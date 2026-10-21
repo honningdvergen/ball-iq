@@ -131,7 +131,7 @@ export const CLUBS_ES = [
       { id: 'q_0bf6a2', q: 'Boca ganó la Intercontinental 2003 por penales, ¿contra qué campeón europeo?', o: ['Juventus', 'Porto', 'AC Milan', 'Ajax'], a: 2, hint: 'Los italianos erraron tres de sus cuatro penales en Yokohama después de que el partido terminara 1-1 tras el alargue.' },
       { id: 'q_b76e7b', q: '¿Qué presidente de Boca Juniors de los años 90 y 2000 llegó después a ser presidente de la Argentina?', o: ['Daniel Angelici', 'Jorge Amor Ameal', 'Juan Román Riquelme', 'Mauricio Macri'], a: 3, hint: 'Condujo el club durante su década más exitosa antes de entrar en política: jefe de gobierno de la capital en 2007 y presidente en 2015.' },
       { id: 'q_658f69', q: 'Boca es el único club que ganó dos Copas Sudamericanas consecutivas. ¿En qué dos años seguidos?', o: ['2002 y 2003', '2004 y 2005', '2006 y 2007', '2008 y 2009'], a: 1, hint: 'En la primera superó una final a doble partido ante un equipo boliviano; en la segunda ganó una definición por penales ante un rival mexicano.' },
-      { id: 'q_5a1003', q: '¿Qué arquero colombiano ganó la Libertadores con Boca en 2000 y 2001?', o: ['Óscar Córdoba', 'René Higuita', 'Faryd Mondragón', 'David Ospina'], a: 0, hint: 'Estuvo en el club entre 1997 y 2001, jugó 118 partidos y fue elegido en el equipo ideal de América en 2000 y 2001.' },
+      { id: 'q_5a1003', q: '¿Qué arquero colombiano ganó la Libertadores con Boca en 2000 y 2001?', o: ['Óscar Córdoba', 'René Higuita', 'Faryd Mondragón', 'Miguel Calero'], a: 0, hint: 'Estuvo en el club entre 1997 y 2001, jugó 118 partidos y fue elegido en el equipo ideal de América en 2000 y 2001.' },
       { id: 'q_b737ed', q: 'La revancha de la final de la Libertadores 2018, entre dos equipos argentinos, se mudó al exterior. ¿A qué estadio?', o: ['Camp Nou', 'Wembley', 'Stade de France', 'Santiago Bernabéu'], a: 3, hint: 'La CONMEBOL llevó el partido a Madrid en diciembre de 2018, después del ataque al micro de Boca en la fecha original.' },
       { id: 'q_f1501d', q: '¿Qué club colombiano le ganó a Boca por penales en la final de la Libertadores 2004?', o: ['Atlético Nacional', 'Once Caldas', 'Deportivo Cali', 'Millonarios'], a: 1, hint: 'El equipo de Manizales ganó la definición tras un 0-0 en la ida y un 1-1 en Colombia, y le negó a Boca el bicampeonato.' },
       { id: 'q_125693', q: '¿Qué arquero, apodado “El Pato”, ganó tres Libertadores con Boca entre 2000 y 2003?', o: ['Óscar Córdoba', 'Agustín Orion', 'Esteban Andrada', 'Roberto Abbondanzieri'], a: 3, hint: 'Estuvo en el club de 1996 a 2006 antes de pasar al Getafe, donde ganó el Trofeo Zamora como mejor arquero de La Liga.' },
@@ -303,8 +303,8 @@ export const CLUBS_ES = [
         "o": [
           "Messi, Suárez y Neymar",
           "Messi, Sánchez y Neymar",
-          "Messi, Silva y Neymar",
-          "Messi, Suárez y Neymar Sr."
+          "Messi, Sandro y Neymar",
+          "Messi, Sergi Roberto y Neymar"
         ],
         "a": 0,
         "hint": "Messi, Suárez y Neymar combinaron un récord de 122 goles en 2014-15 y llevaron al Barça a su segundo triplete continental.",
@@ -499,7 +499,7 @@ export const CLUBS_ES = [
         "q": "¿Qué delantero búlgaro, apodado 'El Pistolero', fue una estrella temperamental del Dream Team de Cruyff y ganó el Balón de Oro de 1994 estando en el Barça?",
         "o": [
           "Hristo Stoichkov",
-          "Gheorghe Hagi",
+          "Lyuboslav Penev",
           "Krasimir Balakov",
           "Emil Kostadinov"
         ],
@@ -513,8 +513,8 @@ export const CLUBS_ES = [
         "o": [
           "Joan Gamper",
           "Josep Sunyol",
-          "Hans Krankl",
-          "Ladislao Kubala"
+          "Paulino Alcántara",
+          "Josep Samitier"
         ],
         "a": 0,
         "hint": "Nacido como Hans Gamper en Winterthur, llegó a ser presidente del club en cinco etapas; el trofeo actual de pretemporada lleva su nombre.",
@@ -987,8 +987,8 @@ export const CLUBS_ES = [
         "o": [
           "Marcelo",
           "Roberto Carlos",
-          "Cafu",
-          "Carlos Alberto"
+          "Sylvinho",
+          "Branco"
         ],
         "a": 1,
         "hint": "El libre directo con efecto de Roberto Carlos, que se curvó de forma imposible hasta entrar en la portería, se hizo legendario; fue fijo de la era galáctica entre 1996 y 2007.",
@@ -998,10 +998,10 @@ export const CLUBS_ES = [
         "id": "q_332594",
         "q": "¿Qué «destructor» brasileño, apodado El Tanque, fue el ancla del centro del campo del Madrid en cuatro Ligas de Campeones junto a Modric y Kroos?",
         "o": [
-          "Xabi Alonso",
+          "Emerson",
           "Casemiro",
-          "Fernando Redondo",
-          "Claude Makelele"
+          "Flávio Conceição",
+          "Gilberto Silva"
         ],
         "a": 1,
         "hint": "Casemiro era el recuperador del célebre trío Modric-Kroos-Casemiro; se marchó al Manchester United en 2022, tras el triunfo europeo de 2021-22.",
@@ -1050,9 +1050,9 @@ export const CLUBS_ES = [
         "id": "q_7661e2",
         "q": "¿Qué exgaláctico centrocampista dirigió al Real Madrid hasta tres Ligas de Campeones consecutivas entre 2016 y 2018?",
         "o": [
-          "Carlo Ancelotti",
+          "Guti",
           "Zinedine Zidane",
-          "Rafael Benítez",
+          "Xabi Alonso",
           "Santiago Solari"
         ],
         "a": 1,
@@ -1106,8 +1106,8 @@ export const CLUBS_ES = [
         "o": [
           "Steve McManaman",
           "David Beckham",
-          "Michael Owen",
-          "Jonathan Woodgate"
+          "Paul Scholes",
+          "Nicky Butt"
         ],
         "a": 1,
         "hint": "David Beckham llegó del Manchester United en 2003 y se convirtió en uno de los grandes fichajes galácticos.",
@@ -1169,10 +1169,10 @@ export const CLUBS_ES = [
         "id": "q_bd9e37",
         "q": "¿Qué rey de España concedió al club el título que llevó la corona real al escudo del Real Madrid en 1920?",
         "o": [
-          "Juan Carlos I",
+          "Amadeo I",
           "Alfonso XII",
           "Alfonso XIII",
-          "Felipe VI"
+          "Fernando VII"
         ],
         "a": 2,
         "hint": "Concedió el título de «Real» al club en junio de 1920; la corona se retiró brevemente con la República de 1931 y se restauró en 1941. Ojo: el rey que murió en 1885 es otro Alfonso.",
@@ -1356,7 +1356,7 @@ export const CLUBS_ES = [
           "Real Madrid",
           "Rayo Vallecano",
           "Getafe",
-          "FC Barcelona"
+          "CD Leganés"
         ],
         "a": 0,
         "hint": "El derbi madrileño enfrenta al Atlético con su vecino, el Real Madrid.",
@@ -1499,8 +1499,8 @@ export const CLUBS_ES = [
         "q": "El estadio en el que el Atlético jugó durante décadas hasta 2017 estaba a orillas de un río de Madrid. ¿Cuál?",
         "o": [
           "Manzanares",
-          "Guadalquivir",
-          "Ebro",
+          "Jarama",
+          "Henares",
           "Tajo"
         ],
         "a": 0,
@@ -2143,9 +2143,9 @@ export const CLUBS_ES = [
         "q": "A mediados de los años cuarenta el Athletic ganó la Copa tres años seguidos, empezando ¿en qué año?",
         "o": [
           "1943",
-          "1930",
-          "1950",
-          "1958"
+          "1942",
+          "1944",
+          "1945"
         ],
         "a": 0,
         "hint": "El Athletic levantó la Copa (entonces Copa del Generalísimo) en 1943, 1944 y 1945.",
@@ -2169,9 +2169,9 @@ export const CLUBS_ES = [
         "q": "¿En qué temporada ganó el Athletic de Bilbao el segundo de sus dos títulos de Liga consecutivos de principios de los ochenta?",
         "o": [
           "1983-84",
-          "1955-56",
-          "1997-98",
-          "2020-21"
+          "1981-82",
+          "1982-83",
+          "1984-85"
         ],
         "a": 0,
         "hint": "Tras el campeonato de 1982-83, el Athletic revalidó el título de Liga en 1983-84.",
@@ -2221,7 +2221,7 @@ export const CLUBS_ES = [
         "q": "El premio de la Liga al máximo goleador español lleva el nombre de ¿qué delantero del Athletic de Bilbao?",
         "o": [
           "Telmo Zarra",
-          "José Ángel Iribar",
+          "Aritz Aduriz",
           "Julen Guerrero",
           "Dani"
         ],
@@ -2234,9 +2234,9 @@ export const CLUBS_ES = [
         "q": "¿Qué mediapunta de un solo club fue el emblema y el ídolo de la afición del Athletic de Bilbao durante los años noventa?",
         "o": [
           "Julen Guerrero",
-          "Markel Susaeta",
-          "Ander Iturraspe",
-          "Iker Muniain"
+          "Joseba Etxeberria",
+          "Ismael Urzaiz",
+          "Cuco Ziganda"
         ],
         "a": 0,
         "hint": "Julen Guerrero, organizador salido de la cantera, se convirtió en icono de los noventa e internacional con España.",
