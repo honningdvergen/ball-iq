@@ -127,7 +127,7 @@ export const CLUBS_ES = [
       { id: 'q_7e0a06', q: 'Boca ganó la final de la Libertadores 2000 por penales, ¿contra qué club brasileño?', o: ['Palmeiras', 'São Paulo', 'Corinthians', 'Santos'], a: 0, hint: 'La serie terminó 2-2 en La Bombonera y 0-0 en el Morumbí; Boca convirtió después cuatro penales en la definición.' },
       { id: 'q_6c4945', q: '¿A qué club mexicano le ganó Boca por penales para retener la Libertadores en 2001?', o: ['Club América', 'Guadalajara', 'Tigres UANL', 'Cruz Azul'], a: 3, hint: 'El equipo mexicano participaba como invitado en el torneo sudamericano y perdió la definición 3-1 tras igualar la serie.' },
       { id: 'q_866922', q: 'Boca le ganó 5-1 en el global a un club brasileño en la final de la Libertadores 2003. ¿A cuál?', o: ['Santos', 'Grêmio', 'Cruzeiro', 'Internacional'], a: 0, hint: 'Revancha de la final de 1963: Boca ganó 2-0 de local y 3-1 en el Morumbí para sellar su quinta corona continental.' },
-      { id: 'q_8ac161', q: '¿A qué club brasileño le ganó Boca 5-0 en el global en la final de la Libertadores 2007?', o: ['Flamengo', 'Grêmio', 'Fluminense', 'Atlético Mineiro'], a: 1, hint: 'Boca ganó 3-0 en La Bombonera y 2-0 en Porto Alegre; sigue siendo su título continental más reciente.' },
+      { id: 'q_8ac161', q: '¿A qué club brasileño le ganó Boca 5-0 en el global en la final de la Libertadores 2007?', o: ['Flamengo', 'Grêmio', 'Fluminense', 'Atlético Mineiro'], a: 1, hint: 'Boca ganó 3-0 en La Bombonera y 2-0 en Porto Alegre; sigue siendo su Copa Libertadores más reciente.' },
       { id: 'q_0bf6a2', q: 'Boca ganó la Intercontinental 2003 por penales, ¿contra qué campeón europeo?', o: ['Juventus', 'Porto', 'AC Milan', 'Ajax'], a: 2, hint: 'Los italianos erraron tres de sus cuatro penales en Yokohama después de que el partido terminara 1-1 tras el alargue.' },
       { id: 'q_b76e7b', q: '¿Qué presidente de Boca Juniors de los años 90 y 2000 llegó después a ser presidente de la Argentina?', o: ['Daniel Angelici', 'Jorge Amor Ameal', 'Juan Román Riquelme', 'Mauricio Macri'], a: 3, hint: 'Condujo el club durante su década más exitosa antes de entrar en política: jefe de gobierno de la capital en 2007 y presidente en 2015.' },
       { id: 'q_658f69', q: 'Boca es el único club que ganó dos Copas Sudamericanas consecutivas. ¿En qué dos años seguidos?', o: ['2002 y 2003', '2004 y 2005', '2006 y 2007', '2008 y 2009'], a: 1, hint: 'En la primera superó una final a doble partido ante un equipo boliviano; en la segunda ganó una definición por penales ante un rival mexicano.' },
@@ -1439,7 +1439,7 @@ export const CLUBS_ES = [
           "Juanfran"
         ],
         "a": 0,
-        "hint": "El gol del uruguayo en el minuto 49 fue la primera vez en los 67 años de historia del Camp Nou que un equipo visitante se proclamaba campeón allí.",
+        "hint": "El uruguayo cabeceó un córner en el minuto 49, y el 1-1 dio al Atlético su primera Liga desde 1996.",
         "en": "Diego Godín"
       },
       {
@@ -2252,7 +2252,7 @@ export const CLUBS_ES = [
           "Markel Susaeta"
         ],
         "a": 1,
-        "hint": "Aritz Aduriz, todavía muy goleador cerca de los cuarenta, marcó tres en la goleada de la ida.",
+        "hint": "Aritz Aduriz, con 34 años, marcó tres en el 4-0 de la ida ante el Barcelona.",
         "en": "Aritz Aduriz"
       }
     ],
