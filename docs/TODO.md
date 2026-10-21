@@ -23,7 +23,8 @@
       the day it opened on. Reaches phones from the first build after 1.8.2 (1.8.3).
 - [ ] 1.8.3, once 1.8.2 is approved: the Footle door, the 312 question fixes, fresh store
       screenshots (club picker "119 clubs", Footle and Trail finish panels) on a quiet Mac.
-- [ ] Calendar editions: El Clásico (Sun 25 Oct) and the Ballon d'Or (Mon 26 Oct).
+- [x] Calendar editions: /quiz/el-clasico-quiz/ and /quiz/ballon-dor-quiz/ live 21 Oct (94cb992f), history only.
+- [ ] **Mon 26 Oct night:** add the 2026 Ballon d'Or winner to /lists/ballon-dor-winners/ once announced, from two sources.
 
 ## 2026-10-16 — THE 17-ITEM PUSH (Alex: "tick off everything on the to do list")
 
