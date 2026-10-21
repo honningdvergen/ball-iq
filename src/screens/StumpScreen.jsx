@@ -5,7 +5,7 @@ import { haptic, loopEvent } from "../App.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { useQuestionText } from "../i18n/questions.js";
+import { useQuestionText } from "../i18n/questionText.js";
 
 export function StumpScreen({ row, onPlayFull, onHome }) {
   const t = useT();

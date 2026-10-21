@@ -1,4 +1,4 @@
-// i18n step 5: the question bank in Spanish (src/i18n/questions.js).
+// i18n step 5: the question bank in Spanish (src/i18n/questionText.js).
 //
 //   • An English player never asks for the Spanish file: not on boot, not
 //     when the bank loads, not when a question renders, and not on a Spanish
@@ -17,7 +17,7 @@ const React = (await import('react')).default;
 const { renderToStaticMarkup } = await import('react-dom/server');
 const { stubGlobals, bootLang } = await import('./i18n-games.harness.js');
 const { getLang, __resetI18nForTests, __setI18nLiveForTests } = await import('../../src/i18n/index.js');
-const Q = await import('../../src/i18n/questions.js');
+const Q = await import('../../src/i18n/questionText.js');
 const { QuizEngine } = await import('../../src/screens/QuizEngine.jsx');
 const { WrongAnswersReview } = await import('../../src/components/WrongAnswersReview.jsx');
 const { loadQuestions } = await import('../../src/questions-loader.js');
@@ -89,8 +89,8 @@ describe('an English player never downloads the Spanish bank', () => {
       }
     })(SRC);
     const importers = files.filter((f) => readFileSync(f, 'utf8').includes('questions.es.json')).map((f) => relative(SRC, f));
-    expect(importers).toEqual(['i18n/questions.js']);
-    const src = readFileSync(resolve(SRC, 'i18n/questions.js'), 'utf8');
+    expect(importers).toEqual(['i18n/questionText.js']);
+    const src = readFileSync(resolve(SRC, 'i18n/questionText.js'), 'utf8');
     expect(src).toContain("import esBankUrl from './questions.es.json?url';");
     expect(src).not.toMatch(/import\(\s*['"][^'"]*questions\.es\.json/);
     // The one fetch, behind the language check.

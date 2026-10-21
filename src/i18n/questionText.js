@@ -18,7 +18,7 @@
 // visitor (scripts/gen-sw-precache.mjs), which would put it in each English
 // install. `?url` makes Vite emit it as a hashed .json asset instead, which is
 // not precached, and fetch() asks for it only while the language is 'es'.
-// tests/unit/i18n-questions.test.js pins both.
+// tests/unit/i18n-question-text.test.js pins both.
 import { useEffect, useSyncExternalStore } from 'react';
 import esBankUrl from './questions.es.json?url';
 import { getLang, subscribe as subscribeLang, t } from './index.js';

@@ -42,7 +42,7 @@
 // The index preserves QB's row ORDER, so an index position maps to the same
 // question. Do not sort it: the Daily 7 shuffles by array position.
 import { loadClubData } from './lib/clubData.js';
-import { loadSpanishQuestions, indexEnglishBank } from './i18n/questions.js';
+import { loadSpanishQuestions, indexEnglishBank } from './i18n/questionText.js';
 
 let idxCache = null;
 let idxInFlight = null;
@@ -95,7 +95,7 @@ export function loadQuestions() {
   // its `club`, so "I have questions but the card cannot route their club
   // answers" must be unrepresentable as well: no bank without the routes.
   //
-  // The Spanish text (i18n/questions.js) rides along for a Spanish player
+  // The Spanish text (i18n/questionText.js) rides along for a Spanish player
   // ONLY, so a quiz opens in Spanish rather than switching under the player's
   // eyes; for English loadSpanishQuestions() resolves at once and fetches
   // nothing. It never rejects: a failed fetch is English questions, not an

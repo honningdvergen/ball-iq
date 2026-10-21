@@ -1,5 +1,5 @@
 // English — THE SOURCE OF TRUTH for every UI string that goes through t().
-// Keep it to UI copy (question text is src/i18n/questions.js's job).
+// Keep it to UI copy (question text is src/i18n/questionText.js's job).
 //
 // ⚠️ NOT ON HOME'S EAGER PATH (i18n step 5). Home, the navigation and
 // onboarding print from en.home.js, a copy of their lines here. Every module

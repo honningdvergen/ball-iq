@@ -10,7 +10,7 @@ import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx"
 import { CLUB_PACK_TO_QB } from "../data/clubPacks.js";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
-import { useQuestionText } from "../i18n/questions.js";
+import { useQuestionText } from "../i18n/questionText.js";
 import { RETIRED_TAGS } from "../lib/quiz.js";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 
@@ -130,7 +130,7 @@ export function LocalSetup({ onStart, onBack }) {
 // reveal phase shows all the picks + correct answer in one go, so a later
 // player can't see what's right from an earlier player's feedback.
 export function LocalGameScreen({ config, onComplete, onExit }) {
-  // Questions print in the player's language (i18n/questions.js); picks and
+  // Questions print in the player's language (i18n/questionText.js); picks and
   // scoring read the English rows. The rest of this screen is not translated yet.
   const loc = useQuestionText();
   const { players, mode, diff, topic = "mixed" } = config;

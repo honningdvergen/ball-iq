@@ -8,7 +8,7 @@ import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, footl
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
 import { useT, fmtLocale } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { useQuestionText } from "../i18n/questions.js";
+import { useQuestionText } from "../i18n/questionText.js";
 import { rich } from "../i18n/rich.jsx";
 
 export function Mini7Strip({ history, today }) {

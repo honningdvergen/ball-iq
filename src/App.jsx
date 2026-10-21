@@ -54,7 +54,7 @@ import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
 import { useT, useLang, isLangLoaded, hasEnglish, t as tl } from './i18n/index.js';
-import { useQuestionText } from './i18n/questions.js';
+import { useQuestionText } from './i18n/questionText.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
@@ -1490,7 +1490,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
 
   const pct = (timeLeft / 60) * 100;
   const barColor = timeLeft > 20 ? 'var(--accent)' : timeLeft > 10 ? 'var(--gold)' : 'var(--red)';
-  // What the player reads (i18n/questions.js); scoring above keeps `q`.
+  // What the player reads (i18n/questionText.js); scoring above keeps `q`.
   const qv = loc.q(q);
 
   return (
@@ -1671,7 +1671,7 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     return { ...base, background: 'var(--s2)', border: '2px solid var(--border)', color: 'var(--t3)', opacity: 0.55 };
   };
 
-  // What the player reads (i18n/questions.js); answer() above keeps `q`.
+  // What the player reads (i18n/questionText.js); answer() above keeps `q`.
   const qv = loc.q(q);
 
   return (

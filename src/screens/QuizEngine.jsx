@@ -15,7 +15,7 @@ import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { useQuestionText } from "../i18n/questions.js";
+import { useQuestionText } from "../i18n/questionText.js";
 import { rich } from "../i18n/rich.jsx";
 
 // A category's chip label: App.jsx's catLabel (the cat.* keys, else CAT_LABELS).
@@ -323,7 +323,7 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   const total = questions?.length || 0;
   const q = questions?.[idx];
   // What the player READS: the Spanish q, options and hint when the language
-  // is es (i18n/questions.js), else `q` itself. Everything that scores,
+  // is es (i18n/questionText.js), else `q` itself. Everything that scores,
   // records or reports keeps using `q`.
   const qv = loc.q(q);
   // Phase 6b Issue A: Daily 7 is a leisurely review experience; the
