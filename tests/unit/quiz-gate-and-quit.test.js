@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import en from '../../src/i18n/en.js';
 
 const read = (p) => readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8');
 // The engine left App.jsx on 2026-09-06 (E16, brick 9); the web-shell gate stays in App.
@@ -16,8 +17,12 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     expect(APP).toMatch(/const \[armed, setArmed\] = useState\(true\);/);
   });
   it('the quit confirm is a centred, stacked sheet: title, the stake, a full-width primary, plain-text quit', () => {
-    expect(APP).toMatch(/Leave this quiz\?/);
-    expect(APP).toMatch(/right from <strong>\{idx\}<\/strong> answered/);
+    // The words are in src/i18n/en.js since step 3; the stake still names
+    // both numbers, each in <strong>.
+    expect(APP).toMatch(/\{t\("quiz\.leave"\)\}/);
+    expect(en['quiz.leave']).toBe('Leave this quiz?');
+    expect(APP).toMatch(/rich\(t\("quiz\.leaveBody"\), \{ score: <strong>\{score\}<\/strong>, n: <strong>\{idx\}<\/strong> \}\)/);
+    expect(en['quiz.leaveBody']).toBe('{score} right from {n} answered — that\'s lost if you quit.');
     expect(APP).toMatch(/className="modal-grab"/);
     expect(APP).not.toMatch(/modal-well/);
     expect(CSS).toMatch(/\.modal-overlay\{[^}]*align-items:flex-end/);
@@ -46,7 +51,7 @@ describe('timed quiz start + quit (2026-09-06)', () => {
     // under a footer occupying 722-812, and elementFromPoint at the link's
     // centre returned .next-btn-primary. What matters is that report comes
     // BEFORE the primary within the footer, which is what a player taps.
-    const report = APP.indexOf('/> Report a problem</>}');
+    const report = APP.indexOf('/> {t("quiz.report")}</>}');
     const primary = APP.indexOf('className="next-btn-primary"');
     const foot = APP.indexOf('className="q-sticky-foot"');
     expect(report).toBeGreaterThan(-1);

@@ -7,6 +7,7 @@
 // (the reveal line and the clue) and by build scripts. wordle.js re-exports
 // both names, so every importer is unchanged. Footle's ANSWER ORDER
 // (WORDLE_PLAYERS, the frozen log) did not move and must not.
+import { t } from '../i18n/index.js';
 
 // Sprint #81 YY2 — full-name reveal map. Looked up at game end (Footle
 // won/lost) to render "Harry Kane" instead of just "KANE" — first name
@@ -566,8 +567,8 @@ export const WORDLE_FULL_NAMES = {
 export function footleClue(answer) {
   const [prefix] = WORDLE_FULL_NAMES[answer] || [""];
   const first = String(prefix || "").trim();
-  if (!first) return "Goes by a single name";
+  if (!first) return t("footle.clueOne");
   // Accents folded to the keyboard's letters: Édouard Mendy reads "E".
   const initial = first[0].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-  return `First name starts with ${initial}`;
+  return t("footle.clueFirst", { l: initial });
 }

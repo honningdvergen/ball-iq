@@ -25,6 +25,7 @@ import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardA
 // has kept a good copy (lib/scheduleRemote.js), else the bundled schedule.
 import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
 import ROLES from '../data/mysteryRoles.json';
+import { t as tNow, useT, useLang } from '../i18n/index.js';
 import './mystery.css';
 
 /* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.
@@ -58,8 +59,9 @@ import './mystery.css';
  * ⚠️ THE ONLY FEEDBACK A GUESS GAVE WAS A BARE INTEGER (1.7.0 design review).
  * A word, a magnitude and a denominator fixed that; the rebuild adds the
  * fourth thing, the reason.
+ * The words are mp.win / mp.hot / mp.warm / mp.cold in src/i18n/en.js.
  */
-const BAND_WORD = { win: 'that’s it', hot: 'boiling', warm: 'warm', cold: 'cold' };
+const bandWord = (t, band) => t(`mp.${band}`);
 
 /**
  * How full the proximity bar is, 0..1. LOG-SCALED: ranks run 1..poolSize and
@@ -80,16 +82,23 @@ const BAND_STYLE = {
 };
 
 // The clue rungs, before the answer has loaded and once it has. The first two
-// are free from guess one (the warm start, lib/mysteryPlayer.js).
+// are free from guess one (the warm start, lib/mysteryPlayer.js). A rung's
+// label is printed from its key (mp.position … in src/i18n/en.js), so it is
+// the same word before and after the answer loads, in either language.
 const CLUE_ICON = { position: Shirt, born: Calendar, club: Shield, initials: Type };
 const CLUE_PLACEHOLDER = [
-  { key: 'position', label: 'Position', after: 0, free: true },
-  { key: 'born', label: 'Born', after: 0, free: true },
-  { key: 'club', label: 'Played for', after: CLUE_AFTER[0], free: false },
-  { key: 'initials', label: 'Initials', after: CLUE_AFTER[1], free: false },
+  { key: 'position', after: 0, free: true },
+  { key: 'born', after: 0, free: true },
+  { key: 'club', after: CLUE_AFTER[0], free: false },
+  { key: 'initials', after: CLUE_AFTER[1], free: false },
 ];
 
 export default function MysteryPlayer({ onExit, date = new Date(), services, embedded = false }) {
+  const t = useT();
+  // Ranks are grouped the language's way (3,571 / 3571); English keeps the
+  // device default it always had.
+  const lang = useLang();
+  const num = (v) => (lang === 'en' ? v.toLocaleString() : v.toLocaleString(lang));
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes
@@ -181,7 +190,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // most years to after 4 guesses and his initials after 8. ⚠️ Never
   // nationality (see above), and never `answer.position` directly:
   // hintPosition prints only a checked role.
-  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES) : CLUE_PLACEHOLDER), [answer, CAREERS]);
+  // `lang`: the initials rung's "(one name)" is worded by clueLadder.
+  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES) : CLUE_PLACEHOLDER), [answer, CAREERS, lang]); // eslint-disable-line react-hooks/exhaustive-deps
   const PAID = CLUES.filter((c) => !c.free);
   const nextClue = PAID[hintsUsed];
   const clueReady = !done && !!answer && !!nextClue && guesses.length >= nextClue.after;
@@ -221,10 +231,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       <div style={{ padding: "20px 0" }}>
         {onExit && (
           <button onClick={onExit} style={{ background: 'none', border: 'none', color: 'var(--t2)', cursor: 'pointer' }}>
-            <ArrowLeft size={20} /> Back
+            <ArrowLeft size={20} /> {t('game.back')}
           </button>
         )}
-        <p style={{ color: 'var(--t2)', marginTop: 20 }}>No Mystery Player today — check back tomorrow.</p>
+        <p style={{ color: 'var(--t2)', marginTop: 20 }}>{t('mp.none')}</p>
       </div>
     );
   }
@@ -261,7 +271,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const submit = (player) => {
     setGiveUpArmed(false); // a guess means they are still playing
     if (done || !player) return;
-    if (guesses.some((g) => g.id === player.id)) { setError(`You already guessed ${player.name}.`); return; }
+    if (guesses.some((g) => g.id === player.id)) { setError(t('mp.already', { name: player.name })); return; }
     const rank = ranks.get(player.id);
     const band = bandFor(rank, POOL.length);
     setLast({ id: player.id, rank, prevBest: rows.length ? rows[0].rank : null });
@@ -298,9 +308,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
 
   const onSubmitText = (e) => {
     e.preventDefault();
-    if (!ready) { ensureData(); setError('Loading the player list — one moment.'); return; }
+    if (!ready) { ensureData(); setError(t('mp.loadingList')); return; }
     const p = matchGuess(POOL, text);
-    if (!p) { setError(`No player called "${text.trim()}" in today's pool.`); return; }
+    if (!p) { setError(t('mp.noSuch', { q: text.trim() })); return; }
     submit(p);
   };
 
@@ -312,7 +322,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     const text = buildMysteryShareText({ number: mysteryNumber(date), guesses: rows, won: w, streak: w ? streak : 0 });
     try {
       if (navigator.share) await navigator.share({ text });
-      else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Copied' })); } catch {} }
+      else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('game.copiedShort') })); } catch {} }
     } catch { /* dismissed or blocked — nothing to recover */ }
   };
   // The header row is at its widest when CLOSEST is present; the title block
@@ -324,7 +334,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     <div ref={rootRef} className="mp" style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: embedded ? '2px 0 8px' : '8px 4px' }}>
         {onExit && (
-          <button onClick={onExit} aria-label="Back" className="back-btn">←</button>
+          <button onClick={onExit} aria-label={t('game.back')} className="back-btn">←</button>
         )}
         {/* ⚠️ THIS ROW HOLDS FIVE THINGS AND THE FIFTH ARRIVES LATE. CLOSEST
             only appears after the first guess, so once it is there the title
@@ -333,19 +343,19 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
           {!embedded && <GameTitle no={tight ? 0 : mysteryNumber(date)} style={tight ? { fontSize: 16 } : undefined}>Mystery Player</GameTitle>}
           <div style={{ fontSize: embedded ? 13.5 : 12.5, color: 'var(--t2)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {(embedded || tight) && <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>No. {mysteryNumber(date)}</span>}
-            {tight ? '' : `${embedded ? ' · ' : ''}${embedded ? 'unlimited guesses' : 'Unlimited guesses'}`}{isArchive ? ' · archive' : ''}
+            {(embedded || tight) && <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>{t('game.no', { n: mysteryNumber(date) })}</span>}
+            {tight ? '' : `${embedded ? ' · ' : ''}${t(embedded ? 'mp.unlimitedLc' : 'mp.unlimited')}`}{isArchive ? ` · ${t('mp.archive')}` : ''}
           </div>
         </div>
         {!done && (
           <button type="button" className="icon-btn" onClick={() => setShowRules((v) => !v)}
-            aria-label="How to play" aria-expanded={showRules} title="How to play"
+            aria-label={t('game.howTo')} aria-expanded={showRules} title={t('game.howTo')}
             style={{ marginRight: 8, color: MODE_ACCENT.mystery, borderColor: modeTint('mystery', 0.35) }}>?</button>
         )}
         {best !== null && !done && (
           <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 4 }}>
-            <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Closest</div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[rows[0].band].fg }}>{best.toLocaleString()}</div>
+            <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t('mp.closest')}</div>
+            <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[rows[0].band].fg }}>{num(best)}</div>
           </div>
         )}
       </div>
@@ -353,24 +363,20 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       {/* One line of rules is always visible; the full version is behind the ?. */}
       {!done && !showRules && n === 0 && (
         <p className="mp-intro">
-          Guess any footballer. You start with two free clues, and each guess gets a rank and the reason for it.{' '}
-          <strong style={{ color: MODE_ACCENT.mystery }}>Lower is closer: the secret player is rank 1.</strong>
+          {t('mp.intro')}{' '}
+          <strong style={{ color: MODE_ACCENT.mystery }}>{t('mp.lower')}</strong>
         </p>
       )}
       {!done && showRules && (
         <p className="mp-intro">
-          Guess any footballer, from any era. You start with his position and the decade he was born in.
-          Each guess is ranked by how close he is to the secret player: clubs they both played for count most
-          (more for years as team-mates), then the same position, then the same era. The line under each guess
-          says which of those it shares, and whether he was born earlier or later than the secret player. A
-          club he played for unlocks after {CLUE_AFTER[0]} guesses, his initials after {CLUE_AFTER[1]}.{' '}
-          <strong style={{ color: 'var(--t1)' }}>Lower is closer: the secret player is rank 1.</strong>
+          {t('mp.rules', { a: CLUE_AFTER[0], b: CLUE_AFTER[1] })}{' '}
+          <strong style={{ color: 'var(--t1)' }}>{t('mp.lower')}</strong>
         </p>
       )}
 
       {won && Confetti ? <Confetti /> : null}
       {done && !answer && (
-        <p style={{ margin: '4px 0 14px', color: 'var(--t3)', fontSize: 13 }}>Loading today's answer…</p>
+        <p style={{ margin: '4px 0 14px', color: 'var(--t3)', fontSize: 13 }}>{t('mp.loadingAnswer')}</p>
       )}
       {/* THE REVEAL (rebuilt 14 Oct 2026). It used to be a name, a position, a
           club COUNT and a birth year: the play-tester's answer was a journeyman
@@ -380,20 +386,20 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           tint and the first line differ — dressing a give-up as a success
           would make the win worth less. */}
       {done && answer && (
-        <section className={`mp-reveal ${won ? 'is-win' : 'is-gaveup'}`} aria-label="The answer">
+        <section className={`mp-reveal ${won ? 'is-win' : 'is-gaveup'}`} aria-label={t('mp.answer')}>
           <div className="mp-reveal-eyebrow">
-            {won ? `Solved in ${n} ${n === 1 ? 'guess' : 'guesses'}` : `Gave up after ${n} ${n === 1 ? 'guess' : 'guesses'}`}
-            {hintsUsed > 0 ? ` · ${hintsUsed} ${hintsUsed === 1 ? 'clue' : 'clues'}` : ''}
+            {t(won ? 'mp.solved' : 'mp.gaveUp', { count: n })}
+            {hintsUsed > 0 ? ` · ${t('mp.clues', { count: hintsUsed })}` : ''}
           </div>
-          <h2 className="mp-reveal-name">{won ? answer.name : `It was ${answer.name}`}</h2>
+          <h2 className="mp-reveal-name">{won ? answer.name : t('mp.itWas', { name: answer.name })}</h2>
           <div className="mp-reveal-meta">
-            {[revealPos ? revealPos.charAt(0).toUpperCase() + revealPos.slice(1) : null, answer.born ? `born ${answer.born}` : null].filter(Boolean).join(' · ')}
+            {[revealPos ? revealPos.charAt(0).toUpperCase() + revealPos.slice(1) : null, answer.born ? t('mp.bornIn', { y: answer.born }) : null].filter(Boolean).join(' · ')}
           </div>
           {won && streak > 1 && (
-            <div className="mp-reveal-streak"><Flame size={13} aria-hidden="true" />{streak}-day Mystery streak</div>
+            <div className="mp-reveal-streak"><Flame size={13} aria-hidden="true" />{t('mp.streak', { n: streak })}</div>
           )}
           {career.length > 0 && (
-            <ol className="mp-career" aria-label="Career">
+            <ol className="mp-career" aria-label={t('mp.career')}>
               {career.map((s, i) => (
                 <li key={`${s.club}-${s.from}-${i}`} className={s.club === keyClub ? 'is-key' : undefined}>
                   <span className="mp-career-years">{spellYears(s)}</span>
@@ -428,9 +434,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
               value={text}
               onFocus={ensureData}
               onChange={(e) => { ensureData(); setText(e.target.value); setError(''); }}
-              placeholder="Search a player"
+              placeholder={t('mp.search')}
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
-              aria-label="Guess a player"
+              aria-label={t('mp.guessAria')}
               /* ⚠️ 16px is a HARD FLOOR — iOS auto-zooms on focusing any input
                  below it and WKWebView never restores the scale on blur. */
               style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', outline: 'none', padding: '15px 0', fontSize: 16, color: 'var(--t1)', fontFamily: 'inherit' }}
@@ -442,7 +448,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
                padding cannot reach it (Transfer Trail had the same defect). */
             <div style={{ position: 'absolute', left: 0, right: 0, zIndex: 20, marginTop: 6, background: 'var(--s2)', border: '1px solid var(--border)', borderRadius: 14, maxHeight: dropMax, overflowY: 'auto', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
               {!ready && text.trim() && (
-                <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--t3)' }} role="status">Loading players…</div>
+                <div style={{ padding: '12px 14px', fontSize: 13, color: 'var(--t3)' }} role="status">{t('mp.loadingPlayers')}</div>
               )}
               {suggestions.map((p) => (
                 /* Birth year then club: tells namesakes apart (the two
@@ -470,15 +476,16 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           decade he was born in. The bottom row waits: a club he played for
           after 4 guesses, his initials after 8, each revealed by a tap. */}
       {!done && (
-        <div className="mp-clues" role="group" aria-label="Clues">
+        <div className="mp-clues" role="group" aria-label={t('mp.clues')}>
           {CLUES.map((c) => {
             const Icon = CLUE_ICON[c.key] || Type;
             const i = PAID.indexOf(c);
+            const label = t(`mp.${c.key}`);
             if (c.free) {
               return (
                 <div key={c.key} className={`mp-clue ${c.value ? 'is-shown' : 'is-pending'}`}>
-                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{c.label}</span>
-                  <span className="mp-clue-value">{c.value || 'When you start'}</span>
+                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{label}</span>
+                  <span className="mp-clue-value">{c.value || t('mp.whenStart')}</span>
                 </div>
               );
             }
@@ -488,7 +495,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             if (shown) {
               return (
                 <div key={c.key} className="mp-clue is-shown">
-                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{c.label}</span>
+                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{label}</span>
                   <span className="mp-clue-value">{c.value}</span>
                 </div>
               );
@@ -497,15 +504,15 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
               return (
                 <button key={c.key} type="button" className="mp-clue is-ready" onClick={revealHint}
                   onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}>
-                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{c.label}</span>
-                  <span className="mp-clue-value">Tap to reveal</span>
+                  <span className="mp-clue-label"><Icon size={12} aria-hidden="true" />{label}</span>
+                  <span className="mp-clue-value">{t('mp.tapReveal')}</span>
                 </button>
               );
             }
             return (
-              <div key={c.key} className="mp-clue is-locked" aria-label={`${c.label}: ${left > 0 ? `unlocks in ${left} ${left === 1 ? 'guess' : 'guesses'}` : 'ready after the one before'}`}>
-                <span className="mp-clue-label"><Lock size={11} aria-hidden="true" />{c.label}</span>
-                <span className="mp-clue-value">{left > 0 ? `in ${left} ${left === 1 ? 'guess' : 'guesses'}` : 'Ready next'}</span>
+              <div key={c.key} className="mp-clue is-locked" aria-label={`${label}: ${left > 0 ? t('mp.unlocksIn', { count: left }) : t('mp.readyAfter')}`}>
+                <span className="mp-clue-label"><Lock size={11} aria-hidden="true" />{label}</span>
+                <span className="mp-clue-value">{left > 0 ? t('mp.inN', { count: left }) : t('mp.readyNext')}</span>
               </div>
             );
           })}
@@ -520,19 +527,19 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         <div className="mp-trend" role="status" aria-live="polite">
           {!done && last && last.prevBest != null && last.rank !== 1 && (
             last.rank < last.prevBest
-              ? <><TrendingUp size={14} aria-hidden="true" /><span>Warmer: your closest guess yet</span></>
-              : <><TrendingDown size={14} aria-hidden="true" /><span>Colder than your closest, rank {last.prevBest.toLocaleString()}</span></>
+              ? <><TrendingUp size={14} aria-hidden="true" /><span>{t('mp.warmer')}</span></>
+              : <><TrendingDown size={14} aria-hidden="true" /><span>{t('mp.colder', { r: num(last.prevBest) })}</span></>
           )}
         </div>
         {/* The key to the colours, where the guesses will stand (13 Oct 2026).
             ⚠️ IN SHARES, NOT RANKS: the pool's size is not known yet. */}
         {n === 0 && !done && (
-          <div role="group" aria-label="What a rank means" style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
+          <div role="group" aria-label={t('mp.rankMeans')} style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
             {[
-              ['win', 'The player', 'Rank 1'],
-              ['hot', BAND_WORD.hot, `Top ${Math.round(HOT_SHARE * 100)}%`],
-              ['warm', BAND_WORD.warm, `Top ${Math.round(WARM_SHARE * 100)}%`],
-              ['cold', BAND_WORD.cold, 'Everyone else'],
+              ['win', t('mp.thePlayer'), t('mp.rank1')],
+              ['hot', bandWord(t, 'hot'), t('mp.top', { n: Math.round(HOT_SHARE * 100) })],
+              ['warm', bandWord(t, 'warm'), t('mp.top', { n: Math.round(WARM_SHARE * 100) })],
+              ['cold', bandWord(t, 'cold'), t('mp.everyoneElse')],
             ].map(([band, word, range]) => (
               <div key={band} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', borderRadius: 12, background: BAND_STYLE[band].bg, border: `1px dashed ${BAND_STYLE[band].bd}` }}>
                 <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: BAND_STYLE[band].fg }}>{word}</span>
@@ -545,7 +552,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           const st = BAND_STYLE[g.band];
           // WHY it is here: shared clubs, position, era. The same three things
           // the rank is computed from (lib/mysteryPlayer.js), so they agree.
-          const why = g.rank === 1 ? 'The secret player' : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS)) : '');
+          const why = g.rank === 1 ? t('mp.secret') : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS)) : '');
           return (
             <div key={g.id} className={`mp-guess${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ background: st.bg, border: `1px solid ${st.bd}` }}>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -566,12 +573,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
                 </div>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{g.rank.toLocaleString()}</div>
+                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{num(g.rank)}</div>
                 {/* In proportion, not "of 9,030": see topShare. */}
                 {POOL.length > 0 && g.rank > 1 && (
                   <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>{topShare(g.rank, POOL.length)}</div>
                 )}
-                <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{BAND_WORD[g.band]}</div>
+                <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{bandWord(t, g.band)}</div>
               </div>
             </div>
           );
@@ -585,7 +592,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             onClick={giveUp}
             style={{ marginTop: 10, alignSelf: 'center', background: 'none', border: 'none', color: giveUpArmed ? 'var(--t1)' : 'var(--t3)', fontSize: 13, fontWeight: 700, textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit', padding: 8 }}
           >
-            {giveUpArmed ? 'Tap again to give up and see the answer' : 'Give up and reveal'}
+            {t(giveUpArmed ? 'mp.giveUpArmed' : 'mp.giveUp')}
           </button>
         )}
       </div>

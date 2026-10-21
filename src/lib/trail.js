@@ -15,6 +15,7 @@
 // included + marked, youth excluded, return spells = separate rungs, max 6.
 import { dateToYMD } from "./date.js";
 import { foldLetters, foldDigraphs } from "./letterFold.js";
+import { t } from "../i18n/index.js";
 
 export const TRAIL_MAX_ATTEMPTS = 5;
 
@@ -1741,7 +1742,8 @@ export function playedForAll(clubs, board) {
   return want.length > 0 && want.every((k) => mine.has(k));
 }
 
-const COUNT_WORD = ["", "one", "two", "three", "four", "five", "six"];
+// "three" for 3, from the i18n word list 'trail.nums' (one … six); the digits past it.
+const countWord = (n) => t("trail.nums").split(" ")[n - 1] || n;
 
 /**
  * The line under a wrong guess whose career holds every club the board showed.
@@ -1758,11 +1760,11 @@ export function wrongPathNote(name, careersOfGuess, boardNow, boardAtGuess = boa
   const distinct = (board) => new Set((board || []).map(trailClubKey)).size;
   if (fits(boardNow)) {
     const n = distinct(boardNow);
-    return `${name} played for ${n === 2 ? "both" : `all ${COUNT_WORD[n] || n}`}, wrong path`;
+    return t(n === 2 ? "trail.wrongBoth" : "trail.wrongAll", { name, w: countWord(n) });
   }
   if (boardAtGuess !== boardNow && fits(boardAtGuess)) {
     const n = distinct(boardAtGuess);
-    return `${name} played for the first ${COUNT_WORD[n] || n}, wrong path`;
+    return t("trail.wrongFirst", { name, w: countWord(n) });
   }
   return null;
 }

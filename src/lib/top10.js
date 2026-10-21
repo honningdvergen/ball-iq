@@ -20,6 +20,7 @@
 // folded name for a club or a nation.
 import { dayIndexForDate, dateToYMD } from './date.js';
 import { normaliseName } from './mysteryPlayer.js';
+import { t } from '../i18n/index.js';
 import { TOP10_ANCHOR_DAY, TOP10_DAYS, TOP10_LOG_HASH } from '../data/top10Meta.js';
 
 export const TOP10_LIVES = 3;
@@ -258,6 +259,7 @@ export function buildTop10ShareText({ number, title, found = [], lives = 0, stre
 export function formatAsOf(iso) {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
   if (!m) return '';
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // The short month names, Jan … Dec, are one space-separated i18n string.
+  const months = t('top10.months').split(' ');
   return `${Number(m[3])} ${months[Number(m[2]) - 1]} ${m[1]}`;
 }

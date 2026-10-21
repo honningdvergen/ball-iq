@@ -604,7 +604,8 @@ describe('Transfer Trail keeps the keyboard up between guesses (Alex\'s recordin
     expect(trail).toMatch(/won && !finishedBefore\(savedAtMount\.current\.status\) && Confetti/);
   });
   it('the guesses left are drawn and named', () => {
-    expect(trail).toMatch(/aria-label=\{`\$\{left\} \$\{left === 1 \? "guess" : "guesses"\} left`\}/);
+    // Named through i18n since step 3: game.left_one / _other, "{count} guess(es) left".
+    expect(trail).toMatch(/aria-label=\{t\("game\.left", \{ count: left \}\)\}/);
     expect(trail).toMatch(/Array\.from\(\{ length: TRAIL_MAX_ATTEMPTS \}/);
   });
 });

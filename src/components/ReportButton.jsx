@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useT } from '../i18n/index.js';
 
 /**
  * The one "report a problem" button.
@@ -40,8 +41,10 @@ import { useState } from 'react';
  */
 export default function ReportButton({
   info, onReport, idle,
-  sending = 'Sending…',
-  done = '✓ Reported — thanks',
+  // Default to report.sending / report.done in src/i18n/en.js: this is
+  // still the one place that thanks anyone.
+  sending,
+  done,
   style,
   // QuizEngine's button is deliberately dimmer than the others — it sits under
   // the primary CTA on the busiest screen and was demoted on purpose — so the
@@ -49,10 +52,11 @@ export default function ReportButton({
   idleColor = 'var(--t2)',
   resolvedColor = 'var(--accent)',
 }) {
+  const t = useT();
   const [state, setState] = useState('idle');
   if (!onReport) return null;
 
-  const label = state === 'done' ? done : state === 'sending' ? sending : idle;
+  const label = state === 'done' ? (done ?? t('report.done')) : state === 'sending' ? (sending ?? t('report.sending')) : idle;
 
   return (
     <button

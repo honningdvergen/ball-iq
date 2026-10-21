@@ -40,10 +40,10 @@ import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from "../lib/p
 import { useKeyboardAwareInput, useDropdownMaxHeight, visibleBottom } from "../lib/useKeyboardAwareInput.js";
 import ResultFoot from "../components/ResultFoot.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
+import { t as tNow, useT } from "../i18n/index.js";
 import "./top10.css";
 
-const ORDINAL = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"];
-const PLACEHOLDER = { player: "Type a player’s name…", club: "Type a club…", nation: "Type a country…" };
+const PLACEHOLDER = { player: "game.typePlayer", club: "top10.typeClub", nation: "top10.typeNation" };
 const SKIN = { "--t10": MODE_ACCENT.top10, "--t10-rgb": MODE_RGB.top10 };
 // How long a pick is held before the board answers. Alex, 9 Oct: "the relief
 // you get when you see, oh thank God that Chad was at number seven". Relief
@@ -96,9 +96,10 @@ export function useTop10Data(date, listId, { library = false } = {}) {
 }
 
 function Head({ number, sub, lives, onBack, embedded }) {
+  const t = useT();
   return (
     <div className={`t10-head${embedded ? " is-embedded" : ""}`}>
-      {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+      {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
       {embedded ? (
         <div className="t10-mast">
           {number > 0 && <><b>Top 10 #{number}</b>{" · "}</>}{sub}
@@ -110,7 +111,7 @@ function Head({ number, sub, lives, onBack, embedded }) {
         </div>
       )}
       {lives != null && (
-        <div className="t10-lives" role="img" aria-label={`${lives} of ${TOP10_LIVES} lives left`}>
+        <div className="t10-lives" role="img" aria-label={t("top10.lives", { n: lives, max: TOP10_LIVES })}>
           {Array.from({ length: TOP10_LIVES }, (_, i) => (
             <Heart key={i} size={20} strokeWidth={2.4}
               className={`t10-heart${i < lives ? "" : " is-lost"}`}
@@ -123,6 +124,7 @@ function Head({ number, sub, lives, onBack, embedded }) {
 }
 
 export default function Top10({ date = new Date(), listId, onBack, onReport, onMoreLists, services, embedded = false }) {
+  const t = useT();
   const { data, failed } = useTop10Data(date, listId);
   // `listId` plays one list by name instead of the day's: the door the archive
   // and the club lists will use. It has no number and never counts as a daily.
@@ -134,7 +136,7 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, onM
   if (!data && !failed) {
     return (
       <div className="screen t10" style={SKIN} aria-busy="true">
-        <Head number={number} sub="Name all ten. Three lives." onBack={onBack} embedded={embedded} />
+        <Head number={number} sub={t("top10.sub")} onBack={onBack} embedded={embedded} />
         <div className="t10-board is-l" style={{ "--t10-row": `${T10_ROW_MAX}px` }} aria-hidden="true">
           {Array.from({ length: 10 }, (_, i) => (
             <div key={i} className="t10-cell is-open is-skeleton"><span className="t10-rank">{i + 1}</span></div>
@@ -148,11 +150,10 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, onM
   if (!list) {
     return (
       <div className="screen t10" style={{ ...SKIN, padding: 24, textAlign: "center" }}>
-        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+        {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         <div style={{ marginTop: 60, fontSize: 20, fontWeight: 800, color: "var(--t1)" }}>Top 10</div>
         <div style={{ fontSize: 14, color: "var(--t2)", marginTop: 8 }}>
-          {failed ? "Could not load today’s list. Check your connection and try again."
-            : "A new list of ten to name every day. Coming soon."}
+          {t(failed ? "top10.loadFail" : "top10.soon")}
         </div>
       </div>
     );
@@ -166,6 +167,7 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, onM
 }
 
 function Top10Board({ list, data, date, number, byName, onBack, onReport, onMoreLists, services, embedded }) {
+  const t = useT();
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   // A list opened by name is saved under its own id, so it can never be read
   // back as a day's result (and so never feeds the streak).
@@ -331,8 +333,9 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
         // Union). Say so, or the board appears to have filled in a name the
         // player never picked.
         const shown = list.slots[i].name;
-        const who = shown === s.name ? s.name : `${s.name} counts as ${shown}`;
-        setSaid({ n, tone: "hit", text: `${who}: ${ORDINAL[i] || `${i + 1}th`}` });
+        const who = shown === s.name ? s.name : tNow("top10.countsAs", { name: s.name, shown });
+        // The places, "1st" … "10th", are one i18n string (top10.ords).
+        setSaid({ n, tone: "hit", text: `${who}: ${tNow("top10.ords").split(" ")[i] || `${i + 1}th`}` });
         haptic("hardCorrect"); playSound("correct");
       } else {
         const near = nearFor(list, s.key);
@@ -341,8 +344,8 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
           // No name in it: the player has just typed the name, and a long one
           // ("Wolverhampton Wanderers") wrapped this line and pushed the board
           // down a row while the keyboard was up.
-          ? { n, tone: "near", text: `So close: ${near.note}. No life lost.` }
-          : { n, tone: "miss", text: `${s.name}: not in the ten` });
+          ? { n, tone: "near", text: tNow("top10.near", { note: near.note }) }
+          : { n, tone: "miss", text: tNow("top10.miss", { name: s.name }) });
         if (near) haptic("soft");
         else { haptic("wrong"); playSound("wrong"); setShake(true); setTimeout(() => setShake(false), 300); }
       }
@@ -378,22 +381,22 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(shareText);
-      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "📋 Copied — paste it anywhere" }));
+      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: `📋 ${tNow("game.copied")}` }));
     } catch {}
   }, [shareText]);
 
   const verdict = g.perfect
-    ? (g.lives === TOP10_LIVES ? "All ten, without a single miss." : `All ten, with ${g.lives} ${g.lives === 1 ? "life" : "lives"} to spare.`)
-    : g.out ? "Out of lives. The ones that got away are filled in above."
+    ? (g.lives === TOP10_LIVES ? t("top10.allClean") : t("top10.allSpare", { count: g.lives }))
+    : g.out ? t("top10.out")
       // "You called it there" read oddly over a 0/10 (design pass, 16 Oct 2026):
       // say something true about the game they had.
-      : g.score === 0 ? "A hard one today. All ten are filled in above."
-        : `You found ${g.score}. The rest are filled in above.`;
+      : g.score === 0 ? t("top10.zero")
+        : t("top10.found", { n: g.score });
   // ⚠️ THE FINISH SAID THE SCORE THREE TIMES: here ("1 of 10"), on the count
   // beside the date ("1/10") and in the large figure under the board (13 Oct
   // 2026). The large figure is the one; the header names the state and the
   // count is for a game still being played.
-  const sub = g.done ? (g.perfect ? "Perfect ten" : "The list, in full") : "Name all ten. Three lives.";
+  const sub = t(g.done ? (g.perfect ? "top10.perfect" : "top10.full") : "top10.sub");
   let missedSeen = 0;
 
   return (
@@ -405,7 +408,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
       <div className="t10-q">
         <h2 className="t10-q-title">{list.title}</h2>
         <div className="t10-q-meta">
-          <span>As of {formatAsOf(list.asOf)}{list.clueLabel ? ` · clue: ${list.clueLabel.toLowerCase()}` : ""}</span>
+          <span>{t("top10.asOf", { d: formatAsOf(list.asOf) })}{list.clueLabel ? ` · ${t("top10.clue", { c: list.clueLabel.toLowerCase() })}` : ""}</span>
           {!g.done && <span className="t10-q-count">{g.score}/{total}</span>}
         </div>
         {/* What counts, and how level entries are ordered. A ranked list is
@@ -428,8 +431,8 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
               onBlur={() => setTyping(false)}
               onChange={(e) => { wantPool?.(); setEntry(e.target.value); }}
               onKeyDown={(e) => { if (e.key === "Enter" && suggestions[0]) pick(suggestions[0]); }}
-              placeholder={PLACEHOLDER[list.kind]}
-              aria-label="Your guess"
+              placeholder={PLACEHOLDER[list.kind] && t(PLACEHOLDER[list.kind])}
+              aria-label={t("game.yourGuess")}
               autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false}
               enterKeyHint="go"
             />
@@ -460,7 +463,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
         </>
       )}
 
-      <div ref={boardRef} className={`t10-board is-${fit.size}${fitting && kbInset > 0 ? " is-fit" : ""}${judging ? " is-wait" : ""}`} style={{ "--t10-row": `${fit.row}px` }} role="list" aria-label="The ten">
+      <div ref={boardRef} className={`t10-board is-${fit.size}${fitting && kbInset > 0 ? " is-fit" : ""}${judging ? " is-wait" : ""}`} style={{ "--t10-row": `${fit.row}px` }} role="list" aria-label={t("top10.theTen")}>
         {list.slots.map((s, i) => {
           const found = g.found[i];
           const missed = g.done && !found;
@@ -480,7 +483,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
       </div>
 
       {(g.wrong.length > 0 || g.close.length > 0) && (
-        <div className="t10-wrong" aria-label="Not in the ten">
+        <div className="t10-wrong" aria-label={t("top10.notIn")}>
           {g.wrong.map((w) => (
             <span key={w.key} className="t10-chip"><s>{w.name}</s></span>
           ))}
@@ -492,7 +495,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
 
       {!g.done && (
         <button type="button" className={`t10-ghost${armed ? " is-armed" : ""}`} onClick={giveUp}>
-          {armed ? "Tap again to end the game and see the list" : "Stuck? Show me the list"}
+          {t(armed ? "top10.giveUpArmed" : "top10.giveUp")}
         </button>
       )}
 
@@ -521,7 +524,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
           {/* A wrong list is unfalsifiable from inside the game: the player
               cannot tell a name they forgot from a name we got wrong. */}
           <ResultFoot thing="List" onReport={onReport} onHome={onBack}
-            more={onMoreLists ? { label: "More Top 10 lists", onClick: onMoreLists, accent: "var(--t10)" } : null}
+            more={onMoreLists ? { label: t("top10.more"), onClick: onMoreLists, accent: "var(--t10)" } : null}
             info={{
               id: `top10:${list.id}`,
               q: `Top 10 ${number ? `#${number}` : `list ${list.id}`} — ${list.title} (as of ${list.asOf}): ${list.slots.map((s, i) => `${i + 1}. ${s.name}`).join(", ")}`,

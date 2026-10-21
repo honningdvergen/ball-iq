@@ -28,14 +28,18 @@ import { ArrowLeft, ArrowRight, Check, LandPlot, ScrollText, Sparkles, Timer } f
 import { prefetchQuestions } from "../questions-loader.js";
 import { faceAbbrForCat } from "../lib/ballIqCard.js";
 import { haptic, LEAGUE_QUIZ_SECTIONS } from "../App.jsx";
+import { useT } from "../i18n/index.js";
+import en from "../i18n/en.js";
 import "./quiz.css";
 
 // The Mix group: the three old tiles that were whole-bank draws, each still
 // started by its own mode so nothing downstream can tell the difference.
+// Names and summaries are qz.<key> / qz.<key>Sum in src/i18n/en.js; `short`
+// is the key of the name the footer uses when the chip's own is too long.
 export const QUIZ_MIX = [
-  { key: "classic", name: "Everything",         Icon: Timer,      sum: "10 questions · easy to hard" },
-  { key: "chaos",   name: "Chaos",              Icon: Sparkles,   sum: "10 questions · wild cards" },
-  { key: "legends", name: "Legends · pre-2000", short: "Legends", Icon: ScrollText, sum: "10 questions · pre-2000" },
+  { key: "classic", Icon: Timer },
+  { key: "chaos",   Icon: Sparkles },
+  { key: "legends", short: "cat.Legends", Icon: ScrollText },
 ];
 export const QUIZ_MIX_KEYS = new Set(QUIZ_MIX.map((m) => m.key));
 // Legends lives in Mix (above), so it leaves the Themes group on this screen.
@@ -52,7 +56,12 @@ export function normaliseQuizTopic(t) {
   return "classic";
 }
 
+// A chip's name: Spanish renames a few categories (cat.* in en.js); the
+// competitions keep LEAGUE_QUIZ_SECTIONS' name, the same in both languages.
+const chipName = (t, it) => (en[`cat.${it.cat}`] ? t(`cat.${it.cat}`) : it.name);
+
 export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, onBack, catStats, cardLeague }) {
+  const t = useT();
   const [topic, setTopic] = React.useState(() => normaliseQuizTopic(initialTopic));
   React.useEffect(() => {
     // Landing here is play intent: warm the bank so the parse overlaps the
@@ -66,9 +75,9 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
   // chip that is picked. Per player: slot 0 of the card is THEIR league.
   const catSum = catItem ? (() => {
     const ab = faceAbbrForCat(catItem.cat, catStats, cardLeague);
-    return ab ? `10 questions · builds your ${ab} rating` : "10 questions · counts toward your overall Ball IQ";
+    return ab ? t("qz.catSum", { ab }) : t("qz.catSumAll");
   })() : "";
-  const label = mix ? (mix.short || mix.name) : catItem?.name || "";
+  const label = mix ? t(mix.short || `qz.${mix.key}`) : catItem ? chipName(t, catItem) : "";
   const start = () => {
     if (mix) onStartMode(mix.key, topic);
     else if (catItem) onStartCat(catItem.cat, topic);
@@ -76,20 +85,20 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
   return (
     <div className="screen qz-screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back"><ArrowLeft size={18} strokeWidth={2.25} aria-hidden="true" /></button>
-        <h1 className="page-title">Quiz</h1>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}><ArrowLeft size={18} strokeWidth={2.25} aria-hidden="true" /></button>
+        <h1 className="page-title">{t("home.quiz.title")}</h1>
       </div>
-      <p className="qz-intro">Pick a topic. Ten questions, and every answer builds your Ball IQ card.</p>
+      <p className="qz-intro">{t("qz.intro")}</p>
 
       <section className="qz-group" aria-labelledby="qz-h-mix">
-        <h2 className="qz-h" id="qz-h-mix">Mix</h2>
+        <h2 className="qz-h" id="qz-h-mix">{t("qz.mix")}</h2>
         <div className="cf-chips qz-chips">
-          {QUIZ_MIX.map(({ key, name, Icon }) => {
+          {QUIZ_MIX.map(({ key, Icon }) => {
             const on = topic === key;
             return (
               <button key={key} type="button" className={`cf-chip qz-chip${on ? " is-on" : ""}`} aria-pressed={on} onClick={() => pick(key)}>
                 <span className="qz-well" aria-hidden="true"><Icon size={16} strokeWidth={2.2} /></span>
-                <span className="cf-chip-name">{name}</span>
+                <span className="cf-chip-name">{t(`qz.${key}`)}</span>
                 {on && <Check className="qz-tick" size={15} strokeWidth={2.6} aria-hidden="true" />}
               </button>
             );
@@ -99,14 +108,14 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
 
       {QUIZ_CAT_SECTIONS.map((section) => (
         <section key={section.label} className="qz-group" aria-labelledby={`qz-h-${section.label}`}>
-          <h2 className="qz-h" id={`qz-h-${section.label}`}>{section.label}</h2>
+          <h2 className="qz-h" id={`qz-h-${section.label}`}>{en[`qz.${section.label}`] ? t(`qz.${section.label}`) : section.label}</h2>
           <div className="cf-chips qz-chips">
             {section.items.map((it) => {
               const on = topic === it.cat;
               return (
                 <button key={it.cat} type="button" className={`cf-chip qz-chip${on ? " is-on" : ""}`} aria-pressed={on} onClick={() => pick(it.cat)}>
                   <span className="cf-abbr" style={{ background: it.color, color: "#fff" }} aria-hidden="true">{it.abbr}</span>
-                  <span className="cf-chip-name">{it.name}</span>
+                  <span className="cf-chip-name">{chipName(t, it)}</span>
                   {on && <Check className="qz-tick" size={15} strokeWidth={2.6} aria-hidden="true" />}
                 </button>
               );
@@ -116,14 +125,14 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
       ))}
 
       <section className="qz-group" aria-labelledby="qz-h-runs">
-        <h2 className="qz-h" id="qz-h-runs">Not ten questions</h2>
+        <h2 className="qz-h" id="qz-h-runs">{t("qz.notTen")}</h2>
         <button type="button" className="qz-run" onClick={onStadiums}>
           <span className="qz-well" aria-hidden="true"><LandPlot size={20} strokeWidth={2.2} /></span>
           <span className="qz-run-body">
-            <span className="qz-run-name">Stadiums</span>
-            <span className="qz-run-sub">Name every ground in a league</span>
+            <span className="qz-run-name">{t("qz.stadiums")}</span>
+            <span className="qz-run-sub">{t("qz.stadiumsSub")}</span>
           </span>
-          <span className="qz-run-go">Open<ArrowRight size={15} strokeWidth={2.4} aria-hidden="true" /></span>
+          <span className="qz-run-go">{t("home.row.open")}<ArrowRight size={15} strokeWidth={2.4} aria-hidden="true" /></span>
         </button>
       </section>
 
@@ -131,8 +140,8 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
       <div className="qz-pad" aria-hidden="true" />
       <div className="qz-foot">
         <div className="qz-foot-in">
-          <p className="qz-sum" aria-live="polite"><strong>{label}</strong> · {mix ? mix.sum : catSum}</p>
-          <button type="button" className="next-btn-primary qz-start" onClick={start}>Start quiz</button>
+          <p className="qz-sum" aria-live="polite"><strong>{label}</strong> · {mix ? t(`qz.${mix.key}Sum`) : catSum}</p>
+          <button type="button" className="next-btn-primary qz-start" onClick={start}>{t("qz.start")}</button>
         </div>
       </div>
     </div>

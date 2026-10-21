@@ -14,6 +14,7 @@
 // desktop (no store to send anyone to), and gone for good once dismissed.
 import React, { useCallback, useState } from 'react';
 import { inAppSource, isNativeShell } from '../lib/inAppBrowser.js';
+import { useT } from '../i18n/index.js';
 
 const KEY = 'biq_inapp_strip_off';
 
@@ -46,13 +47,14 @@ export function useInAppStrip() {
 }
 
 export default function InAppStrip({ src, onDismiss }) {
+  const t = useT();
   if (!src) return null;
   return (
     <div className="wd-inapp" role="note">
       {/* The short line from 350px down: at 320 the long one ellipsised mid-word. */}
-      <span className="wd-inapp-line"><span className="wd-inapp-long">Streaks and reminders live in the app</span><span className="wd-inapp-short">Streaks live in the app</span></span>
-      <a className="wd-inapp-go" href={`/get?src=${src}-inapp`}>Get it<span aria-hidden="true"> →</span></a>
-      <button type="button" className="wd-inapp-x" onClick={onDismiss} aria-label="Hide the app suggestion">×</button>
+      <span className="wd-inapp-line"><span className="wd-inapp-long">{t('inapp.long')}</span><span className="wd-inapp-short">{t('inapp.short')}</span></span>
+      <a className="wd-inapp-go" href={`/get?src=${src}-inapp`}>{t('inapp.go')}<span aria-hidden="true"> →</span></a>
+      <button type="button" className="wd-inapp-x" onClick={onDismiss} aria-label={t('inapp.hide')}>×</button>
     </div>
   );
 }

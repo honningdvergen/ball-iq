@@ -13,6 +13,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CAT_LABELS, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
+import { useT } from "../i18n/index.js";
+import en from "../i18n/en.js";
+import { rich } from "../i18n/rich.jsx";
+
+// A category's chip label. Spanish renames a few (the cat.* keys in en.js);
+// every other category keeps App.jsx's CAT_LABELS name, which is the same in
+// both languages (Premier League, La Liga …).
+export const catLabel = (t, c) => (en[`cat.${c}`] ? t(`cat.${c}`) : CAT_LABELS[c] || c);
 
 // ─── HARD RIGHT BURST ────────────────────────────────────────────────────────
 // Lightweight, quick particle burst used when a user gets a HARD question right.
@@ -84,6 +92,7 @@ export function HardRightBurst({ onComplete }) {
 
 // ─── TYPED INPUT WITH AUTOCOMPLETE ───────────────────────────────────────────
 export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
+  const t = useT();
   const [val, setVal] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [state, setState] = useState(null);
@@ -123,7 +132,7 @@ export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
       <div className="typed-outer">
         <input
           className={`typed-inp${state ? ` ${state}` : ""}`}
-          placeholder="Type your answer…"
+          placeholder={t("quiz.typeAnswer")}
           value={val}
           onChange={e => setVal(e.target.value)}
           onKeyDown={e => e.key === "Enter" && submit()}
@@ -151,9 +160,9 @@ export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
         )}
       </div>
       {hintsEnabled !== false && diff === "easy" && !state && val.length === 0 && firstLetter && (
-        <div className="hint-note"><Lightbulb size={12} strokeWidth={2.5} aria-hidden="true" /> Starts with "{firstLetter}"</div>
+        <div className="hint-note"><Lightbulb size={12} strokeWidth={2.5} aria-hidden="true" /> {t("quiz.startsWith", { l: firstLetter })}</div>
       )}
-      <button className="typed-btn" onClick={() => submit()} disabled={!val.trim() || !!state}>Submit →</button>
+      <button className="typed-btn" onClick={() => submit()} disabled={!val.trim() || !!state}>{t("quiz.submit")}</button>
     </div>
   );
 }
@@ -163,6 +172,7 @@ export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
 export const READ_GRACE_MS = 800;
 
 export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay }) {
+  const t = useT();
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
@@ -418,10 +428,11 @@ const CTA_INSET = (() => {
   // math is inert on mobile — the mobile chrome (.q-top/.timer-row/.streak-bar/
   // .q-tag) stays byte-identical. quizLabel is the mode/club/league badge passed
   // from the mount site; the per-question category is the secondary label. ──
-  const QD_MODE_BADGE = { classic:"Classic", speed:"Speed", daily:"Daily 7", legends:"Legends", chaos:"Chaos", survival:"Survival", local:"Local" };
-  const qdBadge = quizLabel || QD_MODE_BADGE[mode] || "Quiz";
-  const qdCat = q ? (CAT_LABELS[q.cat] || q.cat || "") : "";
-  const qdCounter = mode === "survival" ? `Q ${idx + 1}` : `Q ${String(idx + 1).padStart(2, "0")} / ${total}`;
+  // Mode names: quiz.mode.* in en.js; Daily 7 is a product name, Survival is Home's tile name.
+  const QD_MODE_BADGE = { classic:"quiz.mode.classic", speed:"quiz.mode.speed", legends:"quiz.mode.legends", chaos:"quiz.mode.chaos", survival:"home.mode.survival", local:"quiz.mode.local" };
+  const qdBadge = quizLabel || (mode === "daily" ? "Daily 7" : QD_MODE_BADGE[mode] ? t(QD_MODE_BADGE[mode]) : t("home.quiz.title"));
+  const qdCat = q ? (catLabel(t, q.cat) || "") : "";
+  const qdCounter = mode === "survival" ? t("quiz.q", { n: idx + 1 }) : t("quiz.qOf", { n: String(idx + 1).padStart(2, "0"), total });
   const qdPct = total > 0 ? ((idx + (answered ? 1 : 0)) / total) * 100 : 0;
   const QD_RING_C = 2 * Math.PI * 33; // r=33 → circumference ≈ 207.35
   const qdRatio = timed ? Math.max(0, Math.min(1, timeLeft / timerDuration)) : 1;
@@ -656,9 +667,9 @@ const CTA_INSET = (() => {
   if (!q) return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"60vh",gap:14,padding:"0 24px",textAlign:"center"}}>
       <div style={{fontSize:36}}>⚽</div>
-      <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>Couldn't load questions</div>
-      <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>Please try again in a moment.</div>
-      <button onClick={onBack} className="btn-3d" style={{marginTop:6,maxWidth:240}}>Back to Home</button>
+      <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>{t("quiz.loadFail")}</div>
+      <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>{t("quiz.tryAgain")}</div>
+      <button onClick={onBack} className="btn-3d" style={{marginTop:6,maxWidth:240}}>{t("quiz.backHome")}</button>
     </div>
   );
 
@@ -686,7 +697,7 @@ const CTA_INSET = (() => {
           fontFamily:"'Inter',sans-serif",
           animation:"hardRightBadge 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards",
         }}>
-          🏆 HARD · NAILED IT
+          {t("quiz.hardNailed")}
         </div>
       )}
       {/* ── desktop-web-refresh (Quiz #02): >=1024 chrome. Render-always,
@@ -704,7 +715,7 @@ const CTA_INSET = (() => {
         </div>
         <div className="qd-topbar-r">
           <span className="qd-counter">{qdCounter}</span>
-          <button className="qd-close" onClick={() => { if (idx === 0) { onBack(); return; } setShowQuit(true); }} aria-label="Quit game">
+          <button className="qd-close" onClick={() => { if (idx === 0) { onBack(); return; } setShowQuit(true); }} aria-label={t("quiz.quitAria")}>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
           </button>
         </div>
@@ -716,7 +727,7 @@ const CTA_INSET = (() => {
         <button className="back-btn" onClick={() => {
           if (idx === 0 && (!timed || !armed)) { onBack(); return; }
           setShowQuit(true);
-        }} aria-label="Go back">←</button>
+        }} aria-label={t("game.goBack")}>←</button>
         {mode === "survival" ? (
           <div style={{flex:1}} />
         ) : (
@@ -732,13 +743,13 @@ const CTA_INSET = (() => {
               visibly jumped sideways at exactly the moment the user was
               watching it for feedback. Reserve the space instead. */}
           <span className="q-score-live" aria-hidden={score === 0 || undefined} style={score === 0 ? {visibility:"hidden"} : undefined}>{score}<span className="q-score-tick"> ✓</span></span>
-          <span className="q-ctr">{mode === "survival" ? `Q${idx + 1}` : `${idx + 1}/${total}`}</span>
-          {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
+          <span className="q-ctr">{mode === "survival" ? t("quiz.qTight", { n: idx + 1 }) : `${idx + 1}/${total}`}</span>
+          {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}>?</button>}
         </div>
       </div>
 
       {streakBeat > 0 && (
-        <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {streakBeat} in a row</div>
+        <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.inARow", { n: streakBeat })}</div>
       )}
       {mode === "survival" && (
         <div className="streak-bar">
@@ -747,9 +758,9 @@ const CTA_INSET = (() => {
             {/* At nought this said "Survival Mode" in amber beside a flame and a
                 zero: the mode's name, on the mode's own screen, read as a score
                 of "0 Survival Mode". The rule is what a first run needs. */}
-            <strong className={streak === 0 ? "is-rule" : undefined}>{streak === 0 ? "One miss ends the run" : streak === 1 ? "First one!" : streak < 5 ? "Keep going!" : streak < 10 ? "On fire!" : "Unstoppable!"}</strong>
-            {survivalBest > 0 && <span style={{fontSize:11,color:"var(--t3)",marginLeft:6}}>PB: {survivalBest}</span>}
-            {streak > 0 && survivalBest > 0 && streak >= survivalBest && <span style={{fontSize:11,color:"var(--gold)",marginLeft:4,fontWeight:700}}>New PB</span>}
+            <strong className={streak === 0 ? "is-rule" : undefined}>{t(streak === 0 ? "quiz.survRule" : streak === 1 ? "quiz.surv1" : streak < 5 ? "quiz.surv2" : streak < 10 ? "quiz.surv5" : "quiz.surv10")}</strong>
+            {survivalBest > 0 && <span style={{fontSize:11,color:"var(--t3)",marginLeft:6}}>{t("quiz.pb", { n: survivalBest })}</span>}
+            {streak > 0 && survivalBest > 0 && streak >= survivalBest && <span style={{fontSize:11,color:"var(--gold)",marginLeft:4,fontWeight:700}}>{t("quiz.newPb")}</span>}
           </div>
         </div>
       )}
@@ -775,14 +786,14 @@ const CTA_INSET = (() => {
           up), never every second, so AT users know time is draining in timed
           modes without a chatty per-second read. (medical accessibility HIGH.) */}
       <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
-        {timed && !isTyped ? (timeLeft === 10 ? "10 seconds left" : timeLeft === 5 ? "5 seconds left" : timeLeft === 0 ? "Time's up" : "") : ""}
+        {timed && !isTyped ? (timeLeft === 10 || timeLeft === 5 ? t("quiz.secsLeft", { n: timeLeft }) : timeLeft === 0 ? t("quiz.timesUp") : "") : ""}
       </div>
 
       {/* desktop-web-refresh (Quiz #02): streak · circular timer ring · correct.
           Desktop-only (base display:none); reuses the live streak/score/timeLeft
           state that drives the mobile chrome, so the two never disagree. */}
       <div className="qd-meta" aria-hidden="true">
-        <span className="qd-pill qd-pill-streak"><span className="qd-pill-ic"><Flame size={13} strokeWidth={2.4} aria-hidden="true" /></span>{streak} streak</span>
+        <span className="qd-pill qd-pill-streak"><span className="qd-pill-ic"><Flame size={13} strokeWidth={2.4} aria-hidden="true" /></span>{t("quiz.streak", { n: streak })}</span>
         {timed && !isTyped ? (
           <div className="qd-ring">
             <svg width="78" height="78" viewBox="0 0 78 78">
@@ -795,9 +806,9 @@ const CTA_INSET = (() => {
             <span className="qd-ring-n">{timeLeft}</span>
           </div>
         ) : null}
-        <span className="qd-pill qd-pill-correct"><span className="qd-pill-num">{score}</span>correct</span>
+        <span className="qd-pill qd-pill-correct"><span className="qd-pill-num">{score}</span>{t("quiz.correctWord")}</span>
       </div>
-      <div className="qd-eyebrow" aria-hidden="true">Question {idx + 1}</div>
+      <div className="qd-eyebrow" aria-hidden="true">{t("quiz.question", { n: idx + 1 })}</div>
 
       <div key={idx} className="q-card q-fade" style={qCardStyle(q.cat)}>
         {/* ⚠️ COLOUR IS DERIVED, NOT A CSS CLASS. The `.cat-* .q-tag` block
@@ -807,7 +818,7 @@ const CTA_INSET = (() => {
             red LA LIGA chip sat under an orange LAL tile on the same screen.
             catColour() resolves the card's own colour; lift() keeps a dark
             brand hue readable on the dark chip. */}
-        <div className="q-tag" style={qTagStyle(q.cat)}>{CAT_LABELS[q.cat]||q.cat}</div>
+        <div className="q-tag" style={qTagStyle(q.cat)}>{catLabel(t, q.cat)}</div>
         {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
         <div className="q-text" style={{fontSize:18}}>{noBreakScores(q.q)}</div>
       </div>
@@ -837,7 +848,7 @@ const CTA_INSET = (() => {
                 style={{padding:"20px 8px",fontSize:17,fontWeight:800,borderRadius:16,
                   background:bg,border,color,cursor:isAnswered?"default":"pointer",transition:"all 0.2s",fontFamily:"inherit",
                   opacity: isAnswered && !isCorrect && !isChosen ? 0.55 : 1}}>
-                {isAnswered && isCorrect ? "✓ " : isAnswered && isChosen && !isCorrect ? "✗ " : ""}{val ? "TRUE" : "FALSE"}
+                {isAnswered && isCorrect ? "✓ " : isAnswered && isChosen && !isCorrect ? "✗ " : ""}{t(val ? "quiz.true" : "quiz.false")}
               </button>
             );
           })}
@@ -917,10 +928,10 @@ const CTA_INSET = (() => {
           // when no row can carry the news: time ran out, or a typed answer.
           <div role="status" className={`feedback ${gotIt ? "correct" : "wrong"}${!timedOut && !isTyped ? " sr-only" : ""}`}>
             <span style={{flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{
-              gotIt ? "✓ Correct!"
-                : timedOut ? "Time's up"
+              gotIt ? t("quiz.right")
+                : timedOut ? t("quiz.timesUp")
                 : isTyped ? `✗ ${q.typed_a}`
-                : "✗ Incorrect"
+                : t("quiz.wrong")
             }</span>
           </div>
         );
@@ -957,7 +968,7 @@ const CTA_INSET = (() => {
           color:"var(--t2)",
           animation:"fadeIn 0.4s ease-out"
         }}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> Why?</div>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> {t("quiz.why")}</div>
           <div>{q.hint}</div>
         </div>
       )}
@@ -985,7 +996,7 @@ const CTA_INSET = (() => {
               // cannot go stale.
               key={rkey}
               onReport={onReport}
-              idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> Report a problem</>}
+              idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.report")}</>}
               idleColor="var(--t3)"
               // A thunk, so picked/correct are read at press time rather than
               // recomputed on every render of the question.
@@ -1028,7 +1039,7 @@ const CTA_INSET = (() => {
             className="next-btn-primary"
             onClick={() => doAdvance(showNext.ns, showNext.nb, showNext.correct)}
           >
-            {idx + 1 >= total ? "Results →" : "Next →"}
+            {t(idx + 1 >= total ? "quiz.results" : "quiz.next")}
           </button>
         </div>
       )}
@@ -1042,18 +1053,18 @@ const CTA_INSET = (() => {
                 also looks dull"): a sheet in the app's vocabulary — icon well,
                 what is actually on the line, one green primary, a quiet exit. */}
             <div className="modal-head">
-              <div className="modal-title" id="quit-title">Leave this quiz?</div>
+              <div className="modal-title" id="quit-title">{t("quiz.leave")}</div>
               <div className="modal-body">{idx > 0
-                ? <><strong>{score}</strong> right from <strong>{idx}</strong> answered — that&#39;s lost if you quit.</>
-                : "Your progress will be lost."}</div>
+                ? rich(t("quiz.leaveBody"), { score: <strong>{score}</strong>, n: <strong>{idx}</strong> })
+                : t("quiz.leaveLost")}</div>
             </div>
             <div className="modal-btns">
-              <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>Keep playing</button>
+              <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>{t("quiz.keepPlaying")}</button>
               {/* ⚠️ A rage-quit is a stated bad moment. The app already knows —
                   it rendered a confirm dialog and the player said yes — and it
                   did nothing with that. Abandoning mid-quiz is not the mood to
                   ask for five stars in. */}
-              <button className="modal-btn modal-confirm" onClick={() => { try { markBadReviewMoment(); } catch {} onBack(); }}>Quit</button>
+              <button className="modal-btn modal-confirm" onClick={() => { try { markBadReviewMoment(); } catch {} onBack(); }}>{t("quiz.quit")}</button>
             </div>
           </div>
         </div>

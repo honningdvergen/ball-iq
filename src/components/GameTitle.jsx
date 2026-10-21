@@ -17,14 +17,17 @@
 // 169). So the row wraps and is one line tall: where the number does not fit
 // beside the name it falls to a second line that is not shown, and the name
 // stands whole. Home and the share text still carry the number.
+import { useT } from '../i18n/index.js';
+
 const TITLE = { display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 7, height: "1.2em", overflow: "hidden", fontSize: 20, fontWeight: 800, color: "var(--t1)", lineHeight: 1.2 };
 const NAME = { maxWidth: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
 const NO = { fontSize: 13, fontWeight: 700, color: "var(--t3)", WebkitTextFillColor: "var(--t3)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" };
 
 export default function GameTitle({ children, no, className, style }) {
+  const t = useT();
   return (
     <div className={className} style={{ ...TITLE, ...style }}>
-      <span style={NAME}>{children}</span>{no > 0 ? <span style={NO}>No. {no}</span> : null}
+      <span style={NAME}>{children}</span>{no > 0 ? <span style={NO}>{t('game.no', { n: no })}</span> : null}
     </div>
   );
 }

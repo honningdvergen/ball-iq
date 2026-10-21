@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import en from "../../src/i18n/en.js";
 
 /**
  * ONE QUIZ ENTRY (Alex, 16 Oct 2026).
@@ -59,10 +60,14 @@ describe("Home: one Quiz row replaces five entries", () => {
 });
 
 describe("Quiz screen: every old entry, through its old launcher", () => {
+  // Since i18n step 3 the chip names live in src/i18n/en.js as qz.<key>, and
+  // the screen prints t(`qz.${key}`): the key is the mode, the value the name.
   it("Mix holds Classic (Everything), Chaos and Legends as their own modes", () => {
-    expect(QUIZ_CODE).toMatch(/key: "classic",\s*name: "Everything"/);
-    expect(QUIZ_CODE).toMatch(/key: "chaos",\s*name: "Chaos"/);
-    expect(QUIZ_CODE).toMatch(/key: "legends",\s*name: "Legends · pre-2000"/);
+    expect(QUIZ_CODE).toMatch(/key: "classic",\s*Icon/);
+    expect(QUIZ_CODE).toMatch(/key: "chaos",\s*Icon/);
+    expect(QUIZ_CODE).toMatch(/key: "legends",\s*short: "cat\.Legends",\s*Icon/);
+    expect(QUIZ_CODE).toContain('{t(`qz.${key}`)}');
+    expect([en["qz.classic"], en["qz.chaos"], en["qz.legends"]]).toEqual(["Everything", "Chaos", "Legends · pre-2000"]);
     // A Mix chip starts its mode through startMode, exactly as the tile did.
     expect(APP_CODE).toMatch(/onStartMode=\{\(m, t\) => \{ setQuizTopic\(t\); startMode\(m\); \}\}/);
   });
@@ -77,19 +82,26 @@ describe("Quiz screen: every old entry, through its old launcher", () => {
   });
 
   it("Legends is one door: no second Legends chip under Themes", () => {
-    expect((QUIZ_CODE.match(/name: "Legends/g) || []).length).toBe(1);
+    expect((QUIZ_CODE.match(/key: "legends"/g) || []).length).toBe(1);
+    expect(Object.values(en).filter((v) => /^Legends ·/.test(v))).toEqual(["Legends · pre-2000"]);
   });
 
   it("Stadiums is a row under 'Not ten questions' and opens the Stadiums screen", () => {
-    expect(QUIZ_CODE).toMatch(/Not ten questions/);
-    expect(QUIZ_CODE).toMatch(/<span className="qz-run-name">Stadiums<\/span>/);
+    expect(QUIZ_CODE).toMatch(/\{t\("qz\.notTen"\)\}/);
+    expect(en["qz.notTen"]).toBe("Not ten questions");
+    expect(QUIZ_CODE).toMatch(/<span className="qz-run-name">\{t\("qz\.stadiums"\)\}<\/span>/);
+    expect(en["qz.stadiums"]).toBe("Stadiums");
     expect(APP_CODE).toMatch(/onStadiums=\{\(\) => setScreen\("stadiums"\)\}/);
   });
 
   it("one solid button, sentence case, lucide icons only", () => {
     expect((QUIZ_CODE.match(/next-btn-primary/g) || []).length).toBe(1);
-    expect(QUIZ_CODE).toMatch(/>Start quiz</);
-    for (const h of ["Mix", "Not ten questions"]) expect(QUIZ_CODE).toMatch(new RegExp(`>${h}<`));
+    expect(QUIZ_CODE).toMatch(/>\{t\("qz\.start"\)\}</);
+    expect(en["qz.start"]).toBe("Start quiz");
+    for (const [k, h] of [["qz.mix", "Mix"], ["qz.notTen", "Not ten questions"]]) {
+      expect(QUIZ_CODE).toMatch(new RegExp(`>\\{t\\("${k.replace(".", "\\.")}"\\)\\}<`));
+      expect(en[k]).toBe(h);
+    }
     expect(QUIZ_CODE).not.toMatch(/textTransform|text-transform|uppercase/);
     // No typed arrows standing in for icons: the back and Open marks are lucide.
     expect(QUIZ_CODE).not.toMatch(/[←→]/);

@@ -18,6 +18,7 @@ import en from '../../src/i18n/en.js';
 import es from '../../src/i18n/es.js';
 import { t, initI18n, getLang, LANG_STORAGE_KEY, __resetI18nForTests } from '../../src/i18n/index.js';
 import { FOOTLE_SHORT } from '../../src/lib/modeCopy.js';
+import { STEP3_EN } from './i18n-games.keys.js';
 
 const S = vi.hoisted(() => ({}));
 vi.mock('../../src/useAuth.jsx', () => ({ useAuth: () => S.auth }));
@@ -216,7 +217,8 @@ describe('the step 2 keys', () => {
     for (const [k, v] of Object.entries(STEP2_EN)) expect(en[k], k).toBe(v);
   });
   it('the pinned list is every key step 2 added (no unpinned English)', () => {
-    expect(Object.keys(en).filter((k) => !STEP1(k)).sort()).toEqual(Object.keys(STEP2_EN).sort());
+    // Step 3's keys (the game screens) are pinned in i18n-games.keys.js.
+    expect(Object.keys(en).filter((k) => !STEP1(k) && !Object.hasOwn(STEP3_EN, k)).sort()).toEqual(Object.keys(STEP2_EN).sort());
   });
   it('each one has a Spanish value', () => {
     expect(Object.keys(STEP2_EN).filter((k) => typeof es[k] !== 'string')).toEqual([]);
