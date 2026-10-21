@@ -9036,7 +9036,7 @@ export const TF_STATEMENTS = [
   { id:"tf_61f61f", s:"Ronaldinho won the Ballon d'Or in 2005 after finishing third in 2004.", a:true },
   { id:"tf_38651d", s:"Liverpool trailed AC Milan 3-0 at half time in the 2005 Champions League final before winning on penalties.", a:true },
   { id:"tf_ab8668", s:"Brazil have never lost a World Cup penalty shootout.", a:false },
-  { id:"tf_998cce", s:"Miroslav Klose scored 16 World Cup goals — the all-time record.", a:false },
+  { id:"tf_998cce", s:"Miroslav Klose still holds the World Cup scoring record with 16 goals.", a:false },
   { id:"tf_6a7280", s:"PSG were founded in 1970.", a:true },
   { id:"tf_159fe2", s:"Argentina won the 2021 Copa America — their first major title in 28 years.", a:true },
   { id:"tf_0a4c4a", s:"The Premier League season begins in August every year.", a:true },
