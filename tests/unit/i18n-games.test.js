@@ -97,9 +97,9 @@ describe('the step 3 keys', () => {
   it('each one prints its pinned English', () => {
     for (const [k, v] of Object.entries(STEP3_EN)) expect(en[k], k).toBe(v);
   });
-  it('the pinned list is every key step 3 added (they follow settings.language in en.js)', () => {
+  it('the pinned list is every key step 3 added (they follow settings.language in en.js, up to step 4\'s first)', () => {
     const keys = Object.keys(en);
-    expect(keys.slice(keys.indexOf('settings.language') + 1).sort()).toEqual(Object.keys(STEP3_EN).sort());
+    expect(keys.slice(keys.indexOf('settings.language') + 1, keys.indexOf('dd.aria')).sort()).toEqual(Object.keys(STEP3_EN).sort());
   });
   it('each one has a Spanish value, with the same {placeholders}', () => {
     expect(Object.keys(STEP3_EN).filter((k) => typeof es[k] !== 'string' || !es[k])).toEqual([]);

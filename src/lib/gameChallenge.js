@@ -12,6 +12,8 @@
 // challenge only counts on the SAME puzzle number: anything else is dropped,
 // because comparing two different boards would be a lie.
 
+import { t } from '../i18n/index.js';
+
 export const GAME_CODES = { footle: 'f', trail: 't', top10: 'x' };
 const BY_CODE = { f: 'footle', t: 'trail', x: 'top10' };
 const MAX = { footle: 6, trail: 12, top10: 10 };
@@ -46,20 +48,27 @@ export function compareScores(game, mine, theirs) {
   return Math.sign(rank(theirs) - rank(mine));
 }
 
-/** "3/6", "X/6", "club 2", "7/10": how a score reads in one short line. */
-export function scoreLabel(game, s) {
+/**
+ * "3/6", "X/6", "2 clubs", "7/10": how a score reads in one short line. Pass
+ * `t` for the player's own language (the finish panel); without it the line
+ * stays English, for the challenge text that goes out to someone else.
+ */
+export function scoreLabel(game, s, t) {
   if (game === 'footle') return s > 0 ? `${s}/6` : 'X/6';
-  if (game === 'trail') return s > 0 ? `${s} ${s === 1 ? 'club' : 'clubs'}` : 'missed';
+  if (game === 'trail') {
+    if (t) return s > 0 ? t('gc.clubs', { count: s }) : t('gc.missed');
+    return s > 0 ? `${s} ${s === 1 ? 'club' : 'clubs'}` : 'missed';
+  }
   return `${s}/10`;
 }
 
 /** What the challenger did, for the banner: "Alex solved it in 3". */
 export function challengeLine({ game, score, name }) {
-  const who = name || 'A mate';
-  if (game === 'top10') return `${who} got ${score}/10`;
-  if (score <= 0) return `${who} missed this one`;
-  if (game === 'footle') return `${who} solved it in ${score}`;
-  return `${who} got him with ${score} ${score === 1 ? 'club' : 'clubs'}`;
+  const who = name || t('gc.aMate');
+  if (game === 'top10') return t('gc.got10', { who, score });
+  if (score <= 0) return t('gc.missedIt', { who });
+  if (game === 'footle') return t('gc.solvedIn', { who, score });
+  return t('gc.gotHim', { who, count: score });
 }
 
 export function storeChallenge(c) {

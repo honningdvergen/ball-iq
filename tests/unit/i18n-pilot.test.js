@@ -113,11 +113,17 @@ describe('the tables', () => {
     const missing = Object.keys(es).filter((k) => !(k in en));
     expect(missing).toEqual([]);
   });
+  // English grammar carried as a placeholder (step 4): {s} is the "s" of
+  // "lives"/"shields" and {w} the word "answer(s)", kept as their own text node
+  // so the English markup stays byte-identical. Spanish builds its own
+  // sentence and may leave them out — only these two, and only out.
+  const ENGLISH_ONLY = new Set(['s', 'w']);
   it('every value is a non-empty string, and es keeps en\'s {placeholders}', () => {
     for (const [k, v] of Object.entries(en)) expect(typeof v === 'string' && v.trim().length > 0, `en ${k}`).toBe(true);
     for (const [k, v] of Object.entries(es)) {
       expect(typeof v === 'string' && v.trim().length > 0, `es ${k}`).toBe(true);
-      expect(placeholders(v), `es ${k} placeholders`).toEqual(placeholders(en[k]));
+      const mine = placeholders(v);
+      expect(mine, `es ${k} placeholders`).toEqual(placeholders(en[k]).filter((p) => mine.includes(p) || !ENGLISH_ONLY.has(p)));
     }
   });
   it('plural keys come as a set: any _one has an _other', () => {

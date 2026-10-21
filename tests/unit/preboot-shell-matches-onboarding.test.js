@@ -152,7 +152,13 @@ describe('the pre-boot shell is the screen it imitates', () => {
     // to React must not visibly change the sentence.
     expect(correct[1]).toBe('Nice — you’re a natural');
     expect(wrong[1]).toBe(`It's ${sample.o[sample.a]} — the all-time record holder. You'll pick these up fast!`);
-    expect(APP, 'the component copy moved — re-sync the shell').toContain(correct[1]);
+    // The component's copy is the ob.right / ob.wrong keys in src/i18n/en.js
+    // since i18n step 4; the shell must keep their English.
+    expect(APP).toMatch(/\{t\("ob\.right"\)\}/);
+    expect(APP).toMatch(/t\("ob\.wrong", \{ a: ONBOARD_SAMPLE\.o\[ONBOARD_SAMPLE\.a\] \}\)/);
+    const en = readFileSync(fileURLToPath(new URL('../../src/i18n/en.js', import.meta.url)), 'utf8');
+    expect(en, 'the component copy moved — re-sync the shell').toContain(`'ob.right': '${correct[1]}',`);
+    expect(en).toContain(`'ob.wrong': '${wrong[1].replace(`${sample.o[sample.a]}`, '{a}').replace(/'/g, "\\'")}',`);
   });
 
   it('the shell\'s primary button LOOKS like the one it hands over to', () => {

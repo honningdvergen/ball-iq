@@ -14,7 +14,9 @@ import { WrongAnswersReview } from "../components/WrongAnswersReview.jsx";
 import { dayIndexForDate } from "../lib/date.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { getXPForResult } from "../lib/scoring.js";
-import { dailyTierCopy, scoreTagline } from "../lib/resultsCopy.js";
+import { dailyTierBand, scoreTaglineBand } from "../lib/resultsCopy.js";
+import { useT } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
 import { loopEvent } from "../App.jsx";
 
@@ -27,6 +29,7 @@ import { loopEvent } from "../App.jsx";
 // just rated (the number arrives), rated (before → after, and each face that
 // moved). Faces print in their own colour; the arrow is the fact.
 function CardDeltaRow({ d }) {
+  const t = useT();
   if (!d) return null;
   const Arrow = ({ a, b }) => (
     <span className="rd-num" style={{ color: b > a ? "var(--grn-soft)" : b < a ? "var(--t3)" : "var(--t2)" }}>
@@ -48,7 +51,7 @@ function CardDeltaRow({ d }) {
       <Shell>
         <div className="rd-head">
           <span className="rd-label">Ball IQ</span>
-          <span className="rd-body">{d.toRated} more {d.toRated === 1 ? "answer" : "answers"} to get rated</span>
+          <span className="rd-body">{rich(t("rs.toRated", { count: d.toRated }), { n: d.toRated, w: t("rs.answers", { count: d.toRated }) })}</span>
         </div>
       </Shell>
     );
@@ -58,14 +61,14 @@ function CardDeltaRow({ d }) {
       <Shell>
         <div className="rd-head">
           <span className="rd-label">Ball IQ</span>
-          <span className="rd-body">Rated <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> — your card is live</span>
+          <span className="rd-body">{rich(t("rs.ratedLive"), { n: <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> })}</span>
         </div>
       </Shell>
     );
   }
   const moved = d.faces.slice(0, 2);
   return (
-    <Shell label={`Ball IQ ${d.before} to ${d.after}`}>
+    <Shell label={t("rs.deltaAria", { a: d.before, b: d.after })}>
       <div className="rd-head">
         <span className="rd-label">Ball IQ</span>
         {/* ⚠️ NO "69 → 69". An arrow between two identical numbers is the panel
@@ -91,6 +94,7 @@ function CardDeltaRow({ d }) {
 }
 
 export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone, cardDelta }) {
+  const t = useT();
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
   useEffect(() => { if (isPerfect) haptic("levelup"); }, [isPerfect]);
@@ -114,7 +118,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
      without it actually are. */
   const footleToday = readWordleTodayStatus();
   const footleOpen = footleToday && (footleToday.kind === "ready" || footleToday.kind === "in-progress");
-  const footleCta = footleToday?.kind === "in-progress" ? "Continue today's Footle" : "Play today's Footle";
+  const footleCta = t(footleToday?.kind === "in-progress" ? "rs.contFootle" : "rs.playFootle");
 
   // Personal best detection
   const eligibleForPB = mode === "classic" && result.total === 10;
@@ -159,8 +163,8 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   // so 1 of 7 arrived glowing green over the line "Everyone starts somewhere".
   const scoreEarned = isSurvival ? result.score >= 3 : (result.total > 0 && result.score / result.total >= 0.5);
   const scoreCaption = isSurvival
-    ? (result.score === 0 ? "Out on the first question — it happens to everyone" : `${result.score} in a row before missing one`)
-    : `${result.score} correct out of ${result.total}`;
+    ? (result.score === 0 ? t("rs.out1") : t("rs.runMiss", { count: result.score, n: result.score }))
+    : t("rs.correctOf", { count: result.score, n: result.score, total: result.total });
   // Best run rides the caption (review C: the amber pill was a third accent on
   // a screen that already has green and gold). Hidden below 3 — noise.
   const bestRun = !isSurvival && result.bestStreak != null && result.bestStreak >= 3 && result.bestStreak < result.total ? result.bestStreak : 0;
@@ -168,7 +172,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   // One primary. Whichever daily is still open wins it, "Play again" demotes to
   // the quiet row — except a Survival death on the first question, where the
   // only honest next step is the same run again.
-  const dailyCta = dailyOpen && onPlayDaily ? { label: "Play today's Daily 7", onClick: onPlayDaily }
+  const dailyCta = dailyOpen && onPlayDaily ? { label: t("rs.playDaily"), onClick: onPlayDaily }
     : footleOpen ? { label: footleCta, onClick: onPlayFootle } : null;
   const retryDemoted = !!dailyCta && !(isSurvival && result.score === 0);
   // Green is the app's "this went well" signal — earned, not automatic.
@@ -178,14 +182,14 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   //  score badge · per-question dots · stat tiles). Render-always / CSS-revealed
   //  via the .rd-desktop wrapper; the mobile results is wrapped in .rd-mobile
   //  (display:contents→none at desktop) so it stays byte-identical. ──
-  const RD_MODE_LABEL = { classic:"Classic", daily:"Daily 7", survival:"Survival", legends:"Legends", chaos:"Chaos" };
-  const rdSubtitle = [RD_MODE_LABEL[mode] || "Quiz", label].filter(Boolean).join(" · ");
+  const RD_MODE_LABEL = { classic:"quiz.mode.classic", survival:"home.mode.survival", legends:"quiz.mode.legends", chaos:"quiz.mode.chaos" };
+  const rdSubtitle = [mode === "daily" ? "Daily 7" : t(RD_MODE_LABEL[mode] || "home.quiz.title"), label].filter(Boolean).join(" · ");
   const rdDots = (() => {
     const arr = Array.isArray(result.allAnswers) ? result.allAnswers.map(a => a.isCorrect === true) : [];
     while (arr.length < result.total) arr.push(false); // timed-out / unanswered → miss
     return arr.slice(0, result.total);
   })();
-  const rdTier = isDaily ? dailyTierCopy(result.score, result.total).headline : scoreTagline(pct);
+  const rdTier = isDaily ? t(`d7.h${dailyTierBand(result.score, result.total)}`) : t(`tag.${scoreTaglineBand(pct)}`);
   const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
 
   return (
@@ -196,7 +200,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
 
       {/* Final score eyebrow + huge green number + caption */}
       <div style={{textAlign:"center", padding:"20px 0 8px"}}>
-        <div className="ds-eyebrow">Final score</div>
+        <div className="ds-eyebrow">{t("rs.final")}</div>
         <div
           className="numeric"
           style={{
@@ -219,7 +223,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
         </div>
         {(isSurvival || bestRun > 0) && (
           <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>
-            {isSurvival ? scoreCaption : <>Best run <span className="numeric">{bestRun}</span> in a row</>}
+            {isSurvival ? scoreCaption : rich(t("rs.bestRun"), { n: <span className="numeric">{bestRun}</span> })}
           </div>
         )}
         {/* Score-tier tagline. Daily uses the daily-specific tier copy so
@@ -228,26 +232,26 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             duplicate card. Survival skips — its caption + PB callout
             already carry the moment. */}
         {isDaily ? (() => {
-          const { headline, sub } = dailyTierCopy(result.score, result.total);
+          const band = dailyTierBand(result.score, result.total);
           return (
             <>
-              <div style={{marginTop:6, fontSize:15, color:"var(--t1)", fontWeight:700}}>{headline}</div>
-              <div style={{marginTop:2, fontSize:13, color:"var(--t3)", fontWeight:500}}>{sub}</div>
+              <div style={{marginTop:6, fontSize:15, color:"var(--t1)", fontWeight:700}}>{t(`d7.h${band}`)}</div>
+              <div style={{marginTop:2, fontSize:13, color:"var(--t3)", fontWeight:500}}>{t(`d7.s${band}`)}</div>
             </>
           );
         })() : isSurvival ? (result.score === 0 && (
           <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
-            One wrong answer ends a run. The next one starts clean.
+            {t("rs.survZero")}
           </div>
         )) : (
           <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
-            {scoreTagline(pct)}
+            {t(`tag.${scoreTaglineBand(pct)}`)}
           </div>
         )}
         {isNewPersonalBest && (
           <div style={{marginTop:10, display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"var(--gold)"}}>
             <Star size={14} strokeWidth={2.4} aria-hidden="true" />
-            <span>Personal best{isNewBest && classicBest ? ` — was ${classicBest}` : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}</span>
+            <span>{t("rs.pb")}{isNewBest && classicBest ? t("rs.was", { n: classicBest }) : survivalNewBest && survivalBest ? t("rs.was", { n: survivalBest }) : ""}</span>
           </div>
         )}
         {/* XP indicator promoted into the celebration moment — was a muted
@@ -256,13 +260,13 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             theming elsewhere in the app (toasts, level-up overlay). */}
         {xpEarned > 0 && (
           <div style={{marginTop:14, fontSize:14, color:"var(--gold)", fontWeight:700}}>
-            +{xpEarned} XP
+            {rich(t("rs.xp"), { n: xpEarned })}
           </div>
         )}
       </div>
 
       {result.winner && (
-        <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:6, margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}><Trophy size={16} strokeWidth={2.4} aria-hidden="true" />{result.winner} wins!</div>
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:6, margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}><Trophy size={16} strokeWidth={2.4} aria-hidden="true" />{rich(t("rs.wins"), { name: result.winner })}</div>
       )}
 
       {/* Two-tier action stack: filled green primary, ghost secondaries.
@@ -307,14 +311,14 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           <div className="results-actions" style={{marginTop:18}}>
             {retryDemoted
               ? <button className="btn-3d" onClick={dailyCta.onClick}>{dailyCta.label}</button>
-              : <button className="btn-3d" onClick={onRetry}>{isSurvival ? "Go again" : "Play again"}</button>}
+              : <button className="btn-3d" onClick={onRetry}>{t(isSurvival ? "rs.goAgain" : "rs.playAgain")}</button>}
             <div className="results-row">
-              {retryDemoted && <button className="btn-3d ghost" onClick={onRetry}>Play again</button>}
-              <button className="btn-3d ghost" onClick={onShare}>Share score</button>
-              {!retryDemoted && stumpQ && <button className="btn-3d ghost" onClick={onStump}>Stump a mate</button>}
+              {retryDemoted && <button className="btn-3d ghost" onClick={onRetry}>{t("rs.playAgain")}</button>}
+              <button className="btn-3d ghost" onClick={onShare}>{t("rs.shareScore")}</button>
+              {!retryDemoted && stumpQ && <button className="btn-3d ghost" onClick={onStump}>{t("dd.stump")}</button>}
             </div>
-            {retryDemoted && stumpQ && <button className="results-link" onClick={onStump}>Stump a mate with a question</button>}
-            <button className="results-exit" onClick={onHome}>Back to Home</button>
+            {retryDemoted && stumpQ && <button className="results-link" onClick={onStump}>{t("rs.stumpQ")}</button>}
+            <button className="results-exit" onClick={onHome}>{t("quiz.backHome")}</button>
           </div>
           <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
         </>
@@ -342,7 +346,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
               eyebrow, a green radial-glow badge and a green tier line, so a
               Survival first-question death was congratulated on desktop and
               consoled on mobile. One modifier, so the two cannot diverge again. */}
-          <div className={`rd-eyebrow${rdZero ? " is-zero" : ""}`}>{isSurvival ? "Run over" : "Round complete"}</div>
+          <div className={`rd-eyebrow${rdZero ? " is-zero" : ""}`}>{t(isSurvival ? "rs.runOver" : "rs.roundDone")}</div>
           <div className="rd-sub">{rdSubtitle}</div>
           {rdZero && <div className="rd-soft">{scoreCaption}</div>}
           <div className={`rd-badge${rdZero ? " is-zero" : ""}`}>
@@ -356,7 +360,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
                 mobile's full scoreCaption: this sits inside a circular badge,
                 and the long form wrapped to two lines and pushed against the
                 curve. The number already says how many; this says of what. */}
-            <div className={`rd-badge-tier${rdZero ? " is-zero" : ""}`}>{isSurvival ? "in a row" : rdTier}</div>
+            <div className={`rd-badge-tier${rdZero ? " is-zero" : ""}`}>{isSurvival ? t("rs.inARow") : rdTier}</div>
           </div>
           {/* Dots are a per-question map of a fixed-length round. A survival run
               has no fixed length — a long one would spray dozens of them across
@@ -372,9 +376,9 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             <div className="rd-pb">
               <Star size={14} strokeWidth={2.4} aria-hidden="true" />
               <span>
-                Personal best
-                {isNewBest && classicBest ? ` — was ${classicBest}`
-                  : survivalNewBest && survivalBest ? ` — was ${survivalBest}` : ""}
+                {t("rs.pb")}
+                {isNewBest && classicBest ? t("rs.was", { n: classicBest })
+                  : survivalNewBest && survivalBest ? t("rs.was", { n: survivalBest }) : ""}
               </span>
             </div>
           )}
@@ -386,12 +390,12 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
               // "—" not "0" with no PB yet. A first run already shows +0 XP and
               // best streak 0; a third hard zero reads like the app failed to
               // record something rather than like a record waiting to be set.
-              <div className="rd-tile"><div className="rd-tile-v">{survivalBest > 0 ? survivalBest : "—"}</div><div className="rd-tile-k">Best ever</div></div>
+              <div className="rd-tile"><div className="rd-tile-v">{survivalBest > 0 ? survivalBest : "—"}</div><div className="rd-tile-k">{t("rs.bestEver")}</div></div>
             ) : (
-              <div className="rd-tile"><div className="rd-tile-v">{pct}%</div><div className="rd-tile-k">Accuracy</div></div>
+              <div className="rd-tile"><div className="rd-tile-v">{pct}%</div><div className="rd-tile-k">{t("home.rail.accuracy")}</div></div>
             )}
-            <div className="rd-tile"><div className="rd-tile-v rd-amber">+{xpEarned}</div><div className="rd-tile-k">XP earned</div></div>
-            <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">Best streak</div></div>
+            <div className="rd-tile"><div className="rd-tile-v rd-amber">+{xpEarned}</div><div className="rd-tile-k">{t("rs.xpEarnedK")}</div></div>
+            <div className="rd-tile"><div className="rd-tile-v rd-green">{rdBestStreak}</div><div className="rd-tile-k">{t("rs.bestStreak")}</div></div>
           </div>
           {isDaily && dailyDone && (
             <div style={{margin:"18px 0"}}>
@@ -402,22 +406,22 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           )}
           <div className="rd-actions">
             {!isDaily && dailyOpen && onPlayDaily && (
-              <button className="rd-btn rd-btn-primary" onClick={onPlayDaily}>Play today&#39;s Daily 7</button>
+              <button className="rd-btn rd-btn-primary" onClick={onPlayDaily}>{t("rs.playDaily")}</button>
             )}
             {!isDaily && !dailyOpen && footleOpen && (
               <button className="rd-btn rd-btn-primary" onClick={onPlayFootle}>{footleCta}</button>
             )}
-            {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>{isSurvival ? "Go again" : "Play again"}</button>}
+            {!isDaily && <button className={`rd-btn ${(dailyOpen && onPlayDaily) || footleOpen ? "rd-btn-ghost" : "rd-btn-primary"}`} onClick={onRetry}>{t(isSurvival ? "rs.goAgain" : "rs.playAgain")}</button>}
             {!isDaily && <button className="rd-btn rd-btn-ghost" onClick={onShare}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
-              Share
+              {t("rs.share")}
             </button>}
             {/* Stump drops to a text link rather than a fourth equal button —
                 the same demotion mobile makes. Five equal-weight actions asked
                 the player to rank the app's wishes (review C9); this ranks them. */}
           </div>
-          {stumpQ && !isDaily && <button className="rd-link" onClick={onStump}>Stump a mate with a question</button>}
-          <button className="rd-exit" onClick={onHome}>Back to Home</button>
+          {stumpQ && !isDaily && <button className="rd-link" onClick={onStump}>{t("rs.stumpQ")}</button>}
+          <button className="rd-exit" onClick={onHome}>{t("quiz.backHome")}</button>
         </div>
         {/* Same review loop as mobile — constrained to the rd-card column. */}
         <div style={{maxWidth:560, margin:"0 auto"}}>

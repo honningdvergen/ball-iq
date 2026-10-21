@@ -759,7 +759,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             won={state.status === "won"}
             bucket={state.status === "won" ? state.guesses.length : 0}
             isArchive={isArchive}
-            streak={dailyDone?.streak || { count: state.status === "won" ? computeFootleStreak(date) : 0, label: "Footle streak" }}
+            streak={dailyDone?.streak || { count: state.status === "won" ? computeFootleStreak(date) : 0, label: t("dd.l.footle") }}
             promoted={dailyDone?.promoted}
             onShare={onShare}
             waText={!isNative && shareText ? shareText : undefined}

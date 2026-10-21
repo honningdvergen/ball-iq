@@ -118,7 +118,8 @@ describe('the results panel', () => {
     expect(block).toMatch(/!isNativeShell\(\)/);
   });
   it('"Make it a league?" is a hairline under the head-to-head, never a second solid button', () => {
-    expect(DD).toMatch(/className="dd-share-alt" onClick=\{makeLeague\}>Make it a league\?/);
+    // "Make it a league?" is the dd.league key since i18n step 4.
+    expect(DD).toMatch(/className="dd-share-alt" onClick=\{makeLeague\}>\{t\("dd\.league"\)\}/);
     expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
     expect(DD).toMatch(/const leagueOffer = !!rival && !isNativeShell\(\);/);
   });

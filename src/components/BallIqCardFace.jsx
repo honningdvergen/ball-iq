@@ -1,6 +1,9 @@
 import { tierPalette, faceLabelType } from "../lib/ballIqCard.js";
 import { MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { tint, lift } from "../lib/colourMath.js";
+import { useT } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
+import { tierName, compName } from "../i18n/names.js";
 
 /**
  * THE BALL IQ CARD — one implementation, three surfaces.
@@ -44,7 +47,8 @@ import { tint, lift } from "../lib/colourMath.js";
  *   card and in the canvas share render, which are read-only.
  */
 export default function BallIqCardFace({ card, played, answered = 0, avatar, name, subline, style, onPickLeague }) {
-  const t = tierPalette(card.tier);
+  const t = useT();
+  const pal = tierPalette(card.tier);
 
   // The best of the six PLAYED competitions takes the tier accent, so the eye
   // lands on the player's strongest suit without needing a legend. null when
@@ -56,22 +60,22 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
   return (
     <div style={{
       position: "relative", overflow: "hidden",
-      background: t.bg, border: `1.5px solid ${tint(t.accent, 0.33)}`,
+      background: pal.bg, border: `1.5px solid ${tint(pal.accent, 0.33)}`,
       borderRadius: 22, padding: "22px 20px 18px",
       boxShadow: "0 10px 30px rgba(0,0,0,0.42)",
       ...style,
     }}>
-      <div style={{ position: "absolute", top: -50, left: -50, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${tint(t.accent, 0.15)} 0%, transparent 70%)`, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: -50, left: -50, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${tint(pal.accent, 0.15)} 0%, transparent 70%)`, pointerEvents: "none" }} />
       {/* One diagonal foil sweep across the whole face. A single pass of light
           is what makes the card read as one material rather than parts arranged
           on a ground — the same sweep the canvas render draws. */}
-      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(118deg, ${tint(t.accent, 0)} 30%, ${tint(t.accent, 0.12)} 47%, ${tint(t.accent, 0)} 62%)`, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(118deg, ${tint(pal.accent, 0)} 30%, ${tint(pal.accent, 0.12)} 47%, ${tint(pal.accent, 0)} 62%)`, pointerEvents: "none" }} />
 
       {/* Numeral left, face right, both anchored to the TOP edge so they read
           as one composition rather than two separately-centred blocks. */}
       <div style={{ position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 3.4, color: t.text, opacity: 0.5 }}>BALL IQ</div>
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 3.4, color: pal.text, opacity: 0.5 }}>BALL IQ</div>
           {/* ⚠️ NO RATING BEFORE THE FIRST GAME. A profile with zero games was
               shown "64 · OVERALL · PROSPECT" as the largest number on the
               screen, directly above "No stats yet — play your first game". And
@@ -85,9 +89,9 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               {/* Negative tracking: at this size the default gap between two
                   digits opens a hole in the middle of the card's loudest
                   element. Tightening it makes "87" one object. */}
-              <div style={{ fontSize: 86, fontWeight: 900, color: t.accent, lineHeight: 1.02, letterSpacing: -4, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{card.overall}</div>
-              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: t.text, opacity: 0.55, marginTop: 2 }}>OVERALL</div>
-              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 3, color: t.accent, marginTop: 10 }}>{t.label}</div>
+              <div style={{ fontSize: 86, fontWeight: 900, color: pal.accent, lineHeight: 1.02, letterSpacing: -4, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{card.overall}</div>
+              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text, opacity: 0.55, marginTop: 2 }}>{t("home.rail.overall")}</div>
+              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 3, color: pal.accent, marginTop: 10 }}>{tierName(card.tier)}</div>
             </>
           ) : (
             <>
@@ -96,8 +100,8 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                   value" — caught on the simulator, not in the markup. Two-thirds
                   the size reads as a dash again while the block keeps its
                   optical height. */}
-              <div style={{ fontSize: 58, fontWeight: 900, color: t.text, opacity: 0.3, lineHeight: 88 / 58, marginTop: 6, fontVariantNumeric: "tabular-nums" }} aria-label="No rating yet">—</div>
-              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: t.text, opacity: 0.55, marginTop: 2 }}>OVERALL</div>
+              <div style={{ fontSize: 58, fontWeight: 900, color: pal.text, opacity: 0.3, lineHeight: 88 / 58, marginTop: 6, fontVariantNumeric: "tabular-nums" }} aria-label={t("cf.noRating")}>—</div>
+              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text, opacity: 0.55, marginTop: 2 }}>{t("home.rail.overall")}</div>
               {/* "UNRATED" over six blank dashes is the first thing a new
                   player sees on their OWN profile, and it reads as broken
                   rather than as something to earn. The card is the app's
@@ -110,16 +114,16 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                   the guard that stops a rating appearing after one answer. */}
               {answered ? (
                 <div style={{ marginTop: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
-                  <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: t.text, opacity: 0.7 }}>
-                    {MIN_RATED_ANSWERS - answered} MORE TO GET RATED
+                  <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: pal.text, opacity: 0.7 }}>
+                    {rich(t("cf.more", { count: MIN_RATED_ANSWERS - answered }), { n: MIN_RATED_ANSWERS - answered })}
                   </div>
-                  <div aria-hidden="true" style={{ width: 108, height: 4, borderRadius: 999, background: tint(t.text, 0.18), overflow: "hidden" }}>
-                    <div style={{ width: `${Math.round((answered / MIN_RATED_ANSWERS) * 100)}%`, height: "100%", background: t.accent, borderRadius: 999 }} />
+                  <div aria-hidden="true" style={{ width: 108, height: 4, borderRadius: 999, background: tint(pal.text, 0.18), overflow: "hidden" }}>
+                    <div style={{ width: `${Math.round((answered / MIN_RATED_ANSWERS) * 100)}%`, height: "100%", background: pal.accent, borderRadius: 999 }} />
                   </div>
                 </div>
               ) : (
-                <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: t.text, opacity: 0.7, marginTop: 10 }}>
-                  ANSWER {MIN_RATED_ANSWERS} TO GET RATED
+                <div style={{ fontSize: 11, fontWeight: 900, letterSpacing: 1.4, color: pal.text, opacity: 0.7, marginTop: 10 }}>
+                  {rich(t("cf.answer"), { n: MIN_RATED_ANSWERS })}
                 </div>
               )}
             </>
@@ -177,7 +181,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           return (
             <Row key={r.abbr} type={pickable ? "button" : undefined}
               onClick={pickable ? onPickLeague : undefined}
-              aria-label={pickable ? `${r.name} — change your league` : undefined}
+              aria-label={pickable ? t("cf.change", { c: compName(r) }) : undefined}
               style={{
               display: "flex", alignItems: "center", gap: 9,
               /* Fixed height for the reason the old chips had one: nothing in
@@ -185,27 +189,27 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                  different metrics from others, which made two of six rows
                  shorter on device and identical in Chrome. */
               height: 42, boxSizing: "border-box", minWidth: 0,
-              borderTop: `1px solid ${tint(t.text, 0.10)}`,
+              borderTop: `1px solid ${tint(pal.text, 0.10)}`,
               ...(pickable ? {
                 /* a button re-introduces UA styling the div never had */
-                background: "none", border: 0, borderTop: `1px solid ${tint(t.text, 0.10)}`,
+                background: "none", border: 0, borderTop: `1px solid ${tint(pal.text, 0.10)}`,
                 padding: 0, margin: 0, font: "inherit", textAlign: "left",
                 width: "100%", cursor: "pointer", WebkitTapHighlightColor: "transparent",
               } : null),
             }}>
               <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: lift(r.color) }} />
-              <span style={{ flex: 1, minWidth: 0, fontSize: lab.size, fontWeight: 800, letterSpacing: lab.tracking, color: t.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ flex: 1, minWidth: 0, fontSize: lab.size, fontWeight: 800, letterSpacing: lab.tracking, color: pal.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {r.abbr}{pickable ? <span aria-hidden="true" style={{ opacity: 0.55, marginLeft: 5, fontWeight: 900 }}>›</span> : null}
               </span>
               {has ? (
-                <span style={{ fontSize: 21, fontWeight: 900, color: r.rating === best ? t.accent : t.text, opacity: r.rating === best ? 1 : 0.92, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+                <span style={{ fontSize: 21, fontWeight: 900, color: r.rating === best ? pal.accent : pal.text, opacity: r.rating === best ? 1 : 0.92, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
               ) : soft ? (
-                <span aria-label={`${r.name} ${r.rating}, provisional — ${r.answered} of ${MIN_RATED_ANSWERS} answered`}
-                  style={{ fontSize: 21, fontWeight: 900, color: t.text, opacity: 0.45, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+                <span aria-label={t("cf.prov", { c: compName(r), r: r.rating, n: r.answered, min: MIN_RATED_ANSWERS })}
+                  style={{ fontSize: 21, fontWeight: 900, color: pal.text, opacity: 0.45, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
               ) : (
                 /* A short rule, not an em-dash: at this size a dash beside a
                    label reads as a hyphen. This reads as an empty slot. */
-                <span aria-label={`${r.name} — not rated yet`} style={{ width: 20, height: 3, borderRadius: 2, background: t.text, opacity: 0.3, flexShrink: 0 }} />
+                <span aria-label={t("cf.unrated", { c: compName(r) })} style={{ width: 20, height: 3, borderRadius: 2, background: pal.text, opacity: 0.3, flexShrink: 0 }} />
               )}
             </Row>
           );

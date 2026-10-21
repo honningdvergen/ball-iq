@@ -110,7 +110,8 @@ describe('a streak label names which streak it is', () => {
     expect(HOME).toContain('{t("home.rail.dayStreak")}');
     expect(EN['home.rail.dayStreak']).toBe('Day streak');
     expect(HOME).toMatch(/loginStreak/);
-    expect(DAILY).toContain('Day streak');
+    // History's rail card shares Home's key since i18n step 4.
+    expect(DAILY).toContain('{t("home.rail.dayStreak")}');
     // ⚠️ Pin the SOURCE of Daily's streak scalar, not the shape of the memo.
     // This used to grep for `typeof loginStreak === "number"` — the guard on a
     // `localRun` fallback that could never run, since loginStreak is a number

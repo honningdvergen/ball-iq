@@ -14,6 +14,7 @@
 const URL_ = 'https://blcisypmngimqkwxrrdm.supabase.co';
 const KEY_ = (import.meta.env.VITE_SUPABASE_KEY || '').trim();
 import { noteCompletionHour } from './playHour.js';
+import { t } from '../i18n/index.js';
 export const MIN_N = 20;
 export const DAILY_GAMES = ['footle', 'daily7', 'trail', 'mystery', 'top10'];
 // Games whose bucket is a SCORE out of a fixed total, where higher is better.
@@ -177,14 +178,14 @@ export function comparisonLine(entries, total, { outOf, mine, won }) {
   const pct = (x) => Math.round((x / total) * 100);
   if (nBetter === 0) {
     if (isScore && mine === 0) return null;
-    return nSame <= 1 ? 'Nobody did better' : `Only ${Math.max(1, pct(nSame))}% matched you`;
+    return nSame <= 1 ? t('dd.cmp.none') : t('dd.cmp.only', { p: Math.max(1, pct(nSame)) });
   }
-  if (nSame === biggest && pct(nSame) >= 35) return `Same as ${pct(nSame)}% of players`;
+  if (nSame === biggest && pct(nSame) >= 35) return t('dd.cmp.same', { p: pct(nSame) });
   const top = pct(nBetter + nSame);
-  if (top <= 50) return `Top ${Math.max(1, top)}%`;
+  if (top <= 50) return t('dd.cmp.top', { p: Math.max(1, top) });
   if (isScore) {
     const worse = total - nBetter - nSame;
-    return worse > 0 ? `Better than ${pct(worse)}%` : null;
+    return worse > 0 ? t('dd.cmp.better', { p: pct(worse) }) : null;
   }
   return null;
 }

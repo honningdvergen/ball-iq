@@ -16,6 +16,7 @@ import { ArrowUpRight, Home, Mail, Settings, Share, Star, Timer } from "lucide-r
 import React, { useEffect, useRef, useState } from "react";
 import { loopEvent } from "../App.jsx";
 import { I18N_LIVE, LANGS, LANG_NAMES, setLang, useLang, useT } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
 export function SettingsToggle({ val, onChange, label, disabled }) {
   return (
@@ -85,7 +86,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
     loopEvent("share-get");
     const text = `⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get`;
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
-    try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: '📋 Link copied' })); } catch {}
+    try { await navigator.clipboard.writeText(text); window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: t('st.copied') })); } catch {}
   };
   // Rating is inherently store-specific — openStoreRating sends each platform
   // to its OWN store's review flow (Android used to be sent to the App Store,
@@ -156,18 +157,18 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
   return (
     <div className="screen settings-screen" style={{background:"var(--bg)"}}>
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">Settings</div>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}>←</button>
+        <div className="page-title">{t("nav.settings")}</div>
       </div>
 
       <div className="settings-section">
-        <div className="ds-eyebrow settings-section-title">Account</div>
+        <div className="ds-eyebrow settings-section-title">{t("st.account")}</div>
         <div className="settings-card">
           {user && profile ? (
             <>
               <div className="settings-row" style={{cursor:"default"}}>
                 <div className="sr-left">
-                  <div className="sr-label">Signed in as</div>
+                  <div className="sr-label">{t("st.signedInAs")}</div>
                   <div className="sr-desc">{profile.username}</div>
                   {/* 1.1: show the account email so users recognise which
                       account they're on. Apple's Hide-My-Email gives a cryptic
@@ -175,7 +176,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                       instead of the raw relay. */}
                   {user.email && (
                     <div className="sr-desc" style={{marginTop:2,opacity:0.7}}>
-                      {/@privaterelay\.appleid\.com$/i.test(user.email) ? "Apple · Hide My Email" : user.email}
+                      {/@privaterelay\.appleid\.com$/i.test(user.email) ? t("st.hideEmail") : user.email}
                     </div>
                   )}
                 </div>
@@ -187,7 +188,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 onClick={() => setConfirmSignOut(true)}
               >
                 <div className="sr-left">
-                  <div className="sr-label">Sign out</div>
+                  <div className="sr-label">{t("st.signOut")}</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -196,13 +197,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <>
               <div className="settings-row" style={{cursor:"default"}}>
                 <div className="sr-left">
-                  <div className="sr-label">Signed in</div>
-                  <div className="sr-desc">{user.email} — profile loading…</div>
+                  <div className="sr-label">{t("st.signedIn")}</div>
+                  <div className="sr-desc">{rich(t("st.loading"), { e: user.email })}</div>
                 </div>
               </div>
               <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmSignOut(true)}>
                 <div className="sr-left">
-                  <div className="sr-label">Sign out</div>
+                  <div className="sr-label">{t("st.signOut")}</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -211,13 +212,13 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             <>
               <div className="settings-row" style={{cursor:"default"}}>
                 <div className="sr-left">
-                  <div className="sr-label">Playing as guest</div>
-                  <div className="sr-desc">Sign up to play friends online and keep your progress across devices</div>
+                  <div className="sr-label">{t("st.guest")}</div>
+                  <div className="sr-desc">{t("st.guestSub")}</div>
                 </div>
               </div>
               <button className="settings-row" onClick={() => openAuthPrompt?.('save')} style={{cursor:"pointer",width:"100%",background:"none",border:"none",textAlign:"left",padding:"14px 16px"}}>
                 <div className="sr-left">
-                  <div className="sr-label" style={{color:"var(--accent)"}}>Sign in / Create account</div>
+                  <div className="sr-label" style={{color:"var(--accent)"}}>{t("st.signIn")}</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -228,43 +229,43 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 
       <InstallCard />
       <div className="settings-section">
-        <div className="ds-eyebrow settings-section-title">Gameplay</div>
+        <div className="ds-eyebrow settings-section-title">{t("st.gameplay")}</div>
         <div className="settings-card">
           {/* "Show Hints" (first-letter hints on typed questions) left 2026-09-06: the bank has had no typed questions since df54c40 (2026-05-07). settings.hints is kept for storage compatibility. */}
           <div className="settings-row">
             <div className="sr-left">
-              <div className="sr-label">Timer</div>
-              <div className="sr-desc">Per-question clock in Classic, club and league quizzes</div>
+              <div className="sr-label">{t("st.timer")}</div>
+              <div className="sr-desc">{t("st.timerSub")}</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle label="Timer" val={settings.timer} onChange={v => onUpdate({timer:v})} />
+              <SettingsToggle label={t("st.timer")} val={settings.timer} onChange={v => onUpdate({timer:v})} />
             </div>
           </div>
           <div className="settings-row">
             <div className="sr-left">
-              <div className="sr-label">Sound Effects</div>
-              <div className="sr-desc">Audio feedback on correct and wrong answers</div>
+              <div className="sr-label">{t("st.sound")}</div>
+              <div className="sr-desc">{t("st.soundSub")}</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle label="Sound Effects" val={settings.sound} onChange={v => onUpdate({sound:v})} />
+              <SettingsToggle label={t("st.sound")} val={settings.sound} onChange={v => onUpdate({sound:v})} />
             </div>
           </div>
           <div className="settings-row">
             <div className="sr-left">
-              <div className="sr-label">Haptics</div>
-              <div className="sr-desc">Taps and vibrations on answers, streaks, and button presses</div>
+              <div className="sr-label">{t("st.haptics")}</div>
+              <div className="sr-desc">{t("st.hapticsSub")}</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle label="Haptics" val={settings.haptics !== false} onChange={v => onUpdate({haptics:v})} />
+              <SettingsToggle label={t("st.haptics")} val={settings.haptics !== false} onChange={v => onUpdate({haptics:v})} />
             </div>
           </div>
           <div className="settings-row">
             <div className="sr-left">
-              <div className="sr-label">Colour-blind tiles</div>
-              <div className="sr-desc">Orange and blue Footle tiles instead of green and yellow</div>
+              <div className="sr-label">{t("st.cb")}</div>
+              <div className="sr-desc">{t("st.cbSub")}</div>
             </div>
             <div className="sr-right">
-              <SettingsToggle label="Colour-blind tiles" val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
+              <SettingsToggle label={t("st.cb")} val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
             </div>
           </div>
           {I18N_LIVE && (
@@ -298,25 +299,21 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           user reaches for, never something triggered on mount. */}
       {(notifSupported || webPushAvailable) && (
         <div className="settings-section">
-          <div className="ds-eyebrow settings-section-title">Notifications</div>
+          <div className="ds-eyebrow settings-section-title">{t("nav.notifications")}</div>
           <div className="settings-card">
             <div className="settings-row">
               <div className="sr-left">
-                <div className="sr-label">Daily reminders</div>
+                <div className="sr-label">{t("st.remind")}</div>
                 <div className="sr-desc">
-                  {notifSupported
-                    ? (notifBlocked
-                        ? "Blocked — open iOS Settings › Ball IQ › Notifications and allow them, then come back"
-                        : "An evening nudge if you haven't played yet — keeps your streak alive")
-                    : (webPushBlocked
-                        ? "Blocked — allow notifications for balliq.app in your browser's site settings, then come back"
-                        : "An evening nudge if you haven't played yet — keeps your streak alive")}
+                  {t(notifSupported
+                    ? (notifBlocked ? "st.remindBlockedIos" : "st.remindSub")
+                    : (webPushBlocked ? "st.remindBlockedWeb" : "st.remindSub"))}
                 </div>
               </div>
               <div className="sr-right">
                 {notifSupported
-                  ? <SettingsToggle label="Daily reminders" val={notifEnabled} onChange={onToggleNotif} disabled={notifBlocked} />
-                  : <SettingsToggle label="Daily reminders" val={webPushOn} onChange={onToggleWebPush} disabled={webPushBlocked} />}
+                  ? <SettingsToggle label={t("st.remind")} val={notifEnabled} onChange={onToggleNotif} disabled={notifBlocked} />
+                  : <SettingsToggle label={t("st.remind")} val={webPushOn} onChange={onToggleWebPush} disabled={webPushBlocked} />}
               </div>
             </div>
           </div>
@@ -325,7 +322,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
 
       {(onShowHelp || onShowPrivacy || onShowKnownIssues) && (
         <div className="settings-section">
-          <div className="ds-eyebrow settings-section-title">Help</div>
+          <div className="ds-eyebrow settings-section-title">{t("st.help")}</div>
           <div className="settings-card">
             {onShowHelp && (
               <button
@@ -335,8 +332,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 onClick={onShowHelp}
               >
                 <div className="sr-left">
-                  <div className="sr-label">Help & FAQ</div>
-                  <div className="sr-desc">Common questions and how to reach us</div>
+                  <div className="sr-label">{t("st.faq")}</div>
+                  <div className="sr-desc">{t("st.faqSub")}</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -349,8 +346,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 onClick={onShowKnownIssues}
               >
                 <div className="sr-left">
-                  <div className="sr-label">Known issues</div>
-                  <div className="sr-desc">Honest list of things to expect</div>
+                  <div className="sr-label">{t("st.issues")}</div>
+                  <div className="sr-desc">{t("st.issuesSub")}</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -363,8 +360,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
                 onClick={onShowPrivacy}
               >
                 <div className="sr-left">
-                  <div className="sr-label">Privacy Policy</div>
-                  <div className="sr-desc">How your data is handled</div>
+                  <div className="sr-label">{t("st.privacy")}</div>
+                  <div className="sr-desc">{t("st.privacySub")}</div>
                 </div>
                 <div className="sr-right"><div className="sr-arrow">›</div></div>
               </button>
@@ -378,7 +375,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           UI gate just hides the link from non-reviewers. */}
       {onOpenReview && user?.email === REVIEWER_EMAIL && (
         <div className="settings-section">
-          <div className="ds-eyebrow settings-section-title">Reviewer</div>
+          <div className="ds-eyebrow settings-section-title">{t("st.reviewer")}</div>
           <div className="settings-card">
             <button
               type="button"
@@ -387,8 +384,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               onClick={onOpenReview}
             >
               <div className="sr-left">
-                <div className="sr-label">Review questions</div>
-                <div className="sr-desc">Internal question-bank review</div>
+                <div className="sr-label">{t("st.review")}</div>
+                <div className="sr-desc">{t("st.reviewSub")}</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
             </button>
@@ -397,7 +394,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
       )}
 
       <div className="settings-section">
-        <div className="ds-eyebrow settings-section-title">About</div>
+        <div className="ds-eyebrow settings-section-title">{t("st.about")}</div>
         {/* Sprint #34 BB1 F-S3: about-card-card + about-card-brand wrappers
             let desktop CSS flip this to a horizontal "ball+name+version |
             feedback" row. At mobile (no desktop CSS rule), the wrappers are
@@ -423,7 +420,7 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             />
             <div className="about-card-meta-wrap">
               <div className="about-card-name" style={{fontSize:24,fontWeight:900,color:"var(--t1)",letterSpacing:"-0.4px"}}>Ball <em style={{color:"var(--accent)",fontStyle:"normal"}}>IQ</em></div>
-              <div style={{fontSize:13,color:"var(--t2)",marginTop:4}}>The football quiz for real fans</div>
+              <div style={{fontSize:13,color:"var(--t2)",marginTop:4}}>{t("st.tagline")}</div>
               {/* 1.1: real installed build version (no more stale "1.0.0 BETA"). */}
               <div style={{fontSize:12,color:"var(--t3)",marginTop:3}}>v{appVer}</div>
             </div>
@@ -431,30 +428,30 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           {/* 1.1: three high-value actions — Rate (reviews drive ranking),
               Share (referral growth), Feedback. Equal ghost buttons. */}
           <div style={{display:"flex",gap:8,marginTop:18}}>
-            <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label={ratingStore() === "play" ? "Rate Ball IQ on Google Play" : "Rate Ball IQ on the App Store"}>
+            <button onClick={rateApp} style={ABOUT_ACTION_STYLE} aria-label={t(ratingStore() === "play" ? "st.rateGp" : "st.rateAs")}>
               <Star size={17} strokeWidth={2.25} aria-hidden="true" />
-              <span>Rate</span>
+              <span>{t("st.rate")}</span>
             </button>
-            <button onClick={shareApp} style={ABOUT_ACTION_STYLE} aria-label="Share Ball IQ">
+            <button onClick={shareApp} style={ABOUT_ACTION_STYLE} aria-label={t("st.shareAria")}>
               <ArrowUpRight size={17} strokeWidth={2.25} aria-hidden="true" />
-              <span>Share</span>
+              <span>{t("rs.share")}</span>
             </button>
-            <a href="mailto:hello@balliq.app" style={ABOUT_ACTION_STYLE} aria-label="Send feedback">
+            <a href="mailto:hello@balliq.app" style={ABOUT_ACTION_STYLE} aria-label={t("st.feedbackAria")}>
               <Mail size={17} strokeWidth={2.25} aria-hidden="true" />
-              <span>Feedback</span>
+              <span>{t("st.feedback")}</span>
             </a>
           </div>
-          <div style={{fontSize:12,color:"var(--t3)",marginTop:14}}>Built solo in Norway 🇳🇴</div>
+          <div style={{fontSize:12,color:"var(--t3)",marginTop:14}}>{t("st.built")}</div>
         </div>
       </div>
 
       <div className="settings-section">
-        <div className="ds-eyebrow settings-section-title">Data</div>
+        <div className="ds-eyebrow settings-section-title">{t("st.data")}</div>
         <div className="settings-card">
           <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmClearStats(true)}>
             <div className="sr-left">
-              <div className="sr-label">Clear My Stats</div>
-              <div className="sr-desc">Reset games played, best score and streak</div>
+              <div className="sr-label">{t("st.clear")}</div>
+              <div className="sr-desc">{t("st.clearSub")}</div>
             </div>
             <div className="sr-right"><div className="sr-arrow">›</div></div>
           </button>
@@ -466,8 +463,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               onClick={onClearSeen}
             >
               <div className="sr-left">
-                <div className="sr-label">Clear question history</div>
-                <div className="sr-desc">Allow recently-seen questions to reappear now</div>
+                <div className="sr-label">{t("st.clearSeen")}</div>
+                <div className="sr-desc">{t("st.clearSeenSub")}</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
             </button>
@@ -483,8 +480,8 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           <div className="settings-card">
             <button className="settings-row" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={onShowBlocked}>
               <div className="sr-left">
-                <div className="sr-label">Blocked users</div>
-                <div className="sr-desc">Manage who you've blocked from friend search</div>
+                <div className="sr-label">{t("st.blocked")}</div>
+                <div className="sr-desc">{t("st.blockedSub")}</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
             </button>
@@ -501,16 +498,16 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
           {user ? (
             <button className="settings-row danger" style={{width:"100%",background:"none",border:"none",textAlign:"left"}} onClick={() => setConfirmDelete(true)}>
               <div className="sr-left">
-                <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>Delete account</div>
-                <div className="sr-desc">Permanently remove your profile and data</div>
+                <div className="sr-label" style={{color:"var(--red, #FF5A5A)"}}>{t("st.delete")}</div>
+                <div className="sr-desc">{t("st.deleteSub")}</div>
               </div>
               <div className="sr-right"><div className="sr-arrow">›</div></div>
             </button>
           ) : (
             <div className="settings-row" style={{cursor:"default",opacity:0.5}}>
               <div className="sr-left">
-                <div className="sr-label">Delete account</div>
-                <div className="sr-desc">Sign in to manage your account</div>
+                <div className="sr-label">{t("st.delete")}</div>
+                <div className="sr-desc">{t("st.deleteGuest")}</div>
               </div>
             </div>
           )}
@@ -530,28 +527,23 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             role="dialog"
             aria-modal="true"
           >
-            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Reset all stats?</div>
-            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:10}}>This will reset:</div>
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>{t("st.resetQ")}</div>
+            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:10}}>{t("st.resetWill")}</div>
             <ul style={{paddingLeft:20,marginBottom:14,fontSize:14,color:"var(--t2)",lineHeight:1.6}}>
-              <li>Games played, scores, streaks</li>
-              <li>XP and level</li>
-              <li>Login streak</li>
-              <li>Daily challenge progress</li>
-              <li>Ball IQ history</li>
-              <li>Hot Streak best</li>
+              {[1, 2, 3, 4, 5, 6].map((i) => <li key={i}>{t(`st.r${i}`)}</li>)}
             </ul>
-            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>Your username, avatar, and settings are kept. Stats are cleared on all your devices. This cannot be undone.</div>
+            <div style={{fontSize:13,color:"var(--t3)",marginBottom:18}}>{t("st.resetKept")}</div>
             <button
               onClick={() => { setConfirmClearStats(false); onClearStats?.(); }}
               style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
             >
-              Reset stats
+              {t("st.reset")}
             </button>
             <button
               onClick={() => setConfirmClearStats(false)}
               style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
             >
-              Cancel
+              {t("st.cancel")}
             </button>
           </div>
         </div>
@@ -569,21 +561,21 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-label="Sign out confirmation"
+            aria-label={t("st.signOutAria")}
           >
-            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Sign out?</div>
-            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>Sign out of your {APP_NAME} account on this device? Your progress stays synced — sign back in any time to pick up where you left off.</div>
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>{t("st.signOutQ")}</div>
+            <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>{rich(t("st.signOutBody"), { app: APP_NAME })}</div>
             <button
               onClick={async () => { setConfirmSignOut(false); await signOut(); }}
               style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
             >
-              Sign out
+              {t("st.signOut")}
             </button>
             <button
               onClick={() => setConfirmSignOut(false)}
               style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
             >
-              Cancel
+              {t("st.cancel")}
             </button>
           </div>
         </div>
@@ -602,23 +594,23 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
             role="dialog"
             aria-modal="true"
           >
-            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Delete Account</div>
+            <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>{t("st.deleteTitle")}</div>
             <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>
-              This will permanently delete your profile, scores, friends and all game history. This cannot be undone.
+              {t("st.deleteBody")}
             </div>
             <button
               onClick={performDelete}
               disabled={deleting}
               style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:deleting?"default":"pointer",marginBottom:8,opacity:deleting?0.7:1,WebkitTextFillColor:"#fff"}}
             >
-              {deleting ? "Deleting…" : "Delete Forever"}
+              {t(deleting ? "st.deleting" : "st.deleteForever")}
             </button>
             <button
               onClick={() => setConfirmDelete(false)}
               disabled={deleting}
               style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:deleting?"default":"pointer"}}
             >
-              Cancel
+              {t("st.cancel")}
             </button>
           </div>
         </div>

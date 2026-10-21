@@ -172,7 +172,9 @@ describe('icons are icons, not emoji', () => {
     // role at all. Its replacement is a plain <button> with an aria-label in
     // the results panel, and it asks for permission on that tap.
     const dd = readFileSync(`${SRC}/components/DailyDone.jsx`, 'utf8');
-    expect(dd).toMatch(/aria-label=\{`Turn on a daily reminder at \$\{reminderHourLabel\(\)\}`\}/);
+    // The label is dd.remindAria in src/i18n/en.js since i18n step 4.
+    expect(dd).toMatch(/aria-label=\{t\("dd\.remindAria", \{ h: reminderHourLabel\(\) \}\)\}/);
+    expect(readFileSync(`${SRC}/i18n/en.js`, 'utf8')).toContain("'dd.remindAria': 'Turn on a daily reminder at {h}',");
     expect(dd).toMatch(/onClick=\{doRemind\}/);
     const app = readFileSync(`${SRC}/App.jsx`, 'utf8');
     expect(app, 'nothing opens the retired sheet').not.toMatch(/setNotifPromptOpen\(true\)/);

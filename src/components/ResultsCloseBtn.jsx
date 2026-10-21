@@ -3,11 +3,14 @@
 // other screen in the app has its back button. It was an X at the top right
 // (Alex's recording of his Daily 7, 12 Oct 2026: the one screen that closes
 // from the other corner). 44×44px. All result screens use this.
+import { useT } from "../i18n/index.js";
+
 export function ResultsCloseBtn({ onClose }) {
+  const t = useT();
   return (
     <button
       onClick={onClose}
-      aria-label="Back to Home"
+      aria-label={t("quiz.backHome")}
       style={{
         position: "absolute",
         top: 8,

@@ -86,6 +86,18 @@ export function resolveLang(isLive = live) {
 
 export function getLang() { return lang; }
 
+/**
+ * The locale for toLocaleDateString / toLocaleString: undefined in English, so
+ * English keeps the device's own formats exactly as before; the active
+ * language otherwise.
+ */
+export function fmtLocale() { return lang === DEFAULT_LANG ? undefined : lang; }
+
+/** x with d decimals: toFixed in English (as before), the language's own decimal mark otherwise. */
+export function fmtFixed(x, d) {
+  return lang === DEFAULT_LANG ? x.toFixed(d) : x.toLocaleString(lang, { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+
 /** True when the active language's table has arrived (always true for English). */
 export function isLangLoaded(l = lang) { return !!tables[l]; }
 
