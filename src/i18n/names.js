@@ -5,6 +5,19 @@
 import { t } from './index.js';
 import { LEVELS } from '../lib/scoring.js';
 
+/**
+ * lib/date.js formatCountdown ("5h 12m" · "12m" · "soon", kept English and
+ * dependency-free there) in the player's language: the time.* keys, "12 h 0 min"
+ * in Spanish. Same rounding.
+ */
+export function countdownText(ms) {
+  if (ms <= 0) return t('time.soon');
+  const totalMin = Math.floor(ms / 60000);
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return h === 0 ? t('time.m', { m }) : t('time.hm', { h, m });
+}
+
 /** A level ("Non-League"): the lvl.<index> keys. An unknown name passes through. */
 export function levelName(name) {
   const i = LEVELS.findIndex((l) => l.name === name);

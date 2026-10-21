@@ -3,6 +3,8 @@ import { Flag } from "lucide-react";
 import ReportButton from "./ReportButton.jsx";
 import { bumpUsage } from "../lib/usageCounters.js";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { useQuestionText } from "../i18n/questionText.js";
 import { rich } from "../i18n/rich.jsx";
 
 // Wrong-answer review list — shared by the mobile results stack and the
@@ -15,6 +17,7 @@ import { rich } from "../i18n/rich.jsx";
 // classic, club, league, survival, hot streak — ends up on this one component.
 export function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
   const t = useT();
+  const loc = useQuestionText();
   // Usage counter INSIDE the guard: an empty review isn't a stats view.
   useEffect(() => { if (wrongAnswers?.length) bumpUsage('review-viewed'); }, []);
   if (!wrongAnswers || wrongAnswers.length === 0) return null;
@@ -24,16 +27,19 @@ export function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
         {rich(t("rs.reviewMissed"), { n: wrongAnswers.length, w: t("rs.answers", { count: wrongAnswers.length }) })}
       </div>
       <div className="wrong-review">
-        {wrongAnswers.map((w, i) => (
+        {wrongAnswers.map((w, i) => {
+          // Shown in the player's language; the report still files the English.
+          const v = loc.missed(w);
+          return (
           <div key={i} className="wr-item">
-            <div className="wr-q">{w.q}</div>
-            {w.user && (
+            <div className="wr-q">{v.q}</div>
+            {v.user && (
               <div className="wr-user">
-                <span className="wr-x">✗</span>{w.user}
+                <span className="wr-x">✗</span>{v.user}
               </div>
             )}
-            <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
-            {w.hint && <div className="wr-why">{w.hint}</div>}
+            <div className="wr-a"><span className="wr-tick">✓</span>{v.correct}</div>
+            {v.hint && <div className="wr-why">{v.hint}</div>}
             {onReport && (
               <ReportButton
                 key={w.id != null ? String(w.id) : w.q}
@@ -48,7 +54,8 @@ export function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
               />
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

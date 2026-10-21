@@ -7,6 +7,8 @@ import { APP_NAME } from "../lib/scoring.js";
 import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, footleAnswerFor, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
 import { useT, fmtLocale } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { useQuestionText } from "../i18n/questionText.js";
 import { rich } from "../i18n/rich.jsx";
 
 export function Mini7Strip({ history, today }) {
@@ -65,6 +67,7 @@ export function Mini7Strip({ history, today }) {
 // Phase 5u-5w days, or to score-card-only for pre-Phase-5u days.
 export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, dailyHistory, loginStreak, onBack }) {
   const t = useT();
+  const loc = useQuestionText();
   const todayYMD = dateToYMD(new Date());
   const dateYMD = dateToYMD(date);
   const isToday = dateYMD === todayYMD;
@@ -124,7 +127,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
             {rich(t("rw.missed"), { w: t("rs.answers", { count: wrongAnswers.length }) })}
           </div>
           <div className="wrong-review">
-            {wrongAnswers.map((w, i) => (
+            {wrongAnswers.map((w0, i) => { const w = loc.missed(w0); return (
               <div key={i} className="wr-item">
                 <div className="wr-q">{w.q}</div>
                 {w.user && (
@@ -135,7 +138,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
                 <div className="wr-a"><span className="wr-tick">✓</span>{w.correct}</div>
                 {w.hint && <div className="wr-why">{w.hint}</div>}
               </div>
-            ))}
+            ); })}
           </div>
         </>
       ) : (

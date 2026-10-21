@@ -10,6 +10,7 @@ import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx"
 import { CLUB_PACK_TO_QB } from "../data/clubPacks.js";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
+import { useQuestionText } from "../i18n/questionText.js";
 import { RETIRED_TAGS } from "../lib/quiz.js";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 
@@ -129,6 +130,9 @@ export function LocalSetup({ onStart, onBack }) {
 // reveal phase shows all the picks + correct answer in one go, so a later
 // player can't see what's right from an earlier player's feedback.
 export function LocalGameScreen({ config, onComplete, onExit }) {
+  // Questions print in the player's language (i18n/questionText.js); picks and
+  // scoring read the English rows. The rest of this screen is not translated yet.
+  const loc = useQuestionText();
   const { players, mode, diff, topic = "mixed" } = config;
   const TARGETS = { classic: 10, sprint: 5, survival: 30 };
   const target = TARGETS[mode] || 10;
@@ -205,6 +209,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     ? survivors[turnIdx]
     : players[chunkIdx % players.length];
   const currentQ = questions ? questions[currentQIdx] : null;
+  const shownQ = loc.q(currentQ);
 
   // End-of-game:
   // - Classic/Sprint: ran off the end of the question list → rank by score.
@@ -462,10 +467,10 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
         </div>
         <div className="q-card" style={qCardStyle(currentQ.cat)}>
           <div className="q-tag" style={qTagStyle(currentQ.cat)}>{CAT_LABELS[currentQ.cat] || currentQ.cat}</div>
-          <div className="q-text">{currentQ.q}</div>
+          <div className="q-text">{shownQ.q}</div>
         </div>
         <div className="opts">
-          {currentQ.o.map((opt, i) => {
+          {shownQ.o.map((opt, i) => {
             let cls = "opt";
             if (phase === "locked" && lastPick && i === lastPick.optIdx) cls += " locked";
             else if (phase === "locked") cls += " neutral-after";
@@ -497,12 +502,12 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
         </div>
         {isSurvivalQ ? (
           <>
-            <div className="local-reveal-q">{currentQ.q}</div>
-            <div className="local-reveal-correct">Correct: <strong>{currentQ.o[currentQ.a]}</strong></div>
+            <div className="local-reveal-q">{shownQ.q}</div>
+            <div className="local-reveal-correct">Correct: <strong>{shownQ.o[currentQ.a]}</strong></div>
             <div className="local-reveal-list">
               {revealPlayers.map(p => {
                 const pk = chunkPicks.find(x => x.qIdx === currentQIdx && x.playerId === p.id);
-                const chose = pk ? currentQ.o[pk.optIdx] : "—";
+                const chose = pk ? shownQ.o[pk.optIdx] : "—";
                 const ok = pk && pk.optIdx === currentQ.a;
                 const outNow = newEliminatedIds.includes(p.id);
                 return (
@@ -531,7 +536,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
                 return (
                   <div key={pk.qIdx} className={`local-reveal-row ${ok ? "ok" : "no"}`}>
                     <span className="local-reveal-qn">Q{pk.qIdx + 1}</span>
-                    <span style={{flex:1,color:"var(--t2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{q.q}</span>
+                    <span style={{flex:1,color:"var(--t2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{loc.q(q).q}</span>
                     <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
                   </div>
                 );

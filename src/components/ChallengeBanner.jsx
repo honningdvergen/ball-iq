@@ -11,6 +11,7 @@ import { Swords } from "lucide-react";
 import { readChallenge, challengeLine } from "../lib/gameChallenge.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 
 export default function ChallengeBanner({ game, edition, finished }) {
   const t = useT();

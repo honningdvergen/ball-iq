@@ -57,7 +57,9 @@ describe('the report button is a single source of truth', () => {
       '\n  Exactly one component may claim a report succeeded.\n' +
       '  Found it in: ' + owners.join(', ') + '\n' +
       '  Use <ReportButton>; it waits for the RPC before thanking anyone.\n',
-    ).toEqual(['i18n/en.js']);
+    // en.home.js is en.js's line, copied for Home's eager path (i18n step 5;
+    // i18n-eager-english.test.js holds the copy to en.js).
+    ).toEqual(['i18n/en.home.js', 'i18n/en.js']);
     const readers = FILES.filter((f) => f.code.includes("'report.done'") && !f.path.startsWith('i18n/')).map((f) => f.path);
     expect(readers, 'only ReportButton may print report.done').toEqual(['components/ReportButton.jsx']);
   });

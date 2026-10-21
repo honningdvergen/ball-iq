@@ -2,6 +2,7 @@ import { tierPalette, faceLabelType } from "../lib/ballIqCard.js";
 import { MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { tint, lift } from "../lib/colourMath.js";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { tierName, compName } from "../i18n/names.js";
 

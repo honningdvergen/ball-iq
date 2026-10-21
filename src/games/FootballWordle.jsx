@@ -27,6 +27,7 @@ import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
 import { t, useT } from '../i18n/index.js';
+import '../i18n/en.js'; // the full English table: not on Home's eager path
 import { rich } from '../i18n/rich.jsx';
 import './footle.css';
 

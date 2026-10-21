@@ -571,9 +571,7 @@ export function buildMysteryShareText({ number, guesses = [], won, streak = 0 } 
     .sort((a, b) => b.rank - a.rank)
     .map((g) => icon[g.band] || '⬜')
     .join('');
-  const line = won
-    ? `Solved in ${guesses.length} ${guesses.length === 1 ? 'guess' : 'guesses'}`
-    : 'Gave up';
-  const streakLine = won && streak > 1 ? `\n🔥 ${streak}-day Mystery streak` : '';
+  const line = won ? t('share.mysterySolved', { count: guesses.length }) : t('share.mysteryGaveUp');
+  const streakLine = won && streak > 1 ? `\n${t('share.mysteryStreak', { n: streak })}` : '';
   return `${head}\n${line}\n${grid}${streakLine}\n\nballiq.app/mystery`;
 }

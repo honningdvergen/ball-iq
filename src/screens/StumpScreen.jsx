@@ -3,8 +3,14 @@
 import { useState, useEffect } from "react";
 import { haptic, loopEvent } from "../App.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
+import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { useQuestionText } from "../i18n/questionText.js";
 
 export function StumpScreen({ row, onPlayFull, onHome }) {
+  const t = useT();
+  // The question as the player reads it; `row` (and its link) stays English.
+  const shown = useQuestionText().q(row);
   const [picked, setPicked] = useState(-1);
   const done = picked >= 0;
   const gotIt = done && picked === row.a;
@@ -24,9 +30,7 @@ export function StumpScreen({ row, onPlayFull, onHome }) {
   };
   const onPass = () => {
     loopEvent("stump-pass", { got: gotIt });   // the chain continuing = k > 0
-    const text = gotIt
-      ? `Got it ✅ your turn 😏 ⚽ ${stumpLink(row)}`
-      : `It got me too 🙈 can YOU get it? ⚽ ${stumpLink(row)}`;
+    const text = t(gotIt ? "share.stumpPassGot" : "share.stumpPassMissed", { link: stumpLink(row) });
     shareStumpText(text);
   };
 
@@ -41,32 +45,32 @@ export function StumpScreen({ row, onPlayFull, onHome }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <div className="page-title">🥜 Stump a mate</div>
+        <div className="page-title">{t("sm.title")}</div>
       </div>
       <div style={{ fontSize: 13, fontWeight: 700, color: "var(--t2)", marginBottom: 10 }}>
-        A mate bets you can't get this{row.cat ? ` (${row.cat})` : ""}:
+        {t("sm.bet", { c: row.cat ? ` (${row.cat})` : "" })}
       </div>
-      <div style={{ fontSize: 19, fontWeight: 800, lineHeight: 1.35, color: "var(--text)", letterSpacing: "-0.2px" }}>{row.q}</div>
+      <div style={{ fontSize: 19, fontWeight: 800, lineHeight: 1.35, color: "var(--text)", letterSpacing: "-0.2px" }}>{shown.q}</div>
       <div style={{ marginTop: 14 }}>
-        {row.o.map((opt, i) => (
+        {shown.o.map((opt, i) => (
           <button key={i} style={optStyle(i)} onClick={() => onPick(i)} disabled={done}>{opt}</button>
         ))}
       </div>
       {done && (
         <>
           <div style={{ textAlign: "center", marginTop: 18, fontSize: 17, fontWeight: 800, color: gotIt ? "var(--accent)" : "var(--red, #FF5A5A)" }}>
-            {gotIt ? "⚽ You got it!" : "Stumped! 🥜"}
+            {gotIt ? t("sm.got") : t("sm.stumped")}
           </div>
-          {row.hint && (
+          {shown.hint && (
             <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 12, background: "var(--card, var(--s2))", border: "1px solid var(--bd, var(--border2))", fontSize: 14, lineHeight: 1.5, color: "var(--t2)" }}>
-              {row.hint}
+              {shown.hint}
             </div>
           )}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginTop: 20 }}>
-            <button className="btn-3d" onClick={onPass}>🥜 Pass it on</button>
+            <button className="btn-3d" onClick={onPass}>{t("sm.pass")}</button>
             {/* the conversion step — the reason the loop exists */}
-            <button className="btn-3d ghost" onClick={() => { loopEvent("stump-convert", { got: gotIt }); onPlayFull(); }}>Play the full quiz</button>
-            <button className="btn-3d ghost" onClick={onHome}>Explore Ball IQ</button>
+            <button className="btn-3d ghost" onClick={() => { loopEvent("stump-convert", { got: gotIt }); onPlayFull(); }}>{t("sm.full")}</button>
+            <button className="btn-3d ghost" onClick={onHome}>{t("sm.explore")}</button>
           </div>
         </>
       )}

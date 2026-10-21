@@ -4,7 +4,9 @@
 // independently of the real copy; i18n-pilot.test.js covers the real tables.
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-vi.mock('../../src/i18n/en.js', () => ({
+// index.js imports en.home.js, Home's eager slice; the full en.js registers
+// itself when a lazy screen imports it (i18n step 5), so it is not stubbed.
+vi.mock('../../src/i18n/en.home.js', () => ({
   default: {
     'tab.home': 'Home',
     'only.english': 'Only in English',

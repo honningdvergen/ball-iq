@@ -26,6 +26,7 @@ import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardA
 import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
 import ROLES from '../data/mysteryRoles.json';
 import { t as tNow, useT, useLang } from '../i18n/index.js';
+import '../i18n/en.js'; // the full English table: not on Home's eager path
 import './mystery.css';
 
 /* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.

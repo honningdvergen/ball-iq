@@ -4,6 +4,7 @@
 // (Alex's recording of his Daily 7, 12 Oct 2026: the one screen that closes
 // from the other corner). 44×44px. All result screens use this.
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 
 export function ResultsCloseBtn({ onClose }) {
   const t = useT();

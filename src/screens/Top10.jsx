@@ -41,6 +41,7 @@ import { useKeyboardAwareInput, useDropdownMaxHeight, visibleBottom } from "../l
 import ResultFoot from "../components/ResultFoot.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { t as tNow, useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import "./top10.css";
 
 const PLACEHOLDER = { player: "game.typePlayer", club: "top10.typeClub", nation: "top10.typeNation" };

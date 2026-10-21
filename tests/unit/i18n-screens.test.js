@@ -36,6 +36,7 @@ const { stubGlobals, bootLang } = await import('./i18n-games.harness.js');
 const { pinDefaultLocale, stubWalkableStorage } = await import('./i18n-screens.harness.js');
 const { renderAll, buildScenarios } = await import('./i18n-screens.scenarios.js');
 const { STEP4_EN } = await import('./i18n-screens.keys.js');
+const { STEP5_EN } = await import('./i18n-leftovers.keys.js');
 const { t, getLang, __resetI18nForTests } = await import('../../src/i18n/index.js');
 const { levelName, tierName, compName } = await import('../../src/i18n/names.js');
 const en = (await import('../../src/i18n/en.js')).default;
@@ -95,9 +96,9 @@ describe('the step 4 keys', () => {
   it('each one prints its pinned English', () => {
     for (const [k, v] of Object.entries(STEP4_EN)) expect(en[k], k).toBe(v);
   });
-  it('the pinned list is every key step 4 added (from dd.aria to the end of en.js)', () => {
+  it('the pinned list is every key step 4 added (from dd.aria up to step 5\'s, i18n-leftovers.keys.js)', () => {
     const keys = Object.keys(en);
-    expect(keys.slice(keys.indexOf('dd.aria')).sort()).toEqual(Object.keys(STEP4_EN).sort());
+    expect(keys.slice(keys.indexOf('dd.aria')).filter((k) => !Object.hasOwn(STEP5_EN, k)).sort()).toEqual(Object.keys(STEP4_EN).sort());
   });
   it('each one has a Spanish value', () => {
     expect(Object.keys(STEP4_EN).filter((k) => typeof es[k] !== 'string' || !es[k])).toEqual([]);
@@ -317,9 +318,11 @@ describe('no copy left behind in the source', () => {
       expect(code, f).not.toMatch(/\.toLocaleString\(\)/);
     }
   });
-  it('the share texts that go to someone else stay English (step 5 decides them)', () => {
-    expect(read('components/DailyDone.jsx')).toMatch(/const text = `\$\{what\} No\. \$\{edition\}: \$\{scoreLabel\(game, myScore\)\}\. Can you beat it\?`;/);
-    expect(read('screens/SettingsScreen.jsx')).toContain('⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get');
+  it('the share texts: step 5 put them in the sharer\'s language (i18n-leftovers.test.js pins their English); the card verdict stays English', () => {
+    expect(read('components/DailyDone.jsx')).toContain('const text = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });');
+    expect(en['share.challenge']).toBe('{what} No. {edition}: {score}. Can you beat it?');
+    expect(read('screens/SettingsScreen.jsx')).toContain('const text = t("share.app");');
+    expect(en['share.app']).toBe('⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get');
     expect(read('lib/resultVerdict.js')).toContain('"Ballon d\'Or form"');
   });
   it('es.js stays lazy: nothing in src/ imports it statically', () => {

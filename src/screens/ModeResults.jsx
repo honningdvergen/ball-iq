@@ -6,6 +6,7 @@ import { Home, Share } from "lucide-react";
 import { useEffect } from "react";
 import { Confetti, haptic } from "../App.jsx";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 
 // Loop instrumentation (opportunity scan 2026-08-10 P0): a named Clarity event

@@ -20,6 +20,7 @@ import { t, initI18n, getLang, LANG_STORAGE_KEY, __resetI18nForTests } from '../
 import { FOOTLE_SHORT } from '../../src/lib/modeCopy.js';
 import { STEP3_EN } from './i18n-games.keys.js';
 import { STEP4_EN } from './i18n-screens.keys.js';
+import { STEP5_EN } from './i18n-leftovers.keys.js';
 
 const S = vi.hoisted(() => ({}));
 vi.mock('../../src/useAuth.jsx', () => ({ useAuth: () => S.auth }));
@@ -220,7 +221,7 @@ describe('the step 2 keys', () => {
   it('the pinned list is every key step 2 added (no unpinned English)', () => {
     // Step 3's keys (the game screens) are pinned in i18n-games.keys.js,
     // step 4's (results, History, Profile, Settings …) in i18n-screens.keys.js.
-    expect(Object.keys(en).filter((k) => !STEP1(k) && !Object.hasOwn(STEP3_EN, k) && !Object.hasOwn(STEP4_EN, k)).sort()).toEqual(Object.keys(STEP2_EN).sort());
+    expect(Object.keys(en).filter((k) => !STEP1(k) && !Object.hasOwn(STEP3_EN, k) && !Object.hasOwn(STEP4_EN, k) && !Object.hasOwn(STEP5_EN, k)).sort()).toEqual(Object.keys(STEP2_EN).sort());
   });
   it('each one has a Spanish value', () => {
     expect(Object.keys(STEP2_EN).filter((k) => typeof es[k] !== 'string')).toEqual([]);
@@ -292,7 +293,8 @@ describe('Spanish (biq_lang=es)', () => {
     expect(busy).toContain('aria-label="Racha de 12 días"');
     const done = html(now['home: all four done (the done strip)']);
     expect(done).toContain('<span class="dds-title">Los cuatro, listos</span>');
-    expect(done).toContain('<span class="dds-next">Más en 12h 0m</span>');
+    // Step 5: the countdown in Spanish's own format (time.* keys), was "12h 0m".
+    expect(done).toContain('<span class="dds-next">Más en 12 h 0 min</span>');
     expect(done).toContain('>4/4 hechos<');
     expect(t('home.done.title', { n: 3 })).toBe('Los 3, listos');
   });

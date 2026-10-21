@@ -691,7 +691,7 @@
              mid-screen and the actions sit pinned at the bottom, exactly like
              the real component — otherwise the buttons jump on the swap. -->
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;">
-          <div style="font-size:26px;font-weight:900;letter-spacing:-0.6px;margin-top:16px;margin-bottom:10px;">Quick one — give it a go ⚽</div>
+          <div data-biq-t="title" style="font-size:26px;font-weight:900;letter-spacing:-0.6px;margin-top:16px;margin-bottom:10px;">Quick one — give it a go ⚽</div>
           <!-- 16.5px, deliberately ~10% larger than the real .onboard-body's
                15px. LCP only updates for a STRICTLY larger paint, and
                display=optional cannot stop React's freshly-mounted nodes from
@@ -702,7 +702,7 @@
                outsizes any font's rendering of the React copy, so the LCP
                candidate is permanently the static one. The 1.5px shrink at
                swap is imperceptible inside a full-screen component replace. -->
-          <div style="font-size:16.5px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
+          <div data-biq-t="q" style="font-size:16.5px;color:#9BA0B8;line-height:1.6;max-width:320px;margin-bottom:14px;">Who has scored the most goals in men's international football?</div>
           <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:6px 0 2px;">
             <button data-biq-opt="0" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Lionel Messi</button>
             <button data-biq-opt="1" style="width:100%;padding:14px 16px;border-radius:12px;background:#16181F;border:1.5px solid #2F3240;color:#fff;font-family:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">Cristiano Ronaldo</button>
@@ -732,6 +732,33 @@
       if(/[?&](join|c|club|quiz|stump)=/.test(location.search))return;
       var el=document.getElementById('preboot-onboard');
       if(!el)return;
+      /* SPANISH (i18n step 5). The same rule as src/i18n/index.js resolveLang:
+         an explicit biq_lang wins; otherwise the device, but only once Spanish
+         is live. This script cannot read I18N_LIVE, so index.js leaves
+         biq_i18n_live='1' in storage while it is true (and removes it while it
+         is false): flipping the flag stays a one-line change there. The words
+         are es.js's ob.* lines, so the swap to OnboardingScreen stays seamless;
+         tests/unit/i18n-leftovers.test.js holds them together. */
+      var ES=null;
+      try{
+        var L=localStorage.getItem('biq_lang');
+        if(L==='es'||(L!=='en'&&localStorage.getItem('biq_i18n_live')==='1'&&/^es/i.test(navigator.language||'')))ES={
+          title:"Una rápida. Atrévete.",
+          q:"¿Quién ha marcado más goles con su selección en el fútbol masculino?",
+          skip:"Saltar",
+          start:"Empezar a jugar",
+          play:"¡A jugar!",
+          right:"Bien: se te da de maravilla",
+          wrong:"Es Cristiano Ronaldo, el máximo goleador de la historia. ¡Las irás pillando!"
+        };
+      }catch(e){}
+      if(ES){
+        document.documentElement.lang='es';
+        el.querySelector('[data-biq-t="title"]').textContent=ES.title;
+        el.querySelector('[data-biq-t="q"]').textContent=ES.q;
+        el.querySelector('[data-biq-act="skip"]').textContent=ES.skip;
+        el.querySelector('[data-biq-act="start"]').textContent=ES.start;
+      }
       el.style.display='flex';
       setTimeout(function(){var e=document.getElementById('preboot-onboard');if(e)e.remove();},12000);
 
@@ -784,9 +811,9 @@
           else if(i===idx){opts[i].style.background='rgba(239,68,68,0.14)';opts[i].style.borderColor='#ef4444';opts[i].style.color='#fca5a5';opts[i].innerHTML+=' <span aria-hidden="true">✗</span>';}
         }
         var fb=document.getElementById('preboot-fb');
-        if(fb)fb.textContent=(idx===ANSWER?CORRECT:WRONG);
+        if(fb)fb.textContent=ES?(idx===ANSWER?ES.right:ES.wrong):(idx===ANSWER?CORRECT:WRONG);
         var start=document.getElementById('preboot-start');
-        if(start)start.textContent="Let's play";
+        if(start)start.textContent=ES?ES.play:"Let's play";
       });
     }catch(e){}})();</script>
     <div id="root">

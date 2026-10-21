@@ -49,18 +49,12 @@ import { CLUB_INDEX } from './marketing/clubIndex.js';
 import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
-import { DailyDone } from './components/DailyDone.jsx';
-import { CountUp } from './components/CountUp.jsx';
-import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
-import { WrongAnswersReview } from './components/WrongAnswersReview.jsx';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
-import { resultVerdict } from './lib/resultVerdict.js';
-import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
-import { useT, useLang, isLangLoaded, t as tl } from './i18n/index.js';
-import en from './i18n/en.js';
+import { useT, useLang, isLangLoaded, hasEnglish, t as tl } from './i18n/index.js';
+import { useQuestionText } from './i18n/questionText.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
@@ -147,6 +141,13 @@ const ClubQuizScreen = withSuspense(lazyNamed(() => import('./screens/ClubQuizSc
 // league/tournament/theme quizzes and Stadiums. Lazy so Home carries only the
 // row that opens it; the chips call the same launchers the old tiles did.
 const QuizScreen = withSuspense(lazyNamed(() => import('./screens/QuizScreen.jsx'), 'QuizScreen'), "Loading quiz");
+// The quiz engine (i18n step 5, 21 Oct 2026). It was a STATIC import, and it
+// statically imports the results screen, which imports DailyDone: three play
+// screens and every English string they print rode Home's eager path. Lazy
+// now, warmed with the question index at idle and again the moment play starts
+// (see the effects below), so the fallback is the pathological case only.
+const loadQuizEngine = () => import('./screens/QuizEngine.jsx');
+const QuizEngine = withSuspense(lazyNamed(loadQuizEngine, 'QuizEngine'), "Loading quiz");
 const PrivacyScreen = withSuspense(lazyNamed(() => import('./screens/PrivacyScreen.jsx'), 'PrivacyScreen'));
 const StumpScreen = withSuspense(lazyNamed(() => import('./screens/StumpScreen.jsx'), 'StumpScreen'));
 const LocalSetup = withSuspense(lazyNamed(() => import('./screens/LocalPlay.jsx'), 'LocalSetup'));
@@ -829,7 +830,7 @@ export const CAT_LABELS = {
 // i18n/en.js, same English as above); every other category keeps its
 // CAT_LABELS name, the same in both languages (Premier League, La Liga …).
 // LEAGUE_QUIZ_SECTIONS' names are the same words for the same cat.
-export const catLabel = (t, c) => (en[`cat.${c}`] ? t(`cat.${c}`) : CAT_LABELS[c] || c);
+export const catLabel = (t, c) => (hasEnglish(`cat.${c}`) ? t(`cat.${c}`) : CAT_LABELS[c] || c);
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
 
@@ -1284,6 +1285,7 @@ const IS_IOS_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
 const IS_ANDROID_WEB = !IS_NATIVE && typeof navigator !== "undefined" &&
   /Android/i.test(navigator.userAgent || "") && !/Windows Phone/i.test(navigator.userAgent || "");
 export function FootleGetAppCTA({ style }) {
+  const t = useT();
   if (!IS_IOS_WEB && !IS_ANDROID_WEB) return null;
   // The visitor's own store badge — the same one the homepage row and the
   // static pages draw (src/components/StoreBadge.jsx). Was a 📲 emoji button.
@@ -1292,7 +1294,7 @@ export function FootleGetAppCTA({ style }) {
   return (
     <PlatformStoreBadge
       style={style}
-      caption="Keep your streak: daily reminders and every quiz in the Ball IQ app"
+      caption={t("ib.cta")}
     />
   );
 }
@@ -1379,6 +1381,7 @@ function SETTINGS_DEFAULTS() {
 const HOT_STREAK_MISS_S = 3;
 function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
   const t = useT();
+  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -1487,31 +1490,33 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
 
   const pct = (timeLeft / 60) * 100;
   const barColor = timeLeft > 20 ? 'var(--accent)' : timeLeft > 10 ? 'var(--gold)' : 'var(--red)';
+  // What the player reads (i18n/questionText.js); scoring above keeps `q`.
+  const qv = loc.q(q);
 
   return (
     <div className="quiz-wrap" onClick={onHoldTap}>
       {/* SR countdown at thresholds only — same pattern as QuizEngine.
           Hot Streak runs a 60s clock, so add a 30s waypoint. */}
       <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
-        {timeLeft === 30 ? "30 seconds left" : timeLeft === 10 ? "10 seconds left" : timeLeft === 5 ? "5 seconds left" : timeLeft === 0 ? "Time's up" : ""}
+        {timeLeft === 30 || timeLeft === 10 || timeLeft === 5 ? t("quiz.secsLeft", { n: timeLeft }) : timeLeft === 0 ? t("quiz.timesUp") : ""}
       </div>
       <div className="q-top">
-        <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }} aria-label="Go back">←</button>
+        <button className="back-btn" onClick={() => { clearInterval(timerRef.current); onBack(); }} aria-label={t("game.goBack")}>←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${pct}%`, background:barColor, transition:'width 1s linear'}} /></div>
         {picked && !picked.correct && <span className="hs-miss" aria-hidden="true">&minus;{HOT_STREAK_MISS_S}s</span>}
         <span className="q-ctr" style={{color: timeLeft <= 10 ? 'var(--red)' : 'var(--t2)', fontWeight: timeLeft <= 10 ? 800 : 500}}>{timeLeft}s</span>
-        {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
+        {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}>?</button>}
       </div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-        <div style={{fontSize:12,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}>⚡🔥 Hot Streak</div>
-        <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>pts</span></div>
+        <div style={{fontSize:12,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}>{t("hs.header")}</div>
+        <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>{t("hs.pts")}</span></div>
       </div>
       <div className="q-card">
         <div className="q-tag">{catLabel(t, q.cat)}</div>
-        <div className="q-text">{q.q}</div>
+        <div className="q-text">{qv.q}</div>
       </div>
       <div className="opts">
-        {q.o.map((opt, i) => {
+        {qv.o.map((opt, i) => {
           let cls = 'opt';
           if (picked) {
             if (i === picked.choice) cls += picked.correct ? ' correct' : ' wrong';
@@ -1538,7 +1543,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
           );
         })}
       </div>
-      {picked && !picked.correct && q.hint && (
+      {picked && !picked.correct && qv.hint && (
         <div style={{
           marginTop:10,
           padding:"10px 14px",
@@ -1551,14 +1556,14 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
           animation:"fadeIn 0.3s ease-out"
         }}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",gap:10,marginBottom:4}}>
-            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> Why?</div>
+            <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> {t("quiz.why")}</div>
             {/* ⚠️ A skip nobody can see is not a skip. The hold is capped at
                 1.8s, but a player racing a 60-second clock has no way to know
                 a tap will work unless we say so. Muted on purpose — this is
                 permission, not an instruction. */}
-            <div style={{fontSize:10,fontWeight:600,color:"var(--t3)",fontFamily:"'Inter',sans-serif",whiteSpace:"nowrap",opacity:0.75}}>tap to skip →</div>
+            <div style={{fontSize:10,fontWeight:600,color:"var(--t3)",fontFamily:"'Inter',sans-serif",whiteSpace:"nowrap",opacity:0.75}}>{t("hs.skip")}</div>
           </div>
-          <div>{q.hint}</div>
+          <div>{qv.hint}</div>
         </div>
       )}
     </div>
@@ -1567,6 +1572,8 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
 
 // ─── TRUE OR FALSE ENGINE ─────────────────────────────────────────────────────
 function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
+  const t = useT();
+  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState(null); // { val, correct } | null
@@ -1664,37 +1671,40 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     return { ...base, background: 'var(--s2)', border: '2px solid var(--border)', color: 'var(--t3)', opacity: 0.55 };
   };
 
+  // What the player reads (i18n/questionText.js); answer() above keeps `q`.
+  const qv = loc.q(q);
+
   return (
     <div className="quiz-wrap" onClick={onHoldTap}>
       <div className="q-top">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}>←</button>
         <div className="prog-wrap"><div className="prog-bar" style={{width:`${((idx + (picked?1:0)) / total) * 100}%`}} /></div>
         <span className="q-ctr">{idx + 1}/{total}</span>
-        {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label="How to play" title="How to play">?</button>}
+        {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}>?</button>}
       </div>
       <div style={{textAlign:'center',padding:'8px 0 4px'}}>
-        <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:'var(--accent)',letterSpacing:2}}>✅ True or False</span>
+        <span style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:'var(--accent)',letterSpacing:2}}>{t("tf.label")}</span>
       </div>
       <div className="q-card" style={{minHeight:140,display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}>
-        <div className="q-text" style={{fontSize:18,lineHeight:1.5}}>{q?.s || q?.q}</div>
+        <div className="q-text" style={{fontSize:18,lineHeight:1.5}}>{qv?.s || qv?.q}</div>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:16}}>
         <button onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
-          ✓ TRUE
+          {"✓ " + t("quiz.true")}
         </button>
         <button onClick={() => answer(false)} disabled={!!picked} style={tfStyle(false)}>
-          ✗ FALSE
+          {"✗ " + t("quiz.false")}
         </button>
       </div>
       {picked && (
         <div style={{textAlign:'center',marginTop:14,fontSize:16,fontWeight:700,color: picked.correct ? 'var(--green)' : 'var(--red)'}}>
-          {picked.correct ? '✓ Correct!' : '✗ Incorrect'}
+          {picked.correct ? t("quiz.right") : t("quiz.wrong")}
         </div>
       )}
       {/* Right or wrong — see the QuizEngine explanation block. NOT applied to
           HotStreakEngine: that mode runs a 60-second clock, so a paragraph on
           every correct answer would break the thing it is for. */}
-      {picked && q.hint && (
+      {picked && qv.hint && (
         <div style={{
           marginTop:10,
           padding:"10px 14px",
@@ -1706,8 +1716,8 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
           color:"var(--t2)",
           animation:"fadeIn 0.3s ease-out"
         }}>
-          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> Why?</div>
-          <div>{q.hint}</div>
+          <div style={{fontSize:10,fontWeight:700,color:"var(--t3)",letterSpacing:0.2,fontFamily:"'Inter',sans-serif",marginBottom:4,display:"flex",alignItems:"center",gap:4}}><Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" /> {t("quiz.why")}</div>
+          <div>{qv.hint}</div>
         </div>
       )}
     </div>
@@ -2195,7 +2205,8 @@ function DailySocialProof({ score, total }) {
 
 export function ReviewQuestionCard({ a, index }) {
   const t = useT();
-  const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = a;
+  // The record stays English; the card prints it in the player's language.
+  const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = useQuestionText().answer(a);
   // A true-or-false question stores its options as TRUE / FALSE.
   const optLabel = (opt) => (type === 'tf' && (opt === 'TRUE' || opt === 'FALSE') ? t(opt === 'TRUE' ? 'quiz.true' : 'quiz.false') : opt);
   return (
@@ -2326,6 +2337,7 @@ function ResetPasswordOverlay() {
 }
 
 export function InstallBanner() {
+  const t = useT();
   const { canPromptNative, platform, showBanner, promptInstall, dismiss } = useInstallBanner();
   // PHONES GET THE REAL APP, NOT THE WEB ONE (15 Oct 2026). On an iPhone or an
   // Android phone this banner told a player who had just won to add the
@@ -2336,32 +2348,32 @@ export function InstallBanner() {
   if (IS_IOS_WEB || IS_ANDROID_WEB) return null;
   if (!showBanner) return null;
   return (
-    <div className="install-banner" role="region" aria-label="Install Ball IQ">
+    <div className="install-banner" role="region" aria-label={t("ib.label")}>
       <span className="install-banner-icon" aria-hidden="true">⚽</span>
       <div className="install-banner-body">
-        <div className="install-banner-title">Never miss a day</div>
+        <div className="install-banner-title">{t("ib.title")}</div>
         <div className="install-banner-desc">
           {canPromptNative
-            ? "Install for a daily reminder when new puzzles drop."
+            ? t("ib.native")
             : platform.isIOSSafari
-              ? "Tap Share → Add to Home Screen for daily reminders."
-              : "Add to your home screen for daily reminders."}
+              ? t("ib.ios")
+              : t("ib.other")}
         </div>
       </div>
       <div className="install-banner-actions">
         {canPromptNative ? (
-          <button type="button" className="install-banner-btn" onClick={promptInstall}>Install</button>
+          <button type="button" className="install-banner-btn" onClick={promptInstall}>{t("ib.install")}</button>
         ) : platform.isIOSSafari ? (
-          <span className="install-banner-ios" aria-label="iOS install steps">
-            <span className="install-banner-ios-step">⤴ Share</span>
-            <span className="install-banner-ios-step">Add</span>
+          <span className="install-banner-ios" aria-label={t("ib.iosSteps")}>
+            <span className="install-banner-ios-step">{t("ib.share")}</span>
+            <span className="install-banner-ios-step">{t("ib.add")}</span>
           </span>
         ) : null}
         <button
           type="button"
           className="install-banner-dismiss"
           onClick={dismiss}
-          aria-label="Dismiss install prompt"
+          aria-label={t("ib.dismiss")}
         >×</button>
       </div>
     </div>
@@ -2690,6 +2702,7 @@ function DailyCountdown({ score }) {
 
 // ─── DAILY HERO COUNTDOWN (for home screen hero card) ────────────────────────
 export function DailyHeroCountdown() {
+  const lang = useLang();
   const [timeStr, setTimeStr] = useState("");
   useEffect(() => {
     const update = () => {
@@ -2700,12 +2713,12 @@ export function DailyHeroCountdown() {
       const diff = midnight - now;
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
-      setTimeStr(`${h}h ${m}m`);
+      setTimeStr(tl("time.hm", { h, m }));
     };
     update();
     const id = setInterval(update, 30000);
     return () => clearInterval(id);
-  }, []);
+  }, [lang]);
   return timeStr;
 }
 
@@ -4610,7 +4623,7 @@ function AppInner() {
     // Both are fire-and-forget and dedupe inside questions-loader, so a stage-2
     // timer firing after a picker already started the load is a no-op.
     {
-      const idleIndex = () => { try { prefetchQuestionIndex(); } catch {} };
+      const idleIndex = () => { try { prefetchQuestionIndex(); } catch {} loadQuizEngine().catch(() => {}); };
       const idleBank = () => { try { prefetchQuestions(); } catch {} };
       // ⚠️ THE ONLINE TAB CHUNK — the one measured cause of a slow tab switch.
       //
@@ -6714,6 +6727,7 @@ function AppInner() {
     if (!playing) return;
     import('./screens/ResultsScreen.jsx').catch(() => {});
     import('./screens/ModeResults.jsx').catch(() => {});
+    loadQuizEngine().catch(() => {});
   }, [playing]);
 
   // first-game-played — the honest counterpart to first-game-reached.
