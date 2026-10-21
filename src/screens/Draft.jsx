@@ -34,6 +34,8 @@ import {
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./draft.css";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { t as tNow } from "../i18n/index.js";
 
 const SKIN = { "--dr": MODE_ACCENT.draft, "--dr-rgb": MODE_RGB.draft };
 const PLURAL = { GK: "Goalkeepers", DF: "Defenders", MF: "Midfielders", FW: "Forwards" };
@@ -350,6 +352,11 @@ function Pitch({ picks, chosen }) {
 }
 
 const WORD = { w: "Won", d: "Drew", l: "Lost" };
+// The share's words in the sharer's language (draftModel.js keeps no imports).
+const DRAFT_SHARE_WORDS = {
+  line: (se) => tNow("share.draftLine", { pts: se.pts, w: se.w, d: se.d, l: se.l }),
+  par: (par) => tNow("share.draftPar", { par }),
+};
 
 function Season({ result, number, picks, shown, played, hard, isPractice, onSkip, onAnother, onBack }) {
   const { se, stand, par } = result;
@@ -366,11 +373,12 @@ function Season({ result, number, picks, shown, played, hard, isPractice, onSkip
   // The same share as Top 10 and the Trail: the text through the sheet, or the
   // clipboard where there is no sheet. The text is built in draftModel.js.
   const share = useCallback(async () => {
-    const text = buildDraftShareText({ number, se, par });
+    // In the sharer's language (i18n step 6); the rest of this screen is still English.
+    const text = buildDraftShareText({ number, se, par, words: DRAFT_SHARE_WORDS });
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(text);
-      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "📋 Copied — paste it anywhere" }));
+      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: tNow("share.pasteAnywhere") }));
     } catch { /* nothing to copy to */ }
   }, [se, number, par]);
 

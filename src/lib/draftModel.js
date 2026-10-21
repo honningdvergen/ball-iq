@@ -390,9 +390,12 @@ export function parPoints(D, day) {
 // The number is "#N" as in every share text (GameTitle.jsx); the screen says
 // "No. N". One square per match in the day's playing order, the first half of
 // the season on one row and the second half on the next.
-export function buildDraftShareText({ number = 0, se, par = null } = {}) {
+// `words` (i18n step 6): the sharer's language, { line(se), par(par) } from the
+// screen, so this file keeps no imports; without it, the English it always was.
+export function buildDraftShareText({ number = 0, se, par = null, words = null } = {}) {
   const row = (ms) => ms.map((m) => (m.r === 'w' ? '🟩' : m.r === 'd' ? '⬜' : '🟥')).join('');
   const head = `⚽ Ball IQ · Draft${number > 0 ? ` #${number}` : ''}`;
-  const line = `${se.pts} points · ${se.w}-${se.d}-${se.l}${par != null ? ` · par ${par}` : ''}`;
+  const pts = words ? words.line(se) : `${se.pts} points · ${se.w}-${se.d}-${se.l}`;
+  const line = `${pts}${par != null ? (words ? words.par(par) : ` · par ${par}`) : ''}`;
   return `${head}\n${line}\n${row(se.matches.slice(0, 19))}\n${row(se.matches.slice(19))}\n\nballiq.app/play?game=draft`;
 }

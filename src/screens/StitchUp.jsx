@@ -29,6 +29,8 @@ import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
 import { isNativeShell } from "../lib/inAppBrowser.js";
 import { getTrailAnswer, loadTrailDay, finishedBefore } from "../lib/trail.js";
 import { isProfaneUsername } from "../lib/profanity.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { t } from "../i18n/index.js";
 
 const NAME_KEY = "biq_stitch_name";
 const PLAY_KEY = "biq_stitch_play";
@@ -47,8 +49,12 @@ async function shareOrCopy(text, url) {
   try { await navigator.clipboard.writeText(`${text} ${url}`); return "copied"; } catch { return null; }
 }
 
+// The sharer's language (i18n step 6): the taunt too, as share.taunt.<index>
+// (en.js holds STITCH_TAUNTS' English, pinned by tests/unit/i18n-last-english.test.js).
+// The screen itself is still English.
 export function stitchShareText(taunt) {
-  return `Whose career is this? ${STITCH_TAUNTS[taunt] || "Go on then"}.`;
+  const said = STITCH_TAUNTS[taunt] ? t(`share.taunt.${taunt}`) : t("share.stitchDefault");
+  return t("share.stitch", { taunt: said });
 }
 
 // ── BUILD ─────────────────────────────────────────────────────────────────

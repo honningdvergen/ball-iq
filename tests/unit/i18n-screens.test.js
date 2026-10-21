@@ -37,6 +37,7 @@ const { pinDefaultLocale, stubWalkableStorage } = await import('./i18n-screens.h
 const { renderAll, buildScenarios } = await import('./i18n-screens.scenarios.js');
 const { STEP4_EN } = await import('./i18n-screens.keys.js');
 const { STEP5_EN } = await import('./i18n-leftovers.keys.js');
+const { STEP6_EN } = await import('./i18n-last-english.keys.js');
 const { t, getLang, __resetI18nForTests } = await import('../../src/i18n/index.js');
 const { levelName, tierName, compName } = await import('../../src/i18n/names.js');
 const en = (await import('../../src/i18n/en.js')).default;
@@ -98,7 +99,7 @@ describe('the step 4 keys', () => {
   });
   it('the pinned list is every key step 4 added (from dd.aria up to step 5\'s, i18n-leftovers.keys.js)', () => {
     const keys = Object.keys(en);
-    expect(keys.slice(keys.indexOf('dd.aria')).filter((k) => !Object.hasOwn(STEP5_EN, k)).sort()).toEqual(Object.keys(STEP4_EN).sort());
+    expect(keys.slice(keys.indexOf('dd.aria')).filter((k) => !Object.hasOwn(STEP5_EN, k) && !Object.hasOwn(STEP6_EN, k)).sort()).toEqual(Object.keys(STEP4_EN).sort());
   });
   it('each one has a Spanish value', () => {
     expect(Object.keys(STEP4_EN).filter((k) => typeof es[k] !== 'string' || !es[k])).toEqual([]);

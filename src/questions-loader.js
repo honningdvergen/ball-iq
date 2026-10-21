@@ -42,7 +42,7 @@
 // The index preserves QB's row ORDER, so an index position maps to the same
 // question. Do not sort it: the Daily 7 shuffles by array position.
 import { loadClubData } from './lib/clubData.js';
-import { loadSpanishQuestions, indexEnglishBank } from './i18n/questionText.js';
+import { loadSpanishQuestionsCapped, indexEnglishBank, registerBankLoader } from './i18n/questionText.js';
 
 let idxCache = null;
 let idxInFlight = null;
@@ -99,8 +99,9 @@ export function loadQuestions() {
   // ONLY, so a quiz opens in Spanish rather than switching under the player's
   // eyes; for English loadSpanishQuestions() resolves at once and fetches
   // nothing. It never rejects: a failed fetch is English questions, not an
-  // error.
-  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js'), loadClubData(), loadSpanishQuestions()]).then(([mod, conflicts]) => {
+  // error. And it never holds the bank longer than ES_BANK_WAIT_MS (step 6):
+  // a slow connection opens the quiz in English, see questionText.js.
+  inFlight = Promise.all([import('./questions.js'), import('./questionConflicts.js'), loadClubData(), loadSpanishQuestionsCapped()]).then(([mod, conflicts]) => {
     const QB = mod.QB;
     const TF_STATEMENTS = mod.TF_STATEMENTS;
     const conflictsWith = conflicts.conflictsWith;
@@ -127,6 +128,9 @@ export function loadQuestions() {
   });
   return inFlight;
 }
+
+// The Spanish answer review finds id-less records in the English bank.
+registerBankLoader(loadQuestions);
 
 export function prefetchQuestions() {
   loadQuestions().catch((err) => {

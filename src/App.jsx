@@ -54,7 +54,7 @@ import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
 import { useT, useLang, isLangLoaded, hasEnglish, t as tl } from './i18n/index.js';
-import { useQuestionText } from './i18n/questionText.js';
+import { useQuestionText, questionText } from './i18n/questionText.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
@@ -1959,7 +1959,7 @@ export async function shareCard(type, data, opts = {}) {
         if (navigator.share) await navigator.share({ text: textFallback, url: "https://balliq.app" });
         else if (navigator.clipboard) {
           await navigator.clipboard.writeText(textFallback);
-          onToast("Copied to clipboard 📋");
+          onToast(tl("share.copied"));
         }
       } catch {}
     }
@@ -2000,17 +2000,18 @@ export async function shareCard(type, data, opts = {}) {
         const wLink = "⚽ https://balliq.app/footle";
         const n = data.num > 0 ? ` #${data.num}` : "";
         // A clued result says so here as on the card (lib/wordle.js).
-        const cl = data.clue ? " (with a clue 💡)" : "";
-        if (data.failed) return `Footle${n} got me${cl} — can you do better? ${wLink}`;
-        if (data.score === 1) return `Got Footle${n} on my FIRST guess 🎯 ${wLink}`;
-        return `Got Footle${n} in ${data.score} guesses${cl} — can you beat me? ${wLink}`;
+        const cl = data.clue ? tl("share.lineClue") : "";
+        // The line is the sharer's language (i18n step 6); the card stays English.
+        if (data.failed) return tl("share.lineFootleFail", { n, cl, link: wLink });
+        if (data.score === 1) return tl("share.lineFootleFirst", { n, link: wLink });
+        return tl("share.lineFootle", { n, score: data.score, cl, link: wLink });
       }
-      if (type === "hotstreak") return `I hit a ${data.score}-streak in Hot Streak — beat that ${link}`;
+      if (type === "hotstreak") return tl("share.lineHot", { score: data.score, link });
       if (data?.modeLabel && data?.score != null && data?.total != null) {
-        return `I scored ${data.score}/${data.total} on ${data.modeLabel} — can you beat me? ${link}`;
+        return tl("share.lineScore", { score: data.score, total: data.total, label: data.shareLabel || data.modeLabel, link });
       }
     } catch {}
-    return `Can you beat it? ${link}`;
+    return tl("share.lineAny", { link });
   })();
 
   if (IS_NATIVE) {
@@ -2077,7 +2078,7 @@ export async function shareCard(type, data, opts = {}) {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    onToast("Saved! Share from your photos 📸");
+    onToast(tl("share.saved"));
     return;
   } catch {}
 
@@ -2087,7 +2088,7 @@ export async function shareCard(type, data, opts = {}) {
       if (navigator.share) await navigator.share({ text: textFallback, url: "https://balliq.app" });
       else if (navigator.clipboard) {
         await navigator.clipboard.writeText(textFallback);
-        onToast("Copied to clipboard 📋");
+        onToast(tl("share.copied"));
       }
     } catch {}
   }
@@ -2903,8 +2904,9 @@ const HOW_TO_PLAY = {
   // lines in src/i18n/en.js as `${stepKey}.1`..`.5`; HotStreak and True or
   // False are other engines and move with them.
   wordle: { title:"Footle", stepKey:"help.footle" },
-  hotstreak: { title:"Hot Streak", steps:["You have 60 seconds on the clock","Answer as many questions as you can","A wrong answer costs 3 seconds, so think before you tap","Score is how many you get correct","Try to beat your personal best"] },
-  truefalse: { title:"True or False", steps:["You get 20 football statements","Tap TRUE or FALSE for each one","There's no timer — take your time","Every correct answer earns XP","A perfect 20/20 earns a bonus!"] },
+  // Step 6: Hot Streak and True or False moved too (help.hotstreak.*, help.truefalse.*).
+  hotstreak: { titleKey:"home.mode.hotstreak", stepKey:"help.hotstreak" },
+  truefalse: { titleKey:"help.truefalse.title", stepKey:"help.truefalse" },
   survival: { titleKey:"home.mode.survival", stepKey:"help.survival" },
 };
 // A sheet's title and lines in the current language.
@@ -7176,13 +7178,9 @@ function AppInner() {
         const idx = parseInt(ea, 10);
         const answered = Number.isInteger(idx) && idx >= 0 && idx < q.o.length;
         const correct = answered && idx === q.a;
-        const answerText = q.o[q.a];
-        showToast(
-          correct
-            ? `\u2713 ${answerText} \u2014 correct. Here's today's Daily 7`
-            : `\u2717 It was ${answerText} \u2014 today's seven are waiting`,
-          4200
-        );
+        // The answer as the player reads it (i18n/questionText.js), the toast in their language.
+        const answerText = questionText.q(q).o[q.a];
+        showToast(tl(correct ? "toast.emailRight" : "toast.emailWrong", { a: answerText }), 4200);
         emailAnswerTimer.current = setTimeout(() => { emailAnswerTimer.current = null; playDaily(); }, 2100);
       } catch { playDaily(); }
     })();
@@ -7547,11 +7545,11 @@ function AppInner() {
         {/* Rate prompt */}
         {askShareName && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.2s ease"}} onClick={cancelShareName}>
-            <div ref={shareNameRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Add your name to the challenge" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(40px + env(safe-area-inset-bottom, 34px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
+            <div ref={shareNameRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={t("sn.aria")} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(40px + env(safe-area-inset-bottom, 34px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}} onClick={e => e.stopPropagation()}>
               <div style={{fontSize:44,marginBottom:10}}>⚽</div>
-              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Who should we say it&apos;s from?</div>
+              <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{t("sn.title")}</div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.6,marginBottom:20}}>
-                Your friends see <b style={{color:"var(--t1)"}}>&ldquo;beat my {dailyScore || 0}/7&rdquo;</b> with your name on it.
+                {rich(t("sn.body"), { b: <b style={{color:"var(--t1)"}}>{t("sn.quote", { n: dailyScore || 0 })}</b> })}
               </div>
               <form onSubmit={e => { e.preventDefault(); submitShareName(shareNameDraft); }}>
                 <input
@@ -7559,15 +7557,15 @@ function AppInner() {
                   value={shareNameDraft}
                   onChange={e => setShareNameDraft(e.target.value)}
                   maxLength={22}
-                  placeholder="First name"
-                  aria-label="Your name"
+                  placeholder={t("sn.placeholder")}
+                  aria-label={t("sn.nameAria")}
                   enterKeyHint="send"
                   autoComplete="given-name"
                   style={{width:"100%",padding:"14px 16px",fontSize:16,borderRadius:12,border:"1px solid var(--line)",background:"var(--c2)",color:"var(--t1)",fontFamily:"inherit",marginBottom:14,textAlign:"center"}}
                 />
-                <button className="btn btn-p" type="submit" style={{marginBottom:10}}>Share challenge</button>
+                <button className="btn btn-p" type="submit" style={{marginBottom:10}}>{t("sn.share")}</button>
               </form>
-              <button className="btn btn-s" type="button" onClick={() => submitShareName("")}>Share without a name</button>
+              <button className="btn btn-s" type="button" onClick={() => submitShareName("")}>{t("sn.noName")}</button>
             </div>
           </div>
         )}
@@ -8372,14 +8370,14 @@ function AppInner() {
           <div className="quiz-screen-wrap">
             {mode === "legends" && (
               <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",borderRadius:12,border:"1px solid rgba(251,191,36,0.15)"}}>
-                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>📜 Legends & History</div>
-                <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Take your time. These are the stories that made the game.</div>
+                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>{t("qb.legends")}</div>
+                <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>{t("qb.legendsSub")}</div>
               </div>
             )}
             {mode === "chaos" && (
               <div style={{marginTop:14,marginBottom:4,textAlign:"center",padding:"10px 0 6px",background:"linear-gradient(135deg,rgba(88,204,2,0.10),rgba(255,106,0,0.06))",borderRadius:12,border:"1px solid rgba(88,204,2,0.22)"}}>
-                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--grn-soft)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>🎭 Chaos</div>
-                <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>Quotes, moments &amp; madness — take a beat and think.</div>
+                <div style={{fontSize:10,fontFamily:"'Inter',sans-serif",color:"var(--grn-soft)",fontWeight:700,letterSpacing:0.3,marginBottom:4}}>{t("qb.chaos")}</div>
+                <div style={{fontSize:12,color:"var(--t3)",fontStyle:"italic"}}>{t("qb.chaosSub")}</div>
               </div>
             )}
             {activePack && (
@@ -8388,7 +8386,7 @@ function AppInner() {
                   <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(activePack.color)}}>{clubs.CLUB_ABBR[activeClub] || clubInitials(activePack.name)}</span>
                 </div>
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>Club Quiz</div>
+                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>{t("cat.ClubQuiz")}</div>
                   <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{activePack.name}</div>
                 </div>
               </div>

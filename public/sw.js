@@ -10,7 +10,7 @@
  * itself changes meaningfully.
  */
 
-const CACHE_VERSION = 'balliq-v13'; // v13: /fonts/* (the app's own Inter + JetBrains Mono) kept in the fonts cache, which is never trimmed
+const CACHE_VERSION = 'balliq-v14'; // v14: hashed /assets/*.json (the Spanish question bank) cache-first, so Spanish works offline
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const FONTS_CACHE = `${CACHE_VERSION}-fonts`;
 const DOC_CACHE = `${CACHE_VERSION}-docs`;
@@ -54,6 +54,13 @@ const NEVER_CACHE_HOSTS = [
 
 // Asset extensions served cache-first from same origin.
 const STATIC_EXT = /\.(?:js|css|woff2?|png|svg|ico|webp|jpg|jpeg|gif)$/i;
+// JSON is cache-first ONLY under /assets/, where Vite gives it a content hash
+// (i18n/questions.es.json → /assets/questions.es-<hash>.json, fetched only by a
+// Spanish player): a new deploy is a new URL, so a cached copy is never stale.
+// /data/*.json and every other JSON keep the same URL across deploys and stay
+// on the network. Not precached either: the Spanish bank is 3 MB that English
+// installs must never download (scripts/gen-sw-precache.mjs takes js/css/fonts).
+const HASHED_JSON = /^\/assets\/[^/]+\.json$/i;
 
 // ─── Install: pre-cache the app shell ──────────────────────────────────────
 self.addEventListener('install', (event) => {
@@ -218,7 +225,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Same-origin static asset → cache-first.
-  if (url.origin === self.location.origin && STATIC_EXT.test(url.pathname)) {
+  if (url.origin === self.location.origin && (STATIC_EXT.test(url.pathname) || HASHED_JSON.test(url.pathname))) {
     event.respondWith(cacheFirst(request, STATIC_CACHE));
     return;
   }

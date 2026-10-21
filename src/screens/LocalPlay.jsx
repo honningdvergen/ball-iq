@@ -5,7 +5,9 @@
 // props and reaches into nothing else.
 import { useState, useEffect } from "react";
 import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull, CircleAlert, Loader, Gamepad2 } from "lucide-react";
-import { CAT_LABELS, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
+import { catLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
+import "../i18n/en.js";
+import { useT } from "../i18n/index.js";
 import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx";
 import { CLUB_PACK_TO_QB } from "../data/clubPacks.js";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
@@ -24,6 +26,7 @@ export function PlayerMark({ p, size }) {
 }
 
 export function LocalSetup({ onStart, onBack }) {
+  const t = useT();
   const [count, setCount] = useState(2);
   const [names, setNames] = useState(Array.from({ length: 6 }, (_, i) => ""));
   const [lmode, setLmode] = useState("classic");
@@ -35,7 +38,7 @@ export function LocalSetup({ onStart, onBack }) {
   const launch = () => {
     const players = Array.from({ length: count }, (_, i) => ({
       id: i,
-      name: (names[i] || "").trim() || `Player ${i + 1}`,
+      name: (names[i] || "").trim() || t("lp.player", { n: i + 1 }),
       n: i + 1,
       rgb: PLAYER_RGB[i % PLAYER_RGB.length],
     }));
@@ -47,12 +50,12 @@ export function LocalSetup({ onStart, onBack }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">Local Multiplayer</div>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}>←</button>
+        <div className="page-title">{t("lp.title")}</div>
       </div>
 
       {/* Player count picker */}
-      <div className="ds-eyebrow local-section-label">Players</div>
+      <div className="ds-eyebrow local-section-label">{t("lp.players")}</div>
       <div className="local-count-row">
         {[2,3,4,5,6].map(n => (
           <button key={n} className={`local-count-btn${count===n?" on":""}`} onClick={() => setCount(n)}>{n}</button>
@@ -60,14 +63,14 @@ export function LocalSetup({ onStart, onBack }) {
       </div>
 
       {/* Names */}
-      <div className="ds-eyebrow local-section-label">Names</div>
+      <div className="ds-eyebrow local-section-label">{t("lp.names")}</div>
       <div className="local-names">
         {Array.from({ length: count }, (_, i) => (
           <div key={i} className="player-input-row">
             <PlayerMark p={{ id: i, n: i + 1 }} />
             <input
               className="player-inp"
-              placeholder={`Player ${i + 1}`}
+              placeholder={t("lp.player", { n: i + 1 })}
               value={names[i]}
               onChange={e => setName(i, e.target.value)}
               maxLength={16}
@@ -77,17 +80,17 @@ export function LocalSetup({ onStart, onBack }) {
       </div>
 
       {/* Topic — same card + full-screen picker as the online lobby */}
-      <div className="ds-eyebrow local-section-label">Topic</div>
+      <div className="ds-eyebrow local-section-label">{t("lp.topic")}</div>
       {(() => {
-        const t = topicMeta(topic);
+        const tm = topicMeta(topic, t);
         return (
           <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12}}>
-            <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || t.icon}</span>
+            <span style={{width:46,height:46,borderRadius:13,background:tm.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:tm.abbr ? 12 : 21,fontWeight:tm.abbr ? 900 : 400,letterSpacing:tm.abbr ? "0.04em" : 0,color:tm.fg || "var(--t1)",flexShrink:0,boxShadow:tm.color ? `0 2px 8px ${tm.color}55` : undefined}}>{tm.abbr || tm.icon}</span>
             <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
-              <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",display:"-webkit-box",WebkitBoxOrient:"vertical",WebkitLineClamp:2,lineHeight:1.25}}>{t.label}</span>
-              <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
+              <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",display:"-webkit-box",WebkitBoxOrient:"vertical",WebkitLineClamp:2,lineHeight:1.25}}>{tm.label}</span>
+              <span style={{fontSize:12,color:"var(--t3)"}}>{tm.sub}</span>
             </div>
-            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{t("lp.change")}</button>
           </div>
         );
       })()}
@@ -96,12 +99,12 @@ export function LocalSetup({ onStart, onBack }) {
       )}
 
       {/* Mode */}
-      <div className="ds-eyebrow local-section-label">Mode</div>
+      <div className="ds-eyebrow local-section-label">{t("lp.mode")}</div>
       <div className="local-mode-row">
         {[
-          { id:"classic",  Icon: Timer, name:"Classic",  desc:"10 questions" },
-          { id:"sprint",   Icon: Zap,   name:"Sprint",   desc:"5 questions" },
-          { id:"survival", Icon: Flame, name:"Survival", desc:"Eliminated on wrong" },
+          { id:"classic",  Icon: Timer, name:t("quiz.mode.classic"),  desc:t("lp.classicDesc") },
+          { id:"sprint",   Icon: Zap,   name:t("lp.sprint"),   desc:t("lp.sprintDesc") },
+          { id:"survival", Icon: Flame, name:t("home.mode.survival"), desc:t("lp.survivalDesc") },
         ].map(m => (
           <button key={m.id} className={`local-mode-chip${lmode===m.id?" on":""}`} onClick={() => setLmode(m.id)}>
             <span className="local-mode-icon"><m.Icon size={22} strokeWidth={2.2} aria-hidden="true" /></span>
@@ -112,7 +115,7 @@ export function LocalSetup({ onStart, onBack }) {
       </div>
 
       <button className="btn-3d" style={{marginTop:18}} onClick={launch}>
-        Start with {count} players →
+        {t("lp.start", { n: count })}
       </button>
     </div>
   );
@@ -131,8 +134,9 @@ export function LocalSetup({ onStart, onBack }) {
 // player can't see what's right from an earlier player's feedback.
 export function LocalGameScreen({ config, onComplete, onExit }) {
   // Questions print in the player's language (i18n/questionText.js); picks and
-  // scoring read the English rows. The rest of this screen is not translated yet.
+  // scoring read the English rows. The chrome is t() (i18n step 6).
   const loc = useQuestionText();
+  const t = useT();
   const { players, mode, diff, topic = "mixed" } = config;
   const TARGETS = { classic: 10, sprint: 5, survival: 30 };
   const target = TARGETS[mode] || 10;
@@ -308,10 +312,10 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14,padding:"0 24px",textAlign:"center"}}>
         <CircleAlert size={36} strokeWidth={1.8} color="var(--t3)" aria-hidden="true" />
-        <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>Couldn't load questions</div>
-        <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>Check your connection and try again.</div>
-        <button className="btn-3d" style={{marginTop:6,maxWidth:240}} onClick={() => { setQuestions(null); setLoadNonce(n => n + 1); }}>Try Again</button>
-        <button className="btn-3d ghost" style={{maxWidth:240}} onClick={onExit}>Back to Home</button>
+        <div style={{fontFamily:"'Inter',sans-serif",fontSize:16,fontWeight:700,color:"var(--text)"}}>{t("lp.loadFail")}</div>
+        <div style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:"var(--t2)",lineHeight:1.5}}>{t("lp.loadFailSub")}</div>
+        <button className="btn-3d" style={{marginTop:6,maxWidth:240}} onClick={() => { setQuestions(null); setLoadNonce(n => n + 1); }}>{t("lp.retry")}</button>
+        <button className="btn-3d ghost" style={{maxWidth:240}} onClick={onExit}>{t("quiz.backHome")}</button>
       </div>
     );
   }
@@ -320,7 +324,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="screen" style={{display:"flex",alignItems:"center",justifyContent:"center",minHeight:"60vh",flexDirection:"column",gap:14}}>
         <Loader size={36} strokeWidth={1.8} color="var(--t3)" aria-hidden="true" />
-        <div style={{fontSize:14,color:"var(--t2)"}}>{questions === null ? "Loading questions…" : "Finishing up…"}</div>
+        <div style={{fontSize:14,color:"var(--t2)"}}>{questions === null ? t("lp.loading") : t("lp.finishing")}</div>
       </div>
     );
   }
@@ -398,25 +402,25 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     setPhase("reveal");
   }
 
-  const prog = `Q ${String(currentQIdx + 1).padStart(2, "0")} / ${String(Math.min(target, totalQs)).padStart(2, "0")}`;
+  const prog = t("lp.prog", { a: String(currentQIdx + 1).padStart(2, "0"), b: String(Math.min(target, totalQs)).padStart(2, "0") });
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
   if (phase === "handoff") {
     const classicSprint = mode !== "survival";
     const headline = classicSprint
-      ? `${currentPlayer?.name}'s ${chunkQSize}-question round`
-      : `${currentPlayer?.name}'s turn`;
+      ? t("lp.roundHead", { name: currentPlayer?.name, n: chunkQSize })
+      : t("lp.turn", { name: currentPlayer?.name });
     const sub = classicSprint
-      ? `Pass the phone to ${currentPlayer?.name} — they'll answer the next ${chunkQSize} question${chunkQSize === 1 ? "" : "s"}.`
-      : "Pass the phone. Tap Ready when you've got it.";
+      ? t("lp.passTo", { name: currentPlayer?.name, count: chunkQSize })
+      : t("lp.passReady");
     return (
       <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Go back">←</button>
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label={t("game.goBack")}>←</button>
         <div className="ds-eyebrow local-ready-eyebrow">
           {classicSprint
-            ? `Round ${chunkIdx + 1} · Q${chunkStartQ + 1}–${chunkEndQ + 1}`
-            : `Next up · ${prog}`}
+            ? t("lp.roundEyebrow", { r: chunkIdx + 1, a: chunkStartQ + 1, b: chunkEndQ + 1 })
+            : t("lp.nextUp", { prog })}
         </div>
         <div className="local-ready-emoji"><PlayerMark p={currentPlayer} size="lg" /></div>
         <div className="local-ready-name">{headline}</div>
@@ -430,7 +434,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           </div>
         )}
         <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
-          I'm Ready →
+          {t("lp.ready")}
         </button>
       </div>
     );
@@ -440,13 +444,13 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   if (phase === "playerSwap") {
     return (
       <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label="Go back">←</button>
-        <div className="ds-eyebrow local-ready-eyebrow">Next up · {prog}</div>
+        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label={t("game.goBack")}>←</button>
+        <div className="ds-eyebrow local-ready-eyebrow">{t("lp.nextUp", { prog })}</div>
         <div className="local-ready-emoji"><PlayerMark p={currentPlayer} size="lg" /></div>
-        <div className="local-ready-name">{currentPlayer?.name}'s turn</div>
-        <div className="local-ready-sub">Pass the phone — same question.</div>
+        <div className="local-ready-name">{t("lp.turn", { name: currentPlayer?.name })}</div>
+        <div className="local-ready-sub">{t("lp.sameQ")}</div>
         <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
-          I'm Ready →
+          {t("lp.ready")}
         </button>
       </div>
     );
@@ -456,17 +460,17 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="quiz-wrap">
         <div className="q-top">
-          <button className="back-btn" onClick={onExit} aria-label="Go back">←</button>
+          <button className="back-btn" onClick={onExit} aria-label={t("game.goBack")}>←</button>
           <div className="prog-wrap">
             <div className="prog-bar" style={{ width: `${Math.min(100, ((currentQIdx + 1) / Math.max(1, Math.min(target, totalQs))) * 100)}%` }} />
           </div>
           <span className="q-ctr">{prog}</span>
         </div>
         <div style={{textAlign:"center",padding:"6px 0 8px",fontSize:13,fontWeight:700,color:"var(--accent)"}}>
-          <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{currentPlayer?.name}'s turn
+          <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{t("lp.turn", { name: currentPlayer?.name })}
         </div>
         <div className="q-card" style={qCardStyle(currentQ.cat)}>
-          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{CAT_LABELS[currentQ.cat] || currentQ.cat}</div>
+          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{catLabel(t, currentQ.cat)}</div>
           <div className="q-text">{shownQ.q}</div>
         </div>
         <div className="opts">
@@ -483,7 +487,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
         </div>
         {phase === "locked" && (
           <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, var(--gold))"}}>
-            ✓ Answer locked in
+            {t("lp.locked")}
           </div>
         )}
       </div>
@@ -498,12 +502,12 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="local-reveal">
         <div className="ds-eyebrow local-reveal-eyebrow">
-          {isSurvivalQ ? `Results · ${prog}` : `${currentPlayer?.name}'s round · Q${chunkStartQ + 1}–${chunkEndQ + 1}`}
+          {isSurvivalQ ? t("lp.results", { prog }) : t("lp.roundOf", { name: currentPlayer?.name, a: chunkStartQ + 1, b: chunkEndQ + 1 })}
         </div>
         {isSurvivalQ ? (
           <>
             <div className="local-reveal-q">{shownQ.q}</div>
-            <div className="local-reveal-correct">Correct: <strong>{shownQ.o[currentQ.a]}</strong></div>
+            <div className="local-reveal-correct">{t("lp.correct")} <strong>{shownQ.o[currentQ.a]}</strong></div>
             <div className="local-reveal-list">
               {revealPlayers.map(p => {
                 const pk = chunkPicks.find(x => x.qIdx === currentQIdx && x.playerId === p.id);
@@ -522,7 +526,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
             </div>
             {newEliminatedIds.length > 0 && (
               <div className="local-reveal-eliminate">
-                <Skull size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ")} eliminated
+                <Skull size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{t("lp.eliminated", { names: newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ") })}
               </div>
             )}
           </>
@@ -535,7 +539,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
                 const ok = pk.optIdx === q.a;
                 return (
                   <div key={pk.qIdx} className={`local-reveal-row ${ok ? "ok" : "no"}`}>
-                    <span className="local-reveal-qn">Q{pk.qIdx + 1}</span>
+                    <span className="local-reveal-qn">{t("lp.qn", { n: pk.qIdx + 1 })}</span>
                     <span style={{flex:1,color:"var(--t2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{loc.q(q).q}</span>
                     <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
                   </div>
@@ -543,7 +547,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
               })}
             </div>
             <div className="local-reveal-tally">
-              {chunkPicks.filter(p => p.playerId === currentPlayer.id && p.optIdx === questions[p.qIdx]?.a).length} / {chunkQSize} correct
+              {t("lp.tally", { x: chunkPicks.filter(p => p.playerId === currentPlayer.id && p.optIdx === questions[p.qIdx]?.a).length, n: chunkQSize })}
             </div>
           </>
         )}
@@ -556,7 +560,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     return (
       <div className="local-summary-overlay">
         <div className="local-summary-card">
-          <div className="local-summary-title">After Q{currentQIdx + 1}</div>
+          <div className="local-summary-title">{t("lp.after", { n: currentQIdx + 1 })}</div>
           {rows.map(p => (
             <div key={p.id} className="local-summary-row">
               <PlayerMark p={p} />
@@ -574,15 +578,16 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
 
 // ─── LOCAL RESULTS ────────────────────────────────────────────────────────────
 export function LocalResults({ result, onHome, onRetry, onShare }) {
+  const t = useT();
   if (!result || !result.players || result.players.length === 0) {
     return (
       <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
         <ResultsCloseBtn onClose={onHome} />
         <div className="rc" style={{marginBottom:16}}>
-          <div className="rc-title">No results to show</div>
+          <div className="rc-title">{t("lp.noResults")}</div>
         </div>
         <div className="results-actions">
-          <button className="btn-3d ghost" onClick={onHome}>Back to Home</button>
+          <button className="btn-3d ghost" onClick={onHome}>{t("quiz.backHome")}</button>
         </div>
       </div>
     );
@@ -608,16 +613,16 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
 
     if (endReason === "total-wipe" || (survivors.length === 0 && !winnerId)) {
       iconTop = <Skull size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = "Nobody Survives!";
-      subHeadline = "All players went out on the same question";
+      headline = t("lp.nobody");
+      subHeadline = t("lp.nobodySub");
       ranked = elimRev;
     } else if (endReason === "last-standing" || survivors.length === 1) {
       const winner = players.find(p => p.id === winnerId) || survivors[0];
       // The winner's own mark, as the Classic and Sprint branches already do —
       // a generic trophy says less than the face of who won.
       iconTop = winner ? <PlayerMark p={winner} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = winner ? `${winner.name} Survives!` : "Nobody Survives!";
-      subHeadline = winner ? `${scores[winner.id] || 0} correct · last one standing` : null;
+      headline = winner ? t("lp.survives", { name: winner.name }) : t("lp.nobody");
+      subHeadline = winner ? t("lp.lastStanding", { count: scores[winner.id] || 0 }) : null;
       ranked = winner ? [winner, ...elimRev.filter(p => p.id !== winner.id)] : elimRev;
     } else {
       // questions-out with 2+ survivors — highest score among survivors wins (or draw)
@@ -626,14 +631,14 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
       const tiedAtTop = byScore.filter(p => (scores[p.id] || 0) === topScore);
       if (tiedAtTop.length > 1) {
         iconTop = <Handshake size={40} strokeWidth={2} aria-hidden="true" />;
-        headline = "It's a tie";
+        headline = t("lp.tie");
         const names = tiedAtTop.map(p => p.name).join(" · ");
-        subHeadline = `${names} — all on ${topScore}`;
+        subHeadline = t("lp.allOn", { names, n: topScore });
       } else {
         const top = byScore[0];
         iconTop = top ? <PlayerMark p={top} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-        headline = top ? `${top.name} wins` : "Game over";
-        subHeadline = top ? `${topScore} correct · questions ran out` : null;
+        headline = top ? t("lp.wins", { name: top.name }) : t("lp.over");
+        subHeadline = top ? t("lp.ranOut", { count: topScore }) : null;
       }
       ranked = [...byScore, ...elimRev];
     }
@@ -645,13 +650,13 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
     const top = ranked[0];
     if (tiedAtTop.length > 1) {
       iconTop = <Handshake size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = "It's a tie";
+      headline = t("lp.tie");
       const names = tiedAtTop.map(p => p.name).join(" · ");
-      subHeadline = `${names} — all on ${topScore}`;
+      subHeadline = t("lp.allOn", { names, n: topScore });
     } else {
       iconTop = top ? <PlayerMark p={top} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = top ? `${top.name} wins` : "Game over";
-      subHeadline = top ? `${topScore} correct` : null;
+      headline = top ? t("lp.wins", { name: top.name }) : t("lp.over");
+      subHeadline = top ? t("lp.nCorrect", { count: topScore }) : null;
     }
   }
 
@@ -691,7 +696,7 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
 
       {isSurvival && elimList.length > 0 && (
         <div style={{marginTop:14}}>
-          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.14em",color:"var(--t3)",textTransform:"uppercase",marginBottom:8}}>Elimination order</div>
+          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.14em",color:"var(--t3)",textTransform:"uppercase",marginBottom:8}}>{t("lp.elimOrder")}</div>
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
             {elimList.map((id, i) => {
               const p = players.find(pp => pp.id === id);
@@ -708,9 +713,9 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
       )}
 
       <div className="results-actions" style={{marginTop:16}}>
-        <button className="btn-3d" onClick={onRetry}>Play again</button>
-        {onShare && <button className="btn-3d ghost" onClick={onShare}>Share score</button>}
-        <button className="results-exit" onClick={onHome}>Back to Home</button>
+        <button className="btn-3d" onClick={onRetry}>{t("lp.again")}</button>
+        {onShare && <button className="btn-3d ghost" onClick={onShare}>{t("lp.share")}</button>}
+        <button className="results-exit" onClick={onHome}>{t("quiz.backHome")}</button>
       </div>
     </div>
   );

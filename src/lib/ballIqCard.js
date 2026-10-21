@@ -1094,13 +1094,19 @@ export function readCardDelta() {
   } catch { return null; }
 }
 
-/** One line for the share sheet. Unrated cards say so; rated ones lead with the best face. */
-export function shareLine(card, delta = null, appName = "Ball IQ") {
-  if (!card || !card.rated) return `Can you beat me at ${appName}? ⚽`;
+/**
+ * One line for the share sheet. Unrated cards say so; rated ones lead with the best face.
+ * `t` (Spanish, step 6): the sharer's language, the share.card* keys. This
+ * file imports no translation runtime (api/og.js reads it at the edge), so the
+ * caller passes it; without it the line is the English it always was.
+ */
+export function shareLine(card, delta = null, appName = "Ball IQ", t = null) {
+  if (!card || !card.rated) return t ? t("share.cardUnrated", { app: appName }) : `Can you beat me at ${appName}? ⚽`;
   const faces = card.ratings.filter(r => r.rated).sort((a, b) => b.rating - a.rating);
   const best = faces[0];
   const moved = delta && delta.ratedAfter && delta.faces && delta.faces.find(f => f.after > f.before);
   const head = best ? `${appName} ${card.overall} · ${best.abbr} ${best.rating}` : `${appName} ${card.overall}`;
+  if (t) return moved ? t("share.cardMoved", { head, abbr: moved.abbr, before: moved.before, after: moved.after }) : t("share.card", { head });
   const move = moved ? ` — ${moved.abbr} ${moved.before} → ${moved.after} today` : "";
   return `${head}${move}. Can you beat me? ⚽`;
 }

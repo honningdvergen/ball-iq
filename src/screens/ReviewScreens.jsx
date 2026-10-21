@@ -6,7 +6,7 @@ import { useMemo, useCallback } from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, footleAnswerFor, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
-import { useT, fmtLocale } from "../i18n/index.js";
+import { useT, fmtLocale, fmtLocaleEnglish } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { useQuestionText } from "../i18n/questionText.js";
 import { rich } from "../i18n/rich.jsx";
@@ -194,7 +194,7 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
   const tierLine = won && guesses.length >= 1 && guesses.length <= 6 ? t(`rw.t${guesses.length}`) : null;
 
   const dateLabel = useMemo(
-    () => date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }), // the share card's date: English, like its text
+    () => date.toLocaleDateString(fmtLocaleEnglish(), { weekday: "long", day: "numeric", month: "long" }), // the share card's date: English, like its text
     [date]
   );
 
@@ -213,7 +213,7 @@ export function PuzzleReviewScreen({ date, guesses, status, clue = false, hard =
     // grid right below disambiguates "3/6" (the Sprint #99 concern), so the
     // explicit "guesses" wording lives only on the PNG card headline.
     const head = footleShareHead(APP_NAME, getFootleNumber(date), won, guesses.length, clue, hard);
-    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
+    const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { n: streak })}` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [guesses, answer, won, lost, hasData, date, clue]);
 

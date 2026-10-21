@@ -9,6 +9,7 @@ import { APP_NAME, MIN_RATED_ANSWERS } from './scoring.js';
 import { tint as _tint } from './colourMath.js';
 import { tierPalette, faceLabelType } from './ballIqCard.js';
 import { resultVerdict } from './resultVerdict.js';
+import { fmtLocaleEnglish } from '../i18n/index.js'; // the card is English: its numbers too
 
 // ─── BRANDED SHARE CARD (NEW, 390×600 PORTRAIT) ─────────────────────────────
 // Variants:
@@ -376,7 +377,7 @@ export async function generateShareCard(type, data) {
     if (data?.levelName) {
       ctx.font = `700 ${px(13.5)}px Inter, "Helvetica Neue", Arial, sans-serif`;
       ctx.fillStyle = _tint(t.text, 0.5);
-      ctx.fillText(`${data.levelName} · ${Number(data.xp || 0).toLocaleString()} XP`, px(39), px(364));
+      ctx.fillText(`${data.levelName} · ${Number(data.xp || 0).toLocaleString(fmtLocaleEnglish())} XP`, px(39), px(364));
     }
 
     // The six, as an open two-column list on hairlines. No tiles.

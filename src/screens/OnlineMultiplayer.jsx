@@ -13,6 +13,10 @@ import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUr
 import { topicMeta, TopicPickerSheet } from '../components/TopicPickerSheet.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 import { ProfilePic } from '../components/ProfilePic.jsx';
+// The invite and result share texts are in the sharer's language (i18n step
+// 6); the lobby and the questions (the server's) are still English.
+import '../i18n/en.js'; // the full English table: not on Home's eager path
+import { t as tNow } from '../i18n/index.js';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
 // this ~1,700-line subtree stays out of the first-paint bundle. The logic is
@@ -402,9 +406,9 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
     try { loopEvent('mp-invite-shared', { via: 'code' }); } catch {}
     try {
       await navigator.clipboard.writeText(code);
-      setCopyToast("Code copied");
+      setCopyToast(tNow("share.mpCodeCopied"));
     } catch {
-      setCopyToast("Couldn't copy — long-press to copy manually");
+      setCopyToast(tNow("share.mpCopyFail"));
     }
     setTimeout(() => setCopyToast(""), 1800);
   }, [code]);
@@ -422,7 +426,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
     // card the recipient used to see. Presentation only — the join still keys
     // off the code, so an absent name just falls back to "A mate".
     const url = buildInviteUrl(code, myPlayer?.name);
-    const text = `⚽ Play me at ${APP_NAME}! Tap to join:`;
+    const text = tNow("share.mpInvite", { app: APP_NAME });
     // Recorded on the TAP, not on a completed share: a sheet that is opened
     // and cancelled still means they found the control and meant to invite
     // someone, which is exactly the half of "why did this lobby die" that
@@ -436,7 +440,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
     } catch {}
     try {
       if (Capacitor.isNativePlatform?.()) {
-        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: 'Share invite' });
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: tNow('share.mpDlg') });
         return;
       }
       if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
@@ -448,10 +452,10 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
     }
     try {
       await navigator.clipboard.writeText(`${text} ${url}`);
-      setCopyToast("Invite copied — paste it to a friend");
+      setCopyToast(tNow("share.mpInviteCopied"));
       setTimeout(() => setCopyToast(""), 2200);
     } catch {
-      setCopyToast("Couldn't share — copy the code instead");
+      setCopyToast(tNow("share.mpShareFail"));
       setTimeout(() => setCopyToast(""), 2200);
     }
   }, [code, myPlayer?.name]);
@@ -1502,12 +1506,8 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   const handleShareResult = async () => {
     if (rematching) return; // a rematch room is already being created via the other button
     const opp = sorted.find(p => p.user_id !== myUserId);
-    const oppBit = opp?.name ? ` against ${opp.name}` : "";
-    const text = survivalDraw
-      ? `🤝 Dead level${oppBit} on ${APP_NAME} — settling it in the rematch. Join us!`
-      : isWinner
-      ? `🏆 Just won an online match${oppBit} on ${APP_NAME}! Think you can take me?`
-      : `⚔️ Just went down${oppBit} on ${APP_NAME} — rematch incoming. Join us!`;
+    const opp1 = opp?.name ? tNow("share.mpAgainst", { name: opp.name }) : "";
+    const text = tNow(survivalDraw ? "share.mpDraw" : isWinner ? "share.mpWon" : "share.mpLost", { opp: opp1, app: APP_NAME });
     // The copy promises a rematch but the link used to be the bare homepage —
     // an ended room isn't joinable, so spin up the rematch room FIRST (same
     // create as handleRematch) and share its canonical /join/CODE link.
@@ -1553,7 +1553,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     };
     try {
       if (Capacitor.isNativePlatform?.()) {
-        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share result" });
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: tNow("share.dlgResult") });
         enterRematch();
         return;
       }
