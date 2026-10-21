@@ -1,4 +1,10 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "claude/*": false,
+      "question-health/*": false
+    }
+  },
   "redirects": [
     {
       "source": "/home-old/",
