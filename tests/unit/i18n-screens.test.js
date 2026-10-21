@@ -245,16 +245,16 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('History', () => {
     const h = unq(now['history: two weeks with gaps, yesterday open']);
-    for (const s of ['>Historial<', '>Nuevos retos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Últimos días<', '>Ayer<', '>dom<', '>18 oct<', '15 oct – 16 oct · 2 días sin jugar', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
+    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '15 oct – 16 oct · 2 días sin jugar', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
     expect(unq(now['history: all done today, yesterday open, streak broke'])).toContain('>Se rompió tu racha de 9 días<');
     expect(unq(now['history: a new player, nothing played'])).toContain('Termina cualquiera de los cuatro retos de hoy');
   });
   it('Profile, a friend, blocked users', () => {
     const p = unq(now['profile: signed in, rated, friends and requests']);
-    for (const s of ['>Perfil<', '>Tu Ball IQ<', ' Nivel europeo · 1640 XP<', '>MEDIA<', '>ORO<', '>Medias por liga<', '>Selecciones<', ' Informe del ojeador<', '>A mejorar<', '"Especialista en Premier League"', ' Tu camino<', '>ESTÁS AQUÍ<', '>Faltan 1360 XP<', '>20.000 XP<', '>Solicitudes recibidas<', '>Puntos 900<', '>Clasificación de amigos<', '>TÚ<', '>Insignias: 4/12 conseguidas<', '>Velocista<', '>12 en Crono<', '>✓ Conseguida<']) expect(p, s).toContain(s);
+    for (const s of ['>Perfil<', '>Tu Ball IQ<', ' Nivel europeo · 1640 XP<', '>MEDIA<', '>ORO<', '>Medias por liga<', '>Selecciones<', ' Informe del ojeador<', '>A mejorar<', '"Especialista en Premier League"', ' Tu camino<', '>AQUÍ<', '>Faltan 1360 XP<', '>20.000 XP<', '>Solicitudes recibidas<', '>Puntos 900<', '>Clasificación de amigos<', '>TÚ<', '>Insignias: 4/12 conseguidas<', '>Velocista<', '>12 en Crono<', '>✓ Conseguida<']) expect(p, s).toContain(s);
     expect(unq(now['profile: guest, first visit (the example card)'])).toContain('>EJEMPLO<');
-    expect(unq(now['profile: guest, first visit (the example card)'])).toContain('RESPONDE 10 PARA TENER MEDIA');
-    expect(unq(now['profile: guest, 4 answered, example dismissed'])).toContain('FALTAN 6 PARA TENER MEDIA');
+    expect(unq(now['profile: guest, first visit (the example card)'])).toContain('RESPONDE 10 PARA MEDIA');
+    expect(unq(now['profile: guest, 4 answered, example dismissed'])).toContain('>TE FALTAN 6<');
     expect(unq(now['profile: league picker open'])).toContain('>40 respondidas<');
     expect(unq(now['friend: loaded'])).toContain('>Retar a Jo<');
     expect(unq(now['friend: loaded'])).toContain(' El camino de Jo<');
