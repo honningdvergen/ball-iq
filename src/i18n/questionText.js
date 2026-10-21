@@ -27,10 +27,8 @@ import { getLang, subscribe as subscribeLang, t } from './index.js';
 // instruction, or the four options pasted into one). Each prints in English,
 // whole, until the row is fixed in questions.es.json; the test lists the rows
 // that still look like this, so a fixed row has to come off here.
-export const HELD_ES_ROWS = new Set([
-  'q_9cac54', 'q_a80f03', 'q_90d5f2', 'q_f7459a', 'q_867461',
-  'q_da167d', 'q_72fe57', 'q_9ce66b', 'q_7d7fc6',
-]);
+// Empty since 21 Oct 2026: the nine found by step 5 were fixed by hand.
+export const HELD_ES_ROWS = new Set([]);
 
 const fetchBank = () => fetch(esBankUrl).then((r) => {
   if (!r.ok) throw new Error(`questions.es.json ${r.status}`);
