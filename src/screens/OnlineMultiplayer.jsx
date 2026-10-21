@@ -14,15 +14,19 @@ import { topicMeta, TopicPickerSheet } from '../components/TopicPickerSheet.jsx'
 import { maybeRequestReview } from '../lib/review.js';
 import { ProfilePic } from '../components/ProfilePic.jsx';
 // The invite and result share texts are in the sharer's language (i18n step
-// 6); the lobby and the questions (the server's) are still English.
+// 6), and since step 7 the whole lobby, game and podium (the mp.* keys; each
+// component subscribes with useT and prints through tNow). The questions are
+// the server's, and stay English.
 import '../i18n/en.js'; // the full English table: not on Home's eager path
-import { t as tNow } from '../i18n/index.js';
+import { t as tNow, useT, getLang } from '../i18n/index.js';
+import { rich } from '../i18n/rich.jsx';
 
 // ── Online multiplayer (Stage 1) — extracted from App.jsx and lazy-loaded so
 // this ~1,700-line subtree stays out of the first-paint bundle. The logic is
 // byte-for-byte unchanged from the inline version; only the module moved.
 
 function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoinCode, onAutoJoinConsumed, autoCreate, onAutoCreateConsumed }) {
+  useT();
   const [code, setCode] = useState("");
   const [showCodeInput, setShowCodeInput] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -56,7 +60,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
     if (result.error) {
       // Raw RPC text is console-only; the player gets an action they can take.
       console.warn('[handleCreate] createRoom', result.code || '', result.error);
-      setError("Couldn't create the room — check your connection and try again.");
+      setError(tNow("mp.createFail"));
       setCreating(false);
       return;
     }
@@ -73,7 +77,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
     const candidate = explicitCode ?? code;
     const trimmed = (candidate || "").trim().toUpperCase();
     if (trimmed.length !== 6) {
-      setError("Enter the 6-character room code");
+      setError(tNow("mp.enterCode"));
       return;
     }
     setJoining(true);
@@ -90,14 +94,14 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
       // PostgrestError.code in result.code on error. Falls back to
       // generic RPC message for anything unexpected.
       if (result.code === "53300") {
-        setError("This room is full");
+        setError(tNow("mp.full"));
       } else if (result.code === "P0002") {
-        setError("No room with that code — check with your friend");
+        setError(tNow("mp.noRoom"));
       } else if (result.code === "42P01") {
-        setError("This room isn't accepting joins right now");
+        setError(tNow("mp.notAccepting"));
       } else {
         console.warn('[handleJoin] joinRoom', result.code || '', result.error);
-        setError("Couldn't join the room — check your connection and try again.");
+        setError(tNow("mp.joinFail"));
       }
       setJoining(false);
       return;
@@ -171,8 +175,8 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
     return (
       <div className="screen">
         <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 }}>
-          <span className="avatar-spinner" aria-label={autoJoinCode ? "Joining room" : "Creating room"} />
-          <div style={{ fontSize: 15, fontWeight: 700, color: "var(--t1)" }}>{autoJoinCode ? "Joining room…" : "Setting up your room…"}</div>
+          <span className="avatar-spinner" aria-label={autoJoinCode ? tNow("mp.joiningAria") : tNow("mp.creatingAria")} />
+          <div style={{ fontSize: 15, fontWeight: 700, color: "var(--t1)" }}>{autoJoinCode ? tNow("mp.joiningRoom") : tNow("mp.settingUp")}</div>
         </div>
       </div>
     );
@@ -181,14 +185,14 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Back">←</button>
-        <div className="page-title">Online Multiplayer</div>
+        <button className="back-btn" onClick={onBack} aria-label={tNow("game.back")}>←</button>
+        <div className="page-title">{tNow("mp.title")}</div>
       </div>
       <div style={{ maxWidth: 360, margin: "0 auto", padding: "0 4px", minHeight: "66vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <div style={{ fontSize: 46, lineHeight: 1, marginBottom: 12 }}>⚔️</div>
-          <div style={{ fontSize: 21, fontWeight: 800, color: "var(--text)", marginBottom: 6, letterSpacing: "-0.3px" }}>Who's got the better Ball IQ?</div>
-          <div style={{ fontSize: 13.5, color: "var(--t2)", lineHeight: 1.5 }}>Create a room, share the code, settle it head-to-head.</div>
+          <div style={{ fontSize: 21, fontWeight: 800, color: "var(--text)", marginBottom: 6, letterSpacing: "-0.3px" }}>{tNow("mp.entryH")}</div>
+          <div style={{ fontSize: 13.5, color: "var(--t2)", lineHeight: 1.5 }}>{tNow("mp.entrySub")}</div>
         </div>
         {mpRetrying && (
           <div style={{
@@ -201,7 +205,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
             color: "var(--accent)",
             textAlign: "center",
           }}>
-            Reconnecting…
+            {tNow("mp.reconnecting")}
           </div>
         )}
 
@@ -211,7 +215,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
           disabled={busy}
           style={{ width: "100%", marginBottom: 12 }}
         >
-          {creating ? "Creating…" : "🎮 Create Room"}
+          {creating ? tNow("lg.creating") : tNow("mp.createBtn")}
         </button>
         {!showCodeInput ? (
           <button
@@ -220,7 +224,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
             disabled={busy}
             style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
           >
-            🔑 Join with Code
+            {tNow("mp.joinWithCode")}
           </button>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -251,7 +255,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
               }}
             />
             <button className="btn-3d" onClick={() => handleJoin()} disabled={busy} style={{ width: "100%" }}>
-              {joining ? "Joining…" : "Join"}
+              {joining ? tNow("lg.joining") : tNow("oh.join")}
             </button>
           </div>
         )}
@@ -271,6 +275,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
 // Renders different sub-views based on room.state:
 //   loading | error | lobby | playing (1B placeholder) | ended
 function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch, onReport, onPlayDaily }) {
+  useT();
   const { room, players, myPlayer, isHost, loading, error, errorKind, channelStatus, actions } = useMultiplayerRoom(code);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState("");
@@ -473,11 +478,11 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
       // Thin-pool fallback is no longer silent: tell the host the topic
       // couldn't fill the game so the lobby card and reality agree.
       if (pack !== "mixed" && picked.effectivePack === "mixed") {
-        try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: "Not enough questions in that topic yet — playing Mixed" })); } catch {}
+        try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow("mp.thinTopic") })); } catch {}
       }
     } catch (e) {
       console.warn('[handleStart]', e?.message || e);
-      setStartError("Couldn't load questions — check your connection");
+      setStartError(tNow("mp.loadFail"));
       setStarting(false);
       return;
     }
@@ -486,16 +491,16 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
       // result.error is raw plpgsql text ("room is not in lobby (state=playing)")
       // — useful in the console, meaningless to a player. Never render it.
       console.warn('[handleStart] startGame', result.code || '', result.error);
-      setStartError("Couldn't start the game — tap Start again.");
+      setStartError(tNow("mp.startFail"));
       setStarting(false);
       return;
     }
     if (result.started === false) {
       if (result.reason === "roster_changed") {
-        setStartError(`Roster changed — now ${result.current_count} players. Tap Start again.`);
+        setStartError(tNow("mp.roster", { n: result.current_count }));
       } else {
         console.warn('[handleStart] not started', result.reason);
-        setStartError("Couldn't start the game — tap Start again.");
+        setStartError(tNow("mp.startFail"));
       }
       setStarting(false);
       return;
@@ -558,6 +563,7 @@ function MultiplayerLobby({ code, onExit, defaultName, defaultAvatar, onRematch,
 // topicMeta + TopicPickerSheet live in components/TopicPickerSheet.jsx (shared with LocalSetup).
 
 function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart, onLeave, starting, startError, copyToast, showReconnecting, mode, setMode, pack, setPack, scoringMode, onSetScoringMode, onPlayDaily }) {
+  useT();
   const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));
   // Optimistic mode highlight: reflect the host's tap instantly, then let the
   // realtime room.mode echo confirm it. Revert + toast if the RPC fails so the
@@ -572,7 +578,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
     const r = await onSetScoringMode?.(m);
     if (!r || r.ok === false) {
       setPendingMode(null);
-      try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: 'Could not change mode — try again' })); } catch {}
+      try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('mp.modeFail') })); } catch {}
     }
   }, [onSetScoringMode]);
   // Single "Format" axis: Classic/Sprint are race-scored lengths; Survival is
@@ -599,14 +605,14 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
   const saveName = useCallback(async () => {
     const v = nameDraft.trim();
     if (savingName) return;
-    if (v.length < 1 || v.length > 20) { setNameError("1–20 characters"); return; }
+    if (v.length < 1 || v.length > 20) { setNameError(tNow("mp.nameLen")); return; }
     setSavingName(true);
     setNameError("");
     const result = await mpSetPlayerName({ p_code: room?.code, p_name: v });
     setSavingName(false);
     if (!result.ok) {
       console.warn('[saveName] setPlayerName', result.code || '', result.error);
-      setNameError(result.code === "23514" ? "That name isn't allowed" : "Couldn't save — try again");
+      setNameError(result.code === "23514" ? tNow("mp.nameBad") : tNow("mp.saveFail"));
       return;
     }
     setGuestDisplayName(v); // same name next room
@@ -620,11 +626,11 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
   return (
     <div className="screen">
       <div className="page-hdr" style={{ position: "relative" }}>
-        <button className="back-btn" onClick={onLeave} aria-label="Leave room">←</button>
-        <div className="page-title">Lobby</div>
+        <button className="back-btn" onClick={onLeave} aria-label={tNow("mp.leaveRoomAria")}>←</button>
+        <div className="page-title">{tNow("mp.lobby")}</div>
         {showReconnecting && (
           <div style={{ position: "absolute", right: 16, top: 18, fontSize: 11, color: "var(--t3)" }}>
-            Reconnecting…
+            {tNow("mp.reconnecting")}
           </div>
         )}
       </div>
@@ -640,7 +646,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             color: "var(--text)",
             textAlign: "center",
           }}>
-            ⚠️ The host left — this room is closed.{" "}
+            {tNow("mp.hostLeft")}{" "}
             <button
               onClick={onLeave}
               style={{
@@ -649,7 +655,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                 padding: 0, fontFamily: "inherit",
               }}
             >
-              Leave
+              {tNow("lg.leaveYes")}
             </button>
           </div>
         )}
@@ -682,14 +688,14 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             onClick={onPlayDaily}
             style={{ width: '100%', marginBottom: 16, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
           >
-            {hostStillPresent ? 'Waiting? Play today\u2019s Daily 7 \u2192' : 'Play today\u2019s Daily 7 instead \u2192'}
+            {hostStillPresent ? tNow('mp.waitingD7') : tNow('mp.insteadD7')}
           </button>
         )}
         {/* Room-code card (design handoff lobby.dc.html): eyebrow + mono code
             + share pill in one compact card. Tapping the code still copies. */}
         <div style={{ background: "var(--s1)", border: "1px solid var(--border)", borderRadius: 20, padding: 18, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 24 }}>
           <div style={{ fontSize: 10.5, fontWeight: 800, color: "var(--t3)", letterSpacing: "0.14em", textTransform: "uppercase" }}>
-            Room Code
+            {tNow("mp.roomCode")}
           </div>
           <button
             onClick={onCopy}
@@ -700,7 +706,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
               color: "var(--text)", fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
               cursor: "pointer", display: "inline-block",
             }}
-            aria-label={`Copy room code ${room.code} — tap to copy`}
+            aria-label={tNow("mp.copyCodeAria", { code: room.code })}
           >
             {room.code}
           </button>
@@ -708,7 +714,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
               "it does not say tap to copy or anything which it probably
               should". An affordance nobody can see is half a feature. */}
           <div aria-hidden="true" style={{ fontSize: 10.5, fontWeight: 600, color: "var(--t3)", marginTop: 2 }}>
-            tap to copy
+            {tNow("mp.tapCopy")}
           </div>
           {/* Sprint #92 GGG4: native share sheet for the canonical /join/CODE
               URL. Recipient with the app installed triggers the Universal
@@ -731,9 +737,9 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
               touchAction: "manipulation",
               WebkitTapHighlightColor: "transparent",
             }}
-            aria-label="Share invite link"
+            aria-label={tNow("mp.shareInviteAria")}
           >
-            🔗 Share invite link
+            {tNow("mp.shareInvite")}
           </button>
           {copyToast && (
             <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 6 }}>{copyToast}</div>
@@ -743,12 +749,12 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         {/* Player list */}
         <div style={{ marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
-            <div className="ds-eyebrow">Players</div>
+            <div className="ds-eyebrow">{tNow("su.players")}</div>
             <div style={{ fontSize: 12, fontWeight: 700, color: players.length >= 2 ? "var(--accent)" : "var(--t3)", fontVariantNumeric: "tabular-nums" }}>{players.length} / {room.capacity}</div>
           </div>
           {players.length === 0 ? (
             <div style={{ padding: "20px", textAlign: "center", color: "var(--t2)", fontSize: 13 }}>
-              Waiting for players…
+              {tNow("mp.waitingPlayers")}
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -761,8 +767,8 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   <div style={{ width: 30, height: 30, flexShrink: 0 }}><ProfilePic value={p.avatar} url={photos[p.user_id]} name={p.name} /></div>
                   <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
                     {p.name}
-                    {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>(you)</span>}
-                    {p.user_id === room.host_id && <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", color: "var(--accent)", background: "rgba(88,204,2,0.12)", border: "1px solid rgba(88,204,2,0.3)", borderRadius: 999, padding: "2px 8px", marginLeft: 8, verticalAlign: "middle" }} aria-label="Host">HOST</span>}
+                    {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>{tNow("mp.you")}</span>}
+                    {p.user_id === room.host_id && <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", color: "var(--accent)", background: "rgba(88,204,2,0.12)", border: "1px solid rgba(88,204,2,0.3)", borderRadius: 999, padding: "2px 8px", marginLeft: 8, verticalAlign: "middle" }} aria-label={tNow("mp.hostAria")}>{tNow("mp.host")}</span>}
                   </div>
                 </div>
               ))}
@@ -778,7 +784,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                 >
                   <span aria-hidden="true" style={{ width: 30, height: 30, borderRadius: "50%", border: "1.5px dashed var(--border2)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--t3)", fontSize: 16, flexShrink: 0 }}>+</span>
                   <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--t3)" }}>
-                    Open seat — invite a friend
+                    {tNow("mp.openSeat")}
                   </span>
                 </button>
               )}
@@ -800,7 +806,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                     autoFocus
                     onChange={(e) => { setNameDraft(e.target.value); setNameError(""); }}
                     onKeyDown={(e) => { if (e.key === "Enter") saveName(); }}
-                    aria-label="Your display name"
+                    aria-label={tNow("mp.nameAria")}
                     style={{ width: "100%", padding: "10px 12px", borderRadius: 10, background: "var(--s1)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 14, fontWeight: 600 }}
                   />
                   {nameError && <div role="alert" style={{ fontSize: 11.5, color: "var(--red)", marginTop: 4 }}>{nameError}</div>}
@@ -810,7 +816,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   disabled={savingName}
                   style={{ padding: "10px 14px", borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", background: "var(--accent)", color: "#0a1a00", border: "none", fontFamily: "inherit", fontSize: 13, fontWeight: 800, cursor: "pointer", WebkitTextFillColor: "#0a1a00", opacity: savingName ? 0.6 : 1 }}
                 >
-                  {savingName ? "…" : "Save"}
+                  {savingName ? "…" : tNow("lg.save")}
                 </button>
               </div>
             ) : (
@@ -818,7 +824,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                 onClick={() => { setNameDraft(myRow.name || ""); setNameError(""); setEditingName(true); }}
                 style={{ background: "none", border: "none", padding: "4px 0", fontFamily: "inherit", fontSize: 12.5, fontWeight: 600, color: "var(--t2)", cursor: "pointer" }}
               >
-                ✏️ Playing as <span style={{ color: "var(--text)" }}>{myRow.name}</span> — tap to change
+                {rich(tNow("mp.playingAs"), { name: <span style={{ color: "var(--text)" }}>{myRow.name}</span> })}
               </button>
             )}
           </div>
@@ -829,8 +835,8 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
           <span style={{ display: "inline-flex", alignItems: "center", padding: "7px 14px", borderRadius: 999, background: "var(--s1)", border: "1px solid var(--border)", fontSize: 12.5, fontWeight: 700, color: "var(--t2)" }}>
             {activeMode === "survival"
-              ? "💀 Survival — one wrong answer and you're out"
-              : "🏁 Race — fastest correct answers win"}
+              ? tNow("mp.modeSurvival")
+              : tNow("mp.modeRace")}
           </span>
         </div>
 
@@ -841,14 +847,14 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
           const t = topicMeta(pack);
           return (
             <>
-              <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Topic</div>
+              <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>{tNow("mp.topic")}</div>
               <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
                 <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || t.icon}</span>
                 <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                   <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
                   <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
                 </div>
-                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>Change</button>
+                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{tNow("mp.change")}</button>
               </div>
             </>
           );
@@ -859,12 +865,12 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             one wrong = out, last standing wins). */}
         {isHost && (
           <>
-            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>Format</div>
+            <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>{tNow("mp.format")}</div>
             <div style={{display:"flex",gap:9,marginBottom:16}}>
               {[
-                { id: "classic",  title: "🎯 Classic",  sub: "10 questions" },
-                { id: "sprint",   title: "⚡ Sprint",   sub: "5 questions" },
-                { id: "survival", title: "💀 Survival", sub: "Until you miss" },
+                { id: "classic",  title: tNow("mp.fClassic"),  sub: tNow("mp.fClassicSub") },
+                { id: "sprint",   title: tNow("mp.fSprint"),   sub: tNow("mp.fSprintSub") },
+                { id: "survival", title: tNow("mp.fSurvival"), sub: tNow("mp.fSurvivalSub") },
               ].map(f => {
                 const sel = mode === f.id;
                 return (
@@ -900,11 +906,11 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
               disabled={starting || players.length < 2}
               style={{ width: "100%", marginBottom: 12 }}
             >
-              {starting ? "Starting…" : "Start Game"}
+              {starting ? tNow("mp.starting") : tNow("mp.start")}
             </button>
             {!starting && players.length < 2 && (
               <div style={{ color: "var(--t3)", fontSize: 12, textAlign: "center", marginBottom: 12, lineHeight: 1.4 }}>
-                Waiting for at least one more player — share your room code: <strong style={{ color: "var(--t1)", letterSpacing: 1 }}>{room.code}</strong>
+                {rich(tNow("mp.needOne"), { code: <strong style={{ color: "var(--t1)", letterSpacing: 1 }}>{room.code}</strong> })}
               </div>
             )}
           </>
@@ -921,7 +927,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
           onClick={onLeave}
           style={{ width: "100%", background: "var(--s2)", border: "1px solid var(--border2)", color: "var(--text)" }}
         >
-          Leave Room
+          {tNow("mp.leaveRoom")}
         </button>
       </div>
     </div>
@@ -929,17 +935,23 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
 }
 
 function LobbyLoading() {
+  useT();
   return (
     <div className="screen">
       <div className="page-hdr">
-        <div className="page-title">Lobby</div>
+        <div className="page-title">{tNow("mp.lobby")}</div>
       </div>
       <div style={{ padding: "40px 20px", textAlign: "center", color: "var(--t3)" }}>
-        Connecting to room…
+        {tNow("mp.connecting")}
       </div>
     </div>
   );
 }
+
+// useMultiplayerRoom's error, for the player: English as it always was (the
+// raw text, else the fallback); in any other language the fallback, since the
+// raw text is the server's English.
+const mpErrorText = (e) => (e && getLang() === "en" ? e : tNow("mp.notFound"));
 
 function LobbyError({ error, kind, onExit, onRetry, onPlayDaily }) {
   // Sprint #92 GGG1-#2: previously this screen was a dead end — "Back to Home"
@@ -961,6 +973,7 @@ function LobbyError({ error, kind, onExit, onRetry, onPlayDaily }) {
   // still do — the same decision LobbyEnded already made for the guest who
   // was IN the room when it died. The wave, not the warning triangle: nothing
   // here is their fault.
+  useT();
   const gone = kind === 'gone';
   const retryable = !!onRetry && !gone;
   useEffect(() => {
@@ -971,28 +984,28 @@ function LobbyError({ error, kind, onExit, onRetry, onPlayDaily }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
-        <div className="page-title">Lobby</div>
+        <button className="back-btn" onClick={onExit} aria-label={tNow("game.back")}>←</button>
+        <div className="page-title">{tNow("mp.lobby")}</div>
       </div>
       <div style={{ padding: "40px 20px", textAlign: "center", maxWidth: 360, margin: "0 auto" }}>
         <div style={{ fontSize: 48, marginBottom: 12 }}>{gone ? "\u{1F44B}" : "⚠️"}</div>
         <div style={{ fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>
-          {gone ? "That room has closed" : "Couldn't load room"}
+          {gone ? tNow("mp.closed") : tNow("mp.loadRoomFail")}
         </div>
         <div style={{ fontSize: 13, color: "var(--t2)", marginBottom: 20, lineHeight: 1.5 }}>
           {gone
-            ? "Whoever set it up ended it before you arrived. Ask them for a fresh link \u2014 or play today\u2019s puzzle while you\u2019re here."
-            : (error || "Room not found or no longer active")}
+            ? tNow("mp.closedSub")
+            : mpErrorText(error)}
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
           {gone && onPlayDaily && (
             <button className="btn-3d" onClick={onPlayDaily} style={{ padding: "12px 24px", minWidth: 180 }}>
-              Play today&rsquo;s Daily 7 &rarr;
+              {tNow("mp.playD7")}
             </button>
           )}
           {retryable && (
             <button className="btn-3d" onClick={onRetry} style={{ padding: "12px 24px", minWidth: 180 }}>
-              Try again
+              {tNow("pf.retry")}
             </button>
           )}
           <button
@@ -1005,7 +1018,7 @@ function LobbyError({ error, kind, onExit, onRetry, onPlayDaily }) {
               cursor: "pointer",
             }}
           >
-            Back to Home
+            {tNow("quiz.backHome")}
           </button>
         </div>
       </div>
@@ -1066,6 +1079,7 @@ export function friendableOpponents(players, myUserId) {
 }
 
 function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
+  useT();
   const opponents = useMemo(
     () => friendableOpponents(players, myUserId),
     [players, myUserId],
@@ -1180,7 +1194,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
       loopEvent('rival-add-failed', { h2h: h2h[p.user_id] || 0 });
       try {
         window.dispatchEvent(new CustomEvent('biq:show-toast', {
-          detail: "Couldn't send request — try again",
+          detail: tNow("mp.requestFail"),
         }));
       } catch { /* toast host absent — Sentry still has it */ }
       Sentry.captureException(e, { tags: { area: 'friends', from: 'mp-gameover' } });
@@ -1211,7 +1225,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
                  background: 'var(--s2)', border: '1px solid var(--border)', color: 'var(--t2)',
                  fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, cursor: 'pointer' }}
       >
-        Save your stats and add {opponents.length === 1 ? (opponents[0].name || 'them') : 'these players'} as a friend
+        {opponents.length === 1 ? tNow('mp.saveAddOne', { name: opponents[0].name || tNow('mp.them') }) : tNow('mp.saveAddMany')}
       </button>
     );
   }
@@ -1225,7 +1239,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
           bury them in arrival order. */}
       <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase',
                     color: 'var(--t3)', marginBottom: 8 }}>
-        {offerable.some(o => (h2h[o.user_id] || 0) >= 2) ? 'Your rivals' : 'Good game — keep playing them'}
+        {offerable.some(o => (h2h[o.user_id] || 0) >= 2) ? tNow('mp.rivals') : tNow('mp.gg')}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
         {[...offerable].sort((a, b) => (h2h[b.user_id] || 0) - (h2h[a.user_id] || 0)).map(p => {
@@ -1241,11 +1255,11 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
               <span style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: 'var(--text)',
                                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {p.name || 'Player'}
+                  {p.name || tNow('pf.player')}
                 </span>
                 {rival && (
                   <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--accent)', marginTop: 1 }}>
-                    You&apos;ve played {played} times
+                    {tNow('mp.played', { n: played })}
                   </span>
                 )}
               </span>
@@ -1253,14 +1267,14 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
                 type="button"
                 onClick={() => send(p)}
                 disabled={done || busy.has(p.user_id)}
-                aria-label={done ? `Friend request sent to ${p.name || 'player'}` : `Add ${p.name || 'player'} as a friend`}
+                aria-label={done ? tNow('mp.sentTo', { name: p.name || tNow('mp.playerLc') }) : tNow('mp.addAria', { name: p.name || tNow('mp.playerLc') })}
                 style={{ flexShrink: 0, padding: '8px 14px', borderRadius: 10, border: 'none',
                          background: done ? 'var(--s3)' : 'var(--accent)',
                          color: done ? 'var(--t2)' : 'var(--grn-ink)',
                          fontFamily: 'inherit', fontSize: 13, fontWeight: 800,
                          cursor: done ? 'default' : 'pointer' }}
               >
-                {done ? 'Request sent' : busy.has(p.user_id) ? '…' : 'Add friend'}
+                {done ? tNow('mp.reqSent') : busy.has(p.user_id) ? '…' : tNow('mp.addFriend')}
               </button>
             </div>
           );
@@ -1271,6 +1285,7 @@ function AddFriendRow({ players, myUserId, isAnonUser, openAuthPrompt }) {
 }
 
 function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defaultAvatar, onPlayDaily }) {
+  useT();
   const photos = useProfilePhotos(useMemo(() => (players || []).map(p => p.user_id), [players]));
   // v1.6 guest entry — upgrade CTA in the actions column below.
   const { isAnonUser, openAuthPrompt } = useAuth();
@@ -1406,11 +1421,11 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       const res = await mpSetPlayerReady({ p_code: room?.code, p_ready: !iAmReady });
       if (res?.error) {
         console.warn('[toggleReady]', res.error);
-        setNextError("Couldn't update — check your connection.");
+        setNextError(tNow("mp.updateFail"));
       }
     } catch (e) {
       console.warn('[toggleReady]', e);
-      setNextError("Couldn't update — check your connection.");
+      setNextError(tNow("mp.updateFail"));
     } finally {
       setReadyBusy(false);
     }
@@ -1431,7 +1446,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       questions = picked.questions;
     } catch (e) {
       console.warn('[startNextRound] questions', e?.message || e);
-      setNextError("Couldn't load questions — check your connection.");
+      setNextError(tNow("mp.loadFailDot"));
       setNextBusy(false);
       return;
     }
@@ -1440,7 +1455,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       res = await mpStartNextRound({ p_code: room?.code, p_questions: questions });
     } catch (e) {
       console.warn('[startNextRound]', e);
-      setNextError("Couldn't start the next round — try again.");
+      setNextError(tNow("mp.nextFail"));
       setNextBusy(false);
       return;
     }
@@ -1457,13 +1472,13 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     // start" are different problems, and a generic failure sends the player
     // tapping the same dead button.
     const why = {
-      need_two_ready:   "Need two players ready to go again.",
-      starter_not_ready:"Tap Ready first.",
-      not_host:         "Only the host can start the next round.",
-      not_ended:        "That round is still going.",
+      need_two_ready:   tNow("mp.why.needTwo"),
+      starter_not_ready:tNow("mp.why.notReady"),
+      not_host:         tNow("mp.why.notHost"),
+      not_ended:        tNow("mp.why.notEnded"),
     }[res?.reason];
     console.warn('[startNextRound]', res?.reason || res?.error || 'unknown');
-    setNextError(why || "Couldn't start the next round — try again.");
+    setNextError(why || tNow("mp.nextFail"));
     setNextBusy(false);
   };
 
@@ -1491,7 +1506,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     });
     if (result?.error || !result?.code) {
       console.warn('[handleRematch] claimRematch', result?.code || '', result?.error);
-      setRematchError("Couldn't set up the rematch — check your connection and try again.");
+      setRematchError(tNow("mp.rematchFail"));
       setRematching(false);
       return;
     }
@@ -1594,7 +1609,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       role: 'button',
       tabIndex: 0,
       onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(p); } },
-      'aria-label': `View ${p.name || 'player'}'s profile`,
+      'aria-label': tNow('oh.viewProfile', { name: p.name || tNow('mp.playerLc') }),
       style: { cursor: 'pointer' },
     } : {};
   };
@@ -1645,7 +1660,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   const oppP = twoPlayer ? sorted.find(p => p !== meP) : null;
   const metricOf = (p) => isSurvival ? (p?.eliminated_at_q == null ? Infinity : p.eliminated_at_q) : (p?.score || 0);
   const metricText = (p) => isSurvival ? (p?.eliminated_at_q == null ? '❤️' : `Q${p.eliminated_at_q + 1}`) : `${p?.score ?? 0}`;
-  const metricUnit = isSurvival ? 'survived' : 'points';
+  const metricUnit = isSurvival ? tNow('mp.survived') : tNow('mp.points');
   const boardDraw = twoPlayer && (survivalDraw || metricOf(meP) === metricOf(oppP));
   const iWonBoard = twoPlayer && !boardDraw && metricOf(meP) > metricOf(oppP);
 
@@ -1667,12 +1682,11 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
     if (isSurvival) {
       const w = iWonBoard ? meP : oppP;
       return w?.eliminated_at_q == null
-        ? (iWonBoard ? 'You survived to the end' : `${oppP?.name || 'They'} survived to the end`)
-        : (iWonBoard ? 'You lasted longer' : `${oppP?.name || 'They'} lasted longer`);
+        ? (iWonBoard ? tNow('mp.youSurvived') : tNow('mp.theySurvived', { name: oppP?.name || tNow('mp.they') }))
+        : (iWonBoard ? tNow('mp.youLonger') : tNow('mp.theyLonger', { name: oppP?.name || tNow('mp.they') }));
     }
     const diff = Math.abs(metricOf(meP) - metricOf(oppP));
-    const unit = diff === 1 ? ' point' : ' points';
-    return iWonBoard ? `You won by ${diff}${unit}` : `Beaten by ${diff}${unit}`;
+    return tNow(iWonBoard ? 'mp.wonBy' : 'mp.beatenBy', { count: diff, n: diff });
   })();
 
   // Lifetime head-to-head vs this opponent, from the local biq_mp_history
@@ -1701,14 +1715,14 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
       // uses, so the chip can never disagree with the scoreline above it.
       if (boardDraw) d++; else if (iWonBoard) w++; else l++;
       if (w + d + l < 2) return null; // first meeting — the board says it all
-      const name = oppP.name || 'them';
+      const name = oppP.name || tNow('mp.them');
       // Each branch names the opponent AT MOST once. The old code appended
       // "vs ${name}" to every branch, including the one that already opened
       // with it — which is why the losing device read "Alex leads 3–0 vs Alex".
       return {
-        line: w > l ? `You lead ${w}–${l} vs ${name}`
-          : l > w ? `${name} leads ${l}–${w}`
-            : `All square at ${w}–${l} vs ${name}`,
+        line: w > l ? tNow('mp.h2hLead', { a: w, b: l, name })
+          : l > w ? tNow('mp.h2hTrail', { a: l, b: w, name })
+            : tNow('mp.h2hLevel', { a: w, b: l, name }),
         draws: d,
       };
     } catch { return null; }
@@ -1741,7 +1755,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
         }}><ProfilePic value={p?.avatar} name={p?.name} /></span>
       </span>
       <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {mine ? 'You' : (p?.name || 'Player')}
+        {mine ? tNow('mp.youCap') : (p?.name || tNow('pf.player'))}
       </span>
       <span style={{ fontFamily: MONO, fontSize: 40, fontWeight: 800, lineHeight: 1, color: won ? 'var(--grn-soft)' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
         {display ?? metricText(p)}
@@ -1756,26 +1770,26 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
           (Not for a draw — nobody outlasted anybody.) */}
       {gamePlayed && isWinner && !survivalDraw && <Confetti />}
       <div className="page-hdr">
-        <div className="page-title">Game over</div>
+        <div className="page-title">{tNow('mp.gameOver')}</div>
       </div>
       <div style={{ padding: '12px 4px', maxWidth: 480, margin: '0 auto' }}>
         {/* Headline — winner / your-result framing */}
         <div style={{ textAlign: 'center', padding: '8px 12px 20px' }}>
           <div className={'mp-go-emoji' + (gamePlayed && isWinner && !survivalDraw ? ' mp-go-winner' : '')} style={{ fontSize: 48, marginBottom: 8 }}>{!gamePlayed ? '\u{1F44B}' : survivalDraw ? '\u{1F91D}' : isWinner ? (survivalLastStanding ? '\u{1F3C5}' : '\u{1F3C6}') : '\u{1F44B}'}</div>
           <div className="mp-go-headline" style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>
-            {!gamePlayed ? 'Your mate left before kick-off' : survivalDraw ? "It's a draw!" : winner ? (isWinner ? (survivalLastStanding ? 'You lasted longest!' : 'You won!') : `${winner.name || 'Player'} ${survivalLastStanding ? 'lasted longest' : 'wins'}`) : 'Game over'}
+            {!gamePlayed ? tNow('mp.leftEarly') : survivalDraw ? tNow('mp.draw') : winner ? (isWinner ? (survivalLastStanding ? tNow('mp.youLongest') : tNow('mp.youWon')) : tNow(survivalLastStanding ? 'mp.theyLongest' : 'mp.theyWin', { name: winner.name || tNow('pf.player') })) : tNow('mp.gameOver')}
           </div>
           {!gamePlayed ? (
             <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
-              The room closed before a question was asked — nothing was scored.
+              {tNow('mp.nothingScored')}
             </div>
           ) : survivalDraw ? (
             <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
-              Everyone knocked out on Q{(winner.eliminated_at_q ?? 0) + 1}
+              {tNow('mp.allOut', { q: (winner.eliminated_at_q ?? 0) + 1 })}
             </div>
           ) : myRank > 0 && !isWinner && (
             <div className="mp-go-sub" style={{ fontSize: 13, color: 'var(--t2)' }}>
-              You finished {rankBadge(myRank - 1)}{myRank >= 4 ? ' place' : ''}
+              {tNow(myRank >= 4 ? 'mp.finishedPlace' : 'mp.finished', { r: rankBadge(myRank - 1) })}
             </div>
           )}
           {/* The progression payoff every other ending has and this one did
@@ -1786,7 +1800,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               must never be the thing that pays it. */}
           {gamePlayed && myPlayer && (
             <div style={{ marginTop: 10, fontSize: 14, fontWeight: 800, color: 'var(--accent)' }}>
-              +{getMpXP(isWinner && !survivalDraw, myPlayer.score || 0)} XP earned ⚡
+              {tNow('mp.xp', { n: getMpXP(isWinner && !survivalDraw, myPlayer.score || 0) })}
             </div>
           )}
         </div>
@@ -1812,7 +1826,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                     padding: '5px 12px', borderRadius: 999,
                     background: 'var(--s1)', border: '1px solid var(--border)',
                   }}>
-                    ⚔️ {h2h.line}{h2h.draws > 0 ? ` · ${h2h.draws} draw${h2h.draws === 1 ? '' : 's'}` : ''}
+                    ⚔️ {h2h.line}{h2h.draws > 0 ? tNow('mp.draws', { count: h2h.draws, n: h2h.draws }) : ''}
                   </div>
                 )}
               </div>
@@ -1828,11 +1842,11 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
             letterSpacing: 0.4, textTransform: 'uppercase',
             marginBottom: 2, paddingLeft: 4,
           }}>
-            {isSurvival ? 'Last standing' : 'Final scores'}
+            {isSurvival ? tNow('mp.lastStanding') : tNow('mp.finalScores')}
           </div>
           {isSurvival && !survivalDraw && (
             <div style={{ fontSize: 11, color: 'var(--t3)', paddingLeft: 4, marginBottom: 6 }}>
-              Knocked out later = ranked higher
+              {tNow('mp.koRule')}
             </div>
           )}
           {showPodium && (
@@ -1853,7 +1867,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                       <span style={{
                         fontSize: 12.5, fontWeight: 800, color: 'var(--text)', maxWidth: '100%',
                         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                      }}>{p.name || 'Player'}{isMe ? ' (you)' : ''}</span>
+                      }}>{p.name || tNow('pf.player')}{isMe ? ` ${tNow('mp.you')}` : ''}</span>
                       <span style={{ fontFamily: MONO, fontSize: 20, fontWeight: 800, lineHeight: 1, color: rank === 0 ? '#EAB308' : 'var(--text)', fontVariantNumeric: 'tabular-nums' }}>
                         {isSurvival ? metricText(p) : podiumCounts[rank]}
                       </span>
@@ -1870,7 +1884,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               letterSpacing: 0.4, textTransform: 'uppercase',
               margin: '4px 0 2px', paddingLeft: 4,
             }}>
-              The chasing pack
+              {tNow('mp.chasing')}
             </div>
           )}
           {(showPodium ? sorted.slice(3) : sorted).map((p, i) => {
@@ -1892,10 +1906,10 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                     fontSize: 15, fontWeight: 700, color: 'var(--text)',
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}>
-                    {p.name || 'Player'}
+                    {p.name || tNow('pf.player')}
                     {isMe && (
                       <span style={{ fontSize: 11, color: 'var(--t2)', fontWeight: 500, marginLeft: 8 }}>
-                        (you)
+                        {tNow('mp.you')}
                       </span>
                     )}
                   </div>
@@ -1915,7 +1929,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                       surface raw points as the tie-breaker context. */}
                   {isSurvival && (
                     <div style={{ fontSize: 11, color: 'var(--t3)', fontWeight: 600, marginTop: 1 }}>
-                      {(p.score ?? 0)} pts
+                      {tNow('mp.pts', { n: p.score ?? 0 })}
                     </div>
                   )}
                 </div>
@@ -1924,7 +1938,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
           })}
           {sorted.length === 0 && (
             <div style={{ padding: 16, textAlign: 'center', color: 'var(--t2)', fontSize: 13 }}>
-              No players in room
+              {tNow('mp.noPlayers')}
             </div>
           )}
         </div>
@@ -1959,7 +1973,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               onClick={() => { try { openAuthPrompt?.('upgrade'); } catch {} }}
               style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 999, background: 'transparent', border: '1.5px solid var(--border)', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
             >
-              Playing as a guest — save your stats with a free account
+              {tNow('mp.guestSave')}
             </button>
           )}
           {/* ── PLAY AGAIN, WITHOUT ANYONE LEAVING ─────────────────────────
@@ -1968,9 +1982,9 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               to a new empty room and left the others behind a notification. */}
           <div style={{ marginBottom: 12, padding: '12px 12px 10px', borderRadius: 14, background: 'var(--s1)', border: '1px solid var(--border)' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 8 }}>
-              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--t1)', letterSpacing: '-0.2px' }}>Play again</div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--t1)', letterSpacing: '-0.2px' }}>{tNow('lp.again')}</div>
               <div style={{ fontSize: 12, fontWeight: 700, color: readyCount >= 2 ? 'var(--accent)' : 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>
-                {readyCount}/{totalHere} ready
+                {tNow('mp.readyCount', { n: readyCount, total: totalHere })}
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 10 }}>
@@ -1978,12 +1992,12 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                 <div key={p.user_id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
                   <span style={{ width: 20, height: 20, flexShrink: 0 }}><ProfilePic value={p.avatar} url={photos[p.user_id]} name={p.name} /></span>
                   <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: p.ready ? 'var(--t1)' : 'var(--t3)', fontWeight: p.ready ? 700 : 600 }}>
-                    {p.name}{p.user_id === myPlayer?.user_id ? ' (you)' : ''}
+                    {p.name}{p.user_id === myPlayer?.user_id ? ` ${tNow('mp.you')}` : ''}
                   </span>
                   {/* Glyph as well as colour — the same rule the quiz options
                       follow, so this reads for red-green colour blindness. */}
                   <span style={{ fontSize: 12, fontWeight: 800, color: p.ready ? 'var(--accent)' : 'var(--t3)' }}>
-                    {p.ready ? '✓ ready' : 'waiting'}
+                    {p.ready ? tNow('mp.isReady') : tNow('mp.isWaiting')}
                   </span>
                 </div>
               ))}
@@ -1997,7 +2011,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                 ? { width: '100%', padding: 13, borderRadius: 999, background: 'transparent', border: '1.5px solid var(--accent)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: 'pointer' }
                 : { width: '100%', marginBottom: 0 }}
             >
-              {iAmReady ? "✓ You're ready — tap to cancel" : "I'm ready"}
+              {iAmReady ? tNow('mp.youReady') : tNow('mp.imReady')}
             </button>
             {iCanStart && readyCount >= 2 && (
               <button
@@ -2005,21 +2019,21 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                 disabled={nextBusy || !iAmReady}
                 style={{ width: '100%', marginTop: 8, padding: 13, borderRadius: 999, background: (readyCount >= 2 && iAmReady) ? 'var(--accent)' : 'var(--s2)', border: 'none', color: (readyCount >= 2 && iAmReady) ? 'var(--grn-ink)' : 'var(--t3)', boxShadow: (readyCount >= 2 && iAmReady) ? '0 8px 22px -8px rgba(88,204,2,0.55)' : 'none', fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: (readyCount >= 2 && iAmReady) ? 'pointer' : 'not-allowed' }}
               >
-                {nextBusy ? 'Starting…'
-                  : readyCount < totalHere ? `Start next round (${totalHere - readyCount} not ready)`
-                  : 'Start next round'}
+                {nextBusy ? tNow('mp.starting')
+                  : readyCount < totalHere ? tNow('mp.nextNotReady', { n: totalHere - readyCount })
+                  : tNow('mp.next')}
               </button>
             )}
             {!iCanStart && iAmReady && (
               <div style={{ fontSize: 12, color: 'var(--t3)', textAlign: 'center', marginTop: 8 }}>
-                Waiting for the host to start…
+                {tNow('mp.waitHost')}
               </div>
             )}
             {/* ⚠️ Says so out loud. start_next_round DROPS players who are not
                 ready, and finding that out by disappearing is not acceptable. */}
             {iCanStart && readyCount >= 2 && readyCount < totalHere && (
               <div style={{ fontSize: 11.5, color: 'var(--t3)', textAlign: 'center', marginTop: 6, lineHeight: 1.4 }}>
-                Anyone not ready will sit this one out.
+                {tNow('mp.sitOut')}
               </div>
             )}
             {nextError && (
@@ -2035,7 +2049,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               disabled={rematching}
               style={{ width: '100%', marginBottom: 6, padding: '8px 12px', minHeight: 36, background: 'none', border: 'none', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3 }}
             >
-              {rematching ? 'Setting up…' : 'Opponent gone? Start a new room'}
+              {rematching ? tNow('mp.settingUpShort') : tNow('mp.oppGone')}
             </button>
           )}
           {rematchError && (
@@ -2049,7 +2063,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
             onClick={handleShareResult}
             style={{ width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
           >
-            📣 Share result
+            {tNow('mp.shareResult')}
           </button>
           )}
 {/* ⚠️ THE ONLY ROUTE OUT OF MULTIPLAYER THAT IS NOT AN EXIT. Measured
@@ -2070,14 +2084,14 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                 ? { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'transparent', border: '1.5px solid rgba(88,204,2,0.5)', color: 'var(--accent)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }
                 : { width: '100%', marginBottom: 10, padding: 14, borderRadius: 14, background: 'var(--accent)', border: 'none', color: 'var(--grn-ink)', fontFamily: 'inherit', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
             >
-              {gamePlayed ? 'Not done yet? Play today\u2019s Daily 7 \u2192' : 'Play today\u2019s Daily 7 \u2192'}
+              {gamePlayed ? tNow('mp.notDoneD7') : tNow('mp.playD7')}
             </button>
           )}
           <button
             onClick={onExit}
             style={{ width: '100%', padding: '10px 12px', minHeight: 40, background: 'none', border: 'none', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 600, cursor: 'pointer' }}
           >
-            Back to Home
+            {tNow('quiz.backHome')}
           </button>
         </div>
         {/* The round's questions, with a report on each — MOVED BELOW the
@@ -2093,7 +2107,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
               aria-expanded={reviewOpen}
               style={{ width: '100%', padding: '10px 12px', minHeight: 40, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--t3)', fontFamily: 'inherit', fontSize: 12.5, fontWeight: 700, letterSpacing: '0.04em' }}
             >
-              {reviewOpen ? 'HIDE THE QUESTIONS ▴' : `REVIEW THIS ROUND'S ${reviewQuestions.length} QUESTIONS ▾`}
+              {reviewOpen ? tNow('mp.hideQs') : tNow('mp.reviewQs', { n: reviewQuestions.length })}
             </button>
             {reviewOpen && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -2122,7 +2136,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                                  fontSize: 11.5, fontWeight: 700, fontFamily: 'inherit',
                                  WebkitAppearance: 'none', appearance: 'none',
                                  WebkitTextFillColor: 'currentColor' }}>
-                        {done ? '✓ Reported' : '⚑ This looks wrong'}
+                        {done ? tNow('mp.reported') : tNow('mp.looksWrong')}
                       </button>
                     </div>
                   );
@@ -2149,6 +2163,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
 const REVEAL_PAUSE_MS = 2000;
 
 function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit }) {
+  useT();
   const question = room.questions?.[room.current_question];
 
   // Feed the round into the 14-day seen history so the next pick avoids it.
@@ -2290,7 +2305,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
       // the question advances.
       try {
         window.dispatchEvent(new CustomEvent('biq:show-toast', {
-          detail: { msg: "⚠️ Answer didn't go through — pick again", duration: 4200 },
+          detail: { msg: tNow("mp.answerFail"), duration: 4200 },
         }));
       } catch {}
       return;
@@ -2549,11 +2564,11 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
     return (
       <div className="screen">
         <div className="page-hdr">
-          <button className="back-btn" onClick={handleLeave} aria-label="Leave">←</button>
-          <div className="page-title">Game</div>
+          <button className="back-btn" onClick={handleLeave} aria-label={tNow("lg.leaveYes")}>←</button>
+          <div className="page-title">{tNow("mp.game")}</div>
         </div>
         <div style={{ padding: 40, textAlign: "center", color: "var(--t2)" }}>
-          Question data missing — leave room and rejoin.
+          {tNow("mp.qMissing")}
         </div>
       </div>
     );
@@ -2589,9 +2604,9 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={handleLeave} aria-label="Leave game">←</button>
+        <button className="back-btn" onClick={handleLeave} aria-label={tNow("mp.leaveGame")}>←</button>
         <div className="page-title">
-          Question {currentQuestionIdx + 1}/{room.questions.length}
+          {tNow("mp.qOf", { n: currentQuestionIdx + 1, total: room.questions.length })}
         </div>
       </div>
       <div style={{ padding: "12px 4px", maxWidth: 480, margin: "0 auto" }}>
@@ -2606,7 +2621,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             color: "var(--accent)",
             textAlign: "center",
           }}>
-            Reconnecting…
+            {tNow("mp.reconnecting")}
           </div>
         )}
 
@@ -2628,7 +2643,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             color: "var(--text)",
             textAlign: "center",
           }}>
-            ⚠️ Host disconnected — game can't advance.{" "}
+            {tNow("mp.hostGone")}{" "}
             <button
               onClick={handleLeave}
               style={{
@@ -2637,7 +2652,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
                 padding: 0, fontFamily: "inherit",
               }}
             >
-              Leave game
+              {tNow("mp.leaveGame")}
             </button>
           </div>
         )}
@@ -2653,7 +2668,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             color: "var(--text)",
             textAlign: "center",
           }}>
-            Game seems stuck — host may be unresponsive.{" "}
+            {tNow("mp.stuck")}{" "}
             <button
               onClick={handleLeave}
               style={{
@@ -2662,7 +2677,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
                 padding: 0, fontFamily: "inherit",
               }}
             >
-              Leave game
+              {tNow("mp.leaveGame")}
             </button>
           </div>
         )}
@@ -2683,7 +2698,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
               color: "var(--text)",
               textAlign: "center",
             }}>
-              {isLastQuestion ? "Game ending in 2s" : "Next question in 2s"}
+              {isLastQuestion ? tNow("mp.ending2") : tNow("mp.next2")}
             </div>
           )}
 
@@ -2697,7 +2712,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
               color: "var(--text)",
               textAlign: "center",
             }}>
-              Couldn't advance — leave the room and rejoin to retry.
+              {tNow("mp.advanceFail")}
             </div>
           )}
         </div>
@@ -2753,19 +2768,19 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
             }}>
               <div style={{ fontSize: 54, marginBottom: 10 }}>💀</div>
               <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>
-                Knocked out on Q{(myPlayer?.eliminated_at_q ?? 0) + 1}
+                {tNow('mp.koOn', { q: (myPlayer?.eliminated_at_q ?? 0) + 1 })}
               </div>
               <div style={{ fontSize: 13, color: 'var(--t2)', marginBottom: 20 }}>
-                {aliveCount === 1 ? '1 player still alive' : `${aliveCount} players still alive`} — stick around to see who takes it.
+                {tNow('mp.aliveStick', { count: aliveCount, n: aliveCount })}
               </div>
               <button className="btn-3d" onClick={() => setElimOverlay(false)} style={{ width: '100%', marginBottom: 8 }}>
-                👀 Keep watching
+                {tNow('mp.keepWatching')}
               </button>
               <button
                 onClick={handleLeave}
                 style={{ width: '100%', padding: 12, borderRadius: 12, background: 'transparent', border: '1px solid var(--border)', color: 'var(--t2)', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
               >
-                Leave game
+                {tNow('mp.leaveGame')}
               </button>
             </div>
           </div>
@@ -2782,9 +2797,9 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
               borderRadius: 10, textAlign: "center",
               fontSize: 13, fontWeight: 600, color: "var(--text)",
             }}>
-              💀 You're out — {aliveCount === 1 ? "1 player still alive" : `${aliveCount} players still alive`}.{" "}
+              {tNow("mp.youreOut", { count: aliveCount, n: aliveCount })}{" "}
               <button onClick={handleLeave} style={{ background: "none", border: "none", color: "var(--accent)", textDecoration: "underline", cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "inherit", fontWeight: 600 }}>
-                Leave game
+                {tNow("mp.leaveGame")}
               </button>
             </div>
           ) : hasAnswered && revealPhase === 'answering' && (
@@ -2794,7 +2809,7 @@ function MultiplayerGameplay({ room, players, myPlayer, isHost, actions, onExit 
               borderRadius: 10, textAlign: "center",
               fontSize: 13, color: "var(--t2)",
             }}>
-              ✓ Answer locked — waiting for others
+              {tNow("mp.locked")}
             </div>
           )}
         </div>
@@ -2856,6 +2871,7 @@ function useQuestionTimer(durationMs, resetKey) {
 // remount caused a visible layout collapse during transitions; in-place
 // reset via effect dep eliminates that without losing reset semantics).
 function QuestionTimer({ durationMs, onExpire, questionIdx }) {
+  useT();
   const remainingMs = useQuestionTimer(durationMs, questionIdx);
   const expiredRef = useRef(false);
 
@@ -2911,7 +2927,7 @@ function QuestionTimer({ durationMs, onExpire, questionIdx }) {
       </div>
       {/* SR countdown at thresholds only — same pattern as QuizEngine/HotStreak. */}
       <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
-        {seconds === 10 ? "10 seconds left" : seconds === 5 ? "5 seconds left" : seconds === 0 ? "Time's up" : ""}
+        {seconds === 10 || seconds === 5 ? tNow("quiz.secsLeft", { n: seconds }) : seconds === 0 ? tNow("mp.timeUp") : ""}
       </div>
     </div>
   );
@@ -3111,7 +3127,7 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, 
               {picksByOption?.[idx]?.length > 0 && (
                 <span
                   style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0, marginLeft: 6 }}
-                  aria-label={`Also picked by ${picksByOption[idx].map(p => p.name).join(", ")}`}
+                  aria-label={tNow("mp.alsoPicked", { names: picksByOption[idx].map(p => p.name).join(", ") })}
                 >
                   {picksByOption[idx].slice(0, 4).map(p => (
                     <span
@@ -3160,6 +3176,7 @@ function QuestionView({ question, lockedAnswerIdx, disabled, onPick, revealing, 
 // Score updates flow in via realtime room_players UPDATE → useMultiplayerRoom
 // state update → re-render.
 function ScoreBar({ players, myUserId, hostId, mode }) {
+  useT();
   return (
     <div style={{
       display: "flex",
@@ -3197,7 +3214,7 @@ function ScoreBar({ players, myUserId, hostId, mode }) {
               </div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "var(--text)", lineHeight: 1.2 }}>
                 {mode === "survival"
-                  ? <span role="img" aria-label={p.eliminated_at_q != null ? "eliminated" : "still alive"}>{p.eliminated_at_q != null ? "💀" : "❤️"}</span>
+                  ? <span role="img" aria-label={p.eliminated_at_q != null ? tNow("mp.eliminated") : tNow("mp.alive")}>{p.eliminated_at_q != null ? "💀" : "❤️"}</span>
                   : p.score}
               </div>
             </div>
@@ -3222,6 +3239,7 @@ function ScoreBar({ players, myUserId, hostId, mode }) {
 // Status text in the eyebrow is the answered count for situational
 // awareness — informational, not a gate (the 1+ enable rule is the gate).
 function HostAdvanceControls({ phase, players, currentQuestion, totalQuestions, onTriggerReveal, onSkipAhead }) {
+  useT();
   if (phase === 'stuck') return null;
 
   const answeredCount = players.filter(p => p.answered_question >= currentQuestion).length;
@@ -3235,24 +3253,24 @@ function HostAdvanceControls({ phase, players, currentQuestion, totalQuestions, 
   let statusText;
 
   if (phase === 'answering') {
-    buttonLabel = isLastQuestion ? "End Game" : "Next Question →";
+    buttonLabel = isLastQuestion ? tNow("mp.endGame") : tNow("mp.nextQ");
     buttonOnClick = onTriggerReveal;
     // Always enabled: an ELIMINATED host has no timer (Trigger B) and a
     // ghost opponent never trips allAnswered (Trigger A) — the old
     // answeredCount<1 gate hard-deadlocked survival rooms in that state.
     buttonDisabled = false;
-    statusText = `${answeredCount}/${total} answered`;
-    if (!allAnswered && answeredCount > 0) statusText += " — waiting for the rest";
+    statusText = tNow("mp.answered", { n: answeredCount, total });
+    if (!allAnswered && answeredCount > 0) statusText += tNow("mp.waitRest");
   } else if (phase === 'revealing') {
-    buttonLabel = "Skip ahead";
+    buttonLabel = tNow("mp.skipAhead");
     buttonOnClick = onSkipAhead;
     buttonDisabled = false;
-    statusText = `${answeredCount}/${total} answered`;
+    statusText = tNow("mp.answered", { n: answeredCount, total });
   } else { // 'advancing'
-    buttonLabel = isLastQuestion ? "Ending…" : "Advancing…";
+    buttonLabel = isLastQuestion ? tNow("mp.ending") : tNow("mp.advancing");
     buttonOnClick = undefined;
     buttonDisabled = true;
-    statusText = `${answeredCount}/${total} answered`;
+    statusText = tNow("mp.answered", { n: answeredCount, total });
   }
 
   return (

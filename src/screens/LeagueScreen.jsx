@@ -3,13 +3,15 @@ import { ChevronLeft, Copy, Check, Crown, TrendingDown, Ghost, Trophy, Users, Sh
 import "./league.css";
 import {
   getLeagueTable, createLeague, joinLeague, leaveLeague, leagueInviteUrl, parseLeagueInviteToken,
-  inviteShareText, h2hShareText, finalShareText, whistleLine, rankText, weekOfLabel, DAY_LETTERS,
-  LABEL_COPY, ERROR_COPY, membersBucket, markFinalSeen, clearLeagueInvite, h2hLeagueName,
+  inviteShareText, h2hShareText, finalShareText, whistleLine, rankText, weekOfLabelEnglish, DAY_LETTERS, dayLetters,
+  LABEL_COPY, labelText, errorText, membersBucket, markFinalSeen, clearLeagueInvite, h2hLeagueName,
   saveLeagueUi, readLeagueUi, announceLeagueOpen,
 } from "../lib/leagues.js";
 import { avatarColour } from "../lib/avatarColour.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { t, useT } from "../i18n/index.js";
 
 // MATES' LEAGUES, PHASE 1 (web only; spec ball-iq-audit/2026-10-16/leagues).
 // Three surfaces in one lazy chunk, so Home's eager budget never carries them:
@@ -19,12 +21,9 @@ import { useModalA11y } from "../useModalA11y.js";
 // One solid button per surface; everything else is a hairline link or a tint.
 // Lucide icons only, sentence case, no eyebrows.
 
-const POINTS_HELP = [
-  ["Footle and Transfer Trail", "10 for a first-go solve, down to 5. A miss still scores 1."],
-  ["Daily 7", "Your score plus 3. Zero right scores 1."],
-  ["Top 10", "A point a name, at least 1."],
-  ["A day you skip", "Scores nothing and costs nothing else. Points count from the day you join."],
-];
+// The words are t() since i18n step 7 (the lg.* keys; lib/leagues.js has the
+// rest). How points work: lg.help.<n> and lg.help.<n>.d.
+const POINTS_HELP = [1, 2, 3, 4];
 
 const isMobileWeb = () => { try { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || ""); } catch { return false; } };
 
@@ -45,10 +44,10 @@ function Avatar({ name }) {
 }
 
 function LabelChip({ label, joint }) {
-  if (label === "crown") return <span className="lg-chip is-crown"><Crown size={12} strokeWidth={2.4} aria-hidden="true" />{joint ? "Joint winners" : LABEL_COPY.crown}</span>;
-  if (label === "bottled") return <span className="lg-chip"><TrendingDown size={12} strokeWidth={2.4} aria-hidden="true" />{LABEL_COPY.bottled}</span>;
-  if (label === "ghost") return <span className="lg-chip"><Ghost size={12} strokeWidth={2.4} aria-hidden="true" />{LABEL_COPY.ghost}</span>;
-  if (label === "spoon") return <span className="lg-chip">{LABEL_COPY.spoon}</span>;
+  if (label === "crown") return <span className="lg-chip is-crown"><Crown size={12} strokeWidth={2.4} aria-hidden="true" />{joint ? t("lg.joint") : labelText("crown")}</span>;
+  if (label === "bottled") return <span className="lg-chip"><TrendingDown size={12} strokeWidth={2.4} aria-hidden="true" />{labelText("bottled")}</span>;
+  if (label === "ghost") return <span className="lg-chip"><Ghost size={12} strokeWidth={2.4} aria-hidden="true" />{labelText("ghost")}</span>;
+  if (label === "spoon") return <span className="lg-chip">{labelText("spoon")}</span>;
   return null;
 }
 
@@ -56,6 +55,7 @@ function LabelChip({ label, joint }) {
 // The fetch, then the view. The view is pure on its data, so it can be drawn
 // from fixtures (tests/unit/league-screens.test.js).
 export default function LeagueScreen({ leagueId, onBack, track, ...rest }) {
+  useT();
   const [data, setData] = useState(null);
   const [state, setState] = useState("loading");
   const viewed = useRef(false);
@@ -74,13 +74,13 @@ export default function LeagueScreen({ leagueId, onBack, track, ...rest }) {
   }, [leagueId, track]);
 
   if (state === "loading") {
-    return <div className="lg-screen" aria-busy="true"><div className="lg-top"><button type="button" className="lg-back" onClick={onBack} aria-label="Back"><ChevronLeft size={22} strokeWidth={2.4} /></button></div><div className="lg-skel" /></div>;
+    return <div className="lg-screen" aria-busy="true"><div className="lg-top"><button type="button" className="lg-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div><div className="lg-skel" /></div>;
   }
   if (state === "missing") {
     return (
       <div className="lg-screen">
-        <div className="lg-top"><button type="button" className="lg-back" onClick={onBack} aria-label="Back"><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
-        <div className="lg-empty"><p className="lg-sub">This table isn&rsquo;t available right now.</p></div>
+        <div className="lg-top"><button type="button" className="lg-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
+        <div className="lg-empty"><p className="lg-sub">{t("lg.missing")}</p></div>
       </div>
     );
   }
@@ -88,6 +88,7 @@ export default function LeagueScreen({ leagueId, onBack, track, ...rest }) {
 }
 
 export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = false, onSave, track, inviter = "" }) {
+  useT();
   const [help, setHelp] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [note, setNote] = useState("");
@@ -101,10 +102,10 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
   const invite = useCallback(async () => {
     if (!url) return;
     const via = await shareOrCopy({ text: inviteShareText(meta.name, url) });
-    if (via) { track?.("league-invite-share", { via }); if (via === "copy") flash("Invite link copied"); }
+    if (via) { track?.("league-invite-share", { via }); if (via === "copy") flash(t("lg.copied")); }
   }, [url, meta, track]);
   const copyLink = async () => {
-    try { await navigator.clipboard.writeText(url); flash("Invite link copied"); track?.("league-invite-share", { via: "copy" }); } catch { flash(url); }
+    try { await navigator.clipboard.writeText(url); flash(t("lg.copied")); track?.("league-invite-share", { via: "copy" }); } catch { flash(url); }
   };
   const shareFinal = async () => {
     if (busy || !meta) return;
@@ -116,7 +117,8 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
         const { generateShareCard } = await import("../lib/shareCardRender.js");
         const joint = rows.filter((r) => r.labels?.includes("crown")).length > 1;
         const blob = await generateShareCard("league", {
-          name: meta.name, weekLine: `${weekOfLabel(meta.week_start)} · Final table`,
+          // The card image is English by design (lib/shareCardRender.js).
+          name: meta.name, weekLine: `${weekOfLabelEnglish(meta.week_start)} · Final table`,
           rows: rows.slice(0, 8).map((r) => ({ rank: rankText(r.rank, r.tied), name: r.name, points: r.points, me: r.is_me,
             tags: (r.labels || []).map((l) => (l === "crown" && joint ? "Joint winners" : LABEL_COPY[l])).filter(Boolean) })),
           link: `balliq.app/l/${meta.code}`,
@@ -125,7 +127,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
       } catch { files = undefined; }
       const via = await shareOrCopy({ text: url ? `${text} ${url}` : text, files });
       if (via) track?.("league-final-share", { via });
-      if (via === "copy") flash("Copied");
+      if (via === "copy") flash(t("lg.copiedShort"));
     } finally { setBusy(false); }
   };
   const leave = async () => {
@@ -133,7 +135,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
     setBusy(true);
     const ok = await leaveLeague(leagueId);
     setBusy(false);
-    if (ok) { track?.("league-leave"); onBack?.(); } else flash("Couldn't leave just now");
+    if (ok) { track?.("league-leave"); onBack?.(); } else flash(t("lg.leaveFail"));
   };
 
   const final = !!meta.is_final;
@@ -150,81 +152,81 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
   };
   const last = data.last_week;
   const solid = final
-    ? <button type="button" className="lg-solid" onClick={shareFinal} disabled={busy}><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Share final table</button>
+    ? <button type="button" className="lg-solid" onClick={shareFinal} disabled={busy}><Share size={18} strokeWidth={2.4} aria-hidden="true" /> {t("lg.shareFinal")}</button>
     : playable.length
-      ? <button type="button" className="lg-solid" onClick={() => playable[0].onTap?.()}>Play today&rsquo;s</button>
-      : <button type="button" className="lg-solid" onClick={invite}><Users size={18} strokeWidth={2.4} aria-hidden="true" /> Invite mates</button>;
+      ? <button type="button" className="lg-solid" onClick={() => playable[0].onTap?.()}>{t("lg.playToday")}</button>
+      : <button type="button" className="lg-solid" onClick={invite}><Users size={18} strokeWidth={2.4} aria-hidden="true" /> {t("lg.invite")}</button>;
 
   return (
     <div className="lg-screen">
       <div className="lg-top">
-        <button type="button" className="lg-back" onClick={onBack} aria-label="Back"><ChevronLeft size={22} strokeWidth={2.4} /></button>
+        <button type="button" className="lg-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button>
       </div>
       <header className="lg-head">
         <h1 className="lg-title">{meta.name}</h1>
         <p className="lg-sub">{whistleLine(meta)}</p>
       </header>
 
-      <div className="lg-table" role="table" aria-label={`${meta.name}, ${final ? "final table" : "this week"}`}>
+      <div className="lg-table" role="table" aria-label={t(final ? "lg.ariaFinal" : "lg.ariaWeek", { name: meta.name })}>
         <div className="lg-days" aria-hidden="true">
           <span /><span />
-          <span className="lg-cells">{DAY_LETTERS.map((d, i) => <span key={i} className={!final && meta.week_start + i === meta.today ? "is-today" : ""}>{d}</span>)}</span>
-          <span className="lg-days-t">Pts</span>
+          <span className="lg-cells">{dayLetters().map((d, i) => <span key={i} className={!final && meta.week_start + i === meta.today ? "is-today" : ""}>{d}</span>)}</span>
+          <span className="lg-days-t">{t("lg.ptsHead")}</span>
         </div>
         {rows.map((r, idx) => (
           <div key={idx} className={`lg-row${r.is_me ? " is-me" : ""}`} role="row">
             <span className="lg-rank" role="cell">{rankText(r.rank, r.tied)}</span>
             <Avatar name={r.name} />
             <div className="lg-mid" role="cell">
-              <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you"> (you)</span> : null}</div>
+              <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
               {final && r.labels?.length > 0 && (
                 <div className="lg-chips">{r.labels.map((l) => <LabelChip key={l} label={l} joint={joint} />)}</div>
               )}
-              <div className="lg-cells" aria-label="Points per day, Monday to Sunday">
+              <div className="lg-cells" aria-label={t("lg.cellsAria")}>
                 {DAY_LETTERS.map((_, i) => { const c = cell(r, i); return <span key={i} className={`lg-cell ${c.cls}${!final && meta.week_start + i === meta.today ? " is-today" : ""}`}>{c.t}</span>; })}
               </div>
             </div>
             <span className="lg-total" role="cell">{r.points}</span>
           </div>
         ))}
-        {rows.length === 1 && <p className="lg-alone">Just you so far. Send the link to the group.</p>}
+        {rows.length === 1 && <p className="lg-alone">{t("lg.alone")}</p>}
       </div>
 
       <div className="lg-actions">
         {solid}
         <div className="lg-links">
-          <button type="button" className="lg-link" onClick={copyLink}>Copy invite link</button>
-          <button type="button" className="lg-link" onClick={() => setHelp((h) => !h)} aria-expanded={help}>How points work</button>
-          <button type="button" className="lg-link" onClick={() => setConfirmLeave(true)}>Leave league</button>
+          <button type="button" className="lg-link" onClick={copyLink}>{t("lg.copyLink")}</button>
+          <button type="button" className="lg-link" onClick={() => setHelp((h) => !h)} aria-expanded={help}>{t("lg.how")}</button>
+          <button type="button" className="lg-link" onClick={() => setConfirmLeave(true)}>{t("lg.leave")}</button>
         </div>
         {note && <p className="lg-note" role="status">{note}</p>}
         {confirmLeave && (
-          <div className="lg-confirm" role="group" aria-label="Leave this league?">
-            <span>Leave {meta.name}? Your points stay on this week&rsquo;s table.</span>
+          <div className="lg-confirm" role="group" aria-label={t("lg.leaveQ")}>
+            <span>{t("lg.leaveBody", { name: meta.name })}</span>
             <span className="lg-confirm-links">
-              <button type="button" className="lg-link" onClick={leave} disabled={busy}>Leave</button>
-              <button type="button" className="lg-link" onClick={() => setConfirmLeave(false)}>Stay</button>
+              <button type="button" className="lg-link" onClick={leave} disabled={busy}>{t("lg.leaveYes")}</button>
+              <button type="button" className="lg-link" onClick={() => setConfirmLeave(false)}>{t("lg.stay")}</button>
             </span>
           </div>
         )}
         {help && (
           <dl className="lg-help">
-            {POINTS_HELP.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+            {POINTS_HELP.map((n) => <div key={n}><dt>{t(`lg.help.${n}`)}</dt><dd>{t(`lg.help.${n}.d`)}</dd></div>)}
           </dl>
         )}
       </div>
 
       <footer className="lg-foot">
         {last && last.winners?.length > 0 && (
-          <p className="lg-sub"><Trophy size={13} strokeWidth={2.4} aria-hidden="true" /> Last week: {last.winners.join(" and ")} {last.winners.length > 1 ? "shared it" : "won"} on {last.points}</p>
+          <p className="lg-sub"><Trophy size={13} strokeWidth={2.4} aria-hidden="true" /> {t(last.winners.length > 1 ? "lg.lastShared" : "lg.lastWon", { names: last.winners.join(t("lg.andJoin")), n: last.points })}</p>
         )}
         {isAnon && onSave && (
           <div className="lg-save">
-            <span className="lg-sub">Your points live on this phone</span>
-            <button type="button" className="lg-pill" onClick={onSave}>Save</button>
+            <span className="lg-sub">{t("lg.phoneOnly")}</span>
+            <button type="button" className="lg-pill" onClick={onSave}>{t("lg.save")}</button>
           </div>
         )}
-        {isMobileWeb() && <p className="lg-sub lg-quiet">Playing in the app? League points arrive in the next update.</p>}
+        {isMobileWeb() && <p className="lg-sub lg-quiet">{t("lg.appSoon")}</p>}
       </footer>
     </div>
   );
@@ -259,8 +261,9 @@ const nameOk = (s, max) => { const v = String(s || "").replace(/\s+/g, " ").trim
 
 // ── CREATE AND INVITE ────────────────────────────────────────────────────────
 export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displayName = "", ensureSession, onClose, onOpenTable, track }) {
+  useT();
   const ui = useLeagueUi();
-  const [name, setName] = useState(() => (ui?.kind === "create" && ui.name) || (vs ? h2hLeagueName(vs, displayName) : "Mates' league").slice(0, 32));
+  const [name, setName] = useState(() => (ui?.kind === "create" && ui.name) || (vs ? h2hLeagueName(vs, displayName) : t("lg.matesLeague")).slice(0, 32));
   const [made, setMade] = useState(() => (ui?.kind === "create" && ui.made) || null);
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(() => !!(ui?.kind === "create" && ui.creating));
@@ -269,7 +272,7 @@ export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displa
     if (ui?.kind === "create" && ui.made) { setMade(ui.made); setBusy(false); }
     else if (ui?.kind === "create" && !ui.creating) setBusy(false);
   }, [ui]);
-  useEffect(() => { if (!busy) return undefined; const t = setTimeout(() => setBusy(false), 15000); return () => clearTimeout(t); }, [busy]);
+  useEffect(() => { if (!busy) return undefined; const timer = setTimeout(() => setBusy(false), 15000); return () => clearTimeout(timer); }, [busy]);
   const close = () => { saveLeagueUi(null); onClose?.(); };
   const url = made ? leagueInviteUrl(made.code, made.name, displayName) : "";
   const text = made ? (h2h ? h2hShareText(h2h, url) : inviteShareText(made.name, url)) : "";
@@ -277,13 +280,13 @@ export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displa
   const create = async () => {
     if (busy) return;
     const n = nameOk(name, 32);
-    if (!n) { setErr(ERROR_COPY.bad_name); return; }
+    if (!n) { setErr(errorText("bad_name")); return; }
     setBusy(true); setErr("");
     saveLeagueUi({ kind: "create", seed, vs, h2h, name: n, creating: true });
     if (!(await ensureSession?.())) { setBusy(false); saveLeagueUi({ kind: "create", seed, vs, h2h, name: n }); return; }
     const r = await createLeague({ name: n, displayName: nameOk(displayName, 22) || "Player", seed });
     setBusy(false);
-    if (r?.error) { saveLeagueUi({ kind: "create", seed, vs, h2h, name: n }); setErr(ERROR_COPY[r.error] || ERROR_COPY.offline); return; }
+    if (r?.error) { saveLeagueUi({ kind: "create", seed, vs, h2h, name: n }); setErr(errorText(r.error)); return; }
     track?.("league-created", { seed });
     saveLeagueUi({ kind: "create", seed, vs, h2h, made: r });
     setMade(r);
@@ -297,34 +300,34 @@ export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displa
   };
 
   return (
-    <Sheet label={made ? "Invite your mates" : "Start a league"} onClose={close}>
+    <Sheet label={made ? t("lg.inviteTitle") : t("lg.start")} onClose={close}>
       <span className="lg-well" aria-hidden="true"><Trophy size={22} strokeWidth={2.2} /></span>
       {!made ? (
         <>
-          <h2 className="lg-sheet-title">Start a league</h2>
+          <h2 className="lg-sheet-title">{t("lg.start")}</h2>
           <label className="lg-field">
-            <span className="lg-field-k">League name</span>
+            <span className="lg-field-k">{t("lg.nameK")}</span>
             <input className="lg-input" value={name} maxLength={32} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") create(); }} autoComplete="off" enterKeyHint="go" />
           </label>
-          <p className="lg-sub">Points from today, Monday to Sunday. Anyone with the link can join.</p>
+          <p className="lg-sub">{t("lg.rules")}</p>
           {err && <p className="lg-err" role="alert">{err}</p>}
-          <button type="button" className="lg-solid" onClick={create} disabled={busy}>{busy ? "Creating…" : "Create league"}</button>
-          <button type="button" className="lg-link lg-link-c" onClick={close}>Not now</button>
+          <button type="button" className="lg-solid" onClick={create} disabled={busy}>{busy ? t("lg.creating") : t("lg.create")}</button>
+          <button type="button" className="lg-link lg-link-c" onClick={close}>{t("lg.notNow")}</button>
         </>
       ) : (
         <>
-          <h2 className="lg-sheet-title">{made.name} is ready</h2>
+          <h2 className="lg-sheet-title">{t("lg.ready", { name: made.name })}</h2>
           <div className="lg-linkbox">
             {/* Out of the tab order, so the sheet's first focus is the Copy
                 button rather than a field that selects itself on open. */}
-            <input className="lg-input" value={url} readOnly tabIndex={-1} aria-label="Invite link" onFocus={(e) => e.target.select()} />
-            <button type="button" className="lg-copy" onClick={copy} aria-label="Copy invite link">{copied ? <Check size={18} strokeWidth={2.6} /> : <Copy size={18} strokeWidth={2.2} />}</button>
+            <input className="lg-input" value={url} readOnly tabIndex={-1} aria-label={t("lg.linkAria")} onFocus={(e) => e.target.select()} />
+            <button type="button" className="lg-copy" onClick={copy} aria-label={t("lg.copyLink")}>{copied ? <Check size={18} strokeWidth={2.6} /> : <Copy size={18} strokeWidth={2.2} />}</button>
           </div>
-          <p className="lg-sub">Points from today, Monday to Sunday. Anyone with the link can join.</p>
-          <button type="button" className="lg-solid" onClick={share}><Share size={18} strokeWidth={2.4} aria-hidden="true" /> {copied ? "Link copied" : "Share invite"}</button>
+          <p className="lg-sub">{t("lg.rules")}</p>
+          <button type="button" className="lg-solid" onClick={share}><Share size={18} strokeWidth={2.4} aria-hidden="true" /> {copied ? t("lg.linkCopied") : t("lg.shareInvite")}</button>
           <div className="lg-links">
-            <a className="lg-link" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("league-invite-share", { via: "wa" })}>Send on WhatsApp</a>
-            <button type="button" className="lg-link" onClick={() => { announceLeagueOpen(made.id); onOpenTable?.(made.id); }}>Open the table</button>
+            <a className="lg-link" href={`https://wa.me/?text=${encodeURIComponent(text)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("league-invite-share", { via: "wa" })}>{t("lg.wa")}</a>
+            <button type="button" className="lg-link" onClick={() => { announceLeagueOpen(made.id); onOpenTable?.(made.id); }}>{t("lg.open")}</button>
           </div>
         </>
       )}
@@ -334,26 +337,27 @@ export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displa
 
 // ── JOIN ─────────────────────────────────────────────────────────────────────
 export function LeagueJoinSheet({ token, displayName = "", isGuest = false, ensureSession, onClose, onJoined, track }) {
+  useT();
   const invite = useMemo(() => parseLeagueInviteToken(token), [token]);
   const ui = useLeagueUi();
   const [name, setName] = useState(() => String((ui?.kind === "join" && ui.name) || displayName || "").slice(0, 22));
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(() => !!(ui?.kind === "join" && ui.joining));
   useEffect(() => { if (ui?.kind === "join" && !ui.joining) setBusy(false); }, [ui]);
-  useEffect(() => { if (!busy) return undefined; const t = setTimeout(() => setBusy(false), 15000); return () => clearTimeout(t); }, [busy]);
+  useEffect(() => { if (!busy) return undefined; const timer = setTimeout(() => setBusy(false), 15000); return () => clearTimeout(timer); }, [busy]);
   const seen = useRef(false);
   useEffect(() => { if (!seen.current) { seen.current = true; track?.("league-join-view", { guest: !!isGuest }); } }, [track, isGuest]);
 
   const join = async () => {
     if (busy || !invite) return;
     const n = nameOk(name, 22);
-    if (!n) { setErr(ERROR_COPY.bad_display_name); return; }
+    if (!n) { setErr(errorText("bad_display_name")); return; }
     setBusy(true); setErr("");
     saveLeagueUi({ kind: "join", token, name: n, joining: true });
     if (!(await ensureSession?.())) { setBusy(false); saveLeagueUi({ kind: "join", token, name: n }); track?.("league-join-fail", { reason: "session" }); return; }
     const r = await joinLeague({ code: invite.code, displayName: n });
     setBusy(false);
-    if (r?.error) { saveLeagueUi({ kind: "join", token, name: n }); setErr(ERROR_COPY[r.error] || ERROR_COPY.offline); track?.("league-join-fail", { reason: r.error }); return; }
+    if (r?.error) { saveLeagueUi({ kind: "join", token, name: n }); setErr(errorText(r.error)); track?.("league-join-fail", { reason: r.error }); return; }
     clearLeagueInvite();
     track?.("league-joined", { guest: !!isGuest, seed: r.seed || "manual" });
     // Opens the table now, or on the app's next mount if this one has gone.
@@ -364,30 +368,30 @@ export function LeagueJoinSheet({ token, displayName = "", isGuest = false, ensu
 
   if (!invite) {
     return (
-      <Sheet label="League invite" onClose={dismiss} full>
-        <h2 className="lg-sheet-title">That link doesn&rsquo;t open a league</h2>
-        <p className="lg-sub">Ask whoever sent it for a fresh one.</p>
-        <button type="button" className="lg-solid" onClick={dismiss}>Back to Ball IQ</button>
+      <Sheet label={t("lg.inviteAria")} onClose={dismiss} full>
+        <h2 className="lg-sheet-title">{t("lg.badLink")}</h2>
+        <p className="lg-sub">{t("lg.badLinkSub")}</p>
+        <button type="button" className="lg-solid" onClick={dismiss}>{t("su.backApp")}</button>
       </Sheet>
     );
   }
   return (
-    <Sheet label={`Join ${invite.name || "the league"}`} onClose={dismiss} full>
+    <Sheet label={t("lg.joinAria", { name: invite.name || t("lg.theLeague") })} onClose={dismiss} full>
       <span className="lg-well" aria-hidden="true"><Trophy size={24} strokeWidth={2.2} /></span>
-      <p className="lg-sub lg-c">{invite.inviter || "A mate"} invited you to</p>
-      <h2 className="lg-join-name">{invite.name || "a league"}</h2>
+      <p className="lg-sub lg-c">{t("lg.invited", { name: invite.inviter || t("su.aMate") })}</p>
+      <h2 className="lg-join-name">{invite.name || t("lg.aLeague")}</h2>
       <ul className="lg-facts">
-        <li>The four dailies: Footle, Daily 7, Transfer Trail and Top 10</li>
-        <li>Monday to Sunday, final whistle Sunday midnight</li>
-        <li>Points start today</li>
+        <li>{t("lg.f1")}</li>
+        <li>{t("lg.f2")}</li>
+        <li>{t("lg.f3")}</li>
       </ul>
       <label className="lg-field">
-        <span className="lg-field-k">Your name in the table</span>
+        <span className="lg-field-k">{t("lg.yourName")}</span>
         <input className="lg-input" value={name} maxLength={22} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") join(); }} autoComplete="nickname" enterKeyHint="go" />
       </label>
       {err && <p className="lg-err" role="alert">{err}</p>}
-      <button type="button" className="lg-solid" onClick={join} disabled={busy}>{busy ? "Joining…" : "Join league"}</button>
-      <button type="button" className="lg-link lg-link-c" onClick={dismiss}>Not now</button>
+      <button type="button" className="lg-solid" onClick={join} disabled={busy}>{busy ? t("lg.joining") : t("lg.join")}</button>
+      <button type="button" className="lg-link lg-link-c" onClick={dismiss}>{t("lg.notNow")}</button>
     </Sheet>
   );
 }
