@@ -1,14 +1,22 @@
 // English — THE SOURCE OF TRUTH for every UI string that goes through t().
-// Statically imported by src/i18n/index.js, so these bytes are on Home's eager
-// path: keep it to UI copy (question text is not i18n's job).
+// Keep it to UI copy (question text is src/i18n/questions.js's job).
+//
+// ⚠️ NOT ON HOME'S EAGER PATH (i18n step 5). Home, the navigation and
+// onboarding print from en.home.js, a copy of their lines here. Every module
+// OFF that path that prints any other key imports this file
+// (`import '../i18n/en.js'`), so the table rides with the lazy screens' chunks
+// and is registered with the runtime (registerEnglish) before any of them can
+// render. tests/unit/i18n-eager-english.test.js enforces both halves.
 //
 // Adding a string: add the key HERE first (English exactly as it renders
-// today), then the same key in es.js, then call t('the.key') at the site.
+// today), then the same key in es.js, then call t('the.key') at the site. If
+// the site is on Home's eager path, copy the line into en.home.js too.
 // Keys are flat 'area.name' strings. Placeholders are {name}. Plurals are two
 // keys, 'area.thing_one' and 'area.thing_other', chosen by t(key, { count }).
 import { FOOTLE_SHORT } from '../lib/modeCopy.js';
+import { registerEnglish } from './index.js';
 
-export default {
+export default registerEnglish({
   // Bottom tab bar (App.jsx, the mobile/native tab bar).
   'tab.home': 'Home',
   'tab.online': 'Multiplayer',
@@ -985,4 +993,4 @@ export default {
   'cc.Legends.s': 'Legends',
   'cc.Records': 'Records & Managers',
   'cc.Records.s': 'Records',
-};
+});

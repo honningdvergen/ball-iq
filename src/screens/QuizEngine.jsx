@@ -14,6 +14,7 @@ import { catLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm,
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 
 // A category's chip label: App.jsx's catLabel (the cat.* keys, else CAT_LABELS).

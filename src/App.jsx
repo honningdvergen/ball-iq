@@ -49,18 +49,11 @@ import { CLUB_INDEX } from './marketing/clubIndex.js';
 import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
-import { DailyDone } from './components/DailyDone.jsx';
-import { CountUp } from './components/CountUp.jsx';
-import { ResultsCloseBtn } from './components/ResultsCloseBtn.jsx';
-import { WrongAnswersReview } from './components/WrongAnswersReview.jsx';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
-import { resultVerdict } from './lib/resultVerdict.js';
-import { QuizEngine, TypedInput } from './screens/QuizEngine.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
-import { useT, useLang, isLangLoaded, t as tl } from './i18n/index.js';
-import en from './i18n/en.js';
+import { useT, useLang, isLangLoaded, hasEnglish, t as tl } from './i18n/index.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
@@ -147,6 +140,13 @@ const ClubQuizScreen = withSuspense(lazyNamed(() => import('./screens/ClubQuizSc
 // league/tournament/theme quizzes and Stadiums. Lazy so Home carries only the
 // row that opens it; the chips call the same launchers the old tiles did.
 const QuizScreen = withSuspense(lazyNamed(() => import('./screens/QuizScreen.jsx'), 'QuizScreen'), "Loading quiz");
+// The quiz engine (i18n step 5, 21 Oct 2026). It was a STATIC import, and it
+// statically imports the results screen, which imports DailyDone: three play
+// screens and every English string they print rode Home's eager path. Lazy
+// now, warmed with the question index at idle and again the moment play starts
+// (see the effects below), so the fallback is the pathological case only.
+const loadQuizEngine = () => import('./screens/QuizEngine.jsx');
+const QuizEngine = withSuspense(lazyNamed(loadQuizEngine, 'QuizEngine'), "Loading quiz");
 const PrivacyScreen = withSuspense(lazyNamed(() => import('./screens/PrivacyScreen.jsx'), 'PrivacyScreen'));
 const StumpScreen = withSuspense(lazyNamed(() => import('./screens/StumpScreen.jsx'), 'StumpScreen'));
 const LocalSetup = withSuspense(lazyNamed(() => import('./screens/LocalPlay.jsx'), 'LocalSetup'));
@@ -829,7 +829,7 @@ export const CAT_LABELS = {
 // i18n/en.js, same English as above); every other category keeps its
 // CAT_LABELS name, the same in both languages (Premier League, La Liga …).
 // LEAGUE_QUIZ_SECTIONS' names are the same words for the same cat.
-export const catLabel = (t, c) => (en[`cat.${c}`] ? t(`cat.${c}`) : CAT_LABELS[c] || c);
+export const catLabel = (t, c) => (hasEnglish(`cat.${c}`) ? t(`cat.${c}`) : CAT_LABELS[c] || c);
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
 
@@ -4610,7 +4610,7 @@ function AppInner() {
     // Both are fire-and-forget and dedupe inside questions-loader, so a stage-2
     // timer firing after a picker already started the load is a no-op.
     {
-      const idleIndex = () => { try { prefetchQuestionIndex(); } catch {} };
+      const idleIndex = () => { try { prefetchQuestionIndex(); } catch {} loadQuizEngine().catch(() => {}); };
       const idleBank = () => { try { prefetchQuestions(); } catch {} };
       // ⚠️ THE ONLINE TAB CHUNK — the one measured cause of a slow tab switch.
       //
@@ -6714,6 +6714,7 @@ function AppInner() {
     if (!playing) return;
     import('./screens/ResultsScreen.jsx').catch(() => {});
     import('./screens/ModeResults.jsx').catch(() => {});
+    loadQuizEngine().catch(() => {});
   }, [playing]);
 
   // first-game-played — the honest counterpart to first-game-reached.

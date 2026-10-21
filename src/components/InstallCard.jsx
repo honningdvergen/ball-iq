@@ -2,6 +2,7 @@
 import { useInstallPrompt } from "../installPrompt.js";
 import { Home, Share } from "lucide-react";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 
 // Sprint #34 BB2: PWA install affordance. Renders nothing when the app is
 // already installed, the user has dismissed (within the 30-day TTL window),

@@ -15,6 +15,7 @@
 import React, { useCallback, useState } from 'react';
 import { inAppSource, isNativeShell } from '../lib/inAppBrowser.js';
 import { useT } from '../i18n/index.js';
+import '../i18n/en.js'; // the full English table: not on Home's eager path
 
 const KEY = 'biq_inapp_strip_off';
 

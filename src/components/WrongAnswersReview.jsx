@@ -3,6 +3,7 @@ import { Flag } from "lucide-react";
 import ReportButton from "./ReportButton.jsx";
 import { bumpUsage } from "../lib/usageCounters.js";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 
 // Wrong-answer review list — shared by the mobile results stack and the

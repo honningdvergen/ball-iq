@@ -1,6 +1,7 @@
 import { Flag } from "lucide-react";
 import ReportButton from "./ReportButton.jsx";
 import { t, useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 
 /**
  * The foot of a finished daily: the way to tell us it is wrong, then the way out.

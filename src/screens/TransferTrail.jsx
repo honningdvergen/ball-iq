@@ -60,6 +60,7 @@ import ResultFoot, { ReportLink } from "../components/ResultFoot.jsx";
 // this always hands back the player the caller resolved from the bundle.
 import { trailPlayerForDate } from "../lib/scheduleRemote.js";
 import { t as tNow, useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 
 function loadDay(ymd) {
   try {

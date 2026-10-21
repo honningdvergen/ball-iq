@@ -22,6 +22,7 @@ const SHOW_COUNTS_FROM = 300;
 import { reminderHourLabel } from "../lib/playHour.js";
 import { levelName } from "../i18n/names.js";
 import { useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import "./dailyDone.css";
 

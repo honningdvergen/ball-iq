@@ -16,6 +16,7 @@ import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { getXPForResult } from "../lib/scoring.js";
 import { dailyTierBand, scoreTaglineBand } from "../lib/resultsCopy.js";
 import { useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
 import { loopEvent } from "../App.jsx";

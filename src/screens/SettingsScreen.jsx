@@ -16,6 +16,7 @@ import { ArrowUpRight, Home, Mail, Settings, Share, Star, Timer } from "lucide-r
 import React, { useEffect, useRef, useState } from "react";
 import { loopEvent } from "../App.jsx";
 import { I18N_LIVE, LANGS, LANG_NAMES, setLang, useLang, useT } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 
 export function SettingsToggle({ val, onChange, label, disabled }) {

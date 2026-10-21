@@ -11,6 +11,7 @@ import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLea
 import { lift } from "../lib/colourMath.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 import { t as tl, useT, fmtLocale } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { levelName, tierName, compName } from "../i18n/names.js";
 

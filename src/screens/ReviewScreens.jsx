@@ -7,6 +7,7 @@ import { APP_NAME } from "../lib/scoring.js";
 import { computeFootleStreak, getFootleNumber, getWordleAnswerForDayIndex, footleAnswerFor, gradeWordleGuess, footleShareHead } from "../lib/wordle.js";
 import { CB_MODE, DailyHeroCountdown, FootleGetAppCTA, IS_NATIVE, InstallBanner, ReviewQuestionCard, TIMINGS, shareCard } from "../App.jsx";
 import { useT, fmtLocale } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 
 export function Mini7Strip({ history, today }) {

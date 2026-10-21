@@ -11,6 +11,7 @@ import { isTop10Live } from "../lib/top10.js";
 import { FOOTLE_SHORT } from "../lib/modeCopy.js";
 import { MODE_ACCENT, MODE_RGB } from '../lib/accents.js';
 import { t, useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the

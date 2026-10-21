@@ -18,6 +18,7 @@
 // beside the name it falls to a second line that is not shown, and the name
 // stands whole. Home and the share text still carry the number.
 import { useT } from '../i18n/index.js';
+import '../i18n/en.js'; // the full English table: not on Home's eager path
 
 const TITLE = { display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 7, height: "1.2em", overflow: "hidden", fontSize: 20, fontWeight: 800, color: "var(--t1)", lineHeight: 1.2 };
 const NAME = { maxWidth: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };

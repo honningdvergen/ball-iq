@@ -1,6 +1,7 @@
 // i18n core — the whole translation runtime, hand-written on purpose (no
-// dependency: this file and en.js are the only i18n bytes on Home's eager path,
-// and the Home JS budget gate in scripts/audit-home-budget.mjs is a deploy gate).
+// dependency: this file and en.home.js are the only i18n bytes on Home's eager
+// path, and the Home JS budget gate in scripts/audit-home-budget.mjs is a
+// deploy gate).
 //
 //   import { t, useT } from '../i18n/index.js';
 //   const t = useT();                        // in a component: re-renders on a language change
@@ -10,6 +11,11 @@
 //
 // RULES (the tests in tests/unit/i18n-*.test.js pin them):
 //   • en.js is the source of truth. Every key lives there first; es.js may lag.
+//   • Only en.home.js (Home, navigation, onboarding: a copy of their en.js
+//     lines) is imported here. The full en.js is imported by the lazy screens
+//     that print the rest and registers itself on arrival (registerEnglish),
+//     so its strings land with those screens' chunks, never on Home's eager
+//     path (i18n step 5; tests/unit/i18n-eager-english.test.js).
 //   • A key missing from the active table falls back to English, never to the
 //     key and never to "undefined". English users therefore cannot be affected
 //     by an incomplete translation.
@@ -20,7 +26,7 @@
 //     everything else English. Inside the Capacitor WebView that follows the
 //     phone's language. <html lang> is kept in step.
 import { useSyncExternalStore } from 'react';
-import en from './en.js';
+import enHome from './en.home.js';
 
 export const LANGS = ['en', 'es'];
 // ⚠️ NOT LIVE YET (review, 20 Oct 2026). Until every screen is translated
@@ -47,7 +53,7 @@ const LOADERS = {
 // a slow web connection, where the strings fill in when the chunk lands.
 const BOOT_WAIT_MS = 2000;
 
-const tables = { en };
+const tables = { en: enHome };
 const inflight = {};
 let lang = DEFAULT_LANG;
 let version = 0;
@@ -171,9 +177,23 @@ function lookup(key) {
   const active = tables[lang];
   const hit = active && active[key];
   if (typeof hit === 'string') return hit;
-  const base = en[key];
+  const base = tables.en[key];
   return typeof base === 'string' ? base : undefined;
 }
+
+/**
+ * The full English table has arrived: en.js calls this as it is evaluated,
+ * which is before any module that imported it can render. Returns the table
+ * so en.js can export it. Home's strings are the same either way (en.home.js
+ * is a copy of their lines), so nothing on screen changes when it lands.
+ */
+export function registerEnglish(full) {
+  if (full && tables.en !== full) { tables.en = full; emit(); }
+  return full;
+}
+
+/** True when English has `key` (in the table loaded so far). */
+export function hasEnglish(key) { return typeof tables.en[key] === 'string'; }
 
 function interpolate(s, vars) {
   // A placeholder with no value is left as written ({name}), never "undefined".
