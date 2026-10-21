@@ -6,8 +6,13 @@ import { useModalA11y } from "../useModalA11y.js";
 import React, { useRef } from "react";
 import { clubHexToRgba, clubInitials, clubReadableText, haptic, norm } from "../App.jsx";
 import { CLUB_ABBR, CLUB_LEAGUES, CLUB_LEAGUE_SECTIONS, CLUB_ORDER, CLUB_PACKS, CLUB_SEARCH_NICKNAMES } from "../data/clubPacks.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { useT } from "../i18n/index.js";
 
+// The words are t() since i18n step 7 (the cq.* keys). A section's heading is
+// cq.sec.<key> (CLUB_LEAGUE_SECTIONS: countries); club names stay as they are.
 export function ClubQuizScreen({ onStart, onBack }) {
+  const t = useT();
   const [showProModal, setShowProModal] = React.useState(false);
   // Each league collapses to a short preview. The Premier League alone filled
   // more than a screen, so La Liga sat below the fold with nothing to suggest it
@@ -48,11 +53,11 @@ export function ClubQuizScreen({ onStart, onBack }) {
   return (
     <div className="screen">
       <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label="Go back">←</button>
-        <div className="page-title">Club Quizzes</div>
+        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}>←</button>
+        <div className="page-title">{t("cq.title")}</div>
       </div>
       <p style={{fontSize:13,color:"var(--t2)",lineHeight:1.7,marginBottom:20}}>
-        Test your deep knowledge of a specific club — history, players, trophies and iconic moments.
+        {t("cq.sub")}
       </p>
       {(() => {
         const q = clubQuery.trim().toLowerCase();
@@ -81,8 +86,8 @@ export function ClubQuizScreen({ onStart, onBack }) {
                 type="text"
                 value={clubQuery}
                 onChange={(e) => setClubQuery(e.target.value)}
-                placeholder={`Search ${Object.keys(CLUB_PACKS).length} clubs…`}
-                aria-label="Search clubs"
+                placeholder={t("cq.searchPh", { n: Object.keys(CLUB_PACKS).length })}
+                aria-label={t("tp.searchClubs")}
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}
@@ -98,7 +103,7 @@ export function ClubQuizScreen({ onStart, onBack }) {
                 }}
               />
               {clubQuery && (
-                <button type="button" onClick={() => setClubQuery("")} aria-label="Clear search"
+                <button type="button" onClick={() => setClubQuery("")} aria-label={t("tp.clear")}
                   style={{ position: "absolute", right: 6, top: "50%", transform: "translateY(-50%)",
                            width: 30, height: 30, borderRadius: 9, background: "transparent",
                            border: "none", color: "var(--t2)", fontSize: 15, cursor: "pointer",
@@ -109,7 +114,7 @@ export function ClubQuizScreen({ onStart, onBack }) {
               <div style={{ marginBottom: 18 }}>
                 {matches.length === 0 ? (
                   <div style={{ fontSize: 13.5, color: "var(--t2)", padding: "6px 2px" }}>
-                    No club matches “{clubQuery}”. Try a shorter search.
+                    {t("cq.none", { q: clubQuery })}
                   </div>
                 ) : (
                   <div className="mode-list">
@@ -153,7 +158,7 @@ export function ClubQuizScreen({ onStart, onBack }) {
         return (
           <div key={section.key} style={{ marginBottom: 16 }}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--t2)", margin: "0 0 8px 2px", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-              <span>{section.label}</span>
+              <span>{t(`cq.sec.${section.key}`)}</span>
               <span style={{ letterSpacing: 0, textTransform: "none", fontWeight: 600, color: "var(--t3)" }}>{clubs.length}</span>
             </div>
             <div className="mode-list">
@@ -181,7 +186,7 @@ export function ClubQuizScreen({ onStart, onBack }) {
                 style={{ marginTop: 7, width: "100%", background: "transparent", border: "1px solid var(--border)", borderRadius: 11, padding: "9px 12px", color: "var(--t2)", fontSize: 12.5, fontWeight: 700, fontFamily: "inherit", cursor: "pointer" }}
                 aria-expanded={isOpen}
               >
-                {isOpen ? "Show fewer" : `Show all ${clubs.length}`}
+                {isOpen ? t("cq.fewer") : t("cq.all", { n: clubs.length })}
               </button>
             )}
           </div>
@@ -192,16 +197,16 @@ export function ClubQuizScreen({ onStart, onBack }) {
           directly above it since Wave A. It was telling users that clubs they
           could already play were missing. Replaced with something true. */}
       <div style={{marginTop:16,background:"linear-gradient(135deg,rgba(251,191,36,0.08),rgba(251,191,36,0.03))",border:"1px solid rgba(251,191,36,0.2)",borderRadius:16,padding:"18px 20px",textAlign:"center"}}>
-        <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>Missing your club?</div>
-        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6}}>New clubs are added regularly — more leagues are on the way.</div>
+        <div style={{fontSize:15,fontWeight:800,color:"var(--t1)",marginBottom:4}}>{t("cq.missing")}</div>
+        <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6}}>{t("cq.missingSub")}</div>
       </div>
       {showProModal && (
         <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:999,display:"flex",alignItems:"flex-end"}} onClick={() => setShowProModal(false)}>
-          <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="More club quizzes coming soon" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
+          <div ref={proModalRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={t("cq.soonAria")} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))"}} onClick={e => e.stopPropagation()}>
             <div style={{fontSize:36,textAlign:"center",marginBottom:12}}>🏟️</div>
-            <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>More Coming Soon</div>
-            <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>Additional club packs are on the way. Keep playing to stay ready!</div>
-            <button className="btn btn-p" onClick={() => setShowProModal(false)}>Got it!</button>
+            <div style={{fontSize:22,fontWeight:900,textAlign:"center",marginBottom:8}}>{t("cq.soon")}</div>
+            <div style={{fontSize:14,color:"var(--t2)",textAlign:"center",lineHeight:1.7,marginBottom:24}}>{t("cq.soonSub")}</div>
+            <button className="btn btn-p" onClick={() => setShowProModal(false)}>{t("cq.gotIt")}</button>
           </div>
         </div>
       )}

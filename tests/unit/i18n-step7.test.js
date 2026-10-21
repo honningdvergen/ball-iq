@@ -268,7 +268,7 @@ describe('d. the Spanish gaps', () => {
     }
     const share = text(html(React.createElement(StitchShare, { made: { token: 'abc.3.1.0-0', player: zidane, shown: 2, taunt: 1, name: 'Ana' }, onAnother: () => {}, onBack: () => {} })));
     expect(share).toContain('“Hasta mi abuela la ha sacado”');
-    expect(share).toContain('Ana te ha preparado una: ¿de quién es esta carrera?');
+    expect(share).toContain('Ana te ha preparado una encerrona: ¿de quién es esta carrera?');
   });
 });
 
@@ -279,5 +279,49 @@ describe('e. the dateline\'s accents are not clipped, and nothing moves', () => 
     expect(css).toMatch(/\.hg-dateline\{[^}]*overflow:hidden;[^}]*padding-top:4px;margin-top:-4px;\}/);
     expect(css).toContain('.daily-zone.daily-zone{padding-top:6px!important;margin-top:-6px!important;}');
     expect(css).toMatch(/\.daily-zone\{[^}]*contain:layout paint style;\}/); // the paint containment that clipped too
+  });
+});
+
+// ── copies that cannot import the tables ────────────────────────────────────
+describe('the strings kept outside the tables match them', () => {
+  it('the crash screen (no i18n import: it is on the marketing bundle too) says eb.* in each language', async () => {
+    const { CRASH_COPY } = await import('../../src/components/ErrorBoundary.jsx');
+    for (const [lang, table] of [['en', en], ['es', es]]) {
+      expect(CRASH_COPY[lang]).toEqual({ title: table['eb.title'], body: table['eb.body'], restart: table['eb.restart'] });
+    }
+  });
+  it('every club section has a cq.sec key printing its English label', async () => {
+    const { CLUB_LEAGUE_SECTIONS } = await import('../../src/data/clubPacks.js');
+    for (const s of CLUB_LEAGUE_SECTIONS) {
+      expect(en[`cq.sec.${s.key}`]).toBe(s.label);
+      expect(es[`cq.sec.${s.key}`]).toBeTruthy();
+    }
+  });
+  it('the scheduled reminders read their words when scheduled, and a language change reschedules them', () => {
+    const src = read('src/lib/notifications.js');
+    expect(src).toContain("body: t(DAILY_BODIES[at.getDay() % DAILY_BODIES.length]),");
+    expect(src).toContain("body: t('rem.streak', { n: streak }),");
+    expect(src).toContain('body: t(w.body),');
+    for (const k of [0, 1, 2, 3, 4, 5, 6].map((d) => `rem.d${d}`).concat(['rem.w8', 'rem.w11', 'rem.w15', 'rem.w22', 'rem.w30', 'rem.streak'])) {
+      expect(src).toContain(`'${k}'`);
+      expect(es[k]).toBeTruthy();
+    }
+    expect(en['rem.streak'].replace('{n}', '4')).toBe('Your 4-day daily streak ends at midnight — today\'s puzzles are still open 🔥');
+    expect(read('src/hooks/useLocalNotifications.js')).toContain('}, [notifEnabled, dailyDone, loginStreak, lang]);');
+  });
+  it('every ScreenLoading label has a key printing that label', () => {
+    const app = read('src/App.jsx');
+    const map = app.slice(app.indexOf('const LOADING_KEY = {'), app.indexOf('function ScreenLoading('));
+    const keyed = Object.fromEntries([...map.matchAll(/"([^"]+)": "(ld\.[a-z0-9]+)"/g)].map((m) => [m[1], m[2]]));
+    // ScreenLoading lives in App.jsx and only App.jsx gives it a label.
+    const labels = new Set(['Loading']);
+    for (const m of app.matchAll(/withSuspense\([^\n]*, "([^"]+)"\)/g)) labels.add(m[1]);
+    for (const m of app.matchAll(/<ScreenLoading label="([^"]+)"/g)) labels.add(m[1]);
+    expect(labels.size).toBeGreaterThan(10);
+    for (const l of labels) {
+      expect(keyed[l], `no key for "${l}"`).toBeTruthy();
+      expect(en[keyed[l]]).toBe(l);
+      expect(es[keyed[l]]).toBeTruthy();
+    }
   });
 });

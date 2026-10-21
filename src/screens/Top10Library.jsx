@@ -14,7 +14,12 @@ import { groupTop10Lists, listStatus, myTop10Club, setMyTop10Club } from "../lib
 import { useTop10Data } from "./Top10.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./top10.css";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { t, useT, getLang, fmtLocale } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
+// The words are t() since i18n step 7 (the tl.* keys). The lists themselves
+// (titles, notes) are the game's data, like the question bank's English.
 const SKIN = { "--t10": MODE_ACCENT.top10, "--t10-rgb": MODE_RGB.top10 };
 // Which group is open and how far down the page was, kept for this visit, so
 // coming back from a list lands where the player left (review, 15 Oct 2026).
@@ -22,11 +27,11 @@ const PLACE_KEY = "biq_top10lib_place";
 const readPlace = () => { try { return JSON.parse(sessionStorage.getItem(PLACE_KEY)) || {}; } catch { return {}; } };
 const writePlace = (p) => { try { sessionStorage.setItem(PLACE_KEY, JSON.stringify(p)); } catch { /* private mode */ } };
 const scrollerOf = (el) => { let p = el?.parentElement; while (p && p.scrollHeight <= p.clientHeight + 2) p = p.parentElement; return p || document.scrollingElement; };
-const plural = (n) => `${n} ${n === 1 ? "list" : "lists"}`;
+const plural = (n) => t("tl.lists", { count: n, n });
 
-// The date a Top 10 number falls on, as "Tue 20 Oct" (the schedule counts UTC days).
+// The date a Top 10 number falls on, as "Tue 20 Oct" ("mar 20 oct"; the schedule counts UTC days).
 const dateOfDay = (day) => new Date((TOP10_ANCHOR_DAY + day - 1) * 86400000)
-  .toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).replace(",", "");
+  .toLocaleDateString(getLang() === "en" ? "en-GB" : fmtLocale(), { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).replace(",", "").replace(/\./g, "");
 
 // A club list that is still to come as the daily: shown, not playable.
 // Today's own daily said "locked 16 Oct" on 16 Oct (Alex): it reads "Today".
@@ -35,21 +40,21 @@ const dateOfDay = (day) => new Date((TOP10_ANCHOR_DAY + day - 1) * 86400000)
 function LockedRow({ list }) {
   if (list.day === getTop10Number()) {
     return (
-      <div className="t10lib-list is-locked" aria-label={`${list.title}: today's daily`}>
+      <div className="t10lib-list is-locked" aria-label={t("tl.todayAria", { title: list.title })}>
         <span className="t10lib-list-body">
           <span className="t10lib-list-title">{list.title}</span>
-          <span className="t10lib-list-sub">Today’s daily</span>
+          <span className="t10lib-list-sub">{t("tl.todaySub")}</span>
         </span>
-        <span className="t10lib-pill is-locked">Today</span>
+        <span className="t10lib-pill is-locked">{t("tl.today")}</span>
       </div>
     );
   }
   const when = dateOfDay(list.day);
   return (
-    <div className="t10lib-list is-locked" aria-label={`${list.title}: the daily on ${when}`}>
+    <div className="t10lib-list is-locked" aria-label={t("tl.onAria", { title: list.title, when })}>
       <span className="t10lib-list-body">
         <span className="t10lib-list-title">{list.title}</span>
-        <span className="t10lib-list-sub">The daily on {when}</span>
+        <span className="t10lib-list-sub">{t("tl.on", { when })}</span>
       </span>
       <span className="t10lib-pill is-locked"><Lock size={12} strokeWidth={2.6} aria-hidden="true" /> {when.split(" ").slice(1).join(" ")}</span>
     </div>
@@ -60,17 +65,17 @@ function LockedRow({ list }) {
 function ListRow({ list, prefix, onPlay }) {
   if (list.locked) return <LockedRow list={list} />;
   const st = listStatus(list.id);
-  const sub = st.state === "done" ? "Finished"
-    : st.state === "open" ? "In progress"
-    : list.note ? list.note : "Name all ten";
+  const sub = st.state === "done" ? t("tl.finished")
+    : st.state === "open" ? t("tl.inProgress")
+    : list.note ? list.note : t("tl.nameAll");
   return (
     <button type="button" className="t10lib-list" onClick={() => onPlay(list.id)}
-      aria-label={`${list.title}: ${st.state === "done" ? `finished, ${st.score} of 10` : st.state === "open" ? `${st.score} of 10 found, continue` : "play"}`}>
+      aria-label={`${list.title}: ${st.state === "done" ? t("tl.ariaDone", { n: st.score }) : st.state === "open" ? t("tl.ariaOpen", { n: st.score }) : t("tl.ariaPlay")}`}>
       <span className="t10lib-list-body">
         <span className="t10lib-list-title">{prefix}{list.title}</span>
         <span className="t10lib-list-sub">{sub}</span>
       </span>
-      <span className={`t10lib-pill is-${st.state}`}>{st.state === "new" ? "Play" : `${st.score}/10`}</span>
+      <span className={`t10lib-pill is-${st.state}`}>{st.state === "new" ? t("common.play") : `${st.score}/10`}</span>
     </button>
   );
 }
@@ -95,7 +100,7 @@ function ClubMark({ info }) {
 function StarButton({ on, name, onClick }) {
   return (
     <button type="button" className={`t10lib-star${on ? " is-on" : ""}`} aria-pressed={on}
-      aria-label={on ? `${name} is your club. Tap to remove` : `Make ${name} your club`} onClick={onClick}>
+      aria-label={on ? t("tl.starOn", { name }) : t("tl.starOff", { name })} onClick={onClick}>
       <Star size={18} strokeWidth={2.2} fill={on ? "currentColor" : "none"} aria-hidden="true" />
     </button>
   );
@@ -110,7 +115,7 @@ function Group({ mark, name, lists, open, onToggle, onPlay, prefixOf, onStar }) 
         <button type="button" className="t10lib-group-head" onClick={onToggle} aria-expanded={open}>
           {mark}
           <span className="t10lib-group-name">{name}</span>
-          <span className="t10lib-group-count">{done ? `${done} of ${lists.length} done` : plural(lists.length)}</span>
+          <span className="t10lib-group-count">{done ? t("tl.done", { n: done, total: lists.length }) : plural(lists.length)}</span>
           <ChevronDown size={18} strokeWidth={2.4} className="t10lib-chev" aria-hidden="true" />
         </button>
         {onStar && <StarButton on={false} name={name} onClick={onStar} />}
@@ -121,6 +126,7 @@ function Group({ mark, name, lists, open, onToggle, onPlay, prefixOf, onStar }) 
 }
 
 export default function Top10Library({ onBack, onPlay, clubInfo }) {
+  useT();
   const { data, failed } = useTop10Data(new Date(), null, { library: true });
   const [mine, setMine] = useState(myTop10Club);
   const [openKey, setOpenKey] = useState(() => readPlace().open || null);
@@ -149,22 +155,22 @@ export default function Top10Library({ onBack, onPlay, clubInfo }) {
   return (
     <div ref={rootRef} className="t10 t10lib" style={SKIN}>
       <div className="t10-head">
-        {onBack && <button className="back-btn" onClick={onBack} aria-label="Back">←</button>}
+        {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <GameTitle no={0} className="t10-head-title">Top 10 lists</GameTitle>
-          <div className="t10-head-sub">Your club’s lists, and every past daily</div>
+          <GameTitle no={0} className="t10-head-title">{t("tl.title")}</GameTitle>
+          <div className="t10-head-sub">{t("tl.sub")}</div>
         </div>
       </div>
 
-      {failed && <p className="t10lib-empty">The lists did not load. Check your connection and try again.</p>}
-      {!data && !failed && <p className="t10lib-empty">Loading the lists…</p>}
+      {failed && <p className="t10lib-empty">{t("tl.fail")}</p>}
+      {!data && !failed && <p className="t10lib-empty">{t("tl.loading")}</p>}
 
       {groups && (
         <>
           {/* ONE list of clubs (Alex, 16 Oct 2026: a row of club chips above
               the same clubs listed again "looks like redundant navigation").
               The star on a club's row makes it yours; yours then sits here. */}
-          <div className="t10lib-h">Your club</div>
+          <div className="t10lib-h">{t("tl.yourClub")}</div>
           {myLists ? (
             <div className="t10lib-card is-mine" style={{ "--club": info(mine).color || "var(--t10)" }}>
               <div className="t10lib-card-head"><ClubMark info={info(mine)} /><span>{info(mine).name}</span><em>{plural(myLists.length)}</em>
@@ -172,10 +178,10 @@ export default function Top10Library({ onBack, onPlay, clubInfo }) {
               {myLists.map((l) => <ListRow key={l.id} list={l} onPlay={onPlay} />)}
             </div>
           ) : (
-            <p className="t10lib-empty">Tap the <Star size={14} strokeWidth={2.4} aria-label="star" style={{ verticalAlign: "-2px" }} /> on your club below and its lists sit here, first, every time.</p>
+            <p className="t10lib-empty">{rich(t("tl.tapStar"), { star: <Star size={14} strokeWidth={2.4} aria-label={t("tl.star")} style={{ verticalAlign: "-2px" }} /> })}</p>
           )}
 
-          <div className="t10lib-h">Every club</div>
+          <div className="t10lib-h">{t("tl.every")}</div>
           <div className="t10lib-card">
             {clubSlugs.filter((s) => s !== mine).map((slug) => (
               <Group key={slug} mark={<ClubMark info={info(slug)} />} name={info(slug).name} lists={groups.clubs.get(slug)}
@@ -185,10 +191,10 @@ export default function Top10Library({ onBack, onPlay, clubInfo }) {
 
           {groups.past.length > 0 && (
             <>
-              <div className="t10lib-h">Past dailies</div>
+              <div className="t10lib-h">{t("tl.past")}</div>
               <div className="t10lib-card">
-                <Group mark={<span className="t10lib-mark is-daily" aria-hidden="true">#</span>} name="Every past Top 10" lists={groups.past}
-                  open={openKey === "past"} onToggle={() => toggle("past")} onPlay={onPlay} prefixOf={(l) => `No. ${l.day} · `} />
+                <Group mark={<span className="t10lib-mark is-daily" aria-hidden="true">#</span>} name={t("tl.everyPast")} lists={groups.past}
+                  open={openKey === "past"} onToggle={() => toggle("past")} onPlay={onPlay} prefixOf={(l) => t("tl.no", { n: l.day })} />
               </div>
             </>
           )}

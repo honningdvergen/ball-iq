@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useT } from './i18n/index.js'
 
 // Tuning constants — surface here for easy adjustment without hunting.
 // VERSION_CHECK_INTERVAL_MS: how often we poll /version.json while the tab is
@@ -56,6 +57,7 @@ function useVersionCheck() {
 }
 
 export default function VersionBanner() {
+  const t = useT()
   const mismatch = useVersionCheck()
   const [dismissed, setDismissed] = useState(false)
   const dismissTimerRef = useRef(null)
@@ -70,22 +72,22 @@ export default function VersionBanner() {
 
   return (
     <div className="version-banner" role="status" aria-live="polite">
-      <span className="version-banner-text">↻ A new version of Ball IQ is available.</span>
+      <span className="version-banner-text">{t('vb.text')}</span>
       <div className="version-banner-actions">
         <button
           type="button"
           className="version-banner-refresh"
           onClick={() => window.location.reload()}
         >
-          Refresh
+          {t('vb.refresh')}
         </button>
         <button
           type="button"
           className="version-banner-later"
           onClick={() => setDismissed(true)}
-          aria-label="Dismiss for now"
+          aria-label={t('vb.dismissAria')}
         >
-          Later
+          {t('pn.later')}
         </button>
       </div>
     </div>

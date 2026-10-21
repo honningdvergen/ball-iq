@@ -131,7 +131,9 @@ describe("old routes and deep links", () => {
 
   it("the screen draws its own header, so the global wordmark stays off it", () => {
     expect(APP).toMatch(/"stadiums", "quiz-topics", "stump"/);
-    expect(APP).toMatch(/"quiz-topics": "Quiz"/);
+    // The title is a key since i18n step 7: tt.quiz, "Quiz".
+    expect(APP).toMatch(/"quiz-topics": "tt\.quiz"/);
+    expect(en["tt.quiz"]).toBe("Quiz");
   });
 });
 

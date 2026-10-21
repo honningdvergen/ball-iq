@@ -36,11 +36,14 @@ describe('the report sheet can be backed out of', () => {
     // place onSkip may be reached from.
     const skips = [...SHEET.matchAll(/onClick=\{onSkip\}/g)];
     expect(skips.length, 'onSkip must be reachable from exactly one control').toBe(1);
-    expect(SHEET).toMatch(/onClick=\{onSkip\}>Just flag it</);
+    // The words are a key since i18n step 7: rp.flag, "Just flag it".
+    expect(SHEET).toMatch(/onClick=\{onSkip\}>\{tl\("rp\.flag"\)\}</);
+    expect(readFileSync(new URL('../../src/i18n/en.js', import.meta.url), 'utf8')).toContain("'rp.flag': 'Just flag it',");
   });
 
   it('a visible Cancel exists — the way out must be findable, not just guessable', () => {
-    expect(SHEET).toMatch(/onClick=\{onCancel\}>Cancel</);
+    expect(SHEET).toMatch(/onClick=\{onCancel\}>\{tl\("st\.cancel"\)\}</);
+    expect(readFileSync(new URL('../../src/i18n/en.js', import.meta.url), 'utf8')).toContain("'st.cancel': 'Cancel',");
   });
 
   // ⚠️ The promise contract. reportQuestion() hands its caller a promise and

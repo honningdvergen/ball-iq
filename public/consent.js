@@ -130,6 +130,46 @@
     '@media (prefers-reduced-motion:reduce){#biq-consent{transition:none}}',
   ].join('');
 
+  /* Spanish, in the app only. The app sets <html lang> once its language is
+     picked; before that (this file can run before React) the same rule as the
+     pre-boot shell in index.html decides: an explicit biq_lang, else the device
+     language while Spanish is live (biq_i18n_live). The static SEO pages have no
+     #root and are English, so they always get English. The wording below is
+     the disclosure: a change to one language is a change to both. */
+  var COPY = {
+    en: {
+      aria: 'Analytics consent',
+      text: 'We’d like to use Microsoft Clarity and PostHog to see how people ' +
+        'move through Ball IQ, so we can fix what’s confusing. Clarity records ' +
+        'anonymous session replays. No ads, and nothing is sold. ',
+      policy: 'Privacy policy',
+      decline: 'Decline',
+      allow: 'Allow'
+    },
+    es: {
+      aria: 'Consentimiento de analítica',
+      text: 'Nos gustaría usar Microsoft Clarity y PostHog para ver cómo se ' +
+        'mueve la gente por Ball IQ y así arreglar lo que confunde. Clarity graba ' +
+        'repeticiones anónimas de las sesiones. Sin anuncios, y no vendemos nada. ',
+      policy: 'Política de privacidad',
+      decline: 'Rechazar',
+      allow: 'Permitir'
+    }
+  };
+  function pickLang() {
+    var h = '';
+    try { h = document.documentElement.getAttribute('lang') || ''; } catch (e) {}
+    if (/^es/i.test(h)) return 'es';
+    var root = document.getElementById('root');
+    // Once the app has painted, <html lang> is its answer.
+    if (!root || root.firstChild) return 'en';
+    try {
+      var L = localStorage.getItem('biq_lang');
+      if (L === 'es' || (L !== 'en' && localStorage.getItem('biq_i18n_live') === '1' && /^es/i.test(navigator.language || ''))) return 'es';
+    } catch (e) {}
+    return 'en';
+  }
+
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
@@ -139,20 +179,15 @@
   // Not role="dialog": it does not trap focus and the page stays fully usable
   // behind it. A region with a label is the honest description.
   bar.setAttribute('role', 'region');
-  bar.setAttribute('aria-label', 'Analytics consent');
 
   var text = document.createElement('p');
   text.className = 'biq-c-txt';
-  text.appendChild(document.createTextNode(
-    'We’d like to use Microsoft Clarity and PostHog to see how people ' +
-    'move through Ball IQ, so we can fix what’s confusing. Clarity records ' +
-    'anonymous session replays. No ads, and nothing is sold. '
-  ));
+  var textNode = document.createTextNode('');
+  text.appendChild(textNode);
   var policy = document.createElement('a');
   policy.href = '/privacy';
   policy.target = '_blank';
   policy.rel = 'noopener';
-  policy.textContent = 'Privacy policy';
   text.appendChild(policy);
 
   var btns = document.createElement('div');
@@ -160,7 +195,6 @@
 
   var decline = document.createElement('button');
   decline.type = 'button';
-  decline.textContent = 'Decline';
   decline.addEventListener('click', function () {
     remember('denied');
     dismiss(bar);
@@ -168,7 +202,6 @@
 
   var accept = document.createElement('button');
   accept.type = 'button';
-  accept.textContent = 'Allow';
   accept.addEventListener('click', function () {
     remember('granted');
     loadClarity();
@@ -180,6 +213,20 @@
   btns.appendChild(accept);
   bar.appendChild(text);
   bar.appendChild(btns);
+
+  var shownLang = null;
+  function applyCopy() {
+    var l = pickLang();
+    if (l === shownLang) return;
+    shownLang = l;
+    var c = COPY[l];
+    bar.setAttribute('aria-label', c.aria);
+    textNode.nodeValue = c.text;
+    policy.textContent = c.policy;
+    decline.textContent = c.decline;
+    accept.textContent = c.allow;
+  }
+  applyCopy();
 
   /* Stay out of the way of the onboarding overlay.
    *
@@ -262,6 +309,8 @@
   }
 
   function mount() {
+    // Again at mount: a deferred banner arrives long after the app picked its language.
+    applyCopy();
     document.body.appendChild(bar);
     // After append, so offsetHeight is the real wrapped height — it differs
     // between one and two lines of text, and between phone and desktop.
@@ -279,6 +328,12 @@
         new MutationObserver(queueSync)
           .observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
       } catch (e) { /* worst case the banner shows during onboarding */ }
+      // A player who switches language in Ajustes, or an app that boots after
+      // the bar is up, re-words it in place.
+      try {
+        new MutationObserver(applyCopy)
+          .observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+      } catch (e) {}
     }
   }
   function start() {

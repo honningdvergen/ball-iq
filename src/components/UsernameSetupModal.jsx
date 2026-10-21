@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { supabase } from "../supabase.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
+import { t as tl, useT } from "../i18n/index.js";
 
 // 1.0.2 Feature E: one-time "pick your username" step shown right after a NEW
 // Apple/Google sign-up. Email sign-ups already choose a username at the Login
@@ -49,6 +50,7 @@ function derivePrefill(user, authProfile) {
 const noDismiss = () => {};
 
 export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
+  useT();
   const initial = useMemo(() => derivePrefill(user, authProfile), [user, authProfile]);
   const modalRef = useRef(null);
   useModalA11y({ isOpen: true, onClose: noDismiss, ref: modalRef });
@@ -101,12 +103,12 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
     // auto-derive would have written for the same person.
     const v = draft.trim().replace(/\s+/g, " ");
     if (v.length < 3) {
-      setError("Username must be at least 3 characters");
+      setError(tl("au.userShort"));
       track("username-step-rejected", { reason: "too-short" });
       return;
     }
     if (isProfaneUsername(v)) {
-      setError("This username isn't allowed. Please choose another.");
+      setError(tl("au.userBad"));
       track("username-step-rejected", { reason: "profanity" });
       return;
     }
@@ -129,8 +131,8 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
         const isDup = /profiles_username_key|duplicate key|already (?:registered|taken)/i.test(raw);
         setError(
           isDup
-            ? `"${v}" is already taken — try another.`
-            : "Couldn't save — check your connection and try again."
+            ? tl("us.taken", { name: v })
+            : tl("us.saveFail")
         );
         track("username-step-rejected", { reason: isDup ? "duplicate" : "write-failed" });
         setSaving(false);
@@ -139,21 +141,20 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
       track("username-step-saved", { path: "profile", changed: v !== initial });
       onSaved(v);
     } catch {
-      setError("Couldn't save — check your connection and try again.");
+      setError(tl("us.saveFail"));
       setSaving(false);
     }
   };
 
   return (
-    <div ref={modalRef} tabIndex={-1} className="onboard-wrap" role="dialog" aria-modal="true" aria-label="Choose your username">
+    <div ref={modalRef} tabIndex={-1} className="onboard-wrap" role="dialog" aria-modal="true" aria-label={tl("us.aria")}>
       <div className="onboard-viewport">
         <div className="onboard-step" style={{ width: "100%" }}>
           <div className="onboard-step-top">
             <div className="onboard-icon" aria-hidden="true">⚽️</div>
-            <div className="onboard-title">Pick your username</div>
+            <div className="onboard-title">{tl("us.title")}</div>
             <div className="onboard-body">
-              This is how you'll show up on leaderboards and to friends. You can
-              change it later in your profile.
+              {tl("us.body")}
             </div>
             <input
               className="profile-name-input"
@@ -161,7 +162,7 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
               value={draft}
               onChange={(e) => { setDraft(e.target.value.slice(0, 24)); if (error) setError(""); }}
               onKeyDown={(e) => { if (e.key === "Enter" && !saving) handleContinue(); }}
-              placeholder="Your username"
+              placeholder={tl("us.ph")}
               /* ⚠️ NO autoFocus. THIS IS THE THIRD BUG FROM THIS ROOT.
                  The happy path here needs ZERO typing — derivePrefill() has
                  already filled the field and the player only has to press
@@ -178,7 +179,7 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
                  pass, which is how it became the sign-up dead end.
                  A player who WANTS to change the name still taps the field. */
               maxLength={24}
-              aria-label="Your username"
+              aria-label={tl("us.ph")}
               aria-invalid={!!error}
             />
             {error && (
@@ -194,7 +195,7 @@ export function UsernameSetupModal({ user, authProfile, onSaved, onEvent }) {
               disabled={saving || draft.trim().length < 3}
               style={(saving || draft.trim().length < 3) ? { opacity: 0.55 } : undefined}
             >
-              {saving ? "Saving…" : "Continue"}
+              {saving ? tl("ap.saving") : tl("home.row.continue")}
             </button>
           </div>
         </div>

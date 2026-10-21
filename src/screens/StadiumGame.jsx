@@ -5,6 +5,10 @@ import { Confetti, haptic, playSound, LEAGUE_QUIZ_BY_CAT } from "../App.jsx";
 import { CLUB_ABBR, CLUB_PACKS } from "../data/clubPacks.js";
 import { clubColour, clubAbbr, packColourMap, tint, lift, onColour } from "../lib/clubColour.js";
 import { Lightbulb } from "lucide-react";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { t, useT } from "../i18n/index.js";
+// The words are t() since i18n step 7 (the sg.* keys); league, club and
+// stadium names stay as they are.
 
 // Stadiums — a Sporcle-style completion run: name every ground in the league.
 // Alex's design (2026-08-20): start cold with just a counter; the FIRST hint
@@ -91,6 +95,7 @@ const badgeForLeague = (id) => {
 const FALLBACK_BADGE = { abbr: "—", bg: "var(--s3)", ink: "var(--t2)" };
 
 export default function StadiumGame({ onExit }) {
+  useT();
   // League picker first — five leagues now, and a Board keyed by league.id
   // below so every hook re-initialises cleanly when the league changes.
   const [leagueId, setLeagueId] = useState(null);
@@ -99,10 +104,10 @@ export default function StadiumGame({ onExit }) {
     return (
       <div style={{ minHeight: "100dvh", padding: "16px 0 32px", maxWidth: 560, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-          <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
+          <button className="back-btn" onClick={onExit} aria-label={t("game.back")}>←</button>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.4px", color: "var(--text)" }}>Name the Stadium</div>
-            <div style={{ fontSize: 12.5, color: "var(--t2)" }}>Pick a league — name every ground</div>
+            <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.4px", color: "var(--text)" }}>{t("sg.title")}</div>
+            <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{t("sg.pick")}</div>
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -152,6 +157,7 @@ export default function StadiumGame({ onExit }) {
 }
 
 function StadiumBoard({ league, onExit }) {
+  useT();
   const total = league.clubs.length;
   const [state, setState] = useState(() => loadState(league.id));
   const [text, setText] = useState("");
@@ -276,15 +282,15 @@ function StadiumBoard({ league, onExit }) {
 
   const share = async () => {
     const line = state.gaveUp
-      ? `🏟️ ${league.name} grounds — I got ${state.solved.length}/${total} on Ball IQ`
-      : `🏟️ I named all ${total} ${league.name} grounds on Ball IQ — ${hintsUsed === 0 ? "no hints" : `${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`}`;
+      ? t("sg.shareGaveUp", { league: league.name, n: state.solved.length, total })
+      : t("sg.shareAll", { total, league: league.name, hints: hintsUsed === 0 ? t("sg.noHints") : t("sg.hints", { count: hintsUsed, n: hintsUsed }) });
     const url = "https://balliq.app/play";
     try {
       if (navigator.share) { await navigator.share({ text: `${line}\n${url}` }); return; }
     } catch { /* fall through to clipboard */ }
     try {
       await navigator.clipboard.writeText(`${line}\n${url}`);
-      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: "Copied — paste it anywhere" }));
+      window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: t("sg.copied") }));
     } catch {}
   };
 
@@ -298,9 +304,9 @@ function StadiumBoard({ league, onExit }) {
   return (
     <div style={{ minHeight: "100dvh", padding: "16px 0 32px", paddingBottom: 32 + kbInset, maxWidth: 560, margin: "0 auto" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-        <button className="back-btn" onClick={onExit} aria-label="Back">←</button>
+        <button className="back-btn" onClick={onExit} aria-label={t("game.back")}>←</button>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.4px", color: "var(--text)" }}>Name the Stadium</div>
+          <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.4px", color: "var(--text)" }}>{t("sg.title")}</div>
           <div style={{ fontSize: 12.5, color: "var(--t2)" }}>{league.name} · {league.season}</div>
         </div>
         <div className="numeric-mono" aria-live="polite" style={{ fontSize: 16, fontWeight: 700, color: solvedSet.size === total ? "var(--accent)" : "var(--t2)" }}>
@@ -315,10 +321,10 @@ function StadiumBoard({ league, onExit }) {
             value={text}
             onChange={(e) => onType(e.target.value)}
             onKeyDown={onEnter}
-            placeholder="Type any stadium…"
+            placeholder={t("sg.inputPh")}
             autoFocus
             autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
-            aria-label="Type a stadium name"
+            aria-label={t("sg.inputAria")}
             style={{
               width: "100%", padding: "13px 14px", marginTop: 10, borderRadius: 13,
               background: "var(--s2)", border: "1.5px solid var(--border)", color: "var(--text)",
@@ -332,7 +338,7 @@ function StadiumBoard({ league, onExit }) {
             <button onClick={toggleClubs} aria-pressed={state.clubsHidden}
               style={{ padding: "9px 14px", borderRadius: 11, background: "var(--s2)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}>
               <Lightbulb size={13} strokeWidth={2.5} aria-hidden="true" />
-              {showClubs ? "Hide the clubs" : "Show the clubs"}
+              {showClubs ? t("sg.hideClubs") : t("sg.showClubs")}
             </button>
             <div style={{ flex: 1 }} />
             {/* ⚠️ RESET WAS ONLY REACHABLE ONCE YOU HAD FINISHED. `resetRun`
@@ -354,16 +360,16 @@ function StadiumBoard({ league, onExit }) {
                   resetRun();
                 }}
                 onBlur={() => setConfirmReset(false)}
-                aria-label={confirmReset ? `Confirm starting ${league.name} over` : `Start ${league.name} over`}
+                aria-label={confirmReset ? t("sg.confirmAria", { league: league.name }) : t("sg.startAria", { league: league.name })}
                 style={{ padding: "9px 12px", borderRadius: 11, marginRight: 8,
                   background: confirmReset ? "rgba(239,68,68,0.14)" : "transparent",
                   border: `1px solid ${confirmReset ? "rgba(239,68,68,0.5)" : "var(--border)"}`,
                   color: confirmReset ? "#ef4444" : "var(--t2)", fontFamily: "inherit",
                   fontSize: 12.5, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
-                {confirmReset ? "Tap again to clear" : "Start over"}
+                {confirmReset ? t("sg.tapAgain") : t("sg.startOver")}
               </button>
             )}
-            <span style={{ fontSize: 12, color: "var(--t3, var(--t2))" }}>{hintsUsed === 0 ? "No hints yet" : `${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`}</span>
+            <span style={{ fontSize: 12, color: "var(--t3, var(--t2))" }}>{hintsUsed === 0 ? t("sg.noHintsYet") : t("sg.hints", { count: hintsUsed, n: hintsUsed })}</span>
           </div>
         </>
       )}
@@ -372,21 +378,21 @@ function StadiumBoard({ league, onExit }) {
         <div style={{ marginTop: 12, borderRadius: 16, padding: "18px 16px", textAlign: "center", background: state.gaveUp ? "var(--s2)" : "rgba(88,204,2,0.08)", border: `1px solid ${state.gaveUp ? "var(--border)" : "rgba(88,204,2,0.35)"}` }}>
           {!state.gaveUp && Confetti ? <Confetti /> : null}
           <div style={{ fontSize: 19, fontWeight: 900, color: "var(--text)" }}>
-            {state.gaveUp ? "The full list — for next time" : hintsUsed === 0 ? "🏟️ Clean sweep — no hints!" : "🏟️ Every ground named!"}
+            {state.gaveUp ? t("sg.fullList") : hintsUsed === 0 ? t("sg.clean") : t("sg.every")}
           </div>
           <div style={{ fontSize: 13.5, color: "var(--t2)", marginTop: 5 }}>
             {state.gaveUp
-              ? "It stays on the board below — one read and you'll get more of them next run."
-              : `All ${total} ${league.name} grounds${hintsUsed > 0 ? ` · ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}` : ""}.`}
+              ? t("sg.staysBelow")
+              : t("sg.allLine", { total, league: league.name, h: hintsUsed > 0 ? ` · ${t("sg.hints", { count: hintsUsed, n: hintsUsed })}` : "" })}
           </div>
           <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 14, flexWrap: "wrap" }}>
             {!state.gaveUp && (
               <button onClick={share} style={{ padding: "12px 22px", borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", background: "var(--accent)", border: "none", color: "#0a1a00", fontFamily: "inherit", fontSize: 14, fontWeight: 800, cursor: "pointer" }}>
-                Share result
+                {t("sg.shareBtn")}
               </button>
             )}
             <button onClick={resetRun} style={{ padding: "12px 18px", borderRadius: 12, background: "var(--s2)", border: "1px solid var(--border)", color: "var(--text)", fontFamily: "inherit", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-              Run it again
+              {t("sg.again")}
             </button>
           </div>
         </div>
@@ -405,11 +411,10 @@ function StadiumBoard({ league, onExit }) {
         <div style={{ marginTop: 18, padding: "22px 18px", borderRadius: 14, textAlign: "center",
                       background: "var(--s2)", border: "1px dashed var(--border)" }}>
           <div style={{ fontSize: 14.5, fontWeight: 800, color: "var(--text)" }}>
-            {total} grounds to name
+            {t("sg.toName", { n: total })}
           </div>
           <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6, lineHeight: 1.5 }}>
-            Type any {league.name} ground — they land here as you get them.
-            Stuck? Show the clubs.
+            {t("sg.typeAny", { league: league.name })}
           </div>
         </div>
       )}
@@ -466,10 +471,10 @@ function StadiumBoard({ league, onExit }) {
                    "Hint" is also the word this screen already uses — the
                    counter below the input reads "No hints yet" / "3 hints" and
                    is fed by this exact button. */
-                <button onClick={() => revealLetter(c.club)} aria-label={`Reveal a letter of ${c.club}'s stadium`}
+                <button onClick={() => revealLetter(c.club)} aria-label={t("sg.hintAria", { club: c.club })}
                   style={{ flexShrink: 0, padding: "6px 10px", borderRadius: 9, background: "transparent", border: "1px solid var(--border)", color: "var(--t2)", fontFamily: "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
                   <Lightbulb size={11} strokeWidth={2.5} aria-hidden="true" />
-                  Hint
+                  {t("sg.hint")}
                 </button>
               )}
             </div>
@@ -492,7 +497,7 @@ function StadiumBoard({ league, onExit }) {
       {!done && solvedSet.size > 0 && (
         <button onClick={giveUp}
           style={{ marginTop: 16, display: "block", marginLeft: "auto", marginRight: "auto", padding: 8, background: "none", border: "none", color: "var(--t3)", fontFamily: "inherit", fontSize: 13, fontWeight: 700, textDecoration: "underline", cursor: "pointer" }}>
-          Show me the answers
+          {t("sg.answers")}
         </button>
       )}
     </div>

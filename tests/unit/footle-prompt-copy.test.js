@@ -188,10 +188,15 @@ describe('Footle never promises a surname', () => {
     // what got the word removed the first time.
     // The prompt is short by choice; this line is where the nuance now lives,
     // so deleting it would leave the claim unqualified anywhere in the app.
+    // Since i18n step 7 the FAQ renders through tl("faq.footle.a"), so the
+    // sentence lives in the English table and App.jsx must still list the entry.
     const app = FILES.find((f) => f.path.endsWith('App.jsx'));
     expect(app, 'App.jsx not scanned').toBeTruthy();
+    expect(app.code).toMatch(/\{ q: "faq\.footle\.q", a: "faq\.footle\.a" \}/);
+    const en = readFileSync(fileURLToPath(new URL('../../src/i18n/en.js', import.meta.url)), 'utf8');
+    const line = en.split('\n').find((l) => l.includes("'faq.footle.a':")) || '';
     expect(
-      /usually a surname, sometimes a one-name legend/i.test(app.code),
+      /usually a surname, sometimes a one-name legend/i.test(line),
       'The FAQ line explaining mononyms is the only place the app qualifies\n' +
       '  "surname". Keep it, or the prompt overpromises on ~1 day in 12.',
     ).toBe(true);

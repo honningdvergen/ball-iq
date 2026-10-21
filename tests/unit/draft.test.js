@@ -393,7 +393,9 @@ describe('where it lives', () => {
   it('the screen is loaded on demand, opens by address, and has a title', () => {
     expect(app).toMatch(/const Draft = React\.lazy\(\(\) => import\('\.\/screens\/Draft\.jsx'\)\)/);
     expect(app).toMatch(/gameSlug === "draft"/);
-    expect(app).toMatch(/draft: "Draft"/);
+    // The title is a key since i18n step 7: tt.draft, "Draft".
+    expect(app).toMatch(/draft: "tt\.draft"/);
+    expect(readFileSync(new URL('../../src/i18n/en.js', import.meta.url), 'utf8')).toContain("'tt.draft': 'Draft',");
   });
   it('the pitch shows a surname, and for a Korean name that is the first word', () => {
     const src = screen.slice(screen.indexOf('const surname = '), screen.indexOf('const games = '));

@@ -89,7 +89,9 @@ describe('DailyDone — one panel, four surfaces', () => {
   it('a live streak gets ONE evening streak-at-risk nudge, today only, named', () => {
     expect(NOTIF).toMatch(/STREAK_RISK_ID = ID_BASE \+ 40/);
     expect(NOTIF).toMatch(/streak >= 2 && getReminderHour\(\) < STREAK_RISK_HOUR/);
-    expect(NOTIF).toMatch(/\$\{streak\}-day daily streak ends at midnight/);
+    // The words are a key since i18n step 7 (rem.streak), named with the count.
+    expect(NOTIF).toMatch(/t\('rem\.streak', \{ n: streak \}\)/);
+    expect(EN['rem.streak']).toMatch(/\{n\}-day daily streak ends at midnight/);
     expect(NOTIF, 'cancelled with tonight when the player plays').toMatch(/\{ id: ID_BASE \}, \{ id: STREAK_RISK_ID \}/);
     expect((NOTIF_HOOK.match(/scheduleReminderWindow\(\{ skipToday: [^}]*streak: loginStreak \}\)/g) || []).length).toBe(3);
   });

@@ -5,12 +5,15 @@ import { registerPush } from "../lib/push.js";
 import { webPushPermission, webPushSupported } from "../lib/webpush.js";
 import { enableVisitorPush, visitorRemindState, visitorRemindEvent, lastVisitorPushReason } from "../lib/webpushVisitor.js";
 import { loopEvent } from "../App.jsx";
+import { t, useLang } from "../i18n/index.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Inputs: the user, whether
 // today's daily is done, the login streak, the toast, the streak the session
 // started with (the once-more ask at three days), and the web-push pair the
 // results reminder falls back to on the web. Everything else lives here.
 export function useLocalNotifications({ user, dailyDone, loginStreak, showToast, initialStreakRef, webPushOn, handleToggleWebPush }) {
+  // The scheduled reminders carry their words; a language change reschedules them.
+  const lang = useLang();
   const [notifEnabled, setNotifEnabled] = useState(() => {
     try { return localStorage.getItem('biq_notif_enabled') === '1'; } catch { return false; }
   });
@@ -31,7 +34,7 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
       if (!granted) {
         setNotifEnabled(false);
         try { localStorage.removeItem('biq_notif_enabled'); } catch {}
-        showToast('Turn on notifications for Ball IQ in iOS Settings to get reminders');
+        showToast(t('nt.iosOff'));
         return;
       }
       try { localStorage.setItem('biq_notif_enabled', '1'); localStorage.removeItem('biq_notif_disabled'); } catch {}
@@ -42,7 +45,7 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
       const ws = readWordleTodayStatus();
       const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
       scheduleReminderWindow({ skipToday: playedToday, streak: loginStreak });
-      showToast('Daily reminders on 🔔');
+      showToast(t('nt.on'));
     } else {
       // Explicit opt-out. The 'disabled' marker distinguishes "user turned it
       // off" from "flag never set / evicted" so the reconcile self-heal below
@@ -50,7 +53,7 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
       try { localStorage.removeItem('biq_notif_enabled'); localStorage.setItem('biq_notif_disabled', '1'); } catch {}
       setNotifEnabled(false);
       cancelAllReminders();
-      showToast('Daily reminders off');
+      showToast(t('nt.off'));
     }
   }, [dailyDone, showToast, user?.id, loginStreak]);
   // SIGNED-OUT WEB PLAYERS GET THE VISITOR PATH (2026-09-09). This read
@@ -74,7 +77,7 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
       const after = await enableVisitorPush();
       loopEvent(visitorRemindEvent(after), { engine, reason: lastVisitorPushReason() });
       setVisitorTick((t) => t + 1);
-      if (after === 'on') showToast('Daily reminders on 🔔');
+      if (after === 'on') showToast(t('nt.on'));
     }
   }, [handleToggleNotif, handleToggleWebPush, user?.id, showToast]);
   const maybePromptNotif = useCallback(async () => {
@@ -195,7 +198,7 @@ export function useLocalNotifications({ user, dailyDone, loginStreak, showToast,
     const ws = readWordleTodayStatus();
     const playedToday = dailyDone || ws.kind === 'won' || ws.kind === 'lost';
     scheduleReminderWindow({ skipToday: playedToday, streak: loginStreak });
-  }, [notifEnabled, dailyDone, loginStreak]);
+  }, [notifEnabled, dailyDone, loginStreak, lang]);
   useEffect(() => {
     if (loginStreak >= 3 && initialStreakRef.current < 3) {
       try {

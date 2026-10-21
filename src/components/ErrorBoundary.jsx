@@ -10,6 +10,20 @@ import { markBadReviewMoment } from "../lib/review.js";
 // inside useAuth used to escape every boundary (the root boundary rendered
 // inside App, a child of the provider) and white-screen the app.
 // (medical error-observability, medium.)
+//
+// ⚠️ ITS WORDS ARE INLINE, IN BOTH LANGUAGES (i18n step 7). main.jsx imports
+// this file, so importing the i18n runtime here would put it (and Home's
+// English table) in the bundle every marketing page loads. It reads the
+// language <html lang> already carries (i18n/index.js keeps it in step); the
+// lines are en.js / es.js's eb.* keys, and tests/unit/i18n-step7.test.js holds
+// the two copies together.
+export const CRASH_COPY = {
+  en: { title: "Something went wrong", body: "Even the best teams have bad days. Tap below to restart.", restart: "Restart App" },
+  es: { title: "Algo ha fallado", body: "Hasta los mejores equipos tienen un mal día. Toca abajo para reiniciar.", restart: "Reiniciar la app" },
+};
+const crashCopy = () => {
+  try { return CRASH_COPY[/^es/i.test(document.documentElement.lang || "") ? "es" : "en"]; } catch { return CRASH_COPY.en; }
+};
 export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -55,6 +69,7 @@ export class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError && window.__biqReloading) return null;
     if (this.state.hasError) {
+      const copy = crashCopy();
       return (
         <div style={{
           minHeight:"100dvh", display:"flex", flexDirection:"column",
@@ -63,10 +78,10 @@ export class ErrorBoundary extends React.Component {
         }}>
           <div style={{fontSize:48, marginBottom:16}}>⚽</div>
           <div style={{fontSize:20, fontWeight:800, color:"var(--text)", marginBottom:8, letterSpacing:"-0.3px"}}>
-            Something went wrong
+            {copy.title}
           </div>
           <div style={{fontSize:14, color:"var(--t2)", lineHeight:1.7, marginBottom:28}}>
-            Even the best teams have bad days. Tap below to restart.
+            {copy.body}
           </div>
           <button
             onClick={() => { this.setState({ hasError:false, error:null }); window.location.reload(); }}
@@ -76,7 +91,7 @@ export class ErrorBoundary extends React.Component {
               fontWeight:700, color:"var(--grn-ink)", cursor:"pointer"
             }}
           >
-            Restart App
+            {copy.restart}
           </button>
         </div>
       );

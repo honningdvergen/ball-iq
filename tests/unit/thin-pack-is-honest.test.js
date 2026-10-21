@@ -95,8 +95,17 @@ describe('a spent club pack admits it', () => {
     // there are. It must also not promise MORE questions — expanding the packs
     // is the plan, but a delivery promise in a toast rots the moment the plan
     // slips and cannot be un-said to the people who already read it.
-    const m = APP.match(/showToast\(`You know the \$\{pack\.name\} pack inside out[^`]*`\)/);
-    expect(m, 'the thin-pack toast should still exist').toBeTruthy();
+    // Since i18n step 7 the copy lives in the string tables; both languages
+    // are held to the same rule.
+    expect(APP, 'the thin-pack toast should still exist').toMatch(/showToast\(tl\("ts\.packDone", \{ name: pack\.name \}\)\)/);
+    const line = (file) => readFileSync(fileURLToPath(new URL(`../../src/i18n/${file}`, import.meta.url)), 'utf8')
+      .split('\n').find((l) => l.includes("'ts.packDone':"));
+    const m = [line('en.js')];
+    expect(m[0]).toMatch(/You know the \{name\} pack inside out/);
+    const es = line('es.js');
+    expect(es).toBeTruthy();
+    expect(es, 'no digits in the Spanish copy').not.toMatch(/\d/);
+    expect(es, 'no delivery promise in Spanish').not.toMatch(/pronto|más preguntas|añadiendo|llegan/i);
     expect(m[0], 'no digits in the copy').not.toMatch(/\d/);
     expect(m[0], 'no delivery promise').not.toMatch(/soon|coming|more (are|questions)|we('| a)re adding/i);
   });
