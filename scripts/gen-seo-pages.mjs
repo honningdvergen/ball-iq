@@ -3263,14 +3263,21 @@ ${footer()}`;
 //   - print styles, because these get printed for actual pub quizzes
 function buildClubQuestionsPage(cfg, rows) {
   if (rows.length < 20) return null;   // too thin to be worth a page
-  // SELF-CANONICAL AND IN THE SITEMAP AGAIN (Alex, 15 Oct 2026: "we absolutely
-  // have to drive installs ... free them"). From 11 Aug to 15 Oct they pointed
-  // their canonical at the /quiz/ twin and sat out of the sitemap, for the
-  // AdSense "low value content" review. Installs are the 2026 goal, and the
-  // text "questions and answers" search family clicks at 10 to 27% (website
-  // review, 15 Oct). The format is not the quiz page's: rounds of ten, answers
-  // apart, made to be read out and printed.
-  const canonical = `${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/`;
+  // ⚠️ CANONICAL POINTS AT THE /quiz/ TWIN, not self, and the page stays OUT of
+  // the sitemap. History, so nobody "frees" them again without reading this:
+  //   - 11 Aug 2026: canonicalised to the twin for the AdSense "low value
+  //     content" verdict (75 of 282 sitemap URLs were /questions/ near-duplicates
+  //     of /quiz/ pages: the doorway pattern). Google clicks then grew to 100+ a day.
+  //   - 15 Oct: made self-canonical and put back in the sitemap to chase the
+  //     "questions and answers" searches. Search Console began validating them
+  //     on 16 Oct.
+  //   - 20 Oct: Google impressions fell 96% overnight, site-wide (4,380 to 184),
+  //     with no manual action, no security issue and nothing broken. About 45%
+  //     of each /questions/ page repeats its /quiz/ twin word for word, across
+  //     109 pairs. Reverted 21 Oct.
+  // The page stays live for people (linked from its twin, printable); it just
+  // stops competing with its twin in Google's index.
+  const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
   const rounds = [];
   for (let i = 0; i < rows.length; i += 10) rounds.push(rows.slice(i, i + 10));
 
@@ -3347,8 +3354,8 @@ ${as}
   }
 </style>
 ${/* ⚠️ THESE PAGES HAD NO SITE NAV — the only page type on the domain without
-      one. (Out of the sitemap and canonicalised to their /quiz/ twin from
-      11 Aug to 15 Oct 2026; indexed again since.) They are linked from that twin ("Want them as a
+      one. (Out of the sitemap and canonicalised to their /quiz/ twin, 11 Aug to
+      15 Oct 2026 and again from 21 Oct.) They are linked from that twin ("Want them as a
       printable list instead?"), so a real person does land here — and then had
       nowhere to go but back. The print stylesheet above already hides nav,
       header and footer, so adding it costs the printed sheet nothing. */ ''}
@@ -6362,9 +6369,9 @@ async function main() {
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
   build404Page();
-  // /questions/ pages are back in the sitemap, self-canonical (15 Oct 2026):
-  // see buildClubQuestionsPage.
-  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, questionPages, builtHubs);
+  // /questions/ pages are canonicalised to their /quiz/ twins and OUT of the
+  // sitemap again (21 Oct 2026, after the 20 Oct drop): see buildClubQuestionsPage.
+  const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   await pingIndexNow(sitemapUrls);
 
