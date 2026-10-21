@@ -483,7 +483,7 @@ export const CLUBS_ES = [
       },
       {
         "id": "q_05c854",
-        "q": "Cuando Luis Figo volvió al Camp Nou con la camiseta del Real Madrid, los enfurecidos aficionados del Barça lanzaron al césped un objeto que se hizo célebre. ¿Cuál?",
+        "q": "Cuando Luis Figo volvió al Camp Nou con la camiseta del Real Madrid en 2002, los enfurecidos aficionados del Barça lanzaron al césped un objeto que se hizo célebre. ¿Cuál?",
         "o": [
           "Un muñeco en llamas",
           "Una cabeza de cerdo cortada",
@@ -543,7 +543,7 @@ export const CLUBS_ES = [
           "Deco"
         ],
         "a": 0,
-        "hint": "Ronaldinho marcó dos goles en jugadas individuales en un 3-0; después reconoció que ni siquiera se dio cuenta de que la afición rival le estaba ovacionando en pie.",
+        "hint": "Ronaldinho marcó dos goles en un 3-0 y la afición del Real Madrid se levantó a aplaudirle, algo que ningún jugador del Barça vivía en el Bernabéu desde Maradona.",
         "en": "Ronaldinho"
       },
       {

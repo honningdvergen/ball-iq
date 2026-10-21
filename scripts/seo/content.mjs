@@ -334,6 +334,66 @@ export const LISTICLES = [
       'q_1ba67b', 'q_ead8d3', 'q_079e01', 'q_2c1747', 'q_c35d5d', 'q_3862ba',
     ],
   },
+  {
+    // 2026-10-21: calendar edition for El Clásico (Sun 25 Oct 2026). History of
+    // the fixture, never this week's news (Alex scrapped the summer-2026 pack
+    // for testing who had read the news). Ids hand-picked: Real Madrid v
+    // Barcelona only (no other countries' clásicos), no two rows where one stem
+    // gives away another's answer. Five rows added the same day, verified.
+    slug: 'el-clasico-quiz',
+    h1: 'El Clásico Quiz',
+    title: 'El Clásico Quiz: Real Madrid v Barcelona Trivia | Ball IQ',
+    description:
+      'Real Madrid v Barcelona: a free El Clásico quiz on the famous nights, the scorers and the transfers that crossed the divide, with every answer explained.',
+    about: 'El Clásico (Real Madrid v Barcelona)',
+    lede: 'Real Madrid against Barcelona: the nights, the goals and the transfers that made the biggest rivalry in club football.',
+    intro: [
+      `El Clásico is the meeting of Real Madrid and Barcelona, Spain's two most successful clubs and the biggest rivalry in club football. They first met in 1902, and since then the fixture has been played in La Liga, the Copa del Rey, the Supercopa and the Champions League.`,
+      `This quiz is built from the matches people still talk about: the 5-0 at Camp Nou in 2010, the 6-2 at the Bernabéu in 2009, a Barcelona player being applauded by Real Madrid's own fans in 2005, a world-record transfer's return to Camp Nou in a white shirt, and the four Clásicos in 18 days in the spring of 2011.`,
+      `Every question comes with a short explanation, so you finish knowing the story behind the answer. Play the set here for free; the La Liga quiz in the Ball IQ app goes much deeper.`,
+    ],
+    faq: [
+      { q: 'When was the first El Clásico?', a: 'Real Madrid and Barcelona first met in 1902, in the Copa de la Coronación. Barcelona won 3-1.' },
+      { q: 'Is the El Clásico quiz free?', a: 'Yes. Play it here in your browser with no sign-up, or get the free Ball IQ app for thousands more questions and the daily games.' },
+    ],
+    questionIds: [
+      'q_dba0bf', 'q_8f7371', 'q_4ffa0b', 'q_ced61a', 'q_103627',
+      'q_05c854', 'q_d493d4', 'q_80acb7', 'q_1f06fe', 'q_46b80d', 'q_1d1bd0',
+      'q_3e70b2', 'q_a27d85', 'q_c159cb', 'q_66be09', 'q_e4ad5d',
+    ],
+  },
+  {
+    // 2026-10-21: calendar edition for the Ballon d'Or ceremony (Mon 26 Oct
+    // 2026). History only; the 2026 winner is added to /lists/ballon-dor-winners/
+    // once it is announced and sourced, not guessed here. One row per story
+    // (three Weah, three Platini and three Stoichkov questions cut to one each),
+    // and no row whose stem names another row's answer (Kaká, Eusébio's year).
+    slug: 'ballon-dor-quiz',
+    h1: "Ballon d'Or Quiz",
+    title: "Ballon d'Or Quiz: Winners and History Trivia | Ball IQ",
+    description:
+      "A free Ballon d'Or quiz: the winners since 1956, the records and the near misses, with every answer explained.",
+    about: "Ballon d'Or",
+    lede: "Football's most famous individual prize, from 1956 to the present day.",
+    intro: [
+      `The Ballon d'Or, first awarded by France Football in 1956, is football's best-known individual prize. Lionel Messi has won it a record eight times.`,
+      `This quiz covers the whole history: the first winners, the hat-tricks of titles, the first winner from an African nation, the defenders who won it, the players who finished agonisingly close, and the most recent names on the trophy.`,
+      `Every question comes with a short explanation. For the complete roll of honour, year by year, see our list of every Ballon d'Or winner.`,
+    ],
+    faq: [
+      { q: "Who has won the most Ballon d'Ors?", a: 'Lionel Messi, with eight. Cristiano Ronaldo has five.' },
+      { q: "Who awards the Ballon d'Or?", a: 'The French magazine France Football, which first awarded it in 1956.' },
+      { q: "Is the Ballon d'Or quiz free?", a: 'Yes. Play it here in your browser with no sign-up, or get the free Ball IQ app for thousands more questions and the daily games.' },
+    ],
+    questionIds: [
+      'q_0d58b9', 'q_bfed4c', 'q_23692a', 'q_4c0913', 'q_1d815f', 'q_0b5ee8',
+      'q_a1278c', 'q_a8ce09', 'q_598591', 'q_b86d2e', 'q_272797',
+      'q_47a655', 'q_ce0a8c', 'q_a2b84e', 'q_076bee', 'q_687da2', 'q_06ed77',
+      'q_3fb558', 'q_66070a', 'q_af730a', 'q_e559c8', 'q_fb387c', 'q_642df6',
+      'q_691392', 'q_ddad59', 'q_04c278', 'q_c2b609', 'q_9ad088', 'q_5ef981',
+      'q_ac9108', 'q_8241fb', 'q_4b446e', 'q_0c362f', 'q_373559',
+    ],
+  },
 ];
 
 // ── FOOTLE LANDING PAGE ───────────────────────────────────────────────────────
