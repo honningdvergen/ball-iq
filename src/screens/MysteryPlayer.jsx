@@ -25,7 +25,7 @@ import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardA
 // has kept a good copy (lib/scheduleRemote.js), else the bundled schedule.
 import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
 import ROLES from '../data/mysteryRoles.json';
-import { t as tNow, useT, useLang } from '../i18n/index.js';
+import { t as tNow, useT, useLang, fmtLocale } from '../i18n/index.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
 import './mystery.css';
 
@@ -99,7 +99,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // Ranks are grouped the language's way (3,571 / 3571); English keeps the
   // device default it always had.
   const lang = useLang();
-  const num = (v) => (lang === 'en' ? v.toLocaleString() : v.toLocaleString(lang));
+  const num = (v) => v.toLocaleString(fmtLocale());
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes

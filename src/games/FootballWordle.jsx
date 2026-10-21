@@ -26,7 +26,7 @@ import GameTitle from "../components/GameTitle.jsx";
 import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
-import { t, useT } from '../i18n/index.js';
+import { t, useT, fmtLocaleEnglish } from '../i18n/index.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
 import { rich } from '../i18n/rich.jsx';
 import './footle.css';
@@ -464,7 +464,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   }, []);
 
   const dateLabel = useMemo(() => {
-    return new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    return new Date().toLocaleDateString(fmtLocaleEnglish(), { weekday: "long", day: "numeric", month: "long", year: "numeric" }); // the share card's date: English, like its text
   }, [dateKey]);
 
   // Build all 6 grid rows: completed guesses get coloured, current row shows
@@ -536,7 +536,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     // One head for all three share builders (lib/wordle.js) — one puzzle,
     // one share format, and a clued solve says so.
     const head = footleShareHead(APP_NAME, getFootleNumber(), won, state.guesses.length, !!state.clue, !!state.hard);
-    const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Footle streak` : "";
+    const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { n: streak })}` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [state, answer]);
 

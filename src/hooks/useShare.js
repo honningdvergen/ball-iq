@@ -5,11 +5,63 @@ import { APP_NAME, getLevelInfo } from "../lib/scoring.js";
 import { Share as CapShare } from "@capacitor/share";
 import { avatarColour } from "../lib/avatarColour.js";
 import { firstLetter as firstLetterOf } from "../components/ProfilePic.jsx";
-import { resultVerdict } from "../lib/resultVerdict.js";
+import { t, getLang } from "../i18n/index.js";
 import { loopEvent, shareCard, IS_NATIVE, INVITE_BASE_URL, LEAGUE_QUIZ_BY_CAT, CAT_TO_QUIZ_SLUG } from "../App.jsx";
 // A club result only exists after launchClubQuiz has awaited the lazy club
 // tables, so a share reads them synchronously (an await could spend the tap).
 import { clubData } from "../lib/clubData.js";
+
+// ── The share texts, in the sharer's language (i18n step 6) ─────────────────
+// Pure, so tests/unit/i18n-last-english.test.js can hold the English to the
+// code main had before step 6, byte for byte, over a grid of inputs.
+
+/** The Daily 7 challenge share, line by line (the last line is the link). */
+export function dailyShareLines({ score, total = 7, streak = 0, url, date = new Date() }) {
+  const lang = getLang();
+  const dateStr = date.toLocaleDateString(lang === "en" ? "en-GB" : lang, { day: "numeric", month: "short" });
+  const grid = Array.from({ length: total }, (_, i) => i < score ? "✅" : "❌").join("");
+  const streakLine = streak > 0 ? t("share.d7Streak", { n: streak }) : "";
+  return [
+    `⚽ ${APP_NAME} Daily 7`,
+    `📅 ${dateStr}`,
+    `🎯 ${score}/${total}`,
+    streakLine,
+    "",
+    grid,
+    "",
+    t("share.d7Beat"),
+    url,
+  ].filter(Boolean);
+}
+
+// resultVerdict's bands (lib/resultVerdict.js) as the rv.* keys: the same English.
+const verdictKey = (pct) => (pct === 100 ? "rv.100" : pct >= 80 ? "rv.80" : pct >= 60 ? "rv.60" : pct >= 40 ? "rv.40" : "rv.0");
+const SCORE_KEYS = {
+  daily: "share.mDaily", classic: "share.mClassic", survival: "share.mSurvival", hotstreak: "share.mHotstreak",
+  truefalse: "share.mTruefalse", legends: "share.mLegends", local: "share.mLocal", chaos: "share.mChaos",
+};
+/** A mode's plain-text result (the image share's fallback, and local play's whole share). */
+export function scoreShareText(mode, { score, total, url }) {
+  const pct = total ? Math.round(score / total * 100) : 0;
+  const key = SCORE_KEYS[mode] || SCORE_KEYS.classic;
+  const vars = { app: APP_NAME, score, total, pct, url, beat: t("share.beat") };
+  if (key === SCORE_KEYS.daily) vars.dots = Array.from({ length: total }, (_, i) => i < score ? "🟢" : "🔴").join("");
+  if (key === SCORE_KEYS.classic) {
+    vars.medal = pct === 100 ? "🏆" : pct >= 80 ? "🔥" : pct >= 60 ? "⚽" : "😅";
+    vars.verdict = t(verdictKey(pct));
+  }
+  return t(key, vars);
+}
+
+const LABEL_KEYS = {
+  classic: "share.lClassic", daily: "share.lDaily", survival: "share.lSurvival", hotstreak: "share.lHotstreak",
+  truefalse: "share.lTruefalse", legends: "share.lLegends", local: "share.lLocal", chaos: "share.lChaos",
+};
+/** The result's name in the line under the card ("… on Arsenal Quiz"); the card itself prints the English. */
+export function scoreShareLabel(mode, packName) {
+  if (packName) return t("share.lPack", { name: packName });
+  return LABEL_KEYS[mode] ? t(LABEL_KEYS[mode]) : t("share.lQuiz");
+}
 
 // Extracted from AppInner on 2026-09-06 (review E16). Everything a share needs
 // is an input; the ask-your-name sheet's state is this hook's own.
@@ -29,29 +81,13 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     // one or the other on iOS Safari → WhatsApp / Twitter / Instagram, and the
     // canvas→Blob path can silently fail. Plain text works universally.
     const score = dailyScore || 0;
-    const total = 7;
-    const dateStr = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-    const grid = Array.from({ length: total }, (_, i) => i < score ? "✅" : "❌").join("");
-    const streakLine = loginStreak > 0
-      ? `🔥 ${loginStreak}-day streak`
-      : "";
     // 1.1 async challenge: encode score + date (+ challenger name) into the
     // link so a friend who opens it sees "beat my X/7" on today's deterministic
     // Daily 7 and gets a head-to-head compare after they finish. Format:
     // balliq.app/?c=SCORE.YYYYMMDD[.Name]
     const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
     const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}${user?.id ? `?f=${user.id}` : ""}`;
-    const lines = [
-      `⚽ ${APP_NAME} Daily 7`,
-      `📅 ${dateStr}`,
-      `🎯 ${score}/${total}`,
-      streakLine,
-      "",
-      grid,
-      "",
-      "Think you can beat me?",
-      challengeUrl,
-    ].filter(Boolean);
+    const lines = dailyShareLines({ score, streak: loginStreak, url: challengeUrl });
     const text = lines.join("\n");
     // The share sheet gets the link as a first-class `url`, not buried at the
     // end of `text`: targets that keep only one field (Instagram, some mail
@@ -75,10 +111,10 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     }
     try {
       await navigator.clipboard.writeText(text);
-      showToast("📋 Copied to clipboard");
+      showToast(t("share.d7Copied"));
       loopEvent("share-daily-done", { via: "clipboard" });
     } catch {
-      showToast("Couldn't share — try again");
+      showToast(t("share.fail"));
     }
   }, [dailyScore, loginStreak, showToast]);
   const shareDaily = useCallback(() => {
@@ -110,8 +146,6 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
   const shareScore = useCallback(async (score, total, mode, extras = {}) => {
     // Per-mode plaintext fallback (used only when the image share path
     // fails). Game-result focused — no profile bits.
-    const pct = total ? Math.round(score / total * 100) : 0;
-    const beat = "Can you beat me? ⚽";
     // opportunity-scan #1: deep-link recipients into the app — and for
     // club/league results, into the exact quiz they were just beaten at.
     const clubs = clubData();
@@ -119,23 +153,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     const quizSlug = extras?.league ? CAT_TO_QUIZ_SLUG[extras.league] : null;
     const deepLink = clubSlug ? `/play?club=${clubSlug}` : quizSlug ? `/play?quiz=${quizSlug}` : "/play";
     const url = `balliq.app${deepLink}`;
-    const msgs = {
-      daily: (() => {
-        const dots = Array.from({length: total}, (_, i) => i < score ? '🟢' : '🔴').join('');
-        return `⚽ ${APP_NAME} — Daily 7\n${dots}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
-      })(),
-      classic: (() => {
-        const medal = pct === 100 ? '🏆' : pct >= 80 ? '🔥' : pct >= 60 ? '⚽' : '😅';
-        return `${medal} ${APP_NAME} — Classic Quiz\n${resultVerdict(pct)}\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`;
-      })(),
-      survival:  `🔥 ${APP_NAME} — Survival\n${score} in a row before missing one\n${beat}\n${url}`,
-      hotstreak: `⚡🔥 ${APP_NAME} — Hot Streak\n${score} correct in 60 seconds (${total} answered)\n${beat}\n${url}`,
-      truefalse: `✅ ${APP_NAME} — True or False\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      legends:   `📜 ${APP_NAME} — Legends & History\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-      local:     `🤝 ${APP_NAME} — Local Multiplayer\nFinal scores in — settle it on the rematch.\n${beat}\n${url}`,
-      chaos:     `🎭 ${APP_NAME} — Chaos\n${score}/${total} correct · ${pct}% accuracy\n${beat}\n${url}`,
-    };
-    const text = msgs[mode] || msgs.classic;
+    const text = scoreShareText(mode, { score, total, url });
 
     // Couch multiplayer (mode "local"): players rotate through ONE shared
     // question list, so there is no per-player score/total fraction — the
@@ -144,7 +162,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     if (mode === "local") {
       try {
         if (IS_NATIVE) {
-          await CapShare.share({ title: APP_NAME, text, dialogTitle: "Share result" });
+          await CapShare.share({ title: APP_NAME, text, dialogTitle: t("share.dlgResult") });
           return;
         }
         if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
@@ -156,12 +174,13 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       }
       try {
         await navigator.clipboard.writeText(text);
-        showToast("Copied to clipboard 📋");
+        showToast(t("share.copied"));
       } catch {}
       return;
     }
 
-    // Pick the right card variant + payload for shareCard.
+    // Pick the right card variant + payload for shareCard. The card is
+    // English (lib/shareCardRender.js); shareLabel is the line under it.
     const MODE_LABELS = {
       classic: "Classic Quiz",
       daily: "Daily 7",
@@ -182,11 +201,12 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       // identity ("Arsenal Quiz — 9/10") instead of a generic Classic label;
       // the club/league name is the single most shareable element.
       const pack = extras?.club ? clubs?.CLUB_PACKS[extras.club] : null;
-      const packLabel = pack ? `${pack.name} Quiz`
-        : extras?.league && LEAGUE_QUIZ_BY_CAT[extras.league] ? `${LEAGUE_QUIZ_BY_CAT[extras.league].name} Quiz`
+      const packName = pack ? pack.name
+        : extras?.league && LEAGUE_QUIZ_BY_CAT[extras.league] ? LEAGUE_QUIZ_BY_CAT[extras.league].name
         : null;
       cardData = {
-        modeLabel: packLabel || MODE_LABELS[mode] || "Quiz",
+        modeLabel: packName ? `${packName} Quiz` : MODE_LABELS[mode] || "Quiz",
+        shareLabel: scoreShareLabel(mode, packName),
         score,
         total,
         streak: extras?.streak,
@@ -233,7 +253,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       initial: firstLetterOf(name),
     }, {
       onToast: showToast,
-      textFallback: `${shareLine(card, readCardDelta(), APP_NAME)} ${INVITE_BASE_URL}/play`,
+      textFallback: `${shareLine(card, readCardDelta(), APP_NAME, t)} ${INVITE_BASE_URL}/play`,
     });
   }, [stats, authProfile?.username, authProfile?.avatar_url, profile.name, profile.avatar, user?.id, xp, showToast]);
   const shareProfile = useCallback(async () => {
@@ -291,17 +311,17 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     const url = `https://balliq.app/p?${params.toString()}`;
     loopEvent("share-p");
     // Lead with the strongest league and today's move, not the overall alone.
-    const text = shareLine(card, readCardDelta(), APP_NAME);
+    const text = shareLine(card, readCardDelta(), APP_NAME, t);
     try {
       if (IS_NATIVE) {
-        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: "Share your profile" });
+        await CapShare.share({ title: APP_NAME, text, url, dialogTitle: t("share.dlgProfile") });
         return;
       }
       if (navigator.share) { await navigator.share({ title: APP_NAME, text, url }); return; }
-      if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); return; }
+      if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast(t("share.linkCopied")); return; }
     } catch (e) {
       if (e && (e.name === "AbortError" || /cancel/i.test(e?.message || ""))) return; // user dismissed the sheet
-      try { if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast("Link copied 📋"); } } catch {}
+      try { if (navigator.clipboard) { await navigator.clipboard.writeText(`${text} ${url}`); showToast(t("share.linkCopied")); } } catch {}
     }
   }, [xp, stats, profile, loginStreak, showToast, authProfile]);
   return { shareScore, saveCardImage, shareProfile, shareDaily, performDailyShare, submitShareName, cancelShareName, resolveChallengerName, askShareName, askShareNameRef, shareNameDraft, setShareNameDraft, shareNameRef };

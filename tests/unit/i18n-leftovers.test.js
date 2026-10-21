@@ -18,6 +18,7 @@ const es = (await import('../../src/i18n/es.js')).default;
 const enHome = (await import('../../src/i18n/en.home.js')).default;
 const { STEP5_EN } = await import('./i18n-leftovers.keys.js');
 const { STEP4_EN } = await import('./i18n-screens.keys.js');
+const { STEP6_EN } = await import('./i18n-last-english.keys.js');
 const { footleShareHead } = await import('../../src/lib/wordle.js');
 const { buildTrailShareText, TRAIL_MAX_ATTEMPTS } = await import('../../src/lib/trail.js');
 const { buildMysteryShareText } = await import('../../src/lib/mysteryPlayer.js');
@@ -83,7 +84,7 @@ describe('the step 5 keys', () => {
   it('the pinned list is every key step 5 added (after step 4\'s, to the end of en.js)', () => {
     const keys = Object.keys(en);
     const first = keys.findIndex((k) => Object.hasOwn(STEP5_EN, k));
-    expect(keys.slice(first).sort()).toEqual(Object.keys(STEP5_EN).sort());
+    expect(keys.slice(first).filter((k) => !Object.hasOwn(STEP6_EN, k)).sort()).toEqual(Object.keys(STEP5_EN).sort());
     expect(keys.slice(0, first).some((k) => Object.hasOwn(STEP5_EN, k))).toBe(false);
     expect(Object.hasOwn(STEP4_EN, keys[first - 1])).toBe(true);
   });

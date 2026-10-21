@@ -94,11 +94,21 @@ export function resolveLang(isLive = live) {
 export function getLang() { return lang; }
 
 /**
- * The locale for toLocaleDateString / toLocaleString: undefined in English, so
- * English keeps the device's own formats exactly as before; the active
- * language otherwise.
+ * The locale for text that is English whatever the language (the share
+ * card): the device's own formats, as before, except on a Spanish device.
+ * Since iOS lists es in CFBundleLocalizations (step 5) a Spanish iPhone can
+ * report es to the WebView, and English text must not format in Spanish
+ * ("martes, 21 de octubre" in an English line); there it is 'en'.
  */
-export function fmtLocale() { return lang === DEFAULT_LANG ? undefined : lang; }
+export function fmtLocaleEnglish() { return detectDeviceLang() === 'es' ? 'en' : undefined; }
+
+/**
+ * The locale for toLocaleDateString / toLocaleString / Intl.*Format: in
+ * English the device's own formats exactly as before (fmtLocaleEnglish: 'en'
+ * on a Spanish device); the active language otherwise. Every such call in
+ * src/ passes a locale (tests/unit/i18n-locale-calls.test.js).
+ */
+export function fmtLocale() { return lang === DEFAULT_LANG ? fmtLocaleEnglish() : lang; }
 
 /** x with d decimals: toFixed in English (as before), the language's own decimal mark otherwise. */
 export function fmtFixed(x, d) {

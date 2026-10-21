@@ -9,6 +9,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { FootballWordle } from '../games/FootballWordle.jsx';
 import { getFootleNumber } from '../lib/wordle.js';
+import { fmtLocaleEnglish } from '../i18n/index.js';
 import { marketingEvent } from '../lib/marketingEvent.js';
 import { makeGetAppCTA, makeDailyDoneServices } from './dailyIsland.jsx';
 
@@ -54,7 +55,7 @@ try {
   const m = document.getElementById('footle-masthead');
   const n = getFootleNumber();
   if (m && n > 0) {
-    const day = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+    const day = new Date().toLocaleDateString(fmtLocaleEnglish(), { weekday: 'long', day: 'numeric', month: 'long' }); // an English page
     m.innerHTML = `<b>Footle No. ${n}</b> · ${day} · a new name at midnight, the same for everyone`;
     m.hidden = false;
   }

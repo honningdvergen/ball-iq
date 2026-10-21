@@ -19,6 +19,8 @@
 // come back empty and the UI shows nothing: no league card, no crash.
 
 import { isNativeShell, leagueWeekStart, flushLeagueOutbox, setLeagueTokenSource } from './leagueResults.js';
+import '../i18n/en.js'; // the full English table: not on Home's eager path
+import { t } from '../i18n/index.js';
 
 // Re-exported so the app reaches the results lib through this lazy chunk: a
 // dynamic import of leagueResults.js from App.jsx pulled it into Home's eager
@@ -153,15 +155,18 @@ export function finalShareText(meta, rows) {
   if (names('bottled').length) parts.push(`Bottled it: ${and(names('bottled'))}.`);
   return parts.join(' ');
 }
-export const inviteShareText = (name, url) => `Join ${name} on Ball IQ: the four dailies, Monday to Sunday. ${url}`;
+// The two invites are in the sharer's language (i18n step 6; English pinned
+// in tests/unit/i18n-last-english.test.js). The rest of this file's copy is
+// still English, like the league screens.
+export const inviteShareText = (name, url) => t('share.leagueInvite', { name, url });
 
 const GAME_NAME = { footle: 'Footle', trail: 'Transfer Trail', top10: 'Top 10', daily7: 'Daily 7' };
 const h2hScore = (game, s) => (game === 'top10' ? `${s}/10` : game === 'daily7' ? `${s}/7` : s > 0 ? String(s) : 'X');
 /** "Footle No. 166: 3 v your 5. Make it a week? {link}" */
 export function h2hShareText(h, url) {
   if (!h || !GAME_NAME[h.game]) return null;
-  const what = h.game === 'daily7' ? 'Daily 7' : `${GAME_NAME[h.game]} No. ${h.edition}`;
-  return `${what}: ${h2hScore(h.game, h.mine)} v your ${h2hScore(h.game, h.theirs)}. Make it a week? ${url}`;
+  const what = h.game === 'daily7' ? 'Daily 7' : t('share.h2hWhat', { game: GAME_NAME[h.game], edition: h.edition });
+  return t('share.h2h', { what, mine: h2hScore(h.game, h.mine), theirs: h2hScore(h.game, h.theirs), url });
 }
 /** The name a head-to-head league starts with: "Alex v Sam". */
 export function h2hLeagueName(rival, me) {

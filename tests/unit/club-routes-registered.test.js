@@ -40,8 +40,9 @@ describe("the card's club routes", () => {
 
   it("every source of club answers waits for them", () => {
     // 1. Bank rounds: no bank without the routes.
-    // (i18n step 5 added the Spanish text, a no-op for English, as a fourth.)
-    expect(bankLoader).toMatch(/Promise\.all\(\[import\('\.\/questions\.js'\), import\('\.\/questionConflicts\.js'\), loadClubData\(\), loadSpanishQuestions\(\)\]\)/);
+    // (i18n step 5 added the Spanish text, a no-op for English, as a fourth;
+    // step 6 capped its wait, i18n-review-fixes.test.js.)
+    expect(bankLoader).toMatch(/Promise\.all\(\[import\('\.\/questions\.js'\), import\('\.\/questionConflicts\.js'\), loadClubData\(\), loadSpanishQuestionsCapped\(\)\]\)/);
     // 2. The web's queued club-page rounds drain only once the tables have landed.
     expect(app).toMatch(/loadClubData\(\)\.then\(\(\) => \{\s*const pending = drainPendingRounds\(\);/);
     // 3. And the load starts at App.jsx module level, not on some later tap.

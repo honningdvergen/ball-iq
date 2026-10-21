@@ -10,7 +10,7 @@ import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD, msToNextLocalMidnight } from "../lib/date.js";
-import { countdownText } from "../i18n/names.js";
+import { countdownText, levelName } from "../i18n/names.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
 import { TOPICAL_PACK } from "../lib/quiz.js";
@@ -20,7 +20,7 @@ import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
-import { useT, useLang } from "../i18n/index.js";
+import { useT, useLang, fmtLocale } from "../i18n/index.js";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
 const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
 
@@ -185,7 +185,7 @@ function HomeScreenImpl({
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
   const t = useT();
-  const lang = useLang();
+  useLang(); // the dateline and the XP follow the language (fmtLocale)
   // The card fetches for a member on this browser, or once a session for a
   // signed-in player (a membership made on another device).
   const leagueCardOn = !!onOpenLeague && (() => {
@@ -420,7 +420,7 @@ function HomeScreenImpl({
         return (
           <div className="daily-zone" role="group" aria-label={t("home.today.label")}>
             <div className="daily-zone-head">
-              <span className="hg-dateline">{new Date().toLocaleDateString(lang === "en" ? undefined : lang, { weekday: "long", day: "numeric", month: "long" })}</span>
+              <span className="hg-dateline">{new Date().toLocaleDateString(fmtLocale(), { weekday: "long", day: "numeric", month: "long" })}</span>
               <button type="button" className={`daily-zone-status hit44${allDone ? " is-done" : ""}`}
                 onClick={() => setTab("daily")}
                 aria-label={allDone ? t("home.today.allDoneAria", { total }) : t("home.today.progressAria", { done: doneCount, total })}>
@@ -612,7 +612,7 @@ function HomeScreenImpl({
                     <span className="hr-rating-nametext">{railName}</span>
                     <svg className="hr-rating-pencil" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
                   </div>
-                  <span className="hr-rating-lvl"><lvl.level.Icon size={13} strokeWidth={2.3} /> {lvl.level.name ? `${lvl.level.name} · ` : ""}{(xp || 0).toLocaleString()} XP</span>
+                  <span className="hr-rating-lvl"><lvl.level.Icon size={13} strokeWidth={2.3} /> {lvl.level.name ? `${levelName(lvl.level.name)} · ` : ""}{(xp || 0).toLocaleString(fmtLocale())} XP</span>
                 </div>
               </div>
               {/* A rating you have not earned is not a rating. computeCard's

@@ -40,6 +40,8 @@ let es = null;        // id -> { q, o?, hint? }
 let english = null;   // id -> the bank's own row (its `o` in authored order)
 let idByText = null;  // English question/statement text -> id (records that kept no id)
 let inflight = null;
+let pastCap = false;            // a quiz stopped waiting and opened in English (ES_BANK_WAIT_MS)
+const shownEnglish = new Set(); // questions printed in English past the cap, this session
 let version = 0;
 const listeners = new Set();
 function bump() {
@@ -60,7 +62,7 @@ export function loadSpanishQuestions() {
   if (es) return Promise.resolve(true);
   if (!inflight) {
     inflight = loader()
-      .then((table) => { es = table && typeof table === 'object' ? table : null; bump(); return !!es; })
+      .then((table) => { es = table && typeof table === 'object' ? table : null; if (es) pastCap = false; bump(); return !!es; })
       .catch(() => false)
       .finally(() => { inflight = null; });
   }
@@ -68,6 +70,34 @@ export function loadSpanishQuestions() {
 }
 // A switch to Spanish mid-session fetches it then; a switch back just prints English.
 subscribeLang(() => { if (getLang() === 'es' && !es) loadSpanishQuestions(); bump(); });
+
+// ⚠️ A QUIZ NEVER WAITS LONGER THAN THIS FOR THE TABLE (step 6, the review of
+// step 5). questions-loader.js used to put the fetch in the bank's Promise.all,
+// so a slow or hanging connection held every Spanish quiz on its loading
+// screen with no end. Now the bank waits up to ES_BANK_WAIT_MS; past that the
+// quiz opens in English and the fetch carries on. A question that printed in
+// English while the table was late stays English when it lands (no switching
+// under the player's eyes); the next question is Spanish.
+export const ES_BANK_WAIT_MS = 2500;
+
+/**
+ * loadSpanishQuestions(), but resolved after `ms` at the latest (false: the
+ * table is late, questions print in English until it lands). Never rejects.
+ */
+export function loadSpanishQuestionsCapped(ms = ES_BANK_WAIT_MS) {
+  const load = loadSpanishQuestions();
+  if (es || getLang() !== 'es') return load;
+  return new Promise((done) => {
+    const timer = setTimeout(() => { if (!es) pastCap = true; done(false); }, ms);
+    load.then((ok) => { clearTimeout(timer); done(ok); });
+  });
+}
+
+// The English bank, for the answer review's id-less records (matched by their
+// English text). questions-loader.js registers its loadQuestions() here; this
+// file cannot import it (it imports this file).
+let bankLoader = null;
+export function registerBankLoader(fn) { bankLoader = fn; }
 
 /**
  * questions-loader.js hands over the bank as it resolves, so an option can be
@@ -118,7 +148,13 @@ function optionFor(key, row, text) {
 /** A bank question as the player sees it. English: the very same object. */
 function locQuestion(q) {
   if (!q || typeof q !== 'object') return q;
-  const hit = rowFor(q.id, typeof q.q === 'string' ? q.q : q.s);
+  const text = typeof q.q === 'string' ? q.q : q.s;
+  if (getLang() === 'es') {
+    const seen = q.id ?? text;
+    if (!es) { if (pastCap && seen != null) shownEnglish.add(seen); return q; }
+    if (shownEnglish.has(seen)) return q;
+  }
+  const hit = rowFor(q.id, text);
   if (!hit) return q;
   const { key, row } = hit;
   const out = { ...q };
@@ -176,10 +212,17 @@ const getVersion = () => version;
 export function useQuestionText() {
   useSyncExternalStore(subscribe, getVersion, getVersion);
   // A screen that prints stored questions (History's review) can open before
-  // any bank load has asked for the table; for English this does nothing.
-  useEffect(() => { if (getLang() === 'es' && !es) loadSpanishQuestions(); }, []);
+  // any bank load has asked for the table, or for the English bank its
+  // id-less records are found in (step 6: straight after launch the review
+  // printed English); for English this does nothing.
+  const lang = getLang();
+  useEffect(() => {
+    if (lang !== 'es') return;
+    if (!es) loadSpanishQuestions();
+    if (!bank && bankLoader) Promise.resolve().then(bankLoader).catch(() => { /* offline: English, as before */ });
+  }, [lang]);
   return questionText;
 }
 
 /** Tests only: swap the fetch (resolve to the table) and forget a loaded table. */
-export function __setSpanishQuestionsLoaderForTests(fn) { loader = fn || fetchBank; es = null; inflight = null; bump(); }
+export function __setSpanishQuestionsLoaderForTests(fn) { loader = fn || fetchBank; es = null; inflight = null; pastCap = false; shownEnglish.clear(); bump(); }
