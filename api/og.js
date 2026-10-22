@@ -46,6 +46,14 @@ const h = (type, props, ...children) => ({
   props: { ...(props || {}), children: children.length === 0 ? undefined : (children.length === 1 ? children[0] : children) },
 });
 
+// The brand mark on every card: the app icon (the Centre Circle Q, served by
+// this deployment, so a new icon reaches the cards with no edit here) and the
+// name. Set per request by the handler; every request comes in on balliq.app.
+let ORIGIN = 'https://balliq.app';
+const brandMark = (color) => h('div', { style: { display: 'flex', alignItems: 'center', gap: 12 } },
+  h('img', { src: `${ORIGIN}/icon-192.png`, width: 40, height: 40, style: { width: 40, height: 40, borderRadius: 10 } }),
+  h('div', { style: { fontSize: 30, fontWeight: 800, color, display: 'flex' } }, 'Ball IQ'));
+
 // Stump-a-mate card (?t=stump): the question, answer redacted — paired with
 // api/q.js. Same 1200×630 canvas, app palette (near-black + brand green).
 function stumpCard(sp) {
@@ -58,12 +66,12 @@ function stumpCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
+      fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 26 } },
@@ -117,12 +125,12 @@ function challengeCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
+      fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, dateLabel ? `Daily 7 · ${dateLabel}` : 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 30 } },
@@ -155,11 +163,11 @@ function gameChallengeCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#12141b 0%,#0B0C10 60%)',
-      borderTop: `9px solid ${colour}`, fontFamily: 'Inter', position: 'relative', padding: '0 72px',
+      fontFamily: 'Inter', position: 'relative', padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, no ? `${game} No. ${no}` : 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 26 } },
@@ -190,11 +198,11 @@ function stitchCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#0f1820 0%,#0B0C10 60%)',
-      borderTop: `9px solid ${blue}`, fontFamily: 'Inter', position: 'relative', padding: '0 72px',
+      fontFamily: 'Inter', position: 'relative', padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'Stitch-up'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 24 } },
@@ -219,11 +227,11 @@ function leagueCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#17150d 0%,#0B0C10 60%)',
-      borderTop: `9px solid ${gold}`, fontFamily: 'Inter', position: 'relative', padding: '0 72px',
+      fontFamily: 'Inter', position: 'relative', padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 22 } },
@@ -269,12 +277,12 @@ function inviteCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
+      fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 26 } },
@@ -318,12 +326,12 @@ function clubCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: '9px solid #58CC02', fontFamily: 'Inter', position: 'relative',
+      fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: 40 } },
@@ -380,12 +388,12 @@ function scoreCard(sp) {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      borderTop: `9px solid ${brand}`, fontFamily: 'Inter', position: 'relative',
+      fontFamily: 'Inter', position: 'relative',
       padding: '0 72px',
     },
   },
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: '#F0F1F5', display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark('#F0F1F5'),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: 48 } },
@@ -415,6 +423,7 @@ function scoreCard(sp) {
 
 export default async function handler(req) {
   const url = new URL(req.url);
+  ORIGIN = url.origin;
   const fonts = await loadFonts(url.origin);
   return new ImageResponse(cardTree(url.searchParams), {
     width: 1200, height: 630, emoji: 'twemoji', ...(fonts && { fonts }),
@@ -505,13 +514,13 @@ function cardTree(sp) {
   const tree = h('div', {
     style: {
       width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: t.bg, borderTop: `9px solid ${t.accent}`, fontFamily: 'Inter', position: 'relative',
+      background: t.bg, fontFamily: 'Inter', position: 'relative',
       padding: '0 64px',
     },
   },
     h('div', { style: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 38%)' } }),
     h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      h('div', { style: { fontSize: 30, fontWeight: 800, color: t.text, display: 'flex' } }, '⚽ Ball IQ'),
+      brandMark(t.text),
       h('div', { style: { fontSize: 22, fontWeight: 500, color: t.text, opacity: 0.6, display: 'flex' } }, 'balliq.app'),
     ),
     h('div', { style: { flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 56 } },
