@@ -507,3 +507,39 @@ describe('Draft No. N, par and the share', () => {
     expect(app).toMatch(/loopEvent\('draft-finish'/);
   });
 });
+
+describe('where a man stands on the pitch', async () => {
+  const { lineUp, prepare: prep } = await import('../../src/lib/draftModel.js');
+  const LANES = JSON.parse(readFileSync(new URL('../../src/data/draftLanes.json', import.meta.url), 'utf8'));
+  const Dl = prep(RAW, LANES);
+  const man = (name) => Dl.squads.flatMap((s) => s.players).find((p) => p.n === name);
+  const names = (at) => at.map((m) => m?.n ?? null);
+  it('reads each man’s side: Salah right wing, Rio Ferdinand centre-back, Robertson left-back', () => {
+    expect(man('Mohamed Salah').lane).toBe('R');
+    expect(man('Rio Ferdinand').lane).toBe('C');
+    expect(man('Andy Robertson').lane).toBe('L');
+  });
+  // Alex, 22 Oct 2026: his first pick, Salah, stood on the left wing, and Rio
+  // Ferdinand at left-back, because a line used to fill from the left.
+  it('a first pick goes to his own side, not the left-most place', () => {
+    expect(names(lineUp('FW', [man('Mohamed Salah')]))).toEqual([null, null, 'Mohamed Salah']);
+    expect(names(lineUp('DF', [man('Rio Ferdinand')]))).toEqual([null, 'Rio Ferdinand', null, null]);
+    expect(names(lineUp('DF', [man('Andy Robertson')]))).toEqual(['Andy Robertson', null, null, null]);
+  });
+  it('two for one side: the second takes the nearest free place, and nobody is dropped', () => {
+    const at = lineUp('DF', [{ n: 'a', lane: 'R' }, { n: 'b', lane: 'R' }, { n: 'c', lane: null }, { n: 'd', lane: 'C' }]);
+    expect(at.every(Boolean)).toBe(true);
+    expect(names(at)[3]).toBe('a');
+    expect(new Set(names(at)).size).toBe(4);
+  });
+  it('a man with no lane takes the middle first, and the lanes file covers only real players', () => {
+    expect(names(lineUp('FW', [{ n: 'x', lane: null }]))).toEqual([null, 'x', null]);
+    const ids = new Set(RAW.squads.flatMap((q) => q[10].map((r) => r[0])));
+    for (const list of Object.values(LANES)) for (const id of list) expect(ids.has(id)).toBe(true);
+  });
+  it('without the lanes file every man is laned nowhere and the line still fills', () => {
+    const p = D.squads[0].players.filter((x) => x.p === 'DF').slice(0, 4);
+    expect(p.every((x) => x.lane === null)).toBe(true);
+    expect(lineUp('DF', p).every(Boolean)).toBe(true);
+  });
+});

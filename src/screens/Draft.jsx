@@ -29,7 +29,7 @@ import {
   POS, FORMATION, SPINS, GAMES,
   prepare, strength, playSeason, dayLuck, standing, ordinal, expectedPoints, seasonLabel,
   freshGame, restoreGame, settleSpin, respin, takePick, picksOf, openIn, squadKeyAt,
-  draftNumber, parPoints, buildDraftShareText,
+  draftNumber, parPoints, buildDraftShareText, lineUp,
 } from "../lib/draftModel.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
@@ -115,8 +115,9 @@ function useSquads() {
   const [state, setState] = useState({ D: null, failed: false });
   useEffect(() => {
     let live = true;
-    import("../data/draftSquads.json")
-      .then((m) => { if (live) setState({ D: prepare(m.default || m), failed: false }); })
+    // The lanes (which side each man played, for the pitch) ride with the squads.
+    Promise.all([import("../data/draftSquads.json"), import("../data/draftLanes.json")])
+      .then(([m, l]) => { if (live) setState({ D: prepare(m.default || m, l.default || l), failed: false }); })
       .catch(() => { if (live) setState({ D: null, failed: true }); });
     return () => { live = false; };
   }, []);
@@ -330,18 +331,21 @@ function Head({ no, sub, onBack, right }) {
 }
 
 // The eleven so far, attack at the top. A place lights up when it is filled;
-// the man being considered shows where he would go.
+// the man being considered shows where he would go. Each man stands on his own
+// side of the pitch (lineUp, draftModel.js), not just the next place along.
 function Pitch({ picks, chosen }) {
   const t = useT();
   return (
     <div className="dr-pitch" role="list" aria-label={t("dr.xi")}>
       {LINES.map((pos) => {
-        const mine = picks.filter((x) => x.p.p === pos);
+        const men = picks.filter((x) => x.p.p === pos).map((x) => ({ x, lane: x.p.lane }));
+        if (chosen?.p === pos) men.push({ ghost: true, lane: chosen.lane });
+        const at = lineUp(pos, men);
         return (
           <div key={pos} className="dr-pitch-row">
             {Array.from({ length: FORMATION[pos] }, (_, i) => {
-              const x = mine[i];
-              const ghost = !x && chosen?.p === pos && i === mine.length;
+              const x = at[i]?.x;
+              const ghost = !!at[i]?.ghost;
               return (
                 <div key={i} role="listitem" className={`dr-slot${x ? " is-on" : ghost ? " is-ghost" : ""}`}>
                   {x ? <><b>{surname(x.p.n)}</b><i>{x.sq.season.slice(2)}</i></>

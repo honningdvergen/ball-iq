@@ -65,15 +65,50 @@ function share(sq) {
 // A squad is known everywhere by `k`, "2003|Arsenal": saved games and the day's
 // board are written in those, never in positions in this array, so adding a
 // squad to the data cannot point a saved game at a different one.
-export function prepare(raw) {
+export function prepare(raw, lanes = null) {
+  // lanes (src/data/draftLanes.json): which side each man played, for the
+  // pitch only. Missing, every man is laned nowhere and the pitch still fills.
+  const laneOf = new Map(Object.entries(lanes || {}).flatMap(([l, ids]) => ids.map((id) => [id, l])));
   const squads = raw.squads.map((s) => {
     const [y, clubIdx, pos, pts, w, d, l, gf, ga, split, rows] = s;
-    const players = rows.map(([id, n, p, st, su, g]) => ({ id, n, p: POS[p], st, su, g }));
+    const players = rows.map(([id, n, p, st, su, g]) => ({ id, n, p: POS[p], st, su, g, lane: laneOf.get(id) || null }));
     const sq = { k: `${y}|${raw.clubs[clubIdx]}`, y, season: seasonLabel(y), club: raw.clubs[clubIdx], pos, pts, w, d, l, gf, ga, played: GAMES, split: !!split, players };
     share(sq);
     return sq;
   });
   return { squads, byKey: new Map(squads.map((s) => [s.k, s])), league: raw.league, fit: raw.fit, table: raw.table, built: raw.built };
+}
+
+// ── Where on the pitch a man stands ─────────────────────────────────────────
+// Display only: the season model knows GK/DF/MF/FW and nothing finer. A line's
+// places, left to right, and who stands in them. A man with a side (L or R)
+// takes it, a central man (C) a central place, a wide man with no side given
+// (W) a wide one; then everyone left over, and every man with no lane, takes
+// the nearest free place (the middle first for the laneless). Before lanes the
+// line simply filled from the left, which put Salah on the left wing and Rio
+// Ferdinand at left-back (22 Oct 2026).
+export const PLACES = { GK: ['C'], DF: ['L', 'C', 'C', 'R'], MF: ['L', 'C', 'R'], FW: ['L', 'C', 'R'] };
+export function lineUp(pos, men) {
+  const places = PLACES[pos], at = places.map(() => null), left = [];
+  const free = (want) => places.findIndex((x, i) => at[i] === null && want(x));
+  for (const pass of ['side', 'C', 'W']) {
+    for (const m of men) {
+      if (at.includes(m)) continue;
+      const l = m.lane;
+      const i = pass === 'side' ? ((l === 'L' || l === 'R') ? free((x) => x === l) : -2)
+        : pass === 'C' ? (l === 'C' ? free((x) => x === 'C') : -2)
+          : (l === 'W' ? free((x) => x !== 'C') : -2);
+      if (i >= 0) at[i] = m;
+    }
+  }
+  for (const m of men) if (!at.includes(m)) left.push(m);
+  const mid = (places.length - 1) / 2;
+  for (const m of left) {
+    const home = m.lane === 'L' ? 0 : m.lane === 'R' ? places.length - 1 : mid;
+    const open = at.map((x, i) => i).filter((i) => at[i] === null).sort((a, b) => Math.abs(a - home) - Math.abs(b - home) || a - b);
+    if (open.length) at[open[0]] = m;
+  }
+  return at;
 }
 
 // ── What one pick is worth ───────────────────────────────────────────────────
