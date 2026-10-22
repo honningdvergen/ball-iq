@@ -94,7 +94,7 @@ const OLD = {
     const row = (ms) => ms.map((m) => (m.r === 'w' ? '🟩' : m.r === 'd' ? '⬜' : '🟥')).join('');
     const head = `⚽ Ball IQ · Draft${number > 0 ? ` #${number}` : ''}`;
     const line = `${se.pts} points · ${se.w}-${se.d}-${se.l}${par != null ? ` · par ${par}` : ''}`;
-    return `${head}\n${line}\n${row(se.matches.slice(0, 19))}\n${row(se.matches.slice(19))}\n\nballiq.app/play?game=draft`;
+    return `${head}\n${line}\n${[0, 10, 20, 30].map((i) => row(se.matches.slice(i, i + 10))).join('\n')}\n\nballiq.app/play?game=draft`;
   },
   invite: (name, url) => `Join ${name} on Ball IQ: the four dailies, Monday to Sunday. ${url}`,
   stitch: (taunt) => `Whose career is this? ${STITCH_TAUNTS[taunt] || 'Go on then'}.`,

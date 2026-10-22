@@ -388,8 +388,9 @@ export function parPoints(D, day) {
 
 // The share: spoiler-free (no club, no season, no man), like the other dailies'.
 // The number is "#N" as in every share text (GameTitle.jsx); the screen says
-// "No. N". One square per match in the day's playing order, the first half of
-// the season on one row and the second half on the next.
+// "No. N". One square per match in the day's playing order, ten to a row
+// (10, 10, 10, 8): two rows of 19 wrapped mid-row in a phone chat (Snapchat,
+// 22 Oct), and ten fits a chat bubble on the narrowest phones.
 // `words` (i18n step 6): the sharer's language, { line(se), par(par) } from the
 // screen, so this file keeps no imports; without it, the English it always was.
 // Step 7 adds head(number) and url(); either one missing is the English.
@@ -399,5 +400,7 @@ export function buildDraftShareText({ number = 0, se, par = null, words = null }
   const pts = words ? words.line(se) : `${se.pts} points · ${se.w}-${se.d}-${se.l}`;
   const line = `${pts}${par != null ? (words ? words.par(par) : ` · par ${par}`) : ''}`;
   const url = words?.url ? words.url() : 'balliq.app/play?game=draft';
-  return `${head}\n${line}\n${row(se.matches.slice(0, 19))}\n${row(se.matches.slice(19))}\n\n${url}`;
+  const grid = [];
+  for (let i = 0; i < se.matches.length; i += 10) grid.push(row(se.matches.slice(i, i + 10)));
+  return `${head}\n${line}\n${grid.join('\n')}\n\n${url}`;
 }
