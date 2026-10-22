@@ -126,7 +126,7 @@ describe('the eager English split', () => {
       if ((lazyKeys.length || built) && !staticImports(f).includes(EN)) missing.push(`${rel(f)} (${lazyKeys[0] || 'a built key'}…)`);
     }
     expect(missing).toEqual([]);
-  });
+  }, 60_000); // reads every src module: ~13 s alone, over 20 s under a parallel build
 });
 
 // ── Home renders with en.home.js alone ───────────────────────────────────────
