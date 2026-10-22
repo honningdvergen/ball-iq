@@ -1633,6 +1633,7 @@ ${ADS_ACTIVE ? `<script>
 <meta name="twitter:title" content="${esc(title)}" />
 <meta name="twitter:description" content="${esc(description)}" />
 <meta name="twitter:image" content="${ogImage}" />
+<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
 <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
 <meta name="apple-itunes-app" content="app-id=6775975961" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
