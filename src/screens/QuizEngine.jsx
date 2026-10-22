@@ -15,7 +15,7 @@ import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { useQuestionText } from "../i18n/questionText.js";
+import { useLiveQuestion } from "../i18n/questionText.js";
 import { rich } from "../i18n/rich.jsx";
 
 // A category's chip label: App.jsx's catLabel (the cat.* keys, else CAT_LABELS).
@@ -172,7 +172,6 @@ export const READ_GRACE_MS = 800;
 
 export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay }) {
   const t = useT();
-  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
@@ -325,7 +324,7 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   // What the player READS: the Spanish q, options and hint when the language
   // is es (i18n/questionText.js), else `q` itself. Everything that scores,
   // records or reports keeps using `q`.
-  const qv = loc.q(q);
+  const qv = useLiveQuestion(q);
   // Phase 6b Issue A: Daily 7 is a leisurely review experience; the
   // auto-fail-after-20s signal was creating frustration on re-entry
   // (the timer-at-full initial render read as "stale state"). Daily

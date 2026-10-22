@@ -23,14 +23,15 @@ import { ChevronLeft, ChevronRight, Search, Minus, Plus, EyeOff, Check, Share, C
 import "./stitch.css";
 import TransferTrail from "./TransferTrail.jsx";
 import { stitchPlayers, findStitchPlayer, stitchHashOf, stitchShownRange, searchStitchPlayers, stitchIdeas } from "../lib/stitch.js";
-import { STITCH_TAUNTS, makeStitchToken, parseStitchToken, stitchHeadline, stitchScore, cleanStitchName } from "../lib/stitchToken.js";
+import { STITCH_TAUNTS, makeStitchToken, parseStitchToken, stitchScore, cleanStitchName } from "../lib/stitchToken.js";
 import { clubColour, clubAbbr, onColour } from "../lib/clubColour.js";
 import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
 import { isNativeShell } from "../lib/inAppBrowser.js";
 import { getTrailAnswer, loadTrailDay, finishedBefore } from "../lib/trail.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { t } from "../i18n/index.js";
+import { t, useT, useLang } from "../i18n/index.js";
+import { rich } from "../i18n/rich.jsx";
 
 const NAME_KEY = "biq_stitch_name";
 const PLAY_KEY = "biq_stitch_play";
@@ -39,6 +40,9 @@ export const stitchUrl = (token) => `${STITCH_ORIGIN}/s/${token}`;
 
 const readName = () => { try { return localStorage.getItem(NAME_KEY) || ""; } catch { return ""; } };
 const firstName = (s) => cleanStitchName(String(s || "").split(" ")[0]);
+// lib/stitchToken.js stitchHeadline, in the player's language (the server's
+// link preview keeps that English one).
+const headline = (name) => t("su.headline", { name: cleanStitchName(name) || t("su.aMate") });
 
 async function shareOrCopy(text, url) {
   try {
@@ -51,7 +55,8 @@ async function shareOrCopy(text, url) {
 
 // The sharer's language (i18n step 6): the taunt too, as share.taunt.<index>
 // (en.js holds STITCH_TAUNTS' English, pinned by tests/unit/i18n-last-english.test.js).
-// The screen itself is still English.
+// The screen is t() too since step 7 (the su.* keys), its taunt chips included.
+// The link's preview (api/s.js, api/og.js) is the server's, and English.
 export function stitchShareText(taunt) {
   const said = STITCH_TAUNTS[taunt] ? t(`share.taunt.${taunt}`) : t("share.stitchDefault");
   return t("share.stitch", { taunt: said });
@@ -59,6 +64,7 @@ export function stitchShareText(taunt) {
 
 // ── BUILD ─────────────────────────────────────────────────────────────────
 export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", now = null, initial = null, rnd }) {
+  useT();
   const [at] = useState(() => now || new Date());
   const list = useMemo(() => stitchPlayers(at), [at]);
   const ideas = useMemo(() => stitchIdeas(list, 5, rnd), [list, rnd]);
@@ -74,7 +80,7 @@ export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", n
   const pick = (p) => { setPlayer(p); setShown(2); setQ(""); try { window.scrollTo?.(0, 0); } catch { /* fine */ } };
   const make = () => {
     const n = cleanStitchName(name);
-    if (n && isProfaneUsername(n)) { setErr("Pick a different name."); return; }
+    if (n && isProfaneUsername(n)) { setErr(t("su.badName")); return; }
     const token = makeStitchToken({ hash: stitchHashOf(player), shown, taunt, name: n, tally: back?.tally || [0, 0] });
     if (!token) return;
     try { if (n) localStorage.setItem(NAME_KEY, n); } catch { /* private mode */ }
@@ -84,39 +90,39 @@ export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", n
   if (!player) {
     return (
       <div className="st-screen">
-        <div className="st-top"><button type="button" className="st-back" onClick={onBack} aria-label="Back"><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
+        <div className="st-top"><button type="button" className="st-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
         <div className="st-head">
-          <h1 className="st-title">{back?.to ? `Send one back to ${back.to}` : "Stitch up a mate"}</h1>
-          <p className="st-sub">Pick a footballer. You choose how much of his career your mate sees, and they name him.</p>
+          <h1 className="st-title">{back?.to ? t("su.backTo", { name: back.to }) : t("dd.stitch")}</h1>
+          <p className="st-sub">{t("su.sub")}</p>
         </div>
         <div className="st-search">
           <Search size={18} strokeWidth={2.2} aria-hidden="true" />
-          <input className="st-input" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a player" aria-label="Search a player"
+          <input className="st-input" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("su.search")} aria-label={t("su.search")}
             autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false} enterKeyHint="search" />
         </div>
         {q.trim().length >= 2 ? (
-          <div className="st-list" role="list" aria-label="Players">
+          <div className="st-list" role="list" aria-label={t("su.players")}>
             {results.length ? results.map((p) => (
               <button key={p.id} type="button" role="listitem" className="st-pick" onClick={() => pick(p)}>
                 <span className="st-pick-name">{p.name}</span>
-                <span className="st-pick-meta">{p.clubs.length} clubs</span>
+                <span className="st-pick-meta">{t("su.clubs", { n: p.clubs.length })}</span>
                 <ChevronRight size={18} strokeWidth={2.2} aria-hidden="true" />
               </button>
-            )) : <p className="st-empty">No checked career for that name yet. Only careers we have checked by hand are in here.</p>}
+            )) : <p className="st-empty">{t("su.none")}</p>}
           </div>
         ) : (
           <div>
-            <p className="st-label">A few to start with</p>
-            <div className="st-list" role="list" aria-label="Ideas">
+            <p className="st-label">{t("su.ideasLabel")}</p>
+            <div className="st-list" role="list" aria-label={t("su.ideas")}>
               {ideas.map((p) => (
                 <button key={p.id} type="button" role="listitem" className="st-pick" onClick={() => pick(p)}>
                   <span className="st-pick-name">{p.name}</span>
-                  <span className="st-pick-meta">{p.clubs.length} clubs</span>
+                  <span className="st-pick-meta">{t("su.clubs", { n: p.clubs.length })}</span>
                   <ChevronRight size={18} strokeWidth={2.2} aria-hidden="true" />
                 </button>
               ))}
             </div>
-            <p className="st-sub st-quiet" style={{ marginTop: 10 }}>{list.length} checked careers to choose from.</p>
+            <p className="st-sub st-quiet" style={{ marginTop: 10 }}>{t("su.count", { n: list.length })}</p>
           </div>
         )}
       </div>
@@ -125,25 +131,25 @@ export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", n
 
   return (
     <div className="st-screen">
-      <div className="st-top"><button type="button" className="st-back" onClick={() => setPlayer(null)} aria-label="Pick someone else"><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
+      <div className="st-top"><button type="button" className="st-back" onClick={() => setPlayer(null)} aria-label={t("su.pickOther")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
       <div className="st-head">
         <h1 className="st-title">{player.name}</h1>
-        <p className="st-sub">Your mate sees the clubs above the line, then one more for every miss. Five guesses.</p>
+        <p className="st-sub">{t("su.how")}</p>
       </div>
 
-      <div className="st-career" aria-label={`${player.name}'s career`}>
+      <div className="st-career" aria-label={t("su.careerAria", { name: player.name })}>
         {player.clubs.map((club, i) => {
           const col = clubColour(club, CLUB_PACK_COLOURS);
           const hidden = i >= shown;
           return (
             <React.Fragment key={i}>
-              {i === shown && <div className="st-cut" role="separator">Hidden at the start</div>}
+              {i === shown && <div className="st-cut" role="separator">{t("su.cut")}</div>}
               <div className={`st-club${hidden ? " is-hidden" : ""}`}>
                 <span className="st-club-n">{i + 1}</span>
                 <span className="st-crest" aria-hidden="true" style={{ background: col || "var(--s3)", color: col ? onColour(col) : "var(--t3)" }}>{clubAbbr(club, CLUB_PACK_ABBR)}</span>
                 <span className="st-club-name">{club}</span>
-                {player.loans?.[i] && <span className="st-club-tag" style={{ color: "var(--gold)", WebkitTextFillColor: "var(--gold)" }}>loan</span>}
-                {hidden && <span className="st-club-tag"><EyeOff size={13} strokeWidth={2.3} aria-hidden="true" /> hidden</span>}
+                {player.loans?.[i] && <span className="st-club-tag" style={{ color: "var(--gold)", WebkitTextFillColor: "var(--gold)" }}>{t("su.loan")}</span>}
+                {hidden && <span className="st-club-tag"><EyeOff size={13} strokeWidth={2.3} aria-hidden="true" /> {t("su.hidden")}</span>}
               </div>
             </React.Fragment>
           );
@@ -151,33 +157,34 @@ export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", n
       </div>
 
       <div className="st-step">
-        <span className="st-step-tx">They start with <strong>{shown}</strong> of {player.clubs.length}</span>
+        <span className="st-step-tx">{rich(t("su.start", { total: player.clubs.length }), { n: <strong>{shown}</strong> })}</span>
         <span className="st-step-btns">
-          <button type="button" className="st-round" onClick={() => setShown((s) => Math.max(range.min, s - 1))} disabled={shown <= range.min} aria-label="Show one club fewer"><Minus size={18} strokeWidth={2.4} /></button>
-          <button type="button" className="st-round" onClick={() => setShown((s) => Math.min(range.max, s + 1))} disabled={shown >= range.max} aria-label="Show one club more"><Plus size={18} strokeWidth={2.4} /></button>
+          <button type="button" className="st-round" onClick={() => setShown((s) => Math.max(range.min, s - 1))} disabled={shown <= range.min} aria-label={t("su.fewer")}><Minus size={18} strokeWidth={2.4} /></button>
+          <button type="button" className="st-round" onClick={() => setShown((s) => Math.min(range.max, s + 1))} disabled={shown >= range.max} aria-label={t("su.more")}><Plus size={18} strokeWidth={2.4} /></button>
         </span>
       </div>
 
       <div>
-        <p className="st-label">Your taunt</p>
-        <div className="st-taunts" role="radiogroup" aria-label="Your taunt">
-          {STITCH_TAUNTS.map((t, i) => (
+        <p className="st-label">{t("su.taunt")}</p>
+        <div className="st-taunts" role="radiogroup" aria-label={t("su.taunt")}>
+          {/* The chips in the player's language: the very words the share will send (share.taunt.<i>). */}
+          {STITCH_TAUNTS.map((_, i) => (
             <button key={i} type="button" role="radio" aria-checked={taunt === i} className="st-taunt" onClick={() => setTaunt(i)}>
-              {taunt === i && <Check size={14} strokeWidth={2.6} aria-hidden="true" />}{t}
+              {taunt === i && <Check size={14} strokeWidth={2.6} aria-hidden="true" />}{t(`share.taunt.${i}`)}
             </button>
           ))}
         </div>
       </div>
 
       <div>
-        <label className="st-label" htmlFor="st-name" style={{ display: "block" }}>Your first name</label>
+        <label className="st-label" htmlFor="st-name" style={{ display: "block" }}>{t("su.name")}</label>
         <input id="st-name" className="st-input" value={name} maxLength={22} onChange={(e) => { setErr(""); setName(e.target.value); }}
-          placeholder="So they know who to blame" autoCapitalize="words" autoComplete="given-name" enterKeyHint="done" />
+          placeholder={t("su.namePh")} autoCapitalize="words" autoComplete="given-name" enterKeyHint="done" />
         {err && <p className="st-err" role="alert">{err}</p>}
       </div>
 
       <div className="st-actions">
-        <button type="button" className="st-solid" onClick={make}>Get the link</button>
+        <button type="button" className="st-solid" onClick={make}>{t("su.get")}</button>
       </div>
     </div>
   );
@@ -185,6 +192,7 @@ export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", n
 
 // ── SHARE ─────────────────────────────────────────────────────────────────
 export function StitchShare({ made, onAnother, onBack, track }) {
+  useT();
   const [state, setState] = useState("");
   const url = stitchUrl(made.token);
   const text = stitchShareText(made.taunt);
@@ -197,24 +205,24 @@ export function StitchShare({ made, onAnother, onBack, track }) {
   };
   return (
     <div className="st-screen">
-      <div className="st-top"><button type="button" className="st-back" onClick={onBack} aria-label="Back"><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
+      <div className="st-top"><button type="button" className="st-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
       <div className="st-head">
-        <h1 className="st-title">Ready to send</h1>
-        <p className="st-sub">The link never names him. Your mate gets five guesses.</p>
+        <h1 className="st-title">{t("su.ready")}</h1>
+        <p className="st-sub">{t("su.readySub")}</p>
       </div>
       <div className="st-card">
-        <p className="st-card-line">{stitchHeadline(made.name)}</p>
-        <p className="st-card-taunt">“{STITCH_TAUNTS[made.taunt]}”</p>
-        <p className="st-card-meta">{made.shown} clubs to start · {made.player.clubs.length - made.shown} hidden</p>
+        <p className="st-card-line">{headline(made.name)}</p>
+        <p className="st-card-taunt">“{t(`share.taunt.${made.taunt}`)}”</p>
+        <p className="st-card-meta">{t("su.meta", { n: made.shown, h: made.player.clubs.length - made.shown })}</p>
       </div>
-      <span className="st-url" aria-label="Your link">{url}</span>
+      <span className="st-url" aria-label={t("su.linkAria")}>{url}</span>
       <div className="st-actions">
         <button type="button" className="st-solid" onClick={send}>
-          {state === "sent" ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Sent</> : state === "copied" ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> Link copied</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> Send it</>}
+          {state === "sent" ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> {t("su.sent")}</> : state === "copied" ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" /> {t("su.copied")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" /> {t("su.send")}</>}
         </button>
         <div className="st-links">
-          <button type="button" className="st-link" onClick={copy}><Copy size={14} strokeWidth={2.4} aria-hidden="true" /> Copy link</button>
-          <button type="button" className="st-link" onClick={onAnother}>Stitch up someone else</button>
+          <button type="button" className="st-link" onClick={copy}><Copy size={14} strokeWidth={2.4} aria-hidden="true" /> {t("su.copy")}</button>
+          <button type="button" className="st-link" onClick={onAnother}>{t("su.another")}</button>
         </div>
       </div>
     </div>
@@ -235,17 +243,18 @@ function savePlay(token, state) {
 /** "You 1, Alex 0": the receiver's side first. */
 export function h2hLine(tally, won, sender) {
   const s = stitchScore(tally, won);
-  const who = sender || "Your mate";
-  return { ...s, score: `You ${s.me}, ${who} ${s.them}` };
+  const who = sender || t("su.yourMate");
+  return { ...s, score: t("su.score", { me: s.me, who, them: s.them }) };
 }
 
 export function StitchPlay({ token, parsed, player, onBack, onReport, services, track, onSendBack, onPlayTrail, trailOpen = false }) {
+  const lang = useLang();
   const sender = firstName(parsed.name) || "";
-  const who = sender || "Your mate";
+  const who = sender || t("su.yourMate");
   const finished = useRef(false);
   const stitch = useMemo(() => ({
     opening: parsed.shown,
-    sub: `${who} stitched you up`,
+    sub: t("su.stitchedYou", { who }),
     load: () => loadPlay(token),
     save: (state) => savePlay(token, state),
     onFinish: ({ won, clubsUsed }) => {
@@ -256,7 +265,7 @@ export function StitchPlay({ token, parsed, player, onBack, onReport, services, 
     Banner: () => (
       <div className="st-taunt-in">
         <Quote size={16} strokeWidth={2.4} aria-hidden="true" />
-        <div><b>{STITCH_TAUNTS[parsed.taunt]}</b><span>{who} picked him and shows you {parsed.shown} clubs.{parsed.tally[0] + parsed.tally[1] > 0 ? ` ${who} ${parsed.tally[0]}, you ${parsed.tally[1]} so far.` : ""}</span></div>
+        <div><b>{STITCH_TAUNTS[parsed.taunt] ? t(`share.taunt.${parsed.taunt}`) : ""}</b><span>{t("su.banner", { who, n: parsed.shown })}{parsed.tally[0] + parsed.tally[1] > 0 ? t("su.soFar", { who, a: parsed.tally[0], b: parsed.tally[1] }) : ""}</span></div>
       </div>
     ),
     Done: ({ won, clubsUsed }) => {
@@ -266,36 +275,39 @@ export function StitchPlay({ token, parsed, player, onBack, onReport, services, 
           <div className={`st-h2h ${won ? "is-win" : "is-loss"}`} role="status">
             <span className="st-h2h-score">{h.score}</span>
             <span className="st-h2h-line">{won
-              ? `Got him on ${clubsUsed} ${clubsUsed === 1 ? "club" : "clubs"}. ${who} gave you ${parsed.shown}.`
-              : `Stitched up. ${who} wins this one.`}</span>
+              ? t("su.got", { count: clubsUsed, n: clubsUsed, who, shown: parsed.shown })
+              : t("su.lost", { who })}</span>
           </div>
           <div className="st-actions" style={{ marginTop: 14 }}>
             {trailOpen
-              ? <button type="button" className="st-solid" onClick={onPlayTrail}>Play today's Transfer Trail</button>
-              : <button type="button" className="st-solid" onClick={onBack}>Back to Ball IQ</button>}
+              ? <button type="button" className="st-solid" onClick={onPlayTrail}>{t("su.playTrail")}</button>
+              : <button type="button" className="st-solid" onClick={onBack}>{t("su.backApp")}</button>}
             <div className="st-links">
-              <button type="button" className="st-link" onClick={() => onSendBack?.({ tally: h.backTally, to: sender })}><Swords size={14} strokeWidth={2.4} aria-hidden="true" /> Send one back</button>
+              <button type="button" className="st-link" onClick={() => onSendBack?.({ tally: h.backTally, to: sender })}><Swords size={14} strokeWidth={2.4} aria-hidden="true" /> {t("su.sendBack")}</button>
             </div>
           </div>
         </>
       );
     },
-  }), [token, parsed, player, who, sender, track, trailOpen, onPlayTrail, onBack, onSendBack]);
+  // `lang`: the words above are read when this is built, so a language switch rebuilds it.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [token, parsed, player, who, sender, track, trailOpen, onPlayTrail, onBack, onSendBack, lang]);
   return <TransferTrail key={token} player={player} onBack={onBack} onReport={onReport} services={services} stitch={stitch} />;
 }
 
 /** A link that does not open: a broken token, or a career no longer listed. */
 export function StitchBroken({ onBack, onBuild }) {
+  useT();
   return (
     <div className="st-screen">
-      <div className="st-top"><button type="button" className="st-back" onClick={onBack} aria-label="Back"><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
+      <div className="st-top"><button type="button" className="st-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div>
       <div className="st-head">
-        <h1 className="st-title">This stitch-up has come apart</h1>
-        <p className="st-sub">The link is broken or cut short. Ask your mate to send it again, or make one of your own.</p>
+        <h1 className="st-title">{t("su.broken")}</h1>
+        <p className="st-sub">{t("su.brokenSub")}</p>
       </div>
       <div className="st-actions">
-        <button type="button" className="st-solid" onClick={onBuild}>Stitch up a mate</button>
-        <div className="st-links"><button type="button" className="st-link" onClick={onBack}>Back to Ball IQ</button></div>
+        <button type="button" className="st-solid" onClick={onBuild}>{t("dd.stitch")}</button>
+        <div className="st-links"><button type="button" className="st-link" onClick={onBack}>{t("su.backApp")}</button></div>
       </div>
     </div>
   );

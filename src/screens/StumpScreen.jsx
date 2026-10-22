@@ -5,12 +5,12 @@ import { haptic, loopEvent } from "../App.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
-import { useQuestionText } from "../i18n/questionText.js";
+import { useLiveQuestion } from "../i18n/questionText.js";
 
 export function StumpScreen({ row, onPlayFull, onHome }) {
   const t = useT();
   // The question as the player reads it; `row` (and its link) stays English.
-  const shown = useQuestionText().q(row);
+  const shown = useLiveQuestion(row);
   const [picked, setPicked] = useState(-1);
   const done = picked >= 0;
   const gotIt = done && picked === row.a;

@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 
 const APP = readFileSync(new URL('../../src/App.jsx', import.meta.url), 'utf8');
+const EN = readFileSync(new URL('../../src/i18n/en.js', import.meta.url), 'utf8');
 const fn = APP.slice(APP.indexOf('function ScreenLoading('), APP.indexOf('class TabErrorBoundary'));
 
 describe('ScreenLoading', () => {
@@ -17,7 +18,9 @@ describe('ScreenLoading', () => {
     expect(ms).toBeLessThanOrEqual(10000);     // not after the player has given up
     expect(fn).toMatch(/setTimeout\(\(\) => setSlow\(true\), SCREEN_SLOW_MS\)/);
     expect(fn).toMatch(/new Event\("biq:go-home"\)/);
-    expect(fn).toMatch(/Back to Home/);
+    // The words are keys since i18n step 7.
+    expect(fn).toMatch(/t\("quiz\.backHome"\)/);
+    expect(EN).toContain("'quiz.backHome': 'Back to Home',");
   });
 
   it('leaves the load running, so the screen still appears if the connection returns', () => {
@@ -25,7 +28,8 @@ describe('ScreenLoading', () => {
   });
 
   it('says the score is saved only where that is true: the results screen', () => {
-    expect(fn).toMatch(/\/results\/i\.test\(label\) \? " Your score is saved\." : ""/);
+    expect(fn).toMatch(/\/results\/i\.test\(label\) \? t\("ld\.saved"\) : ""/);
+    expect(EN).toContain("'ld.saved': ' Your score is saved.',");
     // ...which holds because a finished quiz is stored before results are asked for.
     const done = APP.indexOf('setDailyDone(true);');
     const show = APP.indexOf('setScreen("results");', done);

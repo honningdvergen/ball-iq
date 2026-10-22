@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import * as Sentry from "@sentry/react";
 import { supabase } from "../supabase.js";
 import { loopEvent } from "../App.jsx";
+import { t } from "../i18n/index.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Inputs: the signed-in
 // user, the guest flag, the toast, and the pending-join setter the play-invite
@@ -83,10 +84,10 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
         .update({ status: accept ? "accepted" : "declined" })
         .eq("id", id);
       if (error) throw error;
-      showToast(accept ? "✓ Friend added" : "Request declined");
+      showToast(accept ? t("nc.added") : t("nc.declined"));
     } catch (e) {
       console.warn("[friends] respondFriendRequest", e?.message || "Unknown error");
-      showToast("Couldn't update — try again");
+      showToast(t("nc.updateFail"));
       loadNotifs();   // put the request back so it can be retried
     }
   }, [showToast, loadNotifs]);
@@ -98,7 +99,7 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
     setNotifOpen(false);
     try { await supabase.from("notifications").update({ read: true }).eq("id", inv.id); } catch { /* best-effort */ }
     if (code) setPendingJoinCode(String(code).toUpperCase());
-    else showToast("This invite's room has expired");
+    else showToast(t("nc.expired"));
   }, [showToast]);
   const dismissInvite = useCallback(async (inv) => {
     setNotifInvites(prev => prev.filter(n => n.id !== inv.id)); // optimistic

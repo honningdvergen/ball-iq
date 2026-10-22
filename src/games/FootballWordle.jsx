@@ -536,7 +536,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     // One head for all three share builders (lib/wordle.js) — one puzzle,
     // one share format, and a clued solve says so.
     const head = footleShareHead(APP_NAME, getFootleNumber(), won, state.guesses.length, !!state.clue, !!state.hard);
-    const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { n: streak })}` : "";
+    const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { count: streak, n: streak })}` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
   }, [state, answer]);
 

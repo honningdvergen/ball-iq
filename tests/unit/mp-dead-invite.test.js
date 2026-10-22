@@ -39,7 +39,9 @@ describe('a dead invite link is a door, not a wall', () => {
   it('offers the daily as the primary way out, and says it plainly', () => {
     const start = MP.indexOf('function LobbyError');
     const block = MP.slice(start, start + 4000);
-    expect(block).toMatch(/That room has closed/);
+    // A key since i18n step 7: mp.closed, "That room has closed" in en.js.
+    expect(block).toMatch(/gone \? tNow\("mp\.closed"\)/);
+    expect(readFileSync(fileURLToPath(new URL('../../src/i18n/en.js', import.meta.url)), 'utf8')).toContain("'mp.closed': 'That room has closed',");
     expect(block).toMatch(/gone && onPlayDaily/);
     // Not a warning triangle: nothing here is the visitor's fault.
     expect(block).toMatch(/gone \? "\\u\{1F44B\}" : "⚠️"/);

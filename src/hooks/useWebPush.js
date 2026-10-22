@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { webPushSupported, webPushPermission, enableWebPush, disableWebPush, refreshWebPushSubscription } from "../lib/webpush.js";
+import { t } from "../i18n/index.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16): the web-push toggle, its
 // optimistic state, and the once-per-session re-assert of the subscription.
@@ -27,14 +28,14 @@ export function useWebPush({ user, showToast }) {
       const ok = await enableWebPush();
       setWebPushOn(ok);
       showToast(ok
-        ? 'Daily reminders on 🔔'
+        ? t('nt.on')
         : (webPushPermission() === 'denied'
-            ? 'Blocked in your browser — allow notifications for balliq.app'
-            : "Couldn't turn reminders on"));
+            ? t('nt.blocked')
+            : t('nt.fail')));
     } else {
       await disableWebPush();
       setWebPushOn(false);
-      showToast('Daily reminders off');
+      showToast(t('nt.off'));
     }
   }, [showToast]);
   return { webPushOn, setWebPushOn, handleToggleWebPush };

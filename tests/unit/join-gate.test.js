@@ -15,7 +15,9 @@ describe('join gate', () => {
     const guest = APP.slice(APP.indexOf('const hubJoinRoom'), APP.indexOf('const trimmed = String(rawCode'));
     expect(guest).toMatch(/await mpLookupRoom\(code\)/);
     expect(guest.indexOf('mpLookupRoom')).toBeLessThan(guest.indexOf('localStorage.setItem("biq_pending_join"'));
-    expect(guest).toMatch(/No room with that code/);
+    // The words are a key since i18n step 7: mp.noRoom.
+    expect(guest).toMatch(/tl\("mp\.noRoom"\)/);
+    expect(read('../../src/i18n/en.js')).toContain("'mp.noRoom': 'No room with that code");
   });
   it('never opens the gate over a live game, and drops a dead stored code on boot', () => {
     // ⚠️ These pinned `!inGame` until 2026-09-07, and `inGame` is only

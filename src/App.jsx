@@ -53,8 +53,8 @@ import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
-import { useT, useLang, isLangLoaded, hasEnglish, t as tl } from './i18n/index.js';
-import { useQuestionText, questionText } from './i18n/questionText.js';
+import { useT, useLang, isLangLoaded, hasEnglish, getLang, t as tl } from './i18n/index.js';
+import { useQuestionText, useLiveQuestion, questionText } from './i18n/questionText.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
 import { useWebPush } from './hooks/useWebPush.js';
@@ -1255,7 +1255,8 @@ const LEAGUES_WEB = (() => {
 // Home's eager graph.
 const LEAGUE_UI_KEY = "biq_league_ui";
 // While the sheet's chunk loads: its backdrop, so the tap visibly landed.
-const LEAGUE_SHEET_FALLBACK = <div aria-busy="true" aria-label="Loading" style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.72)" }} />;
+// A function, so its label is read in the player's language at render time.
+const leagueSheetFallback = () => <div aria-busy="true" aria-label={tl("ld.loading")} style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.72)" }} />;
 function readLeagueUiInline() {
   try { const v = JSON.parse(localStorage.getItem(LEAGUE_UI_KEY) || "null"); return v && Date.now() - v.at < 15 * 60000 ? v : null; } catch { return null; }
 }
@@ -1381,7 +1382,6 @@ function SETTINGS_DEFAULTS() {
 const HOT_STREAK_MISS_S = 3;
 function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen }) {
   const t = useT();
-  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -1491,7 +1491,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
   const pct = (timeLeft / 60) * 100;
   const barColor = timeLeft > 20 ? 'var(--accent)' : timeLeft > 10 ? 'var(--gold)' : 'var(--red)';
   // What the player reads (i18n/questionText.js); scoring above keeps `q`.
-  const qv = loc.q(q);
+  const qv = useLiveQuestion(q);
 
   return (
     <div className="quiz-wrap" onClick={onHoldTap}>
@@ -1573,7 +1573,6 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
 // ─── TRUE OR FALSE ENGINE ─────────────────────────────────────────────────────
 function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
   const t = useT();
-  const loc = useQuestionText();
   const [idx, setIdx] = useState(0);
   const [score, setScore] = useState(0);
   const [picked, setPicked] = useState(null); // { val, correct } | null
@@ -1643,6 +1642,10 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     timeoutRef.current = setTimeout(advance, delay);
   };
 
+  // What the player reads (i18n/questionText.js); answer() above keeps `q`.
+  // A hook, so above the early returns; nothing is on screen once done.
+  const qv = useLiveQuestion(done ? null : questions?.[idx]);
+
   // Safety: if questions missing or done, render nothing (onComplete will have fired)
   if (done || !questions || questions.length === 0) return null;
   const q = questions[idx];
@@ -1670,9 +1673,6 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
     }
     return { ...base, background: 'var(--s2)', border: '2px solid var(--border)', color: 'var(--t3)', opacity: 0.55 };
   };
-
-  // What the player reads (i18n/questionText.js); answer() above keeps `q`.
-  const qv = loc.q(q);
 
   return (
     <div className="quiz-wrap" onClick={onHoldTap}>
@@ -2291,6 +2291,7 @@ export function recordMpResult(entry) {
 }
 
 function ResetPasswordOverlay() {
+  useT();
   const { passwordRecovery, clearPasswordRecovery, updatePassword } = useAuth();
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
@@ -2300,12 +2301,13 @@ function ResetPasswordOverlay() {
   if (!passwordRecovery) return null;
   const submit = async () => {
     if (busy) return;
-    if (pw.length < 6) { setErr("Password must be at least 6 characters"); return; }
-    if (pw !== pw2) { setErr("Passwords don't match"); return; }
+    if (pw.length < 6) { setErr(tl("au.pwShort")); return; }
+    if (pw !== pw2) { setErr(tl("ap.pwMismatch")); return; }
     setBusy(true); setErr("");
     const { error } = await updatePassword(pw);
     setBusy(false);
-    if (error) { setErr(error.message || "Couldn't update the password — try again"); return; }
+    // The server's own message in English, as before; the app's words otherwise.
+    if (error) { setErr((getLang() === "en" && error.message) || tl("ap.pwFail")); return; }
     setDone(true);
     setTimeout(() => clearPasswordRecovery(), 1800);
   };
@@ -2313,23 +2315,23 @@ function ResetPasswordOverlay() {
     <div style={{position:"fixed",inset:0,zIndex:1200,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
       <div style={{width:"100%",maxWidth:360,textAlign:"center"}}>
         <div style={{fontSize:40,marginBottom:10}}>{done ? "✅" : "🔒"}</div>
-        <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:6}}>{done ? "Password updated" : "Set a new password"}</div>
+        <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:6}}>{done ? tl("ap.pwUpdated") : tl("ap.pwSet")}</div>
         {done ? (
-          <div style={{fontSize:14,color:"var(--t2)"}}>You're signed in — welcome back!</div>
+          <div style={{fontSize:14,color:"var(--t2)"}}>{tl("ap.pwWelcome")}</div>
         ) : (
           <>
-            <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6,marginBottom:18}}>You're signed in via the reset link — choose a new password to finish.</div>
-            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="New password" autoComplete="new-password"
+            <div style={{fontSize:13,color:"var(--t2)",lineHeight:1.6,marginBottom:18}}>{tl("ap.pwSub")}</div>
+            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder={tl("ap.pwNew")} autoComplete="new-password"
               style={{width:"100%",padding:"14px 16px",marginBottom:10,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:16,fontFamily:"inherit",outline:"none"}} />
-            <input type="password" value={pw2} onChange={e => setPw2(e.target.value)} placeholder="Repeat new password" autoComplete="new-password"
+            <input type="password" value={pw2} onChange={e => setPw2(e.target.value)} placeholder={tl("ap.pwRepeat")} autoComplete="new-password"
               onKeyDown={e => { if (e.key === "Enter") submit(); }}
               style={{width:"100%",padding:"14px 16px",marginBottom:14,borderRadius:12,border:"1px solid var(--border)",background:"var(--s1)",color:"var(--text)",fontSize:16,fontFamily:"inherit",outline:"none"}} />
             {err && <div style={{color:"#FF6B6B",fontSize:13,marginBottom:12}}>{err}</div>}
             <button onClick={submit} disabled={busy || !pw || !pw2}
               style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,fontSize:15,fontWeight:800,color:"var(--grn-ink)",cursor:"pointer",fontFamily:"inherit",opacity:(busy || !pw || !pw2) ? 0.6 : 1}}>
-              {busy ? "Saving…" : "Save new password"}
+              {busy ? tl("ap.saving") : tl("ap.pwSave")}
             </button>
-            <button onClick={clearPasswordRecovery} style={{marginTop:10,background:"transparent",border:"none",color:"var(--t3)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>Cancel</button>
+            <button onClick={clearPasswordRecovery} style={{marginTop:10,background:"transparent",border:"none",color:"var(--t3)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"inherit"}}>{tl("st.cancel")}</button>
           </>
         )}
       </div>
@@ -2400,22 +2402,23 @@ function NotifBell({ count, onClick, className, style }) {
 }
 
 function NotificationCenter({ open, requests, invites = [], onClose, onRespond, onJoinInvite, onDismissInvite, onOpenFriend }) {
+  useT();
   const panelRef = useRef(null);
   useModalA11y({ isOpen: open, onClose, ref: panelRef });
   if (!open) return null;
   const isEmpty = requests.length === 0 && invites.length === 0;
   return (
     <div className="notif-overlay" onClick={onClose}>
-      <div ref={panelRef} tabIndex={-1} className="notif-panel" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Notifications">
+      <div ref={panelRef} tabIndex={-1} className="notif-panel" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={tl("nc.title")}>
         <div className="notif-hdr">
-          <span className="notif-title">Notifications</span>
-          <button className="notif-close" onClick={onClose} aria-label="Close notifications">✕</button>
+          <span className="notif-title">{tl("nc.title")}</span>
+          <button className="notif-close" onClick={onClose} aria-label={tl("nc.close")}>✕</button>
         </div>
         {isEmpty ? (
           <div className="notif-empty">
             <div className="notif-empty-ic" aria-hidden="true">🔔</div>
-            <div className="notif-empty-t">You're all caught up</div>
-            <div className="notif-empty-s">Friend requests and invites show up here.</div>
+            <div className="notif-empty-t">{tl("nc.empty")}</div>
+            <div className="notif-empty-s">{tl("nc.emptySub")}</div>
           </div>
         ) : (
           <div className="notif-list">
@@ -2424,10 +2427,10 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
               <div key={inv.id} className="notif-item">
                 <span className="notif-ava"><ProfilePic value={inv.actor_avatar} name={inv.actor_name} /></span>
                 <div className="notif-body">
-                  <div className="notif-line"><strong>{inv.actor_name || "A friend"}</strong> invited you to play</div>
+                  <div className="notif-line">{rich(tl("nc.invited"), { name: <strong>{inv.actor_name || tl("nc.aFriend")}</strong> })}</div>
                   <div className="notif-actions">
-                    <button className="notif-btn notif-accept" onClick={() => onJoinInvite?.(inv)}>Join</button>
-                    <button className="notif-btn notif-decline" onClick={() => onDismissInvite?.(inv)}>Dismiss</button>
+                    <button className="notif-btn notif-accept" onClick={() => onJoinInvite?.(inv)}>{tl("nc.join")}</button>
+                    <button className="notif-btn notif-decline" onClick={() => onDismissInvite?.(inv)}>{tl("nc.dismiss")}</button>
                   </div>
                 </div>
               </div>
@@ -2439,15 +2442,15 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
                   <button
                     className="notif-ava"
                     onClick={() => p.id && onOpenFriend?.({ id: p.id, username: p.username, avatar: p.avatar })}
-                    aria-label={p.username ? `View ${p.username}'s profile` : "View profile"}
+                    aria-label={p.username ? tl("nc.viewProfile", { name: p.username }) : tl("nc.viewProfileBare")}
                   >
                     <ProfilePic value={p.avatar} name={p.username} />
                   </button>
                   <div className="notif-body">
-                    <div className="notif-line"><strong>{p.username || "Someone"}</strong> wants to be friends</div>
+                    <div className="notif-line">{rich(tl("nc.wants"), { name: <strong>{p.username || tl("nc.someone")}</strong> })}</div>
                     <div className="notif-actions">
-                      <button className="notif-btn notif-accept" onClick={() => onRespond(r.id, true)}>Accept</button>
-                      <button className="notif-btn notif-decline" onClick={() => onRespond(r.id, false)}>Decline</button>
+                      <button className="notif-btn notif-accept" onClick={() => onRespond(r.id, true)}>{tl("nc.accept")}</button>
+                      <button className="notif-btn notif-decline" onClick={() => onRespond(r.id, false)}>{tl("nc.decline")}</button>
                     </div>
                   </div>
                 </div>
@@ -2463,41 +2466,19 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
 // ─── HELP / FAQ SCREEN ────────────────────────────────────────────────────────
 // Same overlay shape as PrivacyScreen so dark / light backgrounds, scroll
 // behaviour and back-arrow affordance are consistent.
+// The words are the faq.* keys (i18n step 7), question and answer.
 const FAQ_ENTRIES = [
-  {
-    q: "How do I play with friends online?",
-    a: `Tap "Multiplayer" on the home screen and choose Online Multiplayer. The host taps "Create Room" and gets a 6-character room code (like ABC123). Share the code with up to seven friends — they tap "Join with Code", enter it, and land in your lobby. Once at least one friend has joined, the host taps "Start Game" and you all play the same questions in real time. Want a quick local game instead? "Local Multiplayer" still works for pass-and-play on a single device.`,
-  },
-  {
-    q: "How do I share a multiplayer invite?",
-    a: `Easiest: read out the 6-character room code from your lobby — your friend types it into "Join with Code". You can also share an invite link: balliq.app/join/ABC123 (use your room's code). Anyone tapping the link will land directly in the join flow once they're signed in.`,
-  },
-  {
-    q: "What if my friend joins late or loses connection?",
-    a: `Friends can join the lobby any time before the host starts. If someone loses connection during a game, their existing answers stay in the room and the game continues for everyone else. Reconnecting brings them back to the current question with their score intact.`,
-  },
-  {
-    q: "What is Footle?",
-    a: "Footle is our daily football word game — guess the name a footballer goes by in 6 attempts. Usually a surname, sometimes a one-name legend like Pelé or Xavi. The same player is shown to everyone each day and resets at midnight.",
-  },
-  {
-    q: "How do I delete my account?",
-    a: "Go to Settings → Account → Delete Account. This will permanently remove all your data including your profile, scores, friends, and game history.",
-  },
-  {
-    q: "Does Ball IQ work offline?",
-    a: "Most game modes work offline — your scores are saved locally and synced when you're back online.",
-  },
-  {
-    q: "Why can't I find my friend in friend search?",
-    a: "Make sure they have signed up and set a username. Search is case-insensitive but the username must match exactly.",
-  },
-  {
-    q: "How do I report an issue?",
-    a: "Email us at hello@balliq.app — we read every message.",
-  },
+  { q: "faq.online.q", a: "faq.online.a" },
+  { q: "faq.invite.q", a: "faq.invite.a" },
+  { q: "faq.late.q", a: "faq.late.a" },
+  { q: "faq.footle.q", a: "faq.footle.a" },
+  { q: "faq.delete.q", a: "faq.delete.a" },
+  { q: "faq.offline.q", a: "faq.offline.a" },
+  { q: "faq.search.q", a: "faq.search.a" },
+  { q: "faq.report.q", a: "faq.report.a" },
 ];
 const HelpScreen = React.memo(function HelpScreen({ onClose }) {
+  useT();
   return (
     <div style={{
       position: "fixed",
@@ -2526,7 +2507,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close help"
+          aria-label={tl("faq.close")}
           style={{
             width: 36, height: 36, borderRadius: 10,
             background: "var(--s2)", border: "1px solid var(--border2)",
@@ -2537,11 +2518,11 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
             outline: "none",
           }}
         >←</button>
-        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Help & FAQ</div>
+        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>{tl("faq.title")}</div>
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
         <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {APP_NAME}</div>
-        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>Quick answers to common questions.</div>
+        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>{tl("faq.sub")}</div>
         {/* Phase 6d Issue 3: reuse privacyH2/privacyP from PrivacyScreen so
             Help and Privacy read as visual siblings (same h2 weight/color,
             same body color, same vertical rhythm). Was using a bright
@@ -2549,11 +2530,11 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
             the app. */}
         {FAQ_ENTRIES.map((entry, i) => (
           <React.Fragment key={i}>
-            <h2 style={privacyH2}>{entry.q}</h2>
-            <p style={privacyP}>{entry.a}</p>
+            <h2 style={privacyH2}>{tl(entry.q)}</h2>
+            <p style={privacyP}>{tl(entry.a)}</p>
           </React.Fragment>
         ))}
-        <p style={{...privacyP, marginTop: 32}}>Still stuck? Reach us at <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a>.</p>
+        <p style={{...privacyP, marginTop: 32}}>{rich(tl("faq.stuck"), { mail: <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a> })}</p>
       </div>
     </div>
   );
@@ -2564,28 +2545,18 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
 // week-1 support volume (per CC's strategic assessment). Same overlay
 // shape as HelpScreen / PrivacyScreen — reuses privacyH2 + privacyP
 // so the trio reads as visual siblings.
+// The words are the ki.* keys (i18n step 7), question and answer.
 const KNOWN_ISSUES = [
-  {
-    q: "I had to sign in again after a week — is that normal?",
-    a: "Yes. For security, sign-in sessions expire roughly every 7 days. This is intentional, not a bug. Sign back in with Apple, Google, or your email and you're back in seconds — your scores, streak, and history are tied to your account, not the device.",
-  },
-  {
-    q: "I installed Ball IQ on a second device and it asked me to onboard again",
-    a: "If you're signed in to an account on both devices, onboarding only runs once and the choice syncs across devices. If you're using guest mode (no email), each new install is treated as a fresh visitor and replays the short intro. Sign up to skip this on future devices.",
-  },
-  {
-    q: "A question seems factually wrong",
-    a: "Email hello@balliq.app with the question text and what you think the correct answer is. We hand-review every report — most fixes ship within a few days. Football trivia changes (records broken, players retire, clubs relegated) so even careful research goes stale; reports are how we keep up.",
-  },
-  {
-    q: "My streak / progress didn't sync to my other device",
-    a: "If you're signed in, everything except onboarding state (covered above) syncs through your profile. If you played as a guest first and signed in later, only future progress syncs — past guest sessions stay on the device they were played on. Sign up earlier on new devices to avoid this gap.",
-  },
+  { q: "ki.session.q", a: "ki.session.a" },
+  { q: "ki.device.q", a: "ki.device.a" },
+  { q: "ki.wrong.q", a: "ki.wrong.a" },
+  { q: "ki.sync.q", a: "ki.sync.a" },
   // "White flash at launch" entry removed 2026-06-11 — fixed (and its copy
   // described PWA behavior that doesn't apply to the native app).
 ];
 
 const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
+  useT();
   return (
     <div style={{
       position: "fixed",
@@ -2611,7 +2582,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close known issues"
+          aria-label={tl("ki.close")}
           style={{
             width: 36, height: 36, borderRadius: 10,
             background: "var(--s2)", border: "1px solid var(--border2)",
@@ -2622,21 +2593,20 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
             outline: "none",
           }}
         >←</button>
-        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>Known issues</div>
+        <div style={{fontSize: 17, fontWeight: 800, letterSpacing: "-0.3px"}}>{tl("ki.title")}</div>
       </div>
       <div style={{maxWidth: 680, margin: "0 auto", padding: "28px 20px 80px", lineHeight: 1.7}}>
-        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ Known issues</div>
+        <div style={{fontSize: 22, fontWeight: 900, color: "var(--accent)", marginBottom: 8}}>⚽ {tl("ki.title")}</div>
         <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>
-          We're a small team and we know about these. Honest about what's a bug,
-          what's a deliberate trade-off, and what's just hard.
+          {tl("ki.sub")}
         </div>
         {KNOWN_ISSUES.map((entry, i) => (
           <React.Fragment key={i}>
-            <h2 style={privacyH2}>{entry.q}</h2>
-            <p style={privacyP}>{entry.a}</p>
+            <h2 style={privacyH2}>{tl(entry.q)}</h2>
+            <p style={privacyP}>{tl(entry.a)}</p>
           </React.Fragment>
         ))}
-        <p style={{...privacyP, marginTop: 32}}>Anything else feels off? Email <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a>.</p>
+        <p style={{...privacyP, marginTop: 32}}>{rich(tl("ki.else"), { mail: <a href="mailto:hello@balliq.app" style={{color:"var(--accent)",textDecoration:"none"}}>hello@balliq.app</a> })}</p>
       </div>
     </div>
   );
@@ -2755,7 +2725,21 @@ export { ErrorBoundary };
 // normally arrives in well under a second.
 const SCREEN_SLOW_MS = 8000;
 
+// A ScreenLoading label is the screen's English name, which is also its error
+// boundary's name in the logs; what the player reads is its ld.* key (i18n
+// step 7). A label missing here prints as it is.
+const LOADING_KEY = {
+  "Loading": "ld.loading", "Loading sign-in": "ld.signin", "Loading online": "ld.online",
+  "Loading history": "ld.history", "Loading Footle": "ld.footle", "Loading results": "ld.results",
+  "Loading settings": "ld.settings", "Loading review": "ld.review", "Loading clubs": "ld.clubs",
+  "Loading quiz": "ld.quiz", "Loading profile": "ld.profile", "Loading multiplayer": "ld.multiplayer",
+  "Loading lobby": "ld.lobby", "Loading Transfer Trail": "ld.trail", "Loading Top 10": "ld.top10",
+  "Loading Stitch-up": "ld.stitch", "Loading the table": "ld.table", "Loading Top 10 lists": "ld.top10lib",
+  "Loading Draft": "ld.draft", "Loading Mystery Player": "ld.mystery", "Loading Stadiums": "ld.stadiums",
+  "Getting your questions": "ld.questions",
+};
 function ScreenLoading({ label = "Loading" }) {
+  const t = useT();
   // ⚠️ A SPINNER WITH NO WAY OUT (Alex, 9 Oct 2026: he finished Daily 7 on a
   // flight and the app sat on "Loading results…" for good). When a screen's
   // code is neither on the device nor reachable, the request does not always
@@ -2771,7 +2755,7 @@ function ScreenLoading({ label = "Loading" }) {
   }, []);
   // handleComplete stores a finished quiz before it asks for the results
   // screen, so for that screen this can be said, and Home will show the score.
-  const savedNote = /results/i.test(label) ? " Your score is saved." : "";
+  const savedNote = /results/i.test(label) ? t("ld.saved") : "";
   return (
     <div className="screen" style={{
       minHeight:"60dvh", display:"flex", flexDirection:"column",
@@ -2783,12 +2767,12 @@ function ScreenLoading({ label = "Loading" }) {
         animation:"biqSpin 0.9s linear infinite",
       }} />
       <div style={{fontSize:13.5, fontWeight:700, color:"var(--t2)", letterSpacing:"-0.2px"}}>
-        {label}…
+        {LOADING_KEY[label] ? t(LOADING_KEY[label]) : label}…
       </div>
       {slow && (
         <div role="status" style={{display:"flex", flexDirection:"column", alignItems:"center", gap:14, padding:"6px 28px 0", textAlign:"center"}}>
           <div style={{fontSize:13.5, lineHeight:1.55, color:"var(--t2)", maxWidth:290}}>
-            This is taking longer than it should. It may need a connection.{savedNote}
+            {t("ld.slow")}{savedNote}
           </div>
           <button
             type="button"
@@ -2797,7 +2781,7 @@ function ScreenLoading({ label = "Loading" }) {
               minHeight:44, padding:"11px 24px", background:"var(--accent)", border:"none", borderRadius:999,
               color:"var(--grn-ink)", fontFamily:"inherit", fontSize:14.5, fontWeight:800, cursor:"pointer",
             }}>
-            Back to Home
+            {t("quiz.backHome")}
           </button>
         </div>
       )}
@@ -2839,10 +2823,10 @@ class TabErrorBoundary extends React.Component {
         }}>
           <div style={{fontSize:40, marginBottom:14}}>⚽</div>
           <div style={{fontSize:17, fontWeight:800, color:"var(--t1)", marginBottom:6, letterSpacing:"-0.3px"}}>
-            {this.props.onExit ? "This screen hit a snag" : "This tab hit a snag"}
+            {this.props.onExit ? tl("ap.snagScreen") : tl("ap.snagTab")}
           </div>
           <div style={{fontSize:13.5, color:"var(--t2)", lineHeight:1.7, marginBottom:22, maxWidth:280}}>
-            The rest of the app is fine — tap to reload just this screen.
+            {tl("ap.snagSub")}
           </div>
           <button
             onClick={() => this.setState({ hasError:false })}
@@ -2852,7 +2836,7 @@ class TabErrorBoundary extends React.Component {
               fontWeight:700, color:"var(--grn-ink)", cursor:"pointer"
             }}
           >
-            Try again
+            {tl("pf.retry")}
           </button>
           {/* ⚠️ A full-screen game is not a tab: it has no tab bar underneath
               and nothing else on screen, so "Try again" on a deterministic
@@ -2868,7 +2852,7 @@ class TabErrorBoundary extends React.Component {
                 color:"var(--t2)", cursor:"pointer"
               }}
             >
-              Back to Home
+              {tl("quiz.backHome")}
             </button>
           )}
         </div>
@@ -3045,23 +3029,25 @@ function ReportReasonSheet({ onPick, onSkip, onCancel }) {
   // share of them are people who backed out; the channel cannot be read while
   // its loudest signal is ambiguous.
   useModalA11y({ isOpen: true, onClose: onCancel, ref });
+  useT();
+  // The labels are the rp.* keys (i18n step 7); the slug is what is stored.
   const REASONS = [
-    ["wrong-answer", CircleX, "The answer is wrong"],
-    ["unclear", CircleHelp, "Confusing or unclear"],
-    ["typo", Pencil, "Typo or bad grammar"],
-    ["too-easy", Moon, "Too easy — gives itself away"],
-    ["too-hard", BrickWall, "Too hard or unfair"],
+    ["wrong-answer", CircleX, tl("rp.wrong")],
+    ["unclear", CircleHelp, tl("rp.unclear")],
+    ["typo", Pencil, tl("rp.typo")],
+    ["too-easy", Moon, tl("rp.easy")],
+    ["too-hard", BrickWall, tl("rp.hard")],
   ];
   // Same sheet as the quit confirm (grab, head, stacked rows, quiet exit) so a
   // report feels like the app, not a browser prompt. Rows are the app's row
   // anatomy: icon well, one line, the whole row is the target.
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="What's wrong with this question?" onClick={onCancel}>
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label={tl("rp.aria")} onClick={onCancel}>
       <div ref={ref} tabIndex={-1} className="modal-box" onClick={(e) => e.stopPropagation()}>
         <div className="modal-grab" aria-hidden="true" />
         <div className="modal-head">
-          <div className="modal-title">What&rsquo;s wrong with it?</div>
-          <div className="modal-body">One tap — it tells us exactly what to fix.</div>
+          <div className="modal-title">{tl("rp.title")}</div>
+          <div className="modal-body">{tl("rp.sub")}</div>
         </div>
         <div className="report-reasons">
           {REASONS.map(([slug, Icon, label]) => (
@@ -3075,8 +3061,8 @@ function ReportReasonSheet({ onPick, onSkip, onCancel }) {
           {/* Three exits, three MEANINGS. Pick a reason (above) is the useful
               one; "Just flag it" reports without one; "Cancel" writes nothing.
               Before this, all three did the same thing. */}
-          <button type="button" className="modal-btn modal-quiet" onClick={onSkip}>Just flag it</button>
-          <button type="button" className="modal-btn modal-quiet report-cancel" onClick={onCancel}>Cancel</button>
+          <button type="button" className="modal-btn modal-quiet" onClick={onSkip}>{tl("rp.flag")}</button>
+          <button type="button" className="modal-btn modal-quiet report-cancel" onClick={onCancel}>{tl("st.cancel")}</button>
         </div>
       </div>
     </div>
@@ -3104,6 +3090,7 @@ function ReportReasonSheet({ onPick, onSkip, onCancel }) {
 // connection returns. Phase E (audit finding 2.3): banner only — no retry queue,
 // no feature gating, no blocking UI.
 const OfflineBanner = React.memo(function OfflineBannerImpl() {
+  useT();
   const [online, setOnline] = useState(() => {
     try { return navigator.onLine !== false; } catch { return true; }
   });
@@ -3179,7 +3166,7 @@ const OfflineBanner = React.memo(function OfflineBannerImpl() {
   if (online && !showBackOnline) return null;
   return (
     <div className={`offline-banner${online ? " reconnected" : ""}`} role="status" aria-live="polite">
-      {online ? "✓ Back online" : "You're offline. Your progress will sync when you're back."}
+      {online ? tl("ap.backOnline") : tl("ap.offline")}
     </div>
   );
 });
@@ -3521,7 +3508,7 @@ function AppInner() {
     if (error) {
       console.warn('[handleGuestJoin] signInAsGuest', error.message);
       setGuestJoining(false);
-      setGuestJoinError("Guest entry isn't available right now — sign up free instead, it takes a minute.");
+      setGuestJoinError(tl("au.guestOff"));
       return;
     }
     // No setGuestJoining(false) on success — the SIGNED_IN state change
@@ -3672,22 +3659,24 @@ function AppInner() {
   // step with the screen, and announce the change in a live region. The live
   // region matters more than the title on iOS, where Safari does not announce
   // title changes in a SPA.
+  // The titles are keys (i18n step 7): tt.<screen>, the tabs' own tab.<tab>.
   const SCREEN_TITLES = {
-    home: "Home", quiz: "Quiz", results: "Results", settings: "Settings",
-    wordle: "Footle", trail: "Transfer Trail", top10: "Top 10", draft: "Draft", mystery: "Mystery Player",
-    stadiums: "Stadiums", review: "Question review", "daily-review": "Daily review",
-    "puzzle-review": "Puzzle review", "friend-profile": "Friend profile",
-    "blocked-users": "Blocked users", "club-quiz": "Club quiz",
-    "quiz-topics": "Quiz", stump: "Stump a mate",
-    "online-stage1": "Online multiplayer", "online-stage1-lobby": "Lobby",
-    "local-setup": "Pass and play",
+    home: "tab.home", quiz: "tt.quiz", results: "tt.results", settings: "tt.settings",
+    wordle: "tt.wordle", trail: "tt.trail", top10: "tt.top10", draft: "tt.draft", mystery: "tt.mystery",
+    stadiums: "tt.stadiums", review: "tt.review", "daily-review": "tt.dailyReview",
+    "puzzle-review": "tt.puzzleReview", "friend-profile": "tt.friendProfile",
+    "blocked-users": "tt.blocked", "club-quiz": "tt.clubQuiz",
+    "quiz-topics": "tt.quiz", stump: "tt.stump",
+    "online-stage1": "tt.online", "online-stage1-lobby": "tt.lobby",
+    "local-setup": "tt.local",
   };
-  const TAB_TITLES = { home: "Home", daily: "History", online: "Multiplayer", profile: "Profile" };
+  const TAB_TITLES = { home: "tab.home", daily: "tab.daily", online: "tab.online", profile: "tab.profile" };
+  const titleLang = useLang();
   const screenTitle = useMemo(() => {
-    if (screen === "home") return TAB_TITLES[tab] || "Home";
-    return SCREEN_TITLES[screen] || "";
+    if (screen === "home") return tl(TAB_TITLES[tab] || "tab.home");
+    return SCREEN_TITLES[screen] ? tl(SCREEN_TITLES[screen]) : "";
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [screen, tab]);
+  }, [screen, tab, titleLang]);
   const [srScreenMsg, setSrScreenMsg] = useState("");
   useEffect(() => {
     if (!screenTitle) return undefined;
@@ -4122,7 +4111,7 @@ function AppInner() {
         safeSetItem("biq_stats", JSON.stringify(updated));
         return updated;
       });
-      showToast(`🛡️ Streak shield used — your ${result.streak}-day streak is safe!`);
+      showToast(tl("ts.shield", { n: result.streak }));
       haptic("heavy");
       playSound("streak");
     } else if (result.ticked && result.streak > 1) {
@@ -4143,7 +4132,7 @@ function AppInner() {
       if (!acked) {
         try { localStorage.setItem('biq_streak_death_ack', String(result.lastDay)); } catch {}
         const best = (typeof result.best === 'number' && result.best > 0) ? result.best : prevKnownStreak;
-        showToast(`💔 Streak reset — day ${result.streak} of the rebuild. Your best: ${best} 🔥`, 4200);
+        showToast(tl("ts.reset", { n: result.streak, best }), 4200);
       }
     }
     // Milestone celebration on the day-7/30/100 CROSSING itself (the tick),
@@ -4161,10 +4150,7 @@ function AppInner() {
       try { persisted = JSON.parse(localStorage.getItem('biq_stats') || '{}') || {}; } catch {}
       const flag = `streak${result.streak}Celebrated`;
       if (!persisted[flag]) {
-        const msg = result.streak === 3 ? "🔥 3 days in a row — that's how a streak starts"
-          : result.streak === 7 ? "🔥 7-day streak — you're building a habit"
-          : result.streak === 30 ? "🏆 30-day streak — incredible dedication"
-          : "💎 100-day streak — you are a legend";
+        const msg = tl({ 3: "ts.streak3", 7: "ts.streak7", 30: "ts.streak30" }[result.streak] || "ts.streak100");
         // 1200ms so it lands after the regular streak toast/pulse — same
         // delay handleComplete's copy uses.
         celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(msg); haptic("heavy"); playSound("streak"); if (result.streak !== 3) setMilestoneConfetti(true); }, 1200));
@@ -4335,7 +4321,7 @@ function AppInner() {
     const d0 = new Date();
     const localDay = Math.floor((d0.getTime() - d0.getTimezoneOffset() * 60000) / 86400000);
     const celebrate = (streakVal) => {
-      showToast(`🔥 Streak repaired — ${streakVal} days and counting`);
+      showToast(tl("ts.repaired", { n: streakVal }));
       haptic("heavy");
       playSound("streak");
       setMilestoneConfetti(true);
@@ -4437,7 +4423,7 @@ function AppInner() {
     }
     const age = challengeDayOffset(pendingChallenge.date);
     if (age > 1) {
-      showToast(`⏰ ${pendingChallenge.name || "Your friend"}'s challenge has expired — play today's Daily 7 and send one back!`);
+      showToast(tl("ts.chExpired", { name: pendingChallenge.name || tl("ts.yourFriend") }));
       clearChallenge();
     } else if (dailyDone) {
       // Already played today: settle instantly in the result modal (a toast
@@ -4547,14 +4533,14 @@ function AppInner() {
       if (error) {
         console.warn("[report_question]", error.message);
         Sentry.captureException(error, { tags: { area: "question-report" } });
-        showToast("Couldn't send that report — we'll look into it");
+        showToast(tl("ts.reportFail"));
         return settle(false);
       }
-      showToast("Thanks — we'll double-check this one ⚽");
+      showToast(tl("ts.reportThanks"));
       return settle(true);
     } catch (e) {
       console.warn("[report_question]", e?.message || e);
-      showToast("Couldn't send that report — we'll look into it");
+      showToast(tl("ts.reportFail"));
       return settle(false);
     }
   }, [showToast]);
@@ -4565,7 +4551,7 @@ function AppInner() {
   // is silent and users see "progress not saving" with no explanation.
   useEffect(() => {
     const onQuotaExceeded = () => {
-      showToast('⚠️ Storage full — clear browser data to continue saving progress', 5000);
+      showToast(tl('ts.storage'), 5000);
     };
     window.addEventListener('biq:storage-quota-exceeded', onQuotaExceeded);
     return () => window.removeEventListener('biq:storage-quota-exceeded', onQuotaExceeded);
@@ -5003,7 +4989,7 @@ function AppInner() {
         // shouldn't nag the user after every game.
         if (syncFailed && !scoreSyncToastShownRef.current) {
           scoreSyncToastShownRef.current = true;
-          showToast("⚠️ Score didn't sync — check your connection");
+          showToast(tl("ts.syncFail"));
         }
       })();
     }
@@ -5045,7 +5031,7 @@ function AppInner() {
       // Reset category for special modes that ignore it
       if (m === "daily" || m === "survival" || m === "legends" || m === "hotstreak" || m === "truefalse" || m === "chaos") setCat("All");
       if (m === "daily" && dailyDone) {
-        showToast(`📅 Already done today — ${dailyScore}/7, come back tomorrow`);
+        showToast(tl("ts.d7Done", { n: dailyScore }));
         return;
       }
       setStartingQuiz(true);
@@ -5082,14 +5068,14 @@ function AppInner() {
         // the tile now serves only the detail tier: exact fees, appearance
         // counts, who held the record before, which club took the sell-on.
         qs = await getQs({ tag: TOPICAL_PACK.tag, onlyDiff: "hard", n: 10, ramp: true, includeLegends: true, avoidConflicts: true });
-        if (!qs || qs.length < 5) { showToast("Not enough questions available for this mode"); return; }
+        if (!qs || qs.length < 5) { showToast(tl("ts.notEnough")); return; }
       }
       else if (m === "chaos") {
         // Chaos: quotes / moments / madness. Pull any QB row tagged chaos
         // (cat === "chaos" OR tag === "chaos"), ignore difficulty, shuffle 10.
         const { QB_CHAOS } = await loadQuestions();
         if (QB_CHAOS.length < 5) {
-          showToast("Not enough questions available for this mode");
+          showToast(tl("ts.notEnough"));
           return;
         }
         const fresh = applySeenFilter(QB_CHAOS, 10, qbHistKey);
@@ -5117,14 +5103,14 @@ function AppInner() {
       // Sanity check: filter out undefined/malformed questions (T/F uses `s`, others use `q`)
       qs = (qs || []).filter(item => item && typeof item === "object" && (item.q || item.s));
       if (qs.length === 0) {
-        showToast("No questions found — try a different category or difficulty");
+        showToast(tl("ts.noneFound"));
         return;
       }
       setQuestions(qs);
       setScreen("quiz");
     } catch (err) {
       console.error("[startMode]", err?.message || "Unknown error");
-      showToast("⚠️ Couldn't start mode");
+      showToast(tl("ts.modeFail"));
       // Sprint #77 SS6: forward to Sentry. This is the entry point for
       // every game mode — chunk-fetch failures on the lazy questions
       // bundle, malformed QB rows, getDailyQs throws, etc., all funnel
@@ -5205,7 +5191,7 @@ function AppInner() {
             // true. Checked BEFORE the draw because applySeenFilter's return
             // value cannot tell you whether it had to top up.
             if (countFreshQuestions(clubPool, qbHistKey) < 10 && shouldWarnPackThin(clubKey)) {
-              showToast(`You know the ${pack.name} pack inside out — a few of these will come round again`);
+              showToast(tl("ts.packDone", { name: pack.name }));
             }
             // Same 14-day seen filter League Quiz applies — without it a club
             // pool of ~20 serves immediate repeats while fresh rows sit unused.
@@ -5228,14 +5214,14 @@ function AppInner() {
         try { legacy = (await import("./data/legacyClubQuestions.js")).LEGACY_CLUB_QUESTIONS[clubKey] || []; } catch {}
         qs = shuffle(legacy).slice(0, 10).map(q => ({ ...q, realCat: q.cat, type: "mcq", cat: "ClubQuiz" }));
       }
-      if (!qs.length) { showToast("No questions yet for this club"); return; }
+      if (!qs.length) { showToast(tl("ts.noClubQs")); return; }
       setActiveLeague(null);
       setActiveClub(clubKey);
       setMode("classic");
       setQuestions(qs);
       setScreen("quiz");
     } catch (e) {
-      showToast("⚠️ Couldn't start club quiz");
+      showToast(tl("ts.clubFail"));
     }
   }, [showToast]);
 
@@ -5256,7 +5242,7 @@ function AppInner() {
       // the full pool only if the no-easy pool can't fill 10 (none currently).
       const noEasy = pool.filter(q => q.diff !== "easy");
       const gradedPool = noEasy.length >= 10 ? noEasy : pool;
-      if (gradedPool.length < 10) { showToast("No questions yet for this competition"); return; }
+      if (gradedPool.length < 10) { showToast(tl("ts.noCompQs")); return; }
       const fresh = applySeenFilter(gradedPool, 10, qbHistKey);
       // ⚠️ The answer-leak guard was fitted to the CLUB draw only and left the
       // league draw on a plain shuffle — the same defect, shipped in the other
@@ -5279,7 +5265,7 @@ function AppInner() {
       setQuestions(qs);
       setScreen("quiz");
     } catch (e) {
-      showToast("⚠️ Couldn't start league quiz");
+      showToast(tl("ts.leagueFail"));
     }
   }, [showToast]);
 
@@ -5459,7 +5445,7 @@ function AppInner() {
         // so they can drift apart again the next time a page is added. Start a
         // general quiz rather than nothing, and say why.
         else if (clubSlug || quizSlug) {
-          showToast("No dedicated pack for that one yet — here's a general quiz");
+          showToast(tl("ts.noPack"));
           startMode("classic");
         }
       };
@@ -6232,10 +6218,10 @@ function AppInner() {
     const newTotal = (stats.gamesPlayed || 0) + 1;
     if (newTotal > (stats.lastGamesMilestone || 0)) {
       let milestone = true;
-      if (newTotal === 10) showToast("🎉 10 games played, you're on a roll");
-      else if (newTotal === 50) showToast(`🔥 50 games — serious ${APP_NAME} energy`);
-      else if (newTotal === 100) showToast(`🏆 100 games — you're a ${APP_NAME} legend`);
-      else if (newTotal % 25 === 0 && newTotal > 10) showToast(`⚡ ${newTotal} games played, keep going`);
+      if (newTotal === 10) showToast(tl("ts.games10"));
+      else if (newTotal === 50) showToast(tl("ts.games50", { app: APP_NAME }));
+      else if (newTotal === 100) showToast(tl("ts.games100", { app: APP_NAME }));
+      else if (newTotal % 25 === 0 && newTotal > 10) showToast(tl("ts.gamesN", { n: newTotal }));
       else milestone = false;
       if (milestone) {
         setStats(p => {
@@ -6248,22 +6234,22 @@ function AppInner() {
 
     // Streak milestones (independent of game count)
     if (loginStreak === 3 && !stats.streak3Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 3 days in a row — that's how a streak starts"); haptic("heavy"); playSound("streak"); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(tl("ts.streak3")); haptic("heavy"); playSound("streak"); }, 1200));
       setStats(p => ({...p, streak3Celebrated: true}));
     } else if (loginStreak === 7 && !stats.streak7Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🔥 7-day streak — you're building a habit"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(tl("ts.streak7")); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak7Celebrated: true}));
     } else if (loginStreak === 30 && !stats.streak30Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("🏆 30-day streak — incredible dedication"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(tl("ts.streak30")); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak30Celebrated: true}));
     } else if (loginStreak === 100 && !stats.streak100Celebrated) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast("💎 100-day streak — you are a legend"); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
+      celebrationTimeoutsRef.current.push(setTimeout(() => { showToast(tl("ts.streak100")); haptic("heavy"); playSound("streak"); setMilestoneConfetti(true); }, 1200));
       setStats(p => ({...p, streak100Celebrated: true}));
     }
 
     // 🎉 PERFECT SCORE celebration
     if (res.score === res.total && res.total >= 5 && mode !== "survival") {
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🎉 Perfect — every question right"), 800));
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(tl("ts.perfect")), 800));
       haptic("levelup");
     }
 
@@ -6309,25 +6295,25 @@ function AppInner() {
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily)
     if (mode === "classic" && res.score && res.total === 10 && res.score > (stats.bestScore || 0)) {
       const isFirst = !stats.bestScore;
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `🎯 First score: ${res.score}/10!` : `🎯 New personal best: ${res.score}/10!`), 1400));
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(tl(isFirst ? "ts.firstScore" : "ts.pb", { n: res.score })), 1400));
       haptic("hardCorrect");
     }
 
     // 🔥 HOT STREAK personal best
     if (mode === "hotstreak" && res.score > (stats.bestHotStreak || 0) && res.score >= 5) {
       const isFirst = !stats.bestHotStreak;
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(isFirst ? `⚡ Hot Streak record: ${res.score}!` : `⚡ New Hot Streak best: ${res.score}!`), 1400));
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(tl(isFirst ? "ts.hotFirst" : "ts.hotBest", { n: res.score })), 1400));
       haptic("hardCorrect");
     }
 
     // 🔄 COMEBACK celebration — got Q1 wrong, then nailed the rest
     if (mode === "classic" && res.wrongAnswers && res.wrongAnswers.length === 1 && res.score >= 8) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast("🔄 Great comeback — only missed one after a slow start"), 1600));
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(tl("ts.comeback")), 1600));
     }
 
     // 🎖️ CATEGORY MASTERY — 10+ correct in a row from same category
     if (mode === "hotstreak" && res.score >= 10 && cat && cat !== "All") {
-      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`🎖️ ${cat} mastery — ${res.score} in a row`), 1600));
+      celebrationTimeoutsRef.current.push(setTimeout(() => showToast(tl("ts.mastery", { cat: getLang() === "en" ? cat : catLabel(tl, cat), n: res.score })), 1600));
     }
 
 
@@ -6337,7 +6323,7 @@ function AppInner() {
     // The toast still waits for a run worth announcing.
     if (mode === "survival" && res.score && res.score > (stats.bestSurvival || 0)) {
       if (res.score >= 10 || (stats.bestSurvival || 0) > 0) {
-        celebrationTimeoutsRef.current.push(setTimeout(() => showToast(`New Survival best: ${res.score} in a row`), 1400));
+        celebrationTimeoutsRef.current.push(setTimeout(() => showToast(tl("ts.survivalBest", { n: res.score })), 1400));
       }
       // Written straight to storage, as setCardLeague does: saveStats ran
       // earlier in this handler from the old stats, so a state update alone
@@ -6577,7 +6563,7 @@ function AppInner() {
 
   const clearSeen = useCallback(() => {
     clearSeenHistory();
-    showToast("✓ Question history cleared");
+    showToast(tl("ts.histCleared"));
   }, [showToast]);
 
   // Called by SettingsScreen after the delete_user_account RPC has finished.
@@ -6586,7 +6572,7 @@ function AppInner() {
   // stale leaderboard / IQ history. Errors surface as a toast.
   const onAccountDeleted = useCallback(({ error }) => {
     if (error) {
-      showToast("⚠️ Couldn't delete account — please try again");
+      showToast(tl("ts.deleteFail"));
       return;
     }
     setStats({ gamesPlayed: 0, bestScore: 0, bestStreak: 0 });
@@ -6597,7 +6583,7 @@ function AppInner() {
     setLoginStreak(0);
     setXp(0);
     setProfileState(null);
-    showToast("Your account has been deleted");
+    showToast(tl("ts.deleted"));
   }, [showToast]);
 
   // Full stats reset. Phase F (audit finding 1.4): server-authoritative —
@@ -6620,7 +6606,7 @@ function AppInner() {
       const { error } = await supabase.rpc('reset_user_stats');
       if (error) {
         console.warn('[reset_user_stats]', error.message);
-        showToast("Couldn't reset stats — try again when online");
+        showToast(tl("ts.resetFail"));
         return;
       }
     }
@@ -6647,7 +6633,7 @@ function AppInner() {
         try { localStorage.removeItem(k); } catch {}
       }
     } catch {}
-    showToast("✓ Stats cleared");
+    showToast(tl("ts.statsCleared"));
   }, [showToast, user?.id]);
 
   // Ball IQ is dark-only (light theme removed 2026-07-15). Strip a stale
@@ -7028,24 +7014,25 @@ function AppInner() {
       // used to be persisted and greeted with "we'll drop you straight into the
       // room", then re-prompted on every boot. One read-only RPC first.
       const look = await mpLookupRoom(code);
-      if (look.found === false) return { ok: false, error: "No room with that code — check with your friend" };
-      if (look.found && !look.joinable) return { ok: false, error: look.state === "ended" ? "That game has finished" : "This room is full" };
+      if (look.found === false) return { ok: false, error: tl("mp.noRoom") };
+      if (look.found && !look.joinable) return { ok: false, error: look.state === "ended" ? tl("ap.gameFinished") : tl("mp.full") };
       try { localStorage.setItem("biq_pending_join", JSON.stringify({ c: code, at: Date.now() })); } catch {}
       setPendingJoinCode(code);
       return { ok: false, error: "" };
     }
     const trimmed = String(rawCode || "").trim().toUpperCase();
-    if (trimmed.length !== 6) return { ok: false, error: "Enter the 6-character room code" };
+    if (trimmed.length !== 6) return { ok: false, error: tl("mp.enterCode") };
     const result = await mpJoinRoom({
       p_code: trimmed,
       p_name: (authProfile?.username || profile?.name || "Player"),
       p_avatar: (currentAvatarId(authProfile, profile)),
     });
     if (result.error) {
-      const msg = result.code === "53300" ? "This room is full"
-        : result.code === "P0002" ? "No room with that code — check with your friend"
-        : result.code === "42P01" ? "This room isn't accepting joins right now"
-        : (result.error || "Couldn't join room");
+      // The server's own text in English, as before; the app's words otherwise.
+      const msg = result.code === "53300" ? tl("mp.full")
+        : result.code === "P0002" ? tl("mp.noRoom")
+        : result.code === "42P01" ? tl("mp.notAccepting")
+        : ((getLang() === "en" && result.error) || tl("ap.joinFail"));
       return { ok: false, error: msg };
     }
     setStage1RoomCode(result.code || trimmed);
@@ -7083,7 +7070,7 @@ function AppInner() {
     setPendingInviteFriendId(friend?.id || null);
     setOnlineAutoCreate(true);
     startMode("online");
-    showToast(friend?.username ? `Room ready — inviting ${friend.username}` : "Room ready — share the invite link");
+    showToast(friend?.username ? tl("ts.roomInviting", { name: friend.username }) : tl("ts.roomReady"));
   }, [showToast, startMode]);
   // Friend profile screen — full-screen overlay, reachable from any tappable
   // friend row in FriendsSection (Your friends list + Friends leaderboard).
@@ -7322,10 +7309,10 @@ function AppInner() {
       qs = await getDailyQsForDate(date);
     } catch (e) {
       console.warn('[playDailyForDate]', e?.message || e);
-      showToast("⚠️ Couldn't load questions — check your connection");
+      showToast(tl("ts.loadFail"));
       return;
     }
-    if (!qs || qs.length === 0) { showToast("No questions available for that day"); return; }
+    if (!qs || qs.length === 0) { showToast(tl("ts.noDay")); return; }
     haptic("soft");
     setActiveDailyDate(date);
     setMode("daily");
@@ -7571,25 +7558,25 @@ function AppInner() {
         )}
         {showRatePrompt && (
           <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,background:"rgba(0,0,0,0.75)",zIndex:998,display:"flex",alignItems:"flex-end",animation:"fadeIn 0.3s ease"}} onClick={() => { loopEvent("rate-prompt-dismissed", { view: rateView, how: "backdrop" }); setShowRatePrompt(false); }}>
-            <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Rate Ball IQ" style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
+            <div ref={ratePromptRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label={t("rt.aria", { app: APP_NAME })} style={{width:"100%",maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderRadius:"20px 20px 0 0",padding:"28px 24px calc(48px + env(safe-area-inset-bottom, 34px))",textAlign:"center"}} onClick={e => e.stopPropagation()}>
               {rateView === "ask" ? (
                 <>
                   <div style={{fontSize:48,marginBottom:12}}>⚽</div>
-                  <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Enjoying {APP_NAME}?</div>
-                  <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>We'd love to know how it's going for you.</div>
-                  <button className="btn btn-p" style={{marginBottom:10}} onClick={() => { loopEvent("rate-prompt-loving"); setRateView("store"); }}>Loving it! 😄</button>
+                  <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{t("rt.enjoying", { app: APP_NAME })}</div>
+                  <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>{t("rt.sub")}</div>
+                  <button className="btn btn-p" style={{marginBottom:10}} onClick={() => { loopEvent("rate-prompt-loving"); setRateView("store"); }}>{t("rt.loving")}</button>
                   <button className="btn btn-s" onClick={() => {
                     loopEvent("rate-prompt-not-really");
                     setShowRatePrompt(false);
-                    try { window.location.href = `mailto:hello@balliq.app?subject=${encodeURIComponent(APP_NAME + " feedback")}&body=${encodeURIComponent("What could be better?\n\n")}`; } catch {}
-                    showToast("Thanks — tell us what we can fix 🙏");
-                  }}>Not really</button>
+                    try { window.location.href = `mailto:hello@balliq.app?subject=${encodeURIComponent(t("rt.mailSubject", { app: APP_NAME }))}&body=${encodeURIComponent(t("rt.mailBody"))}`; } catch {}
+                    showToast(t("rt.thanks"));
+                  }}>{t("rt.notReally")}</button>
                 </>
               ) : (
                 <>
                   <div style={{width:56,height:56,margin:"0 auto 12px",borderRadius:16,background:"rgba(255,193,7,0.14)",border:"1px solid rgba(255,193,7,0.3)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--gold)"}}><Star size={26} strokeWidth={2.25} aria-hidden="true" /></div>
-                  <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>Glad you're enjoying it!</div>
-                  <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>A quick rating helps other football fans find the app — and takes just 5 seconds!</div>
+                  <div style={{fontSize:20,fontWeight:900,marginBottom:8,color:"var(--t1)"}}>{t("rt.glad")}</div>
+                  <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.7,marginBottom:24}}>{t("rt.gladSub")}</div>
                   <button className="btn btn-p" style={{marginBottom:10}} onClick={() => {
                     setShowRatePrompt(false);
                     // ⚠️ ONE store detector, not a fourth hand-rolled UA regex. The
@@ -7610,10 +7597,10 @@ function AppInner() {
                       // with the real taps would inflate the only conversion
                       // number this funnel has.
                       loopEvent("rate-store-unreachable", { store: "none" });
-                      showToast(`⭐ Search '${APP_NAME}' on the App Store or Google Play`);
+                      showToast(t("rt.search", { app: APP_NAME }));
                     }
-                  }}>Rate {APP_NAME} ⭐</button>
-                  <button className="btn btn-s" onClick={() => { loopEvent("rate-prompt-dismissed", { view: "store", how: "maybe-later" }); setShowRatePrompt(false); }}>Maybe later</button>
+                  }}>{t("rt.rate", { app: APP_NAME })}</button>
+                  <button className="btn btn-s" onClick={() => { loopEvent("rate-prompt-dismissed", { view: "store", how: "maybe-later" }); setShowRatePrompt(false); }}>{t("rt.later")}</button>
                 </>
               )}
             </div>
@@ -7644,23 +7631,23 @@ function AppInner() {
               tabIndex={-1}
               role="dialog"
               aria-modal="true"
-              aria-label="Leave room confirmation"
+              aria-label={t("lr.aria")}
               style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px 28px",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
               onClick={(e) => e.stopPropagation()}
             >
-              <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>Leave the room?</div>
-              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>You'll exit the multiplayer lobby and return to home. Other players will see you leave.</div>
+              <div style={{fontSize:18,fontWeight:800,color:"var(--text)",marginBottom:8}}>{t("lr.title")}</div>
+              <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:18}}>{t("lr.body")}</div>
               <button
                 onClick={() => { const cb = pendingLeaveRoom?.onConfirm; setPendingLeaveRoom(null); cb?.(); }}
                 style={{width:"100%",padding:14,background:"var(--red)",color:"#fff",border:"none",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#fff"}}
               >
-                Leave room
+                {t("lr.leave")}
               </button>
               <button
                 onClick={() => setPendingLeaveRoom(null)}
                 style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
               >
-                Stay
+                {t("lr.stay")}
               </button>
             </div>
           </div>
@@ -7679,7 +7666,7 @@ function AppInner() {
               tabIndex={-1}
               role="dialog"
               aria-modal="true"
-              aria-label="Daily 7 challenge"
+              aria-label={t("ch.aria")}
               style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px calc(28px + env(safe-area-inset-bottom, 0px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
               onClick={(e) => e.stopPropagation()}
             >
@@ -7687,31 +7674,31 @@ function AppInner() {
                 <Trophy size={26} strokeWidth={2.25} color="#58CC02" />
               </div>
               <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:6}}>
-                {pendingChallenge.name ? `${pendingChallenge.name} scored ${pendingChallenge.score}/7` : `A friend scored ${pendingChallenge.score}/7`}
+                {pendingChallenge.name ? t("ch.scored", { name: pendingChallenge.name, n: pendingChallenge.score }) : t("ch.friendScored", { n: pendingChallenge.score })}
               </div>
               <div style={{fontSize:14,color:"var(--t2)",lineHeight:1.5,marginBottom:20}}>
                 {challengeDayOffset(pendingChallenge.date) === 0
-                  ? "Same day, same 7 questions. Beat that score and it's settled."
-                  : "That was yesterday's Daily 7 — play today's and settle it."}
+                  ? t("ch.sameDay")
+                  : t("ch.yesterday")}
               </div>
               <button
                 onClick={() => { closeChallengeIntro(); playDaily(); }}
                 style={{width:"100%",minHeight:50,padding:"14px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:14,boxShadow:"0 10px 26px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:16,fontWeight:800,cursor:"pointer",WebkitTextFillColor:"#0a1a00"}}
               >
-                Play the Daily 7
+                {t("ch.play")}
               </button>
               <button
                 onClick={closeChallengeIntro}
                 style={{marginTop:12,background:"none",border:"none",color:"var(--t3)",fontFamily:"inherit",fontSize:13.5,fontWeight:700,cursor:"pointer",padding:"8px"}}
               >
-                Not now
+                {t("lg.notNow")}
               </button>
             </div>
           </div>
         )}
         {/* Mates' leagues (web only): the create and join sheets, lazy. */}
         {LEAGUES_WEB && leagueSheet?.kind === "join" && (
-          <TabErrorBoundary name="league-join" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={LEAGUE_SHEET_FALLBACK}><LeagueJoinSheet
+          <TabErrorBoundary name="league-join" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={leagueSheetFallback()}><LeagueJoinSheet
             token={leagueSheet.token}
             displayName={leagueDisplayName}
             isGuest={!user || !!isAnonUser}
@@ -7722,7 +7709,7 @@ function AppInner() {
           /></React.Suspense></TabErrorBoundary>
         )}
         {LEAGUES_WEB && leagueSheet?.kind === "create" && (
-          <TabErrorBoundary name="league-create" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={LEAGUE_SHEET_FALLBACK}><LeagueCreateSheet
+          <TabErrorBoundary name="league-create" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={leagueSheetFallback()}><LeagueCreateSheet
             seed={leagueSheet.seed}
             vs={leagueSheet.vs}
             h2h={leagueSheet.h2h}
@@ -7743,7 +7730,7 @@ function AppInner() {
               tabIndex={-1}
               role="dialog"
               aria-modal="true"
-              aria-label="Challenge result"
+              aria-label={t("ch.resultAria")}
               style={{width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",WebkitOverflowScrolling:"touch",background:"var(--bg)",borderTop:"1px solid var(--border)",borderRadius:"22px 22px 0 0",padding:"22px 22px calc(28px + env(safe-area-inset-bottom, 0px))",textAlign:"center",animation:"slideUp 0.3s cubic-bezier(0.22,1,0.36,1)"}}
               onClick={(e) => e.stopPropagation()}
             >
@@ -7751,18 +7738,18 @@ function AppInner() {
                 {challengeResult.mine > challengeResult.theirs ? "🏆" : challengeResult.mine === challengeResult.theirs ? "🤝" : "😤"}
               </div>
               <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:16}}>
-                {challengeResult.mine > challengeResult.theirs ? `You beat ${challengeResult.name || "your friend"}!`
-                  : challengeResult.mine === challengeResult.theirs ? `Level with ${challengeResult.name || "your friend"}`
-                  : `${challengeResult.name || "Your friend"} takes this one`}
+                {challengeResult.mine > challengeResult.theirs ? t("ch.beat", { name: challengeResult.name || t("ch.yourFriendLc") })
+                  : challengeResult.mine === challengeResult.theirs ? t("ch.level", { name: challengeResult.name || t("ch.yourFriendLc") })
+                  : t("ch.takes", { name: challengeResult.name || t("ts.yourFriend") })}
               </div>
               <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:20}}>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",background:"var(--s2)",border:"1px solid var(--border)",borderRadius:12}}>
-                  <span style={{fontSize:14,fontWeight:700,color:"var(--t1)"}}>You</span>
+                  <span style={{fontSize:14,fontWeight:700,color:"var(--t1)"}}>{t("mp.youCap")}</span>
                   <span style={{fontSize:16,fontWeight:900,color:"var(--t1)"}}>{challengeResult.mine}/7</span>
                 </div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 14px",background:"var(--s2)",border:"1px solid var(--border)",borderRadius:12}}>
                   <span style={{fontSize:14,fontWeight:700,color:"var(--t2)"}}>
-                    {challengeResult.name || "Your friend"}{challengeResult.yesterday ? " (yesterday's score)" : ""}
+                    {challengeResult.name || t("ts.yourFriend")}{challengeResult.yesterday ? t("ch.yesterdayScore") : ""}
                   </span>
                   <span style={{fontSize:16,fontWeight:900,color:"var(--t2)"}}>{challengeResult.theirs}/7</span>
                 </div>
@@ -7771,7 +7758,7 @@ function AppInner() {
                 onClick={() => { setChallengeResult(null); shareDaily(); }}
                 style={{width:"100%",padding:14,background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontFamily:"inherit",fontSize:15,fontWeight:800,cursor:"pointer",marginBottom:8,WebkitTextFillColor:"#0a1a00"}}
               >
-                Send it back 🔁
+                {t("ch.sendBack")}
               </button>
               {/* Mates' leagues (web only): the same seed as the results panel's. */}
               {LEAGUES_WEB && (
@@ -7786,14 +7773,14 @@ function AppInner() {
                   }}
                   style={{display:"block",margin:"2px auto 12px",background:"none",border:"none",color:"var(--t2)",WebkitTextFillColor:"var(--t2)",fontFamily:"inherit",fontSize:13,fontWeight:700,textDecoration:"underline",textUnderlineOffset:3,cursor:"pointer",padding:"6px 8px"}}
                 >
-                  Make it a league?
+                  {t("ch.league")}
                 </button>
               )}
               <button
                 onClick={() => setChallengeResult(null)}
                 style={{width:"100%",padding:14,background:"var(--s2)",color:"var(--text)",border:"1px solid var(--border)",borderRadius:12,fontFamily:"inherit",fontSize:15,fontWeight:700,cursor:"pointer"}}
               >
-                Done
+                {t("ch.done")}
               </button>
             </div>
           </div>
@@ -7814,21 +7801,21 @@ function AppInner() {
               <div style={{marginBottom:16,animation:"iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1)",display:"flex",justifyContent:"center"}}>
                 {levelUpOverlay.Icon && <levelUpOverlay.Icon size={80} strokeWidth={1.6} color="var(--gold)" />}
               </div>
-              <div style={{fontSize:14,color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:8}}>Promoted to</div>
-              <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelUpOverlay.name}</div>
-              <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>Keep playing to reach the next level</div>
+              <div style={{fontSize:14,color:"var(--gold)",fontWeight:700,letterSpacing:0.3,marginBottom:8}}>{t("lu.promoted")}</div>
+              <div style={{fontSize:32,fontWeight:900,color:"#fff",letterSpacing:"-0.5px",marginBottom:12}}>{levelName(levelUpOverlay.name)}</div>
+              <div style={{fontSize:14,color:"rgba(255,255,255,0.6)"}}>{t("lu.keep")}</div>
             </div>
-            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>Let&rsquo;s go</button>
+            <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>{t("lu.go")}</button>
           </div>
         )}
-        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span><strong>{streakToast} day streak!</strong> Keep it up</span></div>}
+        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
 
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (
           <div className="diff-overlay" onClick={() => setShowFriendsPicker(false)}>
             <div ref={friendsPickerRef} tabIndex={-1} className="diff-sheet" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
-              <div className="diff-sheet-title">Multiplayer</div>
-              <div className="diff-sheet-sub">Who's joining?</div>
+              <div className="diff-sheet-title">{t("tab.online")}</div>
+              <div className="diff-sheet-sub">{t("fp.who")}</div>
               <div className="diff-options">
                 <button
                   className="diff-option"
@@ -7845,8 +7832,8 @@ function AppInner() {
                 >
                   <span className="diff-option-icon">🌐</span>
                   <div className="diff-option-body">
-                    <div className="diff-option-name">Online Multiplayer</div>
-                    <div className="diff-option-desc">Real-time with up to 3 friends</div>
+                    <div className="diff-option-name">{t("mp.title")}</div>
+                    <div className="diff-option-desc">{t("fp.onlineSub")}</div>
                   </div>
                 </button>
                 <button
@@ -7855,8 +7842,8 @@ function AppInner() {
                 >
                   <span className="diff-option-icon">🤝</span>
                   <div className="diff-option-body">
-                    <div className="diff-option-name">Local Multiplayer</div>
-                    <div className="diff-option-desc">Pass the phone, same room</div>
+                    <div className="diff-option-name">{t("lp.title")}</div>
+                    <div className="diff-option-desc">{t("fp.localSub")}</div>
                   </div>
                 </button>
               </div>
@@ -7956,7 +7943,7 @@ function AppInner() {
                 const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
                 if (authProfile?.username && !isDef(authProfile.username)) return authProfile.username;
                 if (profile.name && !isDef(profile.name)) return profile.name;
-                return "You";
+                return t("mp.youCap");
               })()}
               avatarUrl={authProfile?.avatar_url}
               avatarId={currentAvatarId(authProfile, profile)}
@@ -8054,7 +8041,7 @@ function AppInner() {
           <div style={{position:"fixed",top:0,left:0,right:0,zIndex:1090,display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:"var(--accent)",boxShadow:"0 2px 10px rgba(0,0,0,0.25)",animation:"fadeIn 0.2s ease"}}>
             <span style={{fontSize:20}} aria-hidden="true">🎯</span>
             <div style={{flex:1,fontSize:13,fontWeight:700,color:"#0a1a00",lineHeight:1.3}}>
-              {pendingChallenge.name ? `${pendingChallenge.name} challenged you` : "You've got a Daily 7 challenge"} — open it in the app
+              {t("ch.nudge", { who: pendingChallenge.name ? t("ch.challengedYou", { name: pendingChallenge.name }) : t("ch.gotOne") })}
             </div>
             <button
               onClick={() => {
@@ -8066,11 +8053,11 @@ function AppInner() {
               }}
               style={{flexShrink:0,padding:"7px 14px",background:"#0a1a00",color:"var(--accent)",border:"none",borderRadius:9,fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
             >
-              Open
+              {t("ch.open")}
             </button>
             <button
               onClick={() => setChallengeAppNudgeDismissed(true)}
-              aria-label="Dismiss"
+              aria-label={t("nc.dismiss")}
               style={{flexShrink:0,width:28,height:28,display:"flex",alignItems:"center",justifyContent:"center",background:"transparent",color:"#0a1a00",border:"none",fontSize:18,fontWeight:700,cursor:"pointer"}}
             >
               ×
@@ -8100,7 +8087,7 @@ function AppInner() {
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
-              aria-label="Join the game"
+              aria-label={t("jg.title")}
               className="modal-box"
             >
               <div className="modal-grab" aria-hidden="true" />
@@ -8108,9 +8095,9 @@ function AppInner() {
                 <div aria-hidden="true" style={{width:52,height:52,borderRadius:15,margin:"0 auto 4px",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(88,204,2,0.14)",border:"1px solid rgba(88,204,2,0.30)"}}>
                   <Gamepad2 size={24} strokeWidth={2.25} color="#58CC02" />
                 </div>
-                <div className="modal-title">Join the game</div>
+                <div className="modal-title">{t("jg.title")}</div>
                 <div className="modal-body">
-                  Your friend&rsquo;s code <strong style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",color:"var(--accent)"}}>{pendingJoinCode}</strong> is ready. We&rsquo;ll drop you straight into the room.
+                  {rich(t("jg.body"), { code: <strong style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",color:"var(--accent)"}}>{pendingJoinCode}</strong> })}
                 </div>
               </div>
               <div className="modal-btns">
@@ -8127,7 +8114,7 @@ function AppInner() {
                 {IS_IOS_WEB && (
                   <button type="button" className="btn-3d modal-btn" onClick={() => { try { window.location.href = `app.balliq://balliq.app/join/${pendingJoinCode}`; } catch {} }}>
                     <Smartphone size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />
-                    Got the app? Open it there
+                    {t("jg.app")}
                   </button>
                 )}
                 {/* v1.6 guest entry — the invite loop's biggest leak was this
@@ -8142,15 +8129,15 @@ function AppInner() {
                   disabled={guestJoining}
                   style={guestJoining ? {opacity:0.6} : undefined}
                 >
-                  {guestJoining ? "Joining…" : <><Zap size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />Play as guest</>}
+                  {guestJoining ? t("lg.joining") : <><Zap size={16} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-3px",marginRight:6}} />{t("jg.guest")}</>}
                 </button>
                 {guestJoinError && (
                   <div role="alert" style={{fontSize:12,color:"var(--red)",lineHeight:1.4,textAlign:"center",padding:"2px 8px"}}>{guestJoinError}</div>
                 )}
                 <button type="button" className="btn-3d ghost modal-btn" onClick={() => { try { openAuthPrompt?.('online'); } catch {} }}>
-                  Sign up or sign in
+                  {t("jg.signIn")}
                 </button>
-                <button type="button" className="modal-btn modal-quiet" onClick={clearPendingJoin}>Not now</button>
+                <button type="button" className="modal-btn modal-quiet" onClick={clearPendingJoin}>{t("lg.notNow")}</button>
               </div>
             </div>
           </div>
@@ -8217,8 +8204,8 @@ function AppInner() {
                   setPendingInviteFriendId(null);
                   const ok = await sendPlayInvite(target, c);
                   showToast(ok
-                    ? "Challenge sent — they've been notified"
-                    : "Couldn't notify them — share the invite link instead");
+                    ? tl("ts.chSent")
+                    : tl("ts.notifyFail"));
                 }
               }}
               defaultName={isAnonUser ? getGuestDisplayName() : (authProfile?.username || profile?.name || "")}
@@ -8264,8 +8251,8 @@ function AppInner() {
                 if (!ids.length) return;
                 const sent = (await Promise.all(ids.map((id) => sendPlayInvite(id, c)))).filter(Boolean).length;
                 showToast(sent
-                  ? (sent === 1 ? "Rematch sent — they've been notified" : `Rematch sent — ${sent} players notified`)
-                  : "Rematch room ready — share the link to bring them back");
+                  ? (sent === 1 ? tl("ts.rematchOne") : tl("ts.rematchN", { n: sent }))
+                  : tl("ts.rematchRoom"));
               }}
             />
           </React.Suspense>
@@ -8489,22 +8476,22 @@ function AppInner() {
                   <ProfilePic value={authProfile?.avatar_id} url={authProfile?.avatar_url} name={authProfile?.username} />
                 </div>
                 <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:14,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>Put a face to the name</div>
-                  <div style={{fontSize:12.5,color:"var(--t2)",lineHeight:1.4,marginTop:2}}>Your friends see this next to your score.</div>
+                  <div style={{fontSize:14,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{t("pn.title")}</div>
+                  <div style={{fontSize:12.5,color:"var(--t2)",lineHeight:1.4,marginTop:2}}>{t("pn.sub")}</div>
                 </div>
                 <button
                   onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-tap'); setTab('profile'); setScreen('home'); }}
                   style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
                 >
-                  Add
+                  {t("pn.add")}
                 </button>
                 {/* A nudge you cannot decline is a wall. */}
                 <button
                   onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-dismiss'); }}
-                  aria-label="Not now"
+                  aria-label={t("lg.notNow")}
                   style={{flexShrink:0,padding:"9px 6px",background:"none",border:"none",color:"var(--t3)",fontFamily:"inherit",fontSize:13,fontWeight:700,cursor:"pointer"}}
                 >
-                  Later
+                  {t("pn.later")}
                 </button>
               </div>
             ) : null}
@@ -8665,7 +8652,7 @@ function AppGate() {
   // index.html's <style>) means the moment React replaces the pre-mount DOM,
   // the user sees an identical wordmark + animated bar — no visible swap.
   const splash = splashMounted ? (
-    <div className={`biq-splash${!effectiveLoading ? ' is-leaving' : ''}`} aria-label={`Loading ${APP_NAME}`}>
+    <div className={`biq-splash${!effectiveLoading ? ' is-leaving' : ''}`} aria-label={tl("ap.loadingApp", { app: APP_NAME })}>
       <div className="biq-splash-mark">Ball <em>IQ</em></div>
       <div className="biq-splash-dot"></div>
     </div>

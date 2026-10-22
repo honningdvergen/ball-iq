@@ -89,7 +89,9 @@ describe('DailyDone — one panel, four surfaces', () => {
   it('a live streak gets ONE evening streak-at-risk nudge, today only, named', () => {
     expect(NOTIF).toMatch(/STREAK_RISK_ID = ID_BASE \+ 40/);
     expect(NOTIF).toMatch(/streak >= 2 && getReminderHour\(\) < STREAK_RISK_HOUR/);
-    expect(NOTIF).toMatch(/\$\{streak\}-day daily streak ends at midnight/);
+    // The words are a key since i18n step 7 (rem.streak), named with the count.
+    expect(NOTIF).toMatch(/t\('rem\.streak', \{ n: streak \}\)/);
+    expect(EN['rem.streak']).toMatch(/\{n\}-day daily streak ends at midnight/);
     expect(NOTIF, 'cancelled with tonight when the player plays').toMatch(/\{ id: ID_BASE \}, \{ id: STREAK_RISK_ID \}/);
     expect((NOTIF_HOOK.match(/scheduleReminderWindow\(\{ skipToday: [^}]*streak: loginStreak \}\)/g) || []).length).toBe(3);
   });
@@ -102,9 +104,13 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(HUB, 'the green slab no longer flips to a sign-up label').not.toMatch(/needsAccount \? "Sign up to play online"/);
     // The guest's first block is the PITCH (what a room is + the one green
     // button = sign-up), above join-by-code and local play.
-    expect(HUB).toMatch(/Who knows more — you or your mates\?/);
-    expect(HUB.indexOf('Who knows more')).toBeLessThan(HUB.indexOf('Got a code? Type it here'));
-    expect(HUB).toMatch(/Challenge your friends/);
+    // The words are keys since i18n step 7 (oh.pitch, oh.codePh, oh.challenge).
+    expect(EN['oh.pitch']).toBe('Who knows more — you or your mates?');
+    expect(EN['oh.codePh']).toBe('Got a code? Type it here');
+    expect(EN['oh.challenge']).toBe('Challenge your friends');
+    expect(HUB).toContain('t("oh.pitch")');
+    expect(HUB.indexOf('t("oh.pitch")')).toBeLessThan(HUB.indexOf('t("oh.codePh")'));
+    expect(HUB).toContain('t("oh.challenge")');
     // Profile: the ask comes AFTER the player's own card.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
     // The words live in i18n/en.js since step 4: pf.saveAria / pf.phoneOnly.

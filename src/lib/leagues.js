@@ -20,7 +20,8 @@
 
 import { isNativeShell, leagueWeekStart, flushLeagueOutbox, setLeagueTokenSource } from './leagueResults.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
-import { t } from '../i18n/index.js';
+import { t, getLang, fmtLocale } from '../i18n/index.js';
+import { ordinalText } from '../i18n/names.js';
 
 // Re-exported so the app reaches the results lib through this lazy chunk: a
 // dynamic import of leagueResults.js from App.jsx pulled it into Home's eager
@@ -102,18 +103,27 @@ export function announceLeagueOpen(id) {
 }
 
 // ── words ──
+// In the player's language since i18n step 7 (the lg.* keys). The share card
+// image stays English by design, so LeagueScreen hands it the English ones
+// (LABEL_COPY, weekOfLabelEnglish).
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 export const DAY_LETTERS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+/** The day letters Monday to Sunday in the player's language. */
+export const dayLetters = () => t('lg.dayLetters').split(' ');
 const dayDate = (day) => new Date(day * 86400000);
-/** "13 Oct" for a day index. */
-export function dayLabel(day) { const d = dayDate(day); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`; }
-export const weekOfLabel = (weekStart) => `Week of ${dayLabel(weekStart)}`;
+const dayLabelEnglish = (day) => { const d = dayDate(day); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`; };
+/** "13 Oct" for a day index ("13 oct" in Spanish). */
+export function dayLabel(day) {
+  return getLang() === 'en' ? dayLabelEnglish(day) : dayDate(day).toLocaleDateString(fmtLocale(), { day: 'numeric', month: 'short', timeZone: 'UTC' }).replace('.', '');
+}
+export const weekOfLabel = (weekStart) => t('lg.weekOf', { d: dayLabel(weekStart) });
+export const weekOfLabelEnglish = (weekStart) => `Week of ${dayLabelEnglish(weekStart)}`;
 /** "Oslo" for Europe/Oslo, "New York" for America/New_York. */
 export function zoneCity(tz) { const s = String(tz || 'UTC').split('/').pop().replace(/_/g, ' '); return s || 'UTC'; }
 export function whistleLine(meta) {
   if (!meta) return '';
-  if (meta.is_final) return `${weekOfLabel(meta.week_start)} · Final table`;
-  return `${weekOfLabel(meta.week_start)} · Final whistle Sun midnight (${zoneCity(meta.tz)})`;
+  if (meta.is_final) return t('lg.finalLine', { week: weekOfLabel(meta.week_start) });
+  return t('lg.whistle', { week: weekOfLabel(meta.week_start), city: zoneCity(meta.tz) });
 }
 export function ordinal(n) {
   const v = n % 100;
@@ -131,33 +141,35 @@ const seenFinal = (id, weekStart) => Number(get(SEEN_FINAL_PREFIX + id)) >= week
 /** Line 2 of the Home card. */
 export function homeCardLine(l) {
   if (!l) return '';
-  if (l.last_final_unseen && !seenFinal(l.id, l.week_start - 7)) return 'Final table is in';
+  if (l.last_final_unseen && !seenFinal(l.id, l.week_start - 7)) return t('lg.finalIn');
   const pts = l.my_points || 0;
-  if (!l.my_rank || (pts === 0 && !l.leader_points)) return 'Points from today, Monday to Sunday';
-  const place = `${l.my_tied ? '=' : ''}${ordinal(l.my_rank)}`;
-  if (l.leader_name) return l.gap > 0 ? `${place} · ${l.gap} behind ${l.leader_name}` : `${place} · level with ${l.leader_name}`;
-  return `${place} · ${pts} ${pts === 1 ? 'point' : 'points'}`;
+  if (!l.my_rank || (pts === 0 && !l.leader_points)) return t('lg.pointsFrom');
+  const place = `${l.my_tied ? '=' : ''}${ordinalText(l.my_rank, ordinal)}`;
+  if (l.leader_name) return l.gap > 0 ? t('lg.behind', { place, gap: l.gap, name: l.leader_name }) : t('lg.level', { place, name: l.leader_name });
+  return t('lg.pts', { count: pts, place, n: pts });
 }
 
+// English, for the share card image (English by design); labelText is the player's language.
 export const LABEL_COPY = { crown: 'Winner', spoon: 'Wooden spoon', bottled: 'Bottled it', ghost: "Didn't turn up" };
+export const labelText = (label) => (LABEL_COPY[label] ? t(`lg.lab.${label}`) : undefined);
 
 /** "The Lads, week of 13 Oct: Alex wins on 214. Wooden spoon: Sam. Bottled it: Jon." */
 export function finalShareText(meta, rows) {
   const winners = rows.filter((r) => r.labels?.includes('crown')).map((r) => r.name);
   const names = (lab) => rows.filter((r) => r.labels?.includes(lab)).map((r) => r.name);
-  const and = (a) => (a.length <= 1 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`);
+  const and = (a) => (a.length <= 1 ? a.join('') : t('lg.and', { a: a.slice(0, -1).join(', '), b: a[a.length - 1] }));
   const top = rows[0]?.points || 0;
-  const parts = [`${meta.name}, week of ${dayLabel(meta.week_start)}:`];
-  if (winners.length === 1) parts.push(`${winners[0]} wins on ${top}.`);
-  else if (winners.length > 1) parts.push(`${and(winners)} share it on ${top}.`);
-  else parts.push('nobody scored.');
-  if (names('spoon').length) parts.push(`Wooden spoon: ${and(names('spoon'))}.`);
-  if (names('bottled').length) parts.push(`Bottled it: ${and(names('bottled'))}.`);
+  const parts = [t('lg.fsHead', { name: meta.name, d: dayLabel(meta.week_start) })];
+  if (winners.length === 1) parts.push(t('lg.fsWins', { name: winners[0], n: top }));
+  else if (winners.length > 1) parts.push(t('lg.fsShare', { names: and(winners), n: top }));
+  else parts.push(t('lg.fsNobody'));
+  if (names('spoon').length) parts.push(t('lg.fsSpoon', { names: and(names('spoon')) }));
+  if (names('bottled').length) parts.push(t('lg.fsBottled', { names: and(names('bottled')) }));
   return parts.join(' ');
 }
 // The two invites are in the sharer's language (i18n step 6; English pinned
-// in tests/unit/i18n-last-english.test.js). The rest of this file's copy is
-// still English, like the league screens.
+// in tests/unit/i18n-last-english.test.js), and since step 7 the rest of this
+// file's words too.
 export const inviteShareText = (name, url) => t('share.leagueInvite', { name, url });
 
 const GAME_NAME = { footle: 'Footle', trail: 'Transfer Trail', top10: 'Top 10', daily7: 'Daily 7' };
@@ -171,9 +183,10 @@ export function h2hShareText(h, url) {
 /** The name a head-to-head league starts with: "Alex v Sam". */
 export function h2hLeagueName(rival, me) {
   const a = cleanLabel(me, 14), b = cleanLabel(rival, 14);
-  return a && b ? `${a} v ${b}` : b ? `${b} v me` : "Mates' league";
+  return a && b ? t('lg.vs', { a, b }) : b ? t('lg.vsMe', { b }) : t('lg.matesLeague');
 }
 
+// English, as it always was; errorText is the player's language (lg.err.*).
 export const ERROR_COPY = {
   bad_name: 'Pick another name for the league.',
   bad_display_name: 'Pick another name to play under.',
@@ -184,7 +197,9 @@ export const ERROR_COPY = {
   offline: "Couldn't reach Ball IQ. Check your connection and try again.",
   unavailable: "Leagues aren't open yet. Try again soon.",
 };
-export const membersBucket = (n) => (n <= 2 ? '2' : n <= 5 ? '3-5' : '6+');
+/** An error code's words in the player's language; an unknown code reads as offline. */
+export const errorText = (code) => t(`lg.err.${ERROR_COPY[code] ? code : 'offline'}`);
+export const membersBucket =(n) => (n <= 2 ? '2' : n <= 5 ? '3-5' : '6+');
 export const leagueTz = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } };
 export const leagueThisWeek = (today) => leagueWeekStart(today);
 

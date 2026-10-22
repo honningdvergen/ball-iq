@@ -2,8 +2,16 @@
 // lib/ballIqCard.js's tiers and faces), in the player's language. Here and not
 // in those files: api/og.js imports them at the edge, and the share card
 // prints their English.
-import { t } from './index.js';
+import { t, getLang } from './index.js';
 import { LEVELS } from '../lib/scoring.js';
+
+/**
+ * An ordinal ("3rd" / "3.º"). English keeps the caller's own `english(n)`
+ * (its suffix rules are not a template); every other language uses ord.n.
+ */
+export function ordinalText(n, english) {
+  return getLang() === 'en' ? english(n) : t('ord.n', { n });
+}
 
 /**
  * lib/date.js formatCountdown ("5h 12m" · "12m" · "soon", kept English and

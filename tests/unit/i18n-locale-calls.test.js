@@ -6,8 +6,8 @@
 // false. A bare toLocaleDateString() would then print "martes, 21 de octubre"
 // in the English app. Every toLocaleString / toLocaleDateString /
 // toLocaleTimeString and Intl.*Format call passes a locale: fmtLocale() (the
-// active language; in English the device's formats, but 'en' on a Spanish
-// device) or fmtLocaleEnglish() for text that is English whatever the language
+// active language; in English the device's formats, but 'en-GB' on a Spanish
+// device, since step 7) or fmtLocaleEnglish() for text that is English whatever the language
 // (the share card), or an explicit tag.
 import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
@@ -71,19 +71,20 @@ describe('fmtLocale: English never formats in Spanish', () => {
     expect(fmtLocale()).toBeUndefined();
     expect(fmtLocaleEnglish()).toBeUndefined();
   });
-  it('English on a Spanish device (the iPhone case): English formats', async () => {
+  it('English on a Spanish device (the iPhone case): the app\'s British English formats (step 7: was en-US)', async () => {
     vi.stubGlobal('navigator', { language: 'es-ES' });
     await bootLang(store, null);
-    expect(fmtLocale()).toBe('en');
+    expect(fmtLocale()).toBe('en-GB');
+    expect(fmtLocaleEnglish()).toBe('en-GB');
     const d = new Date(2026, 9, 20, 12);
-    expect(d.toLocaleDateString(fmtLocale(), { weekday: 'long', day: 'numeric', month: 'long' })).toBe('Tuesday, October 20');
+    expect(d.toLocaleDateString(fmtLocale(), { weekday: 'long', day: 'numeric', month: 'long' })).toBe('Tuesday 20 October');
     expect((12345).toLocaleString(fmtLocale())).toBe('12,345');
   });
   it('Spanish: Spanish formats; the share card\'s English keeps English formats', async () => {
     vi.stubGlobal('navigator', { language: 'es-ES' });
     await bootLang(store, 'es');
     expect(fmtLocale()).toBe('es');
-    expect(fmtLocaleEnglish()).toBe('en');
+    expect(fmtLocaleEnglish()).toBe('en-GB');
     expect(new Date(2026, 9, 20, 12).toLocaleDateString(fmtLocale(), { weekday: 'long', day: 'numeric', month: 'long' })).toBe('martes, 20 de octubre');
   });
 });

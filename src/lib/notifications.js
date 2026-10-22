@@ -14,6 +14,7 @@
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { getReminderHour } from './playHour.js';
+import { t } from '../i18n/index.js';
 
 // The hour is getReminderHour(): 19:00, or later (to 22:00) for a player who
 // habitually finishes later. Never before seven: see lib/playHour.js for why.
@@ -23,12 +24,13 @@ const WINDOW_DAYS = 7;      // schedule a rolling week ahead
 // after 7 days — the single biggest retention hole). Rescheduled — and thereby
 // pushed out — on every app open, so an active user never sees these. iOS
 // allows 64 pending local notifications; we use 12.
+// The words are keys (rem.*, i18n step 7), read when the window is scheduled.
 const WINBACK = [
-  { off: 8,  body: 'Your streak misses you — 2 minutes gets it back 🔥' },
-  { off: 11, body: "New Daily 7 and Footle drop every day — today's are waiting ⚽" },
-  { off: 15, body: 'Club quizzes: 17 clubs, deep cuts only. Still know yours? 🛡️' },
-  { off: 22, body: 'Your rivals are pulling ahead on the leaderboard 👀' },
-  { off: 30, body: 'One quiz. Two minutes. See what you still remember ⚽' },
+  { off: 8,  body: 'rem.w8' },
+  { off: 11, body: 'rem.w11' },
+  { off: 15, body: 'rem.w15' },
+  { off: 22, body: 'rem.w22' },
+  { off: 30, body: 'rem.w30' },
 ];
 // Reminder ids are namespaced by day-offset from "today". Because we
 // reschedule the whole window on every app open, "today" is always offset 0 —
@@ -72,15 +74,7 @@ function atFutureLocal(offsetDays) {
 // days ahead can't know the live count).
 // No "tonight": the hour is the player's own and runs from 08:00 to 22:00, so
 // a reminder can land at one in the afternoon (it did, on Alex's phone).
-const DAILY_BODIES = [
-  "Today's Footle & Daily 7 are still open — keep your streak going 🔥",
-  "Two minutes, seven questions — today's Daily 7 is waiting ⚽",
-  "Today's Footle is still unsolved. One good guess could do it 🧠",
-  "Don't lose the streak — today's puzzles close at midnight 🔥",
-  "Quick one before the day ends? Footle & the Daily 7 are open ⚽",
-  "Your daily fix: Footle and the 7. Still time today 🎯",
-  "Streak check — today's games are still open 🔥",
-];
+const DAILY_BODIES = ['rem.d0', 'rem.d1', 'rem.d2', 'rem.d3', 'rem.d4', 'rem.d5', 'rem.d6'];
 
 // ⚠️ THE SERVER FORGOT THIS ON EVERY APP OPEN (found 9 Oct 2026, from two
 // banners on Alex's phone at 13:00). The push token is registered a moment
@@ -123,7 +117,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
       notifications.push({
         id: ID_BASE + off,
         title: 'Ball IQ',
-        body: DAILY_BODIES[at.getDay() % DAILY_BODIES.length],
+        body: t(DAILY_BODIES[at.getDay() % DAILY_BODIES.length]),
         schedule: { at, allowWhileIdle: true },
       });
     }
@@ -134,7 +128,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
         notifications.push({
           id: STREAK_RISK_ID,
           title: 'Ball IQ',
-          body: `Your ${streak}-day daily streak ends at midnight — today's puzzles are still open 🔥`,
+          body: t('rem.streak', { n: streak }),
           schedule: { at, allowWhileIdle: true },
         });
       }
@@ -145,7 +139,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
       notifications.push({
         id: ID_BASE + w.off,
         title: 'Ball IQ',
-        body: w.body,
+        body: t(w.body),
         schedule: { at, allowWhileIdle: true },
       });
     }

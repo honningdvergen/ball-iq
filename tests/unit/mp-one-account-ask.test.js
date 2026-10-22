@@ -62,15 +62,19 @@ describe('the multiplayer game-over screen asks for an account once', () => {
   it('a guest is never asked twice and never left unasked', () => {
     // Both branches exist: the specific ask, and the fallback for a room with
     // nobody else in it.
-    expect(MP).toMatch(/Save your stats and add \{opponents\.length === 1/);
-    expect(MP).toMatch(/Playing as a guest — save your stats with a free account/);
+    // The words are keys since i18n step 7 (mp.saveAddOne / mp.saveAddMany, mp.guestSave).
+    const EN = readFileSync(fileURLToPath(new URL('../../src/i18n/en.js', import.meta.url)), 'utf8');
+    expect(MP).toMatch(/\{opponents\.length === 1 \? tNow\('mp\.saveAddOne'/);
+    expect(EN).toContain("'mp.saveAddOne': 'Save your stats and add {name} as a friend',");
+    expect(MP).toContain("{tNow('mp.guestSave')}");
+    expect(EN).toContain("'mp.guestSave': 'Playing as a guest — save your stats with a free account',");
   });
 
   it('both asks use the upgrade prompt, which is the honest one for a guest', () => {
     // The upgrade keeps the same auth.uid(), so the game's score and XP really
     // do carry over. The specific ask used to call openAuthPrompt with no
     // argument, which promises nothing about the stats it just showed you.
-    const specific = MP.slice(MP.indexOf('Save your stats and add') - 700, MP.indexOf('Save your stats and add'));
+    const specific = MP.slice(MP.indexOf("tNow('mp.saveAddOne'") - 700, MP.indexOf("tNow('mp.saveAddOne'"));
     expect(specific).toMatch(/openAuthPrompt\?\.\('upgrade'\)/);
   });
 

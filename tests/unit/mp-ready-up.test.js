@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 
 const MP = readFileSync(fileURLToPath(new URL('../../src/screens/OnlineMultiplayer.jsx', import.meta.url)), 'utf8');
 const RPC = readFileSync(fileURLToPath(new URL('../../src/multiplayerRpc.js', import.meta.url)), 'utf8');
+const EN = readFileSync(fileURLToPath(new URL('../../src/i18n/en.js', import.meta.url)), 'utf8');
 const SQL = readFileSync(fileURLToPath(new URL('../../supabase/migrations/v1_7_mp_ready_up.sql', import.meta.url)), 'utf8');
 
 /** The end-of-game component only. */
@@ -79,8 +80,10 @@ describe('the room survives the final whistle', () => {
     // start_next_round DELETEs non-ready players. Finding that out by
     // disappearing from the room is not acceptable.
     expect(SQL).toMatch(/delete from public\.room_players where room_id = v_room\.id and not ready/);
+    // The words are a key since i18n step 7 (mp.sitOut).
     expect(lobbyEnded(), 'the screen must say so before it happens')
-      .toMatch(/not ready will sit this one out/i);
+      .toContain("{tNow('mp.sitOut')}");
+    expect(EN).toMatch(/'mp\.sitOut': 'Anyone not ready will sit this one out\.'/);
   });
 
   it('the client host rule matches the server escape hatch', () => {
@@ -95,6 +98,7 @@ describe('the room survives the final whistle', () => {
     // Deliberately kept, deliberately demoted. Deleting it would strand a room
     // whose players really did leave.
     expect(MP).toMatch(/mpClaimRematch/);
-    expect(lobbyEnded()).toMatch(/Opponent gone\? Start a new room/);
+    expect(lobbyEnded()).toContain("tNow('mp.oppGone')");
+    expect(EN).toMatch(/'mp\.oppGone': 'Opponent gone\? Start a new room'/);
   });
 });

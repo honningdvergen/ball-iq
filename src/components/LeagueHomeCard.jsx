@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Trophy, ChevronRight } from "lucide-react";
 import "../screens/league.css";
 import { getMyLeagues, homeCardLine } from "../lib/leagues.js";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { t, useT } from "../i18n/index.js";
 
 // The league on Home (mates' leagues, phase 1, web only). One hairline card,
 // the whole card is the tap; no solid button, Home's stays the daily. Lazy, so
@@ -11,6 +13,7 @@ import { getMyLeagues, homeCardLine } from "../lib/leagues.js";
 //
 // Several leagues: the one with the latest activity, and a quiet "+1 more".
 export default function LeagueHomeCard({ onOpen }) {
+  useT();
   const [list, setList] = useState(null);
   useEffect(() => {
     let alive = true;
@@ -28,12 +31,12 @@ export default function LeagueHomeCard({ onOpen }) {
   const days = Array.from({ length: 7 }, (_, i) => l.my_days?.[i] != null);
   const line = homeCardLine(l);
   return (
-    <button type="button" className="lg-home" onClick={() => onOpen?.(l.id)} aria-label={`${l.name}: ${line}. Open the table`}>
+    <button type="button" className="lg-home" onClick={() => onOpen?.(l.id)} aria-label={t("lg.cardAria", { name: l.name, line })}>
       <span className="lg-home-ic" aria-hidden="true"><Trophy size={20} strokeWidth={2.2} /></span>
       <span className="lg-home-body">
         <span className="lg-home-name">{l.name}</span>
         <span className="lg-home-line">{line}</span>
-        {list.length > 1 && <span className="lg-home-more">+{list.length - 1} more {list.length === 2 ? "league" : "leagues"}</span>}
+        {list.length > 1 && <span className="lg-home-more">{t("lg.more", { count: list.length - 1, n: list.length - 1 })}</span>}
       </span>
       <span className="lg-dots" aria-hidden="true">
         {days.map((on, i) => <i key={i} className={`${on ? "is-on" : ""}${i === todayAt && !l.is_final ? " is-today" : ""}`} />)}

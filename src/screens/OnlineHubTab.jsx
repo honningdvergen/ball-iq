@@ -6,6 +6,8 @@ import { ProfilePic } from "../components/ProfilePic.jsx";
 import { useProfilePhotos } from "../lib/profilePhotos.js";
 import { useAcceptedFriends } from "../lib/acceptedFriends.js";
 import { readMpHistory } from "../App.jsx";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { useT } from "../i18n/index.js";
 
 // ─── ONLINE TAB (hub) ─────────────────────────────────────────────────────────
 // Head-to-head direction from the Claude Design handoff (Online Tab.dc.html):
@@ -14,6 +16,8 @@ import { readMpHistory } from "../App.jsx";
 // Rematch. All game entry goes through startMode so auth-gating stays in one
 // place; Create/Rematch use the one-tap auto-create path into a lobby.
 export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, onOpenFriend, needsAccount, userId }) {
+  // The words are t() since i18n step 7 (the oh.* keys; the title is tab.online).
+  const t = useT();
   // Inline join-with-code — the code row lives ON the tab (no intermediate
   // entry screen). onJoinCode handles auth-gating, the RPC and navigation.
   const [joinCode, setJoinCode] = React.useState("");
@@ -61,11 +65,11 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
     <div className="screen tab-content online-hub">
       {/* Title + win-streak pill (no local gear — the global header has one) */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
-        <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>Multiplayer</div>
+        <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>{t("tab.online")}</div>
         {stats.streak >= 2 && (
           <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 13px",borderRadius:999,background:"rgba(255,193,7,0.08)",border:"1px solid rgba(255,193,7,0.3)"}}>
             <span style={{fontSize:12}}>🔥</span>
-            <span style={{fontSize:13,fontWeight:800,color:"var(--gold)",fontVariantNumeric:"tabular-nums"}}>{stats.streak} win streak</span>
+            <span style={{fontSize:13,fontWeight:800,color:"var(--gold)",fontVariantNumeric:"tabular-nums"}}>{t("oh.streak", { n: stats.streak })}</span>
           </div>
         )}
       </div>
@@ -94,7 +98,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
             {stats.rival
               ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",background:"var(--s2)",overflow:"hidden"}}><ProfilePic value={stats.rival.avatar} url={oppPhotos[stats.rival.id]} name={stats.rival.name} /></span>
               : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3E4150",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
-            <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : "Your rival here"}</span>
+            <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : t("oh.rival")}</span>
           </div>
         </div>
         {/* Before a first match this row read "0 · 0 · —" in 24px — an empty
@@ -102,14 +106,14 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
             Say what to do instead; the scoreboard appears once there's one. */}
         {(stats.wins + stats.losses) === 0 ? (
           <div style={{marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14,textAlign:"center",fontSize:13,fontWeight:600,color:"var(--t2)",lineHeight:1.5}}>
-            No matches yet — win one and your record starts here.
+            {t("oh.noMatches")}
           </div>
         ) : (
         <div style={{display:"flex",alignItems:"stretch",marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14}}>
           {[
-            { v: stats.wins, label: "Wins", color: "var(--grn-soft)" },
-            { v: stats.losses, label: "Losses", color: "var(--t1)" },
-            { v: stats.winRate == null ? "—" : `${stats.winRate}%`, label: "Win rate", color: "var(--gold)" },
+            { v: stats.wins, label: t("oh.wins"), color: "var(--grn-soft)" },
+            { v: stats.losses, label: t("oh.losses"), color: "var(--t1)" },
+            { v: stats.winRate == null ? "—" : t("oh.pct", { n: stats.winRate }), label: t("oh.winRate"), color: "var(--gold)" },
           ].map((s, i) => (
             <React.Fragment key={s.label}>
               {i > 0 && <div style={{width:1,background:"var(--border)"}} />}
@@ -151,26 +155,26 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
           <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:12}}>
             <span className="t7s-icon" style={{"--mode":"var(--accent)","--mode-rgb":"88,204,2",width:46,height:46,marginTop:2}} aria-hidden="true"><Users size={24} strokeWidth={2} /></span>
             <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:19,fontWeight:800,letterSpacing:"-0.3px",color:"var(--t1)",lineHeight:1.15}}>Who knows more — you or your mates?</div>
-              <div style={{fontSize:13.5,color:"var(--t2)",marginTop:5,lineHeight:1.45}}>Ten questions, everyone answers live, the podium settles it. Up to 8 players, any phone.</div>
+              <div style={{fontSize:19,fontWeight:800,letterSpacing:"-0.3px",color:"var(--t1)",lineHeight:1.15}}>{t("oh.pitch")}</div>
+              <div style={{fontSize:13.5,color:"var(--t2)",marginTop:5,lineHeight:1.45}}>{t("oh.pitchSub")}</div>
             </div>
           </div>
           <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-            <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Zap size={17} strokeWidth={2.4} /></span><span style={{fontSize:16,fontWeight:800,color:"var(--grn-ink)"}}>Challenge your friends</span>
+            <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Zap size={17} strokeWidth={2.4} /></span><span style={{fontSize:16,fontWeight:800,color:"var(--grn-ink)"}}>{t("oh.challenge")}</span>
           </button>
-          <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>Free account, takes seconds — then invite anyone with a link.</div>
+          <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>{t("oh.free")}</div>
         </div>
       )}
       {!needsAccount && (
       <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Gamepad2 size={17} strokeWidth={2.2} /></span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>Create Room</span>
+        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Gamepad2 size={17} strokeWidth={2.2} /></span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>{t("oh.create")}</span>
       </button>
       )}
       {/* The join field and the local row used to float loose under the pitch,
           the only block in the app without a section head — Home has "Today",
           "Find a quiz", "More modes". Naming them also tells a guest that the
           two things they CAN do without an account are right here. */}
-      <div className="home-section-title" style={{marginTop:18, marginBottom:2}}>No account needed</div>
+      <div className="home-section-title" style={{marginTop:18, marginBottom:2}}>{t("oh.noAccount")}</div>
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
       <div style={{display:"flex",gap:9,marginTop:10}}>
@@ -185,7 +189,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
             onKeyDown={(e) => { if (e.key === "Enter" && joinCode.length > 0) submitJoin(); }}
             onFocus={() => setJoinFocus(true)}
             onBlur={() => setJoinFocus(false)}
-            placeholder="Got a code? Type it here"
+            placeholder={t("oh.codePh")}
             autoCapitalize="characters"
             autoCorrect="off"
             autoComplete="off"
@@ -193,7 +197,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
             maxLength={6}
             disabled={joining}
             enterKeyHint="go"
-            aria-label="Room code"
+            aria-label={t("oh.codeAria")}
             style={{flex:1,minWidth:0,border:"none",background:"transparent",outline:"none",padding:"15px 0",
               // ⚠️ 16px is a HARD FLOOR — see the same note in Login.jsx. iOS
               // auto-zooms the page on focusing any input below it, and
@@ -214,17 +218,17 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
             ...(joinCode.length > 0 && !joining
               ? {border:"none",background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
               : {background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t3)"})}}>
-          {joining ? "…" : "Join"}
+          {joining ? "…" : t("oh.join")}
         </button>
       </div>
       {joinError
         ? <div style={{color:"#FF6B6B",fontSize:12,marginTop:9,paddingLeft:4}}>{joinError}</div>
-        : (joinFocus || joinCode) ? <div style={{color:"var(--t3)",fontSize:11.5,marginTop:9,paddingLeft:4}}>Codes are 6 characters — ask your friend for theirs.</div> : null}
+        : (joinFocus || joinCode) ? <div style={{color:"var(--t3)",fontSize:11.5,marginTop:9,paddingLeft:4}}>{t("oh.codeHint")}</div> : null}
 
       {/* Recent opponents — appears once real games have been recorded */}
       {stats.recent.length > 0 && (
         <>
-          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>Recent opponents</div>
+          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>{t("oh.recent")}</div>
           <div style={{display:"flex",gap:9,marginTop:12}}>
             {stats.recent.map((o) => (
               <div key={o.name} style={{flex:1,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:7}}>
@@ -233,7 +237,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
                 {/* Scores are variable-width — "Won 3241–2055" wraps to two lines
                     in a third-of-screen card while "Lost 3329–5274" fits on one.
                     Centred so a wrapped second line doesn't sit ragged-left. */}
-                <span style={{fontSize:11,fontWeight:800,textAlign:"center",color:o.won ? "var(--grn-soft)" : "#FF6B6B"}}>{o.won ? "Won" : "Lost"} {o.line}</span>
+                <span style={{fontSize:11,fontWeight:800,textAlign:"center",color:o.won ? "var(--grn-soft)" : "#FF6B6B"}}>{t(o.won ? "oh.won" : "oh.lost", { line: o.line })}</span>
                 {/* marginTop:auto pins Rematch to the bottom of the card. The
                     cards are flex siblings and already stretch to equal height,
                     but the button used to flow straight after the score — so a
@@ -241,7 +245,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
                     its neighbours' (Alex, 2026-08-03: "the rematch buttons are
                     not aligned"). Bottom-anchoring is wrap-count-independent,
                     which a fixed height or a nowrap score would not be. */}
-                <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{marginTop:"auto",border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>Rematch</button>
+                <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{marginTop:"auto",border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>{t("oh.rematch")}</button>
               </div>
             ))}
           </div>
@@ -262,7 +266,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
           well, one green action. */}
       {stats.recent.length === 0 && friends.length > 0 && (
         <>
-          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>Challenge a friend</div>
+          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>{t("oh.challengeFriend")}</div>
           <div className="mp-friend-list" style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
             {friends.slice(0, 4).map((f) => (
               // ⚠️ THE NAME AND FACE MUST OPEN THE PROFILE, like every other
@@ -280,7 +284,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
                   // `if (!friend?.id) return` — handing it a bare string is a
                   // SILENT no-op, which is the very bug this row is fixing.
                   onClick={() => onOpenFriend?.({ id: f.id, username: f.username, avatar: f.avatar })}
-                  aria-label={`View ${f.username}'s profile`}>
+                  aria-label={t("oh.viewProfile", { name: f.username })}>
                   <span className="t7s-icon" aria-hidden="true">
                     <span style={{width:30,height:30,borderRadius:"50%",overflow:"hidden",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
                       <ProfilePic value={f.avatar} url={friendPhotos[f.id]} name={f.username} />
@@ -290,7 +294,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
                     <span className="t7s-title">{f.username}</span>
                   </span>
                 </button>
-                <button type="button" className="t7s-cta" onClick={() => onChallenge?.({ id: f.id, username: f.username })}>Challenge</button>
+                <button type="button" className="t7s-cta" onClick={() => onChallenge?.({ id: f.id, username: f.username })}>{t("oh.challengeBtn")}</button>
               </div>
             ))}
           </div>
@@ -300,15 +304,15 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
       {/* Local pass & play — same row anatomy as the rest of the app (2026-09-06).
           Filled Play for a guest (the one thing on the tab they can start
           alone); quiet for an account, where online is the point. */}
-      <div className="todays-seven-secondary mp-row" role="group" aria-label="Local pass and play" style={{marginTop:16, marginBottom:0}}>
-        <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label="Play locally on one phone">
+      <div className="todays-seven-secondary mp-row" role="group" aria-label={t("oh.localAria")} style={{marginTop:16, marginBottom:0}}>
+        <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label={t("oh.localOpen")}>
           <span className="t7s-icon" aria-hidden="true"><Gamepad2 size={20} strokeWidth={2} /></span>
           <span className="t7s-body">
-            <span className="t7s-title">Local pass &amp; play</span>
-            <span className="t7s-sub">Same couch, one phone · up to 6 players</span>
+            <span className="t7s-title">{t("oh.local")}</span>
+            <span className="t7s-sub">{t("oh.localSub")}</span>
           </span>
         </button>
-        <button type="button" className="t7s-cta mp-row-invite" onClick={() => startMode("local")}>Play</button>
+        <button type="button" className="t7s-cta mp-row-invite" onClick={() => startMode("local")}>{t("common.play")}</button>
       </div>
       </div>{/* /.online-col-b */}
       </div>{/* /.online-cols */}

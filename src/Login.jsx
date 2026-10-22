@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from './useAuth.jsx'
 import { isProfaneUsername } from './lib/profanity.js'
+import './i18n/en.js' // the full English table: not on Home's eager path
+import { t, useT } from './i18n/index.js'
+import { rich } from './i18n/rich.jsx'
 
 // ── Brand-moment login (Claude Design "Ball IQ Sign In" handoff) ──────────────
 // A RE-STYLE of the auth screen: progressive disclosure (choices first, email
@@ -58,16 +61,16 @@ function authErrorCopy(error, fallback) {
   const code = error?.code || ''
   const raw = error?.message || ''
   if (code === 'invalid_credentials' || /invalid login credentials/i.test(raw)) {
-    return "That email and password don't match. Check the password, or tap “Forgot?” above to reset it."
+    return t('au.err.creds')
   }
   if (code === 'email_not_confirmed' || /email not confirmed/i.test(raw)) {
-    return 'Almost there — confirm your email first. Check your inbox (and spam) for the link we sent.'
+    return t('au.err.confirm')
   }
   if (code === 'over_email_send_rate_limit' || code === 'over_request_rate_limit' || /rate limit/i.test(raw)) {
-    return 'Too many tries just now — wait a minute and try again.'
+    return t('au.err.rate')
   }
   if (code === 'user_not_found' || /user not found/i.test(raw)) {
-    return "We couldn't find an account with that email. Sign up instead?"
+    return t('au.err.noUser')
   }
   return fallback
 }
@@ -82,25 +85,26 @@ function authErrorCopy(error, fallback) {
 // your intent silently discarded. It now reads "Not now" and returns you where
 // you were. Soft gates ('save', 'leaderboard') keep the guest wording, because
 // there continuing as a guest really does work.
+// The words are the au.p.<reason> keys (i18n step 7): `title` and `sub` name them.
 const PROMPT_COPY = {
-  online:      { title: 'Sign up to play online', sub: 'Create a free account to challenge friends in real-time 1v1 — and keep your stats and streak.', hardGate: true, back: 'online' },
+  online:      { title: 'au.p.online', sub: 'au.p.online.s', hardGate: true, back: 'online' },
   // ⚠️ THE DESTINATION MUST NAME THE ACTION THAT SENT YOU. Home's multiplayer
   // card says "Invite friends"; tapping it as a guest opened a screen headed
   // "Sign up to play online", on which the word INVITE appeared nowhere. The
   // design review flagged it as a dead end, and it reads as one: the thing you
   // asked for is not mentioned, so it looks like the app changed the subject.
   // Same gate, same flow — it just answers the question that was asked.
-  invite:      { title: 'Sign up to invite a friend', sub: 'Create a free account to open a room and send your mate the link — takes seconds.', hardGate: true, back: 'online' },
-  friends:     { title: 'Sign up to add friends', sub: 'Create a free account to add friends, compare scores, and challenge them.', hardGate: true, back: 'online' },
+  invite:      { title: 'au.p.invite', sub: 'au.p.invite.s', hardGate: true, back: 'online' },
+  friends:     { title: 'au.p.friends', sub: 'au.p.friends.s', hardGate: true, back: 'online' },
   // ⚠️ SAY WHICH LEADERBOARD. The only one that exists is the friends
   // mini-leaderboard on Profile (ProfileScreen.jsx:711), and it appears once
   // you have an accepted friend — `leaderboard.length > 1`. "Leaderboards",
   // plural and unqualified, reads as a global ranking the app has never had,
   // and OnlineHubTab.jsx:72 records that a real one was deliberately deferred.
-  leaderboard: { title: 'Sign up to rank against your friends', sub: 'Create a free account to add friends, see who is top of your table, and keep your progress across devices.' },
-  save:        { title: 'Save your progress', sub: 'Create a free account so your XP, stats, and streak follow you to any device — and we can nudge you when tomorrow\u2019s puzzles drop.' },
+  leaderboard: { title: 'au.p.leaderboard', sub: 'au.p.leaderboard.s' },
+  save:        { title: 'au.save', sub: 'au.p.save.s' },
   // v1.6 guest entry — anonymous (invite-link) players upgrading in place.
-  upgrade:     { title: 'Save your progress', sub: 'Add an email and password to keep your stats, XP and games — everything you played as a guest comes with you, and we can nudge you when tomorrow\u2019s puzzles drop.' },
+  upgrade:     { title: 'au.save', sub: 'au.p.upgrade.s' },
 }
 
 const C = {
@@ -110,6 +114,7 @@ const C = {
 }
 
 export default function Login({ asOverlay = false, onClose, promptReason = null }) {
+  useT()
   const { signUp, signIn, resetPassword, signInWithGoogle, signInWithApple, continueAsGuest, isAnonUser, upgradeAnonAccount, signInAsGuest } = useAuth()
 
   // Device test 2026-08-30: a signed-out player who was TOLD a room code (not
@@ -125,14 +130,14 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const joinWithCode = async () => {
     if (joinBusy) return
     const code = joinCode.toUpperCase().replace(/[^A-HJ-NP-Z2-9]/g, '').slice(0, 6)
-    if (code.length < 4) { setJoinErr('That code looks too short — check it and try again.'); return }
+    if (code.length < 4) { setJoinErr(t('au.codeShort')); return }
     setJoinBusy(true); setJoinErr('')
     try { localStorage.setItem('biq_pending_join', JSON.stringify({ c: code, at: Date.now() })) } catch {}
     try { window.dispatchEvent(new CustomEvent('biq:join-code', { detail: code })) } catch {}
     const { error } = await signInAsGuest()
     if (error) {
       setJoinBusy(false)
-      setJoinErr("Guest entry isn't available right now — sign up free instead, it takes a minute.")
+      setJoinErr(t('au.guestOff'))
       return
     }
     onClose?.()
@@ -161,12 +166,12 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     if (loading) return
     setError(''); setMessage('')
     const target = (email || '').trim()
-    if (!target) { setError('Type your email above first, then tap "Forgot?"'); return }
+    if (!target) { setError(t('au.emailFirst')); return }
     setLoading(true)
     try {
       const { error } = await resetPassword(target)
-      if (error) setError(authErrorCopy(error, "Couldn't send the reset email — check the address and try again."))
-      else setMessage(`Reset link sent to ${target} — check your inbox (and spam).`)
+      if (error) setError(authErrorCopy(error, t('au.resetFail')))
+      else setMessage(t('au.resetSent', { email: target }))
     } finally { setLoading(false) }
   }
 
@@ -181,24 +186,24 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
     setError(''); setMessage(''); setLoading(true)
     try {
       if (mode === 'signup') {
-        if (username.trim().length < 3) { setError('Username must be at least 3 characters'); setLoading(false); return }
+        if (username.trim().length < 3) { setError(t('au.userShort')); setLoading(false); return }
         if (isProfaneUsername(username.trim())) {
           // Client-side gate before hitting Supabase. The SQL trigger
           // profiles_profanity_check is the bypass-proof backstop.
-          setError("This username isn't allowed. Please choose another."); setLoading(false); return
+          setError(t('au.userBad')); setLoading(false); return
         }
-        if (password.length < 6) { setError('Password must be at least 6 characters'); setLoading(false); return }
+        if (password.length < 6) { setError(t('au.pwShort')); setLoading(false); return }
         if (isAnonUser) {
           // v1.6 guest entry — upgrade the anonymous account IN PLACE
           // (same auth.uid(), stats carry over) instead of creating a
           // second, empty account via signUp.
           const { error: upErr, usernameWarning } = await upgradeAnonAccount(email, password, username.trim())
           if (upErr) {
-            setError(authErrorCopy(upErr, "Couldn't save your account — check your details and try again."))
+            setError(authErrorCopy(upErr, t('au.saveFail')))
           } else if (usernameWarning) {
-            setMessage(`Almost done — check your email to confirm. Username "${username.trim()}" was taken, so you can pick another in your Profile.`)
+            setMessage(t('au.upTaken', { name: username.trim() }))
           } else {
-            setMessage('Almost done — check your email to confirm your account. Your stats stay right where they are.')
+            setMessage(t('au.upDone'))
           }
           setLoading(false)
           return
@@ -210,25 +215,25 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           const raw = error.message || ''
           const isDupUsername = /profiles_username_key|duplicate key|already (?:registered|taken)|database error saving new user/i.test(raw)
           setError(isDupUsername
-            ? `Username "${username.trim()}" is already taken — try another.`
-            : authErrorCopy(error, "Couldn't create your account — check your details and try again."))
+            ? t('au.userTaken', { name: username.trim() })
+            : authErrorCopy(error, t('au.createFail')))
         } else if (Array.isArray(data?.user?.identities) && data.user.identities.length === 0) {
           // Supabase enumeration-protection returns success with identities=[]
           // when the email already exists (no confirmation email sent).
-          setMessage('Looks like you already have an account. Try logging in instead.')
+          setMessage(t('au.exists'))
         } else {
-          setMessage('Check your email to confirm your account — then come back and log in. Your email will be filled in for you.')
+          setMessage(t('au.checkEmail'))
         }
       } else {
         const { data, error } = await signIn(email, password)
-        if (error) setError(authErrorCopy(error, "Couldn't log you in — check your connection and try again."))
-        else if (!data?.session) setError("Couldn't finish logging you in — please try again.")
+        if (error) setError(authErrorCopy(error, t('au.loginFail')))
+        else if (!data?.session) setError(t('au.loginUnfinished'))
         // On success, onAuthStateChange swaps to AppInner, unmounting this.
       }
     } catch (e) {
       console.error('[login] handleSubmit exception', e?.name, e?.message)
       // Raw exception text stays in the console for debugging, never on screen.
-      setError('Something went wrong on our end — please try again.')
+      setError(t('au.ourEnd'))
     }
     setLoading(false)
   }
@@ -236,7 +241,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const socialSignIn = (fn, label) => async () => {
     setError(''); setMessage(''); setLoading(true)
     const { error } = await fn()
-    if (error) setError(authErrorCopy(error, `Couldn't sign in with ${label} — try again, or use email instead.`))
+    if (error) setError(authErrorCopy(error, t('au.socialFail', { label })))
     setLoading(false)
   }
 
@@ -273,8 +278,8 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   }
 
   const isSignup = mode === 'signup'
-  const heroTitle = prompt ? prompt.title : 'How good is your Ball IQ?'
-  const heroSub = prompt ? prompt.sub : 'Save your streak, top your friends\u2019 table and take anyone on in online 1v1.'
+  const heroTitle = t(prompt ? prompt.title : 'au.hero')
+  const heroSub = t(prompt ? prompt.sub : 'au.heroSub')
   const emailBusy = loading || !email || !password
 
   const S = {
@@ -331,7 +336,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   // The people who see this most are the daily players whose tokens aged out
   // overnight — reassure that nothing was lost rather than reporting a systems
   // event at them. (Sign-ins expire by design; see the session-persistence note.)
-  const banner = sessionExpired ? <div style={S.banner}>Welcome back — sign in to pick up your streak. Your XP and stats are safe.</div> : null
+  const banner = sessionExpired ? <div style={S.banner}>{t('au.expired')}</div> : null
 
   return (
     <div className="biql" style={S.root}>
@@ -344,13 +349,13 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
             {/* top row: close (overlay only) + Log in */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: '0 0 auto' }}>
               {asOverlay ? (
-                <button type="button" className="biql-icobtn" style={S.icoBtn} onClick={onClose} aria-label="Close">
+                <button type="button" className="biql-icobtn" style={S.icoBtn} onClick={onClose} aria-label={t('pf.close')}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={C.t2} strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
                 </button>
               ) : <span style={{ width: 34 }} />}
               <button type="button" className="biql-login-top" onClick={openSignin}
                 style={{ border: 'none', background: 'none', fontSize: 14.5, fontWeight: 800, color: C.t1b, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>
-                Log in
+                {t('au.login')}
               </button>
             </div>
 
@@ -377,20 +382,20 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                   would orphan an anonymous player's stats — so anon users get
                   the email upgrade path only (identity linking: follow-up). */}
               {!isAnonUser && (
-                <button type="button" onClick={socialSignIn(signInWithApple, 'Apple')} disabled={loading} aria-label="Continue with Apple"
+                <button type="button" onClick={socialSignIn(signInWithApple, 'Apple')} disabled={loading} aria-label={t('au.apple')}
                   style={{ ...S.btnBase, padding: 16, border: 'none', background: '#fff', color: '#000', opacity: loading ? 0.6 : 1 }}>
-                  {APPLE_GLYPH}<span>Continue with Apple</span>
+                  {APPLE_GLYPH}<span>{t('au.apple')}</span>
                 </button>
               )}
               {!isAnonUser && (
-                <button type="button" className="biql-google" onClick={socialSignIn(signInWithGoogle, 'Google')} disabled={loading} aria-label="Continue with Google"
+                <button type="button" className="biql-google" onClick={socialSignIn(signInWithGoogle, 'Google')} disabled={loading} aria-label={t('au.google')}
                   style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, opacity: loading ? 0.6 : 1 }}>
-                  {GOOGLE_GLYPH}<span>Continue with Google</span>
+                  {GOOGLE_GLYPH}<span>{t('au.google')}</span>
                 </button>
               )}
-              <button type="button" className="biql-email" onClick={openEmail} aria-label="Continue with email"
+              <button type="button" className="biql-email" onClick={openEmail} aria-label={t('au.email')}
                 style={{ ...S.btnBase, padding: 16, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1 }}>
-                {MAIL_GLYPH}<span>Continue with email</span>
+                {MAIL_GLYPH}<span>{t('au.email')}</span>
               </button>
               {prompt?.hardGate && (promptReason === 'online' || promptReason === 'invite') && (
                 joinOpen ? (
@@ -400,18 +405,18 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                         value={joinCode}
                         onChange={(e) => { setJoinCode(e.target.value.toUpperCase()); setJoinErr('') }}
                         onKeyDown={(e) => { if (e.key === 'Enter') joinWithCode() }}
-                        placeholder="ROOM CODE"
+                        placeholder={t('au.codePh')}
                         maxLength={6}
                         autoFocus
                         autoCapitalize="characters"
                         autoCorrect="off"
                         spellCheck={false}
-                        aria-label="Room code"
+                        aria-label={t('oh.codeAria')}
                         style={{ flex: 1, minWidth: 0, padding: '13px 14px', borderRadius: 12, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 16, fontWeight: 700, letterSpacing: '0.2em', textAlign: 'center', outline: 'none' }}
                       />
                       <button type="button" onClick={joinWithCode} disabled={joinBusy}
                         style={{ ...S.btnBase, width: 'auto', padding: '13px 20px', border: 'none', background: 'var(--accent)', color: 'var(--grn-ink)', fontWeight: 800, opacity: joinBusy ? 0.6 : 1 }}>
-                        {joinBusy ? 'Joining…' : 'Join'}
+                        {joinBusy ? t('lg.joining') : t('oh.join')}
                       </button>
                     </div>
                     {joinErr && <div role="alert" style={{ fontSize: 12, lineHeight: 1.4, color: '#ff6b6b', textAlign: 'center' }}>{joinErr}</div>}
@@ -419,7 +424,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                 ) : (
                   <button type="button" onClick={() => setJoinOpen(true)}
                     style={{ ...S.btnBase, gap: 8, padding: 15, marginTop: 2, border: `1px solid ${C.borderHi}`, background: C.card, color: C.t1, fontSize: 15 }}>
-                    Have a room code? Join as a guest
+                    {t('au.haveCode')}
                   </button>
                 )
               )}
@@ -435,10 +440,13 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                     the heading "Sign up to play online" it reads as an offer to
                     play online as a guest, which is the one thing it can't do.
                     "Maybe later" is honest without being a brush-off. */}
-                {prompt?.hardGate ? 'Maybe later' : 'Continue as guest'}
+                {prompt?.hardGate ? t('au.later') : t('au.guest')}
               </button>
               <div style={{ textAlign: 'center', fontSize: 11.5, lineHeight: 1.5, color: C.legal, marginTop: 4 }}>
-                By continuing you agree to our <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Terms</a> &amp; <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>Privacy Policy</a>.
+                {rich(t('au.terms'), {
+                  terms: <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>{t('au.termsLink')}</a>,
+                  privacy: <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>{t('au.privacyLink')}</a>,
+                })}
               </div>
             </div>
           </>
@@ -446,20 +454,20 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           <>
             {/* back row */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: '0 0 auto' }}>
-              <button type="button" className="biql-icobtn" style={S.icoBtn} onClick={backToChoices} aria-label="Back">
+              <button type="button" className="biql-icobtn" style={S.icoBtn} onClick={backToChoices} aria-label={t('game.back')}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.t2} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
               </button>
-              <span style={{ fontSize: 13, fontWeight: 700, color: C.t2 }}>Back</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: C.t2 }}>{t('game.back')}</span>
             </div>
 
             <div style={{ marginTop: 20 }}>
-              <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{isSignup ? (isAnonUser ? 'Save your progress' : 'Create your account') : 'Welcome back'}</div>
+              <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{isSignup ? (isAnonUser ? t('au.save') : t('au.createTitle')) : t('au.welcome')}</div>
               <p style={{ margin: '8px 0 0', maxWidth: '36ch', fontSize: 14, lineHeight: 1.5, color: C.t2 }}>
                 {isSignup
                   ? (isAnonUser
-                    ? 'Add an email and password — everything you played as a guest comes with you.'
-                    : 'Your XP, streak and stats will follow you to any device.')
-                  : 'Log in to pick up your streak and rating right where you left off.'}
+                    ? t('au.upSub')
+                    : t('au.createSub'))
+                  : t('au.loginSub')}
               </p>
             </div>
 
@@ -469,33 +477,33 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
               onSubmit={(e) => { e.preventDefault(); if (emailBusy) return; handleSubmit() }}>
               {isSignup && (
                 <label style={{ display: 'block' }}>
-                  <span style={S.label}>Username</span>
-                  <input type="text" name="username" autoComplete="username" placeholder="Your player name"
+                  <span style={S.label}>{t('au.username')}</span>
+                  <input type="text" name="username" autoComplete="username" placeholder={t('au.usernamePh')}
                     value={username} onChange={(e) => setUsername(e.target.value)} style={S.input}
                     autoCapitalize="none" autoCorrect="off" spellCheck={false} />
                 </label>
               )}
               <label style={{ display: 'block' }}>
-                <span style={S.label}>Email</span>
-                <input type="email" name="email" autoComplete="email" placeholder="you@email.com"
+                <span style={S.label}>{t('au.emailK')}</span>
+                <input type="email" name="email" autoComplete="email" placeholder={t('au.emailPh')}
                   value={email} onChange={(e) => setEmail(e.target.value)} style={S.input}
                   autoCapitalize="none" autoCorrect="off" spellCheck={false} />
               </label>
               <label style={{ display: 'block' }}>
                 <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: C.t2 }}>Password</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: C.t2 }}>{t('au.password')}</span>
                   {!isSignup && (
                     <button type="button" onClick={handleForgot} disabled={loading}
-                      style={{ border: 'none', background: 'none', padding: 0, fontSize: 12, fontWeight: 700, color: C.greenSoft, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>Forgot?</button>
+                      style={{ border: 'none', background: 'none', padding: 0, fontSize: 12, fontWeight: 700, color: C.greenSoft, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>{t('au.forgot')}</button>
                   )}
                 </span>
                 <span style={{ position: 'relative', display: 'block' }}>
                   <input type={showPw ? 'text' : 'password'} name="password"
                     autoComplete={isSignup ? 'new-password' : 'current-password'}
-                    placeholder={isSignup ? 'Create a password' : 'Your password'}
+                    placeholder={isSignup ? t('au.pwNewPh') : t('au.pwPh')}
                     value={password} onChange={(e) => setPassword(e.target.value)}
                     style={{ ...S.input, paddingRight: 46 }} />
-                  <button type="button" onClick={() => setShowPw((s) => !s)} aria-label={showPw ? 'Hide password' : 'Show password'}
+                  <button type="button" onClick={() => setShowPw((s) => !s)} aria-label={showPw ? t('au.pwHide') : t('au.pwShow')}
                     style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', width: 32, height: 32, border: 'none', background: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: C.t3, WebkitTapHighlightColor: 'transparent' }}>
                     {showPw ? (
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M2 2l20 20" /><path d="M6.7 6.7A10.4 10.4 0 0 0 1 12s4 7 11 7a10 10 0 0 0 5.3-1.5M9.9 4.2A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.2 3.2" /><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" /></svg>
@@ -511,21 +519,21 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
 
               <button type="submit" disabled={emailBusy}
                 style={{ width: '100%', marginTop: 6, padding: 16, minHeight: 52, border: 'none', borderRadius: 14, background: C.green, color: C.greenOn, fontSize: 16, fontWeight: 800, fontFamily: 'inherit', cursor: emailBusy ? 'not-allowed' : 'pointer', opacity: emailBusy ? 0.5 : 1, boxShadow: '0 10px 26px -8px rgba(88,204,2,0.6)', touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent' }}>
-                {loading ? <span className="btn-spin" role="status" aria-label={isSignup ? 'Creating account' : 'Logging in'} /> : (isSignup ? 'Create account' : 'Log in')}
+                {loading ? <span className="btn-spin" role="status" aria-label={isSignup ? t('au.creatingAria') : t('au.loggingAria')} /> : (isSignup ? t('au.create') : t('au.login'))}
               </button>
             </form>
 
             <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14, color: C.t2 }}>
-              {isSignup ? 'Already have an account? ' : 'New to Ball IQ? '}
+              {isSignup ? t('au.haveAccount') : t('au.newHere')}
               <button type="button" onClick={toggleMode}
                 style={{ border: 'none', background: 'none', padding: 0, fontSize: 14, fontWeight: 800, color: C.green, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>
-                {isSignup ? 'Log in' : 'Create account'}
+                {isSignup ? t('au.login') : t('au.create')}
               </button>
             </div>
 
             <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid #16181F', textAlign: 'center' }}>
               <button type="button" onClick={backToChoices}
-                style={{ border: 'none', background: 'none', fontSize: 13.5, fontWeight: 700, color: C.t3, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>← All sign-in options</button>
+                style={{ border: 'none', background: 'none', fontSize: 13.5, fontWeight: 700, color: C.t3, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>{t('au.allOptions')}</button>
             </div>
           </>
         )}
