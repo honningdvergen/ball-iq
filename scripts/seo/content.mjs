@@ -30,7 +30,7 @@ export const SITE = {
   base: 'https://balliq.app',
   name: 'Ball IQ',
   tagline: 'The ultimate football quiz',
-  ogImage: 'https://balliq.app/og-image.png',
+  ogImage: 'https://balliq.app/og-image-q.png',
   appStore: 'https://apps.apple.com/app/id6775975961',
   // Google Play listing — LIVE since 2026-07-27. Package is app.balliq
   // (build.gradle applicationId); the reversed com.balliq.app form 404s.
