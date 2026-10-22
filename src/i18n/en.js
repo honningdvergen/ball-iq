@@ -2080,4 +2080,16 @@ export default registerEnglish({
   'rem.w22': 'Your rivals are pulling ahead on the leaderboard 👀',
   'rem.w30': 'One quiz. Two minutes. See what you still remember ⚽',
   'rem.streak': 'Your {n}-day daily streak ends at midnight — today\'s puzzles are still open 🔥',
+  // Draft's info panel (screens/Draft.jsx DraftInfo): what draftModel.js does.
+  'dr.infoAria': 'How Draft works',
+  'dr.infoH': 'How Draft works',
+  'dr.infoClose': 'Got it',
+  'dr.infoPtsB': 'The points.',
+  'dr.infoPts': '{b} Each man brings his real season: his goals, and how many of the 38 league games he was on the pitch for. Everyone shares his club’s goals-against record that year, the keeper and the back four most. The games he missed are played by a stand-in from a relegated side. Your eleven’s goals for and against then play 38 matches: 3 points for a win, 1 for a draw.',
+  'dr.infoLuckB': 'The luck.',
+  'dr.infoLuck': '{b} Today’s board is played with the same luck for everyone, so more points means better picks, not a kinder draw.',
+  'dr.infoParB': 'Par.',
+  'dr.infoPar': '{b} What today’s board scores if you take, from every spin, the man who played the most league games that season, with the same luck. Beat par and you picked better than that.',
+  'dr.infoSpinB': 'Spins.',
+  'dr.infoSpin': '{b} Your eleven is a 4-3-3, and a man can only go where his club’s season page lists him. A spin with nobody who fits a free place is swapped for you. Once a game you can re-spin a squad you don’t want.',
 });

@@ -23,7 +23,7 @@
 // note on board() in draftModel.js for why it is not a full daily yet.
 import GameTitle from "../components/GameTitle.jsx";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { Info, RefreshCw } from "lucide-react";
 import { dayIndexForDate } from "../lib/date.js";
 import {
   POS, FORMATION, SPINS, GAMES,
@@ -162,6 +162,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   const update = useCallback((fn) => setG((cur) => settleSpin(fn(cur), D)), [D]);
   useEffect(() => { if (!isPractice) save(day, g); }, [day, g, isPractice]);
   const [chosen, setChosen] = useState(null);
+  const [info, setInfo] = useState(false);
 
   const picks = useMemo(() => picksOf(g, D), [g, D]);
   const onCourse = useMemo(() => (g.hard ? null : expectedPoints(picks, D)), [picks, D, g.hard]);
@@ -225,7 +226,8 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   if (!g.started) {
     return (
       <div className="screen dr" style={SKIN}>
-        <Head no={number} sub={t("dr.introSub")} onBack={onBack} />
+        <Head no={number} sub={t("dr.introSub")} onBack={onBack} info={info} onInfo={() => setInfo((v) => !v)} />
+        {info && <DraftInfo onClose={() => setInfo(false)} />}
         <div className="dr-intro">
           <h2>{t("dr.introH")}</h2>
           <ol>
@@ -252,11 +254,13 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
     <div className={`screen dr${done ? " is-done" : ""}`} style={SKIN}>
       {played && result.se.pts >= 90 && Confetti ? <Confetti /> : null}
       <Head no={number} sub={done ? (isPractice ? t("dr.practice") : t("dr.today")) : t("dr.spinOf", { n: at + 1, total: SPINS })} onBack={onBack}
+        info={info} onInfo={() => setInfo((v) => !v)}
         right={!done && (
           <button className="dr-respin" onClick={onRespin} disabled={g.respun} aria-label={g.respun ? t("dr.respun") : t("dr.respinAria")}>
             <RefreshCw size={15} strokeWidth={2.4} aria-hidden="true" />{g.respun ? t("dr.respun") : t("dr.respin")}
           </button>
         )} />
+      {info && <DraftInfo onClose={() => setInfo(false)} />}
 
       <Pitch picks={picks} chosen={chosen} />
       {!done && onCourse != null && (
@@ -316,7 +320,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   );
 }
 
-function Head({ no, sub, onBack, right }) {
+function Head({ no, sub, onBack, right, info, onInfo }) {
   const t = useT();
   return (
     <div className="dr-head">
@@ -326,7 +330,24 @@ function Head({ no, sub, onBack, right }) {
         <div className="dr-head-sub">{sub}</div>
       </div>
       {right}
+      <button type="button" className="icon-btn dr-info-btn" onClick={onInfo} aria-expanded={info} aria-label={t("dr.infoAria")} title={t("dr.infoAria")}>
+        <Info size={18} strokeWidth={2.2} aria-hidden="true" />
+      </button>
     </div>
+  );
+}
+
+// What the mode is and how the points are made (asked for 22 Oct 2026). Every
+// line here is what draftModel.js does; change one and change the other.
+function DraftInfo({ onClose }) {
+  const t = useT();
+  return (
+    <section className="dr-info" aria-label={t("dr.infoH")}>
+      <h2>{t("dr.infoH")}</h2>
+      {["Pts", "Luck", "Par", "Spin"].map((k) => <p key={k}>{rich(t(`dr.info${k}`), { b: <b>{t(`dr.info${k}B`)}</b> })}</p>)}
+      <p className="dr-source">{t("dr.source")}</p>
+      <button type="button" className="dr-info-close" onClick={onClose}>{t("dr.infoClose")}</button>
+    </section>
   );
 }
 

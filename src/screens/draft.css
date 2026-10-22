@@ -182,3 +182,21 @@ html.is-android .dr-take { padding-bottom: var(--foot-clear); }
 @media (prefers-reduced-motion: reduce) {
   .dr *, .dr { animation: none !important; transition: none !important; }
 }
+
+/* How Draft works: the ⓘ in the header opens it under the header. */
+.dr-info-btn { flex-shrink: 0; color: var(--t2); }
+.dr-info-btn[aria-expanded="true"] { color: var(--dr); }
+.dr-info {
+  margin: 2px 4px 14px; padding: 16px 16px 14px; border-radius: 16px;
+  background: var(--s1); border: 1px solid var(--border);
+  animation: drRise 260ms ease-out both;
+}
+.dr-info h2 { margin: 0 0 10px; font-size: 17px; font-weight: 800; color: var(--t1); letter-spacing: -0.01em; }
+.dr-info p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; color: var(--t2); text-wrap: pretty; }
+.dr-info p b { color: var(--t1); }
+.dr-info .dr-source { margin: 4px 0 12px; }
+.dr-info-close {
+  min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--border);
+  background: transparent; color: var(--t1); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.dr-info-close:active { transform: scale(0.97); }
