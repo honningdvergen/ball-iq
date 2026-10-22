@@ -77,7 +77,7 @@ export default function handler(req) {
   body{margin:0;background:#0A0E0B;color:#EDF3EE;font-family:-apple-system,system-ui,'Segoe UI',Roboto,sans-serif;
        min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
        padding:28px 16px 44px;text-align:center}
-  .card{width:min(560px,94vw);border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.55);display:block}
+  .card{width:min(560px,94vw);height:auto;aspect-ratio:1200/630;border-radius:18px;box-shadow:0 24px 70px rgba(0,0,0,.55);display:block}
   h1{font-size:clamp(22px,5.5vw,30px);font-weight:900;letter-spacing:-.3px;margin:22px 0 6px}
   p.sub{color:#96AC9D;font-size:15px;margin:0 0 22px;max-width:34em;line-height:1.5}
   a.cta{display:inline-block;background:#58CC02;color:#08130A;font-weight:800;font-size:17px;
