@@ -89,11 +89,15 @@ export function rankPlayerSuggestions(pool, text, opts = {}) {
     .sort((a, b) => b.s - a.s)
     .slice(0, limit)
     .map((x) => x.p);
-  if (exact.length >= limit || q.length < 4) return exact;
+  // Only when the exact list is EMPTY: that is the case it exists for (a name
+  // typed wrong matches nothing), and running it behind every exact hit scanned
+  // the whole pool per keystroke, which timed the build's every-player search
+  // test out on Vercel (23 Oct).
+  if (exact.length > 0 || q.length < 4) return exact;
   // ── THE FORGIVING PASS (Alex, 23 Oct 2026) ────────────────────────────────
   // Nobody can be expected to spell Mkhitaryan: "Mikita" found nothing, because
   // the list above only takes names that CONTAIN what was typed. When it comes
-  // up short, the names that START within a typo or two of the query follow it,
+  // up empty, the names that START within a typo or two of the query fill it,
   // nearest spelling first, then fame. One slip allowed up to five letters, two
   // from six (a short query with two slips matches half the pool).
   const seen = new Set(exact.map((p) => p.id));

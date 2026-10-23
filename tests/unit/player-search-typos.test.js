@@ -22,7 +22,7 @@ describe('a near miss still finds the player', () => {
     ['Ibrahimovich', 'Zlatan Ibrahimović'],
   ])('%s → %s', (q, name) => { expect(first(q)).toBe(name); });
 
-  it('an exact match still leads, ahead of any near one', () => {
+  it('an exact match is left alone: the typo pass only fills an empty list', () => {
     expect(first('Saka')).toBe('Bukayo Saka');
     expect(first('Ronaldo')).toBe('Cristiano Ronaldo');
   });
