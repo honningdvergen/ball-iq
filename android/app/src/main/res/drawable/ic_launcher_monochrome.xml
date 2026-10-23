@@ -4,10 +4,10 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
-    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="6.30" android:fillColor="#00000000"
-        android:pathData="M35.88,54 a18.12,18.12 0 1,0 36.24,0 a18.12,18.12 0 1,0 -36.24,0" />
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="5.75" android:fillColor="#00000000"
+        android:pathData="M33.30,54 a20.70,20.70 0 1,0 41.40,0 a20.70,20.70 0 1,0 -41.40,0" />
     <path android:fillColor="#FFFFFFFF"
-        android:pathData="M51.17,54 a2.83,2.83 0 1,0 5.66,0 a2.83,2.83 0 1,0 -5.66,0" />
+        android:pathData="M51.16,54 a2.84,2.84 0 1,0 5.68,0 a2.84,2.84 0 1,0 -5.68,0" />
     <path android:fillColor="#FFFFFFFF"
-        android:pathData="M58.48,65.04 L75.69,77.54 L79.76,71.94 L62.55,59.43 Z" />
+        android:pathData="M61.03,67.02 L75.61,77.61 L79.33,72.50 L64.75,61.90 Z" />
 </vector>
