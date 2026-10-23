@@ -10,6 +10,7 @@ import { tint as _tint } from './colourMath.js';
 import { tierPalette, faceLabelType } from './ballIqCard.js';
 import { resultVerdict } from './resultVerdict.js';
 import { fmtLocaleEnglish } from '../i18n/index.js'; // the card is English: its numbers too
+import { V2_TYPES, renderShareCardV2 } from './shareCardV2.js';
 
 // ─── BRANDED SHARE CARD (NEW, 390×600 PORTRAIT) ─────────────────────────────
 // Variants:
@@ -101,6 +102,10 @@ function _trackedWidth(ctx, text, tracking) {
 }
 
 export async function generateShareCard(type, data) {
+  // The daily modes have the second design (lib/shareCardV2.js, 23 Oct 2026):
+  // a 1080×1920 story card built to the research brief. The drawings below
+  // stay for the quiz, IQ and league cards, and as that module's history.
+  if (V2_TYPES.has(type)) return renderShareCardV2(type, data);
   // ⚠️ THE IQ CARD GETS ITS OWN CANVAS, AND IT IS THE BIGGEST FIX HERE.
   // 390x600 is a 1x render. Saved to a modern camera roll and opened on a
   // ~1200px-wide phone it is upscaled 3x and looks soft — which is most of why
