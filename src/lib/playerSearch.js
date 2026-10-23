@@ -83,12 +83,80 @@ export function rankPlayerSuggestions(pool, text, opts = {}) {
   // intent, and rendering that list on every keystroke janks a mid-range phone.
   if (q.length < 2) return [];
   const { exclude, limit = 8 } = opts;
-  return pool
+  const exact = pool
     .filter((p) => (!exclude || !exclude.has(p.id)) && spellingsOf(p).some((n) => n.includes(q)))
     .map((p) => ({ p, s: scorePlayerMatch(p, q) }))
     .sort((a, b) => b.s - a.s)
     .slice(0, limit)
     .map((x) => x.p);
+  if (exact.length >= limit || q.length < 4) return exact;
+  // ── THE FORGIVING PASS (Alex, 23 Oct 2026) ────────────────────────────────
+  // Nobody can be expected to spell Mkhitaryan: "Mikita" found nothing, because
+  // the list above only takes names that CONTAIN what was typed. When it comes
+  // up short, the names that START within a typo or two of the query follow it,
+  // nearest spelling first, then fame. One slip allowed up to five letters, two
+  // from six (a short query with two slips matches half the pool).
+  const seen = new Set(exact.map((p) => p.id));
+  const max = q.length <= 5 ? 1 : 2;
+  const near = [];
+  for (const p of pool) {
+    if (seen.has(p.id) || (exclude && exclude.has(p.id))) continue;
+    const d = typoDistance(p, q, max);
+    if (d <= max) near.push({ p, d });
+  }
+  near.sort((a, b) => a.d - b.d || (b.p.fame || 0) - (a.p.fame || 0));
+  return exact.concat(near.slice(0, limit - exact.length).map((x) => x.p));
+}
+
+// The fewest typos between the query and the start of any word of the name
+// (or of the whole name, for "henrik mkhitar"), counting a swapped pair as one.
+// `max` bounds the work: anything worse is reported as max + 1.
+// Same first letter only: a slip on the first letter is rare, and it cuts the
+// work about twenty-fold, which a phone typing at speed needs.
+const WORDS = new WeakMap();
+function wordsOf(p) {
+  let v = WORDS.get(p);
+  if (!v) { v = spellingsOf(p).flatMap((f) => f.split(' ').filter(Boolean)); WORDS.set(p, v); }
+  return v;
+}
+function typoDistance(p, q, max) {
+  let best = max + 1;
+  const multi = q.includes(' ');
+  const targets = multi ? spellingsOf(p) : wordsOf(p);
+  {
+    for (const w of targets) {
+      if (w[0] !== q[0]) continue;
+      if (w.length < q.length - max) continue;
+      for (let k = Math.max(1, q.length - max); k <= Math.min(w.length, q.length + max); k++) {
+        const d = editDistance(q, w.slice(0, k), max);
+        if (d < best) best = d;
+        if (best === 0) return 0;
+      }
+    }
+  }
+  return best;
+}
+
+// Damerau-Levenshtein (optimal string alignment), stopping early once every
+// path in a row is over `max`.
+function editDistance(a, b, max) {
+  const n = a.length, m = b.length;
+  if (Math.abs(n - m) > max) return max + 1;
+  let prev2 = null, prev = Array.from({ length: m + 1 }, (_, j) => j);
+  for (let i = 1; i <= n; i++) {
+    const cur = [i];
+    let low = i;
+    for (let j = 1; j <= m; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      let v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      if (prev2 && i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) v = Math.min(v, prev2[j - 2] + 1);
+      cur[j] = v;
+      if (v < low) low = v;
+    }
+    if (low > max) return max + 1;
+    prev2 = prev; prev = cur;
+  }
+  return prev[m];
 }
 
 /**
