@@ -101,16 +101,20 @@ const MODES = {
     acc: '#FF8FB8', name: 'DRAFT', path_: 'draft',
     hero: (d) => [String(d.pts ?? 0), ''],
     label: () => 'points',
-    // Par is NOT an average of players: it is what this board scores if you
-    // take the obvious man (the most-used) from every spin, with the same
-    // luck. Said in those words, because "par 66" alone reads as a crowd
-    // average (Alex, 23 Oct).
+    // Par is what this board scores if you take the most-used man from every
+    // spin, with the same luck; the game's info panel says so. On the card it
+    // is golf's word and nothing more: "the obvious picks scored 66" read as a
+    // dig (Alex, 23 Oct).
     brag: (d) => {
-      if (d.par != null && d.pts > d.par) return `Beat the obvious picks by ${d.pts - d.par}`;
-      if (d.par != null && d.pts === d.par) return 'Level with the obvious picks';
+      if (d.par != null && d.pts > d.par) return `Beat par by ${d.pts - d.par}`;
+      if (d.par != null && d.pts === d.par) return 'Level with par';
       return d.streak > 1 ? `🔥 ${d.streak}-day streak` : `Won ${d.w} · Drew ${d.d} · Lost ${d.l}`;
     },
-    sub: (d) => (d.par != null ? `The obvious picks scored ${d.par}` : `Won ${d.w} · Drew ${d.d} · Lost ${d.l}`),
+    sub: (d) => {
+      const wdl = `Won ${d.w} · Drew ${d.d} · Lost ${d.l}`;
+      if (d.par == null) return wdl;
+      return d.pts >= d.par ? `Par ${d.par} · ${wdl}` : `Par ${d.par}`;
+    },
     path(ctx, d) {
       // The season as a strip: two rows of nineteen, in the order played.
       const col = { w: GREEN, d: '#555B6E', l: LOSS };
