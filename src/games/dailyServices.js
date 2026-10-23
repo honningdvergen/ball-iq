@@ -18,6 +18,9 @@ export const DEFAULT_DAILY_SERVICES = {
   // pass links to the other pages. null → the panel still renders with the
   // game's own streak and no reminder row.
   dailyDone: null,
+  // The picture share (App.jsx shareCard). The app passes it; without it a
+  // screen shares its text, as the islands do.
+  shareCard: null,
 };
 
 export function resolveDailyServices(services) {

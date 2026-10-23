@@ -151,12 +151,22 @@ export async function generateShareCard(type, data) {
   const headerY = 38;
   ctx.textBaseline = "alphabetic";
   if (!IS_IQ) {
-  ctx.fillStyle = "#58CC02";
+  // The strip is the mode's own colour where the mode has one (Draft's pink).
+  ctx.fillStyle = type === "draft" ? "#FF8FB8" : "#58CC02";
   ctx.fillRect(0, 0, W, 6);
   ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#FFFFFF";
   ctx.textAlign = "left";
-  ctx.fillText(`⚽ ${APP_NAME}`, padX, headerY);
+  // The mark is the app icon (the nav logo's file, which ships in the native
+  // app too); if it cannot load, the football emoji it replaced.
+  let mark = null;
+  try { mark = await _loadImage("/marketing/ball.png", 1500); } catch { mark = null; }
+  if (mark) {
+    ctx.drawImage(mark, padX, headerY - 21, 26, 26);
+    ctx.fillText(APP_NAME, padX + 34, headerY);
+  } else {
+    ctx.fillText(`⚽ ${APP_NAME}`, padX, headerY);
+  }
 
   ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
@@ -169,7 +179,7 @@ export async function generateShareCard(type, data) {
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
   // Centered footer URL (the Footle and league cards draw their own foot)
-  if (type !== "wordle" && type !== "league") {
+  if (type !== "wordle" && type !== "league" && type !== "draft") {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
@@ -251,6 +261,72 @@ export async function generateShareCard(type, data) {
     ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
     ctx.fillText("balliq.app/footle", cx, H - 24);
+  } else if (type === "draft") {
+    // ── THE DRAFT CARD (23 Oct 2026) ────────────────────────────────────────
+    // The text share was emoji squares, and chats draw a run of emoji as big
+    // touching blocks (Alex on Snapchat and Messages: "horrendous"). This is
+    // the same result as a picture: the number, the points against par, the
+    // record, and the 38 matches as a tidy 10-wide grid. Spoiler-free, like
+    // the text: no club, no season, no man.
+    const ACC = "#FF8FB8";
+    const num = data?.num > 0 ? data.num : 0;
+    const pts = Number(data?.pts) || 0;
+    const par = data?.par == null ? null : Number(data.par);
+    const res = Array.isArray(data?.matches) ? data.matches : [];
+
+    ctx.font = '800 14px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = ACC;
+    const eyebrow = num ? `DRAFT  No. ${num}` : "DRAFT";
+    const ew = _trackedWidth(ctx, eyebrow, 1.4);
+    ctx.textAlign = "left";
+    _trackedText(ctx, eyebrow, cx - ew / 2, 98, 1.4);
+    ctx.textAlign = "center";
+    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("Eleven real seasons. One league season.", cx, 120);
+
+    ctx.font = '900 76px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillText(String(pts), cx, 200);
+    ctx.font = '700 14px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("POINTS", cx, 224);
+
+    ctx.font = '700 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#E6E8EF";
+    ctx.fillText(`Won ${data?.w ?? 0} · Drew ${data?.d ?? 0} · Lost ${data?.l ?? 0}`, cx, 256);
+    if (par != null) {
+      const diff = pts - par;
+      ctx.font = '800 15px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = diff >= 0 ? "#58CC02" : ACC;
+      ctx.fillText(diff > 0 ? `${diff} above par (${par})` : diff === 0 ? `Level with par (${par})` : `${-diff} below par (${par})`, cx, 282);
+    }
+
+    // The season, ten matches to a row, in the order they were played.
+    const colour = { w: "#58CC02", d: "#5A5F70", l: "#E5484D" };
+    const cols = 10, gap = 5, tile = 26;
+    const gridW = cols * tile + (cols - 1) * gap;
+    const rows = Math.ceil(res.length / cols);
+    const gridH = rows * tile + (rows - 1) * gap;
+    const bandTop = 304, bandBottom = H - 116;
+    const startX = cx - gridW / 2;
+    const top = bandTop + Math.max(0, (bandBottom - bandTop - gridH) / 2);
+    res.forEach((r, i) => {
+      ctx.fillStyle = colour[r] || colour.d;
+      _roundRectPath(ctx, startX + (i % cols) * (tile + gap), top + Math.floor(i / cols) * (tile + gap), tile, tile, 5);
+      ctx.fill();
+    });
+
+    const pillW = 236, pillH = 44, pillY = H - 96;
+    ctx.fillStyle = ACC;
+    _roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, pillH / 2);
+    ctx.fill();
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#2A0A18";
+    ctx.fillText("Can you beat me?", cx, pillY + 28);
+    ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("balliq.app/play?game=draft", cx, H - 24);
   } else if (type === "hotstreak") {
     const score = data?.score ?? 0;
 

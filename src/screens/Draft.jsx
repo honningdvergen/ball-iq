@@ -154,7 +154,7 @@ export default function Draft({ date, onBack, services }) {
 
 function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
   const t = useT();
-  const { haptic, playSound, Confetti } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, shareCard } = resolveDailyServices(services);
   const number = isPractice ? 0 : draftNumber(day);
   // What was saved, if all of it still makes sense; otherwise a fresh deal.
   // Either way the spin on show is one somebody can be taken from.
@@ -313,7 +313,7 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
       )}
 
       {done && result && (
-        <Season result={result} number={number} picks={picks} shown={shown} played={played} hard={g.hard}
+        <Season shareCard={shareCard} result={result} number={number} picks={picks} shown={shown} played={played} hard={g.hard}
           isPractice={isPractice} onSkip={() => setShown(GAMES)} onAnother={onAnother} onBack={onBack} />
       )}
     </div>
@@ -390,7 +390,7 @@ const DRAFT_SHARE_WORDS = {
   url: () => tNow("share.draftUrl"),
 };
 
-function Season({ result, number, picks, shown, played, hard, isPractice, onSkip, onAnother, onBack }) {
+function Season({ shareCard, result, number, picks, shown, played, hard, isPractice, onSkip, onAnother, onBack }) {
   const t = useT();
   const { se, stand, par } = result;
   const sofar = se.matches.slice(0, shown);
@@ -408,12 +408,20 @@ function Season({ result, number, picks, shown, played, hard, isPractice, onSkip
   const share = useCallback(async () => {
     // In the sharer's language (i18n step 6; its head and link line, step 7).
     const text = buildDraftShareText({ number, se, par, words: DRAFT_SHARE_WORDS });
+    // In the app the share is a picture (lib/shareCardRender.js "draft"): the
+    // text's emoji squares come out as big touching blocks in Snapchat and
+    // Messages (23 Oct). The text stays as the fallback, and on the web pages.
+    if (shareCard) {
+      const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
+      await shareCard("draft", { num: number, pts: se.pts, w: se.w, d: se.d, l: se.l, par, matches: se.matches.map((m) => m.r), deepLink: "/play?game=draft" }, { textFallback: text, onToast: toast });
+      return;
+    }
     try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(text);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: tNow("share.pasteAnywhere") }));
     } catch { /* nothing to copy to */ }
-  }, [se, number, par]);
+  }, [se, number, par, shareCard]);
 
   return (
     <div className="dr-season">

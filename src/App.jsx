@@ -2997,7 +2997,7 @@ const FOOTLE_SERVICES = {
 // its own install banner", which is true inside the app, where the component
 // draws nothing, and wrong on the website's /play, where a phone visitor who
 // finished Transfer Trail, Top 10 or Mystery Player saw no way to the app.
-const DAILY_SERVICES = { haptic, playSound, Confetti, GetAppCTA: FootleGetAppCTA };
+const DAILY_SERVICES = { haptic, playSound, Confetti, GetAppCTA: FootleGetAppCTA, shareCard };
 
 // ⚠️ THE REPORT CHANNEL WAS BLIND: 55 reports, 0 reasons, 25 in the last week
 // alone — p_reason was hardcoded null while the column and the RPC parameter
