@@ -200,6 +200,11 @@ export async function renderShareCardV2(type, data = {}) {
   // (Alex, 23 Oct); the top is the game and its number.
   const q = await load('/marketing/ball.png');
 
+  // Everything from the header to the path sits 70 px lower than drawn: the
+  // top had room to spare and the foot was crowded (Alex, 23 Oct).
+  ctx.save();
+  ctx.translate(0, 70);
+
   // The mode, tracked, and the day's number, not ("FOOTLE #120").
   ctx.font = `800 44px ${FONT}`;
   const nm = M.name, no = Number(data.num) > 0 ? `  #${data.num}` : '';
@@ -227,12 +232,13 @@ export async function renderShareCardV2(type, data = {}) {
   }
 
   M.path(ctx, data, M.acc);
+  ctx.restore();
 
   // The invitation as an outline, so it does not compete with the score, and
   // where to go: short addresses only (balliq.app/draft, not ?game=draft).
   const ask = (key === 'trail' || key === 'mystery') && !data.won ? 'Can you get him?' : key === 'footle' && data.failed ? 'Can you get it?' : 'Can you beat me?';
   ctx.font = `900 50px ${FONT}`;
-  const pw = Math.max(560, ctx.measureText(ask).width + 120), ph = 108, py = 1440;
+  const pw = Math.max(560, ctx.measureText(ask).width + 120), ph = 108, py = 1500;
   ctx.strokeStyle = M.acc; ctx.lineWidth = 4; rr(ctx, CX - pw / 2, py, pw, ph, ph / 2); ctx.stroke();
   text(ctx, ask, CX, py + 70, 50, 900, M.acc);
 
@@ -241,17 +247,18 @@ export async function renderShareCardV2(type, data = {}) {
   const NAME = 'Ball IQ: Football Quiz';
   ctx.font = `800 50px ${FONT}`;
   const nW = ctx.measureText(NAME).width, mW = q ? 72 + 20 : 0, nx = CX - (mW + nW) / 2;
-  if (q) ctx.drawImage(q, nx, 1606, 72, 72);
-  text(ctx, NAME, nx + mW, 1660, 50, 800, '#F2F3F7', 'left');
+  if (q) ctx.drawImage(q, nx, 1686, 72, 72);
+  text(ctx, NAME, nx + mW, 1740, 50, 800, '#F2F3F7', 'left');
   // Both store badges (Alex: a friend on the other kind of phone should see
   // where to get it). The official artwork, unaltered, at 88 px tall with the
   // clear space Apple asks for (a quarter of the height) between them.
   const [ios, play] = await Promise.all([load('/badges/app-store.svg'), load('/badges/google-play.png')]);
-  const bh = 88, iw = ios ? bh * (119.66 / 40) : 0, gw = play ? bh * (564 / 168) : 0, gap = ios && play ? 40 : 0;
+  const bh = 80, iw = ios ? bh * (119.66 / 40) : 0, gw = play ? bh * (564 / 168) : 0, gap = ios && play ? 40 : 0;
   let bx2 = CX - (iw + gap + gw) / 2;
-  if (ios) { ctx.drawImage(ios, bx2, 1712, iw, bh); bx2 += iw + gap; }
-  if (play) ctx.drawImage(play, bx2, 1712, gw, bh);
-  text(ctx, `balliq.app/${M.path_}`, CX, 1870, 38, 700, '#7E8498');
+  // No printed address: the link travels with the picture as text, and the
+  // badges say where the app is.
+  if (ios) { ctx.drawImage(ios, bx2, 1784, iw, bh); bx2 += iw + gap; }
+  if (play) ctx.drawImage(play, bx2, 1784, gw, bh);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('toBlob returned null'))), 'image/png');
