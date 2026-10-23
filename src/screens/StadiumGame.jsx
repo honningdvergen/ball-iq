@@ -94,7 +94,7 @@ const badgeForLeague = (id) => {
 };
 const FALLBACK_BADGE = { abbr: "—", bg: "var(--s3)", ink: "var(--t2)" };
 
-export default function StadiumGame({ onExit }) {
+export default function StadiumGame({ onExit, shareCard }) {
   useT();
   // League picker first — five leagues now, and a Board keyed by league.id
   // below so every hook re-initialises cleanly when the league changes.
@@ -153,10 +153,10 @@ export default function StadiumGame({ onExit }) {
       </div>
     );
   }
-  return <StadiumBoard key={league.id} league={league} onExit={() => setLeagueId(null)} />;
+  return <StadiumBoard shareCard={shareCard} key={league.id} league={league} onExit={() => setLeagueId(null)} />;
 }
 
-function StadiumBoard({ league, onExit }) {
+function StadiumBoard({ league, onExit, shareCard }) {
   useT();
   const total = league.clubs.length;
   const [state, setState] = useState(() => loadState(league.id));
@@ -285,6 +285,13 @@ function StadiumBoard({ league, onExit }) {
       ? t("sg.shareGaveUp", { league: league.name, n: state.solved.length, total })
       : t("sg.shareAll", { total, league: league.name, hints: hintsUsed === 0 ? t("sg.noHints") : t("sg.hints", { count: hintsUsed, n: hintsUsed }) });
     const url = "https://balliq.app/play";
+    // In the app the result goes as a picture card (shareCardV2 "stadiums"),
+    // the same family as every other mode's (23 Oct 2026).
+    if (shareCard) {
+      const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
+      await shareCard("stadiums", { league: `${league.name} · ${league.season}`, solved: state.solved.length, total, hints: hintsUsed, gaveUp: !!state.gaveUp, deepLink: "/play" }, { textFallback: `${line}\n${url}`, onToast: toast });
+      return;
+    }
     try {
       if (navigator.share) { await navigator.share({ text: `${line}\n${url}` }); return; }
     } catch { /* fall through to clipboard */ }

@@ -210,6 +210,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
         score,
         total,
         streak: extras?.streak,
+        mode,
       };
     }
     cardData = { ...cardData, deepLink };

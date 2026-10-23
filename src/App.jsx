@@ -8342,7 +8342,7 @@ function AppInner() {
           <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stadiums" && (
-          <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} /></React.Suspense></TabErrorBoundary>
+          <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} shareCard={shareCard} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stump" && stumpRow && (
           <StumpScreen

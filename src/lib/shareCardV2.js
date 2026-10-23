@@ -84,7 +84,43 @@ const fill = (ctx, color) => (it, x, y, t, rad) => { ctx.fillStyle = color(it); 
 // ever brags (critic: "4 below par" and "1 hint used" are confessions, not
 // something anyone posts), a quiet second line, and the path drawing in the
 // band between y 1000 and 1400.
+// A tally: `total` tiles, the first `n` lit. It is a COUNT, not the order the
+// answers came in (the quiz card has no per-question record), so it is drawn
+// as a filled row, the way a scoreboard counts.
+function tally(ctx, n, total, color) {
+  const cols = total <= 10 ? total : Math.ceil(total / 2);
+  const tile = total <= 10 ? 76 : 60, gap = total <= 10 ? 14 : 12;
+  tiles(ctx, Array.from({ length: total }, (_, i) => i < n), { cols, tile, gap, top: 1000, bottom: 1390, radius: 16, draw: fill(ctx, (on) => (on ? color : DARK)) });
+}
+
 const MODES = {
+  // Every quiz result: Daily 7, Classic, club and league quizzes, Survival,
+  // True or False, Legends, Chaos. The eyebrow is the quiz's own name
+  // ("ARSENAL QUIZ", "DAILY 7"), which is the thing people share it for.
+  standard: {
+    acc: '#8AE042', name: 'QUIZ', path_: 'play',
+    nameOf: (d) => String(d.modeLabel || 'Quiz').toUpperCase(),
+    accOf: (d) => (d.mode === 'daily' ? '#FFC107' : '#8AE042'),
+    hero: (d) => [String(d.score ?? 0), `/${d.total ?? 10}`],
+    label: () => 'correct',
+    brag: (d) => (d.total && d.score === d.total ? 'Perfect score' : d.streak > 1 ? `🔥 ${d.streak}-day streak` : d.total && d.score / d.total >= 0.8 ? 'Top marks' : ''),
+    path(ctx, d, acc) { tally(ctx, Number(d.score) || 0, Math.min(20, Number(d.total) || 10), acc); },
+  },
+  hotstreak: {
+    acc: '#FF8A3D', name: 'HOT STREAK', path_: 'play',
+    hero: (d) => [String(d.score ?? 0), ''],
+    label: () => 'right in a row',
+    brag: (d) => (d.score >= 20 ? 'On fire' : d.score >= 10 ? 'Double figures' : ''),
+    path(ctx, d, acc) { const n = Math.min(30, Number(d.score) || 0); if (n) tally(ctx, n, n, acc); },
+  },
+  stadiums: {
+    acc: '#5EC8B8', name: 'STADIUMS', path_: 'play',
+    hero: (d) => [String(d.solved ?? 0), `/${d.total ?? 0}`],
+    label: () => 'grounds named',
+    brag: (d) => (d.gaveUp ? '' : d.hints === 0 ? 'No hints needed' : `${d.hints} ${d.hints === 1 ? 'hint' : 'hints'}`),
+    sub: (d) => d.league || '',
+    path(ctx, d, acc) { tally(ctx, Number(d.solved) || 0, Math.min(24, Number(d.total) || 0), acc); },
+  },
   footle: {
     acc: '#8AE042', name: 'FOOTLE', path_: 'footle',
     hero: (d) => (d.failed ? ['X', '/6'] : [String(d.score), '/6']),
@@ -182,11 +218,13 @@ const MODES = {
   },
 };
 
-export const V2_TYPES = new Set(['wordle', 'draft', 'top10', 'trail', 'mystery']);
+export const V2_TYPES = new Set(['wordle', 'draft', 'top10', 'trail', 'mystery', 'standard', 'hotstreak', 'stadiums']);
 
 export async function renderShareCardV2(type, data = {}) {
   const key = type === 'wordle' ? 'footle' : type;
-  const M = MODES[key];
+  const base = MODES[key];
+  // A mode can take its colour and its name from the result (Daily 7 is gold).
+  const M = { ...base, acc: base.accOf ? base.accOf(data) : base.acc, name: base.nameOf ? base.nameOf(data) : base.name };
   const canvas = document.createElement('canvas');
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext('2d');
@@ -209,10 +247,15 @@ export async function renderShareCardV2(type, data = {}) {
   ctx.translate(0, 70);
 
   // The mode, tracked, and the day's number, not ("FOOTLE #120").
-  ctx.font = `800 44px ${FONT}`;
+  // A long quiz name ("BORUSSIA MÖNCHENGLADBACH QUIZ") steps the size down to fit.
   const nm = M.name, no = Number(data.num) > 0 ? `  #${data.num}` : '';
-  const trackW = [...nm].reduce((a, c) => a + ctx.measureText(c).width + 6, -6);
-  const noW = no ? ctx.measureText(no).width : 0;
+  let hs = 44, trackW = 0, noW = 0;
+  for (; hs >= 30; hs -= 2) {
+    ctx.font = `800 ${hs}px ${FONT}`;
+    trackW = [...nm].reduce((a, c) => a + ctx.measureText(c).width + 6, -6);
+    noW = no ? ctx.measureText(no).width : 0;
+    if (trackW + noW <= W - 140) break;
+  }
   let hx = CX - (trackW + noW) / 2;
   ctx.fillStyle = M.acc; ctx.textAlign = 'left';
   for (const c of nm) { ctx.fillText(c, hx, 300); hx += ctx.measureText(c).width + 6; }
