@@ -158,14 +158,9 @@ const COPY = {
     head: ['Name {every ground}', 'in the league'],
     sub: 'Five leagues. No multiple choice.',
   },
-  // Not a screenshot of a screen — the card the app hands you, which is why it
-  // is `bare`. In a row of nine phone thumbnails it is the one that stops the eye.
-  '10-iq-card': {
-    eyebrow: 'YOUR BALL IQ CARD', accent: AMBER,
-    head: ['One card.', '{Settle it} with your mates.'],
-    sub: 'Save it, send it, see who actually knows football.',
-    bare: true,
-  },
+  // 10-iq-card is OUT (Alex, 23 Oct 2026): the profile shot already carries the
+  // same 87 card WITH his photo, and two 87s in one gallery read as a repeat.
+
 };
 
 const hl = (line, accent) =>

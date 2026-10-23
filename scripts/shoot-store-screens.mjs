@@ -445,16 +445,16 @@ const SHOTS = [
   { name: '02-footle', expect: 'Footle',
     // The screen check is not enough here — assert the BOARD actually filled.
     verify: async (p) => (await p.evaluate(() =>
-      [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 9,
+      [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 20,
     go: async (p) => {
       const answer = getWordleAnswer();
       await gotoApp(p, '/play?game=footle');
       await p.waitForTimeout(1800);
       if (answer) {
         const A = answer.toUpperCase();
-        // Solved on the third guess: the win word reads "Brilliant" (it follows
-        // the guesses since 14 Oct; a five-guess solve says "Close call").
-        for (const g of [...footleLadder(A).slice(0, 2), A]) {
+        // Solved on the fifth guess (Alex, 23 Oct: "a full footle card"): a
+        // board with five real rows reads as a game played, three as a fluke.
+        for (const g of [...footleLadder(A).slice(0, 4), A]) {
           await p.keyboard.type(g);
           await p.getByText('ENTER', { exact: true }).first().click();
           await p.waitForTimeout(1150);
