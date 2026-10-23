@@ -1,4 +1,5 @@
 import UIKit
+import UserNotifications
 import Capacitor
 
 @UIApplicationMain
@@ -130,7 +131,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // Opening the app clears the red badge on its icon. Every push sets
+        // badge 1 (supabase/functions/send-push) and nothing ever reset it, so
+        // the icon showed "1" for weeks after the reminder was read (Alex, 23
+        // Oct 2026). The delivered banners go too: they were for today's open.
+        if #available(iOS 16.0, *) {
+            UNUserNotificationCenter.current().setBadgeCount(0) { _ in }
+        } else {
+            application.applicationIconBadgeNumber = 0
+        }
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
