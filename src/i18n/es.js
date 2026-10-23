@@ -1164,7 +1164,7 @@ export default {
   'ord.n': '{n}.º',
   'share.draftHead': '⚽ Ball IQ · Draft{n}',
   'share.draftNo': ' n.º {n}',
-  'share.draftUrl': 'Juega en balliq.app/play?game=draft',
+  'share.draftUrl': 'Juega en https://balliq.app/play?game=draft',
   // Draft
   'dr.pos.GK': 'Porteros',
   'dr.pos.DF': 'Defensas',

@@ -9,7 +9,7 @@ export const STEP7_EN = {
   'ord.n': '{n}',
   'share.draftHead': '⚽ Ball IQ · Draft{n}',
   'share.draftNo': ' #{n}',
-  'share.draftUrl': 'balliq.app/play?game=draft',
+  'share.draftUrl': 'https://balliq.app/play?game=draft',
   'dr.pos.GK': 'Goalkeepers',
   'dr.pos.DF': 'Defenders',
   'dr.pos.MF': 'Midfielders',

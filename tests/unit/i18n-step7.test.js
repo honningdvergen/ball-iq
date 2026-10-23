@@ -215,7 +215,7 @@ const OLD_DRAFT = ({ number = 0, se, par = null }) => {
   const row = (ms) => ms.map((m) => (m.r === 'w' ? '🟩' : m.r === 'd' ? '⬜' : '🟥')).join('');
   const head = `⚽ Ball IQ · Draft${number > 0 ? ` #${number}` : ''}`;
   const line = `${se.pts} points · ${se.w}-${se.d}-${se.l}${par != null ? ` · par ${par}` : ''}`;
-  return `${head}\n${line}\n${[0, 10, 20, 30].map((i) => row(se.matches.slice(i, i + 10))).join('\n')}\n\nballiq.app/play?game=draft`;
+  return `${head}\n${line}\n${[0, 10, 20, 30].map((i) => row(se.matches.slice(i, i + 10))).join('\n')}\n\nhttps://balliq.app/play?game=draft`;
 };
 const season = (pts, w, d, l) => ({ pts, w, d, l, gf: 70, ga: 30, matches: Array.from({ length: 38 }, (_, i) => ({ r: i < w ? 'w' : i < w + d ? 'd' : 'l' })) });
 // Draft.jsx's DRAFT_SHARE_WORDS, mirrored (the source check below holds the screen to it).
@@ -250,7 +250,7 @@ describe('d. the Spanish gaps', () => {
     const s = buildDraftShareText({ number: 12, se: season(80, 24, 8, 6), par: 61, words: WORDS }).split('\n');
     expect(s[0]).toBe('⚽ Ball IQ · Draft n.º 12');
     expect(s[1]).toBe('80 puntos · 24-8-6 · par 61');
-    expect(s.at(-1)).toBe('Juega en balliq.app/play?game=draft');
+    expect(s.at(-1)).toBe('Juega en https://balliq.app/play?game=draft');
     const draft = read('src/screens/Draft.jsx');
     expect(draft).toContain('head: (number) => tNow("share.draftHead", { n: number > 0 ? tNow("share.draftNo", { n: number }) : "" }),');
     expect(draft).toContain('url: () => tNow("share.draftUrl"),');

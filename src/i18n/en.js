@@ -1234,7 +1234,7 @@ export default registerEnglish({
   'ord.n': '{n}', // never printed in English: ordinalText keeps English's own suffixes
   'share.draftHead': '⚽ Ball IQ · Draft{n}',
   'share.draftNo': ' #{n}',
-  'share.draftUrl': 'balliq.app/play?game=draft',
+  'share.draftUrl': 'https://balliq.app/play?game=draft',
   // Draft (screens/Draft.jsx).
   'dr.pos.GK': 'Goalkeepers',
   'dr.pos.DF': 'Defenders',

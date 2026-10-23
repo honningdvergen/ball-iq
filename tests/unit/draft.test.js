@@ -488,7 +488,7 @@ describe('Draft No. N, par and the share', () => {
     // Ten squares to a row so a phone chat never wraps one mid-row: 10, 10, 10, 8.
     expect(lines.slice(2, 6).map((l) => [...l].length)).toEqual([10, 10, 10, GAMES - 30]);
     expect(lines[6]).toBe('');
-    expect(lines[lines.length - 1]).toBe('balliq.app/play?game=draft');
+    expect(lines[lines.length - 1]).toBe('https://balliq.app/play?game=draft');
     for (const { p, sq } of picksOf(g, D)) { expect(text).not.toContain(p.n); expect(text).not.toContain(sq.club); }
     expect(m.buildDraftShareText({ number: 0, se }).split('\n')[0]).toBe('⚽ Ball IQ · Draft');
   });

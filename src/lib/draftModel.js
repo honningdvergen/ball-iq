@@ -434,7 +434,7 @@ export function buildDraftShareText({ number = 0, se, par = null, words = null }
   const head = words?.head ? words.head(number) : `⚽ Ball IQ · Draft${number > 0 ? ` #${number}` : ''}`;
   const pts = words ? words.line(se) : `${se.pts} points · ${se.w}-${se.d}-${se.l}`;
   const line = `${pts}${par != null ? (words ? words.par(par) : ` · par ${par}`) : ''}`;
-  const url = words?.url ? words.url() : 'balliq.app/play?game=draft';
+  const url = words?.url ? words.url() : 'https://balliq.app/play?game=draft';
   const grid = [];
   for (let i = 0; i < se.matches.length; i += 10) grid.push(row(se.matches.slice(i, i + 10)));
   return `${head}\n${line}\n${grid.join('\n')}\n\n${url}`;
