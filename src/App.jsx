@@ -5268,6 +5268,15 @@ function AppInner() {
       showToast(tl("ts.leagueFail"));
     }
   }, [showToast]);
+  // The profile card's Play button, per face. Most faces are a league quiz;
+  // CLUBS is the one with none (its rating is built from the club packs), and
+  // handing "Clubs" to launchLeagueQuiz returned silently: Alex tapped Play
+  // under "Needs work · CLUBS" and nothing happened (23 Oct). It opens the
+  // club quizzes instead.
+  const playCardFace = useCallback((catKey) => {
+    if (LEAGUE_QUIZ_BY_CAT[catKey]) { launchLeagueQuiz(catKey); return; }
+    if (catKey === "Clubs") { haptic("soft"); setScreen("club-quiz"); }
+  }, [launchLeagueQuiz]);
 
   // SEO deep-links: launch straight into the club/league quiz named in the
   // URL (?club=<slug> / ?quiz=<league-slug>). Fire-once; params are stripped
@@ -7957,7 +7966,7 @@ function AppInner() {
           <div className="tab-pane" style={tab === "profile" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="profile">
             <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
-              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} onPlayLeague={launchLeagueQuiz}
+              <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} onPlayLeague={playCardFace}
             onPlayDaily={playDaily} onSetCardLeague={setCardLeague} nameEditNonce={nameEditNonce} isActiveTab={tab === "profile"} />
             </React.Suspense>
             </TabErrorBoundary>
