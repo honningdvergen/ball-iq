@@ -73,7 +73,7 @@ function accuracyLabel(card, stats) {
   const a = stats?.totalAnswered || 0, c = stats?.totalCorrect || 0;
   return (a > 0 && c <= a) ? `${Math.round(100 * c / a)}%` : "—";
 }
-import { Pencil, Share2, Download, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy } from 'lucide-react';
+import { Pencil, Share2, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
@@ -1914,21 +1914,17 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           uses, so the two can never disagree. */}
       {(stats.gamesPlayed || 0) > 0 && (
         <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
-          {/* A LINK and an IMAGE are different jobs, so both are offered, but
-              they are not equals: sharing is the action this app most wants
-              taken, so it carries the go colour and saving sits beside it as a
-              quieter sibling. shareProfile sends /p?... — tappable, unfurls the
-              card, right for a group chat; onSaveCard hands over an actual PNG,
-              the only useful thing in a story or a camera roll. */}
+          {/* The card goes as a PICTURE (onSaveCard: the 1080x1440 card, with
+              the link as a separate text item the native sheet keeps away from
+              Snapchat). The /p?... link it used to send showed as a thumbnail
+              the size of a stamp in Snapchat and a small preview in Messages
+              (Alex, 23 Oct). The share sheet has Save Image in it, so one
+              button does both jobs; the link is the fallback where there is no
+              picture share. */}
           <div className="card-actions">
-            <button className="card-action-primary" onClick={onShareProfile}>
+            <button className="card-action-primary" onClick={onSaveCard || onShareProfile}>
               <Share2 size={16} strokeWidth={2.6} aria-hidden="true" />{" " + t("pf.shareCard")}
             </button>
-            {onSaveCard && (
-              <button className="card-action-secondary" onClick={onSaveCard}>
-                <Download size={16} strokeWidth={2.6} aria-hidden="true" />{" " + t("pf.saveImage")}
-              </button>
-            )}
           </div>
           {onShowWeekly && (
             <button className="share-profile-btn" style={{marginBottom:0}} onClick={onShowWeekly}>{t("pf.weekly")}</button>
@@ -2072,7 +2068,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             </div>
           );
         })()}
-        <button type="button" className="pd-share" onClick={onShareProfile} aria-label={t("pf.shareProfile")}>
+        <button type="button" className="pd-share" onClick={onSaveCard || onShareProfile} aria-label={t("pf.shareProfile")}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
           {t("pf.shareProfile")}
         </button>
