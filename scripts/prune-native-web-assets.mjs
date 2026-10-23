@@ -54,6 +54,7 @@ const KEEP_EXACT = new Set([
   'sw.js',
   'version.json',
   '.well-known',       // deep-link association files; harmless, tiny
+  'badges',            // the store badges on the share cards (lib/shareCardV2.js), 22 KB
 ])
 
 // Inside marketing/: delete everything EXCEPT these (BiqNav.jsx nav logo).
