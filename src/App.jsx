@@ -2401,7 +2401,13 @@ function NotifBell({ count, onClick, className, style }) {
   );
 }
 
-function NotificationCenter({ open, requests, invites = [], onClose, onRespond, onJoinInvite, onDismissInvite, onOpenFriend }) {
+// "12 min ago": an invite is only worth joining while the room is live.
+const agoLabel = (iso) => {
+  const m = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+  return m < 1 ? tl("nc.justNow") : m < 60 ? tl("nc.minAgo", { n: m }) : tl("nc.hAgo", { n: Math.round(m / 60) });
+};
+
+function NotificationCenter({ open, requests, invites = [], onClose, onRespond, onJoinInvite, onDismissInvite, onClearInvites, onOpenFriend }) {
   useT();
   const panelRef = useRef(null);
   useModalA11y({ isOpen: open, onClose, ref: panelRef });
@@ -2412,7 +2418,12 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
       <div ref={panelRef} tabIndex={-1} className="notif-panel" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={tl("nc.title")}>
         <div className="notif-hdr">
           <span className="notif-title">{tl("nc.title")}</span>
-          <button className="notif-close" onClick={onClose} aria-label={tl("nc.close")}>✕</button>
+          <div className="notif-hdr-r">
+            {invites.length > 1 && onClearInvites && (
+              <button type="button" className="notif-clear" onClick={onClearInvites}>{tl("nc.clearAll")}</button>
+            )}
+            <button className="notif-close" onClick={onClose} aria-label={tl("nc.close")}>✕</button>
+          </div>
         </div>
         {isEmpty ? (
           <div className="notif-empty">
@@ -2427,7 +2438,8 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
               <div key={inv.id} className="notif-item">
                 <span className="notif-ava"><ProfilePic value={inv.actor_avatar} name={inv.actor_name} /></span>
                 <div className="notif-body">
-                  <div className="notif-line">{rich(tl("nc.invited"), { name: <strong>{inv.actor_name || tl("nc.aFriend")}</strong> })}</div>
+                  <div className="notif-line">{rich(tl("nc.invited"), { name: <strong>{inv.actor_name || tl("nc.someone")}</strong> })}</div>
+                  <div className="notif-when">{agoLabel(inv.created_at)}</div>
                   <div className="notif-actions">
                     <button className="notif-btn notif-accept" onClick={() => onJoinInvite?.(inv)}>{tl("nc.join")}</button>
                     <button className="notif-btn notif-decline" onClick={() => onDismissInvite?.(inv)}>{tl("nc.dismiss")}</button>
@@ -7121,7 +7133,7 @@ function AppInner() {
   // Notification center → hooks/useNotificationCenter.js (E16, 2026-09-06).
   const {
     notifOpen, setNotifOpen, notifRequests, notifInvites, notifCount,
-    loadNotifs, respondFriendRequest, joinInvite, dismissInvite, sendPlayInvite, openNotifs,
+    loadNotifs, respondFriendRequest, joinInvite, dismissInvite, clearInvites, sendPlayInvite, openNotifs,
   } = useNotificationCenter({ user, isGuest, showToast, setPendingJoinCode });
   // Scroll-aware tab bar → hooks/useScrollAwareTabBar.js (E16, 2026-09-06).
   const tabBarRef = useScrollAwareTabBar({ screen, inGame });
@@ -8583,6 +8595,7 @@ function AppInner() {
         onRespond={respondFriendRequest}
         onJoinInvite={joinInvite}
         onDismissInvite={dismissInvite}
+        onClearInvites={clearInvites}
         onOpenFriend={(f) => { setNotifOpen(false); openFriendProfile(f); }}
       />
     </>

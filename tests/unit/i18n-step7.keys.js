@@ -839,4 +839,8 @@ export const STEP7_EN = {
   'top10.hint': 'Need a hint? ({n} left)',
   'top10.hintsOne': 'One hint used.',
   'top10.hintsN': '{n} hints used.',
+  'nc.clearAll': 'Clear all',
+  'nc.justNow': 'Just now',
+  'nc.minAgo': '{n} min ago',
+  'nc.hAgo': '{n} h ago',
 };

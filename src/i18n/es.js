@@ -2004,4 +2004,9 @@ export default {
   'top10.hint': '¿Una pista? (quedan {n})',
   'top10.hintsOne': 'Usaste una pista.',
   'top10.hintsN': 'Usaste {n} pistas.',
+  // Centro de notificaciones.
+  'nc.clearAll': 'Borrar todo',
+  'nc.justNow': 'Ahora mismo',
+  'nc.minAgo': 'hace {n} min',
+  'nc.hAgo': 'hace {n} h',
 };

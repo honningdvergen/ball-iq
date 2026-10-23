@@ -1,4 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+
+// How long a play invite can still be joined: rooms are reaped after two hours.
+const INVITE_LIFE_MS = 2 * 60 * 60 * 1000;
 import * as Sentry from "@sentry/react";
 import { supabase } from "../supabase.js";
 import { loopEvent } from "../App.jsx";
@@ -19,6 +22,7 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifRequests, setNotifRequests] = useState([]);   // incoming friend requests (from friendships)
   const [notifInvites, setNotifInvites] = useState([]);     // play invites (from notifications table)
+  const remindersCleared = useRef(false);
   const loadNotifs = useCallback(async () => {
     if (!user?.id) { setNotifRequests([]); setNotifInvites([]); return; }
     // Friend requests — incoming pending rows from friendships.
@@ -32,17 +36,35 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
         .limit(50);
       setNotifRequests(Array.isArray(data) ? data : []);
     } catch { /* soft-fail: the bell just shows no badge */ }
-    // Play invites — unread rows from the notifications table (v1_3 migration).
+    // Play invites — unread PLAY_INVITE rows from the notifications table.
+    // ⚠️ ONLY play_invite, and only live ones. The same table carries the
+    // hourly cron's daily_reminder rows (enqueue_web_daily_reminders writes one
+    // per player per day so the push trigger fires). They have no sender and
+    // nothing to join, and this query used to take every unread row, so a
+    // player's centre filled with ~50 "A friend invited you to play" cards, and
+    // Dismiss on one just showed the next identical one (Alex, 23 Oct 2026). A
+    // room is reaped two hours after it opens, so an older invite is dead.
     try {
+      const since = new Date(Date.now() - INVITE_LIFE_MS).toISOString();
       const { data } = await supabase
         .from("notifications")
         .select("id,type,actor_name,actor_avatar,payload,created_at")
         .eq("user_id", user.id)
+        .eq("type", "play_invite")
         .eq("read", false)
+        .gte("created_at", since)
         .order("created_at", { ascending: false })
-        .limit(50);
+        .limit(20);
       setNotifInvites(Array.isArray(data) ? data : []);
     } catch { /* table may not exist yet on older deploys — soft-fail */ }
+    // Reminders are delivered as pushes and are never shown here; mark them
+    // read once a session so the table does not keep a backlog of them.
+    if (!remindersCleared.current) {
+      remindersCleared.current = true;
+      supabase.from("notifications").update({ read: true })
+        .eq("user_id", user.id).eq("type", "daily_reminder").eq("read", false)
+        .then(() => {}, () => {});
+    }
   }, [user?.id]);
   useEffect(() => { loadNotifs(); }, [loadNotifs]);
   // Refresh when the tab regains focus (an event may have arrived while away).
@@ -103,8 +125,23 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
   }, [showToast]);
   const dismissInvite = useCallback(async (inv) => {
     setNotifInvites(prev => prev.filter(n => n.id !== inv.id)); // optimistic
-    try { await supabase.from("notifications").update({ read: true }).eq("id", inv.id); } catch { /* best-effort */ }
-  }, []);
+    try {
+      const { error } = await supabase.from("notifications").update({ read: true }).eq("id", inv.id);
+      if (error) throw error;
+    } catch { loadNotifs(); /* put it back rather than pretend */ }
+  }, [loadNotifs]);
+  // Clear all: every play invite in the centre, in one tap. Friend requests
+  // stay, because clearing one would decline a person; they keep their own
+  // Accept and Decline.
+  const clearInvites = useCallback(async () => {
+    if (!user?.id) return;
+    setNotifInvites([]);
+    try {
+      const { error } = await supabase.from("notifications").update({ read: true })
+        .eq("user_id", user.id).eq("type", "play_invite").eq("read", false);
+      if (error) throw error;
+    } catch { loadNotifs(); }
+  }, [user?.id, loadNotifs]);
   // A specific friend can be invited to play: challengeFriend stashes their id;
   // once the auto-created room's code is known (onLobbyEnter) we fire the invite.
   // Returns whether the invite actually landed.
@@ -139,5 +176,5 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
     }
   }, []);
   const openNotifs = useCallback(() => { setNotifOpen(true); loadNotifs(); }, [loadNotifs]);
-  return { notifOpen, setNotifOpen, notifRequests, notifInvites, notifCount, loadNotifs, respondFriendRequest, joinInvite, dismissInvite, sendPlayInvite, openNotifs };
+  return { notifOpen, setNotifOpen, notifRequests, notifInvites, notifCount, loadNotifs, respondFriendRequest, joinInvite, dismissInvite, clearInvites, sendPlayInvite, openNotifs };
 }

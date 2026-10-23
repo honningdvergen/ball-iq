@@ -2096,4 +2096,9 @@ export default registerEnglish({
   'top10.hint': 'Need a hint? ({n} left)',
   'top10.hintsOne': 'One hint used.',
   'top10.hintsN': '{n} hints used.',
+  // Notification centre (App.jsx NotificationCenter, 23 Oct 2026).
+  'nc.clearAll': 'Clear all',
+  'nc.justNow': 'Just now',
+  'nc.minAgo': '{n} min ago',
+  'nc.hAgo': '{n} h ago',
 });
