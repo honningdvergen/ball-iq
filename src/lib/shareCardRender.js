@@ -152,7 +152,7 @@ export async function generateShareCard(type, data) {
   ctx.textBaseline = "alphabetic";
   if (!IS_IQ) {
   // The strip is the mode's own colour where the mode has one (Draft's pink).
-  ctx.fillStyle = type === "draft" ? "#FF8FB8" : "#58CC02";
+  ctx.fillStyle = type === "draft" ? "#FF8FB8" : type === "top10" ? "#FF9B7A" : "#58CC02";
   ctx.fillRect(0, 0, W, 6);
   ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#FFFFFF";
@@ -179,7 +179,7 @@ export async function generateShareCard(type, data) {
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
   // Centered footer URL (the Footle and league cards draw their own foot)
-  if (type !== "wordle" && type !== "league" && type !== "draft") {
+  if (type !== "wordle" && type !== "league" && type !== "draft" && type !== "top10") {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
@@ -261,6 +261,66 @@ export async function generateShareCard(type, data) {
     ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
     ctx.fillText("balliq.app/footle", cx, H - 24);
+  } else if (type === "top10") {
+    // ── THE TOP 10 CARD (23 Oct 2026) ───────────────────────────────────────
+    // Was emoji text, which chats draw as one long bar of touching blocks.
+    // The list's title, the score, and the ten places as numbered tiles, found
+    // or not, so the shape shows where the gaps were without naming anyone.
+    const ACC = "#FF9B7A";
+    const num = data?.num > 0 ? data.num : 0;
+    const found = Array.isArray(data?.found) ? data.found : [];
+    const score = found.filter(Boolean).length;
+    ctx.font = '800 14px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = ACC;
+    const eyebrow = num ? `TOP 10  No. ${num}` : "TOP 10";
+    const ew = _trackedWidth(ctx, eyebrow, 1.4);
+    ctx.textAlign = "left";
+    _trackedText(ctx, eyebrow, cx - ew / 2, 98, 1.4);
+    ctx.textAlign = "center";
+    ctx.font = '800 21px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    _wrapText(ctx, String(data?.title || ""), cx, 132, W - 64, 26);
+
+    ctx.font = '900 76px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#FFFFFF";
+    const big = String(score);
+    ctx.fillText(big, cx - 22, 262);
+    const bw = ctx.measureText(big).width;
+    ctx.font = '800 30px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.textAlign = "left";
+    ctx.fillText(`/${found.length || 10}`, cx - 22 + bw / 2 + 4, 262);
+    ctx.textAlign = "center";
+    const hints = Number(data?.hints) || 0;
+    const lives = Math.max(0, Number(data?.lives) || 0);
+    ctx.font = '700 14px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText([`${lives} ${lives === 1 ? "life" : "lives"} left`, hints ? `${hints} ${hints === 1 ? "hint" : "hints"}` : ""].filter(Boolean).join(" · "), cx, 290);
+
+    // The ten places: two rows of five numbered tiles.
+    const cols = 5, gap = 8, tile = 54;
+    const gridW = cols * tile + (cols - 1) * gap;
+    const startX = cx - gridW / 2, top = 318;
+    found.slice(0, 10).forEach((f, i) => {
+      const x = startX + (i % cols) * (tile + gap), y = top + Math.floor(i / cols) * (tile + gap);
+      ctx.fillStyle = f ? ACC : "#22252F";
+      _roundRectPath(ctx, x, y, tile, tile, 10);
+      ctx.fill();
+      ctx.font = '800 18px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = f ? "#2A0E05" : "#5A5F70";
+      ctx.fillText(String(i + 1), x + tile / 2, y + tile / 2 + 6);
+    });
+
+    const pillW = 236, pillH = 44, pillY = H - 96;
+    ctx.fillStyle = ACC;
+    _roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, pillH / 2);
+    ctx.fill();
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#2A0E05";
+    ctx.fillText("Can you beat me?", cx, pillY + 28);
+    ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText("balliq.app/top10", cx, H - 24);
   } else if (type === "draft") {
     // ── THE DRAFT CARD (23 Oct 2026) ────────────────────────────────────────
     // The text share was emoji squares, and chats draw a run of emoji as big
