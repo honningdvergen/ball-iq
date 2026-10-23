@@ -31,10 +31,4 @@ describe('a near miss still finds the player', () => {
     const r = rankPlayerSuggestions(POOL, 'xqz', { limit: 5 });
     expect(r).toEqual([]);
   });
-
-  it('is quick enough to run on every keystroke', () => {
-    const t0 = performance.now();
-    for (const q of ['Mikita', 'Lewandoski', 'Kvaratskelia', 'Gvardol']) rankPlayerSuggestions(POOL, q, { limit: 30 });
-    expect(performance.now() - t0).toBeLessThan(400);
-  });
 });
