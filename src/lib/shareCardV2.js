@@ -48,13 +48,15 @@ function text(ctx, s, x, y, size, weight, color, align = 'center') {
 // The hero: a big figure with an optional smaller tail ("9" + "/10"), centred
 // as one word.
 function hero(ctx, big, tail, y, color) {
-  ctx.font = `900 400px ${FONT}`;
+  // 280, not 400 (Alex, 23 Oct: "the 9 is like so big"): the number leads, it
+  // does not shout.
+  ctx.font = `900 280px ${FONT}`;
   const bw = ctx.measureText(big).width;
-  ctx.font = `800 140px ${FONT}`;
-  const tw = tail ? ctx.measureText(tail).width + 14 : 0;
+  ctx.font = `800 104px ${FONT}`;
+  const tw = tail ? ctx.measureText(tail).width + 12 : 0;
   const x0 = CX - (bw + tw) / 2;
-  text(ctx, big, x0, y, 400, 900, color, 'left');
-  if (tail) text(ctx, tail, x0 + bw + 14, y, 140, 800, '#8E94A8', 'left');
+  text(ctx, big, x0, y, 280, 900, color, 'left');
+  if (tail) text(ctx, tail, x0 + bw + 12, y, 104, 800, '#8E94A8', 'left');
 }
 
 // One green and one amber on every card (critic, 23 Oct: five near-greens and
@@ -98,13 +100,17 @@ const MODES = {
   draft: {
     acc: '#FF8FB8', name: 'DRAFT', path_: 'draft',
     hero: (d) => [String(d.pts ?? 0), ''],
-    label: (d) => (d.par != null ? `points · par ${d.par}` : 'points'),
+    label: () => 'points',
+    // Par is NOT an average of players: it is what this board scores if you
+    // take the obvious man (the most-used) from every spin, with the same
+    // luck. Said in those words, because "par 66" alone reads as a crowd
+    // average (Alex, 23 Oct).
     brag: (d) => {
-      if (d.par != null && d.pts > d.par) return `Beat par by ${d.pts - d.par}`;
-      if (d.par != null && d.pts === d.par) return 'Level with par';
-      return d.streak > 1 ? `🔥 ${d.streak}-day streak` : `${d.w} wins`;
+      if (d.par != null && d.pts > d.par) return `Beat the obvious picks by ${d.pts - d.par}`;
+      if (d.par != null && d.pts === d.par) return 'Level with the obvious picks';
+      return d.streak > 1 ? `🔥 ${d.streak}-day streak` : `Won ${d.w} · Drew ${d.d} · Lost ${d.l}`;
     },
-    sub: (d) => `Won ${d.w} · Drew ${d.d} · Lost ${d.l}`,
+    sub: (d) => (d.par != null ? `The obvious picks scored ${d.par}` : `Won ${d.w} · Drew ${d.d} · Lost ${d.l}`),
     path(ctx, d) {
       // The season as a strip: two rows of nineteen, in the order played.
       const col = { w: GREEN, d: '#555B6E', l: LOSS };
@@ -188,13 +194,11 @@ export async function renderShareCardV2(type, data = {}) {
 
   // Top: the Q and the name, small and quiet.
   const q = await load('/marketing/ball.png');
-  ctx.globalAlpha = 0.75;
-  ctx.font = `800 40px ${FONT}`;
+  ctx.font = `800 46px ${FONT}`;
   const nameW = ctx.measureText('Ball IQ').width;
-  const markW = q ? 54 + 16 : 0, bx = CX - (markW + nameW) / 2;
-  if (q) ctx.drawImage(q, bx, 168, 54, 54);
-  text(ctx, 'Ball IQ', bx + markW, 210, 40, 800, '#F2F3F7', 'left');
-  ctx.globalAlpha = 1;
+  const markW = q ? 64 + 18 : 0, bx = CX - (markW + nameW) / 2;
+  if (q) ctx.drawImage(q, bx, 160, 64, 64);
+  text(ctx, 'Ball IQ', bx + markW, 208, 46, 800, '#F2F3F7', 'left');
 
   // The mode, tracked, and the day's number, not ("FOOTLE #120").
   ctx.font = `800 44px ${FONT}`;
@@ -203,23 +207,23 @@ export async function renderShareCardV2(type, data = {}) {
   const noW = no ? ctx.measureText(no).width : 0;
   let hx = CX - (trackW + noW) / 2;
   ctx.fillStyle = M.acc; ctx.textAlign = 'left';
-  for (const c of nm) { ctx.fillText(c, hx, 380); hx += ctx.measureText(c).width + 6; }
-  if (no) { ctx.fillStyle = '#8E94A8'; ctx.fillText(no, hx - 6, 380); }
+  for (const c of nm) { ctx.fillText(c, hx, 350); hx += ctx.measureText(c).width + 6; }
+  if (no) { ctx.fillStyle = '#8E94A8'; ctx.fillText(no, hx - 6, 350); }
   ctx.textAlign = 'center';
 
   // Hero and its label, close together so they read as one.
   const [big, tail] = M.hero(data);
-  hero(ctx, big, tail, 760, '#FFFFFF');
-  text(ctx, M.label(data).toUpperCase(), CX, 830, 40, 800, '#8E94A8');
+  hero(ctx, big, tail, 690, '#FFFFFF');
+  text(ctx, M.label(data).toUpperCase(), CX, 762, 40, 800, '#8E94A8');
 
   // Brag line, then a quieter second line where the mode has one.
   const brag = M.brag(data);
-  if (brag) text(ctx, brag, CX, 916, 54, 800, M.acc);
+  if (brag) text(ctx, brag, CX, 852, 52, 800, M.acc);
   const sub = M.sub ? M.sub(data) : '';
   if (sub) {
     ctx.font = `700 38px ${FONT}`;
     let s = sub; while (ctx.measureText(s).width > W - 160 && s.length > 4) s = s.slice(0, -2);
-    text(ctx, s === sub ? s : `${s.trimEnd()}…`, CX, brag ? 972 : 916, 38, 700, '#C3C7D4');
+    text(ctx, s === sub ? s : `${s.trimEnd()}…`, CX, brag ? 910 : 852, 38, 700, '#C3C7D4');
   }
 
   M.path(ctx, data, M.acc);
@@ -228,10 +232,18 @@ export async function renderShareCardV2(type, data = {}) {
   // where to go: short addresses only (balliq.app/draft, not ?game=draft).
   const ask = (key === 'trail' || key === 'mystery') && !data.won ? 'Can you get him?' : key === 'footle' && data.failed ? 'Can you get it?' : 'Can you beat me?';
   ctx.font = `900 50px ${FONT}`;
-  const pw = Math.max(560, ctx.measureText(ask).width + 120), ph = 108, py = 1496;
+  const pw = Math.max(560, ctx.measureText(ask).width + 120), ph = 108, py = 1456;
   ctx.strokeStyle = M.acc; ctx.lineWidth = 4; rr(ctx, CX - pw / 2, py, pw, ph, ph / 2); ctx.stroke();
   text(ctx, ask, CX, py + 70, 50, 900, M.acc);
-  text(ctx, `balliq.app/${M.path_}`, CX, 1790, 40, 700, '#9BA0B8');
+  text(ctx, `balliq.app/${M.path_}`, CX, 1650, 40, 700, '#9BA0B8');
+  // Both store badges (Alex: a friend on the other kind of phone should see
+  // where to get it). The official artwork, unaltered, at 88 px tall with the
+  // clear space Apple asks for (a quarter of the height) between them.
+  const [ios, play] = await Promise.all([load('/badges/app-store.svg'), load('/badges/google-play.png')]);
+  const bh = 88, iw = ios ? bh * (119.66 / 40) : 0, gw = play ? bh * (564 / 168) : 0, gap = ios && play ? 40 : 0;
+  let bx2 = CX - (iw + gap + gw) / 2;
+  if (ios) { ctx.drawImage(ios, bx2, 1712, iw, bh); bx2 += iw + gap; }
+  if (play) ctx.drawImage(play, bx2, 1712, gw, bh);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('toBlob returned null'))), 'image/png');
