@@ -193,8 +193,12 @@ export default function Top10Library({ onBack, onPlay, clubInfo }) {
             <>
               <div className="t10lib-h">{t("tl.past")}</div>
               <div className="t10lib-card">
+                {/* No "No. N" in front of each title: a day whose daily was a club
+                    list is filed under its club, so the numbers here skipped (10,
+                    8, 6, 4…) and read as missing lists (Alex, 23 Oct). Newest
+                    first is order enough. */}
                 <Group mark={<span className="t10lib-mark is-daily" aria-hidden="true">#</span>} name={t("tl.everyPast")} lists={groups.past}
-                  open={openKey === "past"} onToggle={() => toggle("past")} onPlay={onPlay} prefixOf={(l) => t("tl.no", { n: l.day })} />
+                  open={openKey === "past"} onToggle={() => toggle("past")} onPlay={onPlay} />
               </div>
             </>
           )}
