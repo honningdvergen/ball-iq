@@ -82,7 +82,7 @@ function saveDay(ymd, state) {
 // return-loop panel. Its own attempts go through stitch.load/save only.
 export default function TransferTrail({ player: bundledPlayer, date = new Date(), onBack, onReport, services, embedded = false, stitch = null }) {
   const t = useT();
-  const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
   const daily = !stitch;
   const opening = stitch?.opening;
   const ymd = dateToYMD(date);
@@ -291,12 +291,19 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   );
   const onShare = useCallback(async () => {
     if (!shareText) return;
+    // In the app the result goes as a picture (shareCardRender "trail"): the
+    // text was a row of emoji balls, which chats blow up (23 Oct).
+    if (shareCard) {
+      const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
+      await shareCard("trail", { num: number, won, clubsUsed, max: TRAIL_MAX_ATTEMPTS, streak, deepLink: "/trail" }, { textFallback: shareText, onToast: toast });
+      return;
+    }
     try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(shareText);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: `📋 ${tNow("game.copied")}` }));
     } catch {}
-  }, [shareText]);
+  }, [shareText, shareCard, number, won, clubsUsed, streak]);
 
   // Unrouted or a bad day index: land somewhere real rather than on a blank board.
   if (!career.length) {

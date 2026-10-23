@@ -152,7 +152,7 @@ export async function generateShareCard(type, data) {
   ctx.textBaseline = "alphabetic";
   if (!IS_IQ) {
   // The strip is the mode's own colour where the mode has one (Draft's pink).
-  ctx.fillStyle = type === "draft" ? "#FF8FB8" : type === "top10" ? "#FF9B7A" : "#58CC02";
+  ctx.fillStyle = ({ draft: "#FF8FB8", top10: "#FF9B7A", trail: "#7CC3F0", mystery: "#B9A5FF" })[type] || "#58CC02";
   ctx.fillRect(0, 0, W, 6);
   ctx.font = '800 22px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#FFFFFF";
@@ -179,7 +179,7 @@ export async function generateShareCard(type, data) {
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
   // Centered footer URL (the Footle and league cards draw their own foot)
-  if (type !== "wordle" && type !== "league" && type !== "draft" && type !== "top10") {
+  if (type !== "wordle" && type !== "league" && type !== "draft" && type !== "top10" && type !== "trail" && type !== "mystery") {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
@@ -261,6 +261,97 @@ export async function generateShareCard(type, data) {
     ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
     ctx.fillText("balliq.app/footle", cx, H - 24);
+  } else if (type === "trail" || type === "mystery") {
+    // ── THE TRANSFER TRAIL AND MYSTERY PLAYER CARDS (23 Oct 2026) ────────────
+    // Both were emoji text. Same family as Draft and Top 10: eyebrow, the
+    // result in words, one picture of how it went, the invitation. Spoiler-free
+    // like the texts: no player, no club, no rank.
+    const trail = type === "trail";
+    const ACC = trail ? "#7CC3F0" : "#B9A5FF";
+    const INK = trail ? "#04202E" : "#160B35";
+    const num = data?.num > 0 ? data.num : 0;
+    const won = !!data?.won;
+    ctx.font = '800 14px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = ACC;
+    const name = trail ? "TRANSFER TRAIL" : "MYSTERY PLAYER";
+    const eyebrow = num ? `${name}  No. ${num}` : name;
+    const ew = _trackedWidth(ctx, eyebrow, 1.4);
+    ctx.textAlign = "left";
+    _trackedText(ctx, eyebrow, cx - ew / 2, 98, 1.4);
+    ctx.textAlign = "center";
+    ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText(trail ? "Whose career is this?" : "Guess the secret footballer.", cx, 120);
+
+    if (trail) {
+      // The clubs it took, as the trail itself: one rung per club seen, the
+      // last one lit as the moment it clicked.
+      const max = Number(data?.max) || 5;
+      const used = Math.max(0, Math.min(max, Number(data?.clubsUsed) || 0));
+      ctx.font = '800 30px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText(won ? (used === 1 ? "Got it on 1 club" : `Got it on ${used} clubs`) : "Not today", cx, 178);
+      const rungW = 220, rungH = 30, gap = 12, top = 214;
+      for (let i = 0; i < max; i++) {
+        const y = top + i * (rungH + gap), x = cx - rungW / 2;
+        const lit = won ? i < used : true;
+        const hit = won && i === used - 1;
+        if (i > 0) { ctx.fillStyle = lit ? ACC : "#2F3240"; ctx.fillRect(cx - 1.5, y - gap, 3, gap); }
+        ctx.fillStyle = hit ? ACC : lit ? "rgba(124,195,240,0.22)" : "#1A1D26";
+        _roundRectPath(ctx, x, y, rungW, rungH, 9);
+        ctx.fill();
+        ctx.font = '800 13px Inter, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = hit ? INK : lit ? "#CFE9FA" : "#4A4F60";
+        ctx.fillText(hit ? "⚽  Got him" : `Club ${i + 1}`, cx, y + 20);
+      }
+      const streak = Number(data?.streak) || 0;
+      if (won && streak > 1) {
+        ctx.font = '700 14px Inter, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = "#FFC107";
+        ctx.fillText(`🔥 ${streak}-day Trail streak`, cx, H - 118);
+      }
+    } else {
+      // Every guess as a tile, coldest first, ending on the answer: the same
+      // journey the text's grid drew, at a size a chat cannot mangle.
+      const bands = Array.isArray(data?.bands) ? data.bands : [];
+      const n = bands.length;
+      ctx.font = '800 30px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillText(won ? (n === 1 ? "Solved in 1 guess" : `Solved in ${n} guesses`) : "Gave up", cx, 178);
+      const colour = { win: "#58CC02", hot: "#3FA34D", warm: "#E0A526", cold: "#2F3240" };
+      const cols = 7, gap = 7, tile = 36, shown = bands.slice(-35);
+      const rows = Math.ceil(shown.length / cols);
+      const gridW = Math.min(cols, shown.length) * tile + (Math.min(cols, shown.length) - 1) * gap;
+      const top = 214 + Math.max(0, (240 - (rows * tile + (rows - 1) * gap)) / 2);
+      shown.forEach((b, i) => {
+        const x = cx - gridW / 2 + (i % cols) * (tile + gap), y = top + Math.floor(i / cols) * (tile + gap);
+        ctx.fillStyle = colour[b] || colour.cold;
+        _roundRectPath(ctx, x, y, tile, tile, 7);
+        ctx.fill();
+      });
+      if (n > shown.length) {
+        ctx.font = '600 12px Inter, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = "#9BA0B8";
+        ctx.fillText(`the last 35 of ${n} guesses`, cx, top + rows * (tile + gap) + 10);
+      }
+      const streak = Number(data?.streak) || 0;
+      if (won && streak > 1) {
+        ctx.font = '700 14px Inter, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = "#FFC107";
+        ctx.fillText(`🔥 ${streak}-day Mystery streak`, cx, H - 118);
+      }
+    }
+
+    const pillW = 236, pillH = 44, pillY = H - 96;
+    ctx.fillStyle = ACC;
+    _roundRectPath(ctx, cx - pillW / 2, pillY, pillW, pillH, pillH / 2);
+    ctx.fill();
+    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = INK;
+    ctx.fillText(won ? "Can you beat me?" : "Can you get him?", cx, pillY + 28);
+    ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#9BA0B8";
+    ctx.fillText(trail ? "balliq.app/trail" : "balliq.app/mystery", cx, H - 24);
   } else if (type === "top10") {
     // ── THE TOP 10 CARD (23 Oct 2026) ───────────────────────────────────────
     // Was emoji text, which chats draw as one long bar of touching blocks.

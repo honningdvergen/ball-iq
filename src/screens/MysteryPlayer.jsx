@@ -101,7 +101,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // (fmtLocale).
   const lang = useLang();
   const num = (v) => v.toLocaleString(fmtLocale());
-  const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes
   // yesterday's slot and cannot overwrite today's board.
@@ -322,6 +322,14 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // must share under its own puzzle number. Dismissing the sheet REJECTS.
   const shareResult = async (w) => {
     const text = buildMysteryShareText({ number: mysteryNumber(date), guesses: rows, won: w, streak: w ? streak : 0 });
+    // In the app the result goes as a picture (shareCardRender "mystery"),
+    // the guesses coldest first as in the text's grid (23 Oct).
+    if (shareCard) {
+      const toast = (m) => window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: m }));
+      const bands = [...rows].sort((a, b) => b.rank - a.rank).map((g) => g.band);
+      await shareCard('mystery', { num: mysteryNumber(date), won: w, bands, streak: w ? streak : 0, deepLink: '/mystery' }, { textFallback: text, onToast: toast });
+      return;
+    }
     try {
       if (navigator.share) await navigator.share({ text });
       else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('game.copiedShort') })); } catch {} }
