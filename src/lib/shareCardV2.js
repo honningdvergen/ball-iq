@@ -196,13 +196,9 @@ export async function renderShareCardV2(type, data = {}) {
   glow.addColorStop(0, tint(M.acc, 0.16)); glow.addColorStop(1, tint(M.acc, 0));
   ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
 
-  // Top: the Q and the name, small and quiet.
+  // The app's name and the Q sit once, at the foot beside the store badges
+  // (Alex, 23 Oct); the top is the game and its number.
   const q = await load('/marketing/ball.png');
-  ctx.font = `800 46px ${FONT}`;
-  const nameW = ctx.measureText('Ball IQ').width;
-  const markW = q ? 64 + 18 : 0, bx = CX - (markW + nameW) / 2;
-  if (q) ctx.drawImage(q, bx, 160, 64, 64);
-  text(ctx, 'Ball IQ', bx + markW, 208, 46, 800, '#F2F3F7', 'left');
 
   // The mode, tracked, and the day's number, not ("FOOTLE #120").
   ctx.font = `800 44px ${FONT}`;
@@ -211,8 +207,8 @@ export async function renderShareCardV2(type, data = {}) {
   const noW = no ? ctx.measureText(no).width : 0;
   let hx = CX - (trackW + noW) / 2;
   ctx.fillStyle = M.acc; ctx.textAlign = 'left';
-  for (const c of nm) { ctx.fillText(c, hx, 350); hx += ctx.measureText(c).width + 6; }
-  if (no) { ctx.fillStyle = '#8E94A8'; ctx.fillText(no, hx - 6, 350); }
+  for (const c of nm) { ctx.fillText(c, hx, 300); hx += ctx.measureText(c).width + 6; }
+  if (no) { ctx.fillStyle = '#8E94A8'; ctx.fillText(no, hx - 6, 300); }
   ctx.textAlign = 'center';
 
   // Hero and its label, close together so they read as one.
@@ -236,10 +232,17 @@ export async function renderShareCardV2(type, data = {}) {
   // where to go: short addresses only (balliq.app/draft, not ?game=draft).
   const ask = (key === 'trail' || key === 'mystery') && !data.won ? 'Can you get him?' : key === 'footle' && data.failed ? 'Can you get it?' : 'Can you beat me?';
   ctx.font = `900 50px ${FONT}`;
-  const pw = Math.max(560, ctx.measureText(ask).width + 120), ph = 108, py = 1456;
+  const pw = Math.max(560, ctx.measureText(ask).width + 120), ph = 108, py = 1440;
   ctx.strokeStyle = M.acc; ctx.lineWidth = 4; rr(ctx, CX - pw / 2, py, pw, ph, ph / 2); ctx.stroke();
   text(ctx, ask, CX, py + 70, 50, 900, M.acc);
-  text(ctx, `balliq.app/${M.path_}`, CX, 1650, 40, 700, '#9BA0B8');
+
+  // The app: the Q and its store name, the two badges under it, and the
+  // address last.
+  const NAME = 'Ball IQ: Football Quiz';
+  ctx.font = `800 50px ${FONT}`;
+  const nW = ctx.measureText(NAME).width, mW = q ? 72 + 20 : 0, nx = CX - (mW + nW) / 2;
+  if (q) ctx.drawImage(q, nx, 1606, 72, 72);
+  text(ctx, NAME, nx + mW, 1660, 50, 800, '#F2F3F7', 'left');
   // Both store badges (Alex: a friend on the other kind of phone should see
   // where to get it). The official artwork, unaltered, at 88 px tall with the
   // clear space Apple asks for (a quarter of the height) between them.
@@ -248,6 +251,7 @@ export async function renderShareCardV2(type, data = {}) {
   let bx2 = CX - (iw + gap + gw) / 2;
   if (ios) { ctx.drawImage(ios, bx2, 1712, iw, bh); bx2 += iw + gap; }
   if (play) ctx.drawImage(play, bx2, 1712, gw, bh);
+  text(ctx, `balliq.app/${M.path_}`, CX, 1870, 38, 700, '#7E8498');
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('toBlob returned null'))), 'image/png');
