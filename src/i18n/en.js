@@ -2092,4 +2092,8 @@ export default registerEnglish({
   'dr.infoPar': '{b} What today’s board scores if you take, from every spin, the man who played the most league games that season, with the same luck. Beat par and you picked better than that.',
   'dr.infoSpinB': 'Spins.',
   'dr.infoSpin': '{b} Your eleven is a 4-3-3, and a man can only go where his club’s season page lists him. A spin with nobody who fits a free place is swapped for you. Once a game you can re-spin a squad you don’t want.',
+  // Top 10 hints (screens/Top10.jsx, 23 Oct 2026).
+  'top10.hint': 'Need a hint? ({n} left)',
+  'top10.hintsOne': 'One hint used.',
+  'top10.hintsN': '{n} hints used.',
 });

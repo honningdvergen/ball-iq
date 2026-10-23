@@ -17,7 +17,7 @@ import ChallengeBanner from "../components/ChallengeBanner.jsx";
 import { Heart } from "lucide-react";
 import { dateToYMD } from "../lib/date.js";
 import {
-  TOP10_LIVES,
+  TOP10_LIVES, TOP10_HINTS,
   getTop10Number,
   getTop10Id,
   gradeTop10,
@@ -169,7 +169,7 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, onM
 
 function Top10Board({ list, data, date, number, byName, onBack, onReport, onMoreLists, services, embedded }) {
   const t = useT();
-  const { haptic, playSound, Confetti, GetAppCTA, dailyDone } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
   // A list opened by name is saved under its own id, so it can never be read
   // back as a day's result (and so never feeds the streak).
   const ymd = byName ? `list_${list.id}` : dateToYMD(date);
@@ -177,7 +177,9 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
 
   const [day, setDay] = useState(() => {
     const saved = loadTop10Day(ymd);
-    return saved && saved.id === list.id ? { picks: saved.picks, gaveUp: !!saved.gaveUp } : { picks: [], gaveUp: false };
+    return saved && saved.id === list.id
+      ? { picks: saved.picks, gaveUp: !!saved.gaveUp, hints: Array.isArray(saved.hints) ? saved.hints : [] }
+      : { picks: [], gaveUp: false, hints: [] };
   });
   const [entry, setEntry] = useState("");
   const [shake, setShake] = useState(false);
@@ -207,7 +209,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
   useEffect(() => {
     saveTop10Day(ymd, {
       id: list.id, status: g.done ? "done" : "playing", score: g.score,
-      picks: day.picks, gaveUp: day.gaveUp, ...(isArchive ? { arc: 1 } : {}),
+      picks: day.picks, gaveUp: day.gaveUp, hints: day.hints || [], ...(isArchive ? { arc: 1 } : {}),
     });
   }, [ymd, list.id, day, g.done, g.score, isArchive]);
 
@@ -358,6 +360,18 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     beat.current = setTimeout(settle, BEAT_MS);
   }, [g.done, g.score, g.lives, judging, list, day, total, haptic, playSound, inputRef]);
 
+  // A hint (Alex, 23 Oct: "I was stuck, need a hint", and the only way out was
+  // giving up): the first letter of the highest-ranked name still open, shown
+  // in its place. Up to TOP10_HINTS a game; no life is lost, but the finish and
+  // the share say how many were used.
+  const hints = useMemo(() => day.hints || [], [day.hints]);
+  const hintable = useMemo(() => list.slots.findIndex((_, i) => !g.found[i] && !hints.includes(i)), [list, g.found, hints]);
+  const takeHint = useCallback(() => {
+    if (g.done || hints.length >= TOP10_HINTS || hintable < 0) return;
+    haptic("soft");
+    setDay((d) => ({ ...d, hints: [...(d.hints || []), hintable] }));
+  }, [g.done, hints.length, hintable, haptic]);
+
   const giveUp = useCallback(() => {
     if (!armed) { setArmed(true); return; }
     try { document.activeElement?.blur?.(); } catch {}
@@ -379,12 +393,19 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
   );
   const onShare = useCallback(async () => {
     if (!shareText) return;
+    // In the app the result goes as a picture (shareCardRender "top10"): the
+    // emoji text came out as one long bar of blocks in a chat (23 Oct).
+    if (shareCard) {
+      const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
+      await shareCard("top10", { num: number, title: list.title, found: g.found, lives: g.lives, hints: (day.hints || []).length, deepLink: "/top10" }, { textFallback: shareText, onToast: toast });
+      return;
+    }
     try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return; }
     try {
       await navigator.clipboard.writeText(shareText);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: `📋 ${tNow("game.copied")}` }));
     } catch {}
-  }, [shareText]);
+  }, [shareText, shareCard, number, list.title, g.found, g.lives, day.hints]);
 
   const verdict = g.perfect
     ? (g.lives === TOP10_LIVES ? t("top10.allClean") : t("top10.allSpare", { count: g.lives }))
@@ -476,6 +497,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
               <span className={`t10-rank${i < 3 ? ` is-p${i + 1}` : ""}`}>{i + 1}</span>
               <span className="t10-body">
                 {(found || missed) && <span className={`t10-name${hasLongWord(s.name) ? " is-long" : ""}${s.name.length >= 15 ? " is-wide" : ""}`}>{s.name}</span>}
+                {!found && !missed && hints.includes(i) && <span className="t10-name is-hint">{`${s.name.charAt(0)}…`}</span>}
                 {s.clue ? <span className="t10-clue">{s.clue}</span> : null}
               </span>
             </div>
@@ -495,15 +517,22 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
       )}
 
       {!g.done && (
-        <button type="button" className={`t10-ghost${armed ? " is-armed" : ""}`} onClick={giveUp}>
-          {t(armed ? "top10.giveUpArmed" : "top10.giveUp")}
-        </button>
+        <div className="t10-help">
+          {hints.length < TOP10_HINTS && hintable >= 0 && (
+            <button type="button" className="t10-hint" onClick={takeHint}>
+              {t("top10.hint", { n: TOP10_HINTS - hints.length })}
+            </button>
+          )}
+          <button type="button" className={`t10-ghost${armed ? " is-armed" : ""}`} onClick={giveUp}>
+            {t(armed ? "top10.giveUpArmed" : "top10.giveUp")}
+          </button>
+        </div>
       )}
 
       {g.done && (
         <div className="t10-result">
           <div className={`t10-score${g.score * 2 >= total ? " is-earned" : ""}`}>{g.score}<small> / {total}</small></div>
-          <div className="t10-verdict">{verdict}</div>
+          <div className="t10-verdict">{verdict}{hints.length > 0 ? ` ${t(hints.length === 1 ? "top10.hintsOne" : "top10.hintsN", { n: hints.length })}` : ""}</div>
           <div style={{ marginTop: 14 }}>
             <DailyDone
               game="top10"

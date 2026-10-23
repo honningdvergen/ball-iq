@@ -330,3 +330,15 @@
 .t10lib-list.is-locked{cursor:default;}
 .t10lib-list.is-locked .t10lib-list-title{color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .t10lib-pill.is-locked{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:var(--s2);color:var(--t3);-webkit-text-fill-color:var(--t3);border:1px solid var(--border);}
+
+/* Stuck: a hint first, giving up second (23 Oct 2026). */
+.t10-help { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 10px; }
+.t10-help .t10-ghost { margin-top: 0; }
+.t10-hint {
+  min-height: 44px; padding: 0 20px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(var(--t10-rgb), 0.5); background: rgba(var(--t10-rgb), 0.1);
+  color: var(--t10); font: inherit; font-size: 14px; font-weight: 800;
+  transition: transform 90ms ease-out;
+}
+.t10-hint:active { transform: scale(0.97); }
+.t10-name.is-hint { color: var(--t10); opacity: 0.85; letter-spacing: 0.02em; }

@@ -2000,4 +2000,8 @@ export default {
   'rem.w22': 'Tus rivales te están adelantando en la clasificación 👀',
   'rem.w30': 'Un quiz. Dos minutos. A ver cuánto recuerdas ⚽',
   'rem.streak': 'Tu racha diaria de {n} días se acaba a medianoche: los retos de hoy siguen abiertos 🔥',
+  // Pistas de Top 10 (screens/Top10.jsx).
+  'top10.hint': '¿Una pista? (quedan {n})',
+  'top10.hintsOne': 'Usaste una pista.',
+  'top10.hintsN': 'Usaste {n} pistas.',
 };

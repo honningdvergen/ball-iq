@@ -25,6 +25,8 @@ import { TOP10_ANCHOR_DAY, TOP10_DAYS, TOP10_LOG_HASH } from '../data/top10Meta.
 
 export const TOP10_LIVES = 3;
 export const TOP10_SIZE = 10;
+// Hints a game: each shows the first letter of the highest-ranked open name.
+export const TOP10_HINTS = 3;
 
 // The anchor (the day of Top 10 #1) and the schedule's length are set in
 // scripts/top10/specs.mjs and arrive through the generated top10Meta.js.
