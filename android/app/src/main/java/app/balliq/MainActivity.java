@@ -10,6 +10,8 @@ public class MainActivity extends BridgeActivity {
         // Local plugin: the widget bridge (registerPlugin must run BEFORE
         // super.onCreate, per Capacitor's custom-plugin contract).
         registerPlugin(WidgetBridgePlugin.class);
+        // And the share card with its link (ShareCardPlugin; iOS has its own).
+        registerPlugin(ShareCardPlugin.class);
         super.onCreate(savedInstanceState);
         // No scroll bar, the same as iOS (AppDelegate.swift, 2026-10-08).
         if (getBridge() != null && getBridge().getWebView() != null) {

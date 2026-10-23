@@ -903,14 +903,20 @@ try {
       return realCreate(blob);
     };
     HTMLAnchorElement.prototype.click = function () {};
-    const btn = [...document.querySelectorAll('button')].find((b) => /Save image/i.test(b.textContent || ''));
-    if (!btn) { reject(new Error('"Save image" button not found on the profile card')); return; }
+    // Since 23 Oct 2026 the card's one button is "Share card", which sends the
+    // same PNG; with no share sheet in the browser it falls to the download
+    // path, which is where the blob is caught above.
+    try { Object.defineProperty(navigator, 'canShare', { value: undefined, configurable: true }); } catch {}
+    try { Object.defineProperty(navigator, 'share', { value: undefined, configurable: true }); } catch {}
+    const btn = document.querySelector('.card-action-primary')
+      || [...document.querySelectorAll('button')].find((b) => /Share card|Save image/i.test(b.textContent || ''));
+    if (!btn) { reject(new Error('"Share card" button not found on the profile card')); return; }
     btn.click();
     setTimeout(() => reject(new Error('the card blob never arrived')), 20000);
   }));
   const b64 = String(dataUrl).split(',')[1];
   writeFileSync(resolve(RAW, '10-iq-card.png'), Buffer.from(b64, 'base64'));
-  console.log('  \u2713 10-iq-card  (exported through the app\'s own Save image)');
+  console.log('  \u2713 10-iq-card  (exported through the app\'s own Share card)');
   await p.close();
 } catch (e) {
   console.log('  \u2717 10-iq-card NOT regenerated — ' + (e && e.message));

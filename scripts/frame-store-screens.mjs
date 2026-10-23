@@ -102,7 +102,7 @@ const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
 // accent colour — keep it SHORT so the line still reads as a sentence.
 const COPY = {
   '01-home': {
-    eyebrow: 'THE ULTIMATE FOOTBALL QUIZ', accent: ORANGE,
+    eyebrow: 'THE ULTIMATE FOOTBALL QUIZ', accent: GREEN,
     head: ['How good is your', '{Ball IQ}, really?'],
     sub: 'Daily puzzles, club quizzes and live 1v1.',
   },
@@ -190,7 +190,7 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   .mark{display:flex;align-items:center;gap:${f(18)}px}
   .mark img{width:${f(64)}px;height:${f(64)}px;border-radius:${f(16)}px}
   .mark span{font-size:${f(52)}px;font-weight:800;color:#fff;letter-spacing:-.5px}
-  .mark b{color:${AMBER};font-weight:800}
+  .mark b{color:${GREEN};font-weight:800}
   .eyebrow{
     margin-top:${f(78)}px;font-size:${f(31)}px;font-weight:800;letter-spacing:.16em;
     color:${c.accent};text-transform:uppercase;text-align:center;
@@ -319,7 +319,7 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   .mark{display:flex;align-items:center;gap:${f(16)}px}
   .mark img{width:${f(58)}px;height:${f(58)}px;border-radius:${f(14)}px}
   .mark span{font-size:${f(48)}px;font-weight:800;color:#fff;letter-spacing:-.5px}
-  .mark b{color:${AMBER};font-weight:800}
+  .mark b{color:${GREEN};font-weight:800}
   .eyebrow{margin-top:${f(54)}px;font-size:${f(30)}px;font-weight:800;letter-spacing:.16em;color:${c.accent};text-transform:uppercase;text-align:center}
   h1{margin-top:${f(22)}px;font-size:${f(88)}px;line-height:1.05;font-weight:800;color:#fff;letter-spacing:${(-2 * F).toFixed(1)}px;text-align:center;text-wrap:balance}
   .sub{margin-top:${f(26)}px;font-size:${f(38)}px;color:rgba(255,255,255,.66);text-align:center}
