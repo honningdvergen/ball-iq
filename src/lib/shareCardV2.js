@@ -94,7 +94,10 @@ const MODES = {
       const g = Array.isArray(d.grades) ? d.grades : [];
       const cols = g[0]?.length || 5;
       const col = { green: GREEN, yellow: AMBER, grey: DARK };
-      tiles(ctx, g.flat(), { cols, tile: Math.min(104, Math.floor((400 - (g.length - 1) * 16) / Math.max(1, g.length))), gap: 16, top: 1000, radius: 18, draw: fill(ctx, (c) => col[c] || DARK) });
+      // Six rows still have to read as tiles, not as a striped bar: the band
+      // is taller for Footle and the gap tightens as rows are added.
+      const rows = Math.max(1, g.length), gap = rows > 4 ? 12 : 16;
+      tiles(ctx, g.flat(), { cols, tile: Math.min(104, Math.floor((430 - (rows - 1) * gap) / rows)), gap, top: 960, bottom: 1390, radius: rows > 4 ? 14 : 18, draw: fill(ctx, (c) => col[c] || DARK) });
     },
   },
   draft: {
