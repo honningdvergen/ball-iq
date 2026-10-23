@@ -43,7 +43,7 @@ const OLD = {
       ? `Got it on ${clubsUsed} club${clubsUsed === 1 ? '' : 's'} ${'⚽'.repeat(Math.min(clubsUsed, 6))}`
       : `Didn't get it — X/${TRAIL_MAX_ATTEMPTS}`;
     const streakLine = won && streak > 0 ? `\n🔥 ${streak}-day Trail streak` : '';
-    return `${head}\n${line}${streakLine}\n\nballiq.app/trail`;
+    return `${head}\n${line}${streakLine}\n\nhttps://balliq.app/trail`;
   },
   mystery: ({ number, guesses = [], won, streak = 0 } = {}) => {
     const head = `⚽ Ball IQ · Mystery Player${number > 0 ? ` #${number}` : ''}`;
@@ -51,7 +51,7 @@ const OLD = {
     const grid = [...guesses].sort((a, b) => b.rank - a.rank).map((g) => icon[g.band] || '⬜').join('');
     const line = won ? `Solved in ${guesses.length} ${guesses.length === 1 ? 'guess' : 'guesses'}` : 'Gave up';
     const streakLine = won && streak > 1 ? `\n🔥 ${streak}-day Mystery streak` : '';
-    return `${head}\n${line}\n${grid}${streakLine}\n\nballiq.app/mystery`;
+    return `${head}\n${line}\n${grid}${streakLine}\n\nhttps://balliq.app/mystery`;
   },
   top10: ({ number, title, found = [], lives = 0, streak = 0 } = {}) => {
     const score = found.filter(Boolean).length;
@@ -59,7 +59,7 @@ const OLD = {
     const squares = found.map((f) => (f ? '🟩' : '⬛')).join('');
     const hearts = '❤️'.repeat(lives) + '🤍'.repeat(Math.max(0, TOP10_LIVES - lives));
     const streakLine = streak > 1 ? `\n🔥 ${streak}-day Top 10 streak` : '';
-    return `${head}\n${title}\n${squares} ${score}/${found.length}\n${hearts}${streakLine}\n\nballiq.app/top10`;
+    return `${head}\n${title}\n${squares} ${score}/${found.length}\n${hearts}${streakLine}\n\nhttps://balliq.app/top10`;
   },
   challenge: (what, edition, game, s) => `${what} No. ${edition}: ${scoreLabel(game, s)}. Can you beat it?`,
   stump: (missed, link) => (missed ? `This one got me 🙈 bet you can't get it either ⚽ ${link}` : `I got this one — bet you can't 😏 ⚽ ${link}`),
@@ -154,9 +154,9 @@ describe('a Spanish player shares in Spanish', () => {
   beforeEach(() => bootLang(store, 'es'));
   it('every builder, product names kept', () => {
     expect(footleShareHead('Ball IQ', 150, true, 3, true, true)).toBe('⚽ Ball IQ Footle #150 3/6 Difícil 💡');
-    expect(buildTrailShareText({ number: 61, won: true, clubsUsed: 2, streak: 4 })).toBe('⚽ Ball IQ · Transfer Trail #61\nAcertado con 2 clubes ⚽⚽\n🔥 Racha de 4 días en Trail\n\nballiq.app/trail');
-    expect(buildTrailShareText({ number: 61, won: false })).toBe(`⚽ Ball IQ · Transfer Trail #61\nNo lo acerté: X/${TRAIL_MAX_ATTEMPTS}\n\nballiq.app/trail`);
-    expect(buildMysteryShareText({ number: 88, won: true, guesses: MYSTERY_GUESSES[1], streak: 0 })).toBe('⚽ Ball IQ · Mystery Player #88\nResuelto en 1 intento\n🟩\n\nballiq.app/mystery');
+    expect(buildTrailShareText({ number: 61, won: true, clubsUsed: 2, streak: 4 })).toBe('⚽ Ball IQ · Transfer Trail #61\nAcertado con 2 clubes ⚽⚽\n🔥 Racha de 4 días en Trail\n\nhttps://balliq.app/trail');
+    expect(buildTrailShareText({ number: 61, won: false })).toBe(`⚽ Ball IQ · Transfer Trail #61\nNo lo acerté: X/${TRAIL_MAX_ATTEMPTS}\n\nhttps://balliq.app/trail`);
+    expect(buildMysteryShareText({ number: 88, won: true, guesses: MYSTERY_GUESSES[1], streak: 0 })).toBe('⚽ Ball IQ · Mystery Player #88\nResuelto en 1 intento\n🟩\n\nhttps://balliq.app/mystery');
     expect(buildMysteryShareText({ number: 88, won: false, guesses: MYSTERY_GUESSES[2] })).toContain('\nMe rendí\n');
     expect(buildTop10ShareText({ number: 12, title: 'X', found: [true], lives: 3, streak: 5 })).toContain('\n🔥 Racha de 5 días en Top 10\n');
     expect(t('share.challenge', { what: 'Transfer Trail', edition: 61, score: scoreLabel('trail', 2, t) })).toBe('Transfer Trail n.º 61: 2 clubes. ¿Me superas?');

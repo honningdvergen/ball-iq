@@ -245,7 +245,7 @@ describe('share text', () => {
     expect(text).toContain('The last 10 different clubs to win the FA Cup');
     expect(text).toContain('🟩🟩⬛🟩⬛⬛🟩⬛⬛⬛ 4/10');
     expect(text).toContain('3-day Top 10 streak');
-    expect(text.trim().endsWith('balliq.app/top10')).toBe(true);
+    expect(text.trim().endsWith('https://balliq.app/top10')).toBe(true);
   });
 
   it('names no answer', () => {

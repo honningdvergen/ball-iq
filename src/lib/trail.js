@@ -1598,7 +1598,7 @@ export function buildTrailShareText({ number, won, clubsUsed, streak } = {}) {
     ? `${t("share.trailGot", { count: clubsUsed })} ${"⚽".repeat(Math.min(clubsUsed, 6))}`
     : t("share.trailMissed", { max: TRAIL_MAX_ATTEMPTS });
   const streakLine = won && streak > 0 ? `\n${t("share.trailStreak", { n: streak })}` : "";
-  return `${head}\n${line}${streakLine}\n\nballiq.app/trail`;
+  return `${head}\n${line}${streakLine}\n\nhttps://balliq.app/trail`;
 }
 
 // ── Has this day's finish been credited? ─────────────────────────────────────

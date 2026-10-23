@@ -573,5 +573,5 @@ export function buildMysteryShareText({ number, guesses = [], won, streak = 0 } 
     .join('');
   const line = won ? t('share.mysterySolved', { count: guesses.length }) : t('share.mysteryGaveUp');
   const streakLine = won && streak > 1 ? `\n${t('share.mysteryStreak', { n: streak })}` : '';
-  return `${head}\n${line}\n${grid}${streakLine}\n\nballiq.app/mystery`;
+  return `${head}\n${line}\n${grid}${streakLine}\n\nhttps://balliq.app/mystery`;
 }

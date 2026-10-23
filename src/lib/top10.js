@@ -252,7 +252,7 @@ export function buildTop10ShareText({ number, title, found = [], lives = 0, stre
   const squares = found.map((f) => (f ? '🟩' : '⬛')).join('');
   const hearts = '❤️'.repeat(lives) + '🤍'.repeat(Math.max(0, TOP10_LIVES - lives));
   const streakLine = streak > 1 ? `\n${t('share.top10Streak', { n: streak })}` : '';
-  return `${head}\n${title}\n${squares} ${score}/${found.length}\n${hearts}${streakLine}\n\nballiq.app/top10`;
+  return `${head}\n${title}\n${squares} ${score}/${found.length}\n${hearts}${streakLine}\n\nhttps://balliq.app/top10`;
 }
 
 /** "20 Jul 2026" from an ISO date: the "as of" line every list carries. */
