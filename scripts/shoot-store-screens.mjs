@@ -640,6 +640,22 @@ const SHOTS = [
       // screen moves with the length of the list's note, so a fixed crop cut
       // Liverpool's first row off.
       await p.locator('.t10-board[role=list]').screenshot({ path: resolve(RAW, `top10board-${id}.png`) }); } })) : []),
+  // STORY_TOP10=<list id>: one general list for an Instagram story, four found
+  // (ranks 2, 4, 8 and 10) and six still open (SHQ Social, 24 Oct 2026).
+  ...(process.env.STORY_TOP10 ? [process.env.STORY_TOP10].map((id) => ({
+    name: `story-top10-${id}`, expect: '4/10', go: async (p) => {
+      const names = TOP10.lists[id].slots.map((x) => x.name);
+      await gotoApp(p, `/play?game=top10&list=${id}`);
+      await p.waitForTimeout(2200);
+      for (const g of [1, 3, 7, 9].map((i) => names[i])) {
+        const box = p.locator('.t10 input').first();
+        await box.click(); await box.fill(g); await p.waitForTimeout(700);
+        const opt = p.locator('.t10-opt', { hasText: g }).first();
+        if (await opt.count()) await opt.click(); else await p.keyboard.press('Enter');
+        await p.waitForTimeout(1600);
+      }
+      await p.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+      await p.waitForTimeout(800); } })) : []),
 ];
 
 
