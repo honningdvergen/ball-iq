@@ -1,0 +1,133 @@
+/* Tiki Taka Toe: the football grid (screens/GridGame.jsx).
+   House timings: press 90ms, state 180ms, entrance 260ms.
+   Sized for a 375pt phone first: a header column of 72pt and three cell
+   columns share what is left, so every cell is well over 44pt square. */
+
+.gr {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: var(--foot-clear, 20px);
+}
+
+.gr-head { display: flex; align-items: center; gap: 10px; padding: 8px 4px; }
+.gr-head-sub { font-size: 12.5px; color: var(--t2); }
+.gr-empty { margin: 40px 16px; text-align: center; font-size: 15px; line-height: 1.45; color: var(--t2); }
+
+/* Guesses left: one pip a guess, spent ones dimmed. */
+.gr-left { display: flex; align-items: center; gap: 10px; padding: 2px 4px 8px; }
+.gr-pips { display: flex; gap: 5px; }
+.gr-pips i { width: 9px; height: 9px; border-radius: 5px; background: var(--s3); }
+.gr-pips i.is-on { background: var(--gr); }
+.gr-left-n { font-size: 12.5px; font-weight: 700; color: var(--t2); font-variant-numeric: tabular-nums; }
+
+/* The question for the cell being answered, and its box. */
+.gr-ask { padding: 0 2px 4px; animation: grRise 180ms ease-out both; }
+.gr-ask-q { margin: 0 2px 6px; font-size: 14px; font-weight: 800; color: var(--t1); }
+.gr-entry { position: relative; }
+.gr-input {
+  width: 100%; box-sizing: border-box; min-height: 48px;
+  background: var(--s1); border: 1px solid rgba(var(--gr-rgb), 0.55); border-radius: 12px;
+  padding: 12px 15px; color: var(--t1); font-size: 16px; font-family: inherit; outline: none;
+}
+.gr .gr-input:focus-visible { outline: 2px solid rgba(var(--gr-rgb), 0.55); outline-offset: 2px; }
+.gr-drop {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 20; margin-top: 6px;
+  background: var(--s2); border: 1px solid var(--border); border-radius: 14px;
+  overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.gr-opt {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  width: 100%; min-height: 48px; padding: 8px 14px;
+  background: none; border: none; border-bottom: 1px solid var(--border);
+  color: var(--t1); cursor: pointer; font-family: inherit; text-align: left;
+}
+.gr-opt:last-child { border-bottom: none; }
+.gr-opt:active { background: rgba(var(--gr-rgb), 0.12); }
+.gr-opt-name { font-size: 14.5px; font-weight: 700; }
+.gr-opt-sub { font-size: 12px; color: var(--t2); }
+
+/* What the last guess came to. Calm on purpose: an unconfirmed guess is a
+   statement about our record, not a wrong answer, and must not look like one. */
+.gr-say { min-height: 40px; padding: 8px 4px; font-size: 13.5px; line-height: 1.4; color: var(--t2); text-wrap: pretty; }
+.gr-say.is-ok { color: var(--t1); font-weight: 700; }
+.gr-say span { display: block; animation: grRise 180ms ease-out both; }
+
+/* The board: a header column, then three cells a row. */
+.gr-board {
+  display: grid;
+  grid-template-columns: 72px repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 2px;
+}
+.gr-corner { min-height: 0; }
+.gr-badge {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  min-width: 0; padding: 4px 2px; text-align: center;
+}
+.gr-mono {
+  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px;
+  border: 1px solid var(--border2, var(--border));
+  font-size: 13px; font-weight: 900; letter-spacing: 0.02em; line-height: 1;
+}
+.gr-mono.is-plain { background: var(--s3); color: var(--t1); }
+.gr-club {
+  max-width: 100%; font-size: 11.5px; font-weight: 700; line-height: 1.2; color: var(--t1);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere;
+}
+.gr-cell {
+  position: relative; aspect-ratio: 1; min-width: 44px; min-height: 44px; padding: 6px;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  background: var(--s1); border: 1px solid var(--border); border-radius: 14px;
+  color: var(--t1); font-family: inherit; cursor: pointer;
+  transition: transform 90ms ease-out, border-color 180ms, background 180ms;
+  -webkit-tap-highlight-color: transparent;
+}
+.gr-cell:active { transform: scale(0.97); }
+.gr-cell.is-sel { border-color: var(--gr); box-shadow: inset 0 0 0 1px var(--gr); background: rgba(var(--gr-rgb), 0.08); }
+.gr-cell.is-solved { background: rgba(var(--gr-rgb), 0.16); border-color: rgba(var(--gr-rgb), 0.6); cursor: default; }
+.gr-cell.is-solved:active { transform: none; }
+/* A finished board's open cells are disabled, but their example answer is
+   content to read, not a greyed-out control. */
+.gr-cell.is-missed, .gr-cell:disabled { cursor: default; opacity: 1; color: var(--t1); padding: 4px; }
+.gr-cell-name {
+  font-size: 12.5px; font-weight: 800; line-height: 1.2; overflow-wrap: break-word; hyphens: auto;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.gr-cell-ex {
+  font-size: 11px; font-weight: 700; line-height: 1.2; color: var(--t2); overflow-wrap: break-word; hyphens: auto;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.gr-cell-ex small { display: block; font-size: 10.5px; font-weight: 700; color: var(--t3); }
+
+/* Quiet things: give up, back home. One loud thing per screen, and it is Share. */
+.gr-quiet {
+  width: 100%; min-height: 46px; margin-top: 12px; padding: 12px; border-radius: 999px;
+  border: 1px solid var(--border); background: transparent; color: var(--t2);
+  font-family: inherit; font-size: 14px; font-weight: 700; line-height: 1; cursor: pointer;
+}
+.gr-give.is-sure { color: var(--t1); border-color: var(--t3); }
+
+.gr-final { margin-top: 14px; text-align: center; animation: grRise 260ms ease-out both; }
+.gr-score { font-size: 34px; line-height: 1; font-weight: 900; color: var(--t1); font-variant-numeric: tabular-nums; }
+.gr-score small { font-size: 18px; font-weight: 800; color: var(--t2); }
+.gr-verdict { margin: 10px 0 0; font-size: 16px; line-height: 1.3; font-weight: 800; color: var(--t1); text-wrap: balance; }
+.gr-note { margin: 6px 0 16px; font-size: 13px; line-height: 1.4; color: var(--t2); text-wrap: pretty; }
+.gr-cta {
+  width: 100%; min-height: 52px; padding: 14px 20px; border: none; border-radius: 999px;
+  background: var(--gr); color: #06261A; font-family: inherit; font-size: 16px; font-weight: 800; line-height: 1.1; cursor: pointer;
+  transition: transform 90ms ease-out;
+}
+.gr-cta:active { transform: scale(0.985); }
+.gr-source { margin: 14px 4px 0; font-size: 11.5px; line-height: 1.45; color: var(--t3); text-wrap: pretty; }
+
+@keyframes grRise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .gr-ask, .gr-say span, .gr-final { animation: none; }
+  .gr-cell, .gr-cta { transition: none; }
+}

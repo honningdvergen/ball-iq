@@ -179,6 +179,24 @@ const MODES = {
       } });
     },
   },
+  // Tiki Taka Toe (screens/GridGame.jsx): the board as nine squares, filled
+  // where a player was named. Which player, and which clubs, stay off the card.
+  grid: {
+    acc: '#5FD39A', name: 'TIKI TAKA TOE', path_: 'grid',
+    hero: (d) => [String((d.cells || []).filter(Boolean).length), '/9'],
+    label: () => 'squares filled',
+    brag: (d) => {
+      const n = (d.cells || []).filter(Boolean).length;
+      return n === 9 ? 'A full grid' : n >= 6 ? 'Proper fan' : d.streak > 1 ? `🔥 ${d.streak}-day streak` : '';
+    },
+    path(ctx, d, acc) {
+      const cells = Array.from({ length: 9 }, (_, i) => !!(d.cells || [])[i]);
+      tiles(ctx, cells, { cols: 3, tile: 124, gap: 16, top: 960, bottom: 1420, radius: 24, draw: (ok, x, y, t, rad) => {
+        ctx.fillStyle = ok ? acc : '#20242E'; rr(ctx, x, y, t, t, rad); ctx.fill();
+        if (ok) tick(ctx, x + t / 2, y + t / 2, t * 0.6, '#06261A');
+      } });
+    },
+  },
   trail: {
     acc: '#7CC3F0', name: 'TRANSFER TRAIL', path_: 'trail',
     hero: (d) => (d.won ? [String(d.clubsUsed), ''] : ['X', '']),
@@ -218,7 +236,7 @@ const MODES = {
   },
 };
 
-export const V2_TYPES = new Set(['wordle', 'draft', 'top10', 'trail', 'mystery', 'standard', 'hotstreak', 'stadiums']);
+export const V2_TYPES = new Set(['wordle', 'draft', 'top10', 'grid', 'trail', 'mystery', 'standard', 'hotstreak', 'stadiums']);
 
 export async function renderShareCardV2(type, data = {}) {
   const key = type === 'wordle' ? 'footle' : type;

@@ -102,7 +102,7 @@ const knownCareerNames = new Set();
 export const unusedColourKeys = () =>
   Object.keys(GRID_CLUB_COLOURS).filter((k) => !usedColourKeys.has(k) && !knownCareerNames.has(k));
 
-function colourFor(careerName) {
+export function colourFor(careerName) {
   // ⚠️ FIRST, AND BY EXACT NAME — tried against the raw career name AND the
   // shortened display form, because the map is written the way a person says
   // the club. Each of these 28 was verified against a fetched source, so a hit
