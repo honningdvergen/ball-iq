@@ -102,6 +102,11 @@
       "permanent": false
     },
     {
+      "source": "/t10s",
+      "destination": "/play?game=top10&utm_source=instagram_story",
+      "permanent": false
+    },
+    {
       "source": "/d7s",
       "destination": "/play?game=daily&utm_source=instagram_story",
       "permanent": false
