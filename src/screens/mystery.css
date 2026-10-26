@@ -34,44 +34,47 @@
 .mp-guess-bar > div { height: 100%; border-radius: 2px; }
 
 /* ── The clue ladder ───────────────────────────────────────────────────── */
-/* Two by two: the free starting clues on top, the two that wait below. */
+/* Two by two: the free starting clues on top, the two that wait below.
+   THE VALUE IS THE CLUE (declutter, 26 Oct 2026): "Forward", "1940s" were
+   13.5px under a tracked violet caps label that outshouted them. Now the
+   value is the big line and the label a quiet word above it; violet is kept
+   for the one card that wants a tap (is-ready). */
 .mp-clues {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
   margin: 2px 0 6px;
 }
 .mp-clue {
   display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
-  min-height: 58px; box-sizing: border-box; padding: 9px 10px;
+  min-height: 64px; box-sizing: border-box; padding: 9px 12px 10px;
   border-radius: 12px; border: 1px solid var(--border); background: var(--s1);
   font: inherit; text-align: left; color: var(--t1);
   transition: border-color 180ms ease-out, background-color 180ms ease-out, transform 90ms ease-out;
 }
 .mp-clue-label {
   display: inline-flex; align-items: center; gap: 5px;
-  font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 12px; font-weight: 600; line-height: 1.2;
   color: var(--t3);
 }
 .mp-clue-value {
-  font-size: 13.5px; font-weight: 800; line-height: 1.2; color: var(--t1);
+  font-size: 19px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; color: var(--t1);
   overflow-wrap: anywhere;
 }
 .mp-clue.is-locked { border-style: dashed; background: transparent; }
-.mp-clue.is-locked .mp-clue-value { font-size: 12px; font-weight: 600; color: var(--t3); }
+.mp-clue.is-locked .mp-clue-value { font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--t3); }
 .mp-clue.is-ready {
   cursor: pointer; border-color: rgba(var(--mp-rgb), 0.6);
   background: rgba(var(--mp-rgb), 0.12);
   -webkit-tap-highlight-color: transparent; touch-action: manipulation;
 }
 .mp-clue.is-ready .mp-clue-label { color: var(--mp); }
-.mp-clue.is-ready .mp-clue-value { color: var(--mp); font-size: 12.5px; }
+.mp-clue.is-ready .mp-clue-value { color: var(--mp); font-size: 14px; letter-spacing: 0; }
 .mp-clue.is-ready:active { transform: scale(0.97); }
 .mp-clue.is-ready:focus-visible { outline: 2px solid var(--mp); outline-offset: 2px; }
-.mp-clue.is-shown { border-color: rgba(var(--mp-rgb), 0.35); background: rgba(var(--mp-rgb), 0.07); }
-.mp-clue.is-shown .mp-clue-label { color: var(--mp); }
+/* A clue on show is a plain card: the value carries it, no tint needed. */
 /* A free clue before the pool has loaded (the static page loads it on the
    first tap of the guess box). */
 .mp-clue.is-pending { border-style: dashed; background: transparent; }
-.mp-clue.is-pending .mp-clue-value { font-size: 12px; font-weight: 600; color: var(--t3); }
+.mp-clue.is-pending .mp-clue-value { font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--t3); }
 
 /* ── Warmer or colder than your own best ───────────────────────────────── */
 .mp-trend {
