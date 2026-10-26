@@ -180,7 +180,9 @@ check('Sitemap lastmod matches scripts/seo/lastmod.json; no changefreq/priority'
     const got = e.lastmods[0];
     if (!/^\d{4}-\d{2}-\d{2}$/.test(got)) fail(`sitemap.xml: ${e.loc} <lastmod>${got}</lastmod> is not YYYY-MM-DD`);
     const want = store[path]?.d;
-    if (!want && servedBy(path)) fail(`sitemap.xml: ${e.loc} is served by ${servedBy(path)}, not built, so it has no entry in ${relative(ROOT, LASTMOD)}; buildSitemap's fallback stamps it with the build date (${got}), which moves every deploy`);
+    // Pages served by an api/ function (the dailies) change every day, so the build date
+    // is their honest lastmod (Ball IQ HQ, 26 Oct). Built pages still need a store entry.
+    if (!want && servedBy(path)) notes.push(`${e.loc} is served by ${servedBy(path)}; lastmod ${got} is the build date (allowed for api-served pages)`);
     else if (!want) fail(`sitemap.xml: ${e.loc} has no entry in ${relative(ROOT, LASTMOD)} (run a local build and commit the store)`);
     else if (got !== want) fail(`sitemap.xml: ${e.loc} <lastmod>${got}</lastmod> but ${relative(ROOT, LASTMOD)} says ${want}`);
   }
