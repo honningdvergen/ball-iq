@@ -216,7 +216,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     () => new Set(attempts.filter((a) => !a.skipped).map((a) => a.text.toLowerCase().trim())),
     [attempts],
   );
-  const { pool, ensure: ensurePool } = usePlayerPool();
+  const { pool, ensure: ensurePool } = usePlayerPool({ extras: true });
   // The careers of the players guessed, for the line under a wrong guess that
   // fits the board (lib/trail.js, wrongPathNote). Same files Mystery Player
   // ranks against, so a player who has done Mystery already holds them; anyone

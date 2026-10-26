@@ -18,23 +18,39 @@ import { useCallback, useRef, useState } from 'react';
 
 const EMPTY = [];
 
-export function usePlayerPool({ careers = false } = {}) {
+/** The pool plus guessExtra.json: its `add` rows, and its `aka` second spellings
+ *  set on COPIES of the pool's own records (the imported module stays as is). */
+export function withExtras(pool, { add = [], aka = {} } = {}) {
+  return pool.map((p) => (aka[p.id] ? { ...p, aka: aka[p.id] } : p)).concat(add);
+}
+
+// `extras` (26 Oct 2026): also the ~2,600 players the Draft and today's squads
+// hold but the pool does not (John Barnes, Mkhitaryan), from guessExtra.json.
+// ⚠️ ONLY FOR SCREENS THAT JUDGE A GUESS BY ITS NAME (Transfer Trail, Top 10).
+// Mystery Player ranks a guess by its career and these rows have none, so it
+// never asks for them. See scripts/gen-guess-extra.mjs.
+export function usePlayerPool({ careers = false, extras = false } = {}) {
   const [data, setData] = useState(null);
   const inflight = useRef(null);
   const ensure = useCallback(() => {
     if (data) return Promise.resolve(data);
     if (inflight.current) return inflight.current;
-    const loads = [import('../data/mysteryPool.json')];
+    const loads = [
+      extras
+        ? Promise.all([import('../data/mysteryPool.json'), import('../data/guessExtra.json')])
+          .then(([p, x]) => withExtras(p.default || p, x.default || x))
+        : import('../data/mysteryPool.json').then((p) => p.default || p),
+    ];
     if (careers) loads.push(Promise.all([import('../data/mysteryCareers.json'), import('../data/mysteryCareerFixes.json'), import('./mysteryCareer.js')])
       .then(([c, f, m]) => m.withCareerFixes(c.default || c, f.default || f)));
     inflight.current = Promise.all(loads)
-      .then(([p, c]) => {
-        const d = { pool: p.default || p, careers: c ? (c.default || c) : null };
+      .then(([pool, c]) => {
+        const d = { pool, careers: c ? (c.default || c) : null };
         setData(d);
         return d;
       })
       .catch(() => { inflight.current = null; return null; });
     return inflight.current;
-  }, [data, careers]);
+  }, [data, careers, extras]);
   return { pool: data?.pool || EMPTY, careers: data?.careers || null, ready: !!data, ensure };
 }
