@@ -10,7 +10,7 @@ import GameTitle from '../components/GameTitle.jsx';
 import { resolveDailyServices } from '../games/dailyServices.js';
 import { DailyDone } from '../components/DailyDone.jsx';
 import {
-  rankPool, bandFor, HOT_SHARE, WARM_SHARE, matchGuess,
+  rankPool, bandFor, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
   explainGuess, reasonLine, clueLadder, CLUE_AFTER, paidCluesFromSave, topShare,
@@ -18,7 +18,7 @@ import {
 import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
 import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from '../lib/playerSearch.js';
-import { MODE_ACCENT, modeTint } from '../lib/accents.js';
+import { MODE_ACCENT } from '../lib/accents.js';
 import { dateToYMD } from '../lib/date.js';
 import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardAwareInput.js';
 // The day's answer: from the schedule the SITE serves when an installed app
@@ -316,8 +316,6 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     submit(p);
   };
 
-  const best = rows.length ? rows[0].rank : null;
-
   // One share path for win and give-up. ⚠️ `date`, not today: an ARCHIVE win
   // must share under its own puzzle number. Dismissing the sheet REJECTS.
   const shareResult = async (w) => {
@@ -335,9 +333,6 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('game.copiedShort') })); } catch {} }
     } catch { /* dismissed or blocked — nothing to recover */ }
   };
-  // The header row is at its widest when CLOSEST is present; the title block
-  // budgets itself down for it (see the note on the title below).
-  const tight = !embedded && best !== null && !done;
   const revealPos = hintPosition(answer, ROLES);
   const n = guesses.length;
   return (
@@ -346,27 +341,22 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         {onExit && (
           <button onClick={onExit} aria-label={t('game.back')} className="back-btn">←</button>
         )}
-        {/* ⚠️ THIS ROW HOLDS FIVE THINGS AND THE FIFTH ARRIVES LATE. CLOSEST
-            only appears after the first guess, so once it is there the title
-            steps down a size and the subtitle drops its tail. Nothing wraps,
-            nothing truncates, nothing disappears (simulator, 2026-09-09). */}
+        {/* No CLOSEST readout here (declutter, 26 Oct 2026): the list is sorted
+            closest first, so its top row already is the closest guess, a few
+            lines below. The header said it twice. */}
         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
-          {!embedded && <GameTitle no={tight ? 0 : mysteryNumber(date)} style={tight ? { fontSize: 16 } : undefined}>Mystery Player</GameTitle>}
+          {!embedded && <GameTitle no={mysteryNumber(date)}>Mystery Player</GameTitle>}
           <div style={{ fontSize: embedded ? 13.5 : 12.5, color: 'var(--t2)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {(embedded || tight) && <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>{t('game.no', { n: mysteryNumber(date) })}</span>}
-            {tight ? '' : `${embedded ? ' · ' : ''}${t(embedded ? 'mp.unlimitedLc' : 'mp.unlimited')}`}{isArchive ? ` · ${t('mp.archive')}` : ''}
+            {/* Embedded, the number alone: the page's lead above already says
+                "unlimited tries" (declutter, 26 Oct 2026). */}
+            {embedded && <span style={{ color: MODE_ACCENT.mystery, fontWeight: 800 }}>{t('game.no', { n: mysteryNumber(date) })}</span>}
+            {embedded ? '' : t('mp.unlimited')}{isArchive ? ` · ${t('mp.archive')}` : ''}
           </div>
         </div>
+        {/* A plain icon button: the rules are one tap away, not a call to tap. */}
         {!done && (
           <button type="button" className="icon-btn" onClick={() => setShowRules((v) => !v)}
-            aria-label={t('game.howTo')} aria-expanded={showRules} title={t('game.howTo')}
-            style={{ marginRight: 8, color: MODE_ACCENT.mystery, borderColor: modeTint('mystery', 0.35) }}>?</button>
-        )}
-        {best !== null && !done && (
-          <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 4 }}>
-            <div style={{ fontSize: 11, color: 'var(--t3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t('mp.closest')}</div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: BAND_STYLE[rows[0].band].fg }}>{num(best)}</div>
-          </div>
+            aria-label={t('game.howTo')} aria-expanded={showRules} title={t('game.howTo')}>?</button>
         )}
       </div>
 
@@ -374,13 +364,13 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       {!done && !showRules && n === 0 && (
         <p className="mp-intro">
           {t('mp.intro')}{' '}
-          <strong style={{ color: MODE_ACCENT.mystery }}>{t('mp.lower')}</strong>
+          <strong style={{ color: 'var(--t1)', fontWeight: 600 }}>{t('mp.lower')}</strong>
         </p>
       )}
       {!done && showRules && (
         <p className="mp-intro">
           {t('mp.rules', { a: CLUE_AFTER[0], b: CLUE_AFTER[1] })}{' '}
-          <strong style={{ color: 'var(--t1)' }}>{t('mp.lower')}</strong>
+          <strong style={{ color: 'var(--t1)', fontWeight: 600 }}>{t('mp.lower')}</strong>
         </p>
       )}
 
@@ -405,7 +395,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           <div className="mp-reveal-meta">
             {[revealPos ? revealPos.charAt(0).toUpperCase() + revealPos.slice(1) : null, answer.born ? t('mp.bornIn', { y: answer.born }) : null].filter(Boolean).join(' · ')}
           </div>
-          {won && streak > 1 && (
+          {/* Not on the static page (declutter, 26 Oct 2026): there the panel
+              below opens with this same Mystery streak. In the app the panel
+              carries the daily streak, so this one stays. */}
+          {won && streak > 1 && !embedded && (
             <div className="mp-reveal-streak"><Flame size={13} aria-hidden="true" />{t('mp.streak', { n: streak })}</div>
           )}
           {career.length > 0 && (
@@ -541,23 +534,10 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
               : <><TrendingDown size={14} aria-hidden="true" /><span>{t('mp.colder', { r: num(last.prevBest) })}</span></>
           )}
         </div>
-        {/* The key to the colours, where the guesses will stand (13 Oct 2026).
-            ⚠️ IN SHARES, NOT RANKS: the pool's size is not known yet. */}
-        {n === 0 && !done && (
-          <div role="group" aria-label={t('mp.rankMeans')} style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: 0.8 }}>
-            {[
-              ['win', t('mp.thePlayer'), t('mp.rank1')],
-              ['hot', bandWord(t, 'hot'), t('mp.top', { n: Math.round(HOT_SHARE * 100) })],
-              ['warm', bandWord(t, 'warm'), t('mp.top', { n: Math.round(WARM_SHARE * 100) })],
-              ['cold', bandWord(t, 'cold'), t('mp.everyoneElse')],
-            ].map(([band, word, range]) => (
-              <div key={band} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', borderRadius: 12, background: BAND_STYLE[band].bg, border: `1px dashed ${BAND_STYLE[band].bd}` }}>
-                <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: BAND_STYLE[band].fg }}>{word}</span>
-                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--t2)', fontVariantNumeric: 'tabular-nums' }}>{range}</span>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* NO KEY TO THE COLOURS BEFORE THE FIRST GUESS (declutter, 26 Oct
+            2026). Four dashed bands explained ranks nobody had yet. Each guess
+            row carries its own word (boiling / warm / cold) and its share
+            ("top 3%"), so the key is said where it is needed and nowhere else. */}
         {rows.map((g) => {
           const st = BAND_STYLE[g.band];
           // WHY it is here: shared clubs, position, era. The same three things
