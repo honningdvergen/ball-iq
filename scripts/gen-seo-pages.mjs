@@ -131,6 +131,7 @@ import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
 import { competitionFor } from './seo/club-competition.mjs';
+import { PRUNED, noindexHtml } from './seo/prune.mjs';
 // Footle answer schedule + the real grading function, for the playable practice
 // board on /football-wordle/. Importing the GAME's own module is deliberate:
 // the grader is inlined from `gradeWordleGuess.toString()` rather than rewritten,
@@ -1618,7 +1619,7 @@ ${ADS_ACTIVE ? `<script>
 </script>` : ''}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}" />
-<link rel="canonical" href="${canonical}" />${alternates.map((a) => `
+<link rel="canonical" href="${canonical}" />${alternates.filter((a) => !PRUNED.has(a.href.slice(SITE.base.length))).map((a) => `
 <link rel="alternate" hreflang="${a.hreflang}" href="${a.href}" />`).join('')}
 <meta property="og:type" content="website" />
 <meta property="og:url" content="${canonical}" />
@@ -6172,7 +6173,7 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/terms/`, freq: 'yearly', pri: '0.2' },
     { loc: `${SITE.base}/privacy.html`, freq: 'monthly', pri: '0.3' },
-  ];
+  ].filter((u) => !PRUNED.has(u.loc.slice(SITE.base.length))); // scripts/seo/prune.mjs
   const body = urls
     .map(
       (u) =>
@@ -6370,6 +6371,13 @@ async function main() {
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
   build404Page();
+  // The prune (26 Oct 2026, scripts/seo/prune.mjs): built and linked as usual,
+  // then marked noindex here and left out of the sitemap below.
+  for (const path of PRUNED) {
+    const file = resolve(DIST, `.${path}`, path.endsWith('/') ? 'index.html' : '');
+    if (!existsSync(file)) throw new Error(`[gen-seo] pruned page ${path} was not built: delete its line in scripts/seo/prune.mjs`);
+    writeFileSync(file, noindexHtml(readFileSync(file, 'utf8')), 'utf8');
+  }
   // /questions/ pages are canonicalised to their /quiz/ twins and OUT of the
   // sitemap again (21 Oct 2026, after the 20 Oct drop): see buildClubQuestionsPage.
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
