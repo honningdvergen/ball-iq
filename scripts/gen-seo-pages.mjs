@@ -5217,9 +5217,11 @@ function fwExampleHtml() {
 // Today's board on this page. The component's stylesheet (src/games/footle.css)
 // speaks the app's token names; until the shared tokens.css lands they are
 // defined here on the host, with the same values app.css gives them. The
-// 20px side padding is load-bearing: .wd-grid and .wd-keyboard escape their
-// screen's padding with margin-inline:-20px, so the host must supply exactly
-// that much or the keyboard overflows the card on a phone.
+// 20px side gutter is load-bearing: .wd-grid and .wd-keyboard escape their
+// screen's padding with margin-inline:-20px / -14px, so something must supply
+// exactly 20px or the keyboard overflows on a phone. Above 520px the host
+// supplies it; on a phone the page's <main> does and the host has none (26 Oct
+// 2026), which puts the keys 6px from the screen edge, as in the app.
 const FW_TODAY_CSS = `
   /* This page's hero is a masthead, not a pitch: the game is the pitch. On a
      375px phone the shared hero put the board 429px down (measured on the
@@ -5260,6 +5262,11 @@ const FW_TODAY_CSS = `
     .hero .hero-head h1{font-size:22px;line-height:1.15;letter-spacing:-.2px;margin-bottom:4px}  /* out-specifies the site's 34px phone title */
     .hero-lead{font-size:13px;line-height:1.35;color:var(--tx3)}
     .fw-mast{display:none}
+    /* The page's <main> already gives a 20px gutter; the host's own 20px on
+       top of it left the game 295px wide on a 375px phone, and the finish
+       panel's Next-up card squeezed its title onto two lines and its hook onto
+       three (Alex, 26 Oct 2026: "awfully narrow and clunky"). One gutter. */
+    .fw-host{padding:0}
     /* Short phones (and Safari with its bars showing): the app's own rule that
        shrinks tiles to fit does not reach this embedded board, so at 667px
        tall the tiles stayed 44px and ENTER ended 61px below the screen. 497px

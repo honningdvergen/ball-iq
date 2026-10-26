@@ -70,8 +70,10 @@
 .dd-up-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
 .dd-up-name{font-size:17px;font-weight:800;line-height:1.2;}
 .dd-up-hook{font-size:12.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* Each part of the hook breaks as a whole ("Six / guesses" read as a typo). */
+.dd-up-seg{display:inline-block;max-width:100%;}
 /* Tinted, not solid: Share is the panel's one solid button (tidy pass). */
-.dd-up-go{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border-radius:999px;background:rgba(var(--dd-rgb),0.16);border:1px solid rgba(var(--dd-rgb),0.5);color:var(--dd-c, var(--accent));-webkit-text-fill-color:var(--dd-c, var(--accent));font-size:14px;font-weight:800;}
+.dd-up-go{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 15px;border-radius:999px;background:rgba(var(--dd-rgb),0.16);border:1px solid rgba(var(--dd-rgb),0.5);color:var(--dd-c, var(--accent));-webkit-text-fill-color:var(--dd-c, var(--accent));font-size:14px;font-weight:800;}
 .dd-up.is-sweep{cursor:default;--dd-c:var(--accent);--dd-rgb:88,204,2;}
 .dd-day{display:flex;align-items:center;gap:10px;}
 .dd-day-bar{display:flex;gap:4px;flex:0 0 112px;}
@@ -80,6 +82,10 @@
 .dd-day-bar i.is-lost{background:var(--t3);}
 .dd-day-tx{font-size:12.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;}
 .dd-up-more{display:flex;flex-wrap:wrap;gap:8px;}
+/* Chips share the row and fill it: two that fit sit side by side as equals,
+   and one that wraps takes the full width instead of hanging half-empty
+   (Alex, 26 Oct 2026, the finish panel: "narrow and clunky"). */
+.dd-up-more .dd-chip{flex:1 1 auto;min-width:0;}
 .dd-chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px 0 6px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;text-decoration:none;-webkit-appearance:none;appearance:none;}
 .dd-chip-ic{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(var(--dd-rgb),0.16);color:var(--dd-c);}
 @media (prefers-reduced-motion: reduce){.dd-up:active{transform:none;}}

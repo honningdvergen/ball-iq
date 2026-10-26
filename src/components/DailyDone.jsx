@@ -436,7 +436,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
                   <span className="dd-well" aria-hidden="true">{first.icon || DEFAULT_ICON[modeOf(first.key)] || null}</span>
                   <span className="dd-up-body">
                     <span className="dd-up-name">{first.name}</span>
-                    <span className="dd-up-hook">{lostHere ? t("dd.winBack") : ""}{HOOK[modeOf(first.key)] ? t(`dd.hook.${modeOf(first.key)}`) : ""}</span>
+                    <span className="dd-up-hook">{lostHere ? <><span className="dd-up-seg">{t("dd.winBack").trim()}</span>{" "}</> : ""}{HOOK[modeOf(first.key)] ? <span className="dd-up-seg">{t(`dd.hook.${modeOf(first.key)}`)}</span> : ""}</span>
                   </span>
                   <span className="dd-up-go">{t("common.play")}</span>
                 </span>
