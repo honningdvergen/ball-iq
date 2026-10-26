@@ -85,7 +85,12 @@ import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-import { QB } from '../src/questions.js';
+import { QB as QB_ALL } from '../src/questions.js';
+import { RETIRED_TAGS } from '../src/lib/quiz.js';
+// Retired rows (tag in RETIRED_TAGS: unverified, duplicate, ...) never reach
+// the web pages either. Until 26 Oct 2026 only the app filtered them, so a
+// question retired as unverified stayed on its club page.
+const QB = QB_ALL.filter((q) => !q.tag || !RETIRED_TAGS.has(q.tag));
 // The web palette. Shared with the marketing homepage (via design/tokens.css)
 // so the two surfaces cannot drift apart the way they already had -- the
 // homepage was still painting #1A1D27, a colour app.css:57 records the product

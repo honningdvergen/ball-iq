@@ -203,7 +203,9 @@ export const TOPICAL_PACK = null;
 // "unverified": a question whose key could not be sourced when it was checked
 // (20 Oct 2026, q_380d02, the Cheltenham FA Cup entry), kept in the bank so
 // ids and conflicts stay stable, never served until someone can source it.
-export const RETIRED_TAGS = new Set(["summer2026", "unverified"]);
+// "duplicate": a question that asks the same fact as a sibling in its club
+// pack (26 Oct 2026, the strict two-pass check; the better-worded one stays).
+export const RETIRED_TAGS = new Set(["summer2026", "unverified", "duplicate"]);
 
 /**
  * How long a question's clock should run, given how much there is to read.

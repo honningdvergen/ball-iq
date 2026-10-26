@@ -328,7 +328,6 @@ export const CLUBS_TR = [
     ],
     // ── Taster: 10 questions, tappable in the hero ────────────────────────────
     taster: [
-      { id: 'q_51a47c', q: 'Trabzonspor hangi yıl kuruldu?', o: ['1947', '1957', '1967', '1977'], a: 2, hint: 'Trabzonspor, 2 Ağustos 1967’de Trabzon’daki yerel kulüplerin birleşmesiyle kuruldu.' },
       { id: 'q_7a6c3b', en: 'The Black Sea', q: 'Trabzonspor’un şehri Trabzon hangi denizin kıyısında?', o: ['Ege Denizi', 'Karadeniz', 'Akdeniz', 'Marmara Denizi'], a: 1, hint: 'Trabzon, Türkiye’nin kuzeyinde Karadeniz kıyısında; kulübe Karadeniz Fırtınası denmesinin sebebi de bu.' },
       { id: 'q_b2e6c5', en: 'Claret and blue', q: 'Trabzonspor’un geleneksel kulüp renkleri hangileri?', o: ['Yeşil ve beyaz', 'Sarı ve lacivert', 'Kırmızı ve siyah', 'Bordo ve mavi'], a: 3, hint: 'Bordo-mavi, 1967’de birleşen kurucu kulüpler arasında bir uzlaşma olarak kabul edildi.' },
       { id: 'q_a5e8a8', q: 'Trabzonspor ilk Türkiye birinci lig şampiyonluğunu hangi sezonda kazandı?', o: ['1969–70', '1975–76', '1980–81', '1983–84'], a: 1, hint: 'Trabzonspor 1975–76 şampiyonluğunu Ahmet Suat Özyazıcı yönetiminde, Fenerbahçe’nin üç puan önünde kazandı.' },
