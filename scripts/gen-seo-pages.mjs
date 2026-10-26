@@ -4714,7 +4714,8 @@ function buildFootballQuizPage() {
     description,
     url: canonical,
     hasPart: groups.flatMap((g) => g.rows.slice(0, 40).map((r) => ({
-      '@type': 'Quiz', name: `${r.club} Quiz`, url: `${SITE.base}/quiz/${r.slug}/`,
+      // WebPage, not Quiz (26 Oct 2026): the Education Q&A type is gone from the site.
+      '@type': 'WebPage', name: `${r.club} Quiz`, url: `${SITE.base}/quiz/${r.slug}/`,
     }))),
   });
 
