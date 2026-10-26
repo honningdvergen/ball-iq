@@ -2588,7 +2588,7 @@ ${/* Link to this club's TEXT Q&A page. Without this the /questions layer
      links, which is precisely the defect the 2026-07-28 ranking diagnosis
      found on /lists and had to go back and fix. Placed inside the mesh
      section because that sits at ~19% scroll, above the measured cliff. */''}
-${clubHintRows(cfg.club).length >= 20 ? `<p style="margin:14px 2px 0;color:var(--tx2);font-size:14.5px">Want them as a printable list instead? <a href="${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/" style="color:var(--grn);font-weight:700">${esc(cfg.name)} quiz questions and answers →</a></p>` : ''}
+
 ${/* ⚠️ THE LOCALISED LAYER WAS ORPHANED — the SAME defect as the note directly
      above, found again on 2026-08-16. All 20 localised pages had ZERO inbound
      internal links from any English page; they were sitemap-only, so they were
@@ -6316,9 +6316,11 @@ async function main() {
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages, nationPages));
-  // The text Q&A layer — a DIFFERENT SERP from the club quiz, and the format
-  // that earns links. Only clubs with enough questions get one.
-  const questionPages = CLUBS.map((c) => buildClubQuestionsPage(c, clubHintRows(c.club))).filter(Boolean);
+  // The text Q&A layer (/questions/<club>-quiz-questions-and-answers/) is NO
+  // LONGER BUILT (26 Oct 2026). Every URL 301s to its /quiz/ twin (vercel.json):
+  // ~45% of each page repeated the twin word for word, re-freeing them on 15 Oct
+  // preceded the 20 Oct site-wide drop, and a canonical is only a hint Google was
+  // still validating against. buildClubQuestionsPage stays below for the record.
   // Siblings = every OTHER language this slug exists in, so each localised page
   // links the whole cluster rather than just itself and English.
   const builtEs = CLUBS_INTL.map((c) =>
