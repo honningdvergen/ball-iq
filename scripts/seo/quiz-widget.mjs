@@ -10,7 +10,7 @@ import { BQ_I18N } from './bq-i18n.mjs';
 import { DEFAULT_TIERS } from './clubTiers.mjs';
 import { readFileSync } from 'node:fs';
 import { SITE } from './content.mjs';
-import { noBreakScores } from '../../src/lib/noBreakScore.js';
+import { nbHtml } from './nb-html.mjs';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -271,13 +271,13 @@ export function renderQuizItems(rows, t = {}) {
     .map(shuffleOptions)
     .map((r) => {
       const opts = r.o
-        // noBreakScores: "6-1" never wraps after its hyphen. Display only —
+        // nbHtml: "6-1" never wraps after its hyphen, in plain text. Display only —
         // the engine grades by data-a / data-i, never by this text.
-        .map((o, k) => `<button class="bq-o" type="button" data-i="${k}"><span class="k">${'ABCD'[k] || ''}</span><span class="tt">${esc(noBreakScores(o))}</span></button>`)
+        .map((o, k) => `<button class="bq-o" type="button" data-i="${k}"><span class="k">${'ABCD'[k] || ''}</span><span class="tt">${nbHtml(o)}</span></button>`)
         .join('');
       return `<li class="bq-q" data-a="${r.a}"${r.diff ? ` data-diff="${esc(r.diff)}"` : ''}>
 <p class="bq-qn">${esc(r.diff ? (t['diff_' + String(r.diff).toLowerCase()] || r.diff) : (t.question || 'Question'))}</p>
-<p class="bq-qx">${esc(noBreakScores(r.q))}</p>
+<p class="bq-qx">${nbHtml(r.q)}</p>
 <div class="bq-os">${opts}</div>
 <p class="bq-sr" role="status" aria-live="polite"></p>
 ${r.hint ? `<div class="bq-why"><b>${esc(t.why || 'Why')}</b>${esc(r.hint)}</div>\n` : ''}<button class="bq-next" type="button" hidden>${esc(t.next || 'Next question →')}</button>
