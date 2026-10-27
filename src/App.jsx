@@ -18,7 +18,7 @@ import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIn
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
-import { seededShuffle, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS } from './lib/quiz.js';
+import { seededShuffle, pickAvoidingConflicts, TOPICAL_PACK, RETIRED_TAGS, optionOrder } from './lib/quiz.js';
 import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, ListOrdered, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake, Smartphone } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -612,8 +612,7 @@ export async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, in
       return [...shuffle(easy), ...shuffle(med), ...shuffle(hard)].map(q => {
         const histKey = qbHistKey(q);
         if (q.type !== "mcq" || !q.o) return { ...q, _histKey: histKey };
-        const indices = [0,1,2,3].slice(0, q.o.length);
-        const sh = shuffle(indices);
+        const sh = optionOrder(q.o.slice(0, 4), shuffle);
         return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
       });
     }
@@ -651,8 +650,7 @@ export async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, in
   return shuffle(selected).map(q => {
     const histKey = qbHistKey(q);
     if (q.type !== "mcq" || !q.o) return { ...q, _histKey: histKey };
-    const indices = [0,1,2,3].slice(0, q.o.length);
-    const shuffled = shuffle(indices);
+    const shuffled = optionOrder(q.o.slice(0, 4), shuffle);
     return {
       ...q,
       o: shuffled.map(i => q.o[i]),
@@ -699,8 +697,7 @@ async function getDailyQsForDate(date) {
   }
   return pickDailyQuestions(QB, dayIndexForDate(date), log).map(q => {
     const histKey = qbHistKey(q);
-    const indices = [0,1,2,3].slice(0, q.o.length);
-    const sh = shuffle(indices);
+    const sh = optionOrder(q.o.slice(0, 4), shuffle);
     return { ...q, o: sh.map(i => q.o[i]), a: sh.indexOf(q.a), _histKey: histKey };
   });
 }
@@ -1872,7 +1869,7 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
     questions: picked.map(q => {
       // Per-game option shuffle: authored order skews correct answers toward
       // A/B and turns rematches into answer-position memory tests.
-      const idx = [0, 1, 2, 3].sort(() => Math.random() - 0.5);
+      const idx = optionOrder(q.o.slice(0, 4), (a) => a.sort(() => Math.random() - 0.5));
       // `id` rides along so a multiplayer report identifies the exact bank row.
       // Without it a report lands with a null question_id and only the prompt
       // text to match on. Additive: existing readers take prompt/options/correct
@@ -5106,7 +5103,7 @@ function AppInner() {
         // but not significantly. Consistency is the reason; the bias is not.
         qs = shuffle([...fresh]).slice(0, 10).map(q => {
           if (!Array.isArray(q.o)) return { ...q, _histKey: qbHistKey(q) };
-          const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+          const idx = optionOrder(q.o.slice(0, 4), shuffle);
           return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
         });
       }
@@ -5215,7 +5212,7 @@ function AppInner() {
             // the two survives varies per session, and after applySeenFilter so
             // the 14-day freshness rule still decides what is eligible at all.
             qs = pickAvoidingConflicts(shuffle([...freshPool]), 10, conflictsWith).map(q => {
-              const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+              const idx = optionOrder(q.o.slice(0, 4), shuffle);
               return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), realCat: q.cat, cat: "ClubQuiz", type: "mcq", _histKey: qbHistKey(q) };
             });
           }
@@ -5270,7 +5267,7 @@ function AppInner() {
       // session, and after applySeenFilter so freshness still decides
       // eligibility — same order as the club draw above.
       const qs = pickAvoidingConflicts(shuffle([...fresh]), 10, conflictsWith).map(q => {
-        const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+        const idx = optionOrder(q.o.slice(0, 4), shuffle);
         return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
       });
       setActiveClub(null);
