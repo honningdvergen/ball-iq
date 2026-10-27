@@ -70,16 +70,18 @@
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
   min-width: 0; padding: 4px 2px; text-align: center;
 }
-.gr-mono {
-  display: grid; place-items: center; width: 40px; height: 40px; border-radius: 11px;
-  border: 1px solid var(--border2, var(--border));
-  font-size: 13px; font-weight: 900; letter-spacing: 0.02em; line-height: 1;
-}
-.gr-mono.is-plain { background: var(--s3); color: var(--t1); }
-.gr-club {
+/* A club: its shirt (components/KitShirt.jsx) and short name. */
+.gr-kit { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; max-width: 100%; }
+.gr-kit svg { display: block; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35)); }
+.gr-kit .kit-name, .gr-club {
   max-width: 100%; font-size: 11.5px; font-weight: 700; line-height: 1.2; color: var(--t1);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere;
 }
+/* A row that is not a club: what kind, its flag (or a handshake), its name. */
+.gr-cap { font-size: 9.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--t3); line-height: 1; }
+.gr-flag { font-size: 26px; line-height: 1.1; }
+.gr-badge.is-with .gr-flag { font-size: 24px; }
+
 .gr-cell {
   position: relative; aspect-ratio: 1; min-width: 44px; min-height: 44px; padding: 6px;
   display: flex; align-items: center; justify-content: center; text-align: center;
@@ -99,6 +101,9 @@
   font-size: 12.5px; font-weight: 800; line-height: 1.2; overflow-wrap: break-word; hyphens: auto;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
+.gr-cell-in { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+/* The cell's rarity score: small, under the name. */
+.gr-cell-pts { font-size: 10.5px; font-weight: 800; color: var(--gr); font-variant-numeric: tabular-nums; line-height: 1; }
 .gr-cell-ex {
   font-size: 11px; font-weight: 700; line-height: 1.2; color: var(--t2); overflow-wrap: break-word; hyphens: auto;
   display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
@@ -112,6 +117,41 @@
   font-family: inherit; font-size: 14px; font-weight: 700; line-height: 1; cursor: pointer;
 }
 .gr-give.is-sure { color: var(--t1); border-color: var(--t3); }
+/* Quieter still: a text link (the versus door, a new versus board, back). */
+.gr-link {
+  display: block; width: 100%; min-height: 44px; margin-top: 4px; padding: 10px;
+  background: none; border: none; color: var(--t2); font-family: inherit; font-size: 13.5px; font-weight: 700;
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border); cursor: pointer;
+}
+.gr-left-r { margin-left: auto; font-size: 12.5px; font-weight: 800; color: var(--gr); font-variant-numeric: tabular-nums; }
+
+/* The rarity score on the finish panel: second to the solved count. */
+.gr-rarity { display: inline-flex; align-items: baseline; gap: 6px; margin-top: 10px; padding: 6px 12px; border-radius: 999px; background: rgba(var(--gr-rgb), 0.12); }
+.gr-rarity-n { font-size: 18px; font-weight: 900; color: var(--gr); font-variant-numeric: tabular-nums; }
+.gr-rarity-l { font-size: 12.5px; font-weight: 700; color: var(--t2); }
+
+/* Versus: whose turn, steals left, and the marks. X is the mode's green, O amber. */
+.gr-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 2px 2px 8px; }
+.gr-side {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 8px 12px;
+  border: 1px solid var(--border); border-radius: 12px; background: var(--s1); transition: border-color 180ms, background 180ms;
+}
+.gr-side-m { font-size: 20px; font-weight: 900; line-height: 1; }
+.gr-side.is-x .gr-side-m { color: var(--gr); }
+.gr-side.is-o .gr-side-m { color: var(--gr-o); }
+.gr-side-s { font-size: 12px; font-weight: 700; color: var(--t2); font-variant-numeric: tabular-nums; }
+.gr-side.is-x.is-turn, .gr-side.is-x.is-won { border-color: var(--gr); background: rgba(var(--gr-rgb), 0.1); }
+.gr-side.is-o.is-turn, .gr-side.is-o.is-won { border-color: var(--gr-o); background: rgba(var(--gr-o-rgb), 0.1); }
+.gr-mark { font-size: 22px; font-weight: 900; line-height: 1; }
+.gr-cell.is-x { background: rgba(var(--gr-rgb), 0.14); border-color: rgba(var(--gr-rgb), 0.55); }
+.gr-cell.is-x .gr-mark { color: var(--gr); }
+.gr-cell.is-o { background: rgba(var(--gr-o-rgb), 0.14); border-color: rgba(var(--gr-o-rgb), 0.55); }
+.gr-cell.is-o .gr-mark { color: var(--gr-o); }
+.gr-cell.is-line { box-shadow: inset 0 0 0 2px currentColor; }
+.gr-cell.is-x.is-line { color: var(--gr); }
+.gr-cell.is-o.is-line { color: var(--gr-o); }
+.gr-cell.is-mark .gr-cell-name { color: var(--t1); font-size: 11px; -webkit-line-clamp: 2; }
+.is-duel .gr-cell:disabled { opacity: 1; }
 
 .gr-final { margin-top: 14px; text-align: center; animation: grRise 260ms ease-out both; }
 .gr-score { font-size: 34px; line-height: 1; font-weight: 900; color: var(--t1); font-variant-numeric: tabular-nums; }

@@ -32,12 +32,52 @@ export const GRID = {
 };
 
 /**
+ * A header is a string, stored by name or id and never by index (see
+ * scripts/gen-grid-schedule.mjs):
+ *   "FC Barcelona"   a club: the career name, as v1 had it
+ *   "nat:Argentina"  a nationality: "from Argentina"
+ *   "in:Germany"     a spell at a club in that country (grid-club-countries.mjs)
+ *   "with:Q615"      a spell overlapping that star's at the same club by a
+ *                    season (overlapYears in build-grid-pool.mjs)
+ */
+export function headerKind(h) {
+  const m = /^(nat|in|with):(.+)$/.exec(String(h || ""));
+  return m ? { t: m[1], v: m[2] } : { t: "club", v: String(h || "") };
+}
+
+// Each star's teammates as a Set, once per pool.
+const MATES = new WeakMap();
+function matesOf(pool, star) {
+  if (!pool.mates) return null;
+  let m = MATES.get(pool.mates);
+  if (!m) { m = new Map(); MATES.set(pool.mates, m); }
+  if (!m.has(star)) m.set(star, new Set(pool.mates[star] || []));
+  return m.get(star);
+}
+
+/**
+ * Whether our record shows this player meeting one header. false means "not
+ * in our record", never "not true" (see the note on UNCONFIRMED).
+ */
+export function fits(pool, id, header) {
+  const cs = pool.players[id];
+  if (!cs) return false;
+  const { t, v } = headerKind(header);
+  if (t === "club") return cs.some((i) => pool.clubs[i] === v);
+  if (t === "nat") return pool.natNames != null && pool.natNames[pool.nat?.[id]] === v;
+  if (t === "in") return cs.some((i) => pool.country?.[i] === v);
+  return !!matesOf(pool, v)?.has(id);
+}
+
+/**
  * Judge one typed guess against one cell.
  *
  * @param {object}   pool     { players: {id: [clubIdx]}, clubs: string[], index: [{id,name}] }
+ *                            and, for the other headers, natNames/nat, country, mates
+ *                            (toJudgePool)
  * @param {string}   typed    what the player wrote
- * @param {string}   rowClub  display name of the row's club
- * @param {string}   colClub  display name of the column's club
+ * @param {string}   rowClub  the row's header: a club's name, or "nat:", "in:", "with:" (headerKind)
+ * @param {string}   colClub  the column's header, the same way
  */
 export function judgeCell(pool, typed, rowClub, colClub) {
   const text = String(typed || "").trim();
@@ -47,11 +87,9 @@ export function judgeCell(pool, typed, rowClub, colClub) {
   if (!hit) return { result: GRID.UNKNOWN, player: null };
   // matchGuess returns null on an ambiguous surname; a caller that wants to
   // distinguish "nobody" from "which one?" passes an explicit resolver.
-  const clubIdx = pool.players[hit.id];
-  if (!clubIdx) return { result: GRID.UNCONFIRMED, player: hit };
+  if (!pool.players[hit.id]) return { result: GRID.UNCONFIRMED, player: hit };
 
-  const names = new Set(clubIdx.map((i) => pool.clubs[i]));
-  const ok = names.has(rowClub) && names.has(colClub);
+  const ok = fits(pool, hit.id, rowClub) && fits(pool, hit.id, colClub);
   return { result: ok ? GRID.CORRECT : GRID.UNCONFIRMED, player: hit };
 }
 
@@ -114,11 +152,15 @@ export function gridForDay(schedule, day) {
 
 /**
  * The object judgeCell expects, from src/data/gridPool.json (written by
- * scripts/build-grid-pool.mjs --write: { c: clubs, p: players }) and the names,
- * which live in mysteryPool.json (the same index the club-page grid uses).
+ * scripts/build-grid-pool.mjs --write: { c: clubs, p: players, N: nations,
+ * n: nation per player, k: country per club, m: teammates per star }) and the
+ * names, which live in mysteryPool.json (the same index the club-page grid uses).
  */
 export function toJudgePool(gridPool, index) {
-  return { clubs: gridPool.c, players: gridPool.p, index };
+  return {
+    clubs: gridPool.c, players: gridPool.p, index,
+    natNames: gridPool.N, nat: gridPool.n, country: gridPool.k, mates: gridPool.m,
+  };
 }
 
 /**
@@ -184,18 +226,41 @@ function homonymsOf(index) {
  * result is the one the full index gives at a fraction of the cost.
  */
 export function cellAnswers(pool, rowClub, colClub) {
-  const ri = pool.clubs.indexOf(rowClub), ci = pool.clubs.indexOf(colClub);
-  if (ri < 0 || ci < 0) return [];
   const groups = homonymsOf(pool.index);
   const out = [];
   for (const p of pool.index) {
-    const cs = pool.players[p.id];
-    if (!cs || !cs.includes(ri) || !cs.includes(ci)) continue;
+    if (!fits(pool, p.id, rowClub) || !fits(pool, p.id, colClub)) continue;
     const same = groups.get(normaliseName(p.name)) || [p];
     const r = judgeCell({ ...pool, index: same }, p.name, rowClub, colClub);
     if (r.result === GRID.CORRECT && r.player.id === p.id) out.push(p);
   }
   return out.sort((a, b) => (b.fame || 0) - (a.fame || 0));
+}
+
+/**
+ * The rarity score for one right answer, Immaculate Grid's idea turned round
+ * so that more is better: 100 minus the share of players who would have named
+ * him. We have no pick counts, so the share is modelled from fame: the cell's
+ * answers (cellAnswers, most famous first) are picked in proportion to
+ * 1 / (rank + 1), the long tail of a popularity list. The most famous answer
+ * scores lowest; the obscure end scores in the 90s.
+ *
+ * Players of equal fame share a rank. A right answer cellAnswers does not offer
+ * (a pick whose typed name would reach a namesake) counts as the rarest.
+ *
+ * @param {{id: string, fame?: number}[]} answers  cellAnswers for the cell
+ * @param {string} id                              the player named
+ * @returns {number} 1..99
+ */
+export function rarityScore(answers, id) {
+  const n = answers.length;
+  if (!n) return 0;
+  const me = answers.find((p) => p.id === id);
+  const rank = me ? answers.filter((p) => (p.fame || 0) > (me.fame || 0)).length : n - 1;
+  let h = 0;
+  for (let i = 1; i <= n; i++) h += 1 / i;
+  const share = 100 / (rank + 1) / h;
+  return Math.min(99, Math.max(1, Math.round(100 - share)));
 }
 
 const GRID_KEY = "biq_grid_";
@@ -210,7 +275,8 @@ export const freshGrid = () => ({ cells: Array(9).fill(null), left: GRID_GUESSES
 export function restoreGrid(saved) {
   if (!saved || !Array.isArray(saved.cells) || saved.cells.length !== 9) return null;
   if (!Number.isInteger(saved.left) || saved.left < 0 || saved.left > GRID_GUESSES) return null;
-  const cells = saved.cells.map((c) => (c && typeof c.id === "string" && typeof c.name === "string" ? { id: c.id, name: c.name } : null));
+  const pts = (c) => (Number.isInteger(c.pts) && c.pts >= 0 && c.pts <= 100 ? c.pts : 0);
+  const cells = saved.cells.map((c) => (c && typeof c.id === "string" && typeof c.name === "string" ? { id: c.id, name: c.name, pts: pts(c) } : null));
   const ids = cells.filter(Boolean).map((c) => c.id);
   if (new Set(ids).size !== ids.length) return null; // a player is used once per board
   if (ids.length > GRID_GUESSES - saved.left) return null; // more cells filled than guesses spent
@@ -218,6 +284,9 @@ export function restoreGrid(saved) {
 }
 
 export const gridOver = (g) => g.gaveUp || g.left <= 0 || g.cells.every(Boolean);
+
+/** The board's rarity score: the sum of its cells' (rarityScore), out of 900. */
+export const gridRarity = (g) => g.cells.reduce((s, c) => s + (c?.pts || 0), 0);
 
 export function loadGrid(day) {
   try { return restoreGrid(JSON.parse(localStorage.getItem(GRID_KEY + day) || "null")); } catch { return null; }
@@ -238,7 +307,100 @@ export function pruneGrids(today, keepDays = 7) {
 }
 
 /** The text share: the board as squares, row by row. */
-export function buildGridShareText({ cells, head, url }) {
+export function buildGridShareText({ cells, head, score, url }) {
   const rows = [0, 1, 2].map((r) => cells.slice(r * 3, r * 3 + 3).map((c) => (c ? "🟩" : "⬛")).join(""));
-  return [head, ...rows, url].join("\n");
+  return [head, ...rows, ...(score ? [score] : []), url].join("\n");
+}
+
+// ── Headers that are not clubs ───────────────────────────────────────────────
+
+/**
+ * The flag for a nation or country header, as the app draws flags elsewhere: a
+ * plain emoji (scripts/seo/leagues.mjs, components/TopicPickerSheet.jsx).
+ * England's is the subdivision flag, not the Union Jack.
+ */
+export const GRID_FLAGS = {
+  Argentina: "🇦🇷", Belgium: "🇧🇪", Brazil: "🇧🇷", Croatia: "🇭🇷", England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", France: "🇫🇷",
+  Germany: "🇩🇪", Italy: "🇮🇹", Netherlands: "🇳🇱", Portugal: "🇵🇹", Spain: "🇪🇸", Turkey: "🇹🇷", Uruguay: "🇺🇾",
+};
+
+// ── Two players, one phone (the reference game's versus mode) ────────────────
+//
+// X and O take turns on one board. To put your mark on a square you name a
+// player for it; three in a row wins. Each side has three steals: a square the
+// other side holds can be taken by naming a DIFFERENT player for it. A player
+// can be named once a game, so a steal can never reuse the name it replaces.
+//
+// ⚠️ THE SAME NEVER-DENY RULE. A name we cannot confirm loses the turn, and the
+// copy says we could not confirm him, never that he is wrong.
+
+export const DUEL_STEALS = 3;
+const LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+const other = (m) => (m === "X" ? "O" : "X");
+
+export const freshDuel = () => ({
+  cells: Array(9).fill(null), turn: "X", steals: { X: DUEL_STEALS, O: DUEL_STEALS }, used: [], winner: null, line: null, draw: false,
+});
+
+/** The three squares of a finished line, or null. */
+export function duelLine(cells) {
+  for (const l of LINES) {
+    const m = cells[l[0]]?.mark;
+    if (m && l.every((i) => cells[i]?.mark === m)) return l;
+  }
+  return null;
+}
+
+/** What the side to move may do with a square: "claim", "steal" or a reason it may not. */
+export function duelAction(state, i) {
+  if (state.winner || state.draw) return "over";
+  const c = state.cells[i];
+  if (!c) return "claim";
+  if (c.mark === state.turn) return "own";
+  return state.steals[state.turn] > 0 ? "steal" : "noSteals";
+}
+
+// Hand the turn on. On a full board, a side with no steals left has no move,
+// so the turn goes back to the side that has one; with none left either side,
+// the game is drawn.
+function nextTurn(s) {
+  const full = s.cells.every(Boolean);
+  const to = other(s.turn);
+  if (!full) return { ...s, turn: to };
+  if (s.steals[to] > 0) return { ...s, turn: to };
+  if (s.steals[s.turn] > 0) return s;
+  return { ...s, draw: true };
+}
+
+/**
+ * Play one judged name on square i. `result` is judgeCell's (or judgePick's)
+ * for that square. UNKNOWN and AMBIGUOUS change nothing: the side asks again.
+ * @returns {{ state: object, outcome: "placed"|"stolen"|"won"|"draw"|"unconfirmed"|"used"|"retry"|"own"|"noSteals"|"over" }}
+ */
+export function duelPlay(state, i, result, player) {
+  const act = duelAction(state, i);
+  if (act !== "claim" && act !== "steal") return { state, outcome: act };
+  if (result !== GRID.CORRECT && result !== GRID.UNCONFIRMED) return { state, outcome: "retry" };
+  if (state.used.includes(player.id)) return { state, outcome: "used" };
+  const steals = act === "steal" ? { ...state.steals, [state.turn]: state.steals[state.turn] - 1 } : state.steals;
+  if (result === GRID.UNCONFIRMED) {
+    // A steal that fails is still spent: otherwise a steal could be tried for free every turn.
+    return { state: nextTurn({ ...state, steals }), outcome: "unconfirmed" };
+  }
+  const cells = state.cells.map((c, k) => (k === i ? { mark: state.turn, id: player.id, name: player.name } : c));
+  const s = { ...state, cells, steals, used: [...state.used, player.id] };
+  const line = duelLine(cells);
+  if (line) return { state: { ...s, winner: state.turn, line }, outcome: "won" };
+  const n = nextTurn(s);
+  return { state: n, outcome: n.draw ? "draw" : act === "steal" ? "stolen" : "placed" };
+}
+
+/**
+ * The side to move gives up the turn. On a full board where the other side has
+ * no steals left, nobody else can move, so passing ends the game as a draw.
+ */
+export function duelPass(state) {
+  if (state.winner || state.draw) return state;
+  const n = nextTurn(state);
+  return n.turn === state.turn && !n.draw ? { ...state, draw: true } : n;
 }

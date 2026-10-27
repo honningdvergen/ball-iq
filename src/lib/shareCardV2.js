@@ -180,14 +180,17 @@ const MODES = {
     },
   },
   // Tiki Taka Toe (screens/GridGame.jsx): the board as nine squares, filled
-  // where a player was named. Which player, and which clubs, stay off the card.
+  // where a player was named, and the rarity score (lib/grid.js, rarityScore).
+  // Which player, and which clubs, stay off the card.
   grid: {
     acc: '#5FD39A', name: 'TIKI TAKA TOE', path_: 'grid',
     hero: (d) => [String((d.cells || []).filter(Boolean).length), '/9'],
     label: () => 'squares filled',
     brag: (d) => {
       const n = (d.cells || []).filter(Boolean).length;
-      return n === 9 ? 'A full grid' : n >= 6 ? 'Proper fan' : d.streak > 1 ? `🔥 ${d.streak}-day streak` : '';
+      const head = n === 9 ? 'A full grid' : n >= 6 ? 'Proper fan' : d.streak > 1 ? `🔥 ${d.streak}-day streak` : '';
+      const rarity = Number.isInteger(d.rarity) && d.rarity > 0 ? `Rarity ${d.rarity}` : '';
+      return [head, rarity].filter(Boolean).join(' · ');
     },
     path(ctx, d, acc) {
       const cells = Array.from({ length: 9 }, (_, i) => !!(d.cells || [])[i]);
