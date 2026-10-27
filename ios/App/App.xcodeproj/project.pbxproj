@@ -18,6 +18,7 @@
 		FB00000000000000000000A1 /* ShareCardPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00000000000000000000A1 /* ShareCardPlugin.swift */; };
 		FB00000000000000000000A2 /* ShareCardPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = FA00000000000000000000A2 /* ShareCardPlugin.m */; };
 		FB00000000000000000000A3 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00000000000000000000A3 /* MainViewController.swift */; };
+		FB00000000000000000000A4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00000000000000000000A4 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		FA00000000000000000000A1 /* ShareCardPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCardPlugin.swift; sourceTree = "<group>"; };
 		FA00000000000000000000A2 /* ShareCardPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareCardPlugin.m; sourceTree = "<group>"; };
 		FA00000000000000000000A3 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		FA00000000000000000000A4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FC68EB0AF532CFC21C3344DD /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,6 +86,7 @@
 				FA00000000000000000000A1 /* ShareCardPlugin.swift */,
 				FA00000000000000000000A2 /* ShareCardPlugin.m */,
 				FA00000000000000000000A3 /* MainViewController.swift */,
+				FA00000000000000000000A4 /* SceneDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
 				504EC30E1FED79650016851F /* Assets.xcassets */,
 				504EC3101FED79650016851F /* LaunchScreen.storyboard */,
@@ -222,6 +225,7 @@
 				FB00000000000000000000A1 /* ShareCardPlugin.swift in Sources */,
 				FB00000000000000000000A2 /* ShareCardPlugin.m in Sources */,
 				FB00000000000000000000A3 /* MainViewController.swift in Sources */,
+				FB00000000000000000000A4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
