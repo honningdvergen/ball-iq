@@ -25,8 +25,13 @@
 // actually produce a 3x3 is exactly the failure that would ship silently.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { CLUB_COUNTRIES } from './grid-club-countries.mjs';
 
-export function buildPool({ headerMin = Number(process.env.HEADER_MIN ?? 12) } = {}) {
+// `minClubs`: the club-page grids (gen-grid-clubs.mjs, seo/grid-section.mjs)
+// cross a club with a club, so a one-club player can never answer and is
+// dropped (2). The daily grid also crosses clubs with a nation, a country and a
+// teammate, where a one-club player can (buildDailyPool passes 1).
+export function buildPool({ headerMin = Number(process.env.HEADER_MIN ?? 12), minClubs = 2 } = {}) {
 const R = (p) => JSON.parse(readFileSync(fileURLToPath(new URL(p, import.meta.url)), 'utf8'));
 const careers = R('../src/data/mysteryCareers.json');
 const pool = R('../src/data/mysteryPool.json');
@@ -65,6 +70,7 @@ CLUBS.forEach((name, i) => {
 });
 
 const players = {};
+const spellsOf = {};   // pid -> [[club, from, to]], kept senior clubs with a start year
 const nations = {};
 let droppedWomens = 0, droppedNoClub = 0, droppedUnknown = 0;
 
@@ -81,9 +87,11 @@ for (const [pid, spells] of Object.entries(SPELLS)) {
   // than a false negative: the player never learns they were told wrong.
   const cs = [...new Set(spells.filter((s) => s[1] != null).map((s) => s[0]).filter((c) => keptClubIdx.has(c)))]
     .map((c) => keptClubIdx.get(c));
-  // A grid needs INTERSECTIONS, so a one-club player can never fill a cell.
-  if (cs.length < 2) { droppedNoClub++; continue; }
+  // A club x club grid needs INTERSECTIONS, so a one-club player can never fill
+  // one of its cells (see minClubs).
+  if (cs.length < minClubs) { droppedNoClub++; continue; }
   players[pid] = cs;
+  spellsOf[pid] = spells.filter((s) => s[1] != null && keptClubIdx.has(s[0])).map((s) => [keptClubIdx.get(s[0]), s[1], s[2]]);
   if (meta.nat) nations[pid] = meta.nat;
 }
 
@@ -138,7 +146,7 @@ const pct = (n, d) => (d ? Math.round((100 * n) / d) : 0);
   if (biggestNatShare > 0.18) fail.push(`${topNat[0][0]} is ${pct(topNat[0][1].size, Object.keys(players).length)}% of the pool (max 18%)`);
 
   return {
-    clubs: keptClubs, players, nations, clubPlayers, natPlayers,
+    clubs: keptClubs, players, spells: spellsOf, nations, clubPlayers, natPlayers, byId,
     headers: { clubs: clubHeaders, nations: natHeaders },
     stats: {
       players: Object.keys(players).length, sourcePlayers: Object.keys(SPELLS).length,
@@ -151,6 +159,64 @@ const pct = (n, d) => (d ? Math.round((100 * n) / d) : 0);
     },
     fail,
   };
+}
+
+// ── The daily grid's pool (src/data/gridPool.json) ─────────────────────────
+// Tiki Taka Toe crosses a club with a club, a nation ("from Argentina"), a
+// country ("played in Germany") or a teammate ("played with Messi"). Each kind
+// is written out here, so the client judges with lookups and holds no rule of
+// its own that could drift from this one.
+
+/** A star is a teammate header from this fame up (mysteryPool's `fame`). */
+export const STAR_FAME = 150;
+// A spell with no end year is still running when the careers were harvested.
+const NOW = 2026;
+
+/**
+ * ⚠️ TEAMMATES BY A FULL SEASON, NOT A SHARED YEAR. Spells carry years only, so
+ * "2004-2005" and "2005-2010" share 2005 and may never have met: one left in
+ * the summer the other arrived. Two spells at one club count only when they
+ * overlap by at least a year. A pair who did meet for half a season is missed,
+ * which the judge reports as "can't confirm"; it never accepts a pair who
+ * did not meet.
+ */
+export const overlapYears = (a, b) => Math.min(a[2] ?? NOW, b[2] ?? NOW) - Math.max(a[1], b[1]);
+
+export function buildDailyPool() {
+  const P = buildPool({ minClubs: 1 });
+  const ids = Object.keys(P.players);
+
+  // Nations as an index into one list: most players share a dozen of them.
+  const N = [...new Set(ids.map((id) => P.nations[id]).filter(Boolean))].sort();
+  const natIdx = new Map(N.map((n, i) => [n, i]));
+  const n = {};
+  for (const id of ids) if (P.nations[id]) n[id] = natIdx.get(P.nations[id]);
+
+  // The clubs placed in a country, by pool index.
+  const at = new Map(P.clubs.map((c, i) => [c, i]));
+  const k = {};
+  const missing = [];
+  for (const [country, clubs] of Object.entries(CLUB_COUNTRIES)) {
+    for (const c of clubs) {
+      if (!at.has(c)) { missing.push(c); continue; }
+      k[at.get(c)] = country;
+    }
+  }
+
+  // Each star's teammates: anyone with a spell at one of his clubs that
+  // overlaps his by a season (overlapYears).
+  const stars = ids.filter((id) => (P.byId.get(id)?.fame ?? 0) >= STAR_FAME);
+  const m = {};
+  for (const s of stars) {
+    const mine = P.spells[s];
+    const mates = [];
+    for (const id of ids) {
+      if (id === s) continue;
+      if (P.spells[id].some((a) => mine.some((b) => a[0] === b[0] && overlapYears(a, b) >= 1))) mates.push(id);
+    }
+    m[s] = mates.sort();
+  }
+  return { ...P, missingCountryClubs: missing, daily: { c: P.clubs, p: P.players, N, n, k, m } };
 }
 
 // ── CLI ────────────────────────────────────────────────────────────────────
@@ -174,9 +240,18 @@ if (fail.length) {
 }
 console.log('  ✓ all gates pass');
 
+const D = buildDailyPool();
+const mates = Object.entries(D.daily.m).map(([id, l]) => `${D.byId.get(id)?.name} ${l.length}`).join(' · ');
+console.log(`\n  daily pool: ${Object.keys(D.daily.p).length} players · ${D.daily.N.length} nations · ${Object.keys(D.daily.k).length} clubs placed in a country`);
+console.log(`    stars (fame ${STAR_FAME}+) and teammates: ${mates}`);
+if (D.missingCountryClubs.length) {
+  console.error(`  ✗ NOT WRITTEN — grid-club-countries.mjs names clubs the pool does not hold: ${D.missingCountryClubs.join(', ')}`);
+  process.exit(1);
+}
+
 if (process.argv.includes('--write')) {
   const out = fileURLToPath(new URL('../src/data/gridPool.json', import.meta.url));
-  writeFileSync(out, JSON.stringify({ c: P.clubs, p: P.players, n: P.nations, headers }));
+  writeFileSync(out, JSON.stringify(D.daily));
   console.log(`  → wrote ${out}`);
 } else {
   console.log('  (report only — pass --write to emit src/data/gridPool.json)\n');

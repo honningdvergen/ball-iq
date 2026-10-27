@@ -164,6 +164,9 @@ const Top10 = React.lazy(() => import('./screens/Top10.jsx'));
 const Top10Library = React.lazy(() => import('./screens/Top10Library.jsx'));
 // Numbered (Draft No. N) but not one of the four dailies: see the note in the screen.
 const Draft = React.lazy(() => import('./screens/Draft.jsx'));
+// Tiki Taka Toe, the football grid. Hidden (GRID_LIVE, lib/grid.js): reachable
+// only as /play?game=grid until Alex has played it.
+const GridGame = React.lazy(() => import('./screens/GridGame.jsx'));
 const StadiumGame = React.lazy(() => import('./screens/StadiumGame.jsx'));
 const MysteryPlayer = React.lazy(() => import('./screens/MysteryPlayer.jsx'));
 const OnlineEntry = React.lazy(() => import('./screens/OnlineMultiplayer.jsx').then(m => ({ default: m.OnlineEntry })));
@@ -2747,6 +2750,7 @@ const LOADING_KEY = {
   "Loading lobby": "ld.lobby", "Loading Transfer Trail": "ld.trail", "Loading Top 10": "ld.top10",
   "Loading Stitch-up": "ld.stitch", "Loading the table": "ld.table", "Loading Top 10 lists": "ld.top10lib",
   "Loading Draft": "ld.draft", "Loading Mystery Player": "ld.mystery", "Loading Stadiums": "ld.stadiums",
+  "Loading Tiki Taka Toe": "ld.grid",
   "Getting your questions": "ld.questions",
 };
 function ScreenLoading({ label = "Loading" }) {
@@ -3416,7 +3420,7 @@ function AppInner() {
       // ?game=mystery link must not hold the boot screen for a hidden mode.
       // The front door (2026-09-03) links every mode as ?game=<mode>; all of
       // them bypass onboarding — a visitor who chose a game must not be walled.
-      if (["footle", "trail", "top10", "top10lists", "draft", "daily", "classic", "survival", "hotstreak", "legends", "chaos", "stadiums", "clubquiz", "leaguequiz", "online", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
+      if (["footle", "trail", "top10", "top10lists", "draft", "grid", "daily", "classic", "survival", "hotstreak", "legends", "chaos", "stadiums", "clubquiz", "leaguequiz", "online", ...(MYSTERY_ENABLED ? ["mystery"] : [])].includes(sp.get("game"))) return true;
       if (/^q_[a-z0-9]+$/.test((sp.get("eq") || "").trim().toLowerCase())) return true; // email answer link — the verdict must not land behind onboarding
       if (normalizeJoinCode(sp.get("join"))) return true; // legacy query-form invite
       if (/^q_[a-z0-9]+$/.test((sp.get("stump") || "").trim().toLowerCase())) return true;
@@ -5428,6 +5432,7 @@ function AppInner() {
       if (gameSlug === "top10") { setTop10ListId(listSlug || null); setScreen("top10"); return; }
       if (gameSlug === "top10lists") { setScreen("top10lib"); return; }
       if (gameSlug === "draft") { setScreen("draft"); return; }
+      if (gameSlug === "grid") { setScreen("grid"); return; }
       // Front-door doors (2026-09-03): every card on the website homepage is a
       // link, so every mode needs a URL. startMode owns the mode's own rules
       // (difficulty sheet for classic, done-state for dailies).
@@ -6684,7 +6689,7 @@ function AppInner() {
   // times -- twice inline, once inside an effect -- which is exactly how the
   // join gate and the web chrome came to disagree with the analytics that
   // already counted all seven. One value, so they cannot drift again.
-  const playing = inGame || ["wordle","trail","top10","draft","mystery","stadiums"].includes(screen);
+  const playing = inGame || ["wordle","trail","top10","draft","grid","mystery","stadiums"].includes(screen);
   // Departure tracking for game-abandon (see the playing effect below).
   const playStartRef = useRef(null);
   const playModeRef = useRef(null);
@@ -7521,7 +7526,7 @@ function AppInner() {
                 "Name the Stadium" header on every phone (player-reported
                 2026-08-21). The list is the contract: if your screen draws its
                 own title, it belongs in it. */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "grid", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -8336,6 +8341,9 @@ function AppInner() {
         )}
         {screen === "draft" && (
           <TabErrorBoundary name="draft" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Draft" />}><Draft onBack={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+        )}
+        {screen === "grid" && (
+          <TabErrorBoundary name="grid" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Tiki Taka Toe" />}><GridGame onBack={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "mystery" && (
           <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>

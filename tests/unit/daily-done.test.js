@@ -214,8 +214,9 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(APP).toMatch(/services=\{footleServices\}/);
     // Transfer Trail, Mystery Player and Top 10, and the Draft (not a daily
     // yet, but it takes the same haptics, sounds and confetti), and Stitch-up
-    // (the Trail's board as a one-off; it never announces a daily).
-    expect((APP.match(/services=\{dailyScreenServices\}/g) || []).length).toBe(5);
+    // (the Trail's board as a one-off; it never announces a daily), and
+    // Tiki Taka Toe (hidden behind GRID_LIVE; it shares as a picture).
+    expect((APP.match(/services=\{dailyScreenServices\}/g) || []).length).toBe(6);
     expect(APP).toMatch(/dailyDone=\{dailyDoneServices\}/);
     // The TDZ rule: the memo must not reference a const declared below it.
     expect(APP.indexOf('const dailyDoneServices')).toBeGreaterThan(APP.indexOf('const startMode'));
