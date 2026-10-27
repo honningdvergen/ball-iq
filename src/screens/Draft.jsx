@@ -413,10 +413,9 @@ function Season({ shareCard, result, number, picks, shown, played, hard, isPract
     // Messages (23 Oct). The text stays as the fallback, and on the web pages.
     if (shareCard) {
       const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
-      await shareCard("draft", { num: number, pts: se.pts, w: se.w, d: se.d, l: se.l, par, matches: se.matches.map((m) => m.r), deepLink: "/play?game=draft" }, { textFallback: text, onToast: toast });
-      return;
+      return shareCard("draft", { num: number, pts: se.pts, w: se.w, d: se.d, l: se.l, par, matches: se.matches.map((m) => m.r), deepLink: "/play?game=draft" }, { textFallback: text, onToast: toast });
     }
-    try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return; }
+    try { if (navigator.share) { await navigator.share({ text }); return; } } catch { return false; }
     try {
       await navigator.clipboard.writeText(text);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: tNow("share.pasteAnywhere") }));

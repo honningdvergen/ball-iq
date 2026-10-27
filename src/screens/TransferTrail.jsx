@@ -295,10 +295,9 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     // text was a row of emoji balls, which chats blow up (23 Oct).
     if (shareCard) {
       const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
-      await shareCard("trail", { num: number, won, clubsUsed, max: TRAIL_MAX_ATTEMPTS, streak, deepLink: "/trail" }, { textFallback: shareText, onToast: toast });
-      return;
+      return shareCard("trail", { num: number, won, clubsUsed, max: TRAIL_MAX_ATTEMPTS, streak, deepLink: "/trail" }, { textFallback: shareText, onToast: toast });
     }
-    try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return; }
+    try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return false; }
     try {
       await navigator.clipboard.writeText(shareText);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: `📋 ${tNow("game.copied")}` }));

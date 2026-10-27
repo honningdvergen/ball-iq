@@ -56,7 +56,8 @@ export const DEFAULT_SERVICES = {
       // AbortError is the user closing the share sheet — nothing to say. Any
       // other failure (no clipboard, unfocused document) must not be silent:
       // a button that does nothing is the one thing a result card cannot have.
-      if (e?.name !== 'AbortError') onToast?.(t('game.copyFailed'));
+      if (e?.name === 'AbortError') return false; // no "Shared" tick for a dismissed sheet
+      onToast?.(t('game.copyFailed'));
     }
   },
   Confetti: null,
@@ -545,7 +546,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     // Build the per-guess grades grid for the canvas card. Each guess is an
     // array of "green" | "yellow" | "grey" matching the in-app tile colours.
     const grades = state.guesses.map((g) => gradeWordleGuess(g, answer));
-    await shareCard("wordle", {
+    return shareCard("wordle", {
       score: state.guesses.length,
       total: 6,
       grades,

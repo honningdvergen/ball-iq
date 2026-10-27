@@ -272,7 +272,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const doShare = async () => {
     if (busy) return;
     setBusy(true); track?.("dd-share", { game });
-    try { await onShare?.(); setShared(true); setTimeout(() => setShared(false), 2200); }
+    // A dismissed sheet resolves false: no "Shared" tick for a share that never happened.
+    try { const ok = await onShare?.(); if (ok !== false) { setShared(true); setTimeout(() => setShared(false), 2200); } }
     finally { setBusy(false); }
   };
   const doRemind = async () => {

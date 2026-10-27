@@ -325,13 +325,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     if (shareCard) {
       const toast = (m) => window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: m }));
       const bands = [...rows].sort((a, b) => b.rank - a.rank).map((g) => g.band);
-      await shareCard('mystery', { num: mysteryNumber(date), won: w, bands, streak: w ? streak : 0, deepLink: '/mystery' }, { textFallback: text, onToast: toast });
-      return;
+      return shareCard('mystery', { num: mysteryNumber(date), won: w, bands, streak: w ? streak : 0, deepLink: '/mystery' }, { textFallback: text, onToast: toast });
     }
     try {
       if (navigator.share) await navigator.share({ text });
       else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('game.copiedShort') })); } catch {} }
-    } catch { /* dismissed or blocked — nothing to recover */ }
+    } catch { return false; /* dismissed or blocked — nothing to recover */ }
   };
   const revealPos = hintPosition(answer, ROLES);
   const n = guesses.length;

@@ -107,7 +107,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     } catch (e) {
       // Cancelling the sheet is not a failure and must not produce a
       // "Copied to clipboard" toast for a share that never happened.
-      if (e && e.name === "AbortError") { loopEvent("share-daily-cancel"); return; }
+      if (e && e.name === "AbortError") { loopEvent("share-daily-cancel"); return false; }
     }
     try {
       await navigator.clipboard.writeText(text);
@@ -120,7 +120,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
   const shareDaily = useCallback(() => {
     loopEvent("share-daily");
     const who = resolveChallengerName();
-    if (!who) { setShareNameDraft(""); askShareNameRef.current = true; setAskShareName(true); return undefined; }
+    if (!who) { setShareNameDraft(""); askShareNameRef.current = true; setAskShareName(true); return false; }
     return performDailyShare(who);
   }, [resolveChallengerName, performDailyShare]);
   const submitShareName = useCallback((who) => {

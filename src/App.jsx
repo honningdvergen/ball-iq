@@ -2034,9 +2034,11 @@ export async function shareCard(type, data, opts = {}) {
       // Preferred: local ShareCardPlugin — card + per-target text item
       // (text withheld from Snapchat-class extensions; see plugin header).
       try {
-        await NativeShareCard.share({ fileUrl: uri, text: SHARE_LINE });
+        const res = await NativeShareCard.share({ fileUrl: uri, text: SHARE_LINE });
         Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
-        return; // resolves on share AND on sheet-dismiss — both are final
+        // Resolves on share AND on sheet-dismiss. iOS says which in `completed`
+        // (Android's chooser cannot know, and always reports true).
+        return res?.completed !== false;
       } catch (err) {
         // Plugin missing ('not implemented') or failed — fall back to the
         // proven file-only sheet via @capacitor/share. No text: text+image
@@ -2044,11 +2046,11 @@ export async function shareCard(type, data, opts = {}) {
         try {
           await CapShare.share({ files: [uri] });
           Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
-          return;
+          return true;
         } catch (err2) {
           Filesystem.deleteFile({ path: fname, directory: Directory.Cache }).catch(() => {});
           // Dismissed sheet surfaces as "Share canceled" — user intent.
-          if (/cancel/i.test(err2?.message || "")) return;
+          if (/cancel/i.test(err2?.message || "")) return false;
           // Anything else: fall through to the web chain below.
         }
       }
@@ -2060,11 +2062,11 @@ export async function shareCard(type, data, opts = {}) {
     if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
       // files + text (link inline), still no url field — see SHARE_LINE note.
       await navigator.share({ files: [file], text: SHARE_LINE });
-      return;
+      return true;
     }
   } catch (err) {
     // Some platforms reject on user dismiss — bail without falling further.
-    if (err && err.name === "AbortError") return;
+    if (err && err.name === "AbortError") return false;
   }
 
   // Download fallback — works on desktop browsers and mobile platforms that
