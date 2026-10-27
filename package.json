@@ -22,6 +22,7 @@
     "test:spike-2": "node scripts/spike-2-advance-race.mjs",
     "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs",
     "test:unit": "vitest run",
+    "test:site": "node scripts/test-site.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "gen:index": "node scripts/gen-questions-index.mjs",

@@ -32,6 +32,7 @@ import {
   formatAsOf,
   fitTop10Board, hasLongWord, doneRowFor, T10_SHORT_UNDER,
   T10_ROW_MAX,
+  top10GuessPool,
 } from "../lib/top10.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { DailyDone } from "../components/DailyDone.jsx";
@@ -239,18 +240,10 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
   }, [g.done, g.perfect, g.score, g.wrong.length, total, isArchive, ymd]);
 
   // ── The guess box ──────────────────────────────────────────────────────────
-  const { pool, ensure: ensurePool } = usePlayerPool();
+  const { pool, ensure: ensurePool } = usePlayerPool({ extras: true });
   const playerPool = useMemo(() => {
     if (list.kind !== "player") return [];
-    const all = [...pool, ...(data.extras || []).map((e) => ({ id: e.key, name: e.name, fame: 0 }))];
-    // A list fetched from the site can name a player this build's own pool
-    // does not hold yet (the pool grows between builds). Every answer must be
-    // typeable, so once the pool is in, anyone on this list it lacks is added.
-    if (pool.length) {
-      const have = new Set(all.map((p) => p.id));
-      for (const e of [...list.slots, ...(list.near || [])]) if (!have.has(e.key)) { have.add(e.key); all.push({ id: e.key, name: e.name, fame: 0 }); }
-    }
-    return all;
+    return top10GuessPool(list, pool, data.extras);
   }, [list, pool, data.extras]);
   const suggestions = useMemo(() => {
     if (g.done) return [];

@@ -85,7 +85,12 @@ import { gradeGuess } from '../src/marketing/footlePractice.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-import { QB } from '../src/questions.js';
+import { QB as QB_ALL } from '../src/questions.js';
+import { RETIRED_TAGS } from '../src/lib/quiz.js';
+// Retired rows (tag in RETIRED_TAGS: unverified, duplicate, ...) never reach
+// the web pages either. Until 26 Oct 2026 only the app filtered them, so a
+// question retired as unverified stayed on its club page.
+const QB = QB_ALL.filter((q) => !q.tag || !RETIRED_TAGS.has(q.tag));
 // The web palette. Shared with the marketing homepage (via design/tokens.css)
 // so the two surfaces cannot drift apart the way they already had -- the
 // homepage was still painting #1A1D27, a colour app.css:57 records the product
@@ -106,7 +111,7 @@ import { CLUB_PACK_ABBR, CLUB_PACK_COLOURS, CLUB_NAME_TO_COMP } from '../src/dat
 // Display-only: a digit-hyphen-digit ("6-1") gets U+2011 so it never wraps.
 // Used where a question's stem or option is drawn on a page, never on the
 // bank, JSON-LD or anything that is matched or copied.
-import { noBreakScores } from '../src/lib/noBreakScore.js';
+import { nbHtml } from './seo/nb-html.mjs';
 import { CLUBS_ES } from './seo/clubs-es.mjs';
 import { CLUBS_PT } from './seo/clubs-pt.mjs';
 import { CLUBS_TR } from './seo/clubs-tr.mjs';
@@ -131,6 +136,8 @@ import { STUDY, studyStats } from './seo/study.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { LEAGUES } from './seo/leagues.mjs';
 import { competitionFor } from './seo/club-competition.mjs';
+import { PRUNED, noindexHtml } from './seo/prune.mjs';
+import { lastmodFor, lastmodForHtml, contentKeyOf, flushLastmodStore, niceDate } from './seo/lastmod.mjs';
 // Footle answer schedule + the real grading function, for the playable practice
 // board on /football-wordle/. Importing the GAME's own module is deliberate:
 // the grader is inlined from `gradeWordleGuess.toString()` rather than rewritten,
@@ -182,25 +189,12 @@ const jsonLd = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
 // produced "Quiz del FC Barcelona quiz", and the "soccer quiz" / "trivia"
 // alternates (written for US English searches) were English text on a Spanish,
 // Italian or Turkish page. Found by the 2026-10-20 localisation review.
-const eduQuizLd = (name, rows, { intl = false } = {}) => ({
-  '@type': 'Quiz',
-  name: intl ? name : `${name} quiz`,
-  // US visitors convert at ~0 (Clarity 2026-07-28: US Mobile 12.7s, US PC 3.6s
-  // active, and every Google-referred US session recorded ZERO clicks, against
-  // 61.7s for UK Mobile). Part of that is vocabulary: "soccer" appeared 13
-  // times on the hub after #46 and ZERO times on any of the ~120 club pages,
-  // so a search for "arsenal soccer quiz" had nothing to match and the page
-  // read entirely British on arrival. alternateName carries the US term without
-  // touching the visible British copy the UK majority reads.
-  ...(intl ? {} : { alternateName: [`${name} soccer quiz`, `${name} trivia`] }),
-  about: { '@type': 'Thing', name },
-  hasPart: rows.slice(0, 20).map((r) => ({
-    '@type': 'Question',
-    eduQuestionType: 'Flashcard',
-    text: r.q,
-    acceptedAnswer: { '@type': 'Answer', text: `${r.o[r.a]}${r.hint ? ` — ${r.hint}` : ''}` },
-  })),
-});
+// The Quiz/Flashcard node was REMOVED on 26 Oct 2026. It was Google's
+// "Education Q&A" markup on football trivia: the guideline says the page must
+// hold education-related questions, no football query can show the carousel,
+// and its invisible alternateName ("X soccer quiz") marked up text nobody could
+// see. The only thing it could earn was a structured-data action. The
+// BreadcrumbList stays on every page.
 
 const catRows = (cat) => QB.filter((x) => x.cat === cat);
 const hintRows = (cat) => catRows(cat).filter((x) => x.hint && x.type === 'mcq' && Array.isArray(x.o));
@@ -904,10 +898,10 @@ function renderQA(rows, { scripts = true } = {}) {
     .map((row) => {
       const r = shuffleOptions(row);
       const opts = r.o
-        .map((o, k) => `<button class="to" type="button" data-i="${k}"><span class="tl">${'ABCD'[k] || ''}</span><span class="tt">${esc(noBreakScores(o))}</span></button>`)
+        .map((o, k) => `<button class="to" type="button" data-i="${k}"><span class="tl">${'ABCD'[k] || ''}</span><span class="tt">${nbHtml(o)}</span></button>`)
         .join('');
       return `<li class="qa" data-a="${r.a}">
-<p class="q">${esc(noBreakScores(r.q))}</p>
+<p class="q">${nbHtml(r.q)}</p>
 <div class="qa-opts">${opts}</div>
 ${r.hint ? `<p class="qa-why">${esc(r.hint)}</p>\n` : ''}</li>`;
     })
@@ -1265,13 +1259,19 @@ function spreadPick(rows, n) {
 // How many a visible list shows when a page carries more. The full set still
 // rides in the paced quiz widget above, so nothing leaves the page's HTML.
 const SHOWN_CAP = 40;
+// The quiz widget's own cap on league, player and nation pages (26 Oct 2026):
+// /quiz/premier-league/ carried all 715 questions in its HTML, and once the
+// quiz engine ran, 714 were hidden. A rendered page that is 96% hidden text is
+// a quality signal in the wrong direction; sixty rotating questions is still
+// weeks of daily sets, and the rest wait in the app.
+const WIDGET_CAP = 60;
 
 function renderAnswerList(name, rows, { spread = 0 } = {}) {
   const picked = spreadPick(rows, spread);
   const sub = picked.length < rows.length
     ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
     : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
-  const items = picked.map((r) => `<li><p class="ans-q">${esc(noBreakScores(r.q))}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${esc(noBreakScores(r.o[r.a]))}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
+  const items = picked.map((r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
 <p class="sub">${sub}</p>
@@ -1618,7 +1618,7 @@ ${ADS_ACTIVE ? `<script>
 </script>` : ''}
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}" />
-<link rel="canonical" href="${canonical}" />${alternates.map((a) => `
+<link rel="canonical" href="${canonical}" />${alternates.filter((a) => !PRUNED.has(a.href.slice(SITE.base.length))).map((a) => `
 <link rel="alternate" hreflang="${a.hreflang}" href="${a.href}" />`).join('')}
 <meta property="og:type" content="website" />
 <meta property="og:url" content="${canonical}" />
@@ -1891,6 +1891,10 @@ ${FG_CSS}
   .hero-facts .hf b{display:block;font-size:19px;font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:#fff;line-height:1}
   .hero-facts .hf span{display:block;font-size:11.5px;color:var(--tx4);margin-top:5px}
   .hero-free{margin:14px 0 0;font-size:13px;color:var(--tx4)}
+  .byline{margin:6px 16px 0;font-size:13px;line-height:1.5;color:var(--tx4)}
+  .byline a{color:var(--tx3);text-decoration:underline}
+  .tiles-all{margin:12px 2px 0;font-size:14.5px;font-weight:700}
+  .tiles-all a{color:var(--grn)}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 ${ld ? `<script type="application/ld+json">${ld}</script>` : '' /* an empty ld+json block is an error, not an omission — /embed/quiz/ shipped one */}
@@ -1979,7 +1983,7 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
   // typical one. Zero layout cost at any size because the quiz paces in place,
   // so every question rides in crawlable server-rendered HTML without moving
   // the fold. There is no longer a number here to be wrong.
-  const quizRows = arcPick(hints, hints.length);
+  const quizRows = spreadPick(arcPick(hints, hints.length), WIDGET_CAP);
   const sample = quizRows;
   const canonical = `${SITE.base}/quiz/${catCfg.slug}/`;
 
@@ -1999,7 +2003,6 @@ function buildCategoryPage(catCfg, livePages, clubPages = [], playerPages = []) 
           { '@type': 'ListItem', position: 3, name: catCfg.name, item: canonical },
         ],
       },
-      eduQuizLd(catCfg.name, sample),
     ],
   });
 
@@ -2032,7 +2035,7 @@ ${heroTwoCol({
     kind: catKind,
     name: catCfg.name,
     h1: catCfg.h1,
-    lead: catCfg.description,
+    lead,
     chips: [
       // ⚠️ NO COUNTS. See the note on the stat strip in audit-no-question-count.mjs
       // — this row printed "556 questions / 151 hard ones" live.
@@ -2042,18 +2045,18 @@ ${heroTwoCol({
     ],
     playHref: '#quiz',
   }, renderQuizSet(quizRows, { name: catCfg.name, tiers: DEFAULT_TIERS, more: Math.max(0, all.length - quizRows.length), slug: catCfg.slug, kind: 'category', play: `${SITE.base}/play?quiz=${catCfg.slug}` }))}
-${appCtaBand(catCfg.name)}
 ${adSlot('afterQA')}
 <section class="sec">
 <h2>More quizzes to try</h2>
-${renderTiles(related, { collapseAfter: 12 })}
+${renderTiles(related.slice(0, 12))}
+<p class="tiles-all"><a href="${SITE.base}/quiz/clubs/">All club quizzes &rarr;</a></p>
 ${renderListLinks(catCfg.name)}
 </section>
 ${/* AdSense fix 2 (2026-09-23), same as the club page: the write-up renders
      open instead of as the last FAQ fold, and the covers + how-it-is-checked
      blurbs, word-for-word the same on every page of this type, become one
      line to /about/. Prose sits after the band and the mesh. */''}
-${renderClubAbout(catCfg.name, catCfg.intro, `About the ${catCfg.name} quiz`)}
+${renderClubAbout(catCfg.name, rest, `About the ${catCfg.name} quiz`)}
 ${renderAnswerList(catCfg.name, quizRows, { spread: SHOWN_CAP })}
 ${clubCheckLine()}
 <section class="sec narrow">
@@ -2181,7 +2184,6 @@ function buildClubPageIntl(cfg, siblings = []) {
           { '@type': 'ListItem', position: 3, name: cfg.h1, item: canonical },
         ],
       },
-      eduQuizLd(cfg.h1, cfg.sample, { intl: true }),
     ],
   });
 
@@ -2453,8 +2455,12 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
   // so every question rides in crawlable server-rendered HTML without moving
   // the fold. There is no longer a number here to be wrong.
   const quizRows = arcPick(hints, hints.length);
-  const sample = quizRows; // the eduQuiz flashcard nodes anchor to what is rendered
   const canonical = `${SITE.base}/quiz/${cfg.slug}/`;
+  // The page's last-changed date (scripts/seo/lastmod.mjs): moves only when
+  // a question or the prose changes, printed in the byline and the sitemap.
+  const changed = lastmodFor(`/quiz/${cfg.slug}/`, contentKeyOf({
+    rows: all.map((r) => [r.id, r.q, r.o, r.a, r.hint || '']), intro: cfg.intro, faq: cfg.faq || null, title: cfg.title, description: cfg.description,
+  }));
   // ⚠️ null when this club has no FAIR grid — 76 of 96 pages qualify. A page
   // with a thin or mismatched grid is worse than a page without one.
   const grid = gridBuilder().sectionFor(cfg.club, cfg.slug, gridDayIndex(), gridAbsDay());
@@ -2472,7 +2478,6 @@ function buildClubPage(cfg, clubPages, catPages, playerPages = [], nationPages =
       },
       // Flashcard Quiz node anchored to the visible sample Q&A (see the
       // structured-data policy note in buildCategoryPage).
-      eduQuizLd(cfg.name, sample),
     ],
   });
 
@@ -2547,7 +2552,10 @@ ${heroTwoCol({
     kind: 'Club quiz',
     name: cfg.name,
     h1: cfg.h1,
-    lead: cfg.description,
+    // The first sentence of the club's own prose, not the meta description:
+    // the description is the snippet, and a page that opens with its own
+    // snippet reads as written for the result page (26 Oct 2026).
+    lead,
     chips: [
       // ⚠️ NO COUNTS. See the note on the stat strip in audit-no-question-count.mjs
       // — this row printed "556 questions / 151 hard ones" live.
@@ -2575,19 +2583,22 @@ ${/* ACTION BEFORE PROSE — measured, not preference. Clarity (7 days) puts eve
 
      ⚠️ Do NOT move adSlot('afterQA') below this — the placement policy at
      the top of this file requires ad slots to sit below appCtaBand(). */''}
-${appCtaBand(cfg.name)}
-${grid ? grid.html : ''}
+${/* 26 Oct 2026: the second app band and the Football Grid are gone from club
+     pages (one badge pair in the hero, one in the footer is enough), and the
+     "More quizzes" fold that hid 180 links on every club page is a dozen
+     related quizzes plus the directory. A byline with a real date answers
+     Google's who / how / when. */''}
+<p class="byline" data-nosnippet>Questions researched against sources and verified by Alex, who makes Ball IQ in Oslo &middot; ${all.length} questions &middot; Updated ${niceDate(changed)} &middot; <a href="${SITE.base}/about/">How they are checked</a></p>
 <section class="sec">
 <h2>More quizzes to try</h2>
-${/* 12 visible, not 24 (AdSense fix 2). The tail stays FOLDED, never cut:
-     it is the site's internal-link mesh and crawlers walk the closed fold. */''}
-${renderTiles(related, { collapseAfter: 12 })}
+${renderTiles(related.slice(0, 12))}
+<p class="tiles-all"><a href="${SITE.base}/quiz/clubs/">All club quizzes &rarr;</a></p>
 ${/* Link to this club's TEXT Q&A page. Without this the /questions layer
      ships ORPHANED — 71 pages in the sitemap with zero inbound internal
      links, which is precisely the defect the 2026-07-28 ranking diagnosis
      found on /lists and had to go back and fix. Placed inside the mesh
      section because that sits at ~19% scroll, above the measured cliff. */''}
-${clubHintRows(cfg.club).length >= 20 ? `<p style="margin:14px 2px 0;color:var(--tx2);font-size:14.5px">Want them as a printable list instead? <a href="${SITE.base}/questions/${cfg.slug}-quiz-questions-and-answers/" style="color:var(--grn);font-weight:700">${esc(cfg.name)} quiz questions and answers →</a></p>` : ''}
+
 ${/* ⚠️ THE LOCALISED LAYER WAS ORPHANED — the SAME defect as the note directly
      above, found again on 2026-08-16. All 20 localised pages had ZERO inbound
      internal links from any English page; they were sitemap-only, so they were
@@ -2615,7 +2626,7 @@ ${renderListLinks(cfg.name)}
 ${/* Prose AFTER the band + mesh, per the ACTION BEFORE PROSE note above: the
      write-up is now open and on the page, which is what the reviewer needed;
      it does not need to push the install band and the mesh below the cliff. */''}
-${renderClubAbout(cfg.name, cfg.intro)}
+${renderClubAbout(cfg.name, rest)}
 ${renderAnswerList(cfg.name, quizRows)}
 ${clubCheckLine()}
 <section class="sec narrow">
@@ -2681,7 +2692,7 @@ function buildPlayerPage(cfg, clubPages, catPages) {
   // typical one. Zero layout cost at any size because the quiz paces in place,
   // so every question rides in crawlable server-rendered HTML without moving
   // the fold. There is no longer a number here to be wrong.
-  const quizRows = arcPick(hints, hints.length);
+  const quizRows = spreadPick(arcPick(hints, hints.length), WIDGET_CAP);
   // ⚠️ CAPPED 2026-09-23 (Alex). The practice block below showed EVERY row:
   // 373 cards and 168 screens on /quiz/england/, a wall that reads as scaled
   // content to an AdSense reviewer. It now shows an even spread; the quiz
@@ -2700,7 +2711,6 @@ function buildPlayerPage(cfg, clubPages, catPages) {
           { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
         ],
       },
-      eduQuizLd(cfg.name, sample),
     ],
   });
   const related = [...clubPages.slice(0, 8), ...catPages.filter((p) => p.slug !== HUB.slug).slice(0, 4)];
@@ -3284,8 +3294,8 @@ function buildClubQuestionsPage(cfg, rows) {
 
   const toc = rounds.map((_, i) => `<a href="#round-${i + 1}">Round ${i + 1}</a>`).join('\n');
   const body = rounds.map((round, ri) => {
-    const qs = round.map((q, qi) => `<li id="q-${ri + 1}-${qi + 1}">${esc(noBreakScores(q.q))}</li>`).join('\n');
-    const as = round.map((q, qi) => `<li>${esc(noBreakScores(q.o[q.a]))}${q.hint ? ` <span class="qa-why">— ${esc(q.hint)}</span>` : ''}</li>`).join('\n');
+    const qs = round.map((q, qi) => `<li id="q-${ri + 1}-${qi + 1}">${nbHtml(q.q)}</li>`).join('\n');
+    const as = round.map((q, qi) => `<li>${nbHtml(q.o[q.a])}${q.hint ? ` <span class="qa-why">— ${esc(q.hint)}</span>` : ''}</li>`).join('\n');
     return `<section class="sec qa-round" id="round-${ri + 1}">
 <h2>Round ${ri + 1}</h2>
 <ol class="qa-qs">
@@ -3733,7 +3743,7 @@ function buildNationPage(cfg, catPages, nationPages) {
   // typical one. Zero layout cost at any size because the quiz paces in place,
   // so every question rides in crawlable server-rendered HTML without moving
   // the fold. There is no longer a number here to be wrong.
-  const quizRows = arcPick(hints, hints.length);
+  const quizRows = spreadPick(arcPick(hints, hints.length), WIDGET_CAP);
   // ⚠️ CAPPED 2026-09-23 (Alex). The practice block below showed EVERY row:
   // 373 cards and 168 screens on /quiz/england/, a wall that reads as scaled
   // content to an AdSense reviewer. It now shows an even spread; the quiz
@@ -3752,7 +3762,6 @@ function buildNationPage(cfg, catPages, nationPages) {
           { '@type': 'ListItem', position: 3, name: cfg.name, item: canonical },
         ],
       },
-      eduQuizLd(cfg.name, sample),
     ],
   });
   // Nation-to-nation mesh + the tournament categories (World Cup / Euros).
@@ -3859,7 +3868,6 @@ function buildListiclePage(cfg, livePages) {
         ],
       },
       // Flashcard Quiz node anchored to the listicle's fully-visible Q&A list.
-      eduQuizLd(cfg.h1, listRows),
     ],
   });
   const introHtml = cfg.intro.map((p) => `<p>${esc(p)}</p>`).join('\n');
@@ -4507,9 +4515,7 @@ function buildFootballGridPage() {
       { '@type': 'Game', name: 'Football Grid', description: cfg.description, url: canonical,
         gamePlatform: ['Web browser'], isAccessibleForFree: true,
         publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` } },
-      { '@type': 'FAQPage', mainEntity: cfg.faq.map((f) => ({
-        '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
-    ],
+          ],
   });
 
   const html = `${head({ title: cfg.title, description: cfg.description, canonical, ld })}
@@ -4578,11 +4584,7 @@ function buildGamesPage() {
           },
         })),
       },
-      {
-        '@type': 'FAQPage',
-        mainEntity: cfg.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-      },
-    ],
+          ],
   });
 
   const card = (g) => `<a class="gm-card${g.daily ? ' is-daily' : ''}" href="${abs(g.href)}">
@@ -4712,7 +4714,8 @@ function buildFootballQuizPage() {
     description,
     url: canonical,
     hasPart: groups.flatMap((g) => g.rows.slice(0, 40).map((r) => ({
-      '@type': 'Quiz', name: `${r.club} Quiz`, url: `${SITE.base}/quiz/${r.slug}/`,
+      // WebPage, not Quiz (26 Oct 2026): the Education Q&A type is gone from the site.
+      '@type': 'WebPage', name: `${r.club} Quiz`, url: `${SITE.base}/quiz/${r.slug}/`,
     }))),
   });
 
@@ -4854,14 +4857,15 @@ function buildNicknamesPage() {
   const title = 'Football Club Nicknames And Where They Come From | Ball IQ';
   const description = 'Why Arsenal are the Gunners, Everton the Toffees and Barcelona the Culés. The real origin behind each nickname, not the folklore.';
 
+  // FAQPage dropped 26 Oct 2026: Google retired the FAQ rich result on 7 May
+  // 2026, and the "Why are X called Y?" wording was never on the page.
   const ld = jsonLd({
     '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: NICKNAMES.map((n) => ({
-      '@type': 'Question',
-      name: `Why are ${n.club} called ${n.nick.split(' / ')[0]}?`,
-      acceptedAnswer: { '@type': 'Answer', text: n.origin },
-    })),
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Club nicknames', item: `${SITE.base}/club-nicknames/` },
+    ],
   });
 
   const style = `<style>
@@ -5213,9 +5217,11 @@ function fwExampleHtml() {
 // Today's board on this page. The component's stylesheet (src/games/footle.css)
 // speaks the app's token names; until the shared tokens.css lands they are
 // defined here on the host, with the same values app.css gives them. The
-// 20px side padding is load-bearing: .wd-grid and .wd-keyboard escape their
-// screen's padding with margin-inline:-20px, so the host must supply exactly
-// that much or the keyboard overflows the card on a phone.
+// 20px side gutter is load-bearing: .wd-grid and .wd-keyboard escape their
+// screen's padding with margin-inline:-20px / -14px, so something must supply
+// exactly 20px or the keyboard overflows on a phone. Above 520px the host
+// supplies it; on a phone the page's <main> does and the host has none (26 Oct
+// 2026), which puts the keys 6px from the screen edge, as in the app.
 const FW_TODAY_CSS = `
   /* This page's hero is a masthead, not a pitch: the game is the pitch. On a
      375px phone the shared hero put the board 429px down (measured on the
@@ -5256,6 +5262,11 @@ const FW_TODAY_CSS = `
     .hero .hero-head h1{font-size:22px;line-height:1.15;letter-spacing:-.2px;margin-bottom:4px}  /* out-specifies the site's 34px phone title */
     .hero-lead{font-size:13px;line-height:1.35;color:var(--tx3)}
     .fw-mast{display:none}
+    /* The page's <main> already gives a 20px gutter; the host's own 20px on
+       top of it left the game 295px wide on a 375px phone, and the finish
+       panel's Next-up card squeezed its title onto two lines and its hook onto
+       three (Alex, 26 Oct 2026: "awfully narrow and clunky"). One gutter. */
+    .fw-host{padding:0}
     /* Short phones (and Safari with its bars showing): the app's own rule that
        shrinks tiles to fit does not reach this embedded board, so at 667px
        tall the tiles stayed 44px and ENTER ended 61px below the screen. 497px
@@ -5570,15 +5581,7 @@ function buildFootlePage(cfg) {
         playMode: 'SinglePlayer',
         publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
       },
-      {
-        '@type': 'FAQPage',
-        mainEntity: cfg.faq.map((f) => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a },
-        })),
-      },
-      {
+            {
         '@type': 'WebApplication',
         name: 'Footle — the daily football word game',
         url: canonical,
@@ -5814,15 +5817,7 @@ function buildDailyGamePage(cfg) {
         playMode: 'SinglePlayer',
         publisher: { '@type': 'Organization', name: 'Ball IQ', url: `${SITE.base}/` },
       },
-      {
-        '@type': 'FAQPage',
-        mainEntity: cfg.faq.map((f) => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a },
-        })),
-      },
-      {
+            {
         '@type': 'WebApplication',
         name: `${cfg.game} — ${cfg.lede}`,
         url: canonical,
@@ -6120,7 +6115,14 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
   // Build date as <lastmod> — Google honors lastmod but ignores changefreq/
   // priority, so without it the sitemap gives the crawler no freshness signal.
   // Pages are regenerated every deploy, so the build date is an honest hint.
-  const lastmod = new Date().toISOString().slice(0, 10);
+  // Per-URL dates that move only when the page's content does
+  // (scripts/seo/lastmod.mjs). changefreq and priority are gone: Google
+  // documents that it ignores both.
+  const lastmodOf = (loc) => {
+    const path = loc.slice(SITE.base.length);
+    const file = resolve(DIST, `.${path}`, path.endsWith('/') ? 'index.html' : '');
+    return existsSync(file) ? lastmodForHtml(path, readFileSync(file, 'utf8')) : new Date().toISOString().slice(0, 10);
+  };
   const urls = [
     { loc: `${SITE.base}/`, freq: 'daily', pri: '1.0' },
     { loc: `${SITE.base}/quiz/`, freq: 'weekly', pri: '0.8' },
@@ -6172,11 +6174,11 @@ function buildSitemap(livePages, listPages = [], esPages = [], questionPages = [
     { loc: `${SITE.base}/contact/`, freq: 'monthly', pri: '0.4' },
     { loc: `${SITE.base}/terms/`, freq: 'yearly', pri: '0.2' },
     { loc: `${SITE.base}/privacy.html`, freq: 'monthly', pri: '0.3' },
-  ];
+  ].filter((u) => !PRUNED.has(u.loc.slice(SITE.base.length))); // scripts/seo/prune.mjs
   const body = urls
     .map(
       (u) =>
-        `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`,
+        `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${lastmodOf(u.loc)}</lastmod>\n  </url>`,
     )
     .join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
@@ -6315,9 +6317,11 @@ async function main() {
   for (const c of CATEGORIES) built.push(buildCategoryPage(c, livePages, clubPages, playerPages));
   const builtListicles = LISTICLES.map((l) => buildListiclePage(l, livePages));
   const builtClubs = CLUBS.map((c) => buildClubPage(c, clubPages, livePages, playerPages, nationPages));
-  // The text Q&A layer — a DIFFERENT SERP from the club quiz, and the format
-  // that earns links. Only clubs with enough questions get one.
-  const questionPages = CLUBS.map((c) => buildClubQuestionsPage(c, clubHintRows(c.club))).filter(Boolean);
+  // The text Q&A layer (/questions/<club>-quiz-questions-and-answers/) is NO
+  // LONGER BUILT (26 Oct 2026). Every URL 301s to its /quiz/ twin (vercel.json):
+  // ~45% of each page repeated the twin word for word, re-freeing them on 15 Oct
+  // preceded the 20 Oct site-wide drop, and a canonical is only a hint Google was
+  // still validating against. buildClubQuestionsPage stays below for the record.
   // Siblings = every OTHER language this slug exists in, so each localised page
   // links the whole cluster rather than just itself and English.
   const builtEs = CLUBS_INTL.map((c) =>
@@ -6370,10 +6374,19 @@ async function main() {
   buildSimplePage(CONTACT);
   buildSimplePage(TERMS);
   build404Page();
+  // The prune (26 Oct 2026, scripts/seo/prune.mjs): built and linked as usual,
+  // then marked noindex here and left out of the sitemap below.
+  for (const path of PRUNED) {
+    const file = resolve(DIST, `.${path}`, path.endsWith('/') ? 'index.html' : '');
+    if (!existsSync(file)) throw new Error(`[gen-seo] pruned page ${path} was not built: delete its line in scripts/seo/prune.mjs`);
+    writeFileSync(file, noindexHtml(readFileSync(file, 'utf8')), 'utf8');
+  }
   // /questions/ pages are canonicalised to their /quiz/ twins and OUT of the
   // sitemap again (21 Oct 2026, after the 20 Oct drop): see buildClubQuestionsPage.
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
+  const moved = flushLastmodStore();
+  if (moved) console.log(`[gen-seo] lastmod: ${moved} page(s) changed content since the stored date`);
   await pingIndexNow(sitemapUrls);
 
   console.log(`[gen-seo] wrote ${built.length} category + ${builtListicles.length} listicle + ${builtClubs.length} club pages + hub + about + contact + sitemap + llms.txt into dist/`);

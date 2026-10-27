@@ -261,15 +261,17 @@ describe('Spanish (biq_lang=es)', () => {
     for (const s of ['>Resuelto<', '>Era<', '>Acertado con 2 clubes<']) expect(won).toContain(s);
     expect(unq(now['trail: lost'])).toContain('>Sin intentos: vuelve mañana<');
     expect(unq(now['trail: archive, lost'])).toContain('>Sin intentos: este ya es historia<');
-    expect(unq(now['trail: embedded (static page), fresh'])).toContain('adivina el jugador por su carrera');
+    // The static page's H1 and lead say it; the masthead is the number alone (declutter, 26 Oct 2026).
+    expect(unq(now['trail: embedded (static page), fresh'])).not.toContain('adivina el jugador por su carrera');
+    expect(unq(now['trail: embedded, won'])).toContain(' · Resuelto<');
     expect(unq(now['trail: no career (coming soon)'])).toContain('Muy pronto: una carrera nueva');
   });
   it('Mystery Player', () => {
     const fresh = unq(now['mystery: fresh, the pool in (free clues, the key to the colours)']);
-    for (const s of ['>Intentos ilimitados<', '>Posición<', '>Nació<', '>Jugó en<', '>Iniciales<', '>en 4 intentos<', '>ardiendo<', '>El resto<', '>Puesto 1<', 'placeholder="Busca un jugador"', 'aria-label="Pistas"']) expect(fresh).toContain(s);
+    for (const s of ['>Intentos ilimitados<', '>Posición<', '>Nació<', '>Jugó en<', '>Iniciales<', '>en 4 intentos<', 'placeholder="Busca un jugador"', 'aria-label="Pistas"']) expect(fresh).toContain(s);
     expect(unq(now['mystery: fresh, the pool not loaded yet'])).toContain('>Al empezar<');
     const five = unq(now['mystery: five guesses (club clue ready, give up offered)']);
-    for (const s of ['>Mejor<', '>Toca para verla<', '>Rendirse y ver la respuesta<', 'Ningún club en común', '>caliente<']) expect(five).toContain(s);
+    for (const s of ['>Toca para verla<', '>Rendirse y ver la respuesta<', 'Ningún club en común', '>caliente<']) expect(five).toContain(s);
     expect(unq(now['mystery: nine guesses, both clues taken'])).not.toContain('(one name)');
     const won = unq(now['mystery: won in 6 with a clue']);
     expect(won).toContain('Resuelto en 6 intentos · 1 pista');

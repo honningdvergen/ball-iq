@@ -28,26 +28,31 @@ describe('scores never break after the hyphen', () => {
     expect(noBreakScores(7)).toBe(7);
   });
 
-  it('the static quiz card draws it, and still grades by index', () => {
+  // ⚠️ 26 Oct 2026: STATIC PAGES NO LONGER CARRY THE CHARACTERS. Google reads
+  // them, and from 16 Oct they held 8,794 U+2011 and 1,818 zero-width U+2060
+  // across 406 pages, four days before a ~93% site-wide drop. They keep plain
+  // text and hold a score together with a nowrap span (scripts/seo/nb-html.mjs).
+  it('the static quiz card keeps plain text, holds the score with a span, and still grades by index', () => {
     const html = renderQuizItems([{ id: 'q_t1', q: 'Final score 6-1?', o: ['6-1', '2-0', '1-1', '3-2'], a: 0 }]);
-    expect(html).toContain('Final score 6‑1?');
-    expect(html).not.toMatch(/\d-\d/);
-    // The answer is still the index of the 6-1 option, whatever the shuffle did.
+    expect(html).toContain('Final score <span style="white-space:nowrap">6-1</span>?');
+    expect(html).not.toMatch(/[\u2011\u2060]/);
     const a = Number(html.match(/data-a="(\d)"/)[1]);
-    const opts = [...html.matchAll(/<span class="tt">([^<]*)<\/span>/g)].map((m) => m[1]);
-    expect(opts[a]).toBe('6‑1');
+    const opts = [...html.matchAll(/<span class="tt">(.*?)<\/button>/g)].map((m) => m[1].replace(/<[^>]+>/g, ''));
+    expect(opts[a]).toBe('6-1');
   });
 
-  it('is applied where stems and options are drawn, never written back', () => {
+  it('is applied where the app draws stems and options, never written back, never on static pages', () => {
     const qe = read('src/screens/QuizEngine.jsx');
     // qv: the question as the player reads it (i18n step 5, Spanish text when es).
     expect(qe).toContain('{noBreakScores(qv.q)}');
     expect(qe).toContain('{noBreakScores(opt)}');
     // The bank itself never carries the display character.
-    expect(read('src/questions.js')).not.toContain('‑');
-    expect(read('scripts/seo/daily-answers-page.mjs')).toContain('esc(noBreakScores(q.q))');
+    expect(read('src/questions.js')).not.toContain('\u2011');
+    for (const f of ['scripts/gen-seo-pages.mjs', 'scripts/seo/daily-answers-page.mjs', 'scripts/seo/quiz-widget.mjs']) {
+      expect(read(f)).not.toContain('noBreakScores(');
+    }
     const gen = read('scripts/gen-seo-pages.mjs');
-    expect(gen).toContain('<p class="q">${esc(noBreakScores(r.q))}</p>');
-    expect(gen).toContain('<p class="ans-q">${esc(noBreakScores(r.q))}</p>');
+    expect(gen).toContain('<p class="q">${nbHtml(r.q)}</p>');
+    expect(gen).toContain('<p class="ans-q">${nbHtml(r.q)}</p>');
   });
 });

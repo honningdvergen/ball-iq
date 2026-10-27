@@ -67,6 +67,14 @@ jobs:
           VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY || 'sb_publishable_FluGERu-3n3KSIlgM37Jbg_P0KhDsiR' }}
         run: npm run build
 
+      # Regression suite over the built dist/ (scripts/test-site.mjs): no hidden
+      # U+2011/U+2060, no Quiz/FAQPage JSON-LD, sitemap 200s + self-canonicals,
+      # per-page lastmod, pruned pages noindexed, /questions/ redirects, club
+      # bylines and tile caps. CI only, on purpose: it is not part of the
+      # build script, so it adds nothing to Vercel builds. ~1 s, no network.
+      - name: Site regression suite (dist)
+        run: npm run test:site
+
   e2e:
     runs-on: ubuntu-latest
     # ⚠️ ADDED 2026-08-06 after this job ran for FIVE HOURS TEN MINUTES before

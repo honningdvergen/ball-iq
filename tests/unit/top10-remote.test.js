@@ -324,6 +324,8 @@ describe('who fetches, and when', () => {
     expect(app).toMatch(/key=\{`daily-\$\{top10Tick\}`/);
   });
   it('a fetched list’s answers can all be typed, even one this build’s pool does not hold', () => {
-    expect(screen).toMatch(/for \(const e of \[\.\.\.list\.slots, \.\.\.\(list\.near \|\| \[\]\)\]\) if \(!have\.has\(e\.key\)\)/);
+    // the merge moved into lib/top10.js (top10GuessPool, 26 Oct) so it can be tested
+    expect(screen).toMatch(/top10GuessPool\(list, pool, data\.extras\)/);
+    expect(read('src/lib/top10.js')).toMatch(/for \(const e of \[\.\.\.\(list\.slots \|\| \[\]\), \.\.\.\(list\.near \|\| \[\]\)\]\) if \(!have\.has\(e\.key\)\)/);
   });
 });

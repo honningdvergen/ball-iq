@@ -7,6 +7,16 @@
   },
   "redirects": [
     {
+      "source": "/questions/:slug([a-z0-9-]+)-quiz-questions-and-answers/",
+      "destination": "/quiz/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/questions/:slug([a-z0-9-]+)-quiz-questions-and-answers",
+      "destination": "/quiz/:slug/",
+      "permanent": true
+    },
+    {
       "source": "/home-old/",
       "destination": "/",
       "permanent": true
@@ -89,6 +99,11 @@
     {
       "source": "/d7",
       "destination": "/play?game=daily&utm_source=telegram",
+      "permanent": false
+    },
+    {
+      "source": "/t10s",
+      "destination": "/play?game=top10&utm_source=instagram_story",
       "permanent": false
     },
     {

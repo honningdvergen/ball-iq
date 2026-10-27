@@ -170,7 +170,6 @@ export const CLUBS_ID = [
       { id: 'q_fa63f7', q: 'Siapa pencetak gol terbanyak sepanjang sejarah Arsenal?', o: ['Ian Wright', 'Dennis Bergkamp', 'Thierry Henry', 'Robin van Persie'], a: 2, hint: 'Ia mencetak 228 gol untuk klub dan patungnya berdiri di depan Emirates Stadium.' },
       // `en` because Indonesian localises the competition name ("Piala FA"),
       // so the strings share no letters — the guard is right to demand it.
-      { id: 'q_c46593', en: 'FA Cup', q: 'Arsenal memegang rekor juara terbanyak di kompetisi Inggris yang mana?', o: ['Piala Liga', 'Piala FA', 'Community Shield', 'Divisi Satu/Liga Primer'], a: 1, hint: 'Kompetisi piala tertua di dunia, dan Arsenal punya lebih banyak trofinya daripada klub mana pun.' },
       { id: 'q_178706', q: 'Berapa Piala FA yang dimenangkan Arsène Wenger bersama Arsenal?', o: ['5', '6', '7', '8'], a: 2, hint: 'Jumlah itu menjadikannya manajer tersukses dalam sejarah kompetisi tersebut.' },
       { id: 'q_4d67bb', q: 'Thierry Henry bergabung dengan Arsenal pada Agustus 1999 seharga £11 juta — dari klub Italia mana?', o: ['Juventus', 'AC Milan', 'Inter', 'Parma'], a: 0, hint: 'Di Italia ia dimainkan sebagai pemain sayap; Wenger yang memindahkannya ke posisi penyerang tengah.' },
       { id: 'q_a52765', q: 'Setelah menunggu 22 tahun dan tiga kali finis runner-up berturut-turut, Arsenal akhirnya menjadi juara Liga Primer pada musim apa?', o: ['2024-25', '2025-26', '2023-24', '2022-23'], a: 1, hint: 'Gelar liga sebelumnya datang pada musim tak terkalahkan 2003-04.' },

@@ -216,7 +216,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     () => new Set(attempts.filter((a) => !a.skipped).map((a) => a.text.toLowerCase().trim())),
     [attempts],
   );
-  const { pool, ensure: ensurePool } = usePlayerPool();
+  const { pool, ensure: ensurePool } = usePlayerPool({ extras: true });
   // The careers of the players guessed, for the line under a wrong guess that
   // fits the board (lib/trail.js, wrongPathNote). Same files Mystery Player
   // ranks against, so a player who has done Mystery already holds them; anyone
@@ -335,11 +335,13 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
         {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         {/* embedded: on the static page the H1 above already names the game,
             so the title row becomes one masthead line, like Footle's — the
-            number and the state, nothing said twice. */}
+            number and the state, nothing said twice. Before the finish that
+            is the number alone: "name the player from their career" was the
+            H1 and the lead above, said a third time (declutter, 26 Oct 2026). */}
         {embedded ? (
           <div style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
-            {number > 0 && <><b style={{ color: "var(--t1)", fontWeight: 800 }}>Trail #{number}</b>{" · "}</>}
-            {t(done ? (won ? "trail.solved" : "trail.notThisTime") : "trail.mastSub")}
+            {number > 0 && <b style={{ color: "var(--t1)", fontWeight: 800 }}>Trail #{number}</b>}
+            {done && <>{number > 0 ? " · " : ""}{t(won ? "trail.solved" : "trail.notThisTime")}</>}
           </div>
         ) : (
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -551,7 +553,10 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
               // effect above, which returns early when isArchive), so claiming
               // one here would credit the player for something that did not
               // happen. Same class as "back tomorrow" on a puzzle from the past.
-              ? `${t("trail.gotIt", { count: clubsUsed })}${!isArchive && streak > 1 ? ` · ${t("trail.streak", { n: streak })}` : ""}`
+              // Not on the static page (`embedded`, declutter 26 Oct 2026):
+              // there the panel below opens with this same Trail streak; in the
+              // app the panel carries the daily streak, so this one stays.
+              ? `${t("trail.gotIt", { count: clubsUsed })}${!isArchive && !embedded && streak > 1 ? ` · ${t("trail.streak", { n: streak })}` : ""}`
               : t(isArchive ? "trail.outPast" : "trail.out")}
           </div>
           {/* The return loop, built once for all four dailies — see

@@ -16,7 +16,7 @@
 // part of a Ball IQ question people come back for.
 import { QB } from '../../src/questions.js';
 import { pickDailyFromLog } from '../../src/lib/dailyDraw.js';
-import { noBreakScores } from '../../src/lib/noBreakScore.js';
+import { nbHtml } from './nb-html.mjs';
 import DAILY_LOG from '../../src/data/dailyLog.js';
 import { answerDocument, esc, SITE, secondsToUtcMidnight, fmtUtc, MONTH_LONG, MONTH_SHORT } from './answer-shell.mjs';
 
@@ -59,10 +59,10 @@ const breadcrumbLd = (items) => ({
 function questionList(qs, { open }) {
   const items = qs
     .map((q, i) => {
-      // noBreakScores: display only, so "6-1" never wraps after its hyphen.
-      const opts = q.o.map((o, j) => `<span${open && j === q.a ? ' class="ok"' : ''}>${esc(noBreakScores(o))}</span>`).join('');
+      // nbHtml: "6-1" never wraps after its hyphen, in plain text (see nb-html.mjs).
+      const opts = q.o.map((o, j) => `<span${open && j === q.a ? ' class="ok"' : ''}>${nbHtml(o)}</span>`).join('');
       const why = open && q.hint ? `<div class="qw">${esc(q.hint)}</div>` : '';
-      return `<li><div class="qn">Question ${i + 1}${q.cat ? ` · ${esc(q.cat)}` : ''}</div><div class="qq">${esc(noBreakScores(q.q))}</div><div class="qo">${opts}</div>${why}</li>`;
+      return `<li><div class="qn">Question ${i + 1}${q.cat ? ` · ${esc(q.cat)}` : ''}</div><div class="qq">${nbHtml(q.q)}</div><div class="qo">${opts}</div>${why}</li>`;
     })
     .join('\n');
   return `<ol class="qa">${items}</ol>`;

@@ -33,9 +33,12 @@ const SPELLINGS = new WeakMap();
 function spellingsOf(p) {
   let v = SPELLINGS.get(p);
   if (!v) {
-    const plain = normaliseName(p.name);
-    const long = normaliseName(foldDigraphs(p.name));
-    v = long === plain ? [plain] : [plain, long];
+    // `aka`: the name people type when the pool holds a longer one ("Nico
+    // González" for Nicolás González), from guessExtra.json (usePlayerPool).
+    v = [];
+    for (const name of [p.name, ...(p.aka || [])]) {
+      for (const s of [normaliseName(name), normaliseName(foldDigraphs(name))]) if (s && !v.includes(s)) v.push(s);
+    }
     SPELLINGS.set(p, v);
   }
   return v;

@@ -137,6 +137,30 @@ export function outcomeOf(list, day, key) {
 // so the order is simply how well the text matches: the whole name, then the
 // start of a word, then anywhere. An entry also answers to its `aka` spellings
 // ("Spurs", "PSG", "Holland") and is always shown under its one name.
+/**
+ * The guess box's players for a player list: the shared pool, plus every list
+ * answer keyed by name ("x:gary mabbutt") because the pool lacked him.
+ *
+ * A list fetched from the site can name a player this build's own pool does
+ * not hold yet (the pool grows between builds). Every answer must be typeable,
+ * so once the pool is in, anyone on this list it lacks is added.
+ *
+ * ⚠️ ONE MAN, ONE ROW, AND IT IS THE ROW THE LIST GRADES. guessExtra.json
+ * (26 Oct 2026) holds some of those keyed men under their Wikidata id too.
+ * Offering both listed the id row first, and a pick by id is a miss on a
+ * key-graded slot: a life lost for the right answer. So a pool row named like
+ * a keyed entry steps aside.
+ */
+export function top10GuessPool(list, pool, extras = []) {
+  const keyed = (extras || []).map((e) => ({ id: e.key, name: e.name, fame: 0 }));
+  if (pool.length) {
+    const have = new Set([...pool, ...keyed].map((p) => p.id));
+    for (const e of [...(list.slots || []), ...(list.near || [])]) if (!have.has(e.key)) { have.add(e.key); keyed.push({ id: e.key, name: e.name, fame: 0 }); }
+  }
+  const keyedNames = new Set(keyed.map((p) => normaliseName(p.name)));
+  return [...pool.filter((p) => !keyedNames.has(normaliseName(p.name))), ...keyed];
+}
+
 export function rankListSuggestions(pool, text, { limit = 6, exclude } = {}) {
   const q = normaliseName(text);
   if (q.length < 2) return [];
