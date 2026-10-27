@@ -846,7 +846,7 @@ const CTA_INSET = (() => {
               else { bg = "var(--s2)"; border = "2px solid var(--border)"; color = "var(--t3)"; }
             }
             return (
-              <button key={String(val)} disabled={isAnswered}
+              <button key={`${idx}-${val}`} disabled={isAnswered}
                 onClick={() => { haptic("select"); handleMCQ(val ? 1 : 0); }}
                 onPointerDown={e => { if (!isAnswered) e.currentTarget.style.transform = "scale(0.97)"; }}
                 onPointerUp={e => { e.currentTarget.style.transform = ""; }}
@@ -879,7 +879,7 @@ const CTA_INSET = (() => {
               // now it does. aria-disabled (not `disabled`) keeps the control
               // focusable and clickable while still announcing it as unavailable
               // for answering; the paired CSS rules key off it for cursor/hover.
-              <button key={i} className={cls} aria-disabled={answered || undefined}
+              <button key={`${idx}-${i}`} className={cls} aria-disabled={answered || undefined}
                 onClick={() => {
                   if (!answered) { handleMCQ(i); return; }
                   if (showNext) doAdvance(showNext.ns, showNext.nb, showNext.correct);

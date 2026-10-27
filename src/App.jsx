@@ -1534,7 +1534,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
             ? (i === q.a ? '✓' : i === picked.choice ? '✗' : ['A','B','C','D'][i])
             : ['A','B','C','D'][i];
           return (
-            <button key={i} className={cls} onClick={() => answer(i)} disabled={!!picked}>
+            <button key={`${idx}-${i}`} className={cls} onClick={() => answer(i)} disabled={!!picked}>
               <span className="opt-l">{mark}</span>{opt}
             </button>
           );

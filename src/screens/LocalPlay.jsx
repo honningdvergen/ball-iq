@@ -482,7 +482,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
             if (phase === "locked" && lastPick && i === lastPick.optIdx) cls += " locked";
             else if (phase === "locked") cls += " neutral-after";
             return (
-              <button key={i} className={cls} onClick={() => pick(i)} disabled={phase === "locked"}>
+              <button key={`${currentQIdx}-${currentPlayer?.id}-${i}`} className={cls} onClick={() => pick(i)} disabled={phase === "locked"}>
                 <span className="opt-l">{["A","B","C","D"][i]}</span>{opt}
               </button>
             );
