@@ -5,6 +5,7 @@ import { prefetchQuestions } from "../questions-loader.js";
 import { useModalA11y } from "../useModalA11y.js";
 import React, { useRef } from "react";
 import { clubHexToRgba, clubInitials, clubReadableText, haptic, norm } from "../App.jsx";
+import { swatchEdge } from "../lib/colourMath.js";
 import { CLUB_ABBR, CLUB_LEAGUES, CLUB_LEAGUE_SECTIONS, CLUB_ORDER, CLUB_PACKS, CLUB_SEARCH_NICKNAMES } from "../data/clubPacks.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { useT } from "../i18n/index.js";
@@ -124,7 +125,7 @@ export function ClubQuizScreen({ onStart, onBack }) {
                       return (
                         <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
                           style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
-                          <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
+                          <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: [swatchEdge(pack.color), `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}`].filter(Boolean).join(", ") }}>
                             <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
                           </div>
                           <div className="mi-body">
@@ -168,7 +169,7 @@ export function ClubQuizScreen({ onStart, onBack }) {
                 return (
                   <button key={key} type="button" className="mode-item" onClick={() => { haptic("select"); onStart(key); }}
                     style={{ background: `linear-gradient(90deg, ${clubHexToRgba(pack.color, a1)} 0%, ${clubHexToRgba(pack.color, a2)} 100%)`, borderColor: clubHexToRgba(pack.color, lightClub ? 0.5 : 0.4) }}>
-                    <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}` }}>
+                    <div className="mi-icon" style={{ background: pack.color, borderRadius: 11, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0, boxShadow: [swatchEdge(pack.color), `0 2px 8px ${clubHexToRgba(pack.color, 0.45)}`].filter(Boolean).join(", ") }}>
                       <span style={{ fontWeight: 900, fontSize: 13, letterSpacing: 0.3, color: clubReadableText(pack.color) }}>{CLUB_ABBR[key] || clubInitials(pack.name)}</span>
                     </div>
                     <div className="mi-body">

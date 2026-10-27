@@ -101,7 +101,9 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                   value" — caught on the simulator, not in the markup. Two-thirds
                   the size reads as a dash again while the block keeps its
                   optical height. */}
-              <div style={{ fontSize: 58, fontWeight: 900, color: pal.text, opacity: 0.3, lineHeight: 88 / 58, marginTop: 6, fontVariantNumeric: "tabular-nums" }} aria-label={t("cf.noRating")}>—</div>
+              {/* Still read as a skeleton bar on the simulator on 27 Oct, at
+                  58px too. A question mark says "not known yet" at any size. */}
+              <div style={{ fontSize: 72, fontWeight: 900, color: pal.text, opacity: 0.3, lineHeight: 88 / 72, marginTop: 6 }} aria-label={t("cf.noRating")}>?</div>
               <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text, opacity: 0.55, marginTop: 2 }}>{t("home.rail.overall")}</div>
               {/* "UNRATED" over six blank dashes is the first thing a new
                   player sees on their OWN profile, and it reads as broken

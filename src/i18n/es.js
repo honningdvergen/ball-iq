@@ -673,6 +673,8 @@ export default {
   'st.hapticsSub': 'Vibraciones en respuestas, rachas y botones',
   'st.cb': 'Casillas para daltónicos',
   'st.cbSub': 'Casillas de Footle naranjas y azules en vez de verdes y amarillas',
+  'st.hard': 'Modo difícil de Footle',
+  'st.hardSub': 'Solo valen nombres de futbolistas reales. Empieza en tu próximo Footle',
   'st.remind': 'Avisos diarios',
   'st.remindSub': 'Un aviso por la tarde si aún no has jugado: mantiene viva tu racha',
   'st.remindBlockedIos': 'Bloqueados: abre Ajustes de iOS › Ball IQ › Notificaciones, permítelas y vuelve',

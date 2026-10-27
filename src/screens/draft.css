@@ -29,12 +29,17 @@
 /* The opening card. */
 .dr-intro { padding: 6px 4px 20px; animation: drRise 260ms ease-out both; }
 .dr-intro h2 { margin: 6px 0 14px; font-size: 24px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em; color: var(--t1); text-wrap: balance; }
-.dr-intro ol { margin: 0 0 16px; padding: 0; list-style: none; counter-reset: dr; display: grid; gap: 10px; }
+/* One card with four rows, not four cards (sim tour, 27 Oct: four boxed
+   paragraphs before the Spin button read as a wall). */
+.dr-intro ol {
+  margin: 0 0 16px; padding: 0; list-style: none; counter-reset: dr;
+  background: var(--s1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+}
 .dr-intro li {
-  counter-increment: dr; position: relative; padding: 12px 14px 12px 46px;
-  background: var(--s1); border: 1px solid var(--border); border-radius: 14px;
+  counter-increment: dr; position: relative; padding: 11px 14px 11px 46px;
   font-size: 14px; line-height: 1.4; color: var(--t2);
 }
+.dr-intro li + li { border-top: 1px solid var(--border); }
 .dr-intro li::before {
   content: counter(dr); position: absolute; left: 12px; top: 12px;
   display: grid; place-items: center; width: 24px; height: 24px; border-radius: 8px;

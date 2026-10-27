@@ -821,7 +821,9 @@ const CTA_INSET = (() => {
             red LA LIGA chip sat under an orange LAL tile on the same screen.
             catColour() resolves the card's own colour; lift() keeps a dark
             brand hue readable on the dark chip. */}
-        <div className="q-tag" style={qTagStyle(q.cat)}>{catLabel(t, q.cat)}</div>
+        {/* A club round already names the club in the header above; a second
+            "CLUB QUIZ" chip on every card said it twice (sim tour, 27 Oct). */}
+        {q.cat !== "ClubQuiz" && <div className="q-tag" style={qTagStyle(q.cat)}>{catLabel(t, q.cat)}</div>}
         {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
         <div className="q-text" style={{fontSize:18}}>{noBreakScores(qv.q)}</div>
       </div>

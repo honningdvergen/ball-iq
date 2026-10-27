@@ -63,6 +63,24 @@ export function SettingsLangSwitch({ label }) {
   );
 }
 
+// Footle hard mode, the same key the board reads (games/FootballWordle.jsx).
+// Its own component so its state does not shift SettingsScreenImpl's hooks.
+function FootleHardRow({ t }) {
+  const [on, setOn] = useState(() => { try { return localStorage.getItem("biq_footle_hard") === "1"; } catch { return false; } });
+  const set = (v) => { setOn(v); try { localStorage.setItem("biq_footle_hard", v ? "1" : "0"); } catch { /* private mode */ } };
+  return (
+    <div className="settings-row">
+      <div className="sr-left">
+        <div className="sr-label">{t("st.hard")}</div>
+        <div className="sr-desc">{t("st.hardSub")}</div>
+      </div>
+      <div className="sr-right">
+        <SettingsToggle label={t("st.hard")} val={on} onChange={set} />
+      </div>
+    </div>
+  );
+}
+
 function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onBack, onShowPrivacy, onShowHelp, onShowKnownIssues, onAccountDeleted, onOpenReview, onShowBlocked, notifEnabled, onToggleNotif, notifSupported, notifBlocked, webPushOn, onToggleWebPush, webPushAvailable, webPushBlocked }) {
   const { user, profile, isGuest, signOut, exitGuestMode, openAuthPrompt } = useAuth();
   const t = useT();
@@ -269,6 +287,10 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <SettingsToggle label={t("st.cb")} val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
             </div>
           </div>
+          {/* Footle's hard mode lives on the board, as a small pill shown only
+              before the first guess, and Alex could not find it (27 Oct). The
+              same switch here: the board reads biq_footle_hard when it opens. */}
+          <FootleHardRow t={t} />
           {I18N_LIVE && (
           <div className="settings-row" style={{cursor:"default"}}>
             <div className="sr-left">

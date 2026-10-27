@@ -108,3 +108,10 @@ export function inkOn(hex, bg = '#13151C', min = 4.5) {
   for (let L = Math.max(l0, 0.3); L <= 0.97; L += 0.02) { const c = at(L); if (contrast(c, bg) >= min) return c; }
   return at(0.97);
 }
+
+// A club badge whose colour almost matches the dark page (Rosenborg #1A1A1A,
+// Juventus, Newcastle, Spurs navy: 25 packs under 1.6:1) vanishes into it, and
+// the white letters float with no tile behind them (simulator tour, 27 Oct).
+// Those badges get a faint light edge; the club's own colour is unchanged.
+export const swatchEdge = (hex, bg = '#13151C') =>
+  /^#[0-9a-f]{6}$/i.test(hex || '') && contrast(hex, bg) < 1.6 ? 'inset 0 0 0 1px rgba(255,255,255,0.22)' : '';

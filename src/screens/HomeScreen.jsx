@@ -1,4 +1,5 @@
 import React from "react";
+import { swatchEdge } from '../lib/colourMath.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
@@ -99,7 +100,7 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
           {matches.length === 0 && <div className="cf-empty">{t("home.finder.empty", { q: q.trim() })} <button type="button" className="cf-link" onClick={onAllClubs}>{t("home.finder.seeAll")}</button></div>}
           {matches.map(({ key, pack }) => (
             <button key={key} type="button" role="option" className="cf-row" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(key)}>
-              <span className="cf-abbr" style={{ background: pack.color || "var(--s2)", color: abbrInk(pack.color) }}>{clubAbbr?.[key] || pack.name.slice(0, 3).toUpperCase()}</span>
+              <span className="cf-abbr" style={{ background: pack.color || "var(--s2)", color: abbrInk(pack.color), boxShadow: swatchEdge(pack.color) || undefined }}>{clubAbbr?.[key] || pack.name.slice(0, 3).toUpperCase()}</span>
               <span className="cf-name">{pack.name}</span>
               <span className="cf-go">{t("home.finder.play")}</span>
             </button>
@@ -113,7 +114,7 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
             {/* Club colour on the badge (Alex, 2026-09-06: "should we not add
                 color to the clubs?") — the finder sits below Today now, so the
                 reds no longer compete with the first Play. */}
-            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color) }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
+            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color), boxShadow: swatchEdge(clubPacks[k].color) || undefined }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
             <span className="cf-chip-name">{clubPacks[k].name}</span>
           </button>
         ))}
