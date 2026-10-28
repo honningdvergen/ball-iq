@@ -80,7 +80,9 @@ export const stripQuoted = (cmd) => cmd
 const segments = (cmd) => stripQuoted(cmd).split(/;|&&|\|\||\||\n/).map((x) => x.trim()).filter(Boolean);
 
 // ── 5. push to main without a green build of the current files ──────────────
-const NO_BUILD_NEEDED = /^(social|docs)\/|\.md$|^\.claude\/|^\.github\/|^\.agents\/|^\.codex\//;
+// android/ and ios/ hold the native shells (version bumps, signing); Vercel never builds them, and the
+// release scripts run their own `npm run build` in the clean clone.
+const NO_BUILD_NEEDED = /^(social|docs|android|ios)\/|\.md$|^\.claude\/|^\.github\/|^\.agents\/|^\.codex\//;
 export function pushesMain(cmd, branch) {
   return segments(cmd).some((seg) => {
     const m = seg.match(/\bgit\s+push\b(.*)$/);
