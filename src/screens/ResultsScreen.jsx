@@ -212,7 +212,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             color: scoreEarned ? "var(--accent)" : hugeScore > 0 ? "var(--text)" : "var(--t2)",
             letterSpacing:"-0.03em",
             lineHeight:1,
-            textShadow: scoreEarned ? "0 8px 32px rgba(88,204,2,0.35)" : "none",
+            textShadow: scoreEarned ? "0 8px 32px rgba(88,204,2,0.18)" : "none",
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />

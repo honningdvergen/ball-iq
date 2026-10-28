@@ -15,7 +15,7 @@
 .dd-pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 13px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex-shrink:0;letter-spacing:0.01em;}
 .dd-pill:disabled{opacity:0.6;cursor:default;}
 .dd-pill.dd-pill-on{border-color:rgba(88,204,2,0.45);color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);background:rgba(88,204,2,0.10);font-weight:800;}
-.dd-pill.is-set{border-color:rgba(88,204,2,0.35);color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);background:rgba(88,204,2,0.08);cursor:default;}
+.dd-pill.is-set{border-color:var(--border2);color:var(--t2);-webkit-text-fill-color:var(--t2);background:var(--s2);cursor:default;}
 .dd-share{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .1s;}
 .dd-share:active{transform:scale(0.98);}
 .dd-share-alts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-top:-2px;}
@@ -61,10 +61,13 @@
 
 /* ── NEXT UP (16 Oct 2026) ─────────────────────────────────────────────── */
 .dd-up{display:flex;flex-direction:column;gap:8px;width:100%;padding:12px 14px;border-radius:16px;text-align:left;font-family:inherit;cursor:pointer;text-decoration:none;
-  background:rgba(var(--dd-rgb),0.06);border:1px solid rgba(var(--dd-rgb),0.30);
+  /* Neutral card (28 Oct 2026, Alex: the panel "looks a bit hectic"): green
+     was on seven things at once. Share is the one loud thing; the mode keeps
+     its colour in the icon well only. */
+  background:transparent;border:1px solid var(--border2);
   color:var(--t1);-webkit-text-fill-color:var(--t1);-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-up:active{transform:scale(0.985);}
-.dd-up-k{font-size:12.5px;font-weight:700;color:var(--dd-c, var(--t2));-webkit-text-fill-color:var(--dd-c, var(--t2));}
+.dd-up-k{font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-up-main{display:flex;align-items:center;gap:12px;}
 .dd-up .dd-well{width:44px;height:44px;border-radius:12px;flex-shrink:0;}
 .dd-up-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
@@ -73,7 +76,7 @@
 /* Each part of the hook breaks as a whole ("Six / guesses" read as a typo). */
 .dd-up-seg{display:inline-block;max-width:100%;}
 /* Tinted, not solid: Share is the panel's one solid button (tidy pass). */
-.dd-up-go{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 15px;border-radius:999px;background:rgba(var(--dd-rgb),0.16);border:1px solid rgba(var(--dd-rgb),0.5);color:var(--dd-c, var(--accent));-webkit-text-fill-color:var(--dd-c, var(--accent));font-size:14px;font-weight:800;}
+.dd-up-go{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 15px;border-radius:999px;background:var(--s2);border:1px solid var(--border2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-size:14px;font-weight:800;}
 .dd-up.is-sweep{cursor:default;--dd-c:var(--accent);--dd-rgb:88,204,2;}
 .dd-day{display:flex;align-items:center;gap:10px;}
 .dd-day-bar{display:flex;gap:4px;flex:0 0 112px;}
@@ -119,5 +122,5 @@
 .dd-promo{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;padding:6px 11px;border-radius:10px;background:var(--gold-l);border:1px solid rgba(255,193,7,0.28);color:var(--gold);-webkit-text-fill-color:var(--gold);font-size:12.5px;font-weight:600;line-height:1.3;animation:dd-in .34s cubic-bezier(0.22,1,0.36,1) both;}
 .dd-promo strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 @media (prefers-reduced-motion: reduce){.dd-promo{animation:none;}}
-.dd-remind{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin-top:3px;padding:3px 0;min-height:28px;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:800;color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.dd-remind{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin-top:3px;padding:3px 0;min-height:28px;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:800;color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 .dd-remind:disabled{opacity:0.6;}
