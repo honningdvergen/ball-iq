@@ -31,7 +31,7 @@ export function AppBar({ tab, active, setTab, setScreen, dailyDone, notifCount =
   const cur = active === undefined ? tab : active;
   const goTab = (id) => () => { setScreen('home'); setTab(id); };
   return (
-    <nav className="fd-appbar" aria-label="App">
+    <nav className="fd-appbar" aria-label={t('nav.app')}>
       <div className="fd-w fd-appbar-in">
         {TABS.map(({ id, Icon, label }) => (
           <button key={id} type="button" className="fd-appbar-tab" aria-label={t(label)} aria-current={cur === id ? 'page' : undefined} onClick={goTab(id)}>

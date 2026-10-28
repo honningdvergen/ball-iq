@@ -846,4 +846,6 @@ export const STEP7_EN = {
   'nc.justNow': 'Just now',
   'nc.minAgo': '{n} min ago',
   'nc.hAgo': '{n} h ago',
+  // Added by the Spanish leftovers audit (28 Oct 2026): the web app bar's landmark name.
+  'nav.app': 'App',
 };

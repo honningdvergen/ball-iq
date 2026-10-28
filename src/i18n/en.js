@@ -2106,4 +2106,7 @@ export default registerEnglish({
   'nc.justNow': 'Just now',
   'nc.minAgo': '{n} min ago',
   'nc.hAgo': '{n} h ago',
+  // The web app bar's landmark name (components/AppBar.jsx; added by the Spanish
+  // leftovers audit, 28 Oct 2026). On Home's eager path, so also in en.home.js.
+  'nav.app': 'App',
 });
