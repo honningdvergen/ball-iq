@@ -2378,8 +2378,12 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    the daily well around the four (it is what sets them apart from the
    Multiplayer row now that both are neutral) and Multiplayer's green well
    (Alex, 9 Sep: a colourless well reads as disabled). */
-.todays-seven-secondary.is-mode,.todays-seven-secondary.is-mode.is-done{background:var(--s1);border:1px solid var(--border);}
-.todays-seven-secondary.is-mode .t7s-icon{background:rgba(var(--mode-rgb),0.16);border:0;}
+/* Middle ground (Alex, 28 Oct: "is it nice to have a bit of color?"): an
+   unplayed game keeps a faint wash of its colour and a stronger well, so the
+   four still read as four games; the pills stay neutral and done rows go grey. */
+.todays-seven-secondary.is-mode{background:linear-gradient(90deg, rgba(var(--mode-rgb),0.07), transparent 60%), var(--s1);border:1px solid var(--border);}
+.todays-seven-secondary.is-mode.is-done{background:var(--s1);border:1px solid var(--border);}
+.todays-seven-secondary.is-mode .t7s-icon{background:rgba(var(--mode-rgb),0.22);border:0;}
 .todays-seven-secondary.is-mode .t7s-icon .fh-tile-green{background:transparent;color:var(--mode);-webkit-text-fill-color:var(--mode);--fh-tile:30px;font-size:21px;}
 .todays-seven-secondary.is-mode .t7s-cta{background:transparent;border:1px solid var(--border2);color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .todays-seven-secondary.is-mode.is-next .t7s-cta{background:rgba(var(--mode-rgb),0.16);border-color:rgba(var(--mode-rgb),0.45);color:var(--mode);-webkit-text-fill-color:var(--mode);}
