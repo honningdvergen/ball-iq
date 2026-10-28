@@ -251,7 +251,16 @@
       "Bash(~/ball-iq-release/sim-shot.sh *)",
       "Bash(xcrun simctl *)",
       "Bash(ffmpeg *)",
-      "Bash(ffprobe *)"
+      "Bash(ffprobe *)",
+      "mcp__claude-in-chrome__computer",
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__find",
+      "mcp__claude-in-chrome__read_page",
+      "mcp__claude-in-chrome__get_page_text",
+      "mcp__claude-in-chrome__tabs_create_mcp",
+      "mcp__claude-in-chrome__tabs_close_mcp",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "Bash(sh /Users/alexanderbrynolsen/shithousery-hq/social/chromefront.sh)"
     ],
     "ask": [
       "Bash(git push --force*)",
@@ -260,14 +269,16 @@
       "Bash(git push * -f)",
       "Bash(git push * -f *)",
       "Bash(git push * +*)",
-      "Bash(git push origin main)",
-      "Bash(git push -u origin main)",
-      "Bash(git push origin HEAD:main)",
       "Bash(git checkout -- *)",
       "Bash(git checkout .)",
       "Bash(git checkout -f *)",
       "Bash(git checkout * -- *)",
       "Bash(gh pr merge *)"
+    ],
+    "deny": [
+      "Read(~/.appstoreconnect/**)",
+      "Edit(~/.appstoreconnect/**)",
+      "Write(~/.appstoreconnect/**)"
     ]
   },
   "hooks": {
@@ -278,6 +289,16 @@
             "type": "command",
             "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/session-start.mjs\"",
             "timeout": 15
+          }
+        ]
+      },
+      {
+        "matcher": "compact|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat /Users/alexanderbrynolsen/shithousery-hq/social/state/CURRENT_FACTS.md && printf '\\nPaste social/state/BUILDER_PREAMBLE.md at the top of every brief to a builder, critic or fact-checker. Run node social/factlint.mjs on every caption. Facebook Page card captions are 50-100 characters. Read tail -n 120 of social/state/pm/HANDOFF.md, never the whole file.\\n'",
+            "timeout": 5
           }
         ]
       }
@@ -317,6 +338,26 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/alexanderbrynolsen/shithousery-hq/.claude/hooks/agent-brief-guard.mjs\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__7f7042ac-454f-4386-81df-c1e7aef2bb6f__(apply_migration|execute_sql)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/supabase-guard.mjs\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -337,6 +378,11 @@
             "type": "command",
             "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/stop-deploy-verified.mjs\"",
             "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/stop-visual-proof.mjs\"",
+            "timeout": 10
           }
         ]
       }
@@ -349,6 +395,26 @@
             "type": "command",
             "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/postlog-metricool.mjs\"",
             "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/alexanderbrynolsen/shithousery-hq/.claude/hooks/factlint-on-write.mjs\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__6eea10cb-7cea-42f1-a045-5f6978eca183__sc_\\w+|mcp__a2116fbd-a4e9-4dd6-9d5d-5e954b636ce9__console_get_search_analytics",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/stamp-gsc.mjs\"",
+            "timeout": 5
           }
         ]
       }
