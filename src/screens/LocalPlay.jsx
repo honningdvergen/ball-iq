@@ -5,7 +5,7 @@
 // props and reaches into nothing else.
 import { useState, useEffect } from "react";
 import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull, CircleAlert, Loader, Gamepad2 } from "lucide-react";
-import { catLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
+import { chipLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
 import "../i18n/en.js";
 import { useT } from "../i18n/index.js";
 import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx";
@@ -473,7 +473,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{t("lp.turn", { name: currentPlayer?.name })}
         </div>
         <div className="q-card" style={qCardStyle(currentQ.cat)}>
-          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{catLabel(t, currentQ.cat)}</div>
+          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{chipLabel(t, currentQ.cat)}</div>
           <div className="q-text">{shownQ.q}</div>
         </div>
         <div className="opts">

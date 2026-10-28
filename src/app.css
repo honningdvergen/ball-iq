@@ -695,7 +695,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
    and a question screen clear the indicator (and Android's nav buttons) alike. */
 :root{--foot-clear:calc(16px + max(env(safe-area-inset-bottom,34px),34px));}
 .screen.foot-clear{padding-bottom:var(--foot-clear);}
-.q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.q-top{display:flex;align-items:center;gap:10px;margin-bottom:18px;position:relative;}
 .prog-wrap{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
 .prog-bar{height:100%;background:var(--accent);border-radius:1px;transition:width 0.45s cubic-bezier(0.22,1,0.36,1);}
 /* ── Per-question pips ────────────────────────────────────────────────────────
@@ -3594,7 +3594,7 @@ html.native-app .todays-seven-secondary.is-mode.is-next .t7s-cta{background:var(
    the q-top header has visibly shifted the progress track before. */
 .streak-beat{
   display:inline-flex;align-items:center;gap:6px;
-  position:fixed; top:calc(env(safe-area-inset-top, 0px) + 66px);
+  position:absolute; top:50%; margin-top:-17px; height:34px; box-sizing:border-box;
   left:50%; transform:translateX(-50%); z-index:60;
   background:var(--card); color:var(--t1);
   border:1px solid var(--gold); border-radius:999px;

@@ -238,7 +238,7 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the quiz engine and the Quiz screen', () => {
     const classic = unq(now['quiz: classic, timed, first question']);
-    for (const s of ['>Clásico<', '>Champions League<', '>P 01 / 3<', '>Pregunta 1<', '>aciertos<', 'Racha 0', 'aria-label="Salir de la partida"', 'aria-label="Volver"']) expect(classic).toContain(s);
+    for (const s of ['>Clásico<', '>Europa<', '>P 01 / 3<', '>Pregunta 1<', '>aciertos<', 'Racha 0', 'aria-label="Salir de la partida"', 'aria-label="Volver"']) expect(classic).toContain(s);
     const surv = unq(now['quiz: survival, PB 12']);
     for (const s of ['>A muerte<', '>Un fallo y se acaba<', '>Récord: 12<', '>P1<']) expect(surv).toContain(s);
     expect(unq(now['quiz: speed, club label'])).toContain('>Quiz de club<');

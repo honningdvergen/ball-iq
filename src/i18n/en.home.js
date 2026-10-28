@@ -168,6 +168,7 @@ export default {
   'cat.Transfers': 'Transfers',
   'cat.ClubQuiz': 'Club Quiz',
   'cat.LeagueQuiz': 'League Quiz',
+  'cat.chip.UCL': 'Europe',
   'trail.nums': 'one two three four five six',
   'trail.wrongBoth': '{name} played for both, wrong path',
   'trail.wrongAll': '{name} played for all {w}, wrong path',

@@ -10,7 +10,7 @@ import * as Sentry from "@sentry/react";
 import { Lightbulb, Flame, Flag } from "lucide-react";
 import ReportButton from "../components/ReportButton.jsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { catLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
+import { catLabel, chipLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import { useT } from "../i18n/index.js";
@@ -434,7 +434,7 @@ const CTA_INSET = (() => {
   // Mode names: quiz.mode.* in en.js; Daily 7 is a product name, Survival is Home's tile name.
   const QD_MODE_BADGE = { classic:"quiz.mode.classic", speed:"quiz.mode.speed", legends:"quiz.mode.legends", chaos:"quiz.mode.chaos", survival:"home.mode.survival", local:"quiz.mode.local" };
   const qdBadge = quizLabel || (mode === "daily" ? "Daily 7" : QD_MODE_BADGE[mode] ? t(QD_MODE_BADGE[mode]) : t("home.quiz.title"));
-  const qdCat = q ? (catLabel(t, q.cat) || "") : "";
+  const qdCat = q ? (chipLabel(t, q.cat) || "") : "";
   const qdCounter = mode === "survival" ? t("quiz.q", { n: idx + 1 }) : t("quiz.qOf", { n: String(idx + 1).padStart(2, "0"), total });
   const qdPct = total > 0 ? ((idx + (answered ? 1 : 0)) / total) * 100 : 0;
   const QD_RING_C = 2 * Math.PI * 33; // r=33 → circumference ≈ 207.35
@@ -749,11 +749,13 @@ const CTA_INSET = (() => {
           <span className="q-ctr">{mode === "survival" ? t("quiz.qTight", { n: idx + 1 }) : `${idx + 1}/${total}`}</span>
           {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}>?</button>}
         </div>
+        {/* Over the header row, absolutely placed so nothing reflows (28 Oct 2026:
+            as position:fixed at a guessed 66px it sat on the question card's edge). */}
+        {streakBeat > 0 && (
+          <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.inARow", { n: streakBeat })}</div>
+        )}
       </div>
 
-      {streakBeat > 0 && (
-        <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.inARow", { n: streakBeat })}</div>
-      )}
       {mode === "survival" && (
         <div className="streak-bar">
           <div className="streak-n"><Flame size={18} strokeWidth={2.4} aria-hidden="true" />{streak}</div>
@@ -823,7 +825,7 @@ const CTA_INSET = (() => {
             brand hue readable on the dark chip. */}
         {/* A club round already names the club in the header above; a second
             "CLUB QUIZ" chip on every card said it twice (sim tour, 27 Oct). */}
-        {q.cat !== "ClubQuiz" && <div className="q-tag" style={qTagStyle(q.cat)}>{catLabel(t, q.cat)}</div>}
+        {q.cat !== "ClubQuiz" && <div className="q-tag" style={qTagStyle(q.cat)}>{chipLabel(t, q.cat)}</div>}
         {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
         <div className="q-text" style={{fontSize:18}}>{noBreakScores(qv.q)}</div>
       </div>

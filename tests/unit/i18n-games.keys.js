@@ -121,6 +121,7 @@ export const STEP3_EN = {
   'cat.Transfers': "Transfers",
   'cat.ClubQuiz': "Club Quiz",
   'cat.LeagueQuiz': "League Quiz",
+  'cat.chip.UCL': "Europe",
   'qz.intro': "Pick a topic. Ten questions, and every answer builds your Ball IQ card.",
   'qz.mix': "Mix",
   'qz.Leagues': "Leagues",

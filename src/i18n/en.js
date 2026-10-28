@@ -296,6 +296,7 @@ export default registerEnglish({
   'cat.Transfers': 'Transfers',
   'cat.ClubQuiz': 'Club Quiz',
   'cat.LeagueQuiz': 'League Quiz',
+  'cat.chip.UCL': 'Europe',
   // The Quiz topic screen (screens/QuizScreen.jsx).
   'qz.intro': 'Pick a topic. Ten questions, and every answer builds your Ball IQ card.',
   'qz.mix': 'Mix',

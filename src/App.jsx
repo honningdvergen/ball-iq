@@ -828,6 +828,12 @@ export const CAT_LABELS = {
 // CAT_LABELS name, the same in both languages (Premier League, La Liga …).
 // LEAGUE_QUIZ_SECTIONS' names are the same words for the same cat.
 export const catLabel = (t, c) => (hasEnglish(`cat.${c}`) ? t(`cat.${c}`) : CAT_LABELS[c] || c);
+// The chip ABOVE a question (28 Oct 2026). cat:"UCL" is the bank's bucket for all
+// European club football: 224 of its questions are about the UEFA Cup, Europa
+// League or Cup Winners' Cup, so a chip reading "Champions League" over "Which
+// competition did PSV win in 1978?" pointed players at the wrong answer (Alex
+// caught it in Daily 7). The chip says "Europe"; the topic keeps its name.
+export const chipLabel = (t, c) => (c === "UCL" ? t("cat.chip.UCL") : catLabel(t, c));
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
 
@@ -1529,7 +1535,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
         <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>{t("hs.pts")}</span></div>
       </div>
       <div className="q-card">
-        <div className="q-tag">{catLabel(t, q.cat)}</div>
+        <div className="q-tag">{chipLabel(t, q.cat)}</div>
         <div className="q-text">{qv.q}</div>
       </div>
       <div className="opts">

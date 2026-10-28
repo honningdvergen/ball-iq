@@ -274,6 +274,7 @@ export default {
   'cat.Transfers': 'Fichajes',
   'cat.ClubQuiz': 'Quiz de club',
   'cat.LeagueQuiz': 'Quiz de liga',
+  'cat.chip.UCL': 'Europa',
   // Numbers before "preguntas" are spelt out (scripts/audit-no-question-count.mjs).
   'qz.intro': 'Elige un tema. Diez preguntas, y cada respuesta suma a tu carta de Ball IQ.',
   'qz.mix': 'Mezcla',
