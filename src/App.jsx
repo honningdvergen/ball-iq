@@ -1686,10 +1686,11 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
         <div className="q-text" style={{fontSize:18,lineHeight:1.5}}>{qv?.s || qv?.q}</div>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:16}}>
-        <button onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
+        {/* Keyed by statement, so the last answer's green/red does not fade over the next one (as 13cd7b49 did for the other quizzes). */}
+        <button key={`${idx}-true`} onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
           {"✓ " + t("quiz.true")}
         </button>
-        <button onClick={() => answer(false)} disabled={!!picked} style={tfStyle(false)}>
+        <button key={`${idx}-false`} onClick={() => answer(false)} disabled={!!picked} style={tfStyle(false)}>
           {"✗ " + t("quiz.false")}
         </button>
       </div>
