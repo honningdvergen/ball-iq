@@ -28,6 +28,7 @@ export default {
   'common.new': 'NEW',
   'mode.footle.short': FOOTLE_SHORT,
   'nav.primary': 'Primary',
+  'nav.app': 'App',
   'nav.play': 'Play',
   'nav.settings': 'Settings',
   'nav.notifications': 'Notifications',

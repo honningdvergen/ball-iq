@@ -2014,4 +2014,5 @@ export default {
   'nc.justNow': 'Ahora mismo',
   'nc.minAgo': 'hace {n} min',
   'nc.hAgo': 'hace {n} h',
+  'nav.app': 'App',
 };
