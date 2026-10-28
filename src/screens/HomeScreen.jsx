@@ -535,10 +535,12 @@ function HomeScreenImpl({
                   </div>
                 );
               }
+              // The next unplayed game is the one tinted Play (calmer Home, 28 Oct).
+              const nextKey = rows.find((x) => !x.done)?.key;
               return rows.map((r) => (
                 <button
                   key={r.key}
-                  className={`todays-seven-secondary is-mode ${r.key}-row${r.done ? " is-done" : ""}`}
+                  className={`todays-seven-secondary is-mode ${r.key}-row${r.done ? " is-done" : ""}${r.key === nextKey ? " is-next" : ""}`}
                   style={{ "--mode": r.accent, "--mode-rgb": r.rgb }}
                   onClick={r.onTap}
                   aria-label={r.aria}

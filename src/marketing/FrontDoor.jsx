@@ -295,8 +295,10 @@ export default function FrontDoor() {
                 now the app's own Footle mark — an F on the green tile, the same
                 one the app home draws. The worked example lives on the Footle
                 page itself. */}
+            {/* The next unplayed game is the one tinted Play; "Get app" keeps
+                the page's one solid button (calmer Home, 28 Oct 2026). */}
             {dailies.map((d) => (
-              <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)} style={{ '--mode': MODE_ACCENT[d.k === 'daily' ? 'daily7' : d.k] }}>
+              <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}${d.k === dailies.find((x) => !x.done)?.k ? ' is-next' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)} style={{ '--mode': MODE_ACCENT[d.k === 'daily' ? 'daily7' : d.k] }}>
                 {d.k === 'footle' ? (
                   <span className="fd-card-ic fd-fmark" aria-hidden="true">F</span>
                 ) : (
