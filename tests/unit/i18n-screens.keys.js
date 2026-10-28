@@ -267,7 +267,7 @@ export const STEP4_EN = {
   'st.cb': "Colour-blind tiles",
   'st.cbSub': "Orange and blue Footle tiles instead of green and yellow",
   'st.hard': "Footle hard mode",
-  'st.hardSub': "Only real footballers count as guesses. Starts with your next Footle",
+  'st.hardSub': "Only real footballers count as guesses. You can also switch it on the board mid-game",
   'st.remind': "Daily reminders",
   'st.remindSub': "An evening nudge if you haven't played yet — keeps your streak alive",
   'st.remindBlockedIos': "Blocked — open iOS Settings › Ball IQ › Notifications and allow them, then come back",

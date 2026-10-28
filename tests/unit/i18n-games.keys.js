@@ -51,6 +51,8 @@ export const STEP3_EN = {
   'footle.wrongSpot': "wrong spot",
   'footle.hard': "Hard mode",
   'footle.hardOn': "Hard mode: on",
+  'footle.hardOff': "Hard mode off. Today counts as normal",
+  'footle.hardLate': "Hard mode from now on. Today counts as normal",
   'footle.srGreen': "correct spot",
   'footle.srGrey': "not in name",
   'footle.srSolved': "Solved — the answer is {a}.",

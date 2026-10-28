@@ -66,7 +66,7 @@ const footleScenarios = () => {
     ['footle: two guesses in', footleDay(TODAY, { guesses: [m(1), m(2)], status: 'playing' }), footle()],
     ['footle: three guesses (the clue offer)', footleDay(TODAY, { guesses: [m(1), m(2), m(3)], status: 'playing' }), footle()],
     ['footle: clue taken', footleDay(TODAY, { guesses: [m(1), m(2), m(3)], status: 'playing', clue: 1 }), footle()],
-    ['footle: hard mode, one guess in', footleDay(TODAY, { guesses: [m(1)], status: 'playing', hard: true }), footle()],
+    ['footle: hard mode, one guess in', { ...footleDay(TODAY, { guesses: [m(1)], status: 'playing', hard: true }), biq_footle_hard: '1' }, footle()],
     ['footle: won in 1', footleDay(TODAY, { guesses: [a], status: 'won' }), footle()],
     ['footle: won in 3', footleDay(TODAY, { guesses: [m(1), m(2), a], status: 'won' }), footle()],
     ['footle: won in 6, hard, clued', footleDay(TODAY, { guesses: [m(1), m(2), m(3), m(4), m(5), a], status: 'won', hard: true, clue: 1 }), footle()],

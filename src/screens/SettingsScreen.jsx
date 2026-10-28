@@ -287,8 +287,9 @@ function SettingsScreenImpl({ settings, onUpdate, onClearStats, onClearSeen, onB
               <SettingsToggle label={t("st.cb")} val={settings.colorBlind === true} onChange={v => onUpdate({colorBlind:v})} />
             </div>
           </div>
-          {/* Footle's hard mode lives on the board, as a small pill shown only
-              before the first guess, and Alex could not find it (27 Oct). The
+          {/* Footle's hard mode lives on the board as a small pill (once only before
+              the first guess, for the whole game since 28 Oct), and Alex could
+              not find it (27 Oct). The
               same switch here: the board reads biq_footle_hard when it opens. */}
           <FootleHardRow t={t} />
           {I18N_LIVE && (
