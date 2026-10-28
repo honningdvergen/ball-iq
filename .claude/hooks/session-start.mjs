@@ -60,6 +60,16 @@ const gsc = state('gsc-last-read.json');
 const gscDays = gsc ? (Date.now() - gsc.time) / 864e5 : Infinity;
 lines.push(`${gscDays > 1 ? '⚠️ ' : ''}Search Console last read: ${gsc ? ago(gsc.time) : 'never recorded'}${gscDays > 1 ? ' — the Google-drop watch reads it daily (project_google_drop_oct20)' : ''}`);
 
+// Free disk. Alex 28 Oct: "make sure we have disk space always". A native build
+// or simulator boot on a nearly full disk fails in confusing ways, so say it here.
+try {
+  const kb = Number(spawnSync('df', ['-k', '/'], { timeout: 3000 }).stdout.toString().trim().split('\n').pop().split(/\s+/)[3]);
+  const gb = Math.round(kb / 1048576);
+  lines.push(gb < 20
+    ? `⚠️ Disk: ${gb} GB free — under 20 GB. Clear caches first (npm cache clean --force, Xcode DerivedData, brew cleanup -s); old renders under ~/shithousery-hq/social/out are Alex's content, never delete them.`
+    : `Disk: ${gb} GB free`);
+} catch {}
+
 if (lines.length) {
   process.stdout.write(JSON.stringify({
     hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: `Repo state at session start:\n${lines.join('\n')}` },
