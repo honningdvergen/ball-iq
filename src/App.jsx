@@ -1046,6 +1046,26 @@ export function playSound(type) {
 // playSound pattern at line 3082). OS-level haptics disabled silently no-ops
 // inside the plugin itself, so no extra guard needed for that case.
 export const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
+// ⚠️ ANDROID HAS NO navigator.share (28 Oct 2026, Android 16 WebView). A dozen
+// share buttons (Daily 7, Top 10, Trail, Mystery, Draft, invites, rooms) call
+// only navigator.share, so on the Android app every one of them fell back to
+// "copied" and the share sheet never opened. Give the WebView one, backed by
+// the native sheet. Text and link only: no canShare, so file shares keep their
+// own native path (shareCard → ShareCardPlugin). iOS's WKWebView has its own
+// navigator.share and is left alone.
+if (IS_NATIVE && typeof navigator !== "undefined" && typeof navigator.share !== "function") {
+  try {
+    navigator.share = async ({ title, text, url } = {}) => {
+      try {
+        await CapShare.share({ title, text, url });
+      } catch (e) {
+        // Callers treat AbortError as "sheet dismissed", exactly as on the web.
+        if (/cancel/i.test(e?.message || "")) throw new DOMException("Share canceled", "AbortError");
+        throw e;
+      }
+    };
+  } catch {}
+}
 function challengeEventOnce(kind, ch) {
   // Robots must not vote here either. All three record_challenge_event writes
   // go through this helper, so the gate belongs IN it rather than at each call
