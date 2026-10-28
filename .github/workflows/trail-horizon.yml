@@ -34,8 +34,11 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 24
+          cache: npm
 
-      # No npm ci: trail-freeze.mjs only imports src/lib/trail.js (pure data +
-      # date helpers). Report-only mode — it cannot write without --apply.
+      # npm ci IS needed (28 Oct 2026): trail.js now reaches src/i18n, which
+      # imports react, and without it the job crashed before checking anything
+      # (red every day from at least 23 Oct). Report-only: no --apply.
+      - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: At least 7 future Trail days frozen
         run: node scripts/trail-freeze.mjs --min-margin=7
