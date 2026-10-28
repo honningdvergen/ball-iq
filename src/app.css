@@ -319,7 +319,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 /* Streak chip rendered next to the Daily section title when login streak
    > 0. Outline-only treatment so it reads as a peer to the title rather
    than competing for attention. */
-.hst-streak{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:rgba(255,193,7,0.1);border:1px solid transparent;border-radius:999px;font-family:var(--font);font-size:12px;font-weight:800;color:var(--gold);-webkit-text-fill-color:var(--gold);letter-spacing:0;text-transform:none;box-shadow:none;will-change:transform;}
+.hst-streak{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.28);border-radius:999px;font-family:var(--font);font-size:12px;font-weight:800;color:var(--gold);-webkit-text-fill-color:var(--gold);letter-spacing:0;text-transform:none;box-shadow:none;will-change:transform;}
 /* Pulse fires once per session when loginStreak exceeds the value
    captured at AppInner mount (i.e. user just earned today's streak day).
    Subtle by design — celebrating the moment, not demanding attention. */
@@ -2367,29 +2367,11 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    as loudly as one still waiting to be played. */
 .todays-seven-secondary.is-mode.is-done{background:var(--s1);border:1px solid var(--border);}
 .todays-seven-secondary.is-mode.is-done .t7s-cta{background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);border:1px solid var(--border2);}
-/* ⭐ CALMER TODAY BLOCK (Alex, 28 Oct 2026: "calm down home too"). Each row
-   showed its colour four times (wash, border, well, pill): 16 coloured patches
-   and four coloured Plays reading as four calls to action. The independent
-   design critic's call, kept within Alex's 6 Sep ask that the four games stay
-   recognisable: the ICON WELL carries the mode colour, the row and its pill go
-   neutral, and only the NEXT unplayed game keeps a tinted Play (solid in the
-   app, where no "Get app" button holds the screen's one solid slot). A done
-   row fades its well and Review becomes a quiet text link. Kept on purpose:
-   the daily well around the four (it is what sets them apart from the
-   Multiplayer row now that both are neutral) and Multiplayer's green well
-   (Alex, 9 Sep: a colourless well reads as disabled). */
-/* Middle ground (Alex, 28 Oct: "is it nice to have a bit of color?"): an
-   unplayed game keeps a faint wash of its colour and a stronger well, so the
-   four still read as four games; the pills stay neutral and done rows go grey. */
-.todays-seven-secondary.is-mode{background:linear-gradient(90deg, rgba(var(--mode-rgb),0.07), transparent 60%), var(--s1);border:1px solid var(--border);}
-.todays-seven-secondary.is-mode.is-done{background:var(--s1);border:1px solid var(--border);}
-.todays-seven-secondary.is-mode .t7s-icon{background:rgba(var(--mode-rgb),0.22);border:0;}
-.todays-seven-secondary.is-mode .t7s-icon .fh-tile-green{background:transparent;color:var(--mode);-webkit-text-fill-color:var(--mode);--fh-tile:30px;font-size:21px;}
-.todays-seven-secondary.is-mode .t7s-cta{background:transparent;border:1px solid var(--border2);color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.todays-seven-secondary.is-mode.is-next .t7s-cta{background:rgba(var(--mode-rgb),0.16);border-color:rgba(var(--mode-rgb),0.45);color:var(--mode);-webkit-text-fill-color:var(--mode);}
-html.native-app .todays-seven-secondary.is-mode.is-next .t7s-cta{background:var(--mode);border-color:transparent;color:#0b0f0c;-webkit-text-fill-color:#0b0f0c;}
-.todays-seven-secondary.is-mode.is-done .t7s-icon{background:rgba(var(--mode-rgb),0.08);}
-.todays-seven-secondary.is-mode.is-done .t7s-cta{background:none;border:0;padding-inline:6px;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* ⭐ KEEP THE COLOUR (Alex, 28 Oct 2026). The Today rows were calmed twice
+   that evening (neutral rows and pills, then a faint wash) and Alex judged
+   both "a bit boring": each game showing its own colour on the row, the well
+   and its Play pill is the look he wants. Do not neutralise these rows again
+   on a "one loud thing" argument; that rule is for finish panels, not Home. */
 /* Play with Friends as a row (MultiplayerCard.jsx): the wrapper is a div holding
    two buttons, so the body button drops its chrome and the pill is a real
    <button>. Green in the well like the mode colours do. */

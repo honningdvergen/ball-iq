@@ -161,14 +161,8 @@
 /* A loss is played, not won: neutral, never the win green (16 Oct 2026). */
 .fd-state.is-lost{color:var(--t2)}
 .fd-daily.is-done .fd-play{background:var(--s2);color:var(--t1);border:1px solid var(--bd2)}
-/* Calmer Today (Alex, 28 Oct 2026: "calm down home too"; the design critic's
-   call). Four solid green Plays plus "Get app" was five loud buttons. The icon
-   carries each game's colour; Play is a quiet outline, the next unplayed game
-   gets a green tint, Review is a text link, and "Get app" stays the one solid. */
-.fd-daily .fd-play{background:transparent;color:var(--t1);border:1px solid var(--bd2)}
-.fd-daily.is-next .fd-play{background:color-mix(in srgb,var(--grn) 16%,transparent);color:var(--grn);border-color:color-mix(in srgb,var(--grn) 45%,transparent)}
-.fd-daily.is-done .fd-play{background:none;border:0;color:var(--t2);min-width:0;padding:0 6px}
-.fd-card.fd-daily .fd-card-ic.fd-fmark{background:color-mix(in srgb,var(--grn) 16%,var(--s1));color:var(--grn)}
+/* Keep the colour (Alex, 28 Oct 2026): the calmer outline Plays were "a bit
+   boring"; the dailies keep their solid green Play. */
 .fd-games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .fd-game .fd-play{background:transparent;color:var(--t3);min-width:0;padding:0 4px;font-weight:700}
 .fd-game:hover .fd-play{color:var(--t1)}
