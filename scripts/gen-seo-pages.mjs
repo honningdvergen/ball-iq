@@ -98,7 +98,7 @@ const QB = QB_ALL.filter((q) => !q.tag || !RETIRED_TAGS.has(q.tag));
 import { rootCss } from '../src/design/tokens.js';
 import { shellHeader, shellFooter, SHELL_CSS } from './seo/shell.mjs';
 import { shellStrings } from './seo/shell-i18n.mjs';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE, GAMES_PAGE } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE, GAMES_PAGE, XI_PAGE } from './seo/content.mjs';
 import { GAMES_NAV } from '../src/marketing/siteNav.js';
 import { recentFootleAnswers } from './seo/footle-answer-page.mjs';
 import { recentDailyDays } from './seo/daily-answers-page.mjs';
@@ -4232,7 +4232,16 @@ ${NAV}
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Guess the XI</span></nav>
 ${XI_MARKUP}
 </section>
+<section class="sec narrow" id="how"><h2>How to play</h2><div class="prose">${XI_PAGE.how.map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`).join('\n')}</div></section>
+<section class="sec narrow"><h2>What makes it different</h2><div class="prose">${XI_PAGE.body.map((pp) => `<p>${esc(pp)}</p>`).join('\n')}</div></section>
+<section class="sec narrow"><h2>The other daily games</h2><div class="prose">
+<p><a href="${SITE.base}/football-wordle/">Footle</a> — the daily football Wordle — guess the footballer's surname in six.</p>
+<p><a href="${SITE.base}/daily-football-quiz/">Daily 7</a> — seven questions, the same for everyone, once a day.</p>
+<p><a href="${SITE.base}/transfer-trail/">Transfer Trail</a> — name the player from his career path, one club at a time.</p>
+<p><a href="${SITE.base}/mystery-player/">Mystery Player</a> — one secret footballer, unlimited guesses, every guess ranked by closeness.</p>
+</div></section>
 ${appCtaBand('football')}
+<section class="sec narrow"><h2>Guess the XI — FAQ</h2>${renderFaq(XI_PAGE.faq)}</section>
 </main>
 ${footer()}
 <script>${XI_JS}</script>`;

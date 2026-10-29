@@ -551,6 +551,31 @@ export const TRAIL_PAGE = {
   ],
 };
 
+// Guess the XI's page copy (29 Oct 2026). The page was the game and nothing
+// else: 206 words, no how-to, no FAQ, while every other daily page explains
+// itself. Rendered by buildXiPage in gen-seo-pages.mjs. ⚠️ NO QUESTION COUNT.
+export const XI_PAGE = {
+  slug: 'xi',
+  game: 'Guess the XI',
+  how: [
+    ['Read the pitch', 'A famous starting eleven is laid out in its real shape, with the match named above it. Every shirt shows its number and position; the names are what you have to supply.'],
+    ['Name a player', 'Type any player. A right name fills his shirt on the pitch and stays there; the order you name them in does not matter.'],
+    ['Six misses', 'A wrong name costs one of six. Run out and the eleven you have not named are revealed, so you still see the full side.'],
+    ['One line-up a day', 'The same XI for everyone, numbered, new at local midnight. Your score is how many of the eleven you named and how many misses it took.'],
+  ],
+  body: [
+    `Guess the XI is a daily football game about line-ups. Most quizzes ask you to name a team from memory with nothing to go on. This one gives you the shape of the side as it actually stood: who played where, which number he wore, which match it was. From there the names come back one at a time, and the ones you cannot place are the ones worth finding out.`,
+    `The line-ups come from matches people still argue about: finals, famous wins, famous collapses. Each one is taken from that match's own teamsheet, not a season squad list, so the shape on the pitch and the number on each shirt are the ones from the day.`,
+    `One XI a day, the same for everyone, so a score is worth comparing. Free, no account, plays in the browser, and in the Ball IQ app it sits alongside Footle, the Daily 7, Transfer Trail and Mystery Player.`,
+  ],
+  faq: [
+    { q: 'What is Guess the XI?', a: 'A daily football game where you name a famous starting eleven. The formation, shirt numbers and positions are on the pitch, the match is named, and you supply the eleven names with six misses allowed.' },
+    { q: 'Does the spelling have to be exact?', a: 'Accents do not matter and a surname is usually enough; each player accepts the forms his name is commonly written in. Naming a player you have already placed is never counted as a miss.' },
+    { q: 'What happens when I run out of misses?', a: 'The game ends and the players you have not named are revealed, so you always see the whole line-up and can share how many you got.' },
+    { q: 'Is it free? Do I need an account?', a: 'Free, no account, straight in the browser. The free Ball IQ app has the same daily XI alongside the other daily games.' },
+  ],
+};
+
 // ⚠️ SLUG IS THE SEARCH TERM. "football games" is the second head term Alex
 // queued on 2026-09-05 alongside "football quiz" (top 5 on both is the goal,
 // never parked). The pages that hold page one for it in our cluster are daily
