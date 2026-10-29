@@ -523,7 +523,15 @@ function badgeFor(slug, name) {
   if (slug === HUB.slug) return { text: '⚽', emoji: true };
   if (CLUB_BADGE[slug]) return { text: CLUB_BADGE[slug], emoji: false };
   if (CAT_EMOJI[slug]) return { text: CAT_EMOJI[slug], emoji: true };
-  return { text: '❓', emoji: true }; // listicles / anything else
+  // Player tiles carry the player's initials (29 Oct 2026: every player tile
+  // on the hub showed a red ❓, which reads as a missing image, not a badge).
+  const player = PLAYERS.find((p) => p.slug === slug);
+  if (player) {
+    const parts = player.name.split(/\s+/).filter(Boolean);
+    const text = parts.length > 1 ? parts[0][0] + parts[parts.length - 1][0] : player.name.slice(0, 2);
+    return { text: text.toUpperCase(), emoji: false };
+  }
+  return { text: '📝', emoji: true }; // listicles / anything else
 }
 
 // ── shared chrome ─────────────────────────────────────────────────────────────
