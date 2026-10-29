@@ -4635,7 +4635,7 @@ ${GAMES_CSS}
 </section>
 ${island.script}
 <section class="sec gm-sec" id="daily" aria-labelledby="gm-daily-h">
-<h2 class="gm-h" id="gm-daily-h">Today's four</h2>
+<h2 class="gm-h" id="gm-daily-h">Today's puzzles</h2>
 <p class="gm-sub">The same puzzles for everyone, new ones in <b id="gm-countdown">a few hours</b>.</p>
 <div class="gm-grid">
 ${dailies.map(card).join('\n')}

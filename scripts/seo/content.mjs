@@ -305,17 +305,17 @@ export const LISTICLES = [
     h1: 'World Cup 2026 Quiz Questions and Answers',
     title: 'World Cup Quiz Questions and Answers (2026) | Ball IQ',
     description:
-      '55+ World Cup quiz questions with answers — from Uruguay 1930 to the 48-team 2026 tournament in the USA, Canada and Mexico. Free to play.',
+      '55+ World Cup quiz questions with answers — from Uruguay 1930 to Spain lifting the trophy at the 48-team 2026 tournament. Free to play.',
     about: 'FIFA World Cup trivia',
     lede: 'Big set of World Cup quiz questions with answers — graded easy to hard, with most answers explained.',
     intro: [
-      `The summer of the 2026 World Cup — the first 48-team edition, hosted across the United States, Canada and Mexico, with the final at MetLife Stadium in New Jersey on July 19 — is the perfect excuse to find out how much World Cup history you actually know. This is a big, curated set of World Cup quiz questions and answers pulled from the Ball IQ question bank: nearly a century of tournaments, from Uruguay lifting the first trophy in 1930 to Argentina's shoot-out win over France in Qatar in 2022.`,
+      `The 2026 World Cup — the first 48-team edition, hosted across the United States, Canada and Mexico — ended with Spain beating Argentina 1-0 after extra time at MetLife Stadium in New Jersey on July 19, and left a summer's worth of arguments behind it. This is a big, curated set of World Cup quiz questions and answers pulled from the Ball IQ question bank: nearly a century of tournaments, from Uruguay lifting the first trophy in 1930, through Argentina's shoot-out win over France in Qatar in 2022, to Spain's second title in 2026.`,
       `The set is graded from easy to hard. The warm-ups ask things any fan should get — who won in 2010, which country has lifted the trophy five times. The middle band digs into the famous moments: Maradona's 1986, the headbutt final of 2006, Germany 7-1 Brazil. And the hard end is for the obsessives — controversial penalties in extra time, golden goals, and the scorers everyone forgets. Whether you're building a pub-quiz round, testing your mates during the group stage, or just settling an argument, there's a difficulty band for it.`,
       `Every question comes with the answer and a short explanation of the story behind it, so you learn something even on the ones you miss — that's the Ball IQ way. Play the interactive sample below free in your browser, no sign-up needed. And when you want more than one round, the full Ball IQ game is free: thousands of fact-checked questions, a World Cup category, a daily challenge and Footle, our Wordle-style daily footballer game.`,
     ],
     faq: [
       { q: 'How many questions are in this World Cup quiz?', a: 'Over 55 on this page, graded easy to hard, each with the answer and a short explanation. The Ball IQ app has a full World Cup category on top of that, plus thousands of questions across other competitions.' },
-      { q: 'Does it cover the 2026 World Cup?', a: 'The 2026 tournament — the first with 48 teams, hosted by the USA, Canada and Mexico with the final at MetLife Stadium on July 19, 2026 — is the occasion, but the questions cover all of World Cup history, so the quiz never goes stale.' },
+      { q: 'Does it cover the 2026 World Cup?', a: 'Yes. The 2026 tournament — the first with 48 teams, hosted by the USA, Canada and Mexico, won by Spain 1-0 against Argentina after extra time at MetLife Stadium on July 19, 2026 — is in the set, and so is all of World Cup history before it, so the quiz never goes stale.' },
       { q: 'Can I use these for a pub quiz?', a: 'Absolutely — that’s what the difficulty grading is for. Take ten easy ones for a warm-up round and ten hard ones for the tie-breaker, and the explanations double as the quizmaster’s answer notes.' },
       { q: 'Is it free?', a: 'Yes — read and play everything on this page free in your browser with no sign-up. The free Ball IQ app adds the full question bank, daily challenges and live multiplayer.' },
     ],
@@ -565,9 +565,9 @@ export const GAMES_PAGE = {
   title: 'Football Games — Daily Puzzles, Quizzes and Wordle | Ball IQ',
   description:
     'Free football games in the browser: Footle, a daily quiz, Transfer Trail, Mystery Player and quiz modes for every club and league. No sign-up.',
-  lede: 'Four puzzles that reset every midnight, quiz modes for every mood, a quiz for every club — free, in the browser, no sign-up.',
+  lede: 'Daily puzzles that reset every midnight, quiz modes for every mood, a quiz for every club — free, in the browser, no sign-up.',
   body: [
-    `Ball IQ's football games are built for people who actually know football, not for a two-minute tap-through. Four of them reset every midnight and are the same for everyone: Footle, the football Wordle, where the answer is always a footballer's surname; the Daily 7, seven questions the whole world gets identically so a score is worth comparing; Transfer Trail, a career revealed one club at a time; and Mystery Player, one secret footballer and unlimited guesses, each ranked by how close it is.`,
+    `Ball IQ's football games are built for people who actually know football, not for a two-minute tap-through. The daily puzzles reset every midnight and are the same for everyone: Footle, the football Wordle, where the answer is always a footballer's surname; the Daily 7, seven questions the whole world gets identically so a score is worth comparing; Transfer Trail, a career revealed one club at a time; Top 10, where you name every entry on a list with three lives; Mystery Player, one secret footballer and unlimited guesses, each ranked by how close it is; Football Grid, nine cells and one player for each; and Guess the XI, a famous line-up to name from its positions and shirt numbers.`,
     `Around them sit the quiz modes — Classic against the clock, Survival where one miss ends it, Hot Streak, Legends for the pre-2000 greats, Chaos for quotes and nicknames, Stadiums, Guess the XI — and a quiz for every club and league on file, from Real Madrid to Hajduk Split, each researched, fact-checked and given the reason behind every answer. Everything here plays free in the browser; the free app keeps your streaks and adds live 1v1 against a friend.`,
   ],
   faq: [
