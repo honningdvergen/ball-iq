@@ -1,3 +1,10 @@
+## 2026-10-29 — BUILD 168 (1.8.6) ON TESTFLIGHT
+
+- [x] iOS 168 cut at eaeaa6f6 (~/ball-iq-release/build-168.sh), uploaded 29 Oct ~15:10 Oslo. Carries leagues phase 2, the Footle hard-mode switch, the calmer finish panel, Home colour, the Europe chip, the streak badge, the Palace question, the Trail freeze and the Silva/Barry rungs.
+- [ ] Alex plays 168 (leagues: finish a daily → "Start a league with your mates" → create → invite link; the league card on Home). Submit 1.8.6 only after that, AFTER_APPROVAL, What's New in 19 locales (not written yet).
+- [ ] On release day: the AASA `/l/*` flip (see the leagues section), and the Android build (versionCode 62 is 1.8.6; ~/ball-iq-release/aab-62.sh must be re-run at the final commit; run it on the emulator before any Play upload; Play production upload needs Alex's "submit it").
+- [ ] Social daily kit (plan item 4): no renderer exists for "today's result card" outside the app; needs a Playwright script that finishes a daily and captures the V2 share card, or an api/og card kind for the day. Not started.
+
 ## 2026-10-29 — TRAIL FREEZE + VERIFIER FOLLOW-UPS
 
 - [x] Frozen through 28 Nov (ead97a27); No. 103 Stojković ↔ No. 124 Hazard; Silva's Sha Tin and Barry's Hurstpierpoint rungs added (c7936f4b).
