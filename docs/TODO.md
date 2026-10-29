@@ -1,3 +1,10 @@
+## 2026-10-29 — TRAIL FREEZE + VERIFIER FOLLOW-UPS
+
+- [x] Frozen through 28 Nov (ead97a27); No. 103 Stojković ↔ No. 124 Hazard; Silva's Sha Tin and Barry's Hurstpierpoint rungs added (c7936f4b).
+- [ ] **NEDVED (No. 148, 28 Dec): verify his first club.** Wikipedia lists Škoda Plzeň (1990-91) before Dukla Prague, and a "1.FC Košice" entry that looks wrong. Run the bank-verifier with two non-Wikipedia sources before touching the trail; the day is unserved, so a first-rung fix is safe until 13 Dec (freeze horizon).
+- [ ] Verifier noise to leave alone: reserve teams (Dynamo-2 Kyiv, Zenit-2), long club names (Queens Park Rangers, Wolverhampton Wanderers), article-title lookups (Marcelo, Isco, Joaquín).
+- [ ] Fewer bad days, next pass: the remaining Japanese-career days still to come (Yoshida No. 147, Nagatomo 175, Endo 201, Konno 214, Sakai 215, Uchida 219, Stojković now 124) — replace, or open with three clubs, before each enters the 30-day freeze.
+
 ## 2026-10-29 — LEAGUES IN THE APP (phase 2)
 
 - [x] Mates' leagues run in the native shell (LEAGUES_ON), the app captures balliq.app/l/CODE links, and the finish panel offers "Start a league with your mates" to anyone not in one. In 13 days of the web-only phase, zero leagues were created.
