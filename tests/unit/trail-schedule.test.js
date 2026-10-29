@@ -162,6 +162,30 @@ describe("Trail schedule is frozen", () => {
     "VERMAELEN",          // #92 · 2026-11-02 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "MARCELO",            // #93 · 2026-11-03 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "DYBALA",             // #94 · 2026-11-04 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "NESTA",              // #95 · 2026-11-05 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SILVA_DAV",          // #96 · 2026-11-06 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DEMBL",              // #97 · 2026-11-07 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GOMEZ",              // #98 · 2026-11-08 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "KANTE",              // #99 · 2026-11-09 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SAGNA",              // #100 · 2026-11-10 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "RIQUELME",           // #101 · 2026-11-11 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "RIJKAARD",           // #102 · 2026-11-12 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HAZARD",             // #103 · 2026-11-13 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BALE",               // #104 · 2026-11-14 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HERNANDEZ",          // #105 · 2026-11-15 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BARRY",              // #106 · 2026-11-16 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SRNA",               // #107 · 2026-11-17 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BARTHEZ",            // #108 · 2026-11-18 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "CALHANOGLU",         // #109 · 2026-11-19 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "WILSHERE",           // #110 · 2026-11-20 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "CHIESA",             // #111 · 2026-11-21 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BONIEK",             // #112 · 2026-11-22 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ZIDANE",             // #113 · 2026-11-23 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "JOAQUIN",            // #114 · 2026-11-24 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DRAXLER",            // #115 · 2026-11-25 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GNDOAN",             // #116 · 2026-11-26 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ARSHAVIN",           // #117 · 2026-11-27 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HOWEDES",            // #118 · 2026-11-28 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
