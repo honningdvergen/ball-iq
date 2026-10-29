@@ -1268,10 +1268,17 @@ const WIDGET_CAP = 60;
 
 function renderAnswerList(name, rows, { spread = 0 } = {}) {
   const picked = spreadPick(rows, spread);
+  // Answers are VISIBLE (29 Oct 2026). The searches that brought these pages
+  // their traffic were "liverpool quiz with answers", "arsenal quiz with
+  // answers", "premier league quiz questions and answers": people want the
+  // answer on the page, for a pub quiz or an argument. Behind a "Show answer"
+  // button every answer and explanation (60% of the page's words) was hidden
+  // until tapped, which served neither them nor a crawler weighing the page.
+  // The paced widget above still hides its answers, so the game is intact.
   const sub = picked.length < rows.length
-    ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
-    : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
-  const items = picked.map((r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
+    ? 'A selection from the quiz above, from the easiest to the hardest, each with its answer and the reason it is right. Play the quiz first if you want a clean score.'
+    : 'Every question from the quiz above, each with its answer and the reason it is right. Play the quiz first if you want a clean score.';
+  const items = picked.map((r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></li>`);
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
 <p class="sub">${sub}</p>
@@ -1843,10 +1850,7 @@ ${SHELL_CSS}
   .ans-list li{border-top:1px solid #1A1D27;padding:16px 2px}
   .ans-list li:last-child{border-bottom:1px solid #1A1D27}
   .ans-q{margin:0 0 10px;color:#fff;font-size:16px;line-height:1.5;font-weight:600;max-width:68ch}
-  .ans-show summary{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--bd2);border-radius:10px;color:var(--tx3);font-size:14px;font-weight:700;cursor:pointer;list-style:none}
-  .ans-show summary::-webkit-details-marker{display:none}
-  .ans-show[open] summary{color:var(--grn);border-color:rgba(88,204,2,.4)}
-  .ans-a{margin:10px 0 0;color:#CDD3DE;font-size:15.5px;line-height:1.65;max-width:68ch}
+  .ans-a{margin:6px 0 0;padding-left:14px;border-left:3px solid rgba(88,204,2,.45);color:#CDD3DE;font-size:15.5px;line-height:1.65;max-width:68ch}
   .ans-a b{color:#fff}
   .check-line{margin:0;color:var(--tx3);font-size:15px;line-height:1.65;max-width:68ch}
   .check-line a{color:var(--grn);font-weight:700}
