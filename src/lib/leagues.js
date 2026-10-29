@@ -13,10 +13,10 @@
 // api/l.js unfurls it (no database read) and sends a person to
 // /play?league=TOKEN; the app's boot hands the token to the join screen.
 //
-// ⚠️ PHASE 1 IS WEB ONLY. Every call here returns null in a native shell, and
-// the league UI is hidden there (isNativeShell), so nothing reaches the
-// installed apps before build 1.9. Without the migration applied the calls
-// come back empty and the UI shows nothing: no league card, no crash.
+// Phase 2 (29 Oct 2026): the calls run in the native shell too; the first
+// build after that date carries the league screens. Without the migration
+// applied the calls come back empty and the UI shows nothing: no league card,
+// no crash.
 
 import { isNativeShell, leagueWeekStart, flushLeagueOutbox, setLeagueTokenSource } from './leagueResults.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
@@ -209,7 +209,7 @@ export const leagueThisWeek = (today) => leagueWeekStart(today);
 // is remembered for the session: one quiet miss, then no more calls.
 let missing = false;
 async function call(name, args) {
-  if (missing || isNativeShell()) return { error: { code: 'unavailable' } };
+  if (missing) return { error: { code: 'unavailable' } };
   try {
     const { supabase } = await import('../supabase.js');
     const { data, error } = await supabase.rpc(name, args || {});

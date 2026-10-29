@@ -115,12 +115,15 @@ describe('the results panel', () => {
     const block = DD.slice(DD.indexOf('if (!isArchive) {'), DD.indexOf('await recordDailyResult('));
     expect(block).toMatch(/import\("\.\.\/lib\/leagueResults\.js"\)\.then\(\(m\) => m\.recordLeagueResult\(\{ game, edition, bucket, won \}\)\)/);
     expect(block).not.toMatch(/await import/);
-    expect(block).toMatch(/!isNativeShell\(\)/);
+    // Phase 2 (29 Oct 2026): the native shell sends results too.
+    expect(block).not.toMatch(/isNativeShell/);
   });
-  it('"Make it a league?" is a hairline under the head-to-head, never a second solid button', () => {
-    // "Make it a league?" is the dd.league key since i18n step 4.
-    expect(DD).toMatch(/className="dd-share-alt" onClick=\{makeLeague\}>\{t\("dd\.league"\)\}/);
+  it('the league offer is a hairline, never a second solid button, and reaches a player with no head-to-head', () => {
+    // "Make it a league?" (dd.league) with a rival; "Start a league with your
+    // mates" (dd.leagueStart) for anyone not yet in one.
+    expect(DD).toMatch(/className="dd-share-alt" onClick=\{makeLeague\}>\{t\(rival \? "dd\.league" : "dd\.leagueStart"\)\}/);
     expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
-    expect(DD).toMatch(/const leagueOffer = !!rival && !isNativeShell\(\);/);
+    expect(DD).toMatch(/const leagueOffer = leagueGame && \(!!rival \|\| !inLeague\(\)\);/);
+    expect(DD).not.toMatch(/isNativeShell/);
   });
 });

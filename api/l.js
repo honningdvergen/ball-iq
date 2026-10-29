@@ -16,10 +16,11 @@
 // compares them): importing that file would pull the Supabase client into this
 // edge bundle.
 //
-// ⚠️ /l/ IS NOT IN THE DEEP-LINK FILES on purpose (apple-app-site-association,
-// assetlinks, the Android intent filters). Old app builds would catch the link
-// and land on Home; in the browser the web join works. Add /l/* there only once
-// build 1.9 is widely installed (spec section 10).
+// ⚠️ /l/ IS NOT YET IN apple-app-site-association on purpose: an iOS install
+// older than the first build with the league handler (29 Oct 2026, App.jsx
+// tryCapture) would catch the link and land on Home; in the browser the web
+// join works. Add /l/* there the day that build is live in the App Store. The
+// Android intent filter already lists /l/ (it ships inside the build).
 
 export const config = { runtime: 'edge' };
 

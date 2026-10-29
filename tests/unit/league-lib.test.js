@@ -161,12 +161,8 @@ describe('recordLeagueResult: two panels, one request', () => {
     expect(lib.readLeagueOutbox()).toEqual([]);
   });
 
-  it('native shells and out-of-range results send nothing', async () => {
+  it('out-of-range results send nothing (phase 2: native shells send like the web)', async () => {
     session();
-    vi.stubGlobal('window', { Capacitor: { isNativePlatform: () => true } });
-    const lib = await fresh();
-    expect(await lib.recordLeagueResult({ game: 'footle', edition: 166, bucket: 3, won: true })).toBe(false);
-    vi.unstubAllGlobals();
     vi.stubGlobal('localStorage', mem());
     vi.stubGlobal('fetch', fetchMock);
     const lib2 = await fresh();

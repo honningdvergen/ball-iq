@@ -37,6 +37,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="balliq.app" android:pathPrefix="/join/" />
                 <data android:scheme="https" android:host="balliq.app" android:pathPrefix="/c/" />
+                <!-- Mates' league invites (/l/*), from the first build after 29 Oct 2026. -->
+                <data android:scheme="https" android:host="balliq.app" android:pathPrefix="/l/" />
             </intent-filter>
         </activity>
 

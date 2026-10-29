@@ -481,6 +481,7 @@ export default registerEnglish({
   'dd.shared': 'Shared',
   'dd.shareResult': 'Share result',
   'dd.league': 'Make it a league?',
+  'dd.leagueStart': 'Start a league with your mates',
   'dd.wa': 'Send on WhatsApp',
   'dd.stump': 'Stump a mate',
   'dd.stitch': 'Stitch up a mate',

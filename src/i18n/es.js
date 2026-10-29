@@ -450,6 +450,7 @@ export default {
   'dd.shared': 'Compartido',
   'dd.shareResult': 'Compartir resultado',
   'dd.league': '¿Hacemos una liga?',
+  'dd.leagueStart': 'Crea una liga con tus amigos',
   'dd.wa': 'Enviar por WhatsApp',
   'dd.stump': 'Pon a prueba a un colega',
   'dd.stitch': 'Prepárale uno a un colega',

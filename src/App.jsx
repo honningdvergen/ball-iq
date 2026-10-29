@@ -1262,11 +1262,18 @@ export function loopEvent(name, meta) {
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
 
-// ── MATES' LEAGUES: WEB ONLY IN PHASE 1 ──
-// Installed apps carry the web code they were built with, so phase 1 must not
-// reach them: every league surface is gated on this, detected the way the
-// rest of the app detects a native shell (capacitor: protocol, the
-// html.native-app class, or the bridge itself).
+// ── MATES' LEAGUES: ON EVERYWHERE (phase 2, 29 Oct 2026) ──
+// Phase 1 (16 Oct) was web only, and in 13 days nobody created a league: the
+// players are in the app (30-35 signed-in a week), and the web card only ever
+// showed to someone already in one. Every league surface now runs in the
+// native shell too; the next native build carries it. The /l/ Universal Link
+// stays OUT of apple-app-site-association until that build is live (an older
+// install would catch the link and land on Home); the Android intent filter
+// ships inside the build, so it is already in the manifest.
+const LEAGUES_ON = true;
+// Stitch-up is still web only: it is gated on this, detected the way the rest
+// of the app detects a native shell (capacitor: protocol, the html.native-app
+// class, or the bridge itself).
 const LEAGUES_WEB = (() => {
   try {
     return !IS_NATIVE && window.location.protocol !== "capacitor:" && !document.documentElement.classList.contains("native-app");
@@ -3430,7 +3437,7 @@ function AppInner() {
       if (path === "/footle" || path === "/footle/" || /^\/c\/./.test(path)) return true;
       // A league invite (/l/TOKEN, or ?league= from api/l.js) shows its join
       // screen first: the card promised "free", not a tour.
-      if (LEAGUES_WEB && (/^\/l\/./.test(path) || /[?&](league|leaguenew)=/.test(BOOT_SEARCH))) return true;
+      if (LEAGUES_ON && (/^\/l\/./.test(path) || /[?&](league|leaguenew)=/.test(BOOT_SEARCH))) return true;
       // The code itself survives the deferral: the pendingJoinCode initializer
       // below persists it to localStorage (biq_pending_join) before stripping
       // the path, so the join modal / auto-join still fire. Validated through
@@ -3655,6 +3662,17 @@ function AppInner() {
             setPendingChallenge(ch);
             setChallengeIntro(true);
           }
+          return;
+        }
+        // Mates' league invite — balliq.app/l/CODE.Name.Inviter (api/l.js on
+        // the web). The token goes to the join sheet exactly as the web boot
+        // hands it over; the sheet validates it (lib/leagues.js).
+        const lm = u.pathname.match(/^\/l\/([^/?#]+)/);
+        if (lm && LEAGUES_ON) {
+          let tok = lm[1];
+          try { tok = decodeURIComponent(tok); } catch { /* keep it raw */ }
+          try { localStorage.setItem("biq_league_invite", JSON.stringify({ token: tok, at: Date.now() })); } catch {}
+          setLeagueSheet({ kind: "join", token: tok });
         }
       } catch {}
     };
@@ -5368,12 +5386,12 @@ function AppInner() {
         setScreen("wordle");
         return;
       }
-      // Mates' leagues (web only): /l/TOKEN or ?league=TOKEN (api/l.js) opens
-      // the join screen; ?leaguenew=SEED, from "Make it a league?" on a static
-      // island, opens the create sheet. The /l/ path is NOT in the deep-link
-      // files on purpose (spec section 10): old app builds would catch it.
+      // Mates' leagues: /l/TOKEN or ?league=TOKEN (api/l.js) opens the join
+      // screen; ?leaguenew=SEED, from "Make it a league?" on a static island,
+      // opens the create sheet. In the native shell the same link arrives
+      // through the appUrlOpen capture below.
       try {
-        if (LEAGUES_WEB) {
+        if (LEAGUES_ON) {
           const lsp = new URLSearchParams(window.location.search);
           const pathTok = (window.location.pathname.match(/^\/l\/([^/?#]+)/) || [])[1];
           let lt = lsp.get("league");
@@ -7936,7 +7954,7 @@ function AppInner() {
               clubAbbr={clubs?.CLUB_ABBR}
               launchClubQuiz={launchClubQuiz}
               firstSession={showFirstQuizTip}
-              onOpenLeague={LEAGUES_WEB ? openLeagueTable : undefined}
+              onOpenLeague={LEAGUES_ON ? openLeagueTable : undefined}
             />
             </TabErrorBoundary>
           </div>

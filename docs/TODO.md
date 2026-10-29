@@ -1,3 +1,8 @@
+## 2026-10-29 — LEAGUES IN THE APP (phase 2)
+
+- [x] Mates' leagues run in the native shell (LEAGUES_ON), the app captures balliq.app/l/CODE links, and the finish panel offers "Start a league with your mates" to anyone not in one. In 13 days of the web-only phase, zero leagues were created.
+- [ ] **Release day of the first build after 29 Oct (1.8.6+): add `/l/*` to public/.well-known/apple-app-site-association** (league invites open in the iOS app) and flip the pin in tests/unit/league-invite-landing.test.js. Before that day an older install would catch the link and land on Home. The Android intent filter already ships inside the build.
+
 ## 2026-10-17 — QUALITY + THE GOOGLE FUNNEL
 
 - [x] Bank: 198 questions no longer give the answer away (c3f5e670); 1.8.2 is now iOS 155.
