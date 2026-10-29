@@ -1535,9 +1535,34 @@ export function guessMatchesPlayer(guess, player) {
  */
 export const TRAIL_OPENING_CLUBS = 2;
 // `opening`: Stitch-up lets the sender choose how many clubs show at the start
-// (two or more); the daily always opens on two.
+// (two or more); the daily opens on two, or on three for the careers in
+// TRAIL_OPEN_THREE.
 export function cluesShown(misses, careerLength, opening = TRAIL_OPENING_CLUBS) {
   return Math.min(Math.max(TRAIL_OPENING_CLUBS, opening) + Math.max(0, misses), careerLength);
+}
+
+// ── Three-club openings (29 Oct 2026) ─────────────────────────────────────────
+// Fitted on 35 played editions (docs/TODO.md, "Fewer bad days"): a Trail's win
+// rate follows the answer's fame, EXCEPT that a career opening on Japanese
+// clubs ran at 6-11% against a 60-80% norm (Shibasaki, Osako, Muto). The first
+// two rungs are the whole puzzle until a miss, and "Kashima Antlers > Tenerife"
+// gives a British or American player nothing to hold. These careers open on
+// THREE clubs: the third rung is the first one most players recognise. Every
+// key here has at least four rungs, so a three-club opening still hides one.
+// Only new builds know this set (older installs open on two, same answer), so
+// it is a difficulty split, never an answer split.
+export const TRAIL_OPEN_THREE = new Set([
+  // Japanese starts (the measured signal)
+  "ENDO", "NAGATOMO", "MINAMINO", "OSAKO", "YOSHIDA", "UCHIDA", "SHIBASAKI",
+  "SAKAI", "MUTO", "SAKAI_HIR", "KONNO", "PARK",
+  // Two obscure rungs before the first known club
+  "STOJKOVIC", "VIDIC", "IVANOVIC", "MODRI", "CORLUKA", "NATALE", "VARDY",
+  "MEIRELES", "CECH", "BONIEK", "BLASZCZYKOWSKI", "STEFANO", "GILBERTO_SILVA",
+  "FERNANDEZ", "KANTE", "KLOSE", "BALLACK", "DYBALA", "MILITO",
+]);
+/** How many clubs the daily shows before the first guess for this answer. */
+export function openingFor(player) {
+  return player && TRAIL_OPEN_THREE.has(player.key) ? 3 : TRAIL_OPENING_CLUBS;
 }
 
 /** The hint unlocks once three guesses are gone. */

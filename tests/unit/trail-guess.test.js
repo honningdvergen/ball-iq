@@ -2,8 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   TRAIL_PLAYERS, TRAIL_ALIASES, TRAIL_POSITIONS, TRAIL_MAX_ATTEMPTS,
   normaliseGuess, normaliseVariants, acceptedNamesFor, guessMatchesPlayer,
-  cluesShown, hintFor, buildTrailShareText,
+  cluesShown, hintFor, buildTrailShareText, TRAIL_OPENING_CLUBS, TRAIL_OPEN_THREE, openingFor,
 } from "../../src/lib/trail.js";
+import { readFileSync } from "node:fs";
 
 const find = (k) => TRAIL_PLAYERS.find((p) => p.key === k);
 
@@ -150,5 +151,39 @@ describe("aliases", () => {
   it("only lists keys that exist", () => {
     const keys = new Set(TRAIL_PLAYERS.map((p) => p.key));
     expect(Object.keys(TRAIL_ALIASES).filter((k) => !keys.has(k))).toEqual([]);
+  });
+});
+
+// 29 Oct 2026: careers whose first two rungs are obscure open on three clubs
+// (TRAIL_OPEN_THREE in trail.js). The set is data, so this pins its contract:
+// every key is a real career, every one keeps at least one rung hidden, and
+// the daily asks the library rather than carrying its own number.
+describe("three-club openings", () => {
+  it("every flagged key is a roster career with at least four rungs", () => {
+    expect(TRAIL_OPEN_THREE.size).toBeGreaterThan(0);
+    for (const key of TRAIL_OPEN_THREE) {
+      const p = find(key);
+      expect(p, `${key} is not in TRAIL_PLAYERS`).toBeTruthy();
+      expect(p.clubs.length, `${key} would show its whole career`).toBeGreaterThanOrEqual(4);
+    }
+  });
+
+  it("openingFor answers 3 for a flagged career and 2 for the rest", () => {
+    expect(openingFor(find("YOSHIDA"))).toBe(3);
+    expect(openingFor(find("STOJKOVIC"))).toBe(3);
+    expect(openingFor(find("HAZARD"))).toBe(TRAIL_OPENING_CLUBS);
+    expect(openingFor(null)).toBe(TRAIL_OPENING_CLUBS);
+  });
+
+  it("the ladder honours a three-club opening and still runs out with the attempts", () => {
+    expect(cluesShown(0, 6, 3)).toBe(3);
+    expect(cluesShown(2, 6, 3)).toBe(5);
+    expect(cluesShown(TRAIL_MAX_ATTEMPTS, 6, 3)).toBe(6);
+    expect(cluesShown(0, 4, 3)).toBe(3); // one rung stays hidden
+  });
+
+  it("the Trail screen takes the daily opening from the library, not a local constant", () => {
+    const src = readFileSync(new URL("../../src/screens/TransferTrail.jsx", import.meta.url), "utf8");
+    expect(src).toMatch(/const opening = stitch\?\.opening \?\? openingFor\(player\);/);
   });
 });

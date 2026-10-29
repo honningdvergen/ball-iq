@@ -19,6 +19,7 @@ import {
   getTrailNumber,
   guessMatchesPlayer,
   cluesShown,
+  openingFor,
   hintFor,
   computeTrailStreak,
   buildTrailShareText,
@@ -84,7 +85,6 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   const t = useT();
   const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
   const daily = !stitch;
-  const opening = stitch?.opening;
   const ymd = dateToYMD(date);
   // Keyed by the day, not the Date object: the island passes none, and the
   // default is a new Date on every render.
@@ -92,6 +92,9 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   // A Stitch-up plays the career its sender chose, never the day's log.
   const player = useMemo(() => (stitch ? bundledPlayer : trailPlayerForDate(date, bundledPlayer)), [ymd, bundledPlayer, stitch]);
   const number = daily ? getTrailNumber(date) : 0;
+  // A Stitch-up opens on what its sender chose; the daily on two clubs, or
+  // three for the careers in TRAIL_OPEN_THREE (trail.js).
+  const opening = stitch?.opening ?? openingFor(player);
   const career = useMemo(() => player?.clubs || [], [player]);
 
   // Attempts are the raw submissions — { text, skipped } — and everything else

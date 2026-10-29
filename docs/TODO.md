@@ -10,7 +10,8 @@
 - [x] Frozen through 28 Nov (ead97a27); No. 103 Stojković ↔ No. 124 Hazard; Silva's Sha Tin and Barry's Hurstpierpoint rungs added (c7936f4b).
 - [ ] **NEDVED (No. 148, 28 Dec): verify his first club.** Wikipedia lists Škoda Plzeň (1990-91) before Dukla Prague, and a "1.FC Košice" entry that looks wrong. Run the bank-verifier with two non-Wikipedia sources before touching the trail; the day is unserved, so a first-rung fix is safe until 13 Dec (freeze horizon).
 - [ ] Verifier noise to leave alone: reserve teams (Dynamo-2 Kyiv, Zenit-2), long club names (Queens Park Rangers, Wolverhampton Wanderers), article-title lookups (Marcelo, Isco, Joaquín).
-- [ ] Fewer bad days, next pass: the remaining Japanese-career days still to come (Yoshida No. 147, Nagatomo 175, Endo 201, Konno 214, Sakai 215, Uchida 219, Stojković now 124) — replace, or open with three clubs, before each enters the 30-day freeze.
+- [x] Fewer bad days (29 Oct, evening): 31 careers now OPEN ON THREE CLUBS (`TRAIL_OPEN_THREE` in src/lib/trail.js, `openingFor()`): the twelve Japanese starts (Yoshida 147, Nagatomo 175, Endo 201, Konno 214, Sakai 215/221, Uchida 219, Muto, Osako, Shibasaki, Minamino, Park) plus the careers whose first two rungs are both obscure (Stojković 124, Vidić, Modrić, Ivanović, Ćorluka, Di Natale, Vardy, Meireles, Čech, Boniek, Błaszczykowski, Di Stéfano, Gilberto Silva, Enzo Fernández, Kanté, Klose, Ballack, Dybala, Milito). Three-club careers (Fontaine, Solskjær, Zanetti) stay on two. The log is untouched (every career appears exactly twice; swapping would only move a bad day). Older installs open on two: a difficulty split, not an answer split. Web live today; native from the next build after 168.
+- [ ] Konno (No. 214, 3 Mar 2027) is five Japanese clubs and stays hopeless even on three: retire him in the next candidate merge (merge-trail-candidates.mjs re-plans beyond the frozen horizon; the equal-use test then needs a `retired` allowance). Read the win rate of the first three-club day (Stojković, 4 Dec) against the 6-11% baseline.
 
 ## 2026-10-29 — LEAGUES IN THE APP (phase 2)
 
@@ -80,6 +81,8 @@ games for the social promo; grow the bank through club packs.
       (3) Mystery: reordering cannot fix it. Every future answer estimates 25-86%, median 51%,
       148 of 323 under 50%, and the two famous-only days so far (Salah, Xavi) both ran 57%.
       The level needs the game (warm start, an earlier first clue), not the order.
+      → Done 16 Oct for Mystery (position and birth decade free from guess one);
+      done 29 Oct for Trail (three-club openings, below).
       Scripts and data: ~/ball-iq-audit/2026-10-16/return-research/difficulty/ (fit.mjs).
 - [ ] Top 10 schedule ends 30 Nov; calendar lists can only be APPENDED (apps refuse a schedule
       that does not start with their own). First calendar slot: North London derby, Sat 5 Dec.
