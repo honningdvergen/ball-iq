@@ -1274,7 +1274,10 @@ const SHOWN_CAP = 40;
 // weeks of daily sets, and the rest wait in the app.
 const WIDGET_CAP = 60;
 
-function renderAnswerList(name, rows, { spread = 0 } = {}) {
+// `fold`: show this many answers open and the rest under ONE disclosure
+// ("Show the other N"), so a 58-question club page is not 25 phone screens
+// of answers while nothing is hidden behind a per-question button.
+function renderAnswerList(name, rows, { spread = 0, fold = 0 } = {}) {
   const picked = spreadPick(rows, spread);
   // Answers are VISIBLE (29 Oct 2026). The searches that brought these pages
   // their traffic were "liverpool quiz with answers", "arsenal quiz with
@@ -1286,12 +1289,17 @@ function renderAnswerList(name, rows, { spread = 0 } = {}) {
   const sub = picked.length < rows.length
     ? 'A selection from the quiz above, from the easiest to the hardest, each with its answer and the reason it is right. Play the quiz first if you want a clean score.'
     : 'Every question from the quiz above, each with its answer and the reason it is right. Play the quiz first if you want a clean score.';
-  const items = picked.map((r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></li>`);
+  const item = (r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></li>`;
+  const open = fold > 0 && picked.length > fold + 4 ? picked.slice(0, fold) : picked;
+  const rest = picked.slice(open.length);
+  const more = rest.length
+    ? `\n<li class="ans-more"><details><summary>Show the other ${rest.length} questions</summary><ol class="ans-list" start="${open.length + 1}">\n${rest.map(item).join('\n')}\n</ol></details></li>`
+    : '';
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
 <p class="sub">${sub}</p>
 <ol class="ans-list">
-${items.join('\n')}
+${open.map(item).join('\n')}${more}
 </ol>
 </section>`;
 }
@@ -1860,6 +1868,12 @@ ${SHELL_CSS}
   .ans-q{margin:0 0 10px;color:#fff;font-size:16px;line-height:1.5;font-weight:600;max-width:68ch}
   .ans-a{margin:6px 0 0;padding-left:14px;border-left:3px solid rgba(88,204,2,.45);color:#CDD3DE;font-size:15.5px;line-height:1.65;max-width:68ch}
   .ans-a b{color:#fff}
+  .ans-more{padding:16px 2px 0;border-top:1px solid #1A1D27}
+  .ans-more summary{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--bd2);border-radius:12px;color:var(--tx1);font-size:14px;font-weight:700;cursor:pointer;list-style:none}
+  .ans-more summary::-webkit-details-marker{display:none}
+  .ans-more details[open] summary{display:none}
+  .ans-more .ans-list{margin-top:0}
+  .ans-more .ans-list li:first-child{border-top:0}
   .check-line{margin:0;color:var(--tx3);font-size:15px;line-height:1.65;max-width:68ch}
   .check-line a{color:var(--grn);font-weight:700}
   .stats{display:inline-block;font-size:13px;font-variant-numeric:tabular-nums;color:var(--tx3);background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-top:6px}
@@ -2639,7 +2653,7 @@ ${/* Prose AFTER the band + mesh, per the ACTION BEFORE PROSE note above: the
      write-up is now open and on the page, which is what the reviewer needed;
      it does not need to push the install band and the mesh below the cliff. */''}
 ${renderClubAbout(cfg.name, rest)}
-${renderAnswerList(cfg.name, quizRows)}
+${renderAnswerList(cfg.name, quizRows, { fold: 20 })}
 ${clubCheckLine()}
 <section class="sec narrow">
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
