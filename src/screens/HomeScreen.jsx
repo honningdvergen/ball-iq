@@ -146,6 +146,24 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
 // The Draft's NEW label shows to everyone until this date (1.8.1, 15 Oct 2026).
 const DRAFT_NEW_UNTIL = new Date('2026-11-15T00:00:00').getTime();
 
+/**
+ * "New in 5h 12m" on the all-done strip: the time to local midnight, when all
+ * four dailies change (each one's day is the LOCAL date). ⚠️ IT TICKS ON ITS
+ * OWN. It used to read `new Date()` inside Home's render, so it said whatever
+ * it said when Home last rendered and then sat still (review, 14 Oct 2026).
+ * Its own 30s clock, like DailyDone's: minute granularity, and only this span
+ * re-renders, not Home.
+ */
+function NextDailiesIn() {
+  const t = useT();
+  const [now, setNow] = React.useState(() => new Date());
+  React.useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(id);
+  }, []);
+  return <span className="dds-next">{t("home.done.next", { time: countdownText(msToNextLocalMidnight(now)) })}</span>;
+}
+
 function HomeScreenImpl({
   // False when the web app bar is on screen — it carries its own gear, and two
   // routes to Settings, stacked, is the clutter the wordmark used to hide.
@@ -522,7 +540,7 @@ function HomeScreenImpl({
                     <div className="dds-head">
                       <CircleCheck size={20} strokeWidth={2.2} aria-hidden="true" className="dds-tick" />
                       <span className="dds-title">{total === 4 ? t("home.done.titleFour") : t("home.done.title", { n: total })}</span>
-                      <span className="dds-next">{t("home.done.next", { time: countdownText(msToNextLocalMidnight(new Date())) })}</span>
+                      <NextDailiesIn />
                     </div>
                     <div className="dds-chips">
                       {rows.map((r) => (

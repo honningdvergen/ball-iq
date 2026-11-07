@@ -97,3 +97,22 @@ describe('one running spell per answer', () => {
     expect(bad).toEqual([]);
   });
 });
+
+describe('the all-done strip\'s "New in" ticks', () => {
+  // It read `new Date()` in Home's (memoised) render, so it froze at whatever
+  // Home last rendered. Now its own component with its own clock.
+  const s = src('../../src/screens/HomeScreen.jsx');
+  const body = s.slice(s.indexOf('function NextDailiesIn()'), s.indexOf('function HomeScreenImpl('));
+
+  it('counts to local midnight from a clock that updates', () => {
+    expect(body).toMatch(/setInterval\(\(\) => setNow\(new Date\(\)\), 30000\)/);
+    expect(body).toMatch(/clearInterval\(id\)/);
+    expect(body).toMatch(/countdownText\(msToNextLocalMidnight\(now\)\)/);
+  });
+
+  it('the strip uses it, and nothing in Home renders a frozen countdown', () => {
+    const strip = s.slice(s.indexOf('className="daily-done-strip"'), s.indexOf('className="dds-chips"'));
+    expect(strip).toMatch(/<NextDailiesIn \/>/);
+    expect(s).not.toMatch(/msToNextLocalMidnight\(new Date\(\)\)/);
+  });
+});
