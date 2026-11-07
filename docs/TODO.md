@@ -1744,10 +1744,18 @@ Pro Max (build 144), reviewed before it went out:
       scripts now judging the corrected careers, Hot Streak ending at once when
       a miss spends the last seconds. gen-mystery-schedule.mjs now needs
       --from and refuses to redraw days with checked careers (to index 128).
-- [ ] From that review, later: NOW_YEAR is 2026 in mysteryCareer.js (2027 days
-      undercount running spells); Grealish (day 289) shows two running spells;
-      the strip's "New in" does not tick; a stale weights comment in
-      mysteryPlayer.js; Zlatan (day 75) and Nesta (day 83) both clue AC Milan.
+- [x] From that review, later (7 Nov, branch local/mystery-leftovers): running
+      spells count to the puzzle's own year (puzzleYear), not 2026; Grealish
+      (day 289) has one running spell (fix closes City at 2026, not 2025, so
+      served days rank him as before); Home's all-done "New in" ticks; the
+      weights comment matches W (and a test holds it); Zlatan (75) / Nesta
+      (83) both clue AC Milan because a career fix moved Zlatan's main club
+      after the draw. Served, left as they are; the build audit now warns
+      about club-clue repeats in the days still to be drawn.
+- [ ] ⚠️ Six future club-clue repeats inside ten days (days 271, 292, 323,
+      330, 350, 388; listed by audit-mystery-schedule.mjs at every build).
+      Clear them with `node scripts/gen-mystery-schedule.mjs --from 171`
+      once days 129-170 are checked (a redraw from 171 leaves those alone).
 - [x] App Store listing for 1.8.0 (14 Oct): the version renamed from 1.7.6,
       What's New in all 19 languages (two new games, Mystery Player rebuilt,
       Footle hard mode, the 1.7.6 items that never shipped), and ten new
