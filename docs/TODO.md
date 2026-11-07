@@ -1,3 +1,10 @@
+## 2026-11-07 — CHECKPOINT (paused for social work)
+
+- [x] iOS 170 on TestFlight (VALID): 169 plus per-tab scroll memory (b9f85251). Alex plays it; submit 1.8.6 on his word, AFTER_APPROVAL; What's New already set on 19 locales.
+- [ ] Cloud PR #57 (club-pack verifier batch 1: 387 ok, 9 fixed, 35 flagged) and batch 2 wait for review. Do not merge unreviewed.
+- [ ] Known, not fixed: on a first run the tab bar's hide-on-scroll hook attaches only after the next screen change (useScrollAwareTabBar depends on [screen, inGame] and the bar is not mounted during onboarding).
+- [ ] Android 62 re-run at the final commit + emulator, before any Play upload.
+
 ## 2026-11-07 — OVERNIGHT: HEALTH REPORT, CONSENT + AGE GATE SHIPPED, LEAGUE OFFER MADE VISIBLE
 
 - [ ] **ALEX, 7 Nov 09:15: "Good report, let's get A+."** The standard for the week is the critic's grading in ~/ball-iq-audit/2026-11-07/report.md (project C today). Order: 1.8.6 to both stores (iOS 169 cut this morning for Alex to play; Android 62 re-run + emulator), the native cohort counter, the rating ask at a better moment, the monetisation decision on paper, the club-pack verifier sweep (cloud job 4), CI validators (cloud job 5). Re-grade on 14 Nov.
