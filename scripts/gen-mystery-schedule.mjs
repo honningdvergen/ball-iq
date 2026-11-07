@@ -95,11 +95,26 @@ const clubOn = (c, year) => {
   if (!c.clubs.has(year)) c.clubs.set(year, mainClub(c.p, careers, year));
   return c.clubs.get(year);
 };
+// The spread rules look back ACROSS the kept boundary (7 Nov 2026). A redraw
+// from --from used to start with an empty memory, so the first ten redrawn
+// days could repeat the club clue, slot or era of the kept days just before
+// them: the audit found days 174, 175 and 178 repeating 167, 168 and 170.
+// The kept tail is seeded here for the lookback only; it is not re-drawn and
+// it is not counted in the figures printed at the end.
+const byId = new Map(pool.map((p) => [p.id, p]));
+const kept = [];
+for (let day = Math.max(0, FROM - 10); day < FROM; day++) {
+  const p = byId.get(schedule[day]);
+  if (!p) continue;
+  const c = { p, era: era(p), clubs: new Map() };
+  kept.push({ ...c, club: clubOn(c, puzzleYear(MYSTERY_ANCHOR_DAY + day)) });
+}
 for (let day = FROM; day < DAYS; day++) {
   const year = puzzleYear(MYSTERY_ANCHOR_DAY + day);
-  const prev = picks[picks.length - 1];
-  const last10 = picks.slice(-10).map((x) => x.club);
-  const last6 = picks.slice(-6);
+  const recent = kept.concat(picks);
+  const prev = recent[recent.length - 1];
+  const last10 = recent.slice(-10).map((x) => x.club);
+  const last6 = recent.slice(-6);
   const fits = (c) => !prev || (
     c.p.slot !== prev.p.slot && clubOn(c, year) !== prev.club && !last10.includes(clubOn(c, year))
     && last6.filter((x) => x.era === c.era).length < 4

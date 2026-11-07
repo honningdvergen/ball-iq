@@ -82,8 +82,11 @@ describe('one running spell per answer', () => {
 
   it('Grealish has one "now"', () => {
     const g = byId.get('Q16056053');
-    expect(schedule.indexOf('Q16056053')).toBe(289);
-    const running = careerOf(g, fixed, puzzleYear(MYSTERY_ANCHOR_DAY + 289)).filter((s) => s.to == null).map((s) => s.club);
+    // His day is wherever the schedule puts him (a redraw beyond the checked
+    // days moves it: 289 → 335 on 7 Nov 2026); the guard is about his career.
+    const day = schedule.indexOf('Q16056053');
+    expect(day).toBeGreaterThan(128);
+    const running = careerOf(g, fixed, puzzleYear(MYSTERY_ANCHOR_DAY + day)).filter((s) => s.to == null).map((s) => s.club);
     expect(running).toEqual(['Everton']);
   });
 
