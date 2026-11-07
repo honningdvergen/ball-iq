@@ -75,6 +75,12 @@ jobs:
       - name: Site regression suite (dist)
         run: npm run test:site
 
+      # JSON-LD on every built page, validated against schema.org (pinned
+      # release, see the script header) and Google's rich-result rules.
+      # Errors fail; warnings are printed. Added 2026-11-07.
+      - name: Structured data (dist)
+        run: npm run test:structured-data
+
   e2e:
     # Pinned 2026-10-27: ubuntu-latest became 26.04, where Playwright cannot
     # install chromium yet. Move back to ubuntu-latest once Playwright supports it.
