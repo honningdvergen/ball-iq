@@ -781,5 +781,464 @@
    2025,
    null
   ]
+ ],
+ "Q166317": [
+  [
+   "Instituto",
+   2011,
+   2012
+  ],
+  [
+   "Palermo F.C.",
+   2012,
+   2015
+  ],
+  [
+   "Juventus FC",
+   2015,
+   2022
+  ],
+  [
+   "AS Roma",
+   2022,
+   null
+  ]
+ ],
+ "Q10553748": [
+  [
+   "Milton Keynes Dons F.C.",
+   2012,
+   2015
+  ],
+  [
+   "Tottenham Hotspur F.C.",
+   2015,
+   2022
+  ],
+  [
+   "Everton F.C.",
+   2022,
+   2024
+  ],
+  [
+   "Beşiktaş J.K. (Football)",
+   2022,
+   2023
+  ],
+  [
+   "Como 1907",
+   2025,
+   2025
+  ]
+ ],
+ "Q2339": [
+  [
+   "Feyenoord Rotterdam",
+   2001,
+   2004
+  ],
+  [
+   "Arsenal F.C.",
+   2004,
+   2012
+  ],
+  [
+   "Manchester United F.C.",
+   2012,
+   2015
+  ],
+  [
+   "Fenerbahçe Istanbul",
+   2015,
+   2018
+  ],
+  [
+   "Feyenoord Rotterdam",
+   2018,
+   2019
+  ]
+ ],
+ "Q170328": [
+  [
+   "AJ Auxerre",
+   1983,
+   1988
+  ],
+  [
+   "FC Martigues",
+   1985,
+   1986
+  ],
+  [
+   "Olympique de Marseille",
+   1988,
+   1991
+  ],
+  [
+   "FC Girondins de Bordeaux",
+   1989,
+   1989
+  ],
+  [
+   "Montpellier Hérault Sport Club",
+   1989,
+   1990
+  ],
+  [
+   "Nîmes Olympique",
+   1991,
+   1992
+  ],
+  [
+   "Leeds United F.C.",
+   1992,
+   1992
+  ],
+  [
+   "Manchester United F.C.",
+   1992,
+   1997
+  ]
+ ],
+ "Q202054": [
+  [
+   "Nagoya Grampus",
+   2005,
+   2007
+  ],
+  [
+   "VVV-Venlo",
+   2008,
+   2009
+  ],
+  [
+   "PFC CSKA Moscow",
+   2010,
+   2013
+  ],
+  [
+   "AC Milan",
+   2014,
+   2017
+  ],
+  [
+   "CF Pachuca",
+   2017,
+   2018
+  ],
+  [
+   "Melbourne Victory FC",
+   2018,
+   2019
+  ],
+  [
+   "SBV Vitesse",
+   2019,
+   2019
+  ],
+  [
+   "Botafogo F.R.",
+   2020,
+   2020
+  ],
+  [
+   "Neftchi Baku PFC",
+   2021,
+   2021
+  ],
+  [
+   "FK Sūduva",
+   2021,
+   2021
+  ],
+  [
+   "Paro FC",
+   2024,
+   2024
+  ],
+  [
+   "FC Jurong",
+   2026,
+   null
+  ]
+ ],
+ "Q188997": [
+  [
+   "Arsenal F.C.",
+   2009,
+   2017
+  ],
+  [
+   "Brentford F.C.",
+   2009,
+   2010
+  ],
+  [
+   "AS Roma",
+   2015,
+   2017
+  ],
+  [
+   "Juventus FC",
+   2017,
+   2024
+  ],
+  [
+   "FC Barcelona",
+   2024,
+   null
+  ]
+ ],
+ "Q203749": [
+  [
+   "Montevideo Wanderers Fútbol Club",
+   2004,
+   2007
+  ],
+  [
+   "Club Nacional de Football",
+   2007,
+   2007
+  ],
+  [
+   "SS Lazio",
+   2007,
+   2011
+  ],
+  [
+   "Galatasaray S.K.",
+   2011,
+   2025
+  ],
+  [
+   "Estudiantes de La Plata",
+   2025,
+   null
+  ]
+ ],
+ "Q602525": [
+  [
+   "Figueirense Futebol Clube",
+   2010,
+   2010
+  ],
+  [
+   "TSG 1899 Hoffenheim",
+   2011,
+   2015
+  ],
+  [
+   "Liverpool F.C.",
+   2015,
+   2023
+  ],
+  [
+   "Al Ahli FC",
+   2023,
+   2025
+  ],
+  [
+   "Al Sadd Sports Club",
+   2025,
+   null
+  ]
+ ],
+ "Q169098": [
+  [
+   "AFC Ajax",
+   1980,
+   1987
+  ],
+  [
+   "Sporting CP",
+   1988,
+   1988
+  ],
+  [
+   "Real Zaragoza",
+   1988,
+   1988
+  ],
+  [
+   "AC Milan",
+   1988,
+   1993
+  ],
+  [
+   "AFC Ajax",
+   1993,
+   1995
+  ]
+ ],
+ "Q180553": [
+  [
+   "Cobreloa",
+   2005,
+   2006
+  ],
+  [
+   "Udinese Calcio",
+   2006,
+   2011
+  ],
+  [
+   "Club Social y Deportivo Colo Colo",
+   2006,
+   2007
+  ],
+  [
+   "Club Atlético River Plate",
+   2007,
+   2008
+  ],
+  [
+   "FC Barcelona",
+   2011,
+   2014
+  ],
+  [
+   "Arsenal F.C.",
+   2014,
+   2018
+  ],
+  [
+   "Manchester United F.C.",
+   2018,
+   2020
+  ],
+  [
+   "Inter Milan",
+   2019,
+   2022
+  ],
+  [
+   "Olympique de Marseille",
+   2022,
+   2023
+  ],
+  [
+   "Inter Milan",
+   2023,
+   2024
+  ],
+  [
+   "Udinese Calcio",
+   2024,
+   2025
+  ],
+  [
+   "Sevilla FC",
+   2025,
+   2026
+  ],
+  [
+   "CF Montréal",
+   2026,
+   null
+  ]
+ ],
+ "Q80306": [
+  [
+   "US Livorno 1915",
+   2000,
+   2004
+  ],
+  [
+   "ACF Fiorentina",
+   2004,
+   2005
+  ],
+  [
+   "Juventus FC",
+   2005,
+   2022
+  ],
+  [
+   "Los Angeles FC",
+   2022,
+   2023
+  ]
+ ],
+ "Q483577": [
+  [
+   "Santa Cruz Futebol Clube",
+   1991,
+   1992
+  ],
+  [
+   "Mogi Mirim Esporte Clube",
+   1992,
+   1994
+  ],
+  [
+   "S.C. Corinthians Paulista",
+   1993,
+   1994
+  ],
+  [
+   "Sociedade Esportiva Palmeiras",
+   1994,
+   1996
+  ],
+  [
+   "Deportivo de A Coruña",
+   1996,
+   1997
+  ],
+  [
+   "FC Barcelona",
+   1997,
+   2002
+  ],
+  [
+   "AC Milan",
+   2002,
+   2003
+  ],
+  [
+   "Cruzeiro E.C.",
+   2004,
+   2004
+  ],
+  [
+   "Olympiacos F.C.",
+   2004,
+   2007
+  ],
+  [
+   "AEK Athens F.C.",
+   2007,
+   2008
+  ],
+  [
+   "F.C. Bunyodkor",
+   2008,
+   2010
+  ],
+  [
+   "Mogi Mirim Esporte Clube",
+   2010,
+   2011
+  ],
+  [
+   "São Paulo FC",
+   2011,
+   2011
+  ],
+  [
+   "Kabuscorp S.C.",
+   2012,
+   2012
+  ],
+  [
+   "Associação Desportiva São Caetano",
+   2013,
+   2013
+  ],
+  [
+   "Mogi Mirim Esporte Clube",
+   2014,
+   2015
+  ]
  ]
 }
