@@ -54,6 +54,20 @@ export const FAME_MIN = 55;
 export const STAR = 95;
 export const ELITE_YEARS = 3;
 export const MAX_GAP = 2;
+
+/* Gaps longer than MAX_GAP that are REAL, not missing data (Ball IQ HQ, 7 Nov
+   2026). MAX_GAP exists to catch careers whose spells were never recorded;
+   these players truly had no club. Each entry is ONE exact gap, keyed by
+   Wikidata id and named, so it cannot be widened by accident: the gap must
+   run from `after` (the last year before it) to `until` (the first year
+   after it). Any other gap, for this player or anyone else, still fails. */
+export const REAL_GAPS = {
+  // Keisuke Honda: Süduva to Dec 2021, no club 2022-23 while coaching
+  // Cambodia, Paro (Bhutan) from 2024. worldfootball.net
+  // (worldfootball.net/player_summary/keisuke-honda/), HEROs
+  // (heroe.jp/athlete/keisuke-honda/).
+  Q202054: { player: 'Keisuke Honda', after: 2021, until: 2024 },
+};
 export const FIRST_CLUB_BY = 20;
 export const LAST_SEEN_BY = 28;
 // 45, not 42 (16 Oct 2026): restoring second spells gave Rivaldo his Mogi
@@ -115,9 +129,11 @@ export function answerBar(p, { careers, roles, exclusions, pool = null }) {
     const first = career.find((s) => s.from != null);
     if (first && p.born && first.from - p.born > FIRST_CLUB_BY) why.push(`first senior club at ${first.from - p.born}`);
     let reach = null, gap = 0;
+    const allowed = REAL_GAPS[p.id];
     for (const s of career) {
       if (s.from == null) continue;
-      if (reach != null) gap = Math.max(gap, s.from - reach);
+      const real = allowed && reach === allowed.after && s.from === allowed.until;
+      if (reach != null && !real) gap = Math.max(gap, s.from - reach);
       reach = Math.max(reach ?? s.from, s.to ?? 2026);
     }
     if (gap > MAX_GAP) why.push(`a ${gap}-year hole in the career record`);
