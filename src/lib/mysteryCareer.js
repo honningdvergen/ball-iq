@@ -28,6 +28,13 @@ const NAMES = {
   'Grenoble Foot 38': 'Grenoble',
   'U.F.C.I. Tomar': 'União de Tomar',
   'Al Ahli SC (Doha)': 'Al Ahli Doha',
+  // Two different clubs printed "Al Ahli" and gave a false "Shared Al Ahli"
+  // (Ball IQ HQ, 7 Nov 2026): "Al Ahli SC" is the Qatari club (Guardiola,
+  // Draxler, de Jong…); "Al Ahli FC" (Jeddah: Mahrez, Firmino) stays "Al Ahli".
+  'Al Ahli SC': 'Al Ahli Doha',
+  // Honda's current club (2026). The HEAD rule would print "Jurong", the same
+  // as the older, different "Jurong FC".
+  'FC Jurong': 'FC Jurong',
   'Stade Brestois 29': 'Brest',
   'SD Eibar': 'Eibar',
   'Al Jazira Club': 'Al Jazira',
