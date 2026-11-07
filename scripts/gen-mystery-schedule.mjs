@@ -34,7 +34,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { answerBar, FIRST_FAMOUS_DAY } from './mystery-answer-bar.mjs';
 import { mainClub } from '../src/lib/mysteryCareer.js';
-import { mysteryDayIndex, MYSTERY_ANCHOR_DAY } from '../src/lib/mysteryPlayer.js';
+import { mysteryDayIndex, MYSTERY_ANCHOR_DAY, puzzleYear } from '../src/lib/mysteryPlayer.js';
 import { withCareerFixes } from '../src/lib/mysteryCareer.js';
 import { planScheduleRemote } from './lib/schedule-remote.mjs';
 
@@ -78,7 +78,7 @@ const used = new Set(schedule.slice(0, FROM));
 const era = (p) => (p.born < 1960 ? 'legend' : p.born < 1975 ? '60s-70s' : p.born < 1987 ? '75-86' : p.born < 1996 ? '87-95' : 'now');
 const cands = pool
   .filter((p) => !used.has(p.id) && answerBar(p, { careers, roles, exclusions, pool }).ok)
-  .map((p) => ({ p, club: mainClub(p, careers), era: era(p) }))
+  .map((p) => ({ p, era: era(p), clubs: new Map() }))
   .sort((a, b) => (b.p.fame - a.p.fame) || a.p.id.localeCompare(b.p.id));
 const need = DAYS - FROM;
 if (cands.length < need) throw new Error(`only ${cands.length} players clear the bar for ${need} days`);
@@ -89,12 +89,19 @@ const WINDOW = 30;
 
 const out = schedule.slice(0, FROM);
 const picks = [];
+// The club clue a day prints, counted to THAT day's year (a running spell
+// grows a year on 1 Jan; MysteryPlayer.jsx passes the same puzzleYear).
+const clubOn = (c, year) => {
+  if (!c.clubs.has(year)) c.clubs.set(year, mainClub(c.p, careers, year));
+  return c.clubs.get(year);
+};
 for (let day = FROM; day < DAYS; day++) {
+  const year = puzzleYear(MYSTERY_ANCHOR_DAY + day);
   const prev = picks[picks.length - 1];
   const last10 = picks.slice(-10).map((x) => x.club);
   const last6 = picks.slice(-6);
   const fits = (c) => !prev || (
-    c.p.slot !== prev.p.slot && c.club !== prev.club && !last10.includes(c.club)
+    c.p.slot !== prev.p.slot && clubOn(c, year) !== prev.club && !last10.includes(clubOn(c, year))
     && last6.filter((x) => x.era === c.era).length < 4
   );
   const window = cands.slice(0, WINDOW);
@@ -106,7 +113,7 @@ for (let day = FROM; day < DAYS; day++) {
   let pick = from[from.length - 1];
   for (const c of from) { r -= c.p.fame; if (r <= 0) { pick = c; break; } }
   cands.splice(cands.indexOf(pick), 1);
-  picks.push(pick);
+  picks.push({ ...pick, club: clubOn(pick, year) });
   out.push(pick.p.id);
 }
 

@@ -13,7 +13,7 @@ import {
   rankPool, bandFor, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
-  explainGuess, reasonLine, clueLadder, CLUE_AFTER, paidCluesFromSave, topShare,
+  explainGuess, reasonLine, clueLadder, CLUE_AFTER, paidCluesFromSave, topShare, puzzleYear,
 } from '../lib/mysteryPlayer.js';
 import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
@@ -107,6 +107,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // yesterday's slot and cannot overwrite today's board.
   const dayIndex = mysteryDayIndex(date);
   const isArchive = dayIndex !== mysteryDayIndex();
+  // A running spell ("2023–now") counts up to the PUZZLE's year, not the
+  // clock's: the club clue, teammate years and ranks of a 2027 day count 2027.
+  const year = puzzleYear(dayIndex);
   // Best first: the kept site copy's id, then the bundled one. Read once per
   // day, so a fetch landing mid-game never swaps the answer under the board.
   const answerIds = useMemo(() => mysteryAnswerIds(dayIndex), [dayIndex]);
@@ -127,8 +130,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
 
   // Rank the pool once per puzzle, not per keystroke.
   const ranks = useMemo(
-    () => (answer && CAREERS ? rankPool(POOL, answer, CAREERS) : null),
-    [POOL, CAREERS, answer],
+    () => (answer && CAREERS ? rankPool(POOL, answer, CAREERS, year) : null),
+    [POOL, CAREERS, answer, year],
   );
 
   // Restore today's game. Without this a refresh — or backgrounding the PWA
@@ -193,7 +196,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // nationality (see above), and never `answer.position` directly:
   // hintPosition prints only a checked role.
   // `lang`: the initials rung's "(one name)" is worded by clueLadder.
-  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES) : CLUE_PLACEHOLDER), [answer, CAREERS, lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES, year) : CLUE_PLACEHOLDER), [answer, CAREERS, lang, year]); // eslint-disable-line react-hooks/exhaustive-deps
   const PAID = CLUES.filter((c) => !c.free);
   const nextClue = PAID[hintsUsed];
   const clueReady = !done && !!answer && !!nextClue && guesses.length >= nextClue.after;
@@ -223,8 +226,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const dropMax = useDropdownMaxHeight(inputRef, { gap: 26, kbInset });
 
   // The reveal: his senior career, oldest first, with the club the clue named.
-  const career = useMemo(() => (answer && CAREERS ? careerOf(answer, CAREERS) : []), [answer, CAREERS]);
-  const keyClub = useMemo(() => (answer && CAREERS ? mainClub(answer, CAREERS) : null), [answer, CAREERS]);
+  const career = useMemo(() => (answer && CAREERS ? careerOf(answer, CAREERS, year) : []), [answer, CAREERS, year]);
+  const keyClub = useMemo(() => (answer && CAREERS ? mainClub(answer, CAREERS, year) : null), [answer, CAREERS, year]);
 
   if (ready && (!answer || !ranks)) {
     // No puzzle scheduled for today. The home card is gated on the same
@@ -541,7 +544,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           const st = BAND_STYLE[g.band];
           // WHY it is here: shared clubs, position, era. The same three things
           // the rank is computed from (lib/mysteryPlayer.js), so they agree.
-          const why = g.rank === 1 ? t('mp.secret') : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS)) : '');
+          const why = g.rank === 1 ? t('mp.secret') : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS, year)) : '');
           return (
             <div key={g.id} className={`mp-guess${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ background: st.bg, border: `1px solid ${st.bd}` }}>
               <div style={{ flex: 1, minWidth: 0 }}>

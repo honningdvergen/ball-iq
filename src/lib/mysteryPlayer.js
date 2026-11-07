@@ -86,12 +86,12 @@ function ageShare(p, answer) {
  * A scoring function for one answer. The answer's clubs are worked out once,
  * so ranking nine thousand players does not rebuild them nine thousand times.
  */
-export function makeScorer(answer, careers = null) {
-  const answerClubs = careers ? clubsOf(answer, careers) : null;
+export function makeScorer(answer, careers = null, year = undefined) {
+  const answerClubs = careers ? clubsOf(answer, careers, year) : null;
   return (p) => {
     let s = 0;
     if (answerClubs && answerClubs.size) {
-      const shared = sharedClubs(answer, p, careers, answerClubs);
+      const shared = sharedClubs(answer, p, careers, answerClubs, year);
       for (const x of shared.slice(0, W.sharedClubMax)) {
         s += W.sharedClub + W.together * Math.min(x.together, W.togetherFull) / W.togetherFull;
       }
@@ -104,8 +104,8 @@ export function makeScorer(answer, careers = null) {
 }
 
 /** Similarity of `p` to the secret `answer`. Higher is closer. */
-export function similarity(p, answer, careers = null) {
-  return makeScorer(answer, careers)(p);
+export function similarity(p, answer, careers = null, year = undefined) {
+  return makeScorer(answer, careers, year)(p);
 }
 
 /**
@@ -116,8 +116,8 @@ export function similarity(p, answer, careers = null) {
  * the same puzzle produces the same ranks on every device — the Daily 7 was
  * bitten by exactly this when a sort depended on engine-specific behaviour.
  */
-export function rankPool(pool, answer, careers = null) {
-  const score = makeScorer(answer, careers);
+export function rankPool(pool, answer, careers = null, year = undefined) {
+  const score = makeScorer(answer, careers, year);
   const scored = pool.map((p) => ({ id: p.id, name: p.name, s: p.id === answer.id ? Infinity : score(p) }));
   scored.sort((a, b) => (b.s - a.s) || a.name.localeCompare(b.name));
   const ranks = new Map();
@@ -138,9 +138,9 @@ export function rankPool(pool, answer, careers = null) {
  *   bornWhen     'earlier' | 'later' | null: the GUESS was born before or
  *                after the answer (null when the years match or one is unknown)
  */
-export function explainGuess(p, answer, careers = null) {
+export function explainGuess(p, answer, careers = null, year = undefined) {
   if (!p || !answer || p.id === answer.id) return null;
-  const shared = careers ? sharedClubs(answer, p, careers) : [];
+  const shared = careers ? sharedClubs(answer, p, careers, null, year) : [];
   const gap = p.born && answer.born ? Math.abs(p.born - answer.born) : null;
   const era = gap == null ? null : gap <= SAME_ERA_YEARS ? 'same' : gap <= NEAR_ERA_YEARS ? 'near' : 'far';
   const bornWhen = !gap ? null : p.born < answer.born ? 'earlier' : 'later';
@@ -238,7 +238,7 @@ export function birthDecade(born) {
   return Number.isFinite(born) && born > 1800 ? `${Math.floor(born / 10) * 10}s` : null;
 }
 
-export function clueLadder(answer, careers = null, roles = null) {
+export function clueLadder(answer, careers = null, roles = null, year = undefined) {
   if (!answer) return [];
   const free = [];
   const pos = hintPosition(answer, roles);
@@ -246,7 +246,7 @@ export function clueLadder(answer, careers = null, roles = null) {
   const decade = birthDecade(answer.born);
   if (decade) free.push({ key: 'born', label: 'Born', value: decade });
   const paid = [];
-  const club = careers ? mainClub(answer, careers) : null;
+  const club = careers ? mainClub(answer, careers, year) : null;
   if (club) paid.push({ key: 'club', label: 'Played for', value: club });
   const ini = initials(answer.name);
   // A one-name player (Eusébio, Neymar) gets one letter, and says so: a lone
@@ -459,6 +459,15 @@ export const MYSTERY_ENABLED = true;
  */
 export function mysteryDayIndex(now = new Date()) {
   return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+}
+/**
+ * The year of a puzzle's own date, for counting its running spells ("2023–now"
+ * runs to this year). From the day index, not the clock, so an archive replay
+ * reads as it did on its day. Same calendar as mysteryDayIndex: a day index is
+ * UTC midnight of the local date, so its UTC year is the local year.
+ */
+export function puzzleYear(dayIndex) {
+  return new Date(dayIndex * 86400000).getUTCFullYear();
 }
 export function mysteryNumber(now = new Date()) {
   return mysteryDayIndex(now) - MYSTERY_ANCHOR_DAY + 1;
