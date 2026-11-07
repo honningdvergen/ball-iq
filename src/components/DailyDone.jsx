@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, ShieldCheck, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords } from "lucide-react";
+import { Flame, ShieldCheck, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users } from "lucide-react";
 import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
@@ -377,13 +377,20 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
-      {(waText || stump || stitch || canChallenge || leagueOffer) && (
+      {/* The league offer (7 Nov 2026): as a 12.5px underlined line among the
+          alts it was shown 178 times to 48 web visitors in nine days and tapped
+          by none (league-offer-shown v league-make-tap). It is now the one
+          quiet pill under the share: full width, hairline, no fill, so the
+          share button stays the only solid thing on the panel. */}
+      {leagueOffer && (
+        <button type="button" className="dd-league" onClick={makeLeague}>
+          <Users size={17} strokeWidth={2.4} aria-hidden="true" /> {t(rival ? "dd.league" : "dd.leagueStart")}
+        </button>
+      )}
+      {(waText || stump || stitch || canChallenge) && (
         <div className="dd-share-alts">
           {rival && (
             <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : "dd.shareResult")}</button>
-          )}
-          {leagueOffer && (
-            <button type="button" className="dd-share-alt" onClick={makeLeague}>{t(rival ? "dd.league" : "dd.leagueStart")}</button>
           )}
           {waText && (
             <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>{t("dd.wa")}</a>

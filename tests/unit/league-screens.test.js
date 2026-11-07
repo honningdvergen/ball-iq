@@ -118,10 +118,13 @@ describe('the results panel', () => {
     // Phase 2 (29 Oct 2026): the native shell sends results too.
     expect(block).not.toMatch(/isNativeShell/);
   });
-  it('the league offer is a hairline, never a second solid button, and reaches a player with no head-to-head', () => {
+  it('the league offer is one quiet pill under the share, never a second solid button, and reaches a player with no head-to-head', () => {
     // "Make it a league?" (dd.league) with a rival; "Start a league with your
-    // mates" (dd.leagueStart) for anyone not yet in one.
-    expect(DD).toMatch(/className="dd-share-alt" onClick=\{makeLeague\}>\{t\(rival \? "dd\.league" : "dd\.leagueStart"\)\}/);
+    // mates" (dd.leagueStart) for anyone not yet in one. 7 Nov 2026: the
+    // underlined 12.5px line was tapped 0 times in 178 shows, so it is now a
+    // full-width hairline pill (dd-league), still no fill.
+    expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueStart"\)\}/);
+    expect(read('../../src/components/dailyDone.css')).toMatch(/\.dd-league\{[^}]*border:1px solid var\(--border2\);background:var\(--s2\)/);
     expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
     expect(DD).toMatch(/const leagueOffer = leagueGame && \(!!rival \|\| !inLeague\(\)\);/);
     expect(DD).not.toMatch(/isNativeShell/);

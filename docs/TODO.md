@@ -1,3 +1,14 @@
+## 2026-11-07 — OVERNIGHT: HEALTH REPORT, CONSENT + AGE GATE SHIPPED, LEAGUE OFFER MADE VISIBLE
+
+- [x] Health report with numbers: ~/ball-iq-audit/2026-11-07/report.md (GSC read 00:37 UTC, prod funnel 00:39, Clarity, Supabase advisors, bank, stores) + tools-research-notes.md + gsc-read-2026-11-07.md. Grade C+; the two weak numbers are web return (0 of 41 in the 25 Oct–2 Nov cohort) and the league offer (178 shows, 48 visitors, 0 taps, 0 leagues ever).
+- [x] Shipped: the 30 Oct consent work (a stored "no" holds on every route, EEA zones beyond Europe/*, "Change my analytics choice" on the privacy page and screen) and the 13+ confirmation on sign-up (51a59ab9, 2100a5b7). This also cleared the red CI from 30 Oct (lastmod.json was never committed).
+- [x] Shipped: set_reminder_hour no longer called without a session (it returned 401 ~20×/day from guests' phones, Supabase logs); the league offer is a full-width hairline pill under the share button, not a 12.5px underline (goldens updated for exactly that markup).
+- [x] 1.8.6 What's New written in 14 languages (~/ball-iq-release/store/wn-1.8.6/) and set on all 19 storefront locales. NOT submitted. The build to submit is a fresh cut after these commits, not 168 (nine days of fixes since).
+- [ ] Read league-make-tap and the leagues table daily for seven days; that is the measure of tonight's pill.
+- [ ] Cloud PR #54 (Mystery careers 129–170 + review leftovers): review and merge once CI is green on its final commit; then run `gen-mystery-schedule.mjs --from 171` for the six club-spacing breaks; then Konno (job 3).
+- [ ] Clarity: three recordings each for the Home quick-backs (33 in 107 sessions) and the "Next question" dead taps (74) before changing anything.
+- [ ] Not a bug, noted: daily_results.user_id is NULL on every row by design (the store-listing promise: no identifier from native, and the web sends only the visitor id); signed-in daily play is counted in `scores`.
+
 ## 2026-10-29 — BUILD 168 (1.8.6) ON TESTFLIGHT
 
 - [x] iOS 168 cut at eaeaa6f6 (~/ball-iq-release/build-168.sh), uploaded 29 Oct ~15:10 Oslo. Carries leagues phase 2, the Footle hard-mode switch, the calmer finish panel, Home colour, the Europe chip, the streak badge, the Palace question, the Trail freeze and the Silva/Barry rungs.
