@@ -568,7 +568,12 @@ export const TRAIL_PLAYERS = [
   { key: "OSIMHEN", display: ["Victor","Osimhen"], nat: "Nigeria",
     clubs: ["VfL Wolfsburg","Charleroi","Lille","Napoli","Galatasaray"],
     loans: [false,false,false,false,false] },
-  { key: "KONNO", display: ["Yasuyuki","Konno"], nat: "Japan",
+  // RETIRED 7 Nov 2026 (Ball IQ HQ): too obscure to win from his trail. He
+  // stays in the roster because day #28 (index 27) was served and must still
+  // resolve; `retired` keeps him out of every future day (the planner skips
+  // him, and trail-schedule.test.js fails if he appears past the frozen days).
+  // His one future day, index 213, went to POGBA.
+  { key: "KONNO", display: ["Yasuyuki","Konno"], nat: "Japan", retired: true,
     clubs: ["Consadole Sapporo","FC Tokyo","Gamba Osaka","Júbilo Iwata","Nankatsu SC"],
     loans: [false,false,false,false,false] },
   { key: "ISAK", display: ["Alexander","Isak"], nat: "Sweden",
@@ -787,7 +792,10 @@ export const TRAIL_ANSWER_LOG = [
   // ⚠️ Entries 1..87 are copied through UNCHANGED — those puzzles have been
   // played and their grids shared. Everything after is re-planned, which is
   // safe precisely because nobody has seen it. Deterministic LCG, seed 20260812.
-  // Minimum gap between repeats: 121 days.
+  // Minimum gap between repeats, measured 7 Nov 2026: 111 days inside the log
+  // (STOJKOVIC), and 35 across the wrap from the last entry back to the first
+  // (ERIKSEN). The "121 days" this line used to claim was never true of the
+  // re-planned log.
   "TORRES",
   "GILBERTO_SILVA",
   "RONALDO_C",
@@ -1001,7 +1009,7 @@ export const TRAIL_ANSWER_LOG = [
   "TORRES_FER",
   "AFELLAY",
   "MATUIDI",
-  "KONNO",
+  "POGBA", // index 213: was KONNO, retired 7 Nov 2026 (Pogba's third use, see trail-schedule.test.js)
   "SAKAI_HIR",
   "STEGEN",
   "DONNARUMMA",
