@@ -89,7 +89,7 @@ function runGate(source, { tz = 'Europe/Oslo', choice = null, pathname = '/', se
 }
 
 /** Every timezone shape that changes the answer, plus a few that must not. */
-const IN_SCOPE = ['Europe/Oslo', 'Europe/London', 'Europe/Dublin', 'UTC', '', THROWS];
+const IN_SCOPE = ['Europe/Oslo', 'Europe/London', 'Europe/Dublin', 'Atlantic/Reykjavik', 'Atlantic/Canary', 'Asia/Nicosia', 'Indian/Reunion', 'UTC', '', THROWS];
 const OUT_OF_SCOPE = ['America/New_York', 'Asia/Tokyo', 'Africa/Cairo', 'Australia/Sydney'];
 const label = (tz) => (tz === THROWS ? 'a browser with no resolvable time zone' : tz === '' ? 'an empty time zone' : tz);
 
@@ -125,6 +125,13 @@ describe('the two consent gates agree', () => {
       }
 
       for (const tz of OUT_OF_SCOPE) {
+        it(`honours a stored "denied" for a visitor in ${tz}`, () => {
+          const r = runGate(gate, { ...route, tz, choice: 'denied' });
+          expect(r.clarity, 'a "no" must hold outside Europe too').toBe(false);
+          expect(r.posthog).toBe(false);
+          expect(r.banner).toBe(false);
+        });
+
         it(`does not interrupt a visitor in ${tz}`, () => {
           const r = runGate(gate, { ...route, tz, choice: null });
           expect(r.clarity).toBe(true);

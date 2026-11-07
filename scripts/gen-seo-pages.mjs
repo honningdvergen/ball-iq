@@ -1543,11 +1543,11 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      wherever they are, and reading that as non-European would silently track
      exactly the visitors most likely to object. See index.html. */
   try { var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
-        needsConsent = tz.indexOf('Europe/') === 0 || tz === 'UTC' || tz === ''; }
+        needsConsent = tz.indexOf('Europe/') === 0 || ' Atlantic/Reykjavik Atlantic/Canary Atlantic/Madeira Atlantic/Azores Atlantic/Jan_Mayen Arctic/Longyearbyen Asia/Nicosia Asia/Famagusta Africa/Ceuta Indian/Reunion Indian/Mayotte America/Guadeloupe America/Martinique America/Cayenne America/Marigot America/St_Barthelemy '.indexOf(' ' + tz + ' ') > -1 || tz === 'UTC' || tz === ''; }
   catch (e) { needsConsent = true; }
   var choice = null;
   try { choice = localStorage.getItem('biq_consent_analytics'); } catch (e) {}
-  if (!needsConsent || choice === 'granted') {
+  if (choice !== 'denied' && (!needsConsent || choice === 'granted')) {
     var c = document.createElement('script');
     c.async = true;
     c.src = 'https://www.clarity.ms/tag/xqwevk9brq';

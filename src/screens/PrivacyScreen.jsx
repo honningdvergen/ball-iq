@@ -2,6 +2,7 @@
 import React from "react";
 import { APP_NAME } from "../lib/scoring.js";
 import { privacyH2, privacyP, privacyLi } from "./privacyStyles.js";
+import { isNativeShell } from "../lib/inAppBrowser.js";
 
 // ─── PRIVACY POLICY SCREEN ────────────────────────────────────────────────────
 // Full-screen in-app overlay. Content is hardcoded (no network fetch, no
@@ -13,7 +14,19 @@ import { privacyH2, privacyP, privacyLi } from "./privacyStyles.js";
 // the same policy as in-app users. Sprint #83 ZZ7 caught a drift; Sprint #84
 // AAA1 re-synced them. Edit both files in the same commit and bump
 // "Last updated" in both when the policy materially changes.
+// Reopens the analytics banner: public/consent.js forgets the stored answer,
+// switches Clarity and PostHog off and asks again (website only).
+function changeConsent() {
+  try {
+    window.__biqConsentReset = true;
+    const s = document.createElement("script");
+    s.src = "/consent.js";
+    document.head.appendChild(s);
+  } catch { /* the policy text still says how */ }
+}
+
 export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
+  const native = isNativeShell();
   return (
     <div style={{
       position: "fixed",
@@ -103,6 +116,15 @@ export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>Our <strong>website</strong> also records a small number of <strong>first-party product events</strong> of our own — for example “a quiz was started” or “the app link was tapped” — so we can tell which parts of the site are working. Each event stores only its name, the surface it happened on, the campaign tag of the link that brought you there if it had one (for example <code>utm_source=instagram</code>), and a <strong>random identifier we generate on your device</strong> (stored in your browser as <code>biq_vid</code>) so a single visit hangs together. That identifier is a random value, not derived from anything about you or your device: it is not a fingerprint and it is not shared with anyone. If you are signed in on the website, these events are also linked to your account ID (never your email); deleting your account removes that link. Clearing this site’s data removes it. No question text and no personal data is recorded. This runs on the website only.</p>
         <p style={privacyP}>Our <strong>website (balliq.app)</strong> also uses <strong>Microsoft Clarity</strong> to understand how visitors use the site. Clarity records anonymised interaction signals — clicks, scrolls, mouse movement — and session replays with typed text masked, which we use to find and fix confusing parts of the site. It may set cookies or similar identifiers. This runs on the website only, never inside the app — and for visitors in Europe it does not run there either unless they allow it, which we ask once on the first visit. See Microsoft's privacy statement at <a href="https://privacy.microsoft.com/privacystatement" style={{color:"var(--accent)",textDecoration:"none"}} target="_blank" rel="noopener noreferrer">privacy.microsoft.com</a>.</p>
         <p style={privacyP}>Our <strong>website (balliq.app)</strong> also uses <strong>PostHog</strong> product analytics (EU cloud, Frankfurt) to measure which games people play, where they stop, and whether they come back, and to compare versions of a page. It records page views, clicks and the same product events described above, with IP addresses anonymised; it does <strong>not</strong> record session replays. If you are signed in, events are linked to your account ID (never your email or username). PostHog stores an identifier in your browser. It follows exactly the same rules as Clarity: website only, never in the app, and in Europe only if you choose “Allow”. See PostHog’s privacy policy at <a href="https://posthog.com/privacy" style={{color:"var(--accent)",textDecoration:"none"}} target="_blank" rel="noopener noreferrer">posthog.com/privacy</a>.</p>
+        <p style={privacyP}><strong>Changing your mind.</strong> On the website you can change your analytics choice at any time. We ask you again straight away; if you decline, Clarity and PostHog stop and their identifiers are removed from this browser.</p>
+        {!native && (
+          <p style={privacyP}>
+            <button type="button" onClick={changeConsent}
+              style={{ font: "inherit", fontSize: 15, fontWeight: 700, minHeight: 44, padding: "0 18px", borderRadius: 10, border: "1px solid var(--border2)", background: "var(--s2)", color: "var(--text)", cursor: "pointer" }}>
+              Change my analytics choice
+            </button>
+          </p>
+        )}
         <p style={privacyP}>We <strong>do not currently display ads</strong> anywhere — not on the website and not in the app. If that changes we will update this page first. The paragraph below describes how <strong>Google AdSense</strong> would work on the <strong>website only</strong> if we enable it. To serve and measure ads, Google and its partners may set and read cookies or similar identifiers in your browser, and — where you agree — use them to show more relevant ads. This applies to the website only; the app remains ad-free and sets no advertising cookies. We are not currently serving ads, so no advertising cookies are set. Visitors in Europe, the UK and Switzerland are asked once, on their first visit to the website, before Microsoft Clarity or PostHog loads — that prompt covers those two only, since no ads run. If we ever enable ads we will extend that prompt to cover them and ask again first. You can review how Google uses data from sites that use its services at <span style={{color:"var(--accent)"}}>policies.google.com/technologies/partner-sites</span>, and manage ad personalisation at <span style={{color:"var(--accent)"}}>adssettings.google.com</span>.</p>
 
         <h2 style={privacyH2}>5. Third-party services we use</h2>
@@ -122,7 +144,7 @@ export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         <p style={privacyP}>Account data is kept until you delete your account. Website product events are deleted automatically after 180 days, and unused guest accounts after 30 days. Our database (Supabase), error monitoring (Sentry) and product analytics (PostHog) are hosted in the EU. Some services we use are US companies (Vercel, Microsoft, Resend); where data leaves the EEA, it is covered by the safeguards those companies provide, such as the EU-US Data Privacy Framework or standard contractual clauses.</p>
 
         <h2 style={privacyH2}>7. Children's Privacy</h2>
-        <p style={privacyP}>{APP_NAME} is not directed at children under 13. Guest mode requires no account or personal data. To sign in you must provide an email address — please don't sign in if you are under 13. The app's content is suitable for all ages.</p>
+        <p style={privacyP}>{APP_NAME} is not directed at children under 13. Guest mode requires no account or personal data. To create an account you must confirm that you are 13 or older; please don't create one if you are younger. The app's content is suitable for all ages.</p>
 
         <h2 style={privacyH2}>8. Changes to This Policy</h2>
         <p style={privacyP}>If we make changes to this privacy policy, we will update the date at the top of this page. Continued use of the app after any changes constitutes acceptance of the new policy.</p>
