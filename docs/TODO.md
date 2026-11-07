@@ -1,5 +1,7 @@
 ## 2026-11-07 — OVERNIGHT: HEALTH REPORT, CONSENT + AGE GATE SHIPPED, LEAGUE OFFER MADE VISIBLE
 
+- [ ] **ALEX, 7 Nov 09:15: "Good report, let's get A+."** The standard for the week is the critic's grading in ~/ball-iq-audit/2026-11-07/report.md (project C today). Order: 1.8.6 to both stores (iOS 169 cut this morning for Alex to play; Android 62 re-run + emulator), the native cohort counter, the rating ask at a better moment, the monetisation decision on paper, the club-pack verifier sweep (cloud job 4), CI validators (cloud job 5). Re-grade on 14 Nov.
+
 - [x] Health report with numbers: ~/ball-iq-audit/2026-11-07/report.md (GSC read 00:37 UTC, prod funnel 00:39, Clarity, Supabase advisors, bank, stores) + tools-research-notes.md + gsc-read-2026-11-07.md. Grade C+; the two weak numbers are web return (0 of 41 in the 25 Oct–2 Nov cohort) and the league offer (178 shows, 48 visitors, 0 taps, 0 leagues ever).
 - [x] Shipped: the 30 Oct consent work (a stored "no" holds on every route, EEA zones beyond Europe/*, "Change my analytics choice" on the privacy page and screen) and the 13+ confirmation on sign-up (51a59ab9, 2100a5b7). This also cleared the red CI from 30 Oct (lastmod.json was never committed).
 - [x] Shipped: set_reminder_hour no longer called without a session (it returned 401 ~20×/day from guests' phones, Supabase logs); the league offer is a full-width hairline pill under the share button, not a 12.5px underline (goldens updated for exactly that markup).
