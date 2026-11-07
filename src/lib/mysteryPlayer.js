@@ -27,8 +27,8 @@
    which works for a 766-player pool. Ours is nine thousand, all eras.)
 
    What the ranking now pays for, and nothing else:
-     · SHARED CLUBS, most: 300 for each club both played for, +200 scaled by
-       the years they were there TOGETHER (full at 6), best three clubs.
+     · SHARED CLUBS, most: 200 for each club both played for, +300 scaled by
+       the years they were there TOGETHER (full at 5), best three clubs.
        Torres-at-Atlético still counts for something; Koke counts for more.
      · SAME POSITION: 250, by line (GK / DF / MF / FW). The specific word
        ("centre-back", "wing half") is a Wikidata ranking token that is wrong
@@ -41,8 +41,8 @@
    teammates by their real years), the position word.
 
    The consequence that matters: with no shared club, the best a guess can do
-   is same line + same era, 425 — below anyone who played at the answer's club
-   in his time. The reasons line under each guess (explainGuess) says exactly
+   is same line + same era + age, 425 — below anyone who was the answer's
+   teammate for four years or more on the club alone (200 + 300 × 4/5 = 440). The reasons line under each guess (explainGuess) says exactly
    these three things, so the rank and its explanation always agree. */
 import { foldLetters } from './letterFold.js';
 import { clubsOf, sharedClubs, mainClub, initials } from './mysteryCareer.js';

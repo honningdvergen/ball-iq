@@ -116,3 +116,22 @@ describe('the all-done strip\'s "New in" ticks', () => {
     expect(s).not.toMatch(/msToNextLocalMidnight\(new Date\(\)\)/);
   });
 });
+
+describe('the weights comment in mysteryPlayer.js matches W', () => {
+  // It said 300 per club + 200 together, full at 6; the code says 200 + 300,
+  // full at 5. Read both from the source so they cannot drift apart again.
+  const s = src('../../src/lib/mysteryPlayer.js');
+  const w = (k) => Number(s.match(new RegExp(`\\n  ${k}: (\\d+),`))[1]);
+
+  it('shared club, together, full-at, position, era, age', () => {
+    expect(s).toContain(`${w('sharedClub')} for each club both played for, +${w('together')} scaled by`);
+    expect(s).toContain(`TOGETHER (full at ${w('togetherFull')})`);
+    expect(s).toContain(`SAME POSITION: ${w('slot')}`);
+    expect(s).toContain(`ERA, as the tiebreak: ${w('era')}`);
+    expect(s).toContain(`AGE: ${w('age')}`);
+    expect(s).toContain(`, ${w('slot') + w('era') + w('age')} — below`);
+    const four = w('sharedClub') + w('together') * 4 / w('togetherFull');
+    expect(four).toBeGreaterThan(w('slot') + w('era') + w('age'));
+    expect(s).toContain(`= ${four})`);
+  });
+});
