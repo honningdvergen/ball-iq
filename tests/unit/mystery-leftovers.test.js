@@ -66,3 +66,34 @@ describe('a running spell counts to the puzzle year, not 2026', () => {
     expect(s).not.toMatch(/NOW_YEAR|getFullYear\(\)/);
   });
 });
+
+describe('one running spell per answer', () => {
+  // Grealish (day 289) read "Manchester City 2021–now" AND "Everton 2025–now":
+  // Wikidata keeps a parent club's spell open across a loan. The reveal can
+  // print only one "now". The fix closes City at 2026 (not 2025: his City
+  // years must count to 2026 exactly as before, or Haaland's day 94, already
+  // served, would rank him differently). Day 57 (ter Stegen) is served and
+  // frozen, so the guard starts at the first unchecked day.
+  const pool = read('../../src/data/mysteryPool.json');
+  const schedule = read('../../src/data/mysterySchedule.json');
+  const fixed = withCareerFixes(read('../../src/data/mysteryCareers.json'), read('../../src/data/mysteryCareerFixes.json'));
+  const byId = new Map(pool.map((p) => [p.id, p]));
+
+  it('Grealish has one "now"', () => {
+    const g = byId.get('Q16056053');
+    expect(schedule.indexOf('Q16056053')).toBe(289);
+    const running = careerOf(g, fixed, puzzleYear(MYSTERY_ANCHOR_DAY + 289)).filter((s) => s.to == null).map((s) => s.club);
+    expect(running).toEqual(['Everton']);
+  });
+
+  it('no answer after the served days has two', () => {
+    const bad = [];
+    for (let i = 129; i < schedule.length; i++) {
+      const a = byId.get(schedule[i]);
+      if (!a) continue;
+      const running = careerOf(a, fixed, puzzleYear(MYSTERY_ANCHOR_DAY + i)).filter((s) => s.to == null && s.from != null);
+      if (running.length > 1) bad.push(`${i} ${a.name}: ${running.map((s) => s.club).join(' + ')}`);
+    }
+    expect(bad).toEqual([]);
+  });
+});
