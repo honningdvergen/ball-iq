@@ -4,6 +4,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { clubsOf, mainClub, overlapYears, careerOf, withCareerFixes, NOW_YEAR } from '../../src/lib/mysteryCareer.js';
 import { puzzleYear, MYSTERY_ANCHOR_DAY, rankPool, explainGuess, clueLadder } from '../../src/lib/mysteryPlayer.js';
+import { clubSpacingBreaks } from '../../scripts/mystery-answer-bar.mjs';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const src = (p) => readFileSync(new URL(p, import.meta.url), 'utf8');
@@ -133,5 +134,32 @@ describe('the weights comment in mysteryPlayer.js matches W', () => {
     const four = w('sharedClub') + w('together') * 4 / w('togetherFull');
     expect(four).toBeGreaterThan(w('slot') + w('era') + w('age'));
     expect(s).toContain(`= ${four})`);
+  });
+});
+
+describe('the club clue is not repeated inside ten days', () => {
+  const pool = read('../../src/data/mysteryPool.json');
+  const schedule = read('../../src/data/mysterySchedule.json');
+  const fixed = withCareerFixes(read('../../src/data/mysteryCareers.json'), read('../../src/data/mysteryCareerFixes.json'));
+  const byId = new Map(pool.map((p) => [p.id, p]));
+
+  it('finds the served Zlatan/Nesta pair: a career fix after the draw', () => {
+    const raw = withCareerFixes(read('../../src/data/mysteryCareers.json'), {});
+    const zlatan = byId.get(schedule[75]);
+    expect(mainClub(zlatan, raw)).toBe('Inter Milan'); // what the draw saw
+    expect(mainClub(zlatan, fixed)).toBe('AC Milan'); // after his first Milan was restored
+    const breaks = clubSpacingBreaks(schedule, byId, fixed, { from: 73, to: 128 });
+    expect(breaks).toEqual([{ day: 83, earlier: 75, club: 'AC Milan' }]);
+  });
+
+  // ⚠️ Days after 128 can still be redrawn (gen-mystery-schedule.mjs --from),
+  // and audit-mystery-schedule.mjs lists these at every build. They are known,
+  // not accepted: 388 was on main already; the other five came when 2027 days
+  // started counting running spells to 2027 (Gakpo, Isak, Gyökeres, Milik).
+  // A NEW repeat fails here; clearing one by a redraw does not.
+  const KNOWN = ['271/262 Liverpool', '292/287 Liverpool', '323/319 Arsenal', '330/323 Arsenal', '350/346 Juventus', '388/385 Chelsea'];
+  it('no new repeat in the days still to be drawn', () => {
+    const found = clubSpacingBreaks(schedule, byId, fixed, { from: 129 }).map((b) => `${b.day}/${b.earlier} ${b.club}`);
+    expect(found.filter((b) => !KNOWN.includes(b))).toEqual([]);
   });
 });

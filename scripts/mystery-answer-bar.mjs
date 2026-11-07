@@ -44,7 +44,7 @@
  * added to it on 14 Oct 2026 when the bar first produced him.
  */
 import { careerOf, clubsOf, mainClub } from '../src/lib/mysteryCareer.js';
-import { hintPosition } from '../src/lib/mysteryPlayer.js';
+import { hintPosition, puzzleYear, MYSTERY_ANCHOR_DAY } from '../src/lib/mysteryPlayer.js';
 
 /** Index 73 = Mystery Player No. 74, 15 Oct 2026: the first famous-only day.
  *  Days before it are public record and keep whatever they served. */
@@ -145,4 +145,35 @@ export function answerBar(p, { careers, roles, exclusions, pool = null }) {
   if (!hintPosition(p, roles)) why.push('no position the clue can print');
   if (!mainClub(p, careers)) why.push('no club for the club clue');
   return { ok: why.length === 0, why };
+}
+
+/**
+ * THE CLUB CLUE'S SPREAD: no main club twice inside CLUB_SPACING days (the
+ * generator's rule since 14 Oct 2026). Returns every break as
+ * { day, earlier, club }, judged as players will see it: the corrected careers
+ * and each day's own puzzle year.
+ *
+ * ⚠️ WHY IT IS CHECKED AFTER THE DRAW, NOT ONLY DURING IT (review, 14 Oct
+ * 2026). Zlatan (day 75) and Nesta (day 83) both clue AC Milan, eight days
+ * apart. The draw was right: Zlatan's main club was Inter Milan then. His
+ * first AC Milan spell was restored in mysteryCareerFixes.json AFTERWARDS,
+ * which made AC Milan his main club. A career fix, or a new year making a
+ * running spell longer, changes a day's club clue without anyone redrawing.
+ * Days 75 and 83 are served and stay as they are; this is for the days to come.
+ */
+export const CLUB_SPACING = 10;
+export function clubSpacingBreaks(schedule, byId, careers, { from = 0, to = schedule.length - 1 } = {}) {
+  const clubOn = (i) => {
+    const p = byId.get(schedule[i]);
+    return p ? mainClub(p, careers, puzzleYear(MYSTERY_ANCHOR_DAY + i)) : null;
+  };
+  const out = [];
+  for (let day = from; day <= to && day < schedule.length; day++) {
+    const club = clubOn(day);
+    if (!club) continue;
+    for (let j = Math.max(0, day - CLUB_SPACING); j < day; j++) {
+      if (clubOn(j) === club) { out.push({ day, earlier: j, club }); break; }
+    }
+  }
+  return out;
 }
