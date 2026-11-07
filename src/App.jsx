@@ -3690,6 +3690,51 @@ function AppInner() {
   const [tab, setTab] = useState("home");
   // 4th usage counter: opening the Profile tab is the stats-appetite signal.
   useEffect(() => { if (tab === 'profile') bumpUsage('stats-view'); }, [tab]);
+  // ── EACH TAB KEEPS ITS OWN SCROLL (Alex, 7 Nov 2026: "can we make tab
+  // switching smoother and faster?"). The four panes share the page scroll and
+  // a hidden pane is display:none, so leaving a long tab clamped the page to
+  // the top and coming back landed there too: scroll Home, peek at History,
+  // return, and Home was at the top again (measured: 420 → 0 → 0). Every
+  // scroll is noted against the tab it happened on, and a tab switch puts the
+  // page back where that tab was, in a layout effect, before the frame paints.
+  // A switch that comes with a SCREEN change (back from a game) is left to the
+  // [screen] effect below, which puts Home at the top on purpose (QA S-03).
+  const tabScrollRef = useRef({});
+  const tabNowRef = useRef(tab);
+  const tabScreenRef = useRef(screen);
+  useEffect(() => {
+    const note = () => { tabScrollRef.current[tabNowRef.current] = window.scrollY; };
+    window.addEventListener("scroll", note, { passive: true });
+    return () => window.removeEventListener("scroll", note);
+  }, []);
+  useLayoutEffect(() => {
+    const tabChanged = tabNowRef.current !== tab;
+    const screenChanged = tabScreenRef.current !== screen;
+    tabNowRef.current = tab;
+    tabScreenRef.current = screen;
+    if (!tabChanged || screenChanged || screen !== "home") return;
+    const y = tabScrollRef.current[tab] || 0;
+    try { window.scrollTo({ top: y, left: 0, behavior: "instant" }); } catch { try { window.scrollTo(0, y); } catch {} }
+    // A restore is not the player scrolling down: tell the tab bar, or its
+    // hide-on-scroll would tuck it away under the finger that just tapped it
+    // (hooks/useScrollAwareTabBar.js).
+    try { window.dispatchEvent(new Event("biq:tab-restore")); } catch {}
+  }, [tab, screen]);
+  // Tapping the tab you are on scrolls it to the top, as phone apps do.
+  // ⚠️ THE SWITCH STAYS ON CLICK, NOT TOUCH-DOWN (tried and reverted, 7 Nov
+  // 2026). Switching on pointerdown saves the length of a tap, but a tab that
+  // opens a full-screen sheet on arrival (Profile's sample card for a player
+  // with no games) then receives the click of the same finger lifting: the
+  // test tapped Profile and started a Daily 7. The switch itself costs about
+  // 30-40ms of work at phone speed (measured), so there was little to win.
+  // No haptic here, ever (tests/unit/tab-switch-no-haptic.test.js).
+  const selectTab = useCallback((id) => {
+    if (id === tabNowRef.current) {
+      try { window.scrollTo({ top: 0, left: 0, behavior: "smooth" }); } catch { try { window.scrollTo(0, 0); } catch {} }
+      return;
+    }
+    setTab(id);
+  }, []);
   const [profile, setProfileState] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_profile");
@@ -8619,7 +8664,7 @@ function AppInner() {
               { id:"daily",    Icon: CalendarDays, label:t("tab.daily"), badge: false },
               { id:"profile",  Icon: User,         label:t("tab.profile") },
             ].map(({ id, Icon, label, badge }) => (
-              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => setTab(id)}>
+              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => selectTab(id)}>
                 <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}

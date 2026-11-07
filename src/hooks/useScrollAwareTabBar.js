@@ -44,8 +44,13 @@ export function useScrollAwareTabBar({ screen, inGame }) {
       last = y;
     };
     const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } };
+    // A tab switch puts the page back where that tab was (App.jsx, 7 Nov
+    // 2026). That jump is not the player scrolling down, so it must neither
+    // tuck the bar nor count as the start of the next scroll.
+    const onRestore = () => { last = window.scrollY; if (hidden) { hidden = false; el.classList.remove('tab-bar--tucked'); } };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('biq:tab-restore', onRestore);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('biq:tab-restore', onRestore); };
   }, [screen, inGame]);
   return tabBarRef;
 }
