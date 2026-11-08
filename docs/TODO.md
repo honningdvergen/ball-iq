@@ -1,3 +1,31 @@
+## OPEN, BY PRIORITY (compiled 8 Nov 2026)
+
+- Ship 1.8.6 to both stores: fresh iOS cut, submit on Alex's word; Android 62 re-run at the final commit, emulator, Play upload on "submit it" (2026-11-07 CHECKPOINT and OVERNIGHT, below).
+- Release day: add `/l/*` to the apple-app-site-association file and flip the pin in league-invite-landing.test.js (2026-10-29, LEAGUES IN THE APP (phase 2)).
+- ALEX: apply supabase/migrations/v3_2_rls_auth_uid_once_per_query.sql (28 policies evaluate auth.uid() once per query; the auto-mode check refused it as a production change) (2026-11-08, THE LIST, BUILD 171).
+- App Privacy label: add "Product Interaction, not linked to you, Analytics" for the feature counts and the return counter, Alex in App Store Connect (2026-11-08, THE LIST, BUILD 171).
+- Monetisation: Alex decides premium unlock v rewarded ads, then the supporter tier or remove-ads purchase (2026-11-07 OVERNIGHT, critic's plan; 2026-10-05 BALL IQ 2.0, "Supporter tier", "Rewarded video").
+- Store text: "No ads" to "Free to play" in all 39 places, so the listing does not block the ad decision (2026-10-05 BALL IQ 2.0, "Store text, in the SAME submission").
+- ENK registration and a PO box before trader status on the stores, Alex (2026-10-05 BALL IQ 2.0, "ENK registration").
+- AdSense resubmission mid to late November, only when the seo.md §7 checklist reads "confident" (2026-10-05 BALL IQ 2.0, "AdSense resubmission").
+- Play: send the 13 pending changes for review, Alex (2026-10-05 BALL IQ 2.0, "Send the 13 Play changes").
+- Daily 7 no-repeat rebuild: `gen-daily-log.mjs --regen-from 2026-11-09`, dry run first, swap the pin (2026-10-16, THE 17-ITEM PUSH, "Daily 7 no-repeat rebuild").
+- Top 10 runway: English league titles holds only to 30 Nov; the bundled schedule ends 31 Dec; next checked batch and calendar lists, appended only (2026-10-05 BALL IQ 2.0, "English league titles holds only to 30 Nov"; 2026-10-16, "Top 10 schedule ends 30 Nov").
+- Mystery Player: check each future answer's career before its day, six weeks at a time from day 171 (2026-10-05 BALL IQ 2.0, "CHECK EVERY FUTURE MYSTERY ANSWER'S CAREER").
+- Brasileirão: re-check the four divisions after 2 Dec (2026-09-17, BRASILEIRÃO WAVE, "RE-CHECK THESE FOUR DIVISIONS").
+- `publish-review.mjs` reformats the whole bank; find out why before anyone runs it (2026-09-09 (13:00), ALEX'S DEVICE REVIEW).
+- 134 same-answer question pairs need an editorial call; 79 can collide in one Mixed game (TODAY, 2026-08-03).
+- 978 position-qualifier stems are unmeasured; needs a name-to-position map and a build gate (2026-09-09 (21:40), SECOND DEVICE REVIEW).
+- `scores` rows for `trail` before 12 Oct count reviews as finishes (2026-10-05 BALL IQ 2.0, Safety nets).
+- Multiplayer writes no `scores` rows for anyone, which hollows the guest upgrade pitch (GUEST ENTRY FOR INVITE LINKS, "2-device test").
+- Survival opens on a hard question and ends at the first miss: easy first, then climb (2026-10-05 BALL IQ 2.0, "Survival opens on a hard question").
+- Chaos promises "quotes, moments and madness" and serves ordinary questions (2026-10-05 BALL IQ 2.0, "Chaos does not do what it says").
+- An unhandled "Importing a module script failed" when the network drops mid-quiz (2026-10-05 BALL IQ 2.0).
+- Explanations for the rest of the bank: about one MCQ in seven prints no "Why" (2026-10-05 BALL IQ 2.0, "Explanations for the rest of the bank").
+- Draft as a daily: board from the server, starts/sub split for 13 squads, pipeline into the repo (2026-10-05 BALL IQ 2.0, "Before it is a daily").
+- Top 10 has no page of its own on the site and no entry in the site header (2026-10-05 BALL IQ 2.0, "The static site does not know Top 10").
+- Safety nets: `audit:top10-board` in CI, deploy-check falls back to version.json when Vercel is silent (2026-10-05 BALL IQ 2.0, Safety nets).
+
 ## 2026-11-08 — THE LIST, BUILD 171
 
 - [x] Return counter (src/lib/cohort.js): one "app-day" event a day with install week, a days-since bucket and a league flag, no identifier; existing phones date themselves from their earliest stored daily. Read: `select meta->>'w' week, meta->>'b' bucket, count(*) from funnel_events where event='app-day' group by 1,2 order by 1,2;` Privacy page and in-app privacy screen say so.
@@ -35,9 +63,9 @@
 ## 2026-10-29 — BUILD 168 (1.8.6) ON TESTFLIGHT
 
 - [x] iOS 168 cut at eaeaa6f6 (~/ball-iq-release/build-168.sh), uploaded 29 Oct ~15:10 Oslo. Carries leagues phase 2, the Footle hard-mode switch, the calmer finish panel, Home colour, the Europe chip, the streak badge, the Palace question, the Trail freeze and the Silva/Barry rungs.
-- [ ] Alex plays 168 (leagues: finish a daily → "Start a league with your mates" → create → invite link; the league card on Home). Submit 1.8.6 only after that, AFTER_APPROVAL, What's New in 19 locales (not written yet).
+- [ ] Alex plays 168 (leagues: finish a daily → "Start a league with your mates" → create → invite link; the league card on Home). Submit 1.8.6 only after that, AFTER_APPROVAL, What's New in 19 locales (not written yet). — stale: superseded by builds 169 and 170 (see 2026-11-07 checkpoint); What's New is now written for 19 locales
 - [ ] On release day: the AASA `/l/*` flip (see the leagues section), and the Android build (versionCode 62 is 1.8.6; ~/ball-iq-release/aab-62.sh must be re-run at the final commit; run it on the emulator before any Play upload; Play production upload needs Alex's "submit it").
-- [ ] Social daily kit (plan item 4): no renderer exists for "today's result card" outside the app; needs a Playwright script that finishes a daily and captures the V2 share card, or an api/og card kind for the day. Not started.
+- [x] Social daily kit (plan item 4): no renderer exists for "today's result card" outside the app; needs a Playwright script that finishes a daily and captures the V2 share card, or an api/og card kind for the day. Not started. (done: c673e871)
 
 ## 2026-10-29 — TRAIL FREEZE + VERIFIER FOLLOW-UPS
 
@@ -75,10 +103,10 @@
 - [x] Footle fetch door (d0e5a6ff), three review rounds: calendar guard in the generator,
       answer stamped in the day record and synced, sign-in merge keeps stamps, the board keeps
       the day it opened on. Reaches phones from the first build after 1.8.2 (1.8.3).
-- [ ] 1.8.3, once 1.8.2 is approved: the Footle door, the 312 question fixes, fresh store
-      screenshots (club picker "119 clubs", Footle and Trail finish panels) on a quiet Mac.
+- [x] 1.8.3, once 1.8.2 is approved: the Footle door, the 312 question fixes, fresh store
+      screenshots (club picker "119 clubs", Footle and Trail finish panels) on a quiet Mac. (done: a9462dff)
 - [x] Calendar editions: /quiz/el-clasico-quiz/ and /quiz/ballon-dor-quiz/ live 21 Oct (94cb992f), history only.
-- [ ] **Mon 26 Oct night:** add the 2026 Ballon d'Or winner to /lists/ballon-dor-winners/ once announced, from two sources.
+- [x] **Mon 26 Oct night:** add the 2026 Ballon d'Or winner to /lists/ballon-dor-winners/ once announced, from two sources. (done: c99c08ab)
 
 ## 2026-10-16 — THE 17-ITEM PUSH (Alex: "tick off everything on the to do list")
 
@@ -94,9 +122,9 @@ games for the social promo; grow the bank through club packs.
 - [ ] **Daily 7 no-repeat rebuild:** run `node scripts/gen-daily-log.mjs --regen-from 2026-11-09`
       (dry-run first) ONLY once 1.8.2 is live and adopted; swap the whole-log pin in
       tests/unit/daily-log.test.js in the same commit. Dry run: 338 days, 545 repeat slots → 0.
-- [ ] **1.8.2 native build** must carry dailyRemote before the rebuild date. Do not release
-      1.8.0 build 149 (manual release, waiting) as is.
-- [ ] **Fewer bad days, Trail and Mystery: PLAN ONLY, nothing reordered (16 Oct).** Both
+- [x] **1.8.2 native build** must carry dailyRemote before the rebuild date. Do not release
+      1.8.0 build 149 (manual release, waiting) as is. (done: 0e85206e)
+- [x] **Fewer bad days, Trail and Mystery: PLAN ONLY, nothing reordered (16 Oct).** Both
       schedules are compiled into every native build (TRAIL_ANSWER_LOG in src/lib/trail.js,
       src/data/mysterySchedule.json; no fetch door like Daily 7's), so moving a future day
       splits phones from the website. ⚠️ Mystery is ALREADY split: the 14 Oct famous-only
@@ -117,9 +145,9 @@ games for the social promo; grow the bank through club packs.
       The level needs the game (warm start, an earlier first clue), not the order.
       → Done 16 Oct for Mystery (position and birth decade free from guess one);
       done 29 Oct for Trail (three-club openings, below).
-      Scripts and data: ~/ball-iq-audit/2026-10-16/return-research/difficulty/ (fit.mjs).
+      Scripts and data: ~/ball-iq-audit/2026-10-16/return-research/difficulty/ (fit.mjs). (done: a97f30b9)
 - [ ] Top 10 schedule ends 30 Nov; calendar lists can only be APPENDED (apps refuse a schedule
-      that does not start with their own). First calendar slot: North London derby, Sat 5 Dec.
+      that does not start with their own). First calendar slot: North London derby, Sat 5 Dec. — stale: the schedule now runs to 31 Dec (1a931170); the append-only rule still holds
 - [ ] Return research (~/ball-iq-audit/2026-10-16/return-research/report.md): mates' leagues
       (Mon-Sun), Draft as the fifth daily, fewer bad days (win bands, weekly slope), Stitch-up
       (build a Trail for a mate), Higher or Lower daily ladder; one Quiz entry; Hot Streak →
@@ -235,10 +263,10 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
 - [ ] Trail cap of six clubs excludes Salah, Zlatan, Haaland, Maradona and
       about 200 other famous careers. Raising it to eight is an editorial call
       **(Alex)**; it would take the Trail past 300 careers.
-- [ ] New game idea from Alex's friend: a daily DRAFT (the "38-0" format: spin
+- [x] New game idea from Alex's friend: a daily DRAFT (the "38-0" format: spin
       a club and season, pick one player from that squad per position, get a
       season record to boast about). We hold the squads and careers already.
-      About a week of work; step two, after the release.
+      About a week of work; step two, after the release. (done: cc1ccfbb)
 
 ### 0c. 6 Oct: release state, and what two research runs found
 
@@ -379,12 +407,12 @@ Legend: `[x]` shipped and verified live, `[ ]` open, **(Alex)** needs Alex.
       but not source-checked one by one; the 537 wingers labelled "wing
       half" still do not match the 65 labelled "winger" on the 50-point
       position term.
-- [ ] New first three store screenshots: not started as of 8 Oct. They can
+- [x] New first three store screenshots: not started as of 8 Oct. They can
       only change with a version submission, so they ride with 1.7.6 or wait
-      for 1.7.7.
+      for 1.7.7. (done: 7edb4b67)
 - [ ] The iOS 27 simulator froze this Mac a third time on 7 Oct (load 89,
       a two-minute build ran past ten). Do not boot it while anything else
-      is building; the sweep waits for 9 to 11 Oct.
+      is building; the sweep waits for 9 to 11 Oct. — stale: the 9-11 Oct sweep window passed; builds 145-170 were simulator-checked since
 - [ ] Still open in design round 1: items 3 (padding and scroll; the score
       now counts), 4 to 12, and the rest of the motion list (meter fill,
       next-question slide, menu drop, tab underline, the two loops to remove).
@@ -426,10 +454,10 @@ which are scheduled on the server.
       (the 2025 title is before the Court of Arbitration for Sport, heard
       8 Oct, no award yet), the Club World Cup (FIFA calls the Intercontinental
       Cup its continuation, so the answer can be argued), Ligue 1 top scorers.
-- [ ] ⚠️ **Our Ligue 1 top-scorers table is inconsistent** (`scripts/seo/lists.mjs`,
+- [x] ⚠️ **Our Ligue 1 top-scorers table is inconsistent** (`scripts/seo/lists.mjs`,
       2011-12 row reads "Olivier Giroud / Nenê"). The league names one top
       scorer when players finish level (fewer penalty goals) and our table
-      follows that for 2019-20 and 2024-25. Fix the row and the live page.
+      follows that for 2019-20 and 2024-25. Fix the row and the live page. (done: 88370aa4)
 - [ ] **Top 10, to switch it on.** In order: (1) the Home row and the done
       state, with `TOP10_DAYS` in a tiny generated module so Home never loads
       the lists; (2) History: a fifth column, or Top 10 takes Mystery's place
@@ -442,15 +470,15 @@ which are scheduled on the server.
       `TOP10_ANCHOR_DAY` to launch day (it is provisional: 12 Oct) and fill
       `TOP10_LOG`, soonest-expiring lists first (Ballon d'Or before 26 Oct,
       Copa Libertadores before 28 Nov).
-- [ ] **Top 10 needs the crowd-pleasers.** Every list so far is "the last ten
+- [x] **Top 10 needs the crowd-pleasers.** Every list so far is "the last ten
       different winners". All-time top scorers, most appearances, record
       transfers, biggest stadiums need a new fact-checked batch (generate,
-      verify, date). Alex's own examples were of this kind.
+      verify, date). Alex's own examples were of this kind. (done: 57c24f35)
 - [x] **Name search fix** (`1eb365e1`): "odegaard", "hojbjerg", "yildiz" found
       nobody in Trail and Mystery, because ø ł ı ß were deleted rather than
       folded. One table now (`src/lib/letterFold.js`); a test types every
       pool name.
-- [ ] **The draft game needs a dataset first.** Research is in
+- [x] **The draft game needs a dataset first.** Research is in
       `~/ball-iq-audit/2026-10-08/research/game-formats.md`: the reference
       ("38-0") is eleven spins of a club and season, one player per spin,
       then a simulated season record. A worked example on our own data
@@ -466,7 +494,7 @@ which are scheduled on the server.
       one re-spin, the same eleven always gives the same record. One to two
       weeks. **Alex to confirm he wants the data project.** The
       `daily_results` bucket tops out at 30, so a 38-game record needs its
-      own encoding.
+      own encoding. (done: cc1ccfbb)
 - [x] **Real club emblems: no.** Report in
       `~/ball-iq-audit/2026-10-08/research/emblems.md`. FAPL v Panini (2003)
       held unofficial stickers infringed copyright in club badges; no licence
@@ -484,14 +512,14 @@ which are scheduled on the server.
       dot, a ball with one lit panel. Next round: redraw the top three at
       final quality, compare with the rivals' real icons (nobody has looked
       at them as pictures yet, and "Golazo" at No. 5 in UK Sports games was
-      not in the teardown), then a Play listing experiment. Alex decides.
-- [ ] **Store screenshots.** Script and three directions in
+      not in the teardown), then a Play listing experiment. Alex decides. — stale: overtaken: the Centre Circle Q icon shipped (3038e357)
+- [x] **Store screenshots.** Script and three directions in
       `~/ball-iq-audit/2026-10-08/screens/` (`compose.mjs`, `manifest.json`).
       Direction C won: one amber ground, poster type, the game moment pulled
       out of the phone. First three: "Guess the player", "Six tries. One
       name.", "No ads. Every answer checked." Needs fresh simulator captures
       (list in `notes.md`), a frame-three question that does not say "World
-      Cup", and the two new games.
+      Cup", and the two new games. (done: 7edb4b67)
 - [x] Review page for Alex with all of the above as pictures:
       https://claude.ai/artifact/W66Z4KMV8KxjHGyH9N6aGj
 - [x] Permission prompts: auto mode ignores the bare `WebFetch` rule, so each
@@ -545,7 +573,7 @@ Rulings (his words are in memory `project_top10_draft_icon_round_2026_10_09`):
          simulator walk; cut the build; TestFlight; tell Alex.
       5. Jerseys, round two, then onto Transfer Trail.
       6. Icon, round two.
-      7. The draft dataset, then the game.
+      7. The draft dataset, then the game. — stale: plan overtaken: Top 10 lists, launch, 1.8.0, icon and Draft all shipped; jerseys stay open under "Jerseys, if he says yes"
 - [ ] **Top 10 lists: prefer the ones that hold** (Alex, 9 Oct, 01:00: "the
       more robust top 10 lists are probably better... things we don't have
       to fact check again after the weekend"; his examples: clubs with the
@@ -564,10 +592,10 @@ Rulings (his words are in memory `project_top10_draft_icon_round_2026_10_09`):
       scheduled for the coming week, not the library. The size of that job
       does not grow with the number of lists. Needs his yes before it is set
       up as a scheduled task.
-- [ ] **Serve the lists from the server, not from the build.** A list that
+- [x] **Serve the lists from the server, not from the build.** A list that
       Sunday's check corrects must reach installed apps the same day. Fetch
       the day's list from balliq.app with the bundled copy as the fallback.
-      Do this before Top 10 first ships in a store build.
+      Do this before Top 10 first ships in a store build. (done: c9da7ad9)
 - [ ] The club pool for the guess box (578 names) needs one read-through for
       the same club under two names before a clubs list is ever scheduled;
       one pair was found by accident tonight.
@@ -598,13 +626,13 @@ he hates both the icon and the lettering on the splash.
       Claude app crashed a minute later), so that reading proves nothing
       either way. The code path at the tap is unchanged and WebKit keeps
       focus through the beat, but only a calm simulator or a phone settles it.
-- [ ] **Launch: is there a black beat before the name appears?** In the
+- [x] **Launch: is there a black beat before the name appears?** In the
       simulator the first seconds of every launch were plain black, then the
       new launch picture. The old picture sat in the same slot at the same
       size, so this is very likely not new, but it was not compared against
       the old build. Check on a real phone with the next TestFlight build. If
       it is there, the cure is a launch storyboard with a background colour
-      and a small centred image instead of one 2732-pixel picture.
+      and a small centred image instead of one 2732-pixel picture. (done: 0de9f509)
 - [ ] **The simulator and this Mac.** Before booting it: stop the dev server
       and any headless browser, and look at swap. It took the Claude app down
       on 9 Oct with Chrome, a dev server and a build all running.
@@ -634,10 +662,10 @@ screens in `~/ball-iq-audit/2026-10-09/tour/`. Not seen: first launch on a
 fresh install, an online room (needs two accounts), a pass-and-play game in
 progress. What it found, worst first:
 
-- [ ] **Every game wears a different header.** Footle, Daily 7, Transfer
+- [x] **Every game wears a different header.** Footle, Daily 7, Transfer
       Trail, Mystery, Top 10, club quiz, Classic, Survival, Hot Streak and
       Chaos each place the back arrow, title, progress and timer differently.
-      One header, used by all.
+      One header, used by all. (done: aa785e4e)
 - [ ] **After an answer the question page scrolls and the header leaves the
       screen** (Daily 7, Classic, club and league quizzes). Back, progress and
       score are gone exactly when the player looks for them. Pin the header.
@@ -646,10 +674,10 @@ progress. What it found, worst first:
       "did not pin on device" (`QuizEngine.jsx`, the comment near line 379).
       So the next attempt starts by finding out why it did not pin (most
       likely an ancestor that scrolls or clips), in the simulator.
-- [ ] **Timed modes start the clock before the player has read anything.**
+- [x] **Timed modes start the clock before the player has read anything.**
       Hot Streak had 52 of its 60 seconds left by the time the first question
       could be read; a club chip on Home drops straight into a timed question.
-      A ready beat, or start the clock on first paint of the question.
+      A ready beat, or start the clock on first paint of the question. (done: e5966c95)
 - [ ] **Survival opens on a hard question.** Question one was a 2005 Brazilian
       second-division decider. One wrong answer ends the run, so the mode is
       over before it starts. Easy first, then climb.
@@ -678,10 +706,10 @@ progress. What it found, worst first:
 - [x] Checked and cleared: the right answer seemed to land on D far too often.
       It was my tapping. Options are shuffled per question with a fair
       Fisher-Yates (`App.jsx`, `shuffle`).
-- [ ] **The app's typeface comes from Google at every launch.** Inter is
+- [x] **The app's typeface comes from Google at every launch.** Inter is
       loaded from fonts.googleapis.com with `display=optional`, so a cold or
       offline start draws the whole app in the system face, and the native
-      app makes a third-party request it does not need to. Host it in the app.
+      app makes a third-party request it does not need to. Host it in the app. (done: e9ae17b7)
 
 **The main modes** (funnel read of 60 and 14 days, in the same memory file):
 the product is the daily set. Four dailies are nine in ten plays by the
@@ -713,7 +741,7 @@ we want this to be an upgrade that is properly felt."
       `research-2.md`, `verify-2a.md`, `verify-2b.md`). Add each that is
       confirmed. Failed so far: Manchester City's scorers (tie at the cut),
       World Cup scorers (three tied on 11), biggest club grounds in England
-      (this season only: Villa Park's closed stand).
+      (this season only: Villa Park's closed stand). — stale: overtaken by the later list batches (c7235026, 459f7d79), each checked by an independent checker
 - [ ] **Alex's list ideas to research next:** players with the most World Cup
       appearances; goalkeepers with the most appearances (say which
       competition); biggest club grounds in Germany.
@@ -723,8 +751,8 @@ we want this to be an upgrade that is properly felt."
 - [x] **Reminders: one a day, not two** (`b13bc0ba`; v2_7 and v2_8 applied to
       production with Alex's yes). The server kept forgetting that a phone
       reminds itself.
-- [ ] **The server's own reminder texts still say "tonight"** and go out at
-      any hour from 8 to 22. One more production change; needs his yes.
+- [x] **The server's own reminder texts still say "tonight"** and go out at
+      any hour from 8 to 22. One more production change; needs his yes. (done: b34ccb03)
 - [ ] **Reminder hour: let the player choose.** It is learned from when they
       finish (now from fourteen finishes, not seven). A setting to pin it is
       the honest answer to "what is ideal".
@@ -732,8 +760,8 @@ we want this to be an upgrade that is properly felt."
       correction reaches installed apps the same day; its own web page (the
       front door links to /top10, which redirects into the game); the open
       keyboard check from 0h; launch day and schedule; release 1.8.0; build;
-      TestFlight.
-- [ ] **The draft game: the data is feasible, and it is a real project.**
+      TestFlight. — stale: Top 10 launched 12 Oct (1aa2b2f9) and lists come from the site (c9da7ad9); only the web page is left, under "The static site does not know Top 10"
+- [x] **The draft game: the data is feasible, and it is a real project.**
       Probe in `~/ball-iq-audit/2026-10-09/draft/data-probe.md`. 686 top-flight
       club-seasons since 1992-93, all with a Wikipedia season article; 88%
       carry a per-player table a script can read; 51% pass every arithmetic
@@ -742,17 +770,17 @@ we want this to be an upgrade that is properly felt."
       club-seasons; the early 1990s by hand are 5 to 8 days more.
       Recommended: the wheel starts at 1995-96, only verified club-seasons
       ship, 1992 to 1995 follow. 2,525 of the 4,716 players are not in the
-      player pool yet. A credits line for Wikipedia is required.
+      player pool yet. A credits line for Wikipedia is required. (done: cc1ccfbb)
 - [ ] **Icon, round two:** started; work in `~/ball-iq-audit/2026-10-09/icon2/`.
-      Needs an independent critic and a look before Alex sees it.
-- [ ] **A Telegram desk for Ball IQ** (Alex: "a ball iq news bot channel like
+      Needs an independent critic and a look before Alex sees it. — stale: overtaken: the Centre Circle Q icon shipped (3038e357)
+- [x] **A Telegram desk for Ball IQ** (Alex: "a ball iq news bot channel like
       SHQ"): asked the social session for the recipe; proposed topics Shipped,
-      Needs you, Builds, Numbers, alerts in General.
-- [ ] **Found in passing:** the web front door says questions are "written and
+      Needs you, Builds, Numbers, alerts in General. (done: d5849b5b)
+- [x] **Found in passing:** the web front door says questions are "written and
       fact-checked by hand", which the standing rule forbids claiming; the old
       flaming ball is also the logo in the web header; "More modes" was made
       grey on purpose after an all-green grid was rejected, so recolouring it
-      needs a better idea than colour.
+      needs a better idea than colour. (done: f3d6dd7a)
 
 
 ### 0j. 9 Oct, evening: Top 10 launches Monday, thirteen lists, build 144, and what Alex ruled
@@ -794,8 +822,8 @@ we want this to be an upgrade that is properly felt."
       send-only; the social session creates the group and writes the ids to
       `~/ball-iq-audit/tg_desk_balliq.json`. Post a first message when it
       exists.
-- [ ] **Draft game**: decision made by me, open to his veto: the wheel starts
-      at 1995-96 and ships only club-seasons that verify.
+- [x] **Draft game**: decision made by me, open to his veto: the wheel starts
+      at 1995-96 and ships only club-seasons that verify. (done: cc1ccfbb)
 - [x] **Draft: first dataset and the season model** (prototype, outside the
       repo: `~/ball-iq-audit/2026-10-09/draft/model/`, read its README). 333
       verified club-seasons, 9,065 player-seasons, 637 KB. The model has no
@@ -825,10 +853,10 @@ we want this to be an upgrade that is properly felt."
 - [ ] **⚠️ The schedule now runs dry after 30 October**, and TestFlight
       build 144 still carries only the first thirteen days: from 25 October
       it shows Mystery Player while the website shows Top 10. Either a build
-      145 before then or, better, the lists from the server.
+      145 before then or, better, the lists from the server. — stale: lists reach installed apps from the site (c9da7ad9) and the schedule runs to 31 Dec (1a931170)
 - [ ] **⚠️ The keepers' list (29 Oct) has a one-game cut that closes on
       5 December** (Pickford). It must never be moved later; `until` and a
-      test hold it.
+      test hold it. — stale: the list ran on 29 Oct, before the 5 Dec cut
 
 
 ### 0k. 10 Oct: the Draft plays, on the web, by address only
@@ -920,13 +948,13 @@ dealt with.
       schedule that does not begin with the days already served, unless
       `--reschedule` is passed.
 - [ ] **⚠️ Build 144 has none of this** and still runs dry on 25 October.
-      Build 145 carries it. Uploading it is Alex's call.
+      Build 145 carries it. Uploading it is Alex's call. — stale: builds 145 to 170 have shipped since
 - [ ] **Not yet seen in a real app.** Rehearsed in WebKit with the Android
       bridge faked (31 Oct, two days past the bundled schedule: Home gains the
       row, #20 plays; fetch fails: unchanged). The reviewer read the native
       configs and found nothing that blocks the request (no in-app CSP, no ATS
       exception needed, plain CORS GET). First real proof is build 145 in the
-      simulator with the clock set forward.
+      simulator with the clock set forward. — stale: fetching builds (1.8.0 onwards) have been in the stores since mid-October
 - [ ] **When a build that fetches is in the stores:** freeze a copy of its
       `acceptRemote` in the tests, so a later format change that old builds
       would reject fails here first. A format change must bump `v`.
@@ -942,10 +970,10 @@ dealt with.
       fact-checked, not scraped." A test reads every page a player can see
       (the front door's components and the generated pages) for an authorship
       claim.
-- [ ] **Alex to rule: "hand-picked".** Three generated pages call their sets
+- [x] **Alex to rule: "hand-picked".** Three generated pages call their sets
       "a hand-picked set of ... questions" (hardest trivia, World Cup). That
       is a claim about choosing the set, not about who wrote the questions,
-      and the test lets it through. Keep it, or say "a chosen set"?
+      and the test lets it through. Keep it, or say "a chosen set"? (done: 9517aef6)
 - [x] **Top 10, fourth batch: eight of twelve passed both checks and are
       scheduled, 31 October to 7 November** (appearance records for Manchester
       United, Liverpool, Arsenal and Chelsea; France caps and goals; Germany
@@ -957,12 +985,12 @@ dealt with.
       the builder took him. A slot can now say `born`, the man becomes his
       own entry, his namesake is accepted too, and `--print` shows the birth
       year and club of every match. All 27 scheduled lists were read that way.
-- [ ] **The schedule now ends on Saturday 7 November.**
+- [ ] **The schedule now ends on Saturday 7 November.** — stale: the schedule now runs to 31 Dec (459f7d79, 1a931170)
 - [ ] **Build 145 is not cut.** A build has to be made and preflighted on the
       day it is uploaded (the Footle practice file turns over daily), so it is
       cut when Alex says upload. The simulator proof of the list fetching
       cannot use a clock set forward (the simulator runs on the Mac's clock);
-      what it can show is the fetched file landing in the app's storage.
+      what it can show is the fetched file landing in the app's storage. — stale: build 145 was cut on 13 Oct (4a40a51a)
 
 
 ### 1. This week, before the 1.7.6 cut
@@ -988,8 +1016,8 @@ dealt with.
       itself on tap, and say what the rank number means.
 - [x] Transfer Trail how-to says "the first club and nothing else"; the game
       opens with two clubs. Fix the copy.
-- [ ] `/play` first visit: "Start building mine" on the example-card modal
-      starts a 7-question game with no warning, and the modal blocks Sign in.
+- [x] `/play` first visit: "Start building mine" on the example-card modal
+      starts a 7-question game with no warning, and the modal blocks Sign in. (done: 87e74158)
 - [ ] Translated club pages: the Spanish finish says "that is all we have"
       after 10 questions; the footer link farm is English. Decide per language
       whether to translate the footer or cut it to the localised pages.
@@ -1001,10 +1029,10 @@ dealt with.
 
 Daily 7 Q1 diverges for old builds on 19 Oct; Trail #85 on 26 Oct.
 
-- [ ] Tue 6 Oct: release commit. Trail freeze, version fields to 1.7.6 in
-      `package.json`, `src/lib/appMeta.js`, iOS build 140, Android versionCode 53.
+- [x] Tue 6 Oct: release commit. Trail freeze, version fields to 1.7.6 in
+      `package.json`, `src/lib/appMeta.js`, iOS build 140, Android versionCode 53. (done: 66bb3309)
 - [ ] Tue 6 Oct: build from a CLEAN CLONE (the shared checkout is dirty with
-      the social session's files), iOS 27 simulator sweep of every screen.
+      the social session's files), iOS 27 simulator sweep of every screen. — stale: 1.7.6 builds 140-143 were cut (2176243c); superseded by 1.8.x
 - [ ] Store text, in the SAME submission: remove "written by hand" and "never
       auto-generated" (false: waves are researched by a pipeline and verified);
       replace "No ads" with "Free to play" everywhere (39 places, list in
@@ -1012,17 +1040,17 @@ Daily 7 Q1 diverges for old builds on 19 Oct; Trail #85 on 26 Oct.
 - [ ] Draft fixes in `aso.md` §7.4: UK subtitle, UK keywords, repeated words in
       ko/nb/sv/nl, the four privacy URLs. One field at a time. **(Alex saves)**
 - [ ] Wed 7 Oct: TestFlight and Play Internal testing on real phones. **(Alex)**
-      The Android emulator was deleted on 1 Oct; a real Android phone is needed.
-- [ ] Fri 9 Oct: submit iOS, promote Android. **(Alex)**
+      The Android emulator was deleted on 1 Oct; a real Android phone is needed. — stale: 1.7.6 test window passed; superseded by 1.8.x
+- [ ] Fri 9 Oct: submit iOS, promote Android. **(Alex)** — stale: 1.7.6 submit date passed; superseded by 1.8.x
 - [ ] After release: upload native source maps to Sentry; read crashes by release.
 
 ### 3. Stores: ratings and the listing
 
 - [ ] **Ratings from 14 to 25+ by 1 Nov.** Ask after a win, not on a timer;
       send existing players the direct review link once. The top 10 for
-      "football quiz" in the UK have 24 to 3,616 UK ratings; we have 3 there.
-- [ ] **New icon** (Alex's ask): flat, bold, legible at 29 px, not the
-      brain-ball. Three candidates, Alex picks, then a Play listing experiment.
+      "football quiz" in the UK have 24 to 3,616 UK ratings; we have 3 there. — stale: the 1 Nov deadline passed; the rating ask now sits on every daily (351d9bca, on origin/main)
+- [x] **New icon** (Alex's ask): flat, bold, legible at 29 px, not the
+      brain-ball. Three candidates, Alex picks, then a Play listing experiment. (done: 3038e357)
 - [ ] New first three screenshots for both stores (Play still shows 8 stale ones).
 - [ ] A real Norwegian Play listing (the current one is machine-translated). **(Alex reads)**
 - [ ] One concentrated install week in the UK or Norway around the release.
@@ -1030,7 +1058,7 @@ Daily 7 Q1 diverges for old builds on 19 Oct; Trail #85 on 26 Oct.
 ### 4. Search
 
 - [ ] **GSC API key** so reads are query by page by day (`scripts/gsc.mjs` is
-      ready; setup steps in its header). **(Alex creates the key)**
+      ready; setup steps in its header). **(Alex creates the key)** — stale: done outside the repo: the 7 Oct read used our own Search Console key (scripts/gsc.mjs, 842137d2)
 - [x] **Club title test read and closed (7 Oct, first read with our own
       Search Console key).** "Play the X Quiz — Free, with Answers" (Arsenal,
       Real Madrid, Man City, since 9 Sep) did not beat "X Quiz with Answers —
@@ -1048,9 +1076,9 @@ Daily 7 Q1 diverges for old builds on 19 Oct; Trail #85 on 26 Oct.
       clicks 1.3% against 5.1%; several list pages sit at 10 to 40 with no
       clicks (coppa italia winners, club world cup winners, bundesliga top
       scorers, copa america winners). READ AGAIN 22 OCT for the snippet fix
-      and the reverted titles.
+      and the reverted titles. — stale: the 22 Oct re-read is overtaken by the 7 Nov GSC read in ~/ball-iq-audit/2026-11-07/
 - [ ] Recovery read: club football resumes 10 Oct. Read the four big club
-      pages for 12 to 18 Oct (complete in GSC about 21 Oct).
+      pages for 12 to 18 Oct (complete in GSC about 21 Oct). — stale: the read window passed; overtaken by the 7 Nov GSC read
 - [ ] `/quiz/` should be playable and fresh at the top (it targets "football quiz").
 - [ ] Technical batch on a preview deploy first: real `lastmod` per page, 308
       for no-slash URLs, the 34,000 hidden words on the Premier League page,
@@ -1073,17 +1101,17 @@ the mandate says 300+. The plan that satisfies both:
       new pages before the AdSense review, none in the three weeks before it.
       Each page needs a 350-word club-only write-up, four club FAQs, a records
       block, under 30% shared text.
-- [ ] Wave 1 (12 Oct): rest of the Championship (4), Villarreal, Werder Bremen,
+- [x] Wave 1 (12 Oct): rest of the Championship (4), Villarreal, Werder Bremen,
       Stuttgart, Gladbach, Aberdeen. Wave 2 (19 Oct): Hearts, Hibs, Bologna,
       Genoa, Lille, Lens, Köln, Espanyol. Then freeze to the review. Full
-      26-wave table in `content.md` §2.
-- [ ] Before wave 4: move the club tables to a lazy generated module (235
-      bytes per club on Home's eager path; headroom runs out near wave 13).
+      26-wave table in `content.md` §2. (done: e12cb028)
+- [x] Before wave 4: move the club tables to a lazy generated module (235
+      bytes per club on Home's eager path; headroom runs out near wave 13). (done: efc2f944)
 - [ ] Before wave 8: split the bank chunk by league.
 - [ ] Forge gates to add: era cap (two pre-1950 identity questions per club),
       category spread (a wave filed all 400 non-English questions under
       History), an independent verifier pass on every wave before it ships.
-- [ ] Top up the 12 thin packs (nine sit at the build floor).
+- [x] Top up the 12 thin packs (nine sit at the build floor). (done: d128a142)
 - [ ] About 15 to 20 roster clubs (San Diego FC, NEOM) may not have 15 honest
       questions: mini-pack class or leave as coming soon. **(Alex)**
 
@@ -1105,7 +1133,7 @@ the mandate says 300+. The plan that satisfies both:
 - [ ] Sentry: resolve the fixed issues, filter extension CSP noise, look at
       BALL-IQ-2K (iOS build 139 Settings crash).
 - [ ] Two-week reads, 19 Oct: club-lander return (2.6% now, target 5%), store
-      tappers (1.4% now, target 3%), Footle web loss rate (39% now).
+      tappers (1.4% now, target 3%), Footle web loss rate (39% now). — stale: the 19 Oct read date passed; the 7 Nov health report is the current read
 
 ### 8. Money (before the year ends)
 
@@ -1128,7 +1156,7 @@ Order, from `market.md` §5: today's audience earns about $10 a month from ads.
       logs off Home (about 58 KB). Home sits at 852 of 909 KB.
 - [ ] `App.jsx` is 9,277 lines; 129 lint warnings are hidden by `--quiet`.
       Turn `exhaustive-deps` into errors one area at a time.
-- [ ] Finish moving `social/` to its own repo (agreed 2 Oct).
+- [x] Finish moving `social/` to its own repo (agreed 2 Oct). (done: 803e6c2d)
 - [ ] Capacitor 8.
 
 ### 0n. 12 Oct: launch day, played end to end in the simulator (iPhone 17, iOS 27)
@@ -1166,10 +1194,10 @@ found, and what a pair of independent reviews found in the fixes:
       home indicator. Draws were checked after a 21-2-15 season: the model
       gives 7 to 9 draws a season against a real 9.5, and 2 or fewer on about
       one day in a hundred at that strength.
-- [ ] **🔴 THE LAUNCH IS BLACK FOR ABOUT SIX SECONDS** (video, loaded Mac: 3s of
+- [x] **🔴 THE LAUNCH IS BLACK FOR ABOUT SIX SECONDS** (video, loaded Mac: 3s of
       pure black, 3s of background, then the name). The native launch picture
       is not drawn. Cure: a launch storyboard with a background colour and a
-      small centred image. Needs an xcodebuild and a new video. Blocks 145.
+      small centred image. Needs an xcodebuild and a new video. Blocks 145. (done: 0de9f509)
 - [ ] **Still open from the same pass.** The reminder row and the "Why?" box
       are fine now; these are not: the clock starts before a question is
       readable (Classic showed 19 of 20 on first sight); the page still jumps
@@ -1178,7 +1206,7 @@ found, and what a pair of independent reviews found in the fixes:
       today; confetti replays on every review of a solved Trail; "WORLDCUP" is
       one word on the Daily 7 tag; Profile shows 83 overall with every
       category blank; three finish-screen patterns and three wordings of the
-      report link; onboarding ends in Footle, not Home.
+      report link; onboarding ends in Footle, not Home. — stale: overtaken by the 13 Oct "A player would notice" and "Design and wording" lists, where each is ticked
 - [ ] **From the second review, not done:** a drag that dismisses the keyboard
       regrows the Top 10 board under the finger (needs a device to judge); the
       loading skeleton has 42pt rows against the board's 60; TransferTrail has
@@ -1330,7 +1358,7 @@ Pro Max (build 144), reviewed before it went out:
       deploy. Check the fetch in the simulator (Network: data/daily7.json, 200).
 
 **Daily 7 difficulty (Alex, 12 Oct, late: "make it easier ... get the average up to 4 correct")**
-- [ ] The Daily 7 averages 3.2 of 7 over three weeks (about 500 results; 2.7
+- [x] The Daily 7 averages 3.2 of 7 over three weeks (about 500 results; 2.7
       on 12 Oct, n=23; guessing gets 1.75), and a third of results are 2 or
       less. Two sources agree (`daily_results`, and `scores` game_mode
       'daily'). Cause: `pickDailyFresh` (src/lib/dailyDraw.js) has drawn from
@@ -1351,7 +1379,7 @@ Pro Max (build 144), reviewed before it went out:
       phone gets the same seven; a new picker must keep the site and installed
       builds in step (the Top 10 remote-list problem again). (2) Difficulty
       tags are judgement. Measuring it means recording right and wrong per
-      question, which is a production data change and needs Alex's word.
+      question, which is a production data change and needs Alex's word. (done: a685c83b)
 - [x] **Question screen, from his recording (12 Oct, night):** the category
       chip is set in a colour with 4.5 to 1 contrast (Champions League blue
       was 1.8 to 1); the "Correct!" / "Incorrect" banner is for a screen
@@ -1550,7 +1578,7 @@ Pro Max (build 144), reviewed before it went out:
       `simctl runtime delete` no longer lists it; one image is still mounted
       by cryptexd. A restart of the Mac should release it; if not, Xcode,
       Settings, Components.
-- [ ] What's New draft: `~/ball-iq-audit/2026-10-13/whats-new-1.8.0-draft.md`.
+- [ ] What's New draft: `~/ball-iq-audit/2026-10-13/whats-new-1.8.0-draft.md`. — stale: 1.8.0 shipped; the current What's New is 1.8.6's
 
 **Blocks build 145**
 - [x] **Launch screen: green, and the "six seconds of black" was mostly my
@@ -1571,7 +1599,7 @@ Pro Max (build 144), reviewed before it went out:
 - [x] Footle keys: one fast burst lost four of five letters in the simulator.
       Confirm on a real phone, then fix.
 - [ ] App Store record says 1.7.6; What's New unwritten; screenshots show
-      neither Top 10 nor Draft.
+      neither Top 10 nor Draft. — stale: 1.8.0 to 1.8.4 were cut and submitted since; the store screenshots now show Top 10 and Draft (7edb4b67)
 - [ ] (Alex) Was the stuck offline results screen in the app or on the site?
 
 **A player would notice**
@@ -1588,7 +1616,7 @@ Pro Max (build 144), reviewed before it went out:
 **Design and wording**
 - [x] ONE finish screen and ONE game header (today: three and four), with one
       wording for the report link. Removes a class of the small faults.
-- [ ] Home once all four are done: fold the dailies to a line, lift Draft up.
+- [x] Home once all four are done: fold the dailies to a line, lift Draft up. (done: f22df5ce)
 - [x] Onboarding ends in Footle, not Home; its heading uses an emoji; the top
       third is empty.
 - [x] Profile: 83 overall with every category blank; a rating request on day
@@ -1605,7 +1633,7 @@ Pro Max (build 144), reviewed before it went out:
 - [ ] The pipeline lives outside the repo.
 
 **Top 10**
-- [ ] The lists run out on 7 Nov.
+- [x] The lists run out on 7 Nov. (done: 459f7d79)
 - [ ] No page of its own on the site, no entry in the site header.
 
 **Safety nets**
@@ -1668,13 +1696,13 @@ Pro Max (build 144), reviewed before it went out:
       REPORT.md`: our Draft is the 38-0 format; nothing spins, no strength
       readout while picking, the result has no story or par, not a daily.
       Ten ranked changes there; decide with Alex.
-- [ ] PLAY-TEST OF EVERY MODE (14 Oct, independent agent, 91 screenshots):
+- [x] PLAY-TEST OF EVERY MODE (14 Oct, independent agent, 91 screenshots):
       `~/ball-iq-audit/2026-10-14/qc/REPORT.md`. Grades: Top 10 and Draft
       best, Mystery Player worst (3 for fun). Confirmed bugs: Survival's
       personal best reads the Daily 7 best run (App.jsx 8918, 8981); the
       level-up overlay is see-through. Two findings CONFLICT with Alex's
       rulings and are not to be acted on as written: Footle accepting
-      non-names (by design) and a ramped Daily 7 (mixed from 15 Oct).
+      non-names (by design) and a ramped Daily 7 (mixed from 15 Oct). (done: 490b948b)
 - [x] From the play-test: Survival's best is its own (it read the Daily 7's
       best run) and every new best is kept, not only from 10 up; the level-up
       overlay is solid and its button has no emoji; the Draft says "1 game";
@@ -1703,7 +1731,7 @@ Pro Max (build 144), reviewed before it went out:
       next batch is due by mid-November (six held lists are in the batch 5
       report, each failing the bar on one point). Footle 236 days
       in its frozen log (pool of 427 after that), Transfer Trail ~343, Mystery
-      ~327, Daily 7 to Oct 2027, Draft 392 club-seasons.
+      ~327, Daily 7 to Oct 2027, Draft 392 club-seasons. — stale: a 14 Oct snapshot; Top 10 now runs to 31 Dec (1a931170)
 - [x] Hot Streak: a wrong answer costs three seconds, shown by the clock;
       the rules say so. Mashing at 29% had been called "Poacher's instinct".
 - [x] Content from the play-test, checked by an independent verifier with
@@ -1775,10 +1803,10 @@ Pro Max (build 144), reviewed before it went out:
       (83) both clue AC Milan because a career fix moved Zlatan's main club
       after the draw. Served, left as they are; the build audit now warns
       about club-clue repeats in the days still to be drawn.
-- [ ] ⚠️ Six future club-clue repeats inside ten days (days 271, 292, 323,
+- [x] ⚠️ Six future club-clue repeats inside ten days (days 271, 292, 323,
       330, 350, 388; listed by audit-mystery-schedule.mjs at every build).
       Clear them with `node scripts/gen-mystery-schedule.mjs --from 171`
-      once days 129-170 are checked (a redraw from 171 leaves those alone).
+      once days 129-170 are checked (a redraw from 171 leaves those alone). (done: 95469ec1)
 - [x] App Store listing for 1.8.0 (14 Oct): the version renamed from 1.7.6,
       What's New in all 19 languages (two new games, Mystery Player rebuilt,
       Footle hard mode, the 1.7.6 items that never shipped), and ten new
@@ -1837,7 +1865,7 @@ Pro Max (build 144), reviewed before it went out:
       club captures with CLUBS=1). The social session tests them.
 - [ ] Top 10's bundled schedule ends 30 Nov: publish the longer list to
       balliq.app/data/top10.json before then, or Top 10 drops out of the
-      dailies and Mystery Player takes the slot back.
+      dailies and Mystery Player takes the slot back. — stale: the bundled schedule now runs to 31 Dec (1a931170); the same cliff now falls on 31 Dec
 - [x] Android on the emulator for build 149's code: every mode opens, no
       crash; signed AAB rebuilt (versionCode 54). Play frames rendered
       (screenshots/android-sim). Upload waits for the Play Console login.
@@ -1853,7 +1881,7 @@ Pro Max (build 144), reviewed before it went out:
       "Upload succeeded"). The practice puzzle did not rotate at midnight
       (No. 134 is too short, so No. 133 stays), so no rotation commit.
 - [ ] Alex plays 146 on his phone. Then: screenshots with Top 10 and Draft,
-      What's New, submit for review.
+      What's New, submit for review. — stale: 1.8.0 went on to builds 147-149 and was submitted; superseded by 1.8.x
 - [x] Build 146 is VALID on App Store Connect (read 14 Oct, 00:14).
 - [x] Android, same commit, on the emulator (14 Oct, 00:20): bundled fonts
       load and swap, onboarding under the wordmark, six real taps on Footle
@@ -1862,7 +1890,7 @@ Pro Max (build 144), reviewed before it went out:
       Daily 7 all open; no crash and no script error in the log.
 - [x] Signed AAB built from the same commit: `~/ball-iq-release/
       BallIQ-1.8.0-54.aab` (versionCode 54, fonts inside).
-- [ ] Upload of that AAB waits for the Play Console login (Alex).
+- [ ] Upload of that AAB waits for the Play Console login (Alex). — stale: Android bundles 55 to 62 have been built and uploaded since
 
 **Sweep of this section, 13 Oct, 22:40.** Every box above this line that was
 still open and has since been fixed, ruled on or found not to be a fault is
@@ -1891,7 +1919,7 @@ listed once, here:
       black first?); what "stuck" looked like offline on the flight; a Mac
       restart to free 17.5 GB; the Play Console login.
 - [ ] Before review: App Store screenshots with Top 10 and Draft, What's New
-      (draft at `~/ball-iq-audit/2026-10-13/whats-new-1.8.0-draft.md`).
+      (draft at `~/ball-iq-audit/2026-10-13/whats-new-1.8.0-draft.md`). — stale: 1.8.0 went to review with the Top 10 and Draft screenshots (7edb4b67); superseded by 1.8.x
 
 ## 2026-09-21 — 🚨 FOUR DAYS OF SILENTLY FAILED DEPLOYS: the cause is fixed, the silence is not
 
@@ -1953,14 +1981,14 @@ simply 404. Found by accident, not by any instrument.
       `ball-iq-native-build` skills both end in a push). If it is ever skipped
       again, the next step up is a scheduled check that alerts when main's HEAD
       status is not `success` — not built, deliberately: try the habit first.
-- [ ] **`src/lib/clubColour.js` is eager in full (5.8 KB) for two small helpers.**
+- [x] **`src/lib/clubColour.js` is eager in full (5.8 KB) for two small helpers.**
       Home needs `tint` / `lift` (and App.jsx `CLUB_COLOUR_ALIASES`); the 180-line
       `EXTRA` colour table is used only by the lazy Trail and Stadium screens, but
       Rollup never splits a module across chunks, so Home pays for all of it.
       Splitting the file (helpers + aliases / `EXTRA` + `clubColour()`, with
       re-exports so scripts and tests keep their imports) is worth ~3.5 KB of
       headroom. Not urgent at 905 vs 909 — do it BEFORE the next club wave needs
-      the room, not after a deploy fails.
+      the room, not after a deploy fails. (done: efc2f944)
 
 ## 2026-09-17 — 🇧🇷 BRASILEIRÃO WAVE: facts verified against live sources BEFORE the forge
 
@@ -2012,9 +2040,9 @@ merely have two aggregators agreeing. Treat club hexes as convention, not fact.
       zone — and Grêmio 16th**, both on 28 points with 11 rounds left. The Série A
       text is correct today and has a real chance of being wrong in December.
       This is the August-audit rule firing early because we already know the risk.
-- [ ] Add `São Paulo` and `Cruzeiro` to `src/lib/clubColour.js` for Transfer Trail
+- [x] Add `São Paulo` and `Cruzeiro` to `src/lib/clubColour.js` for Transfer Trail
       coverage. `Grêmio` and `Internacional` are already there and the lookup
-      strips diacritics, so `Grêmio` → `Gremio` resolves (verified, not assumed).
+      strips diacritics, so `Grêmio` → `Gremio` resolves (verified, not assumed). (done: 5303b4b0)
 
 ## 2026-09-17 — 📏 THE 09-16 MEASUREMENT READ: one clear win, and THREE INSTRUMENTS WE KILLED OURSELVES
 
@@ -2161,7 +2189,7 @@ people.** That is not a failed detector; that is what those changes are worth.
       accounts. Not one mode writing a score: a decay applied across the board.
       1.7.5 (build 137) carries the fix and is cut but not uploaded. That is the 71 → 69 drift in three
       hours while games went 207 → 210. Ends as players update; their history
-      stays depressed.
+      stays depressed. — stale: 1.7.5 and later carry the fix; every current build is 1.8.x
 - [x] **A `d` BACKFILL — DECIDED AGAINST 2026-09-13, measured on prod.** The item
       said "all 33 are recoverable from `correct_answers`". They are not, and the
       column is the wrong source:
@@ -2273,7 +2301,7 @@ and a Daily 7 question whose distractors were all eliminable.
 - [ ] **The remind row's subtitle is the next ~15pt** — "One nudge at your hour,
       only if you haven't played · off any time" wraps to three lines and is the
       tallest text block on the panel. It is copy Alex approved for the reach push,
-      so shortening it is his call, not mine.
+      so shortening it is his call, not mine. — stale: the reminder offer moved onto the streak line (71109296); this row no longer exists
 - [x] **Build 123 superseded — 1.7.5 / iOS build 137 / Android vc51 CUT 2026-09-13.**
       Friend-card fix + Racing, Independiente and San Lorenzo (105 questions). Synced,
       pruned, verified on the simulator. AAB built. NOT uploaded — Alex's call, per build.
@@ -3844,7 +3872,7 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       ready-up persisted, 10/10 clean advances
 - [x] Long-answer tell: 42.4% measured, 21 drastic giveaways rebalanced,
       build gate added (Alex caught it live mid-game)
-- [ ] Alex: upload 1.7.1 — iOS build 106 / Android vc45 (NOT 103/104/105)
+- [ ] Alex: upload 1.7.1 — iOS build 106 / Android vc45 (NOT 103/104/105) — stale: 1.7.2 to 1.8.6 have shipped since
 - [ ] Alex: Bulgarian editorial call (q_b312e9)
 - [ ] Next builds: guest reachability design, FAQ store-first copy pass
       (drafts/nations prose), entitlements migration (needs "apply it"),
@@ -3881,7 +3909,7 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
 - [ ] ~~DO FIRST — two ~10-minute wins~~ (superseded by the two lines above):
       PWA Directory (`/submit`, free Standard queue — do NOT buy the $49 Pro
       tier) and LikeWordle (`/submit-app`). Footle is exactly LikeWordle's
-      category.
+      category. — stale: superseded by the two lines above, as its own text says
 - [ ] **Alex: send the licensing feeler** (email 6 in OUTREACH-EMAILS.md) to
       pub-quiz/quiz-night operators, and to any of the five publishers who
       replies warmly. ⚠️ Never as first contact, and never name a price first.
@@ -3931,7 +3959,7 @@ vc44** (in Xcode Organizer + android bundle path — 103/104 are superseded).
       Play: "Alle appene dine er registrert og oppfyller kravene". Package
       names registered (app.balliq since 9 July), identity populated. The
       30 Sept date is the global deadline, not an outstanding task.
-- [ ] ⚠️ MinimumOSVersion must reach 15.0 by Spring 2027 (Apple upload warning).
+- [x] ⚠️ MinimumOSVersion must reach 15.0 by Spring 2027 (Apple upload warning). (done: 7ab14e43)
 - [ ] Verify Johannes's card converges after he updates (server XP → 10,961).
 - [x] **Email answer links now answer something** (`/play?eq=&ea=`). The emails'
       tappable options previously went nowhere — the app ignored the param, so
@@ -4001,7 +4029,7 @@ upload itself remain.
       rule 950 lines below was removed.
 - [ ] **Alex's device evening** (8 tests, in the report). #1 is the on-screen
       keyboard in Trail — unrun for three consecutive reports, and build 77
-      changes it again.
+      changes it again. — stale: the build-77 tests are overtaken; builds up to 170 since
 - [x] **Upload iOS — DONE 2026-08-26.** 1.7.0 (101) submitted, Waiting for
       Review. Add for Review first failed on **14 locales** missing What's New;
       ASC requires it in every localization and says so only when you press the
@@ -4015,7 +4043,7 @@ upload itself remain.
       note that dropping iq-card frees a slot for daily-chips or
       quiz-explanation, which were cut for Play's 8-slot cap.
       ⚠️ `frame-store-screens.mjs` still emits all 10; the curation lives only
-      in the consoles, so a future re-upload will bring 10-iq-card back.
+      in the consoles, so a future re-upload will bring 10-iq-card back. — stale: both stores carry the new 1.8.0 screenshot set since (7edb4b67)
 - [x] **Store galleries re-done 2026-08-26.** App Store: 10 screenshots
       (home · footle · profile lead the install sheet), description gained a
       YOUR BALL IQ section. Play: description gained 📊 YOUR BALL IQ CARD, and
@@ -4030,7 +4058,7 @@ upload itself remain.
       ⚠️ Play was in PRODUCTION at 1.6.2/vc20, not the closed test the memory
       file claimed for over a month.
 - [ ] Attach **build 102** (Stadiums "Hint" label) on the next iOS submission,
-      or on a resubmit if 101 is rejected. Archived and preflighted already.
+      or on a resubmit if 101 is rejected. Archived and preflighted already. — stale: build 102 era; 1.7.x and 1.8.x shipped since
 
 ### 2 · One sitting on the question bank — SELF-ANSWERS DONE (`9ac6dc6`)
 - [x] **Stems that state their own answer.** Reported 26; **actual 3.** My own
@@ -4376,7 +4404,7 @@ never reaches the bucket. Every person converted past their first game is worth
       Section 4 (instrument health) FIRST — a funnel that stopped recording
       looks identical to one where everybody succeeded, and
       `record_funnel_event` silently drops everything once the table exceeds
-      3000 rows in an hour.
+      3000 rows in an hour. — stale: 1.7.0 is long superseded; the funnel was re-baselined on 2 Sep and 16 Sep
 
 ## ✅ SUMMER 2026 — ALEX'S RULING APPLIED (2026-08-24)
 
@@ -5719,18 +5747,18 @@ taster questions, each referencing the English question id it came from, and
       returns ZERO for both. Sixth firing of the long-name trap.
 
 ### L2 · DEEPEN THE LANGUAGES WE ALREADY HAVE
-- [ ] **Turkish +3** — fenerbahce, besiktas, trabzonspor. Galatasaray alone is
-      absurd; Süper Lig top-scorers is one of only six `/lists/` pages on page 1.
-- [ ] **Portuguese +4** — benfica, porto, sporting-cp (Portugal, currently zero)
-      and santos (Brazil).
+- [x] **Turkish +3** — fenerbahce, besiktas, trabzonspor. Galatasaray alone is
+      absurd; Süper Lig top-scorers is one of only six `/lists/` pages on page 1. (done: 45976c3e)
+- [x] **Portuguese +4** — benfica, porto, sporting-cp (Portugal, currently zero)
+      and santos (Brazil). (done: 79beb4a2)
 - [ ] **Spanish** — 10 live; audit which are missing vs the La Liga packs.
 
 ### L3 · MARKETS THAT NEED A PACK FORGED FIRST (~5× the work)
 - [ ] **Liga MX** — Alex asked for this explicitly. **Zero packs exist**:
       club-america, chivas, cruz-azul, pumas, monterrey, tigres. Forge → verify →
       translate. Biggest Spanish-speaking football market we do not serve.
-- [ ] **More Brasileirão** — sao-paulo, gremio, internacional, cruzeiro,
-      atletico-mineiro, vasco-da-gama, botafogo, fluminense. All packless.
+- [x] **More Brasileirão** — sao-paulo, gremio, internacional, cruzeiro,
+      atletico-mineiro, vasco-da-gama, botafogo, fluminense. All packless. (done: 45976c3e)
 - [ ] **Arabic `/ar/`** — al-hilal, al-nassr, al-ahly, zamalek. All packless.
       Huge market; also the App Store locale flagged lowest-confidence, so get a
       native read on the copy either way.
@@ -5883,7 +5911,7 @@ for `barcelona quiz`. Same club, same content, wildly different competition.
 
 - [ ] **Re-measure first** — the GSC connector lost entitlement 2026-08-16
       (`sc_query_performance`, `sc_top_pages`, `sc_inspect_url` all refuse). Read
-      it in the browser, or restore the connector. Do not plan off the 08-08 read.
+      it in the browser, or restore the connector. Do not plan off the 08-08 read. — stale: Search Console is read with our own key now (scripts/gsc.mjs, 842137d2)
 - [ ] `/es/` pages for the big three ALREADY EXIST (real-madrid, barcelona,
       atletico-madrid) and got their first English inbound link on 2026-08-16.
       The next lever for them is **LaLiga depth** — more Spanish club pages make
@@ -5913,10 +5941,10 @@ for `barcelona quiz`. Same club, same content, wildly different competition.
 ### ⏰ EXPIRES MON 18 AUG — two free store levers, no binary needed
 - [ ] **Play promotional content — Transfer Deadline Day (1 Sep).** Play needs
       14 days lead when "request featuring" is ticked. Console → Grow users →
-      Store presence → Promotional content. Games qualify with no threshold.
+      Store presence → Promotional content. Games qualify with no threshold. — stale: the 1 Sep date passed
 - [ ] **Apple featuring nomination + In-App Event — UCL MD1 (8-10 Sep).** Apple's
       stated minimum lead is 3 weeks. ASC → app → Featuring → Nominations.
-      IAE limits: 10 published at once, badges Competition / Challenge / New Season.
+      IAE limits: 10 published at once, badges Competition / Challenge / New Season. — stale: the 8-10 Sep date passed
 - ⚠️ **NAME THEM GENERICALLY.** We were already rejected under 5.2.1 for World Cup
       IP and event metadata goes through the same review. "Deadline Day Special",
       "Europe's Big Night" — NEVER "Champions League Week".
@@ -6977,7 +7005,7 @@ dilute rather than add. Alex's call: noindex, delete, or leave.
 - [ ] **134 same-answer question pairs need an editorial call** (`.audit/same-answer-pairs.json`, found while fixing bug 3). Each pair shares a resolved answer and 50%+ of its stem tokens; **79 cross category boundaries, so they can collide inside one Mixed game.** The 2 verbatim duplicates were already removed (`6e244df`). The rest are rewordings — picking which twin dies is a football judgment, not a script's.
 - [x] **✅ League ladder extended upward** (`6663f6e`) — a perfect game pays 200 XP, so the old Legend ceiling at 3,000 was ~15 games: every engaged player finished the whole progression in a fortnight. **Stretching the thresholds was measured and rejected** — it demoted 9 of 9 active users, including one losing a Legend badge they earned. The six existing rungs are frozen; **Icon (8,000)** and **Immortal (20,000)** sit above them. Nobody moved; the leader now has 1,582 XP of visible headroom instead of a full bar.
 
-- [ ] **WAVE N — RESCUED, NOT SHIPPED** (`b115646`). Run 1 died at the usage
+- [x] **WAVE N — RESCUED, NOT SHIPPED** (`b115646`). Run 1 died at the usage
   wall: 19 of 196 agents done, 177 errored. Six clubs returned EMPTY with
   `belowGate: true` — the pipeline correctly refusing to ship unverified work.
   **175 generated questions are saved** in `.audit/wave-n-run1/generated.json`
@@ -6990,26 +7018,26 @@ dilute rather than add. Alex's call: noindex, delete, or leave.
   Then: curate → insert → wire (App.jsx ×5, gen-seo ×2+DIR_ALIAS, clubs.mjs
   prose w/ array-hole assert, NEW `club-competition.mjs` entries or the build
   fails, clubIndex self-regenerates). Titles need "& Answers" ≤60 chars.
-  Indexing is automatic: prod deploy regenerates sitemap + pings IndexNow.
+  Indexing is automatic: prod deploy regenerates sitemap + pings IndexNow. (done: cfaafae5)
 
 - [ ] **FORTNIGHT WATCH (started 2026-08-03)** — the homepage swapped and the
   "& Answers" retitle both went live today. Read GSC + Clarity around
   2026-08-17 BEFORE any further homepage surgery: homepage CTR/bounce vs the
   old page, and the 45 retitled clubs vs the 27 unchanged. Tottenham +
-  Newcastle are the natural experiment (they were LOSING those queries).
-- [ ] **POST-SWAP CLEANUP (after the fortnight verdict)** — delete
+  Newcastle are the natural experiment (they were LOSING those queries). — stale: the fortnight passed; the homepage has been rebuilt since (82b4b38d)
+- [x] **POST-SWAP CLEANUP (after the fortnight verdict)** — delete
   MarketingHome.jsx + the `/home-old` route + its vercel.json rewrites. That
   also retires the pixel-debt list (8 stray surface shades, the two text
-  ramps, the orange Trail ramp) — it all lives in the page being deleted.
+  ramps, the orange Trail ramp) — it all lives in the page being deleted. (done: 28f7b941)
 
-- [ ] **CLAUDE: GSC via the data plugin** (Alex, 2026-08-03) — run a proper
+- [x] **CLAUDE: GSC via the data plugin** (Alex, 2026-08-03) — run a proper
   data-tool analysis over Search Console instead of screenshots + the flaky
   in-console filters (the `?query=*term*` trap). ⚠️ The data connectors
   (BigQuery / Hex / Definite) all sit unauthorized — Alex must connect one in
   claude.ai settings first, OR we pull GSC's API directly (the property is
   URL-prefix `https://balliq.app/`, never sc-domain). First questions to ask
   the data: did the "& Answers" retitle move CTR on the 45 changed pages vs
-  the 27 unchanged; post-swap homepage CTR; Türkiye cluster demand curve.
+  the 27 unchanged; post-swap homepage CTR; Türkiye cluster demand curve. (done: 842137d2)
 
 ### 🎨 THE SCOUTING REPORT — LIVE AT https://balliq.app/home-preview/
 
@@ -8164,10 +8192,10 @@ Natural share artifact (the rebus IS the share); pairs with the daily-hub
 packaging idea from the scan. Data: hand-curated emoji strings per club —
 editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
 
-- [ ] TRAIL WAVE N (careers): 45 unique careers over a 397-day schedule = each
+- [x] TRAIL WAVE N (careers): 45 unique careers over a 397-day schedule = each
       returns ~fortnightly for daily players. Runway fine (into late 2027);
       VARIETY is the real gap. Forge +40 careers post-kickoff, same locked
-      editorial rules, extend the frozen log deliberately.
+      editorial rules, extend the frozen log deliberately. (done: 9115c639)
 
 ## Guess the XI — pipeline state (2026-08-11 evening)
 - [x] build-xi-pool.mjs: 10 verified XIs (5 UCL finals × both teams) — PLAYERS
@@ -8177,16 +8205,16 @@ editorial fun, zero API risk, no licence exposure. Start with the 72 packs.
 - [ ] surname field breaks on Dutch names ("van der Sar" → "Sar") — match via
       the Footle normalizer against full display instead
 - [x] XI spot-checks — FIXED: both Istanbul and Lusail now exit(1) when absent instead of skipping
-- [ ] CI: flip e2e continue-on-error -> strict after two green runs on main
+- [x] CI: flip e2e continue-on-error -> strict after two green runs on main
       (the 131-failure era ended 2026-08-11: env var + 12 stale specs + the
       zombie Test tile — see 832ee3c). Also: Alex may set VITE_SUPABASE_KEY
-      as a repo secret and delete the in-repo fallback if preferred.
+      as a repo secret and delete the in-repo fallback if preferred. (done: 00061cee)
 
 - [ ] CI e2e residue (post-831ee3c): runner subset shows 35/86 failing on
       expectNoCrash "console errors" — CI-environment console noise (likely
       network-dependent services on the runner), NOT the env-var class. Widen
       the console-error filter for CI or stub network calls; then the strict
-      flip. Local full run remains 405/407.
+      flip. Local full run remains 405/407. — stale: the e2e job became a strict gate in 00061cee and stays one
 
 ## Senior-debugger pass (2026-08-25) — moderates
 - [x] M1 Mystery rolled over at UTC midnight while its save key used the local
@@ -8229,8 +8257,8 @@ the ones living in more than one file. 100 sites, 10 cross-file twins.
 - [x] Verified CLEAN (recorded so nobody re-audits them): the four
       upsert_daily_* RPCs (App.jsx vs useAuth.jsx back-sync) both check error;
       notifications read-flag writes are deliberately best-effort.
-- [ ] `.biq-nav` active state hardcodes #58CC02 twice instead of var(--accent).
-      Same colour today, so it is drift not a bug — fold into the next CSS pass.
+- [x] `.biq-nav` active state hardcodes #58CC02 twice instead of var(--accent).
+      Same colour today, so it is drift not a bug — fold into the next CSS pass. (done: d29c6061)
 - [ ] `.home-stat-chip-desktop-only` has NO renderer: three rules across base,
       desktop reflow and the standalone mirror for an element no JSX produces.
       Concrete instance of m8.
@@ -8265,12 +8293,12 @@ the ones living in more than one file. 100 sites, 10 cross-file twins.
 - [x] Corrected the activation figure everywhere (memory + question-bank skill).
 
 ### Open — measurement gaps, ranked
-- [ ] **No `first-game-finished` event exists.** 60% of first sessions end at
+- [x] **No `first-game-finished` event exists.** 60% of first sessions end at
       `first-game-started` and the data stops. Until this lands, no activation
-      change can be evaluated. Smallest, highest-value item on this list.
+      change can be evaluated. Smallest, highest-value item on this list. (done: 29f79c89)
 - [ ] 94% of question reports (63 of 67) carry a NULL reason, and 41 point at
       questions never triaged. Highest-precision feedback channel in the
-      product, discarding its payload. Capture a reason at report time.
+      product, discarding its payload. Capture a reason at report time. — stale: the reason sheet shipped on 23 Aug (352735e8); the NULL rows predate it
 - [ ] `challenge_events` has never recorded a row though its RPC is deployed —
       the /c/ Daily-7 measurement layer is inert.
 - [ ] Web push cron has run 278 successful cycles against ZERO subscribers
@@ -8290,7 +8318,7 @@ the ones living in more than one file. 100 sites, 10 cross-file twins.
       surface.
 - [ ] 6 list pages have no playable element whatsoever (gated at groups >= 8).
 - [ ] 76 `/questions/` pages are internally linked, live, and have zero
-      playable content.
+      playable content. — stale: the /questions/ pages now 301 to their /quiz/ twins and are no longer built (17a5e061)
 - [ ] Home says "up to 8 players"; the observed maximum in any room is 4.
       Capacity is designed, never demonstrated — 3+ device smoke test.
 
