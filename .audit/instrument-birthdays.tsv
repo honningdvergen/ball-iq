@@ -15,6 +15,7 @@
 2026-08-31	source	bqev(h.indexOf('/footle')>=0?'clubq-out-daily':h===play?'clubq-out-play'
 2026-09-05	source	const funnel = (event, meta) => marketingEvent(event, { surface: 'footle
 2026-09-03	source	const go = (name, href) => { try { marketingEvent(name, { href }); } cat
+2026-11-08	source	const send = () => { const e = appDayEvent(); if (e) loopEvent(e.name, e
 2026-08-28	source	ev('p-cta'
 2026-08-28	source	ev('p-land'
 2026-09-05	source	export const makeFunnel = (surface) => (event, meta) => marketingEvent(e
