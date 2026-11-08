@@ -101,10 +101,16 @@ const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
 // One entry per raw frame. `hi` is the phrase pulled out of the headline in the
 // accent colour — keep it SHORT so the line still reads as a sentence.
 const COPY = {
+  // 9 Nov 2026 (store audit): the mates' league leads the gallery.
+  '00-league': {
+    eyebrow: "NEW · MATES' LEAGUES", accent: GREEN,
+    head: ['Race your mates', 'to {Sunday}'],
+    sub: 'One link, one table, Monday to Sunday.',
+  },
   '01-home': {
     eyebrow: 'THE ULTIMATE FOOTBALL QUIZ', accent: GREEN,
     head: ['How good is your', '{Ball IQ}, really?'],
-    sub: 'Daily puzzles, club quizzes and live 1v1.',
+    sub: 'New puzzles every morning, and a quiz for your club.',
   },
   '02-footle': {
     eyebrow: 'DAILY · FOOTLE', accent: GREEN,
@@ -272,7 +278,7 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   }
 </style></head><body>
   <div class="top">
-    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b></span></div>
+    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b>: Football Quiz</span></div>
     <div class="eyebrow">${c.eyebrow}</div>
     <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
     <div class="sub">${c.sub}</div>
@@ -343,7 +349,7 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   .bare img{width:${Math.round(SIM_W * 1.12)}px;height:auto;display:block;border-radius:${f(34)}px;box-shadow:0 ${f(44)}px ${f(100)}px rgba(0,0,0,.6), 0 0 ${f(160)}px rgba(${rgb(c.accent)},.25)}
 </style></head><body>
   <div class="top">
-    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b></span></div>
+    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b>: Football Quiz</span></div>
     <div class="eyebrow">${c.eyebrow}</div>
     <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
     <div class="sub">${c.sub}</div>
@@ -360,7 +366,7 @@ const logo = ICON ? 'data:image/png;base64,' + readFileSync(ICON).toString('base
 
 const BAND_FILE = resolve('screenshots/sim/status-band.png');
 const BAND_URI = SIM && existsSync(BAND_FILE) ? 'data:image/png;base64,' + readFileSync(BAND_FILE).toString('base64') : '';
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
 const ctx = await b.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 const p = await ctx.newPage();
 let n = 0;

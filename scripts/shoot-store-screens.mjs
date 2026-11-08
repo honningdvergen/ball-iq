@@ -248,6 +248,14 @@ const SHOTS = [
   // deep-link handling the website depends on, and they do not move when
   // Home does. Only the NAVIGATION changed; every play-through below is as
   // it was.
+  // 9 Nov 2026 (store audit): the mates' league leads the gallery. A staged
+  // final table (fixture below, answered by this script, never the database):
+  // tap the league card on Home, the table opens.
+  { name: '00-league', expect: 'Final table', go: async (p) => {
+      await p.waitForSelector('.lg-home', { timeout: 8000 });
+      await p.click('.lg-home');
+      await p.waitForTimeout(1500);
+    } },
   { name: '01-home',           expect: 'More modes',   go: async (p) => {} },
   { name: '03-club-picker',    expect: 'Club Quizzes', go: async (p) => {
       await gotoApp(p, '/play?game=clubquiz'); } },
@@ -689,7 +697,7 @@ async function settleScroll(p, tabH = 96) {
   }, tabH);
 }
 
-const b = await webkit.launch();
+const b = await webkit.launch(process.env.PW_WEBKIT ? { executablePath: process.env.PW_WEBKIT } : {});
 // ⚠️ DERIVED FROM THE FRAME, not chosen. frame-store-screens.mjs renders at
 // 1284x2778 (the 6.5" size this listing actually uses — there is no 6.9" slot)
 // and leaves an 875x1739 image area inside the device, an aspect of 1.9874.
@@ -697,7 +705,38 @@ const b = await webkit.launch();
 // BOTTOM — which is exactly where the tab bar lives. The framer PRINTS the
 // number it needs on every run; copy it here if the geometry changes.
 const CAPTURE_H = SIMLIKE ? 812 : 874;
-const ctx = await b.newContext({ viewport: { width: SIMLIKE ? 402 : 440, height: CAPTURE_H }, deviceScaleFactor: 3 });
+// serviceWorkers 'block': requests made through the site's service worker skip
+// Playwright's routes, so the staged league answers would reach the real
+// database instead (9 Nov 2026).
+const ctx = await b.newContext({ viewport: { width: SIMLIKE ? 402 : 440, height: CAPTURE_H }, deviceScaleFactor: 3, serviceWorkers: 'block' });
+// ── The league fixture (9 Nov 2026). Day numbers are days since 1970 in the
+// league's zone, as the server uses; the week shown is LAST week, final, so the
+// labels (Winner, Wooden spoon, Bottled it) are on the table.
+{
+  const d = new Date(); const todayN = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
+  const dow = (new Date(todayN * 86400000).getUTCDay() + 6) % 7; // 0 = Monday
+  const weekStart = todayN - dow - 7;
+  const meta = { id: 'shot-league', name: 'The Lads', code: 'K7QM2XPA', tz: 'Europe/Oslo', week_start: weekStart, today: todayN, is_final: true, is_owner: true, my_joined_day: weekStart - 14, my_name: 'Alex' };
+  const rows = [
+    { rank: 1, tied: false, name: 'Alex', is_me: true, points: 48, tens: 3, days: 7, joined_day: weekStart - 14, per_day: [8, 9, 6, 7, 10, 3, 5], labels: ['crown'] },
+    { rank: 2, tied: false, name: 'Sam', is_me: false, points: 41, tens: 2, days: 6, joined_day: weekStart - 14, per_day: [10, 7, null, 6, 9, 4, 5], labels: [] },
+    { rank: 3, tied: false, name: 'Kim', is_me: false, points: 37, tens: 1, days: 6, joined_day: weekStart - 14, per_day: [6, 8, 7, null, 7, 4, 5], labels: [] },
+    { rank: 4, tied: false, name: 'Jon', is_me: false, points: 30, tens: 2, days: 4, joined_day: weekStart - 14, per_day: [9, 10, 6, 5, null, null, null], labels: ['bottled'] },
+    { rank: 5, tied: false, name: 'Lee', is_me: false, points: 17, tens: 0, days: 3, joined_day: weekStart - 14, per_day: [null, 6, null, 5, null, 6, null], labels: ['spoon'] },
+  ];
+  const table = { meta, rows, last_week: null };
+  const mine = [{ id: 'shot-league', code: 'K7QM2XPA', name: 'The Lads', tz: 'Europe/Oslo', week_start: weekStart + 7, today: todayN, is_final: false, members: 5, my_rank: 1, my_tied: false, my_points: 8, my_days: [8, null, null, null, null, null, null], leader_name: null, leader_points: 8, gap: 0, last_final_unseen: false, activity: new Date().toISOString() }];
+  // WebKit enforces CORS on a fulfilled response, preflight included: answer
+  // both the way the database would, or the app sees an error and says the
+  // table "isn't available".
+  const cors = { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'POST, GET, OPTIONS' };
+  const answer = (body) => (r) => (r.request().method() === 'OPTIONS'
+    ? r.fulfill({ status: 204, headers: cors, body: '' })
+    : r.fulfill({ status: 200, headers: { ...cors, 'content-type': 'application/json' }, body: JSON.stringify(body) }));
+  await ctx.route(/\/rest\/v1\/rpc\/get_my_leagues/, answer(mine));
+  await ctx.route(/\/rest\/v1\/rpc\/get_league_table/, answer(table));
+  await ctx.addInitScript(() => { try { localStorage.setItem('biq_league_member', '1'); } catch {} });
+}
 if (SIMLIKE) await ctx.addInitScript(() => {
   const put = () => { const s = document.createElement('style'); s.textContent = '.tab-bar{bottom:22px !important}'; document.head.appendChild(s); };
   if (document.head) put(); else document.addEventListener('DOMContentLoaded', put);
