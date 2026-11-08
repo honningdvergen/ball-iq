@@ -115,6 +115,20 @@ describe('RPC grants match what the code calls', () => {
     expect(trig).toEqual([...ANON_TRIGGERS].sort());
   });
 
+  it('granted to authenticated, not yet called by the client: kept on purpose', () => {
+    // is_room_member is an RLS helper (policies call it, the client never
+    // does). set_league_display_name belongs to the leagues feature: a rename
+    // in the league table may use it (Ball IQ HQ, 8 Nov 2026: keep the grant).
+    // When the client starts calling one, take it off this list.
+    const GRANTED_NOT_CALLED = ['is_room_member', 'set_league_display_name'];
+    for (const name of GRANTED_NOT_CALLED) {
+      const f = FN.get(name);
+      expect(f, name).toBeTruthy();
+      expect([f.anon, f.authenticated], name).toEqual([false, true]);
+      expect(calls.has(name), `${name} is now called: remove it from GRANTED_NOT_CALLED`).toBe(false);
+    }
+  });
+
   it('server-only functions stay closed to both client roles', () => {
     // Cron jobs, cleanup and the email selectors run as the service role.
     for (const name of ['cleanup_funnel_events', 'cleanup_stale_anon_users', 'enqueue_web_daily_reminders',
