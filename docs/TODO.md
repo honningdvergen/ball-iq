@@ -1,3 +1,16 @@
+## 2026-11-08 — THE LIST, BUILD 171
+
+- [x] Return counter (src/lib/cohort.js): one "app-day" event a day with install week, a days-since bucket and a league flag, no identifier; existing phones date themselves from their earliest stored daily. Read: `select meta->>'w' week, meta->>'b' bucket, count(*) from funnel_events where event='app-day' group by 1,2 order by 1,2;` Privacy page and in-app privacy screen say so.
+- [x] Rating ask: Trail, Top 10 and Mystery now ask natively on a good result, for phones with 3+ play days (Footle and the quiz results screen already did).
+- [x] Tab bar hide-on-scroll re-attaches when the bar mounts (first-run bug).
+- [x] Social daily kit: `node scripts/daily-kit.mjs` captures today's Trail, Top 10 and Footle boards from the live site (no answers) to ~/ball-iq-audit/daily-kit/<date>/.
+- [x] Monetisation on paper: ~/ball-iq-audit/2026-11-07/monetisation-decision.md (recommends a premium unlock first, no ads yet). Alex decides.
+- [x] PR #57 (verifier batch 1) merged; batches 2-3, the grants lock test, the Wikidata trial and the TODO cleanup are with the cloud session.
+- [ ] **ALEX: apply supabase/migrations/v3_2_rls_auth_uid_once_per_query.sql.** The auto-mode safety check refused apply_migration as a production change. Same rows allowed and refused; 28 policies evaluate auth.uid() once per query instead of per row. Either say "apply it" or add a permission rule for the Supabase apply_migration tool.
+- [ ] Clarity (2-8 Nov): dead taps on "Next →" (82), Footle's hard-mode label and colour legend (66 and 55), "Play" (52); mobile front page left after 3-6 s at 9-18% scroll. Watch three recordings each before changing anything.
+- [ ] FactSearch trial: not run. It needs a self-hosted search engine (SearXNG) and a model endpoint; set up when there is a session for it.
+- [ ] App Privacy label: it lists Usage Data only for App Functionality. The anonymous feature counts (since 1.6.5) and now the return counter are analytics; consider adding "Product Interaction, not linked to you, Analytics" in App Store Connect (web form, Alex).
+
 ## 2026-11-07 — CHECKPOINT (paused for social work)
 
 - [x] iOS 170 on TestFlight (VALID): 169 plus per-tab scroll memory (b9f85251). Alex plays it; submit 1.8.6 on his word, AFTER_APPROVAL; What's New already set on 19 locales.
