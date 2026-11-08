@@ -26,6 +26,17 @@
 - Top 10 has no page of its own on the site and no entry in the site header (2026-10-05 BALL IQ 2.0, "The static site does not know Top 10").
 - Safety nets: `audit:top10-board` in CI, deploy-check falls back to version.json when Vercel is silent (2026-10-05 BALL IQ 2.0, Safety nets).
 
+## 2026-11-09 — STORE LISTING TO A+ (Alex: "our listing to A+")
+
+- [x] Agreement: Alex accepted the updated Developer Program License Agreement (deadline was 14 Nov).
+- [x] App Privacy label published: Usage Data / Product Interaction, Analytics, not linked, not tracking.
+- [x] Leaked-password protection ON (Supabase advisor clear). v3_2 RLS migration applied (8 Nov).
+- [x] Listing audit (agent, 9 Nov): subtitle C (identical to FootEx's), description opening C ("Four daily puzzles"), promo text F, screenshots B-, CPP/events F. Applied to 1.8.6 (read back OK): en-GB subtitle "Guess the Player & Career Game", keywords, description (five dailies + mates' leagues + Trail three-club line), promo text; en-US/en-AU/en-CA description + promo. Texts: ~/ball-iq-release/store/listing-1.8.6/. asc-store.mjs has a new `subtitle <locale> <file>` command.
+- [ ] Screenshots for 1.8.6: frame 1 the league table ("Race your mates to Sunday"), frame 2 Home with all five dailies, Footle third, profile last, one multiplayer frame; brand line "Ball IQ: Football Quiz". Then localised sets for de, es, fr, pt-BR, ar.
+- [ ] iPhone Duo: run the Duo simulator once (side camera island v our layout; no side safe-area insets in app.css today) and make Duo-size screenshots for the "Made for iPhone Duo" badge. Inner display renders fine at 669x951 in Chromium (9 Nov).
+- [ ] After 1.8.6 is live: In-App Event "Mates' League Week" (Challenge, deep link to league creation); custom product pages (mates' league; Arsenal, Man United, Liverpool) for social links; rating moment when someone wins their league on Sunday.
+- [ ] Why does the binary declare English only? The product page says "English" to everyone though the app is localised (CFBundleLocalizations / Localizable resources).
+
 ## 2026-11-08 — THE LIST, BUILD 171
 
 - [x] Return counter (src/lib/cohort.js): one "app-day" event a day with install week, a days-since bucket and a league flag, no identifier; existing phones date themselves from their earliest stored daily. Read: `select meta->>'w' week, meta->>'b' bucket, count(*) from funnel_events where event='app-day' group by 1,2 order by 1,2;` Privacy page and in-app privacy screen say so.
