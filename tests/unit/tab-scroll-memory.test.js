@@ -16,6 +16,10 @@ const block = APP.slice(APP.indexOf('EACH TAB KEEPS ITS OWN SCROLL'), APP.indexO
 const HOOK = readFileSync(fileURLToPath(new URL('../../src/hooks/useScrollAwareTabBar.js', import.meta.url)), 'utf8');
 
 describe('tab scroll memory', () => {
+  it('the tab bar hook re-attaches when the bar mounts (callback ref)', () => {
+    expect(HOOK).toMatch(/const tabBarRef = useCallback\(\(node\) => setEl\(node\), \[\]\);/);
+    expect(HOOK).toMatch(/\}, \[el, screen, inGame\]\);/);
+  });
   it('a restore tells the tab bar, which neither tucks nor counts it as a scroll', () => {
     expect(block).toMatch(/window\.dispatchEvent\(new Event\("biq:tab-restore"\)\)/);
     expect(HOOK).toMatch(/addEventListener\('biq:tab-restore', onRestore\)/);
