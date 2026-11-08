@@ -15,6 +15,7 @@ import { BiqNav } from './BiqNav.jsx';
 import { AppBar } from './components/AppBar.jsx';
 import { SiteHeader } from './marketing/SiteHeader.jsx';
 import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIndex } from './questions-loader.js';
+import { appDayEvent, cleanAppDayMeta, playDays } from './lib/cohort.js';
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
@@ -1185,6 +1186,13 @@ const NATIVE_RATE_KEYS = ["reason", "trigger", "engine", "store", "surface"];
 const NATIVE_RATE_WORD = /^[a-z][a-z-]{0,23}$/;
 function nativeRateMeta(name, meta) {
   const out = { native: true, anon: true };
+  // The return counter (lib/cohort.js, 8 Nov 2026): the second closed
+  // exception. Install week, a days-since bucket and a league flag, filtered
+  // to their exact shapes, plus the platform. Still no identifier.
+  if (name === "app-day") {
+    try { const p = Capacitor.getPlatform?.(); if (p === "ios" || p === "android") out.platform = p; } catch {}
+    return { ...out, ...cleanAppDayMeta(meta) };
+  }
   if (!NATIVE_RATE_EVENT.test(name)) return out;
   try {
     const p = Capacitor.getPlatform?.();
@@ -3699,6 +3707,16 @@ function AppInner() {
   // page back where that tab was, in a layout effect, before the frame paints.
   // A switch that comes with a SCREEN change (back from a game) is left to the
   // [screen] effect below, which puts Home at the top on purpose (QA S-03).
+  // The return counter (lib/cohort.js): one "app-day" event per calendar day,
+  // at start and whenever the app comes back to the foreground (most people
+  // resume rather than relaunch). Install week + bucket + league flag only.
+  useEffect(() => {
+    const send = () => { const e = appDayEvent(); if (e) loopEvent(e.name, e.meta); };
+    send();
+    const onVis = () => { if (document.visibilityState === "visible") send(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
   const tabScrollRef = useRef({});
   const tabNowRef = useRef(tab);
   const tabScreenRef = useRef(screen);
@@ -6005,6 +6023,30 @@ function AppInner() {
       // Never prompt over a LOSS (Trail/Mystery dispatch positive:false).
       // The event has carried the flag all along; the ask now honors it.
       const askedNotif = e?.detail?.positive === false ? false : maybePromptNotif();
+      // ⭐ TRAIL, TOP 10 AND MYSTERY ASK TOO (8 Nov 2026). Only Footle and the
+      // quiz results screen ever asked, so most daily play never met the
+      // rating sheet, and the app sat on seven UK ratings while the apps
+      // above it in "football quiz" had hundreds to thousands (7 Nov report).
+      // Same manners as Footle: native only, a good result (Trail and Mystery
+      // solved, Top 10 half or better), never over the notification sheet,
+      // and only for a phone that has played on three different days, so the
+      // ask reaches people who come back. lib/review.js and Apple still decide
+      // whether anything shows. Apple allows no "do you like it?" screen in
+      // front of its sheet, so the moment is the only lever.
+      if (IS_NATIVE && ["trail", "top10", "mystery"].includes(e?.detail?.game) && e.detail.positive === true) {
+        const trigger = e.detail.game;
+        Promise.resolve(askedNotif).then((notifOpened) => {
+          if (notifOpened) return;
+          if (playDays() < 3) return;
+          celebrationTimeoutsRef.current.push(setTimeout(() => {
+            if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger }); return; }
+            const blocked = nativeAskBlockedReason();
+            if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger }); return; }
+            loopEvent("rate-prompt-shown", { engine: "native", trigger });
+            maybeRequestReview();
+          }, 3500));
+        });
+      }
       if (e?.detail?.game === 'footle' && e.detail.won === true) {
         Promise.resolve(askedNotif).then((notifOpened) => {
           if (notifOpened) return;
