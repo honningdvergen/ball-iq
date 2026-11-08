@@ -2,7 +2,7 @@
 
 - Ship 1.8.6 to both stores: fresh iOS cut, submit on Alex's word; Android 62 re-run at the final commit, emulator, Play upload on "submit it" (2026-11-07 CHECKPOINT and OVERNIGHT, below).
 - Release day: add `/l/*` to the apple-app-site-association file and flip the pin in league-invite-landing.test.js (2026-10-29, LEAGUES IN THE APP (phase 2)).
-- ALEX: apply supabase/migrations/v3_2_rls_auth_uid_once_per_query.sql (28 policies evaluate auth.uid() once per query; the auto-mode check refused it as a production change) (2026-11-08, THE LIST, BUILD 171).
+- DONE 8 Nov 23:40 Oslo: v3_2 RLS migration applied with Alex's yes (advisor: 0 auth_rls_initplan warnings left). Check the first scores saved after it.
 - App Privacy label: add "Product Interaction, not linked to you, Analytics" for the feature counts and the return counter, Alex in App Store Connect (2026-11-08, THE LIST, BUILD 171).
 - Monetisation: Alex decides premium unlock v rewarded ads, then the supporter tier or remove-ads purchase (2026-11-07 OVERNIGHT, critic's plan; 2026-10-05 BALL IQ 2.0, "Supporter tier", "Rewarded video").
 - Store text: "No ads" to "Free to play" in all 39 places, so the listing does not block the ad decision (2026-10-05 BALL IQ 2.0, "Store text, in the SAME submission").
@@ -34,7 +34,7 @@
 - [x] Social daily kit: `node scripts/daily-kit.mjs` captures today's Trail, Top 10 and Footle boards from the live site (no answers) to ~/ball-iq-audit/daily-kit/<date>/.
 - [x] Monetisation on paper: ~/ball-iq-audit/2026-11-07/monetisation-decision.md (recommends a premium unlock first, no ads yet). Alex decides.
 - [x] PR #57 (verifier batch 1) merged; batches 2-3, the grants lock test, the Wikidata trial and the TODO cleanup are with the cloud session.
-- [ ] **ALEX: apply supabase/migrations/v3_2_rls_auth_uid_once_per_query.sql.** The auto-mode safety check refused apply_migration as a production change. Same rows allowed and refused; 28 policies evaluate auth.uid() once per query instead of per row. Either say "apply it" or add a permission rule for the Supabase apply_migration tool.
+- [x] **APPLIED 8 Nov 23:40 Oslo (Alex: yes): apply supabase/migrations/v3_2_rls_auth_uid_once_per_query.sql.** The auto-mode safety check refused apply_migration as a production change. Same rows allowed and refused; 28 policies evaluate auth.uid() once per query instead of per row. Either say "apply it" or add a permission rule for the Supabase apply_migration tool.
 - [ ] Clarity (2-8 Nov): dead taps on "Next →" (82), Footle's hard-mode label and colour legend (66 and 55), "Play" (52); mobile front page left after 3-6 s at 9-18% scroll. Watch three recordings each before changing anything.
 - [ ] FactSearch trial: not run. It needs a self-hosted search engine (SearXNG) and a model endpoint; set up when there is a session for it.
 - [ ] App Privacy label: it lists Usage Data only for App Functionality. The anonymous feature counts (since 1.6.5) and now the return counter are analytics; consider adding "Product Interaction, not linked to you, Analytics" in App Store Connect (web form, Alex).
