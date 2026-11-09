@@ -2,11 +2,11 @@
    everything else is a hairline, a tint or a link. Sentence case throughout:
    nothing here transforms text to capitals. */
 
-.lg-screen{max-width:560px;margin:0 auto;padding:6px 16px calc(32px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:16px;min-height:100%;box-sizing:border-box;}
+.lg-screen{max-width:560px;margin:0 auto;padding:4px 16px calc(32px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:14px;min-height:100%;box-sizing:border-box;}
 .lg-top{display:flex;align-items:center;min-height:44px;}
 .lg-back{width:44px;height:44px;margin-left:-10px;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);cursor:pointer;border-radius:12px;-webkit-tap-highlight-color:transparent;}
-.lg-head{display:flex;flex-direction:column;gap:4px;}
-.lg-title{margin:0;font-size:26px;line-height:1.15;font-weight:900;letter-spacing:-0.5px;color:var(--t1);-webkit-text-fill-color:var(--t1);overflow-wrap:anywhere;}
+.lg-head{display:flex;flex-direction:column;gap:6px;margin-top:-4px;}
+.lg-title{margin:0;font-size:30px;line-height:1.1;font-weight:900;letter-spacing:-0.8px;color:var(--t1);-webkit-text-fill-color:var(--t1);overflow-wrap:anywhere;}
 .lg-sub{margin:0;font-size:13px;line-height:1.4;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .lg-quiet{color:var(--t3);-webkit-text-fill-color:var(--t3);}
 .lg-c{justify-content:center;text-align:center;}
@@ -14,30 +14,30 @@
 .lg-empty{padding:40px 0;text-align:center;}
 
 /* The table: one hairline card, your row tinted. */
-.lg-table{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--s1);}
-.lg-days{display:grid;grid-template-columns:24px 30px 1fr 42px;column-gap:9px;align-items:end;padding:10px 12px 2px;}
-.lg-days .lg-cells span{font-size:10.5px;font-weight:700;text-align:center;color:var(--t3);-webkit-text-fill-color:var(--t3);}
-.lg-days .lg-cells span.is-today{color:var(--accent);-webkit-text-fill-color:var(--accent);}
-.lg-days-t{font-size:10.5px;font-weight:700;text-align:right;color:var(--t3);-webkit-text-fill-color:var(--t3);}
-.lg-row{display:grid;grid-template-columns:24px 30px 1fr 42px;column-gap:9px;align-items:center;padding:11px 12px;border-top:1px solid var(--border);}
-.lg-days + .lg-row{border-top:0;}
-.lg-row.is-me{background:rgba(88,204,2,0.08);}
-.lg-rank{font-size:14px;font-weight:800;color:var(--t2);-webkit-text-fill-color:var(--t2);font-variant-numeric:tabular-nums;text-align:center;}
-.lg-av{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;}
-.lg-mid{min-width:0;display:flex;flex-direction:column;gap:6px;}
-.lg-name{font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lg-you{font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);}
-.lg-total{font-size:20px;font-weight:900;text-align:right;color:var(--t1);-webkit-text-fill-color:var(--t1);font-variant-numeric:tabular-nums;}
-/* Seven cells of 22px and six 3px gaps = 172px; at 375 wide the middle column
-   is about 194px, so the week never runs under the total. */
-.lg-cells{display:grid;grid-template-columns:repeat(7, 22px);gap:3px;}
-.lg-cell{height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);box-sizing:border-box;}
-.lg-cell.is-miss{color:var(--t3);-webkit-text-fill-color:var(--t3);}
-.lg-cell.is-future,.lg-cell.is-before{background:transparent;border:1px dashed var(--border);}
-.lg-cell.is-today{box-shadow:inset 0 0 0 1.5px var(--accent);}
-.lg-chips{display:flex;flex-wrap:wrap;gap:5px;}
-.lg-chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:700;background:var(--s2);border:1px solid var(--border);color:var(--t2);-webkit-text-fill-color:var(--t2);}
-.lg-chip.is-crown{color:var(--gold);-webkit-text-fill-color:var(--gold);border-color:rgba(255,193,7,0.35);background:rgba(255,193,7,0.08);}
+.lg-table{border:1px solid var(--border);border-radius:20px;overflow:hidden;background:var(--s1);box-shadow:0 1px 0 rgba(255,255,255,0.03) inset;}
+/* 9 Nov 2026, second pass (Alex: "still cluttery"): three things per row,
+   rank, name and total. The week is a thin bar strip under the name, shaded by
+   score, no numbers; labels are quiet words, not pills; no avatars. */
+.lg-row{display:grid;grid-template-columns:20px 1fr auto;column-gap:14px;align-items:center;padding:16px 18px;border-top:1px solid var(--border);position:relative;}
+.lg-row:first-child{border-top:0;}
+.lg-row.is-me{background:rgba(88,204,2,0.06);}
+.lg-row.is-me::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--accent);}
+.lg-rank{font-size:14px;font-weight:800;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;text-align:center;}
+.lg-rank.is-first{color:var(--gold);-webkit-text-fill-color:var(--gold);}
+.lg-mid{min-width:0;display:flex;flex-direction:column;gap:9px;}
+.lg-name-line{display:flex;align-items:baseline;gap:10px;min-width:0;}
+.lg-name{font-size:16px;font-weight:800;letter-spacing:-0.2px;color:var(--t1);-webkit-text-fill-color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto;}
+/* "you" stays for screen readers; the row's accent edge says it to the eye. */
+.lg-you,.lg-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.lg-total{font-size:22px;font-weight:900;letter-spacing:-0.5px;text-align:right;color:var(--t1);-webkit-text-fill-color:var(--t1);font-variant-numeric:tabular-nums;}
+.lg-cells{display:grid;grid-template-columns:repeat(7, 1fr);gap:4px;max-width:168px;}
+.lg-cell{height:5px;border-radius:3px;position:relative;background:color-mix(in srgb, var(--accent) calc(25% + var(--h, 0) * 75%), var(--s2));}
+.lg-cell.is-miss{background:rgba(255,255,255,0.07);}
+.lg-cell.is-future,.lg-cell.is-before{background:rgba(255,255,255,0.03);}
+.lg-cell.is-today{box-shadow:0 0 0 1.5px var(--accent);}
+.lg-chips{display:flex;flex-wrap:nowrap;gap:8px;flex-shrink:0;}
+.lg-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.lg-chip.is-crown{color:var(--gold);-webkit-text-fill-color:var(--gold);}
 .lg-alone{margin:0;padding:12px 14px;border-top:1px solid var(--border);font-size:13px;color:var(--t3);-webkit-text-fill-color:var(--t3);}
 
 /* The one solid button, then quiet links. */
@@ -45,8 +45,9 @@
 .lg-solid{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:15.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .lg-solid:disabled{opacity:0.65;cursor:default;}
 .lg-solid:active{transform:scale(0.98);}
-.lg-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;}
-.lg-link{display:inline-block;padding:4px 0;border:0;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.lg-links{display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:0;}
+.lg-links .lg-link + .lg-link::before{content:"·";margin:0 10px;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.lg-link{display:inline-block;padding:4px 0;border:0;background:none;font-family:inherit;font-size:12.5px;min-height:32px;white-space:nowrap;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);text-decoration:none;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 .lg-link-c{align-self:center;}
 .lg-note{margin:0;text-align:center;font-size:12.5px;font-weight:700;color:var(--grn-soft);-webkit-text-fill-color:var(--grn-soft);}
 .lg-confirm{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;padding:12px;border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--t2);-webkit-text-fill-color:var(--t2);}

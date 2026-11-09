@@ -3,11 +3,10 @@ import { ChevronLeft, Copy, Check, Crown, TrendingDown, Ghost, Trophy, Users, Sh
 import "./league.css";
 import {
   getLeagueTable, createLeague, joinLeague, leaveLeague, leagueInviteUrl, parseLeagueInviteToken,
-  inviteShareText, h2hShareText, finalShareText, whistleLine, rankText, weekOfLabelEnglish, DAY_LETTERS, dayLetters,
+  inviteShareText, h2hShareText, finalShareText, whistleLine, rankText, weekOfLabelEnglish, DAY_LETTERS,
   LABEL_COPY, labelText, errorText, membersBucket, markFinalSeen, clearLeagueInvite, h2hLeagueName,
   saveLeagueUi, readLeagueUi, announceLeagueOpen,
 } from "../lib/leagues.js";
-import { avatarColour } from "../lib/avatarColour.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
@@ -36,11 +35,6 @@ async function shareOrCopy({ text, files }) {
     if (e && (e.name === "AbortError" || /cancel/i.test(e.message || ""))) return null;
   }
   try { await navigator.clipboard.writeText(text); return "copy"; } catch { return null; }
-}
-
-function Avatar({ name }) {
-  const c = avatarColour(null, name || "?");
-  return <span className="lg-av" style={{ background: c.bg, color: c.ink, WebkitTextFillColor: c.ink }} aria-hidden="true">{String(name || "?").trim().charAt(0).toUpperCase()}</span>;
 }
 
 function LabelChip({ label, joint }) {
@@ -140,6 +134,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
 
   const final = !!meta.is_final;
   const joint = rows.filter((r) => r.labels?.includes("crown")).length > 1;
+  const maxDay = Math.max(0, ...rows.flatMap((r) => (r.per_day || []).filter((v) => typeof v === "number")));
   const cell = (r, i) => {
     const day = meta.week_start + i;
     const v = r.per_day?.[i];
@@ -147,8 +142,12 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
     if (day < (r.joined_day ?? -Infinity)) return { cls: "is-before", t: "" };
     // Today is still open: nothing yet is not a miss.
     if (v == null && !final && day === meta.today) return { cls: "is-future", t: "" };
-    if (v == null) return { cls: "is-miss", t: "–" };
-    return { cls: v >= 30 ? "is-big" : "", t: String(v) };
+    if (v == null) return { cls: "is-miss", t: "·" };
+    // 9 Nov 2026 (Alex: "not tidy and premium enough", then "still cluttery"):
+    // each day is a thin bar shaded by its score against the best day on the
+    // table, no number printed. The week reads as one streak; the number stays
+    // for screen readers.
+    return { cls: v >= 30 ? "is-big" : "", t: String(v), h: maxDay ? Math.max(0.12, Math.min(1, v / maxDay)) : 0 };
   };
   const last = data.last_week;
   const solid = final
@@ -168,22 +167,18 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
       </header>
 
       <div className="lg-table" role="table" aria-label={t(final ? "lg.ariaFinal" : "lg.ariaWeek", { name: meta.name })}>
-        <div className="lg-days" aria-hidden="true">
-          <span /><span />
-          <span className="lg-cells">{dayLetters().map((d, i) => <span key={i} className={!final && meta.week_start + i === meta.today ? "is-today" : ""}>{d}</span>)}</span>
-          <span className="lg-days-t">{t("lg.ptsHead")}</span>
-        </div>
         {rows.map((r, idx) => (
           <div key={idx} className={`lg-row${r.is_me ? " is-me" : ""}`} role="row">
-            <span className="lg-rank" role="cell">{rankText(r.rank, r.tied)}</span>
-            <Avatar name={r.name} />
+            <span className={`lg-rank${r.rank === 1 ? " is-first" : ""}`} role="cell">{rankText(r.rank, r.tied)}</span>
             <div className="lg-mid" role="cell">
-              <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
-              {final && r.labels?.length > 0 && (
-                <div className="lg-chips">{r.labels.map((l) => <LabelChip key={l} label={l} joint={joint} />)}</div>
-              )}
+              <div className="lg-name-line">
+                <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
+                {final && r.labels?.length > 0 && (
+                  <div className="lg-chips">{r.labels.map((l) => <LabelChip key={l} label={l} joint={joint} />)}</div>
+                )}
+              </div>
               <div className="lg-cells" aria-label={t("lg.cellsAria")}>
-                {DAY_LETTERS.map((_, i) => { const c = cell(r, i); return <span key={i} className={`lg-cell ${c.cls}${!final && meta.week_start + i === meta.today ? " is-today" : ""}`}>{c.t}</span>; })}
+                {DAY_LETTERS.map((_, i) => { const c = cell(r, i); return <span key={i} className={`lg-cell ${c.cls}${!final && meta.week_start + i === meta.today ? " is-today" : ""}`} style={c.h ? { "--h": c.h.toFixed(2) } : undefined}>{c.t && c.t !== "·" ? <span className="lg-sr">{c.t}</span> : null}</span>; })}
               </div>
             </div>
             <span className="lg-total" role="cell">{r.points}</span>
