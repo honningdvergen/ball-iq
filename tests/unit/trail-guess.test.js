@@ -127,6 +127,19 @@ describe("hint", () => {
     const missing = TRAIL_PLAYERS.filter((p) => !TRAIL_POSITIONS[p.key]);
     expect(missing.map((p) => p.key)).toEqual([]);
   });
+
+  // 9 Nov 2026: about thirty legends carried a default "Midfielder", among
+  // them three goalkeepers. A wrong rescue hint is worse than none.
+  it("gives the famous keepers, defenders and strikers their real position", () => {
+    const want = {
+      Goalkeeper: ["ZOFF", "LEHMANN", "BARTHEZ", "SAR", "BUFFON", "CECH"],
+      Defender: ["NESTA", "MARCELO", "THURAM", "FERDINAND", "DESAILLY", "GALLAS", "LIZARAZU", "ZANETTI"],
+      Forward: ["SHEARER", "LINEKER", "SHEVCHENKO", "PIERO", "BERGKAMP", "MULLER", "RUMMENIGGE", "VOLLER", "SOLSKJAER", "SCHILLACI", "FONTAINE", "NATALE", "MILITO", "KEEGAN", "STEFANO"],
+    };
+    for (const [pos, keys] of Object.entries(want)) {
+      for (const k of keys) expect([k, TRAIL_POSITIONS[k]]).toEqual([k, pos]);
+    }
+  });
 });
 
 describe("share text", () => {
