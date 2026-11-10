@@ -50,6 +50,7 @@ import { CLUB_INDEX } from './marketing/clubIndex.js';
 import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
+import { dailyRunAnswered } from './lib/dailyRun.js';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
@@ -5724,20 +5725,23 @@ function AppInner() {
     try {
       const ws = readWordleTodayStatus();
       if (ws.kind === "ready" || ws.kind === "in-progress") {
-        nextUp.push({ ...(ws.kind === "in-progress" ? { key: "footle", name: tl("dd.contToday", { g: "Footle" }) } : today("footle", "Footle")),
+        nextUp.push({ ...(ws.kind === "in-progress" ? { key: "footle", name: tl("dd.contToday", { g: "Footle" }), open: true } : today("footle", "Footle")),
           icon: <span className="fh-tile fh-tile-green" style={{ "--fh-tile": "22px", borderRadius: 6 }} aria-hidden="true">F</span>,
           onTap: () => setScreen("wordle") });
       }
     } catch {}
-    if (!dailyDone) nextUp.push({ ...today("daily7", "Daily 7"), icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
+    // `open`: started and left, so the card's button says Continue as Home's row does (10 Nov 2026).
+    let d7Open = false; try { d7Open = dailyRunAnswered(dateToYMD(new Date())) > 0; } catch {}
+    if (!dailyDone) nextUp.push({ ...today("daily7", "Daily 7"), open: d7Open, icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
     try {
       if (getTrailAnswer() && !["won", "lost"].includes(loadTrailDay()?.status)) {
         nextUp.push({ ...today("trail", "Transfer Trail"), icon: <Route size={18} strokeWidth={2.2} />, onTap: () => setScreen("trail") });
       }
     } catch {}
     try {
-      if (isTop10Live() && loadTop10Day(dateToYMD(new Date()))?.status !== "done") {
-        nextUp.push({ ...today("top10", "Top 10"), icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
+      const t10 = isTop10Live() ? loadTop10Day(dateToYMD(new Date())) : null;
+      if (isTop10Live() && t10?.status !== "done") {
+        nextUp.push({ ...today("top10", "Top 10"), open: (t10?.picks?.length || 0) > 0, icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
       }
     } catch {}
     try {

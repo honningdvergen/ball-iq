@@ -47,7 +47,7 @@ import "./dailyDone.css";
 //   onShare     async () => void   (host builds the text / card)
 //   waText      web-only WhatsApp fallback text (omit on native)
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
-//   nextUp      [{ key, name, onTap? , href? }] — today's other unplayed dailies
+//   nextUp      [{ key, name, onTap? , href?, open? }] — today's other unplayed dailies (open: started, so the button says Continue)
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
 //   stump       () => void | null — "Stump a mate" under Share (the app's k-factor lever)
 //   stitch      () => void | null — "Stitch up a mate" under Share (Trail, web only)
@@ -446,7 +446,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
                     <span className="dd-up-name">{first.name}</span>
                     <span className="dd-up-hook">{lostHere ? <><span className="dd-up-seg">{t("dd.winBack").trim()}</span>{" "}</> : ""}{HOOK[modeOf(first.key)] ? <span className="dd-up-seg">{t(`dd.hook.${modeOf(first.key)}`)}</span> : ""}</span>
                   </span>
-                  <span className="dd-up-go">{t("common.play")}</span>
+                  <span className="dd-up-go">{t(first.open ? "home.row.continue" : "common.play")}</span>
                 </span>
               </>
             )) : keys.length > 0 && doneN >= keys.length ? (
