@@ -1,4 +1,4 @@
-// colourMath.js — painting a colour: tint / lift / onColour / contrast / inkOn.
+// colourMath.js — painting a colour: tint / lift / onColour / crestPaint / contrast / inkOn.
 //
 // ⚠️ SPLIT FROM clubColour.js ON 2026-10-16 so Home does not carry club data.
 // The Ball IQ card (lib/ballIqCard.js, on Home's eager path) needs only this
@@ -85,6 +85,29 @@ const lum = (hex) => {
   return 0.2126 * f((n >> 16) & 255) + 0.7152 * f((n >> 8) & 255) + 0.0722 * f(n & 255);
 };
 export const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+
+// ── A club badge you can READ ────────────────────────────────────────────────
+// onColour() alone put white letters on sky blue, orange and pink (2.3 to 3 to 1,
+// 25 of the 103 club colours on 10 Nov 2026), and the accessibility gate in CI
+// went red on every day whose trail held one of those clubs. crestPaint() gives
+// the badge BOTH its colours: white letters stay wherever white is close to
+// readable (reds, greens, navy), dark letters take over on the light colours,
+// and the background moves the last few percent it takes to reach 4.5 to 1.
+const CREST_DARK = "#14181F";
+const mixHex = (hex, to, k) => {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => Math.round(c + (to - c) * k));
+  return `#${ch.map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+};
+export function crestPaint(hex, min = 4.5) {
+  if (!/^#[0-9a-f]{6}$/i.test(hex || "")) return { bg: hex, ink: "#FFFFFF" };
+  const ink = contrast(hex, "#FFFFFF") >= 3.6 ? "#FFFFFF" : CREST_DARK;
+  const to = ink === "#FFFFFF" ? 0 : 255;
+  let bg = hex;
+  for (let k = 0.03; contrast(bg, ink) < min && k <= 0.6; k += 0.03) bg = mixHex(hex, to, k);
+  return { bg, ink };
+}
+
 export function inkOn(hex, bg = '#13151C', min = 4.5) {
   if (!/^#[0-9a-f]{6}$/i.test(hex || '')) return hex;
   if (contrast(hex, bg) >= min) return hex;
