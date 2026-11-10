@@ -903,7 +903,11 @@ export function cardTier(overall) {
 // (api/og.js imports these — keep this module the single source of truth).
 export const CARD_TIERS = {
   gold:   { bg: "linear-gradient(160deg,#2a2410 0%,#0B0C10 100%)", accent: "#FFC107", text: "#FFF6E0", label: "GOLD" },
-  silver: { bg: "linear-gradient(160deg,#1b212a 0%,#080a0f 100%)", accent: "#C7D2E0", text: "#EDF1F7", label: "SILVER" },
+  // Silver is a material of its own (10 Nov 2026). It was grey text on a
+  // near-black card, the same look as an unrated one; Alex, seeing a mate's 72
+  // beside his own gold 75: "silver looked more bland than gold". Cool steel:
+  // a blue-lit ground and a brighter face, so the tier reads as earned.
+  silver: { bg: "linear-gradient(160deg,#22324a 0%,#0a0d14 100%)", accent: "#D6E4F5", text: "#EDF3FB", label: "SILVER" },
   bronze: { bg: "linear-gradient(160deg,#2a1a0e 0%,#0b0705 100%)", accent: "#D08A4E", text: "#F6E7D8", label: "BRONZE" },
 };
 

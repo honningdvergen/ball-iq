@@ -76,7 +76,15 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           as one composition rather than two separately-centred blocks. */}
       <div style={{ position: "relative", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 3.4, color: pal.text, opacity: 0.5 }}>BALL IQ</div>
+          {/* The tier rides on the label line, "BALL IQ · GOLD" (10 Nov 2026). As a
+              pill beside the numeral it looked stuck on (Alex: "silver and gold
+              looks a bit awkward like that"); the card's colour already says the
+              tier, the word is kept for saying aloud and for eyes that cannot
+              tell the tones apart. */}
+          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 3.4, color: pal.text }}>
+            <span style={{ opacity: 0.5 }}>BALL IQ</span>
+            {played ? <><span style={{ opacity: 0.35 }}> · </span><span style={{ color: pal.accent }}>{tierName(card.tier)}</span></> : null}
+          </div>
           {/* ⚠️ NO RATING BEFORE THE FIRST GAME. A profile with zero games was
               shown "64 · OVERALL · PROSPECT" as the largest number on the
               screen, directly above "No stats yet — play your first game". And
@@ -90,9 +98,12 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               {/* Negative tracking: at this size the default gap between two
                   digits opens a hole in the middle of the card's loudest
                   element. Tightening it makes "87" one object. */}
+              {/* NOTHING UNDER THE NUMBER (10 Nov 2026). Two more lines of spaced
+                  capitals sat here, "OVERALL" and the tier, so the top of the
+                  card was three labels round one number. Alex: "does overall
+                  need to be there? it is kind of obvious". "BALL IQ" above
+                  names the number and now carries the tier. Two lines shorter. */}
               <div style={{ fontSize: 86, fontWeight: 900, color: pal.accent, lineHeight: 1.02, letterSpacing: -4, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{card.overall}</div>
-              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text, opacity: 0.55, marginTop: 2 }}>{t("home.rail.overall")}</div>
-              <div style={{ fontSize: 12, fontWeight: 900, letterSpacing: 3, color: pal.accent, marginTop: 10 }}>{tierName(card.tier)}</div>
             </>
           ) : (
             <>
@@ -104,7 +115,6 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               {/* Still read as a skeleton bar on the simulator on 27 Oct, at
                   58px too. A question mark says "not known yet" at any size. */}
               <div style={{ fontSize: 72, fontWeight: 900, color: pal.text, opacity: 0.3, lineHeight: 88 / 72, marginTop: 6 }} aria-label={t("cf.noRating")}>?</div>
-              <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text, opacity: 0.55, marginTop: 2 }}>{t("home.rail.overall")}</div>
               {/* "UNRATED" over six blank dashes is the first thing a new
                   player sees on their OWN profile, and it reads as broken
                   rather than as something to earn. The card is the app's

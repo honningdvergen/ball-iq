@@ -1034,7 +1034,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             accuracyLabel(fCard, { totalCorrect, totalAnswered })
           }</div><div className="ds-eyebrow st-key">{t("home.rail.accuracy")}</div></div>
           {friendStats.bestIQ > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--accent)"}}>{friendStats.bestIQ}</div><div className="ds-eyebrow st-key">{t("pf.bestIq")}</div></div>}
-          {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">{"⚡ " + t("home.mode.hotstreak")}</div></div>}
+          {friendStats.bestHotStreak > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--gold)"}}>{friendStats.bestHotStreak}</div><div className="ds-eyebrow st-key">{t("home.mode.hotstreak")}</div></div>}
           {friendStats.bestTrueFalse > 0 && <div className="stat-tile"><div className="st-val" style={{color:"var(--t1)"}}>{friendStats.bestTrueFalse}<span style={{fontSize:12,color:"var(--t3)"}}>/20</span></div><div className="ds-eyebrow st-key">{t("pf.tfBest")}</div></div>}
         </div>
       );
