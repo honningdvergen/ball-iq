@@ -72,6 +72,19 @@ export default function LeagueScreen({ leagueId, onBack, track, ...rest }) {
     return () => { alive = false; };
   }, [leagueId, track]);
 
+  // Back from another app (the invite was just sent, a mate has just joined):
+  // read the table again, quietly. Until 10 Nov 2026 it stayed as it was first
+  // drawn, "Just you so far" with two in the league, until the screen was reopened.
+  useEffect(() => {
+    let alive = true;
+    const onVis = () => {
+      if (document.visibilityState !== "visible") return;
+      getLeagueTable(leagueId).then((t) => { if (alive && t && t.meta) setData(t); }).catch(() => {});
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { alive = false; document.removeEventListener("visibilitychange", onVis); };
+  }, [leagueId]);
+
   if (state === "loading") {
     return <div className="lg-screen" aria-busy="true"><div className="lg-top"><button type="button" className="lg-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div><div className="lg-skel" /></div>;
   }

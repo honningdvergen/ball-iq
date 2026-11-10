@@ -130,3 +130,16 @@ describe('the results panel', () => {
     expect(DD).not.toMatch(/isNativeShell/);
   });
 });
+
+describe('the open table keeps up (10 Nov 2026)', () => {
+  it('reads the table again when the app comes back to the foreground, without a loading flash', () => {
+    const src = read('../../src/screens/LeagueScreen.jsx');
+    const m = src.match(/const onVis = \(\) => \{[\s\S]*?\};\n/);
+    expect(m, 'a visibility handler in LeagueScreen').toBeTruthy();
+    expect(m[0]).toContain('document.visibilityState !== "visible"');
+    expect(m[0]).toContain('getLeagueTable(leagueId)');
+    expect(m[0]).toContain('setData(t)');
+    expect(m[0]).not.toContain('setState("loading")');
+    expect(src).toContain('document.removeEventListener("visibilitychange", onVis)');
+  });
+});
