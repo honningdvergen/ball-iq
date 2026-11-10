@@ -9,6 +9,8 @@ import {
 } from "../lib/leagues.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
+import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
+import { isNativeShell } from "../lib/leagueResults.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
 
@@ -24,7 +26,10 @@ import { t, useT } from "../i18n/index.js";
 // rest). How points work: lg.help.<n> and lg.help.<n>.d.
 const POINTS_HELP = [1, 2, 3, 4];
 
-const isMobileWeb = () => { try { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || ""); } catch { return false; } };
+// A phone BROWSER, not the app: the shell has a phone user agent too, and there
+// the table told the player "points arrive in the next update" beside points
+// that had just arrived (10 Nov 2026, simulator walk).
+const isMobileWeb = () => { try { return !isNativeShell() && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || ""); } catch { return false; } };
 
 // `text` carries the link already (the share lines end with it).
 async function shareOrCopy({ text, files }) {
@@ -232,9 +237,15 @@ function Sheet({ label, onClose, full = false, children }) {
   const ref = useRef(null);
   // Focus trap, Escape and the back button, as every other sheet in the app.
   useModalA11y({ isOpen: true, onClose, ref });
+  // 10 Nov 2026 (simulator walk): the first time these sheets ran in the app,
+  // the name field took focus and the keyboard covered the whole sheet. The
+  // scrim is position:fixed and the native shell never resizes the viewport
+  // (Keyboard "resize":"none"), so a bottom-anchored sheet sits UNDER the
+  // keyboard. Lift it by the keyboard's height, and cap it to what is left.
+  const { kbInset } = useKeyboardAwareInput();
   return (
-    <div className={`lg-scrim${full ? " is-full" : ""}`} onClick={onClose}>
-      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} className="lg-sheet" onClick={(e) => e.stopPropagation()}>
+    <div className={`lg-scrim${full ? " is-full" : ""}`} onClick={onClose} style={kbInset ? { paddingBottom: kbInset } : undefined}>
+      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} className="lg-sheet" onClick={(e) => e.stopPropagation()} style={kbInset && !full ? { maxHeight: `calc(92vh - ${kbInset}px)` } : undefined}>
         {children}
       </div>
     </div>
