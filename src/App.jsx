@@ -8545,6 +8545,9 @@ function AppInner() {
               key={mode}
               questions={questions}
               mode={mode}
+              // Today's Daily 7 only (not an archive day): the engine saves and
+              // resumes the run under this day (10 Nov 2026, lib/dailyRun.js).
+              dailyDay={mode === "daily" && dateToYMD(activeDailyDate || new Date()) === dateToYMD(new Date()) ? dateToYMD(new Date()) : undefined}
               timerEnabled={settings.timer !== false}
               timerSecondsOverride={activeClub ? 15 : undefined}
               soundEnabled={settings.sound === true}

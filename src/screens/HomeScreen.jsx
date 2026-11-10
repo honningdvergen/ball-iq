@@ -11,6 +11,7 @@ import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD, msToNextLocalMidnight } from "../lib/date.js";
+import { dailyRunAnswered } from "../lib/dailyRun.js";
 import { countdownText, levelName } from "../i18n/names.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
@@ -428,6 +429,9 @@ function HomeScreenImpl({
         const mysteryRes = loadMysteryResult(new Date());
         const mysteryDone = !!(mysteryRes?.won || mysteryRes?.gaveUp);
         const mysteryGuesses = mysteryDone ? 0 : (mysteryRes?.guesses?.length || 0);
+        // 10 Nov 2026: an unfinished Daily 7 is kept (lib/dailyRun.js), so the
+        // row says Continue with the count, like Footle's.
+        const dailyAnswered = dailyDone ? 0 : dailyRunAnswered(dateToYMD(new Date()));
         const top10Day = top10Live ? loadTop10Day(dateToYMD(new Date())) : null;
         const top10Done = top10Day?.status === "done";
         const top10Found = top10Day?.score || 0;
@@ -486,10 +490,14 @@ function HomeScreenImpl({
                 },
                 {
                   key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
-                  done: dailyDone,
-                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` }) : t("home.daily7.sub"),
+                  done: dailyDone, open: dailyAnswered > 0,
+                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` })
+                    : dailyAnswered > 0 ? withStrong(t("home.daily7.inProgress"), { n: dailyAnswered })
+                    : t("home.daily7.sub"),
                   onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
-                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore }) : t("home.daily7.ariaPlay"),
+                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore })
+                    : dailyAnswered > 0 ? t("home.daily7.ariaOpen", { n: dailyAnswered })
+                    : t("home.daily7.ariaPlay"),
                 },
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,

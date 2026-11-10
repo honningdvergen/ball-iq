@@ -132,6 +132,8 @@ const STEP2_EN = {
   'home.footle.start': "Start here · six guesses",
   'home.daily7.sub': "7 questions · ~3 min",
   'home.daily7.ariaPlay': "Play Daily 7",
+  'home.daily7.inProgress': "In progress · {n} of 7",
+  'home.daily7.ariaOpen': "Today's Daily 7: {n} of 7 answered — continue",
   'home.daily7.ariaDone': "Daily 7 complete: {score} out of 7",
   'home.trail.sub': "Whose career is this?",
   'home.trail.doneSub': "Done · today's player",

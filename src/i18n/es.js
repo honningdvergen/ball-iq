@@ -79,6 +79,8 @@ export default {
   // bans a digit before the non-English noun (it cannot tell format from inventory).
   'home.daily7.sub': 'Siete preguntas · ~3 min',
   'home.daily7.ariaPlay': 'Jugar al Daily 7',
+  'home.daily7.inProgress': 'En juego · {n} de 7',
+  'home.daily7.ariaOpen': 'Daily 7 de hoy: {n} de 7 respondidas. Seguir',
   'home.daily7.ariaDone': 'Daily 7 completado: {score} de 7',
   'home.trail.sub': '¿De quién es esta carrera?',
   'home.trail.doneSub': 'Hecho · el jugador de hoy',
