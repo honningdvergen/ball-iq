@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Flag } from "lucide-react";
+import { Check, Flag } from "lucide-react";
 import ReportButton from "./ReportButton.jsx";
 import { bumpUsage } from "../lib/usageCounters.js";
 import { useT } from "../i18n/index.js";
@@ -23,33 +23,40 @@ export function WrongAnswersReview({ wrongAnswers, onReport, mode }) {
   if (!wrongAnswers || wrongAnswers.length === 0) return null;
   return (
     <div style={{marginTop:24}}>
-      <div className="ds-eyebrow" style={{textAlign:"center", marginBottom:10}}>
-        {rich(t("rs.reviewMissed"), { n: wrongAnswers.length, w: t("rs.answers", { count: wrongAnswers.length }) })}
-      </div>
+      {/* TIDY PASS (10 Nov 2026). Alex on the old list: "explanations are
+          correct but they are presented so untidy". Each miss was five pieces
+          on four left edges: the question, a red line, a green line, an
+          indented explanation behind a rule and a boxed report button. Now one
+          left edge: the right answer leads and is the only colour, the wrong
+          pick is a grey "You said", the explanation is plain text, and the
+          report control is a flag in the corner. */}
+      <h3 className="wr-head">{rich(t("rs.reviewMissed"), { n: wrongAnswers.length, w: t("rs.answers", { count: wrongAnswers.length }) })}</h3>
       <div className="wrong-review">
         {wrongAnswers.map((w, i) => {
           // Shown in the player's language; the report still files the English.
           const v = loc.missed(w);
           return (
           <div key={i} className="wr-item">
-            <div className="wr-q">{v.q}</div>
-            {v.user && (
-              <div className="wr-user">
-                <span className="wr-x">✗</span>{v.user}
-              </div>
-            )}
-            <div className="wr-a"><span className="wr-tick">✓</span>{v.correct}</div>
-            {v.hint && <div className="wr-why">{v.hint}</div>}
+            <span className="wr-n" aria-hidden="true">{i + 1}</span>
+            <div className="wr-body">
+              <div className="wr-q">{v.q}</div>
+              <div className="wr-a">{v.correct}</div>
+              {v.user && <div className="wr-user">{t("rs.youSaid", { a: v.user })}</div>}
+              {v.hint && <div className="wr-why">{v.hint}</div>}
+            </div>
             {onReport && (
               <ReportButton
                 key={w.id != null ? String(w.id) : w.q}
                 onReport={onReport}
-                idle={<><Flag size={13} strokeWidth={2.4} aria-hidden="true" />{" " + t("rs.looksWrong")}</>}
+                idle={<><Flag size={15} strokeWidth={2.2} aria-hidden="true" /><span className="wr-flag-t">{t("rs.looksWrong")}</span></>}
+                sending={<><Flag size={15} strokeWidth={2.2} aria-hidden="true" /><span className="wr-flag-t">{t("report.sending")}</span></>}
+                done={<><Check size={16} strokeWidth={2.6} aria-hidden="true" /><span className="wr-flag-t">{t("report.done")}</span></>}
                 info={{ id: w.id, q: w.q, picked: w.user ?? null, correct: w.correct ?? null, mode }}
+                idleColor="var(--t3)"
                 style={{
-                  marginTop:10, padding:"7px 11px", minHeight:36,
-                  background:"none", border:"1px solid var(--border)", borderRadius:9,
-                  fontSize:12, fontWeight:700,
+                  position:"relative", flex:"none", width:36, height:36, margin:"-6px -8px 0 0", padding:0,
+                  display:"inline-flex", alignItems:"center", justifyContent:"center",
+                  background:"none", border:"none", borderRadius:10,
                 }}
               />
             )}

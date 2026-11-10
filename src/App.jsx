@@ -8633,7 +8633,7 @@ function AppInner() {
             onReport={reportQuestion}
             askedQuestions={questions}
             dailyDone={dailyDoneServices}
-            photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
+            photoNudge={(user?.id && !isAnonUser && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div style={{width:44,height:44,flexShrink:0}}>
                   <ProfilePic value={authProfile?.avatar_id} url={authProfile?.avatar_url} name={authProfile?.username} />
@@ -8644,7 +8644,7 @@ function AppInner() {
                 </div>
                 <button
                   onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-tap'); setTab('profile'); setScreen('home'); }}
-                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+                  style={{flexShrink:0,padding:"8px 14px",borderRadius:999,background:"var(--s2)",border:"1px solid var(--border2)",color:"var(--t1)",WebkitTextFillColor:"var(--t1)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
                 >
                   {t("pn.add")}
                 </button>

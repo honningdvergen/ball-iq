@@ -20,9 +20,9 @@
 .dd-share:active{transform:scale(0.98);}
 /* The league offer: the one quiet pill under the share (7 Nov 2026). Hairline
    and surface only; the share above it stays the single solid fill. */
-.dd-league{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:42px;padding:10px 16px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:14px;font-weight:800;letter-spacing:-0.1px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;margin-top:-4px;}
+.dd-league{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:6px 13px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-league:active{transform:scale(0.98);}
-.dd-share-alts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-top:-2px;}
+.dd-share-alts{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 18px;}
 .dd-share-alt{display:inline-block;padding:0;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 /* How everyone did: one bar per bucket, yours in green. */
 .dd-dist{display:flex;flex-direction:column;gap:6px;}
@@ -128,3 +128,12 @@
 @media (prefers-reduced-motion: reduce){.dd-promo{animation:none;}}
 .dd-remind{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin-top:3px;padding:3px 0;min-height:28px;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:800;color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 .dd-remind:disabled{opacity:0.6;}
+
+/* Calm pass, 10 Nov 2026: the reminder bell, the day's progress on the Next up card, the crowd on one line. */
+.dd-bell{flex:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.dd-bell:disabled{opacity:0.6;}
+.dd-up-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.dd-up-top .dd-day-bar{flex:0 0 72px;}
+.dd-dist-tog{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:40px;padding:0;border:0;background:none;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.dd-dist-more{flex:none;display:inline-flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.dd-dist-tog[aria-expanded="true"] .dd-dist-more svg{transform:rotate(180deg);}

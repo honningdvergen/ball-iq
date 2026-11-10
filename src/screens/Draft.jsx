@@ -231,7 +231,11 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
         <div className="dr-intro">
           <h2>{t("dr.introH")}</h2>
           <ol>
-            {[1, 2, 3, 4].map((i) => <li key={i}>{rich(t(`dr.i${i}`), { b: <b>{t(`dr.i${i}b`)}</b> })}</li>)}
+            {/* Four EQUAL rows: a title and one short line each (10 Nov 2026). They
+                were sentences of two and three lines with a bold lead-in that ran
+                into the grey text, so no two rows had the same shape. Alex: "the
+                4 point list just looks untidy". */}
+            {[1, 2, 3, 4].map((i) => <li key={i}><b>{t(`dr.i${i}b`)}</b><span>{t(`dr.i${i}`)}</span></li>)}
           </ol>
           <label className="dr-hard">
             <input type="checkbox" checked={g.hard} onChange={(e) => { const hard = e.target.checked; update((cur) => ({ ...cur, hard })); }} />
@@ -460,7 +464,7 @@ function Season({ shareCard, result, number, picks, shown, played, hard, isPract
               <div key={p.id} className="dr-xi-row">
                 <span className="dr-xi-pos">{t(`dr.ab.${p.p}`)}</span>
                 <span className="dr-xi-who"><b>{p.n}</b><i>{t("dr.xiFinished", { season: sq.season, club: sq.club, pos: ord(sq.pos) })}</i></span>
-                <span className="dr-xi-num">{games(p, sq)}<small>{t("dr.ofSmall", { total: GAMES })}</small>{p.p !== "GK" && <> · {p.g}<small>{t("dr.goalSmall", { count: p.g })}</small></>}</span>
+                <span className="dr-xi-num"><span>{games(p, sq)}<small>{t("dr.ofSmall", { total: GAMES })}</small></span><span>{p.p !== "GK" && <>{p.g}<small>{t("dr.goalSmall", { count: p.g })}</small></>}</span></span>
               </div>
             ))}
           </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, ShieldCheck, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users } from "lucide-react";
+import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users } from "lucide-react";
 import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
@@ -196,6 +196,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const myScore = game === "top10" ? (bucket || 0) : (won ? bucket || 0 : 0);
   const rival = useMemo(() => (canChallenge ? readChallenge(game, edition) : null), [canChallenge, game, edition]);
   const [challengeState, setChallengeState] = useState("");
+  // LAST of the state hooks on purpose: the render tests address the others by their order.
+  const [distOpen, setDistOpen] = useState(false);
   // The league offer. With a head-to-head on the panel it is "Make it a
   // league?"; otherwise, for a player who is not in one, "Start a league with
   // your mates" (29 Oct 2026: in 13 days on the web nobody made a league, and
@@ -309,16 +311,16 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               : streakN >= 1 ? rich(t("dd.tomorrow"), { n: <strong className="dd-num">{streakN + 1}</strong>, ko: <strong className="dd-num">{ko}</strong> })
               : rich(t("dd.newIn"), { ko: <strong className="dd-num">{ko}</strong> })}
           </div>
-          {/* THE REMINDER LIVES ON THE STREAK IT PROTECTS (16 Oct 2026). As a row in
-              the footer it drew 12 taps in 14 days against ~1,774 finish views. Here
-              it is a third line of the streak itself: a pill beside the title
-              wrapped "12-day daily streak" onto three lines at 375px. */}
-          {remind && remind.state === "off" && !isArchive && (
-            <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
-              <Bell size={13} strokeWidth={2.4} aria-hidden="true" />{rich(t("dd.remind"), { h: reminderHourLabel() })}
-            </button>
-          )}
         </div>
+        {/* THE REMINDER IS A BELL ON THE STREAK ROW (calm pass, 10 Nov 2026). It
+            was a third line under the streak ("Remind me at 19:00"), which made
+            the block three lines tall on every finish. The bell keeps it on the
+            streak it protects; once set it becomes the hour pill below. */}
+        {remind && remind.state === "off" && !isArchive && (
+          <button type="button" className="dd-bell" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
+            <Bell size={17} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        )}
         {remind && remind.state === "on" && (
           <span className="dd-pill is-set" aria-label={t("dd.remindSet", { h: reminderHourLabel() })}>
             {/* A bell, not a tick: a tick and "19:00" beside the streak said nothing about
@@ -377,18 +379,19 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
-      {/* The league offer (7 Nov 2026): as a 12.5px underlined line among the
-          alts it was shown 178 times to 48 web visitors in nine days and tapped
-          by none (league-offer-shown v league-make-tap). It is now the one
-          quiet pill under the share: full width, hairline, no fill, so the
-          share button stays the only solid thing on the panel. */}
-      {leagueOffer && (
-        <button type="button" className="dd-league" onClick={makeLeague}>
-          <Users size={17} strokeWidth={2.4} aria-hidden="true" /> {t(rival ? "dd.league" : "dd.leagueStart")}
-        </button>
-      )}
-      {(waText || stump || stitch || canChallenge) && (
+      {(leagueOffer || waText || stump || stitch || canChallenge) && (
         <div className="dd-share-alts">
+          {/* The league offer. 7 Nov 2026: as a 12.5px underlined line it was
+              shown 178 times to 48 web visitors and tapped by none, so it became
+              a full-width pill. 10 Nov: Alex on the panel, "cluttery and busy";
+              two full-width bars stacked under each other was part of it. It
+              stays a hairline BUTTON (not a link again), but compact and first
+              in this row, so Share is the only full-width thing. */}
+          {leagueOffer && (
+            <button type="button" className="dd-league" onClick={makeLeague}>
+              <Users size={15} strokeWidth={2.4} aria-hidden="true" /> {t(rival ? "dd.league" : "dd.leagueShort")}
+            </button>
+          )}
           {rival && (
             <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : "dd.shareResult")}</button>
           )}
@@ -433,13 +436,23 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           const c = MODE_ACCENT[modeOf(n.key)] || "var(--accent)";
           return <T key={n.key} className={cls} style={{ "--dd-rgb": rgb, "--dd-c": c }} href={n.href} onClick={() => go(n)} {...(n.href ? {} : { type: "button" })}>{inner}</T>;
         };
+        // The day's progress rides on the card's top line (10 Nov 2026). It was
+        // its own row under the card, so a clean sweep read "All 4 done today"
+        // and, right under it, "4 of 4 done today".
+        const dayBar = keys.length > 1 ? (
+          <span className="dd-day-bar" role="img" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
+            {keys.map((k) => (
+              <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
+            ))}
+          </span>
+        ) : null;
         return (
           <>
             <div className="dd-hr" aria-hidden="true" />
             <div {...g()}>
             {first ? card(first, "dd-up", (
               <>
-                <span className="dd-up-k">{t("dd.nextUp")}</span>
+                <span className="dd-up-top"><span className="dd-up-k">{t("dd.nextUp")}{keys.length > 1 ? <> · {rich(t("dd.dayDoneShort"), { n: doneN, total: keys.length })}</> : null}</span>{dayBar}</span>
                 <span className="dd-up-main">
                   <span className="dd-well" aria-hidden="true">{first.icon || DEFAULT_ICON[modeOf(first.key)] || null}</span>
                   <span className="dd-up-body">
@@ -451,21 +464,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               </>
             )) : keys.length > 0 && doneN >= keys.length ? (
               <div className="dd-up is-sweep">
-                <span className="dd-up-k">{t("dd.sweep")}</span>
+                <span className="dd-up-top"><span className="dd-up-k">{t("dd.sweep")}</span>{dayBar}</span>
                 <span className="dd-up-name">{rich(t("dd.allDone"), { n: keys.length })}</span>
               </div>
             ) : null}
-            {keys.length > 1 && (
-              <div className="dd-day" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
-                <span className="dd-day-bar" aria-hidden="true">
-                  {keys.map((k) => (
-                    <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
-                  ))}
-                </span>
-                {/* The countdown lives on the streak line at the top; once is enough. */}
-                <span className="dd-day-tx">{rich(t("dd.dayDone"), { n: <strong className="dd-num">{rich(t("dd.nOf"), { n: doneN, total: keys.length })}</strong> })}</span>
-              </div>
-            )}
             {rest.length > 0 && (
               <div className="dd-up-more">
                 {rest.map((n) => card(n, "dd-chip", (
@@ -516,48 +518,47 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           here, and a small room is a reason to leave. Below SHOW_COUNTS_FROM
           results the panel speaks only in percentages (which are just as true);
           above it the real numbers come back, because then they are an asset. */}
+      {/* ONE LINE, BARS ON A TAP (calm pass, 10 Nov 2026). The block was a
+          title, up to eleven bars and a summary on every finish; Alex: "looks
+          cluttery and busy". The summary line is the answer most people want
+          ("Average 3.0/7"); the bars open under it. The frame while loading is
+          the same one line, so nothing moves when the numbers land. */}
       {!distReady ? (
-        // The frame: same head, same rows, same one-line sub, no numbers.
         <div className="dd-dist is-loading" aria-busy="true" aria-label={t("dd.distLoading")}>
-          <div className="dd-dist-head"><div className="dd-title">{t("dd.dist")}</div></div>
-          <div className="dd-bars" aria-hidden="true">
-            {bars.map((r) => (
-              <React.Fragment key={r.k}>
-                <span className="dd-bar-k">{r.label}</span>
-                <span className="dd-bar"><i style={{ width: 0 }} /></span>
-                <span className="dd-bar-v">{"\u00a0"}</span>
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="dd-sub" aria-hidden="true">{"\u00a0"}</div>
+          <div className="dd-dist-tog" aria-hidden="true"><span className="dd-sub">{"\u00a0"}</span></div>
         </div>
       ) : summary && (
         <div className={`dd-dist${yesterday ? " is-yesterday" : ""}`} aria-label={yesterday ? yLabel : showCounts ? t("dd.distN", { n: summary.n }) : t("dd.dist")}>
-          <div className="dd-dist-head">
-            <div className="dd-title">{yesterday ? yLabel : t("dd.dist")}</div>
-            {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{rich(t("dd.played"), { n: summary.n.toLocaleString(fmtLocale()) })}</div>
-              : !yesterday ? <div className="dd-dist-cap">{t("dd.early")}</div> : null}
-          </div>
-          <div className="dd-bars">
-            {bars.map((r) => (
-              <React.Fragment key={r.k}>
-                <span className={`dd-bar-k${r.mine ? " is-mine" : ""}`}>{r.label}</span>
-                <span className={`dd-bar${r.mine ? " is-mine" : ""}`} role="img" aria-label={`${r.label}: ${barValue(r)}`}><i style={{ width: `${r.pct}%` }} /></span>
-                <span className={`dd-bar-v${r.mine ? " is-mine" : ""}`}>{barValue(r)}</span>
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="dd-sub">
-            {yesterday
-              // One line, like today's (the frame reserves one): two lines here
-              // moved everything under the block by a line when it landed.
-              ? rich(t("dd.earlyToday"), { x: summary.outOf != null
-                ? rich(t("dd.ydayAvg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong> })
-                : rich(t("dd.ydaySolved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong> }) })
-              : summary.outOf != null
-                ? rich(t("dd.avg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })
-                : rich(t("dd.solved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })}
-          </div>
+          <button type="button" className="dd-dist-tog" aria-expanded={distOpen} onClick={() => { setDistOpen((v) => !v); if (!distOpen) track?.("dd-dist-open", { game }); }}>
+            <span className="dd-sub">
+              {yesterday
+                ? rich(t("dd.earlyToday"), { x: summary.outOf != null
+                  ? rich(t("dd.ydayAvg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong> })
+                  : rich(t("dd.ydaySolved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong> }) })
+                : summary.outOf != null
+                  ? rich(t("dd.avg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })
+                  : rich(t("dd.solved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })}
+            </span>
+            <span className="dd-dist-more">{t("dd.distShort")}<ChevronDown size={15} strokeWidth={2.4} aria-hidden="true" /></span>
+          </button>
+          {distOpen && (
+            <>
+              <div className="dd-dist-head">
+                <div className="dd-title">{yesterday ? yLabel : t("dd.dist")}</div>
+                {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{rich(t("dd.played"), { n: summary.n.toLocaleString(fmtLocale()) })}</div>
+                  : !yesterday ? <div className="dd-dist-cap">{t("dd.early")}</div> : null}
+              </div>
+              <div className="dd-bars">
+                {bars.map((r) => (
+                  <React.Fragment key={r.k}>
+                    <span className={`dd-bar-k${r.mine ? " is-mine" : ""}`}>{r.label}</span>
+                    <span className={`dd-bar${r.mine ? " is-mine" : ""}`} role="img" aria-label={`${r.label}: ${barValue(r)}`}><i style={{ width: `${r.pct}%` }} /></span>
+                    <span className={`dd-bar-v${r.mine ? " is-mine" : ""}`}>{barValue(r)}</span>
+                  </React.Fragment>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
 

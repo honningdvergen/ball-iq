@@ -216,12 +216,12 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the finish panel', () => {
     const won = unq(now['dd: footle won in 3, everything on, loading']);
-    for (const s of ['Mañana serán <', '> · nuevos retos en <', ' Avísame a las 19:00', 'Asciendes a <strong>Regional<', ' Compartir resultado<', '>Reta a un colega<', '>Ahora toca<', '>Siete preguntas · 3 min<', '>Jugar<', '> hechos hoy<', '>Cómo le fue a todos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
+    for (const s of ['Mañana serán <', '> · nuevos retos en <', 'aria-label="Activar un aviso diario a las 19:00"', 'Asciendes a <strong>Regional<', ' Compartir resultado<', '>Reta a un colega<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
     expect(unq(now['dd: footle lost, streak safe, reminder on, early numbers'])).toContain('>Racha a salvo<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>Mejor que el 44%<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>4,6/7<');
-    expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>1240 jugadas<');
-    expect(unq(now['dd: trail won on 2, yesterday stands in'])).toContain('>Ayer, N.º 74<');
+    expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('1240');
+    expect(unq(now['dd: trail won on 2, yesterday stands in'])).toContain('"Ayer, N.º 74"');
     expect(unq(now['dd: trail won on 2, yesterday stands in'])).toContain('Llegas pronto hoy. <strong class="dd-num">77%</strong> resolvió el de ayer.');
     expect(unq(now['dd: top 10 on 7, a mate beat it'])).toContain('>Esta la gana Sam<');
     expect(unq(now['dd: trail missed, mate got it on 1'])).toContain('>fallado<');

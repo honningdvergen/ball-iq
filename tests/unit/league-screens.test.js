@@ -123,7 +123,10 @@ describe('the results panel', () => {
     // mates" (dd.leagueStart) for anyone not yet in one. 7 Nov 2026: the
     // underlined 12.5px line was tapped 0 times in 178 shows, so it is now a
     // full-width hairline pill (dd-league), still no fill.
-    expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueStart"\)\}/);
+    // 10 Nov 2026: still a hairline BUTTON, but compact and first in the row of
+    // quiet options (two full-width bars under each other read as clutter).
+    expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueShort"\)\}/);
+    expect(DD.indexOf('className="dd-share-alts"')).toBeLessThan(DD.indexOf('className="dd-league"'));
     expect(read('../../src/components/dailyDone.css')).toMatch(/\.dd-league\{[^}]*border:1px solid var\(--border2\);background:var\(--s2\)/);
     expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
     expect(DD).toMatch(/const leagueOffer = leagueGame && \(!!rival \|\| !inLeague\(\)\);/);
