@@ -1423,6 +1423,7 @@ export default {
   'oh.free': 'Cuenta gratis, en un momento. Después, invita a quien quieras con un enlace.',
   'oh.create': 'Crear sala',
   'oh.noAccount': 'Sin cuenta',
+  'oh.joinHead': 'Únete a una sala',
   'oh.codePh': '¿Tienes un código? Escríbelo aquí',
   'oh.codeAria': 'Código de sala',
   'oh.join': 'Entrar',

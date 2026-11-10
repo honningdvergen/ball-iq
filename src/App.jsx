@@ -5012,8 +5012,12 @@ function AppInner() {
       weekEpoch: currentWeekEpoch,
       catStats,
       shieldsUsed: stats.shieldsUsed || 0,
-      // Only count standard quiz scores toward bestScore (max 10)
-      bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
+      // Only count standard quiz scores toward bestScore (max 10). Survival is
+      // not one: its score is the length of the run, so an eleven-answer run
+      // wrote 11 here and a friend's profile read "Best score 11/10" (seen on
+      // the simulator, 10 Nov 2026). It also handed out the "perfect" badge.
+      // The cap heals a stored value above 10 on the next save.
+      bestScore: Math.min(10, (isSpecialMode || mode === "survival") ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score)),
       bestStreak: Math.max(stats.bestStreak || 0, newStreak),
       // Both halves of the accuracy ratio move together or not at all — see
       // scoreIsCorrectCount. Counting one and not the other is how the

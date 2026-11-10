@@ -1481,6 +1481,7 @@ export default registerEnglish({
   'oh.free': 'Free account, takes seconds — then invite anyone with a link.',
   'oh.create': 'Create Room',
   'oh.noAccount': 'No account needed',
+  'oh.joinHead': 'Join a room',
   'oh.codePh': 'Got a code? Type it here',
   'oh.codeAria': 'Room code',
   'oh.join': 'Join',
