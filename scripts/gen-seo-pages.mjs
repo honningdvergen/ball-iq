@@ -103,6 +103,7 @@ import { GAMES_NAV } from '../src/marketing/siteNav.js';
 import { recentFootleAnswers } from './seo/footle-answer-page.mjs';
 import { recentDailyDays } from './seo/daily-answers-page.mjs';
 import { CLUBS } from './seo/clubs.mjs';
+import { MOVED_QUESTION_SLUGS } from './seo/moved-questions.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
@@ -6420,6 +6421,20 @@ async function main() {
   // sitemap again (21 Oct 2026, after the 20 Oct drop): see buildClubQuestionsPage.
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
+  // TEMPORARY (10 Nov 2026, ends by itself after 31 Dec 2026): a second sitemap
+  // that lists only the OLD /questions/ URLs. They have redirected to their
+  // /quiz/ twins since 26 Oct, but Google only learns that when it re-crawls
+  // each one, and on 10 Nov some were still indexed as duplicates from an
+  // 18 Oct crawl. Listing moved URLs in a sitemap is Google's own advice for
+  // getting redirects seen. Submitted by hand in Search Console; it is NOT in
+  // robots.txt and NOT part of sitemap.xml (the orphan gate reads that one).
+  // Delete this block and scripts/seo/moved-questions.mjs in January 2027.
+  if (new Date() < new Date('2027-01-01')) {
+    const moved = MOVED_QUESTION_SLUGS.map((s) =>
+      `  <url>\n    <loc>${SITE.base}/questions/${s}-quiz-questions-and-answers/</loc>\n    <lastmod>2026-10-26</lastmod>\n  </url>`).join('\n');
+    writeFileSync(resolve(DIST, 'sitemap-moved.xml'),
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${moved}\n</urlset>\n`, 'utf8');
+  }
   const moved = flushLastmodStore();
   if (moved) console.log(`[gen-seo] lastmod: ${moved} page(s) changed content since the stored date`);
   await pingIndexNow(sitemapUrls);
