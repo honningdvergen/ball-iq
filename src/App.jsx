@@ -47,7 +47,7 @@ import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drai
 // The club tables are LAZY (src/data/clubPacks.js); this is the only way in.
 import { loadClubData, useClubData } from './lib/clubData.js';
 import { CLUB_INDEX } from './marketing/clubIndex.js';
-import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
+import { liveStreak, localDayNow, needsTodayCredit, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
 import { dailyRunAnswered } from './lib/dailyRun.js';
@@ -4092,6 +4092,9 @@ function AppInner() {
   // when the RPC/guest tick reports an un-shielded break stamped today;
   // consumed by repairLoginStreak below.
   const [streakRepair, setStreakRepair] = useState(null);
+  // What the account's streak record held at the last hydrate; read by the
+  // credit effect beside the hydrate handler (needsTodayCredit, lib/streak.js).
+  const [hydratedStreak, setHydratedStreak] = useState(null);
 
   // Android widget sync (1.6.2). done-count reads per-mode completion the
   // same way the Daily hub does, but from storage directly so this works
@@ -7078,6 +7081,11 @@ function AppInner() {
       // already stored is still alive today; the RPC keeps ownership of
       // ticking it. `best` is taken straight through, since a personal best
       // does not expire.
+      // What the account held when it was read, for the credit check below
+      // (lib/streak.js needsTodayCredit). A new object every hydrate, so the
+      // effect runs once per sign-in or refresh, not once per render.
+      setHydratedStreak({ rec: (detail.loginStreak && typeof detail.loginStreak === 'object') ? detail.loginStreak : null,
+        scoredToday: !!(detail.dailyScores && typeof detail.dailyScores === 'object' && dateToYMD(new Date()) in detail.dailyScores) });
       if (detail.loginStreak && typeof detail.loginStreak === 'object') {
         const rec = detail.loginStreak;
         let xpVal = 0, used = 0;
@@ -7101,6 +7109,29 @@ function AppInner() {
     window.addEventListener('biq:hydrated', onHydrated);
     return () => window.removeEventListener('biq:hydrated', onHydrated);
   }, []);
+  // A DAILY FINISHED BEFORE THE ACCOUNT WAS THERE STILL COUNTS (10 Nov 2026).
+  // Played as a guest, then signed in: the account's streak never heard about
+  // today (see needsTodayCredit). An effect, not a line in the handler above:
+  // that handler is bound once and would call a tick that still thinks nobody
+  // is signed in. Runs once per hydrate; the RPC is idempotent per day.
+  useEffect(() => {
+    if (!hydratedStreak || !user?.id) return;
+    let playedToday = hydratedStreak.scoredToday || dailyDone;
+    if (!playedToday) {
+      try {
+        const ymd = dateToYMD(new Date());
+        const ws = readWordleTodayStatus();
+        const trail = JSON.parse(localStorage.getItem(`biq_trail_${ymd}`) || "null");
+        const mystery = JSON.parse(localStorage.getItem(`biq_mystery_${ymd}`) || "null");
+        playedToday = ws.kind === "won" || ws.kind === "lost"
+          || trail?.status === "won" || trail?.status === "lost"
+          || (isTop10Live() ? loadTop10Day(ymd)?.status === "done" : !!(mystery && (mystery.won || mystery.gaveUp)));
+      } catch { /* unreadable storage: nothing to credit */ }
+    }
+    if (needsTodayCredit(hydratedStreak.rec, playedToday)) tickLoginStreak();
+    // Once per hydrate on purpose: dailyDone and the tick are read as they are then.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydratedStreak, user?.id]);
   // Past-7-days activity for the home Streak tile pulse. Recompute when a
   // game completes (gamesPlayed bumps) or the streak changes (day rollover).
   const streakPulseDays = useMemo(
