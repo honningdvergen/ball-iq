@@ -1278,6 +1278,10 @@ if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } c
 // stays OUT of apple-app-site-association until that build is live (an older
 // install would catch the link and land on Home); the Android intent filter
 // ships inside the build, so it is already in the manifest.
+// ⚠️ 10 Nov 2026: phase 2 added this flag but left the sheets, the table screen
+// and the result sync on LEAGUES_WEB (web only), so in the app "Start a league"
+// set state that nothing rendered and the player landed on Home. Found on the
+// simulator walk. Every LEAGUE gate reads LEAGUES_ON; only Stitch-up reads LEAGUES_WEB.
 const LEAGUES_ON = true;
 // Stitch-up is still web only: it is gated on this, detected the way the rest
 // of the app detects a native shell (capacitor: protocol, the html.native-app
@@ -3270,7 +3274,7 @@ function AppInner() {
   // Stitch-up: the link's token (null = the builder). Web only (LEAGUES_WEB).
   const [stitchToken, setStitchToken] = useState(null);
   const [leagueSheet, setLeagueSheetRaw] = useState(() => {
-    if (!LEAGUES_WEB) return null;
+    if (!LEAGUES_ON) return null;
     const v = readLeagueUiInline();
     return v && (v.kind === "join" || v.kind === "create") ? v : null;
   });
@@ -3284,7 +3288,7 @@ function AppInner() {
   // A join or a create announces the table (lib/leagues.js announceLeagueOpen),
   // possibly from a sheet that this remount replaced: honour it either way.
   useEffect(() => {
-    if (!LEAGUES_WEB) return undefined;
+    if (!LEAGUES_ON) return undefined;
     const v = readLeagueUiInline();
     if (v && v.kind === "open" && v.id) openLeagueTable(v.id);
     const onOpen = (e) => openLeagueTable(e?.detail?.id);
@@ -3320,13 +3324,13 @@ function AppInner() {
   const leagueDisplayName = useMemo(() => {
     const u = authProfile?.username;
     if (user && !isAnonUser && u && !/^player_/i.test(u)) return u;
-    return LEAGUES_WEB ? getGuestDisplayName() : "";
+    return LEAGUES_ON ? getGuestDisplayName() : "";
   }, [user, isAnonUser, authProfile?.username]);
   // Results that waited for a session go once there is one, sent with the
   // session's own token (lib/leagueResults.js, reached through lib/leagues.js).
   const leagueUid = user?.id || null;
   useEffect(() => {
-    if (!LEAGUES_WEB || !leagueUid) return;
+    if (!LEAGUES_ON || !leagueUid) return;
     import("./lib/leagues.js").then((m) => {
       m.setLeagueTokenSource(async () => {
         try { return (await supabase.auth.getSession()).data.session?.access_token || null; } catch { return null; }
@@ -3622,7 +3626,7 @@ function AppInner() {
   // closed.
   const [challengeResult, setChallengeResult] = useState(null);
   // "Make it a league?" was offered under the Daily 7 head-to-head.
-  useEffect(() => { if (LEAGUES_WEB && challengeResult) loopEvent("league-offer-shown", { game: "daily7" }); }, [challengeResult]);
+  useEffect(() => { if (LEAGUES_ON && challengeResult) loopEvent("league-offer-shown", { game: "daily7" }); }, [challengeResult]);
   // Social-webview escape hatch (task #22, Alex steer 2026-07-17: "if people
   // share their result it is okay to push the app"). A /c/ challenge tapped
   // inside Snapchat/IG opens their in-app browser, which swallows the Universal
@@ -7849,7 +7853,7 @@ function AppInner() {
           </div>
         )}
         {/* Mates' leagues (web only): the create and join sheets, lazy. */}
-        {LEAGUES_WEB && leagueSheet?.kind === "join" && (
+        {LEAGUES_ON && leagueSheet?.kind === "join" && (
           <TabErrorBoundary name="league-join" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={leagueSheetFallback()}><LeagueJoinSheet
             token={leagueSheet.token}
             displayName={leagueDisplayName}
@@ -7860,7 +7864,7 @@ function AppInner() {
             track={loopEvent}
           /></React.Suspense></TabErrorBoundary>
         )}
-        {LEAGUES_WEB && leagueSheet?.kind === "create" && (
+        {LEAGUES_ON && leagueSheet?.kind === "create" && (
           <TabErrorBoundary name="league-create" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={leagueSheetFallback()}><LeagueCreateSheet
             seed={leagueSheet.seed}
             vs={leagueSheet.vs}
@@ -7912,8 +7916,8 @@ function AppInner() {
               >
                 {t("ch.sendBack")}
               </button>
-              {/* Mates' leagues (web only): the same seed as the results panel's. */}
-              {LEAGUES_WEB && (
+              {/* Mates' leagues: the same seed as the results panel's. */}
+              {LEAGUES_ON && (
                 <button
                   type="button"
                   onClick={() => {
@@ -8071,7 +8075,7 @@ function AppInner() {
               dailyDone={dailyDone}
               dailyScore={dailyScore}
               playDailyForDate={playDailyForDate}
-              onStartLeague={LEAGUES_WEB ? openLeagueCreateFromDaily : undefined}
+              onStartLeague={LEAGUES_ON ? openLeagueCreateFromDaily : undefined}
             />
             </TabErrorBoundary>
           </div>
@@ -8447,7 +8451,7 @@ function AppInner() {
             onPlayTrail={() => { setArchiveDate(null); setScreen("trail"); }}
           /></React.Suspense></TabErrorBoundary>
         )}
-        {screen === "league" && LEAGUES_WEB && leagueId && (
+        {screen === "league" && LEAGUES_ON && leagueId && (
           <TabErrorBoundary name="league" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading the table" />}><LeagueScreen
             key={leagueId}
             leagueId={leagueId}
