@@ -931,8 +931,12 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               ? t("hi.gap1", { d: `${newest.dateLabel} ${newest.dateSub}` })
               : t("hi.gapN", { a: oldest.dateSub, b: newest.dateSub, n: m.days.length });
             return (
-              <div key={`gap-${newest.ymd}`} aria-label={text}
-                style={{ borderRadius: 11, padding: "8px 14px", border: "1px dashed var(--border)", textAlign: "center", fontSize: 11.5, color: "var(--t3)" }}>
+              // A quiet caption between two days (11 Nov 2026). It was a dashed
+              // box reading "Nov 8 to Nov 9 · 2 days not played", four of them
+              // on one screen: a list of the player's absences, boxed. The
+              // dates stay for a screen reader.
+              <div key={`gap-${newest.ymd}`} aria-label={m.days.length === 1 ? `${newest.dateLabel} ${newest.dateSub}: ${text}` : `${oldest.dateSub} – ${newest.dateSub}: ${text}`}
+                style={{ padding: "0 14px", textAlign: "center", fontSize: 11, fontWeight: 600, letterSpacing: 0.3, color: "var(--t3)", opacity: 0.8 }}>
                 {text}
               </div>
             );

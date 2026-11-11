@@ -3777,6 +3777,8 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 .cf-link{background:none;border:none;padding:0;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
 .cf-abbr{flex:0 0 auto;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#fff;}
 .cf-abbr-quiet{background:var(--s2);color:var(--t2);border:1px solid var(--border2);}
+/* In a pill the badge is a circle sharing the pill end's centre (radius 22, badge 15, 7 in); as a rounded square its corners crowded the curve, as the finish panel's did (11 Nov 2026). */
+.cf-chip .cf-abbr{border-radius:50%;}
 .cf-chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;mask-image:linear-gradient(90deg,#000 92%,transparent);}
 .cf-chips::-webkit-scrollbar{display:none;}
 .cf-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--s1);border:1px solid var(--border);color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s;}
