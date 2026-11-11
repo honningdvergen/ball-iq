@@ -242,7 +242,7 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the review', () => {
     const r = unq(now['review: daily 7 today, full review, day 1 streak']);
-    for (const s of ['>Hoy · martes, 20 de octubre<', '>Repaso completo<', '>P1<', '>Selecciones<', '>VERDADERO<', '>tu respuesta<', '>sin tiempo<', '>Escribiste: <', '>mié<']) expect(r, s).toContain(s);
+    for (const s of ['>Hoy · martes, 20 de octubre<', '>Repaso completo<', '>VERDADERO<', '>Dijiste ', '>Se acabó el tiempo<', '>Escribiste: <', '>mié<']) expect(r, s).toContain(s);
     expect(unq(now['review: footle lost'])).toContain('>Mañana será otro día<');
     expect(unq(now['review: footle won in 4, clue, hard'])).toContain('>Resuelto en 4 intentos<');
   });

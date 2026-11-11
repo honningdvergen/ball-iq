@@ -604,6 +604,7 @@ export default {
   'rw.missed': 'Fallos',
   'rw.noRecord': 'Ese día no se guardó el repaso completo.',
   'rw.timedOut': 'sin tiempo',
+  'rw.timedOutLine': 'Se acabó el tiempo',
   'rw.correctTag': 'correcta',
   'rw.yourPick': 'tu respuesta',
   'rw.typed': 'Escribiste: {x}',

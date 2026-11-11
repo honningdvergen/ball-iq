@@ -644,6 +644,7 @@ export default registerEnglish({
   'rw.missed': 'Missed {w}',
   'rw.noRecord': 'Full review wasn\'t recorded for this day.',
   'rw.timedOut': 'timed out',
+  'rw.timedOutLine': 'Timed out',
   'rw.correctTag': 'correct',
   'rw.yourPick': 'your pick',
   'rw.typed': 'You typed: {x}',

@@ -2261,6 +2261,27 @@ export function ReviewQuestionCard({ a, index }) {
   const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = useQuestionText().answer(a);
   // A true-or-false question stores its options as TRUE / FALSE.
   const optLabel = (opt) => (type === 'tf' && (opt === 'TRUE' || opt === 'FALSE') ? t(opt === 'TRUE' ? 'quiz.true' : 'quiz.false') : opt);
+  // THE CALM LIST (11 Nov 2026). Each question was a card in a red or green
+  // border with all four options stacked and YOUR PICK / CORRECT pills: seven
+  // of them made the oldest-looking screen in the app, a day after the finish
+  // screen's "N you missed" list was tidied. Same row here: the right answer
+  // leads in green, a wrong pick is a grey "You said", and a tick in place of
+  // the number marks the ones they got.
+  if ((type === 'mcq' || type === 'tf') && Array.isArray(options)) {
+    const right = options[correctIdx] != null ? optLabel(options[correctIdx]) : correctText;
+    const said = !isCorrect && userIdx != null && options[userIdx] != null ? optLabel(options[userIdx]) : null;
+    return (
+      <div className="wr-item">
+        <span className="wr-n" aria-hidden="true">{isCorrect ? <Check size={13} strokeWidth={3} style={{ color: "var(--green-ink)", verticalAlign: "-2px" }} /> : index + 1}</span>
+        <div className="wr-body">
+          <div className="wr-q">{q}</div>
+          <div className="wr-a">{right}</div>
+          {said && <div className="wr-user">{t('rs.youSaid', { a: said })}</div>}
+          {!isCorrect && !said && timedOut && <div className="wr-user">{t('rw.timedOutLine')}</div>}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`dr-q ${isCorrect ? 'dr-q-right' : 'dr-q-wrong'}`}>
       <div className="dr-q-head">
