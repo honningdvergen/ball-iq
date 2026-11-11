@@ -59,6 +59,7 @@
 2026-10-16	source	loopEvent("league-offer-shown"
 2026-08-22	source	loopEvent("notif-prompt-dismissed"
 2026-08-23	source	loopEvent("notif-prompt-skipped"
+2026-11-11	source	loopEvent("onboard-shown"
 2026-10-04	source	loopEvent("rate-link-tap"
 2026-08-24	source	loopEvent("rate-prompt-dismissed"
 2026-08-24	source	loopEvent("rate-prompt-loving"
