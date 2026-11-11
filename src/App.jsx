@@ -15,7 +15,7 @@ import { BiqNav } from './BiqNav.jsx';
 import { AppBar } from './components/AppBar.jsx';
 import { SiteHeader } from './marketing/SiteHeader.jsx';
 import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIndex } from './questions-loader.js';
-import { appDayEvent, cleanAppDayMeta, playDays } from './lib/cohort.js';
+import { appDayEvent, playDays } from './lib/cohort.js';
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
@@ -182,7 +182,6 @@ import { HomeScreen } from './screens/HomeScreen.jsx';
 import { currentAvatarId } from './lib/currentAvatar.js';
 import { isIOSUA, isAndroidUA } from './components/StoreBadge.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { App as CapApp } from '@capacitor/app';
@@ -199,6 +198,10 @@ const NativeShareCard = registerPlugin('ShareCard');
 
 // Sprint #90 EEE1: cold-start instrumentation (toggle in ./lib/perf.js).
 import { perfMark } from './lib/perf.js';
+import { IS_NATIVE } from './lib/platform.js';
+import { playSound, haptic } from './lib/feedback.js';
+import { loopEvent, isSyntheticTraffic } from './lib/funnel.js';
+import { Confetti } from './components/Confetti.jsx';
 perfMark('module-load: App.jsx parsed');
 
 export const TIMINGS = {
@@ -952,108 +955,6 @@ export const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMa
 
 
 
-// ─── SOUND EFFECTS ────────────────────────────────────────────────────────────
-// Pure Web-Audio sound synthesis. Honours biq_settings.sound and no-ops on
-// environments without AudioContext or with the setting disabled. Reuses a
-// single AudioContext across calls (iOS Safari limits to ~4 concurrent ones).
-let _audioCtx = null;
-function _getAudioCtx() {
-  try {
-    if (_audioCtx) return _audioCtx;
-    const AC = typeof window !== "undefined" && (window.AudioContext || window.webkitAudioContext);
-    if (!AC) return null;
-    _audioCtx = new AC();
-    return _audioCtx;
-  } catch { return null; }
-}
-export function playSound(type) {
-  try {
-    // Honour user sound preference (read synchronously so we can be called from anywhere)
-    let enabled = false;
-    try {
-      const raw = localStorage.getItem("biq_settings");
-      if (raw) enabled = JSON.parse(raw)?.sound === true;
-    } catch {}
-    if (!enabled) return;
-
-    const ctx = _getAudioCtx();
-    if (!ctx) return;
-    // iOS Safari often keeps the context in "suspended" state until a user gesture.
-    // Calling resume() inside a touch handler (where playSound usually fires) is safe.
-    if (ctx.state === "suspended" && typeof ctx.resume === "function") {
-      try { ctx.resume(); } catch {}
-    }
-    const now = ctx.currentTime;
-
-    // Helper: schedule a single sine note with a short attack + exponential release
-    const note = (freq, start, dur, vol = 0.13, wave = "sine") => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = wave;
-      osc.frequency.value = freq;
-      const t0 = now + start;
-      const tAttackEnd = t0 + 0.02;
-      const tEnd = t0 + dur;
-      gain.gain.setValueAtTime(0.0001, t0);
-      gain.gain.exponentialRampToValueAtTime(vol, tAttackEnd);
-      gain.gain.exponentialRampToValueAtTime(0.0001, tEnd);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(t0);
-      osc.stop(tEnd + 0.05);
-    };
-
-    if (type === "correct") {
-      // Two-tone ascending chime: C5 → G5, ~600ms total
-      note(523.25, 0,    0.28, 0.15);
-      note(783.99, 0.22, 0.38, 0.15);
-    } else if (type === "wrong") {
-      // Soft sine glide 300 → 200Hz over 400ms — gentle, not harsh
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(300, now);
-      osc.frequency.linearRampToValueAtTime(200, now + 0.4);
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.09, now + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.45);
-    } else if (type === "streak") {
-      // C5 → E5 → G5, each 150ms, overlapping slightly
-      note(523.25, 0.00, 0.22, 0.14);
-      note(659.25, 0.12, 0.22, 0.14);
-      note(783.99, 0.24, 0.30, 0.14);
-    } else if (type === "daily_complete") {
-      // Warm celebratory C-major chord with 800ms soft fade
-      note(523.25, 0, 0.8, 0.09);
-      note(659.25, 0, 0.8, 0.09);
-      note(783.99, 0, 0.8, 0.09);
-    } else if (type === "levelup") {
-      // Ascending 4-note fanfare, 120ms each
-      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-        note(freq, i * 0.12, 0.20, 0.13);
-      });
-    } else if (type === "soft") {
-      // Sprint #78 UU1: short UI-tap tick. Used by local multiplayer's
-      // option-pick handler. Was previously falling through to the silent
-      // path because no "soft" case existed — soft taps had no audio
-      // feedback even with sound enabled. ~60ms 700Hz, low volume.
-      note(700, 0, 0.06, 0.08, "triangle");
-    }
-  } catch {}
-}
-
-// Sprint #87: native iOS haptics via @capacitor/haptics. navigator.vibrate is a
-// silent no-op on iOS WKWebView so the web-only path produced zero feedback on
-// the installed app. On native (Capacitor.isNativePlatform()) we dispatch to the
-// system Taptic engine; on the web we keep the navigator.vibrate fallback so
-// Android Chrome / installed Android PWAs still buzz.
-// Sprint #89 #2: gated on settings.haptics (defaults true). Read synchronously
-// from localStorage so the helper can be called from anywhere (matches the
-// playSound pattern at line 3082). OS-level haptics disabled silently no-ops
-// inside the plugin itself, so no extra guard needed for that case.
-export const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 // ⚠️ ANDROID HAS NO navigator.share (28 Oct 2026, Android 16 WebView). A dozen
 // share buttons (Daily 7, Top 10, Trail, Mystery, Draft, invites, rooms) call
 // only navigator.share, so on the Android app every one of them fell back to
@@ -1112,160 +1013,6 @@ function removePrebootOnboard() {
   } catch {}
 }
 
-// A stable per-device id so a funnel can be followed across a visit without
-// anything resembling a fingerprint. Random, client-issued, and it never
-// leaves localStorage — same approach challenge_events already uses.
-function visitorId() {
-  try {
-    let v = localStorage.getItem("biq_vid");
-    if (!v) { v = (crypto?.randomUUID?.() || String(Math.random()).slice(2)); localStorage.setItem("biq_vid", v); }
-    return /^[0-9a-f-]{36}$/i.test(v) ? v : null;
-  } catch { return null; }
-}
-
-// ⚠️ This used to fire into Clarity and NOWHERE ELSE, which made it
-// write-only: Clarity's export API returns only its own auto-detected smart
-// events, so a query for onboard-done-answered / first-game-started /
-// clubq-play comes back empty. Three features shipped in August that could
-// not be read, and every recommendation about them in scouting report #2 was
-// therefore reasoning rather than measurement.
-// Now it fans out to BOTH — Clarity keeps session replay lined up with the
-// numbers, and funnel_events makes the numbers answerable in SQL forever.
-// Fire-and-forget on purpose: measurement must never delay or break a game.
-// ⚠️ SYNTHETIC TRAFFIC MUST NOT REACH THE FUNNEL.
-//
-// Measured 2026-08-21, three hours after funnel_events went live: 905 rows,
-// of which 767 were `first-game-started` at ~250/hour, exactly one per
-// visitor, arriving in precisely the hours the Playwright suite was running —
-// against a real DAU of 13-17. One row was literally named `probe-e2e`.
-//
-// The cause is a seam, not a bug in anything: the e2e suite runs against
-// localhost:4173, localhost reads .env.local, and .env.local points at
-// PRODUCTION Supabase because there is no staging project. So every local run
-// and every CI run wrote test events into the table the product's decisions
-// are supposed to come from. A green suite was quietly corrupting the
-// instrument it shares a repo with.
-//
-// This is worse than having no data, because it looks like data. 767 synthetic
-// rows would have drowned real signal at a ratio of roughly 50:1 and made
-// every funnel number read as a triumph.
-//
-// Two signals, both deliberately conservative — when in doubt, DON'T record:
-//   navigator.webdriver  is set by every automation driver (Playwright,
-//                        Selenium, Puppeteer) and by nothing else.
-//   localhost/127.0.0.1  is Alex's own dev browsing, which is not a user
-//                        journey either and never should have counted.
-// Native builds have neither, so real app traffic is untouched.
-function isSyntheticTraffic() {
-  try {
-    if (IS_NATIVE) return false;
-    if (typeof navigator !== "undefined" && navigator.webdriver === true) return true;
-    const h = typeof location !== "undefined" ? location.hostname : "";
-    return h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h.endsWith(".local");
-  } catch { return false; }
-}
-
-// ⭐ The ONE exception to "native sends the name and nothing else" (below):
-// the rating funnel, and only a fixed set of low-cardinality words.
-//
-// ASO deep-dive, 2026-10-04: native logged 103 rate-prompt-shown against 668
-// rate-prompt-skipped in five weeks, skips rising every week — and every one of
-// those rows reads {native, anon}, so nobody can say whether the cooldown, a
-// bad moment or a screen change eats 87% of the happy moments. Ratings are
-// also per STORE, and the rows could not even tell iOS from Android.
-//
-// Why this still keeps the promise in privacy §4 ("no identifier of any
-// kind… nothing links one count to another"): every value here is one word
-// from a short closed list (cooldown, footle, ios…). There is no id, no club
-// slug, no surface path, no number — nothing that varies per person, so no
-// combination of these fields can single anyone out or join two rows. Keys
-// outside the list, and values that are not a short lowercase word, are
-// dropped rather than trusted, so a future call site cannot widen it by
-// accident.
-const NATIVE_RATE_EVENT = /^rate-(prompt|link)-/;
-const NATIVE_RATE_KEYS = ["reason", "trigger", "engine", "store", "surface"];
-const NATIVE_RATE_WORD = /^[a-z][a-z-]{0,23}$/;
-function nativeRateMeta(name, meta) {
-  const out = { native: true, anon: true };
-  // The return counter (lib/cohort.js, 8 Nov 2026): the second closed
-  // exception. Install week, a days-since bucket and a league flag, filtered
-  // to their exact shapes, plus the platform. Still no identifier.
-  if (name === "app-day") {
-    try { const p = Capacitor.getPlatform?.(); if (p === "ios" || p === "android") out.platform = p; } catch {}
-    return { ...out, ...cleanAppDayMeta(meta) };
-  }
-  if (!NATIVE_RATE_EVENT.test(name)) return out;
-  try {
-    const p = Capacitor.getPlatform?.();
-    if (p === "ios" || p === "android") out.platform = p;
-    if (meta) for (const k of NATIVE_RATE_KEYS) {
-      const v = meta[k];
-      if (typeof v === "string" && NATIVE_RATE_WORD.test(v)) out[k] = v;
-    }
-  } catch {}
-  return out;
-}
-
-// Exported so lazy screens can report into the SAME funnel rather than growing
-// their own. OnlineMultiplayer needs it for the rivalry prompt; scouting report
-// #4's item 5 was "instrument the rating funnel — it has ZERO loopEvents", and
-// the way that happens is a feature shipping in a file that could not reach
-// this function.
-export function loopEvent(name, meta) {
-  // Gate BOTH sinks. Clarity session replays of a robot are as useless as
-  // funnel rows from one, and Clarity's own quota is finite.
-  if (isSyntheticTraffic()) return;
-  try {
-    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
-  } catch {}
-  // PostHog mirror (web only, consent-gated: biqTrack exists only once
-  // public/ph.js has been allowed to load).
-  try {
-    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.biqTrack === "function") window.biqTrack(name, meta);
-  } catch {}
-  try {
-    // ⚠️ NATIVE IS COUNTED, BUT NEVER IDENTIFIED — and the privacy policy says
-    // so in those words. Decision recorded 2026-08-23 (Alex, from three
-    // options: guard native entirely / anonymous counts / full funnel).
-    //
-    // The guard above covers Clarity but NOT this RPC, so shipping 1.6.5 as it
-    // stood would have made three separate declarations false at once: privacy
-    // §4's "does not measure how you use it… this is enforced in code", the
-    // App Store privacy label, and the Play Data safety form. Nobody could
-    // have caught it after the fact either — funnel_events holds zero native
-    // rows precisely because no shipped build has ever had this code, so the
-    // contradiction only appears once it is too late to stop.
-    //
-    // So native sends the event NAME and nothing else: no biq_vid, no meta
-    // (the rating funnel's closed word list in nativeRateMeta is the only
-    // exception, and it carries no identifier either).
-    // We learn which modes get used and where people stop; we cannot follow a
-    // person, because there is no key to follow them by. Dropping meta as well
-    // as the id is deliberate — meta carries club slugs and surfaces, and a
-    // rich enough meta rebuilds a fingerprint even without an explicit id.
-    const anon = IS_NATIVE === true;
-    supabase.rpc("record_funnel_event", {
-      p_event: name,
-      p_meta: anon
-        ? nativeRateMeta(name, meta)
-        : (meta ? { ...meta, native: false } : { native: false }),
-      p_visitor: anon ? null : visitorId(),
-      // ⚠️ Belt AND braces, and the braces are the load-bearing half. Passing
-      // p_visitor: null is not enough on its own — the function also records
-      // auth.uid(), so a signed-in native player would still be named by their
-      // ACCOUNT id, a stronger identifier than the one we just withheld.
-      // p_anon makes the server null both, so the guarantee survives a stale
-      // bundle or a future call site that forgets. See
-      // supabase/migrations/v1_6_funnel_anon_native_and_rate_cap.sql.
-      p_anon: anon,
-    }).then(({ error }) => {
-      // ⚠️ supabase.rpc() RESOLVES on error rather than rejecting — a bare
-      // .catch() would silently swallow every failure, which is exactly how
-      // two write paths were lost before. Check the error explicitly.
-      if (error) Sentry.addBreadcrumb({ category: 'funnel', message: `record_funnel_event failed: ${error.message}`, level: 'warning' });
-    });
-  } catch {}
-}
 // Belt-and-braces for index.html's head script: re-apply the native-app class
 // (hides the desktop rail and the static site header inside the native shell).
 // Covers any case where the bridge wasn't injected before the head script ran.
@@ -1347,67 +1094,6 @@ export function FootleGetAppCTA({ style }) {
 // checked at call time, same lazy-read pattern as haptic()'s settings gate.
 export function CB_MODE() {
   try { return document.documentElement.classList.contains("biq-cb"); } catch { return false; }
-}
-
-// ⚠️ EVERY CALL IS A NATIVE BRIDGE ROUND TRIP, AND THEY SERIALISE.
-// From Alex's device log while tab switching felt slow — ~57 of these back to
-// back, each a full JS -> native -> JS hop, with
-// `WebProcessProxy::didBecomeUnresponsive` in the same log:
-//
-//     ⚡️ To Native ->  Haptics impact 120633433
-//     ⚡️ TO JS undefined
-//     ⚡️ To Native ->  Haptics impact 120633434
-//     ⚡️ TO JS undefined      … x57
-//
-// No amount of browser profiling can see this: there is no bridge in Chrome,
-// which is why three rounds of CSS measurement kept saying the app was fine
-// while the phone said otherwise. Capacitor builds a fresh
-// UIImpactFeedbackGenerator per call and iOS charges latency for one that has
-// not been prepare()d, so a burst of taps queues a burst of hops in front of
-// the UI work.
-//
-// 55ms floor for the LIGHT taps only. Two impacts closer together than that
-// are not distinguishable by a fingertip anyway, so nothing is lost — while a
-// spammed tab bar or a fast Footle typist stops flooding the bridge. The
-// meaningful, once-per-moment haptics (correct, wrong, levelup, hardCorrect)
-// are deliberately exempt: those must never be swallowed.
-let _lastLightHapticAt = 0;
-export function haptic(type) {
-  try {
-    if (type === "soft" || type === "select") {
-      const now = Date.now();
-      if (now - _lastLightHapticAt < 55) return;
-      _lastLightHapticAt = now;
-    }
-    let enabled = true;
-    try {
-      const raw = localStorage.getItem("biq_settings");
-      if (raw) {
-        const v = JSON.parse(raw)?.haptics;
-        enabled = v !== false; // default-on: missing/undefined => true
-      }
-    } catch {}
-    if (!enabled) return;
-    if (IS_NATIVE) {
-      if (type === "correct") Haptics.impact({ style: ImpactStyle.Medium });
-      else if (type === "wrong") Haptics.notification({ type: NotificationType.Error });
-      else if (type === "soft" || type === "select") Haptics.impact({ style: ImpactStyle.Light });
-      else if (type === "heavy") Haptics.impact({ style: ImpactStyle.Heavy });
-      else if (type === "hardCorrect") Haptics.notification({ type: NotificationType.Success });
-      else if (type === "levelup") {
-        Haptics.notification({ type: NotificationType.Success });
-        setTimeout(() => { try { Haptics.impact({ style: ImpactStyle.Heavy }); } catch {} }, 220);
-      }
-      return;
-    }
-    if (typeof navigator === "undefined" || !navigator.vibrate) return;
-    if (type === "correct") navigator.vibrate(40);
-    else if (type === "wrong") navigator.vibrate([30, 20, 30]);
-    else if (type === "soft" || type === "select") navigator.vibrate(15);
-    else if (type === "heavy") navigator.vibrate(100);
-    else if (type === "hardCorrect") navigator.vibrate([30, 40, 30, 40, 60]);
-    else if (type === "levelup") navigator.vibrate([50, 30, 50, 30, 100]);
-  } catch {}
 }
 
 /**
@@ -2147,50 +1833,6 @@ export async function shareCard(type, data, opts = {}) {
 // ─── CONFETTI ─────────────────────────────────────────────────────────────────
 // ─── COUNT-UP ANIMATION ───────────────────────────────────────────────────────
 // Animates a number from 0 to `value` over `duration` ms. Triggers haptic on finish.
-export function Confetti() {
-  const canvasRef = useRef(null);
-  useEffect(() => {
-    // Honor prefers-reduced-motion (vestibular disorders / migraine): skip the
-    // full-viewport confetti animation entirely. (medical, accessibility.)
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    // visualViewport reflects the actual visible area (excludes a collapsed
-    // mobile URL bar). innerWidth/Height fall back for older WebViews.
-    canvas.width = window.visualViewport?.width ?? window.innerWidth;
-    canvas.height = window.visualViewport?.height ?? window.innerHeight;
-    const pieces = Array.from({length:80}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      w: Math.random() * 10 + 5,
-      h: Math.random() * 6 + 3,
-      r: Math.random() * Math.PI * 2,
-      dr: (Math.random() - 0.5) * 0.2,
-      vy: Math.random() * 3 + 2,
-      vx: (Math.random() - 0.5) * 2,
-      color: ["#58CC02","#FFC800","#FF4B4B","#1CB0F6","#CE82FF","#FF9600"][Math.floor(Math.random()*6)],
-    }));
-    let alive = true;
-    const draw = () => {
-      if (!alive) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pieces.forEach(p => {
-        p.y += p.vy; p.x += p.vx; p.r += p.dr;
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
-        ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - p.y / canvas.height);
-        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-        ctx.restore();
-      });
-      if (pieces.some(p => p.y < canvas.height)) requestAnimationFrame(draw);
-    };
-    requestAnimationFrame(draw);
-    return () => { alive = false; };
-  }, []);
-  return <canvas ref={canvasRef} aria-hidden="true" style={{position:"fixed",top:0,left:0,pointerEvents:"none",zIndex:500,width:"100%",height:"100%"}} />;
-}
-
-
 // ─── DAILY SOCIAL PROOF ───────────────────────────────────────────────────────
 // Shows "You beat X% of players today" based on mock score distribution.
 // Uses seeded randomness so the number doesn't change between views.

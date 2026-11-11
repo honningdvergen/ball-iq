@@ -4,7 +4,8 @@ import { CountUp } from "../components/CountUp.jsx";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { Home, Share } from "lucide-react";
 import { useEffect } from "react";
-import { Confetti, haptic } from "../App.jsx";
+import { Confetti } from "../components/Confetti.jsx";
+import { haptic } from "../lib/feedback.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";

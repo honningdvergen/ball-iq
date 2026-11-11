@@ -3,7 +3,8 @@ import { supabase } from "../supabase.js";
 import * as Sentry from "@sentry/react";
 import { Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { haptic, loopEvent } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
+import { loopEvent } from "../lib/funnel.js";
 import { useT } from "../i18n/index.js";
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────

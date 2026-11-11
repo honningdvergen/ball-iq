@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
-import { Confetti, haptic, playSound, LEAGUE_QUIZ_BY_CAT } from "../App.jsx";
+import { LEAGUE_QUIZ_BY_CAT } from "../App.jsx";
+import { Confetti } from "../components/Confetti.jsx";
+import { haptic, playSound } from "../lib/feedback.js";
 import { CLUB_ABBR, CLUB_PACKS } from "../data/clubPacks.js";
 import { clubColour, clubAbbr, packColourMap, tint, lift, onColour, crestPaint } from "../lib/clubColour.js";
 import { Lightbulb } from "lucide-react";

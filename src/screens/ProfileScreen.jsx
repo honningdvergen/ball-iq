@@ -145,7 +145,7 @@ const BALL_SRC = "/marketing/ball.png";
 // by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { canRateInStore, openStoreRating, ratingStore } from '../lib/review.js';
-import { loopEvent } from '../App.jsx';
+import { loopEvent } from '../lib/funnel.js';
 import BallIqCardFace from '../components/BallIqCardFace.jsx';
 export { ProfilePic };
 

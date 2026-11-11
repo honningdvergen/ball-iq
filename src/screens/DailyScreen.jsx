@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
-import { Confetti, haptic } from "../App.jsx";
+import { Confetti } from "../components/Confetti.jsx";
+import { haptic } from "../lib/feedback.js";
 import { dateToYMD, msToNextLocalMidnight } from '../lib/date.js';
 import { countdownText } from '../i18n/names.js';
 import { footleAnswerFor } from "../lib/wordle.js";

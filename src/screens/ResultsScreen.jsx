@@ -5,7 +5,8 @@
 // way the lazy screens already import them.
 import { useEffect } from "react";
 import { Star, Trophy } from "lucide-react";
-import { haptic, Confetti } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
+import { Confetti } from "../components/Confetti.jsx";
 import { DailyDone } from "../components/DailyDone.jsx";
 import { CountUp } from "../components/CountUp.jsx";
 import ResultFoot from "../components/ResultFoot.jsx";
@@ -19,7 +20,7 @@ import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
-import { loopEvent } from "../App.jsx";
+import { loopEvent } from "../lib/funnel.js";
 
 // TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
 // return loop is one component for all four dailies — components/DailyDone.jsx.
