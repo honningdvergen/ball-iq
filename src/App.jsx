@@ -2473,7 +2473,7 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
         </div>
         {isEmpty ? (
           <div className="notif-empty">
-            <div className="notif-empty-ic" aria-hidden="true">🔔</div>
+            <div className="notif-empty-ic" aria-hidden="true"><Bell size={26} strokeWidth={1.9} /></div>
             <div className="notif-empty-t">{tl("nc.empty")}</div>
             <div className="notif-empty-s">{tl("nc.emptySub")}</div>
           </div>
