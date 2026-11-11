@@ -67,7 +67,7 @@ export const STEP4_EN = {
   'dd.saveStreak': "Your {days} streak{and} live{s} on this phone only.",
   'dd.saveDays': "{n}-day",
   'dd.saveAnd': " and ",
-  'dd.saveLine': "{line} — on this phone only.",
+  'dd.saveLine': "Your {line} live on this phone only.",
   'dd.toNext': " · {n} to {name}",
   'dd.save': "Save",
   'dd.dist': "How everyone did",

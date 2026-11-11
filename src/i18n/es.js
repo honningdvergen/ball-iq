@@ -484,7 +484,7 @@ export default {
   'dd.saveStreak': 'Tu racha de {days}{and}: solo en este móvil.',
   'dd.saveDays': '{n} días',
   'dd.saveAnd': ' y ',
-  'dd.saveLine': '{line}: solo en este móvil.',
+  'dd.saveLine': 'Tus {line}: solo en este móvil.',
   'dd.toNext': ' · {n} para {name}',
   'dd.save': 'Guardar',
   'dd.dist': 'Cómo le fue a todos',

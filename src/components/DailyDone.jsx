@@ -497,9 +497,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             {streakN >= 2
               ? <div className="dd-sub">{rich(t("dd.saveStreak"), {
                   days: <strong className="dd-num">{rich(t("dd.saveDays"), { n: streakN })}</strong>,
-                  and: save.line ? <>{t("dd.saveAnd")}<strong className="dd-num">{save.line}</strong></> : null,
-                  // English agrees "live"/"lives" with what is saved; Spanish has no {s}.
-                  s: save.line ? "" : "s",
+                  // The streak alone (11 Nov 2026): with the XP joined on, the
+                  // line ran to three. English "lives"; Spanish has no {s}.
+                  and: null,
+                  s: "s",
                 })}</div>
               : <div className="dd-sub">{rich(t("dd.saveLine"), { line: <strong className="dd-num">{save.line}</strong> })}</div>}
           </div>

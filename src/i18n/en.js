@@ -516,7 +516,7 @@ export default registerEnglish({
   'dd.saveStreak': 'Your {days} streak{and} live{s} on this phone only.',
   'dd.saveDays': '{n}-day',
   'dd.saveAnd': ' and ',
-  'dd.saveLine': '{line} — on this phone only.',
+  'dd.saveLine': 'Your {line} live on this phone only.',
   // App.jsx's save line: "Non-League · 120 XP · 180 to Championship".
   'dd.toNext': ' · {n} to {name}',
   'dd.save': 'Save',

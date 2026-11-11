@@ -5790,11 +5790,12 @@ function AppInner() {
         // already has, and it lived three screens away on Profile ("192 XP to
         // go"). It now rides the line the player reads for a minute (critique
         // 2026-09-08, F1). getLevelInfo already computes it — no new data.
-        line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? (() => {
-          const li = getLevelInfo(xp);
-          const toNext = li.nextLevel ? Math.max(0, (li.nextLevel.xpNeeded || 0) - xp) : 0;
-          return `${levelName(li.level.name)} · ${xp} XP${li.nextLevel && toNext > 0 ? tl("dd.toNext", { n: toNext, name: levelName(li.nextLevel.name) }) : ''}`;
-        })() : null,
+        // SHORT SINCE 11 Nov 2026. The line carried the level, the XP and the
+        // next rung ("Sunday League · 20 XP · 80 to Non-League") on top of the
+        // streak: three lines of dots and bold in the quiet footer, and the
+        // Save beside it had not been tapped once in 208 views. One thing a
+        // guest would lose, in one line; the rung lives on Profile.
+        line: xp > 0 ? `${xp} XP` : null,
       } : null,
       nextUp,
       // A promotion this daily finish earned; DailyDone shows it only under
