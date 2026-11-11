@@ -1975,7 +1975,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           marginBottom:16,
           textAlign:"center",
         }}>
-          <div style={{fontSize:32, marginBottom:8}}>⚽</div>
+          {/* A line icon like the rest of the screen; it was an emoji football. */}
+          <Target size={28} strokeWidth={1.8} aria-hidden="true" style={{ color: "var(--t3)", marginBottom: 8 }} />
           <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>{t("pf.noStats")}</div>
           <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>{t("pf.noStatsSub")}</div>
         </div>
