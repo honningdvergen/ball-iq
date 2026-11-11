@@ -24,10 +24,14 @@ import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardA
 // The day's answer: from the schedule the SITE serves when an installed app
 // has kept a good copy (lib/scheduleRemote.js), else the bundled schedule.
 import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
+import { rich } from '../i18n/rich.jsx';
 import ROLES from '../data/mysteryRoles.json';
 import { t as tNow, useT, useLang, fmtLocale } from '../i18n/index.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
 import './mystery.css';
+import ANSWER_IDS from "../data/mysteryAnswers.json";
+
+const KNOWN_PLAYERS = new Set(ANSWER_IDS);
 
 /* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.
    Measured 2026-08-15 against the live pool:
@@ -127,6 +131,35 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     return null;
   }, [POOL, answerIds]);
   const byId = useMemo(() => new Map(POOL.map((p) => [p.id, p])), [POOL]);
+  // Yesterday's player, named at the foot of the empty start: closure for
+  // anyone who gave up on him, and a floor for the screen (11 Nov 2026).
+  const yesterdayName = useMemo(() => {
+    if (!POOL.length || !(dayIndex > 0)) return '';
+    for (const id of mysteryAnswerIds(dayIndex - 1)) { const p = POOL.find((x) => x.id === id); if (p) return p.name; }
+    return '';
+  }, [POOL, dayIndex]);
+  // THREE FIRST MOVES (11 Nov 2026). Before the first guess the screen was a
+  // search box over nine thousand names and two thirds of empty black (Alex's
+  // "empty lower half", worst on a tall phone). These are the three most
+  // famous players who fit the two FREE clues (position, birth decade), never
+  // the answer itself, so they give away nothing the clues have not. A tap
+  // makes the guess; the rows show where guesses will land and what one costs.
+  const starters = useMemo(() => {
+    if (!answer || !POOL.length) return [];
+    const dec = (y) => Math.floor((Number(y) || 0) / 10);
+    // Only players the game itself would set as an answer (mysteryAnswers.json,
+    // known first as footballers). The guessable pool is every footballer with
+    // a Wikidata record, ordered here by fame, and fame is page views: the
+    // first build of this offered Viktor Orbán, a prime minister who played
+    // for Budapesti EAC, as the opening guess for "forward, born 1960s".
+    return POOL
+      .filter((p) => KNOWN_PLAYERS.has(p.id) && p.id !== answer.id && p.slot === answer.slot && dec(p.born) === dec(answer.born))
+      .sort((a, b) => (b.fame || 0) - (a.fame || 0))
+      .slice(0, 8)
+      // Three of the eight best known, a different three each day: with a fixed
+      // top three, the day's answer would be the famous name that is missing.
+      .filter((_, i, all) => all.length <= 3 || [0, 1, 2].some((k) => (dayIndex + k * 3) % all.length === i));
+  }, [POOL, answer, dayIndex]);
 
   // Rank the pool once per puzzle, not per keystroke.
   const ranks = useMemo(
@@ -540,6 +573,20 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             2026). Four dashed bands explained ranks nobody had yet. Each guess
             row carries its own word (boiling / warm / cold) and its share
             ("top 3%"), so the key is said where it is needed and nowhere else. */}
+        {!done && rows.length === 0 && starters.length > 0 && (
+          <div className="mp-start">
+            <div className="mp-start-k">{t('mp.startK')}</div>
+            {starters.map((p) => (
+              <button key={p.id} type="button" className="mp-start-row" onClick={() => submit(p)}>
+                <span className="mp-start-name">{p.name}</span>
+                <span className="mp-start-go">{t('mp.startTap')}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        {!done && rows.length === 0 && yesterdayName && (
+          <p className="mp-yday">{rich(t('mp.yesterday'), { name: <strong>{yesterdayName}</strong> })}</p>
+        )}
         {rows.map((g) => {
           const st = BAND_STYLE[g.band];
           // WHY it is here: shared clubs, position, era. The same three things
