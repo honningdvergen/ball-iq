@@ -102,6 +102,10 @@ export default {
   'home.mp.sub': 'En vivo con amigos',
   'home.mp.invite': 'Invitar',
   'home.mp.inviteAria': 'Crear una sala e invitar a amigos',
+  'home.league.title': 'Liga de amigos',
+  'home.league.sub': 'Los cuatro retos diarios, puntuados toda la semana',
+  'home.league.start': 'Crear',
+  'home.league.startAria': 'Crear una liga con tus amigos',
   'home.rail.label': 'Tus estadísticas',
   'home.rail.anonName': 'Jugador de Ball IQ',
   // "Media": the word for a FIFA card's OVERALL in Spanish.
@@ -118,6 +122,7 @@ export default {
   'home.rail.strongest': 'Punto fuerte',
   'home.rail.formEmpty': 'Juega una partida para ver tu forma.',
   'home.findQuiz': 'Busca un quiz',
+  'home.mates': 'Con tus amigos',
   'home.finder.placeholder': 'Busca tu club…',
   'home.finder.label': 'Busca tu club',
   'home.finder.results': 'Clubes',

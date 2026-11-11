@@ -119,6 +119,10 @@ export default registerEnglish({
   'home.mp.sub': 'Play your mates live',
   'home.mp.invite': 'Invite',
   'home.mp.inviteAria': 'Create a room and invite friends',
+  'home.league.title': 'Mates’ league',
+  'home.league.sub': 'The four dailies, scored all week',
+  'home.league.start': 'Start',
+  'home.league.startAria': 'Start a league with your mates',
   // Desktop right rail.
   'home.rail.label': 'Your stats',
   'home.rail.anonName': 'Ball IQ Player',
@@ -136,6 +140,7 @@ export default registerEnglish({
   'home.rail.formEmpty': 'Play a game to see your form.',
   // Find a quiz: the club finder (search + chips) and the Quiz row.
   'home.findQuiz': 'Find a quiz',
+  'home.mates': 'With your mates',
   'home.finder.placeholder': 'Find your club…',
   'home.finder.label': 'Find your club',
   'home.finder.results': 'Clubs',
