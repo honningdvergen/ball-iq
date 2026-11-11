@@ -1503,6 +1503,11 @@ export function getGuestDisplayName() {
   try { localStorage.setItem(GUEST_NAME_KEY, name); } catch {}
   return name;
 }
+/** The guest name if one was ever made, WITHOUT making one: the profile reads
+    this so a guest already named in a league or a room sees that name. */
+export function peekGuestDisplayName() {
+  try { return localStorage.getItem(GUEST_NAME_KEY) || ""; } catch { return ""; }
+}
 export function setGuestDisplayName(name) {
   const v = String(name || "").trim().slice(0, 20);
   if (!v) return;
@@ -1898,6 +1903,27 @@ export function ReviewQuestionCard({ a, index }) {
   const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = useQuestionText().answer(a);
   // A true-or-false question stores its options as TRUE / FALSE.
   const optLabel = (opt) => (type === 'tf' && (opt === 'TRUE' || opt === 'FALSE') ? t(opt === 'TRUE' ? 'quiz.true' : 'quiz.false') : opt);
+  // THE CALM LIST (11 Nov 2026). Each question was a card in a red or green
+  // border with all four options stacked and YOUR PICK / CORRECT pills: seven
+  // of them made the oldest-looking screen in the app, a day after the finish
+  // screen's "N you missed" list was tidied. Same row here: the right answer
+  // leads in green, a wrong pick is a grey "You said", and a tick in place of
+  // the number marks the ones they got.
+  if ((type === 'mcq' || type === 'tf') && Array.isArray(options)) {
+    const right = options[correctIdx] != null ? optLabel(options[correctIdx]) : correctText;
+    const said = !isCorrect && userIdx != null && options[userIdx] != null ? optLabel(options[userIdx]) : null;
+    return (
+      <div className="wr-item">
+        <span className="wr-n" aria-hidden="true">{isCorrect ? <Check size={13} strokeWidth={3} style={{ color: "var(--green-ink)", verticalAlign: "-2px" }} /> : index + 1}</span>
+        <div className="wr-body">
+          <div className="wr-q">{q}</div>
+          <div className="wr-a">{right}</div>
+          {said && <div className="wr-user">{t('rs.youSaid', { a: said })}</div>}
+          {!isCorrect && !said && timedOut && <div className="wr-user">{t('rw.timedOutLine')}</div>}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`dr-q ${isCorrect ? 'dr-q-right' : 'dr-q-wrong'}`}>
       <div className="dr-q-head">
@@ -3774,7 +3800,7 @@ function AppInner() {
   }, [dailyDone, loginStreak, top10Tick]);
   useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
 
-  const tickLoginStreak = useCallback(async () => {
+  const tickLoginStreak = useCallback(async ({ onPanel = false } = {}) => {
     // Calendar day in the USER'S timezone (days since epoch of the local
     // date). The previous UTC day (Date.now()/DAY_MS client-side,
     // current_date server-side) broke streaks for anyone west of UTC playing
@@ -3888,11 +3914,19 @@ function AppInner() {
       haptic("heavy");
       playSound("streak");
     } else if (result.ticked && result.streak > 1) {
-      if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
-      setStreakToast(result.streak);
+      // ONE TELLING (11 Nov 2026). A finished daily lands on a panel whose
+      // first row IS the streak ("3-day daily streak"); the gold toast said it
+      // again on top of that row, and on day 3, 7, 30 and 100 the milestone
+      // toast below made it three. The toast now shows only where no panel
+      // does (the credit after a sign-in), and never beside a milestone's.
+      const milestone = [3, 7, 30, 100].includes(result.streak);
+      if (!onPanel && !milestone) {
+        if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
+        setStreakToast(result.streak);
+        streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
+      }
       haptic("heavy");
       playSound("streak");
-      streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
     } else if (result.streak < prevKnownStreak && prevKnownStreak >= 3) {
       // The streak died since this device last ticked (normally streak === 1
       // after a reset; a stale multi-device cache can land higher). Without
@@ -5427,11 +5461,12 @@ function AppInner() {
         // already has, and it lived three screens away on Profile ("192 XP to
         // go"). It now rides the line the player reads for a minute (critique
         // 2026-09-08, F1). getLevelInfo already computes it — no new data.
-        line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? (() => {
-          const li = getLevelInfo(xp);
-          const toNext = li.nextLevel ? Math.max(0, (li.nextLevel.xpNeeded || 0) - xp) : 0;
-          return `${levelName(li.level.name)} · ${xp} XP${li.nextLevel && toNext > 0 ? tl("dd.toNext", { n: toNext, name: levelName(li.nextLevel.name) }) : ''}`;
-        })() : null,
+        // SHORT SINCE 11 Nov 2026. The line carried the level, the XP and the
+        // next rung ("Sunday League · 20 XP · 80 to Non-League") on top of the
+        // streak: three lines of dots and bold in the quiet footer, and the
+        // Save beside it had not been tapped once in 208 views. One thing a
+        // guest would lose, in one line; the rung lives on Profile.
+        line: xp > 0 ? `${xp} XP` : null,
       } : null,
       nextUp,
       // A promotion this daily finish earned; DailyDone shows it only under
@@ -5650,8 +5685,9 @@ function AppInner() {
       // finishing is the habit we want to reward.
       //
       // The RPC is idempotent per local day (lastDay === today → ticked:false),
-      // so solving all four modes ticks once and shows one toast.
-      tickLoginStreak();
+      // so solving all four modes ticks once. The finish panel states the
+      // streak, so the toast stays away (onPanel).
+      tickLoginStreak({ onPanel: true });
       // The daily_complete chord + heavy haptic used to be Daily 7's private
       // reward (it fires them in handleComplete, whose dispatch above carries
       // no `game` field — hence the named-game gate, which also keeps this
@@ -7244,12 +7280,14 @@ function AppInner() {
             onDone={(startGame) => {
               setHasOnboarded(true);
               // They answered the sample question and pressed "Let's play", so
-              // put them IN a game rather than in front of a menu. Footle is
-              // the choice because it is where the habit forms (94% of players
-              // reaching three active days got there through it) and because
-              // it needs nobody else, unlike a room. Deferred a tick so the
-              // onboarding unmount completes first.
-              if (startGame === true) setTimeout(() => { try { setScreen("wordle"); } catch { /* stay on home */ } }, 0);
+              // put them IN a game rather than in front of a menu. Daily 7 since
+              // 11 Nov 2026: the first screen has just asked a football question,
+              // and seven more of those is what the button promises. Footle (the
+              // choice until then, because the habit forms there) is a word game
+              // with its own rules to learn, a change of subject in the first
+              // minute; it is the next row on the finish panel. Deferred a tick
+              // so the onboarding unmount completes first.
+              if (startGame === true) setTimeout(() => { try { playDaily(); } catch { /* stay on home */ } }, 0);
               // The component has already written biq_onboarded + any chosen fav_club / skill_level.
               // Pull through the new default difficulty so it takes effect immediately.
               try {
@@ -7649,7 +7687,7 @@ function AppInner() {
             <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>{t("lu.go")}</button>
           </div>
         )}
-        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
+        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><Flame size={15} strokeWidth={2.6} aria-hidden="true" /><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
 
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (

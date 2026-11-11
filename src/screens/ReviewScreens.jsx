@@ -95,7 +95,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
           {dateLabel}
         </div>
         <div style={{fontSize:22, fontWeight:700, color:"var(--t1)", letterSpacing:"-0.4px", marginBottom:6}}>
-          {rich(t("rw.scored"), { s: <span style={{color:"var(--accent)", fontWeight:800}}>{score}/7</span> })}
+          {rich(t("rw.scored"), { s: <span style={{color: score >= 5 ? "var(--accent)" : "var(--t1)", fontWeight:800}}>{score}/7</span> })}
         </div>
         <div style={{fontSize:13, color:"var(--t3)"}}>
           {rich(t("rw.nextIn"), { c: <DailyHeroCountdown /> })}
@@ -117,7 +117,7 @@ export function DailyReviewScreen({ date, score, wrongAnswers, allAnswers, daily
             <span>{t("rw.full")}</span>
             <span style={{color:"var(--t3)", fontSize:11, fontWeight:600, letterSpacing:0.4, textTransform:"none"}}>{rich(t("rw.correct7"), { n: score })}</span>
           </div>
-          <div className="dr-list">
+          <div className="wrong-review">
             {allAnswers.map((a, i) => <ReviewQuestionCard key={i} a={a} index={i} />)}
           </div>
         </>

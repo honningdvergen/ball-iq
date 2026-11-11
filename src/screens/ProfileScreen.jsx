@@ -145,7 +145,13 @@ const BALL_SRC = "/marketing/ball.png";
 // by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { canRateInStore, openStoreRating, ratingStore } from '../lib/review.js';
+import { peekGuestDisplayName, setGuestDisplayName } from '../App.jsx';
 import { loopEvent } from '../lib/funnel.js';
+// THE FACE ON THE CARD IS FRAMED, NOT OUTLINED (11 Nov 2026). A 2.5px line
+// drawn straight on the picture read as a default avatar dropped on a card.
+// A dark gap, then a fine ring in the tier's colour with a little of its
+// light under it, is how a badge is set into a surface.
+const avatarFrame = (accent) => ({ border: "3px solid rgba(6,8,14,0.78)", boxShadow: `0 0 0 1.5px ${accent}, 0 12px 26px -12px ${accent}` });
 import BallIqCardFace from '../components/BallIqCardFace.jsx';
 export { ProfilePic };
 
@@ -1001,7 +1007,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             played={played}
             style={{ marginBottom: 16 }}
             avatar={
-              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${pal.accent}`, overflow: "hidden" }}>{avatar}</div>
+              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", ...avatarFrame(pal.accent), overflow: "hidden" }}>{avatar}</div>
             }
             name={
               <div style={{ fontSize: 30, fontWeight: 900, color: pal.text, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{username}</div>
@@ -1412,14 +1418,19 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const realLocalName = !isDefaultName(localName) ? localName : null;
   // What we show on the card + pre-fill into the editor. Server name wins over
   // a local one; both fall back to "" so a default-named user edits from blank.
-  const currentName = pendingName || realUsername || realLocalName || "";
+  // ONE NAME FOR A GUEST (11 Nov 2026). A guest in a league or an online room
+  // already plays under a name the app made for them ("Wonder Keeper 25");
+  // this card said "Set your name" beside it, as if they had none. The card
+  // now shows that same name, and a rename here is carried to the league.
+  const guestName = (isGuest || isAnonUser) ? peekGuestDisplayName() : "";
+  const currentName = pendingName || realUsername || realLocalName || guestName || "";
   const hasUsername = !!realUsername || !!pendingName;
   // Drop the optimistic override once the server echoes the new name back (or
   // keep it if offline — local-first, the name still shows).
   useEffect(() => {
     if (pendingName != null && authProfile?.username === pendingName) setPendingName(null);
   }, [authProfile?.username, pendingName]);
-  const showNameCTA = !authLoading && !hasUsername && !realLocalName;
+  const showNameCTA = !authLoading && !hasUsername && !realLocalName && !guestName;
   const startNameEdit = () => {
     // Pre-fill with the current real name so a signed-in user *edits* their
     // username instead of retyping from scratch; default names start blank.
@@ -1473,6 +1484,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     setPendingName(v);
     setProfile(p => ({ ...p, name: v }));
     setEditingName(false);
+    // The same name in the next room, and in the league tables they are in
+    // (a quiet call: no league, no session or no network changes nothing).
+    if (isGuest || isAnonUser) setGuestDisplayName(v);
+    let inLeague = false; try { inLeague = localStorage.getItem('biq_league_member') === '1'; } catch { /* private mode */ }
+    if (user && inLeague) import('../lib/leagues.js').then((m) => m.renameInMyLeagues(v)).catch(() => {});
     // Mirror the change up to Supabase so leaderboards and other devices
     // see the new username. Guests stay local-only.
     if (v && user && !isGuest) {
@@ -1485,7 +1501,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   };
   // Open the inline editor when the home greeting tells us to.
   useEffect(() => {
-    if (nameEditNonce && showNameCTA) startNameEdit();
+    if (nameEditNonce && (showNameCTA || (guestName && !realLocalName && !hasUsername))) startNameEdit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nameEditNonce]);
   // Phase 6a Item 4: tap a badge to expand its detail card below the
@@ -1759,9 +1775,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 54, fontWeight: 900, color: pal.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>85</div>
-                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: pal.text, opacity: 0.65, marginTop: 4 }}>{t("home.rail.overall")}</div>
-                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: pal.accent, marginTop: 7 }}>{tierName("gold")}</div>
+                  {/* The same top as the real card since 11 Nov 2026: the label
+                      line carries the tier and nothing sits under the number.
+                      The example kept "OVERALL" and "GOLD" below it for a day
+                      after the card itself lost them. */}
+                  <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text }}>
+                    <span style={{ opacity: 0.5 }}>BALL IQ</span><span aria-hidden="true" style={{ opacity: 0.35 }}> · </span><span style={{ color: pal.accent }}>{tierName("gold")}</span>
+                  </div>
+                  <div style={{ fontSize: 64, fontWeight: 900, color: pal.accent, lineHeight: 1.02, letterSpacing: -3, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>85</div>
                 </div>
                 {/* A line icon in the tier's colour, like every other icon on
                     this screen. It was the trophy emoji, drawn by the phone's
@@ -1820,8 +1841,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             avatar={
                 <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
                   <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={showPhoto
-                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${pal.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
-                    : {width:96, height:96, fontSize:44, border:`2.5px solid ${pal.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
+                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}
+                    : {width:96, height:96, fontSize:44, ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
                     {uploading ? (
                       <span className="avatar-spinner" aria-label={t("pf.uploading")} />
                     ) : showPhoto ? (
@@ -1955,7 +1976,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           marginBottom:16,
           textAlign:"center",
         }}>
-          <div style={{fontSize:32, marginBottom:8}}>⚽</div>
+          {/* A line icon like the rest of the screen; it was an emoji football. */}
+          <Target size={28} strokeWidth={1.8} aria-hidden="true" style={{ color: "var(--t3)", marginBottom: 8 }} />
           <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>{t("pf.noStats")}</div>
           <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>{t("pf.noStatsSub")}</div>
         </div>
