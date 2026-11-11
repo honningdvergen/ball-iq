@@ -1006,7 +1006,7 @@ function FriendProfileScreenImpl({ friendId, onBack, onChallenge, onToast }) {
             played={played}
             style={{ marginBottom: 16 }}
             avatar={
-              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", border: `2.5px solid ${pal.accent}`, overflow: "hidden" }}>{avatar}</div>
+              <div style={{ width: 96, height: 96, flexShrink: 0, borderRadius: "50%", ...avatarFrame(pal.accent), overflow: "hidden" }}>{avatar}</div>
             }
             name={
               <div style={{ fontSize: 30, fontWeight: 900, color: pal.text, letterSpacing: "-0.02em", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{username}</div>
@@ -1835,8 +1835,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             avatar={
                 <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
                   <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={showPhoto
-                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", border:`2.5px solid ${pal.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}
-                    : {width:96, height:96, fontSize:44, border:`2.5px solid ${pal.accent}`, appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
+                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}
+                    : {width:96, height:96, fontSize:44, ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
                     {uploading ? (
                       <span className="avatar-spinner" aria-label={t("pf.uploading")} />
                     ) : showPhoto ? (
