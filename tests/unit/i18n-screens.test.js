@@ -237,7 +237,7 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['results: classic 3/10, daily open (the daily is the primary), one more to rate'])).toContain('Te falta 1 respuesta para tener media');
     expect(unq(now['results: survival 12, new best over 8'])).toContain('>12 seguidas antes del primer fallo<');
     expect(unq(now['results: daily 7 on 5, the panel'])).toContain('>Hoy había alguna difícil.<');
-    expect(unq(now['hot streak: first run, 3'])).toContain('⚡🔥 Crono');
+    expect(unq(now['hot streak: first run, 3'])).toContain('>Crono<');
     expect(unq(now['true or false: perfect 10'])).toContain('>Nivel Balón de Oro<');
   });
   it('the review', () => {
