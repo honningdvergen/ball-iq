@@ -522,7 +522,7 @@ export default {
   'rs.answers_one': 'respuesta',
   'rs.answers_other': 'respuestas',
   'rs.reviewMissed': 'Repasa tus fallos ({n})',
-  'rs.youSaid': 'Dijiste {a}',
+  'rs.youSaid': 'Tu respuesta: {a}',
   'rs.looksWrong': 'Esto parece un error',
   'rs.toRated_one': 'Te falta {n} {w} para tener media',
   'rs.toRated_other': 'Te faltan {n} {w} para tener media',

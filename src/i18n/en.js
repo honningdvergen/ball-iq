@@ -559,7 +559,7 @@ export default registerEnglish({
   'rs.answers_one': 'answer',
   'rs.answers_other': 'answers',
   'rs.reviewMissed': '{n} you missed',
-  'rs.youSaid': 'You said {a}',
+  'rs.youSaid': 'Your answer: {a}',
   'rs.looksWrong': 'This looks wrong',
   'rs.toRated_one': '{n} more {w} to get rated',
   'rs.toRated_other': '{n} more {w} to get rated',

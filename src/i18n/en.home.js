@@ -551,7 +551,7 @@ export default {
   'ts.clubFail': '⚠️ Couldn\'t start club quiz',
   'ts.comeback': '🔄 Great comeback — only missed one after a slow start',
   'ts.d7Done': '📅 Already done today — {n}/7, come back tomorrow',
-  'rs.youSaid': 'You said {a}',
+  'rs.youSaid': 'Your answer: {a}',
   'rw.timedOutLine': 'Timed out',
   'ts.dayStreak': '{s} Keep it up',
   'ts.dayStreakB': '{n} day streak!',
