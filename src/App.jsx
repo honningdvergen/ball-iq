@@ -8697,6 +8697,11 @@ function AppInner() {
             label={activePack ? activePack.name
               : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? catLabel(t, activeLeague)
               : null}
+            // The club's (or league's) own badge, as on the quiz screen's banner,
+            // so the result says whose quiz this was (11 Nov 2026).
+            badge={activePack ? { abbr: clubs.CLUB_ABBR[activeClub] || clubInitials(activePack.name), color: activePack.color, fg: clubReadableText(activePack.color) }
+              : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? { abbr: LEAGUE_QUIZ_BY_CAT[activeLeague].abbr, color: LEAGUE_QUIZ_BY_CAT[activeLeague].color, fg: clubReadableText(LEAGUE_QUIZ_BY_CAT[activeLeague].color) }
+              : null}
             onShare={() => (mode === "daily"
               // Daily shares route through shareDaily — the (previously
               // unwired) path that carries the balliq.app/c/ challenge link
