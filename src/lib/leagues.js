@@ -62,7 +62,7 @@ export function parseLeagueInviteToken(token) {
   const raw = String(token || '').trim();
   const m = /^([23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8})(?:\.([^.]*))?(?:\.([^.]*))?$/i.exec(raw);
   if (!m) return null;
-  const dec = (s) => { try { return decodeURIComponent(s || ''); } catch { return s || ''; } };
+  const dec = (s) => { let v; try { v = decodeURIComponent(s || ''); } catch { v = s || ''; } return v.replace(/-/g, ' '); };
   return { code: m[1].toUpperCase(), name: cleanLabel(dec(m[2]), 32), inviter: cleanLabel(dec(m[3]), 22) };
 }
 
