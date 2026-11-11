@@ -2115,7 +2115,7 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
         </div>
         {isEmpty ? (
           <div className="notif-empty">
-            <div className="notif-empty-ic" aria-hidden="true">🔔</div>
+            <div className="notif-empty-ic" aria-hidden="true"><Bell size={26} strokeWidth={1.9} /></div>
             <div className="notif-empty-t">{tl("nc.empty")}</div>
             <div className="notif-empty-s">{tl("nc.emptySub")}</div>
           </div>
@@ -2950,6 +2950,10 @@ function AppInner() {
       try { delete window.__biqOpenLeague; } catch {}
     };
   }, [openLeagueTable, setLeagueSheet]);
+  const openLeagueCreateFromHome = useCallback(() => {
+    loopEvent("league-create-open", { from: "home" });
+    setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
+  }, [setLeagueSheet]);
   const openLeagueCreateFromDaily = useCallback(() => {
     loopEvent("league-create-open", { from: "daily" });
     setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
@@ -7727,6 +7731,7 @@ function AppInner() {
               launchClubQuiz={launchClubQuiz}
               firstSession={showFirstQuizTip}
               onOpenLeague={LEAGUES_ON ? openLeagueTable : undefined}
+              onStartLeague={LEAGUES_ON ? openLeagueCreateFromHome : undefined}
             />
             </TabErrorBoundary>
           </div>

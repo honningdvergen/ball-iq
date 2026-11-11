@@ -21,6 +21,7 @@ import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
 import { useT, useLang, fmtLocale } from "../i18n/index.js";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
@@ -202,6 +203,7 @@ function HomeScreenImpl({
   // Mates' leagues: the App passes this on the web only (never in a native
   // shell, phase 1), so its absence hides the card everywhere else.
   onOpenLeague,
+  onStartLeague,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
   const t = useT();
@@ -585,10 +587,20 @@ function HomeScreenImpl({
         );
       })()}
 
-      {/* ── MATES' LEAGUE ── directly under the daily zone, members only. */}
-      {leagueCardOn && (
-        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} /></React.Suspense>
-      )}
+      {/* ── WITH YOUR MATES ── the league and Multiplayer under one heading
+          (11 Nov 2026). They were two loose cards between the dailies and
+          "Find a quiz". A heading, as "Find a quiz" and "More modes" have, and
+          not a second bordered box: the box is what marks the dailies as the
+          thing to do every day (Alex asked; this was the verdict). */}
+      <div className="home-mates">
+      <div className="home-section-title">{t("home.mates")}</div>
+      {/* The league: the card for a member, the way in for everyone else. */}
+      {leagueCardOn ? (
+        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} onStart={onStartLeague} /></React.Suspense>
+      ) : onStartLeague ? (
+        // In no league: the way in (LeagueStartRow says why it is here).
+        <LeagueStartRow onStart={onStartLeague} />
+      ) : null}
 
       {/* ── PLAY WITH FRIENDS — one row, same anatomy as the Today rows
           (2026-09-06 critique: it had the loudest button on the screen and the
@@ -615,6 +627,7 @@ function HomeScreenImpl({
         onOpen={() => setTab("online")}
         showToast={showToast}
       />
+      </div>
       </div>
 
       {/* ─────────── RIGHT RAIL (desktop-only, render-always/CSS-reveal) ─────────── */}

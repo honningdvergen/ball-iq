@@ -104,6 +104,11 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                   need to be there? it is kind of obvious". "BALL IQ" above
                   names the number and now carries the tier. Two lines shorter. */}
               <div style={{ fontSize: 86, fontWeight: 900, color: pal.accent, lineHeight: 1.02, letterSpacing: -4, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{card.overall}</div>
+              {/* A gold number on a short record: say when the card turns, so the
+                  hold reads as a goal and not as gold that failed to arrive. */}
+              {card.goldIn > 0 && (
+                <div style={{ fontSize: 11.5, fontWeight: 700, color: pal.text, opacity: 0.6, marginTop: 4 }}>{t("cf.goldIn", { count: card.goldIn, n: card.goldIn })}</div>
+              )}
             </>
           ) : (
             <>

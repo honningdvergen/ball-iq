@@ -437,6 +437,29 @@ export const PROVISIONAL_ANSWERS = 3;
 // the only direction a rating should surprise in. Twenty ≈ two club quizzes.
 export const PRIOR_WEIGHT = 20;
 
+// A WEAK RECORD IS BELIEVED SOONER (11 Nov 2026). The twenty-answer prior
+// protects a lucky start from printing gold and sliding (above). It pulled a
+// BAD start up just as hard: 0/10 read 66, 0/20 read 60, and a player needed
+// about two hundred wrong answers to reach the bottom of the scale. Seen on a
+// test guest: 0 out of 10 on a club quiz, then "Rated 68 — your card is live".
+// Alex: "they can not get 68 if they score that low, maybe low fifties?"
+//
+// So the prior is asymmetric. While the player's own record is BELOW the
+// baseline it weighs four answers; at or above it, twenty, exactly as before,
+// so nothing about the lucky-start fix changes. The two meet at the baseline
+// (a record AT the baseline shrinks to itself under any weight), so there is
+// no jump. With the real curve: 0/10 → 56, 2/10 → 61, 4/10 → 70, 5/10 → 73,
+// 6/10 and up unchanged; a long record is unchanged at every level.
+export const WEAK_PRIOR_WEIGHT = 4;
+
+// GOLD WAITS FOR FIFTY ANSWERS (11 Nov 2026). Six right on a first ten-question
+// quiz reads 78, and 75 is the gold line, so gold arrived in one evening and
+// silver was the rare card. The NUMBER is shown as it is; only the tier holds
+// at silver until the record is long enough to mean it. computeCard returns
+// `goldIn` (answers still to go) so the card can say so instead of the gold
+// quietly not arriving.
+export const GOLD_MIN_ANSWERS = 50;
+
 /** Multiplier a correct answer earns, by difficulty. Unknown labels count as medium. */
 export const MULT = CALIBRATION.mult;
 export const AVG_MULT = CALIBRATION.avgMult;
@@ -826,7 +849,9 @@ export function overallScore(catStats = {}, lifetime) {
   let s = 0, n = 0, own = 0;
   for (const cs of Object.values(catStats || {})) { const k = scoreOf(cs); s += k.s; n += k.n; own += rawAnswered(cs); }
   void lifetime; // spread by computeCard via withLegacyTopUp before this is called
-  return { mean: (s + BASELINE * PRIOR_WEIGHT) / (n + PRIOR_WEIGHT), answered: own };
+  // Below the baseline the prior is light (WEAK_PRIOR_WEIGHT, above).
+  const w = n > 0 && s / n < BASELINE ? WEAK_PRIOR_WEIGHT : PRIOR_WEIGHT;
+  return { mean: (s + BASELINE * w) / (n + w), answered: own };
 }
 
 /** Kept for callers that think in accuracy. */
@@ -1018,8 +1043,11 @@ export function computeCard(catStats = {}, _priorAcc, lifetime, pinnedLeague) {
   //
   // Silver is the neutral, not bronze: an unplayed card is unproven, not bad.
   const isRated = answeredTotal >= MIN_RATED_ANSWERS;
+  // Gold on the number but not yet on the record: the tier holds at silver (GOLD_MIN_ANSWERS).
+  const earned = isRated ? cardTier(overall) : "silver";
+  const goldHeld = earned === "gold" && answeredTotal < GOLD_MIN_ANSWERS;
   return {
-    ratings, overall, tier: isRated ? cardTier(overall) : "silver", answeredTotal,
+    ratings, overall, tier: goldHeld ? "silver" : earned, goldIn: goldHeld ? Math.ceil(GOLD_MIN_ANSWERS - answeredTotal) : 0, answeredTotal,
     rated: isRated,
     accuracy: acc,
     rawAccuracy: rn > 0 ? rc / rn : null,

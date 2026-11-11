@@ -2389,6 +2389,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    than one list. Same doubled-spacing shape as the results card's "24pt of
    doubled flex margins". In a list the gap owns the rhythm. */
 .mp-friend-list .mp-row{margin:0;}
+/* "With your mates" on Home: the two rows sit as one group under their heading. */
+.home-mates .home-section-title{margin-bottom:12px;}
+.home-mates > .mp-row,.home-mates > .lg-home{margin-bottom:8px;}
+.home-mates > .mp-row:last-child{margin-bottom:22px;}
 /* Multiplayer keeps its green icon well (Alex, 2026-09-09: "no colour at all
    to the multiplayer icon? are you sure?" — he was right; a colourless well
    reads as DISABLED, the lesson Mystery taught). The daily well above now
