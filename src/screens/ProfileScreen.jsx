@@ -1774,9 +1774,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 54, fontWeight: 900, color: pal.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>85</div>
-                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, color: pal.text, opacity: 0.65, marginTop: 4 }}>{t("home.rail.overall")}</div>
-                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.2, color: pal.accent, marginTop: 7 }}>{tierName("gold")}</div>
+                  {/* The same top as the real card since 11 Nov 2026: the label
+                      line carries the tier and nothing sits under the number.
+                      The example kept "OVERALL" and "GOLD" below it for a day
+                      after the card itself lost them. */}
+                  <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2.6, color: pal.text }}>
+                    <span style={{ opacity: 0.5 }}>BALL IQ</span><span aria-hidden="true" style={{ opacity: 0.35 }}> · </span><span style={{ color: pal.accent }}>{tierName("gold")}</span>
+                  </div>
+                  <div style={{ fontSize: 64, fontWeight: 900, color: pal.accent, lineHeight: 1.02, letterSpacing: -3, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>85</div>
                 </div>
                 {/* A line icon in the tier's colour, like every other icon on
                     this screen. It was the trophy emoji, drawn by the phone's
