@@ -5,7 +5,7 @@
 // them, SQL scores them), the week runs Monday to Sunday and goes final at
 // Monday 00:00 in the league's own zone. Spec: ball-iq-audit/2026-10-16/leagues.
 //
-//   balliq.app/l/K7QM2XPA.The%20Lads.Alex
+//   balliq.app/l/K7QM2XPA.The-Lads.Alex
 //     code: 8 characters from a 31-symbol alphabet (no 0/O, 1/I/L)
 //     name, inviter: LABELS ONLY, URI-encoded, for the preview card and the
 //     join screen. The real name comes from the server after joining.
@@ -37,9 +37,13 @@ const SEEN_FINAL_PREFIX = 'biq_league_seen_';
 // decoded %2E in a query string would split it in the wrong place). Letters,
 // numbers, spaces, apostrophes, hyphens and underscores.
 const cleanLabel = (s, max) => String(s || '').replace(/\./g, ' ').replace(/[^\p{L}\p{N} '_-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, max);
-const enc = (s) => encodeURIComponent(s).replace(/\./g, '%2E');
+// A label in the link reads as words: spaces travel as hyphens and an
+// apostrophe is dropped, so "Mates' league" is Mates-league, not
+// Mates'%20league (a chat app can also end a link at the apostrophe). The
+// label is only the preview; the real name comes from the server.
+const enc = (s) => encodeURIComponent(String(s).replace(/'/g, '').replace(/ /g, '-')).replace(/\./g, '%2E');
 
-/** "K7QM2XPA.The%20Lads.Alex"; the inviter is optional. Null for a bad code. */
+/** "K7QM2XPA.The-Lads.Alex"; the inviter is optional. Null for a bad code. */
 export function leagueInviteToken(code, name = '', inviter = '') {
   const c = String(code || '').toUpperCase();
   if (!LEAGUE_CODE_RE.test(c)) return null;
