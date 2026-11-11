@@ -97,6 +97,9 @@ console.log(`  ${IS_ANDROID ? 'PLAY  ' : 'APPLE '}frame ${W}x${H} · phone ${PHO
   + ` · image ${IMG_W}x${IMG_H} · copy block ${TOP_BLOCK}`
   + `  ->  capture 440 x ${Math.round(440 * IMG_H / IMG_W)}`);
 const GREEN = '#58CC02', AMBER = '#FFC107', ORANGE = '#FF8A3D';
+// The games' own colours, as on Home's rows (12 Nov 2026): eight of the ten
+// frames were green, so the gallery read as one picture ten times.
+const BLUE = '#4DA3FF', PURPLE = '#9B8CFF', PINK = '#F2558F';
 
 // One entry per raw frame. `hi` is the phrase pulled out of the headline in the
 // accent colour — keep it SHORT so the line still reads as a sentence.
@@ -123,22 +126,22 @@ const COPY = {
     sub: 'From Real Madrid to Hajduk Split.',
   },
   '04-transfer-trail': {
-    eyebrow: 'DAILY · TRANSFER TRAIL', accent: GREEN,
+    eyebrow: 'DAILY · TRANSFER TRAIL', accent: BLUE,
     head: ['Name him from', '{his career}'],
     sub: 'One club at a time. Fewer clubs, more points.',
   },
   '07-mystery-player': {
-    eyebrow: 'MYSTERY PLAYER', accent: AMBER,
+    eyebrow: 'MYSTERY PLAYER', accent: PURPLE,
     head: ['Every guess tells you', '{how close}'],
     sub: 'Teammates, same position, same era. Find the player.',
   },
   '11-top10': {
     eyebrow: 'DAILY · TOP 10', accent: ORANGE,
-    head: ['Name all ten', 'before your {lives run out}'],
+    head: ['Name all ten', 'on {three lives}'],
     sub: 'A new ranked list every day.',
   },
   '12-draft': {
-    eyebrow: 'NEW · DRAFT', accent: GREEN,
+    eyebrow: 'NEW · DRAFT', accent: PINK,
     head: ['Draft eleven from', '{real seasons}'],
     sub: 'Spin a club, take a player, play the season.',
   },
@@ -148,13 +151,13 @@ const COPY = {
     sub: 'The story behind the answer, every time.',
   },
   '08-daily-chips': {
-    eyebrow: 'DAILY 7', accent: GREEN,
+    eyebrow: 'DAILY 7', accent: AMBER,
     head: ['Seven questions,', '{every single day}'],
     sub: 'Every answer explained the moment you pick it.',
   },
   '06-profile': {
     eyebrow: 'YOUR PROFILE', accent: AMBER,
-    head: ["What's your {Ball IQ}?"],
+    head: ["What's your", '{Ball IQ}?'],
     sub: 'Every answer builds your rating.',
   },
   // Stadiums shipped 2026-08-20, is badged NEW in the app and named in both the
@@ -278,7 +281,6 @@ const page = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8"><
   }
 </style></head><body>
   <div class="top">
-    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b>: Football Quiz</span></div>
     <div class="eyebrow">${c.eyebrow}</div>
     <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
     <div class="sub">${c.sub}</div>
@@ -310,9 +312,13 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   html,body{width:${W}px;height:${H}px;overflow:hidden}
   body{
     background:
-      radial-gradient(ellipse 85% 48% at 50% 4%, rgba(${rgb(c.accent)},.42) 0%, rgba(${rgb(c.accent)},.12) 45%, transparent 75%),
-      radial-gradient(ellipse 70% 40% at 50% 100%, rgba(${rgb(c.accent)},.16) 0%, transparent 70%),
-      linear-gradient(180deg,#11131A 0%,#0A0B10 55%,#07080B 100%);
+      /* THE COLOUR SITS BEHIND THE PHONE, THE WORDS SIT ON DARK (12 Nov 2026).
+         The glow used to be brightest at the very top, right under the text,
+         so a green eyebrow and a green headline word were printed on green
+         (Alex: "is not the green IQ bad on the green background?"). */
+      radial-gradient(ellipse 95% 46% at 50% 58%, rgba(${rgb(c.accent)},.34) 0%, rgba(${rgb(c.accent)},.10) 50%, transparent 78%),
+      radial-gradient(ellipse 70% 30% at 50% 0%, rgba(${rgb(c.accent)},.10) 0%, transparent 70%),
+      linear-gradient(180deg,#0E1016 0%,#0A0B10 55%,#07080B 100%);
     font-family:-apple-system,'Inter','Helvetica Neue',sans-serif;
     display:flex;flex-direction:column;align-items:center;
   }
@@ -321,9 +327,14 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   .mark img{width:${f(58)}px;height:${f(58)}px;border-radius:${f(14)}px}
   .mark span{font-size:${f(48)}px;font-weight:800;color:#fff;letter-spacing:-.5px}
   .mark b{color:${GREEN};font-weight:800}
-  .eyebrow{margin-top:${f(54)}px;font-size:${f(30)}px;font-weight:800;letter-spacing:.16em;color:${c.accent};text-transform:uppercase;text-align:center}
-  h1{margin-top:${f(22)}px;font-size:${f(88)}px;line-height:1.05;font-weight:800;color:#fff;letter-spacing:${(-2 * F).toFixed(1)}px;text-align:center;text-wrap:balance}
-  .sub{margin-top:${f(26)}px;font-size:${f(38)}px;color:rgba(255,255,255,.66);text-align:center}
+  /* NO WORDMARK (12 Nov 2026). "Ball IQ: Football Quiz" with the icon led every
+     frame; the listing prints the icon and the name directly above the gallery
+     (Alex: "people see our app logo above the screenshots anyway"). Its room
+     goes to the headline, which is what is read at thumbnail size. */
+  .eyebrow{font-size:${f(32)}px;font-weight:800;letter-spacing:.16em;color:color-mix(in srgb, ${c.accent} 78%, #fff);text-transform:uppercase;text-align:center}
+  h1{margin-top:${f(26)}px;font-size:${f(108)}px;line-height:1.04;font-weight:800;color:#fff;letter-spacing:${(-2.6 * F).toFixed(1)}px;text-align:center;text-wrap:balance}
+  h1 span{color:color-mix(in srgb, ${c.accent} 86%, #fff) !important}
+  .sub{margin-top:${f(30)}px;font-size:${f(42)}px;color:rgba(255,255,255,.72);text-align:center}
   .shot{flex:0 0 auto;margin-bottom:${f(70)}px;width:${SIM_W}px;height:${SIM_H}px;border-radius:${Math.round(SIM_W * 0.137)}px;overflow:hidden;
     box-shadow:0 0 0 ${Math.max(2, f(3))}px rgba(255,255,255,.16), 0 ${f(40)}px ${f(110)}px rgba(0,0,0,.65), 0 0 ${f(160)}px rgba(${rgb(c.accent)},.22)}
   .shot{position:relative;display:flex;flex-direction:column;background:#0B0C10}
@@ -349,7 +360,6 @@ const simPage = (dataUri, c) => `<!doctype html><html><head><meta charset="utf-8
   .bare img{width:${Math.round(SIM_W * 1.12)}px;height:auto;display:block;border-radius:${f(34)}px;box-shadow:0 ${f(44)}px ${f(100)}px rgba(0,0,0,.6), 0 0 ${f(160)}px rgba(${rgb(c.accent)},.25)}
 </style></head><body>
   <div class="top">
-    <div class="mark">${c.logo ? `<img src="${c.logo}">` : ''}<span>Ball <b>IQ</b>: Football Quiz</span></div>
     <div class="eyebrow">${c.eyebrow}</div>
     <h1>${c.head.map((l) => hl(l, c.accent)).join('<br>')}</h1>
     <div class="sub">${c.sub}</div>
