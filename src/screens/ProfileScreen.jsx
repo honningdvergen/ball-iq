@@ -145,7 +145,12 @@ const BALL_SRC = "/marketing/ball.png";
 // by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { canRateInStore, openStoreRating, ratingStore } from '../lib/review.js';
-import { loopEvent } from '../App.jsx';
+import { loopEvent, peekGuestDisplayName, setGuestDisplayName } from '../App.jsx';
+// THE FACE ON THE CARD IS FRAMED, NOT OUTLINED (11 Nov 2026). A 2.5px line
+// drawn straight on the picture read as a default avatar dropped on a card.
+// A dark gap, then a fine ring in the tier's colour with a little of its
+// light under it, is how a badge is set into a surface.
+const avatarFrame = (accent) => ({ border: "3px solid rgba(6,8,14,0.78)", boxShadow: `0 0 0 1.5px ${accent}, 0 12px 26px -12px ${accent}` });
 import BallIqCardFace from '../components/BallIqCardFace.jsx';
 export { ProfilePic };
 
@@ -1412,14 +1417,19 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const realLocalName = !isDefaultName(localName) ? localName : null;
   // What we show on the card + pre-fill into the editor. Server name wins over
   // a local one; both fall back to "" so a default-named user edits from blank.
-  const currentName = pendingName || realUsername || realLocalName || "";
+  // ONE NAME FOR A GUEST (11 Nov 2026). A guest in a league or an online room
+  // already plays under a name the app made for them ("Wonder Keeper 25");
+  // this card said "Set your name" beside it, as if they had none. The card
+  // now shows that same name, and a rename here is carried to the league.
+  const guestName = (isGuest || isAnonUser) ? peekGuestDisplayName() : "";
+  const currentName = pendingName || realUsername || realLocalName || guestName || "";
   const hasUsername = !!realUsername || !!pendingName;
   // Drop the optimistic override once the server echoes the new name back (or
   // keep it if offline — local-first, the name still shows).
   useEffect(() => {
     if (pendingName != null && authProfile?.username === pendingName) setPendingName(null);
   }, [authProfile?.username, pendingName]);
-  const showNameCTA = !authLoading && !hasUsername && !realLocalName;
+  const showNameCTA = !authLoading && !hasUsername && !realLocalName && !guestName;
   const startNameEdit = () => {
     // Pre-fill with the current real name so a signed-in user *edits* their
     // username instead of retyping from scratch; default names start blank.
@@ -1473,6 +1483,11 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     setPendingName(v);
     setProfile(p => ({ ...p, name: v }));
     setEditingName(false);
+    // The same name in the next room, and in the league tables they are in
+    // (a quiet call: no league, no session or no network changes nothing).
+    if (isGuest || isAnonUser) setGuestDisplayName(v);
+    let inLeague = false; try { inLeague = localStorage.getItem('biq_league_member') === '1'; } catch { /* private mode */ }
+    if (user && inLeague) import('../lib/leagues.js').then((m) => m.renameInMyLeagues(v)).catch(() => {});
     // Mirror the change up to Supabase so leaderboards and other devices
     // see the new username. Guests stay local-only.
     if (v && user && !isGuest) {
@@ -1485,7 +1500,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   };
   // Open the inline editor when the home greeting tells us to.
   useEffect(() => {
-    if (nameEditNonce && showNameCTA) startNameEdit();
+    if (nameEditNonce && (showNameCTA || (guestName && !realLocalName && !hasUsername))) startNameEdit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nameEditNonce]);
   // Phase 6a Item 4: tap a badge to expand its detail card below the

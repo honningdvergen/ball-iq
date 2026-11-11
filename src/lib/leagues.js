@@ -251,6 +251,14 @@ export async function getMyLeagues() {
   setLeagueMember(r.data.length > 0);
   return r.data;
 }
+/** A new name on the profile is the name in every league table too. */
+export async function renameInMyLeagues(name) {
+  if (!isLeagueMember()) return false;
+  const mine = await getMyLeagues();
+  if (!mine?.length) return false;
+  const done = await Promise.all(mine.map((l) => call('set_league_display_name', { p_league_id: l.id, p_name: name })));
+  return done.some((r) => r.data === true);
+}
 export async function getLeagueTable(id, weekStart = null) {
   const r = await call('get_league_table', { p_league_id: id, p_week_start: weekStart });
   return r.error ? null : r.data || null;

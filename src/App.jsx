@@ -1817,6 +1817,11 @@ export function getGuestDisplayName() {
   try { localStorage.setItem(GUEST_NAME_KEY, name); } catch {}
   return name;
 }
+/** The guest name if one was ever made, WITHOUT making one: the profile reads
+    this so a guest already named in a league or a room sees that name. */
+export function peekGuestDisplayName() {
+  try { return localStorage.getItem(GUEST_NAME_KEY) || ""; } catch { return ""; }
+}
 export function setGuestDisplayName(name) {
   const v = String(name || "").trim().slice(0, 20);
   if (!v) return;
