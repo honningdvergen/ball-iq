@@ -6422,7 +6422,7 @@ async function main() {
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
   // TEMPORARY (10 Nov 2026, ends by itself after 31 Dec 2026): a second sitemap
-  // that lists only the OLD /questions/ URLs. They have redirected to their
+  // that lists the OLD /questions/ URLs (and, from 11 Nov, the pruned pages). They have redirected to their
   // /quiz/ twins since 26 Oct, but Google only learns that when it re-crawls
   // each one, and on 10 Nov some were still indexed as duplicates from an
   // 18 Oct crawl. Listing moved URLs in a sitemap is Google's own advice for
@@ -6430,8 +6430,18 @@ async function main() {
   // robots.txt and NOT part of sitemap.xml (the orphan gate reads that one).
   // Delete this block and scripts/seo/moved-questions.mjs in January 2027.
   if (new Date() < new Date('2027-01-01')) {
-    const moved = MOVED_QUESTION_SLUGS.map((s) =>
-      `  <url>\n    <loc>${SITE.base}/questions/${s}-quiz-questions-and-answers/</loc>\n    <lastmod>2026-10-26</lastmod>\n  </url>`).join('\n');
+    // ⚠️ THE PRUNED PAGES NEED THE SAME DOOR (11 Nov 2026). URL inspection on
+    // 11 Nov: Rosenborg, Lincoln City, Rennes and Union Berlin were all last
+    // crawled on 20 Oct at 02:35 UTC, hours before the drop, and Google still
+    // holds that copy as "Submitted and indexed", old quiz markup included.
+    // The 26 Oct prune took them out of sitemap.xml in the same commit that
+    // made them noindex, so nothing has asked Google to come back and read
+    // the noindex. Listed here until Google has seen it; same end date.
+    const moved = [
+      ...MOVED_QUESTION_SLUGS.map((s) => `/questions/${s}-quiz-questions-and-answers/`),
+      ...PRUNED,
+    ].map((path) =>
+      `  <url>\n    <loc>${SITE.base}${path}</loc>\n    <lastmod>2026-10-26</lastmod>\n  </url>`).join('\n');
     writeFileSync(resolve(DIST, 'sitemap-moved.xml'),
       `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${moved}\n</urlset>\n`, 'utf8');
   }
