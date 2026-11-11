@@ -10,9 +10,10 @@ import * as Sentry from "@sentry/react";
 import { Lightbulb, Flame, Flag } from "lucide-react";
 import ReportButton from "../components/ReportButton.jsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { catLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
+import { catLabel, chipLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, haptic, norm, playSound } from "../App.jsx";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
+import { loadDailyRun, saveDailyRun, clearDailyRun } from "../lib/dailyRun.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { useLiveQuestion } from "../i18n/questionText.js";
@@ -170,9 +171,17 @@ export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
 // How long a timed question sits with a full clock before it starts to drain.
 export const READ_GRACE_MS = 800;
 
-export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay }) {
+export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay, dailyDay }) {
   const t = useT();
-  const [idx, setIdx] = useState(0);
+  // 10 Nov 2026: leaving Daily 7 lost the run and let a player replay seen
+  // answers. `dailyDay` (today's YMD, set by App for today's daily only) turns
+  // on save-after-every-answer and resume; see lib/dailyRun.js. `qs` pins the
+  // snapshot to the question array it was validated against.
+  const [resume] = useState(() => {
+    const s = dailyDay ? loadDailyRun(dailyDay, questions) : null;
+    return s ? { ...s, qs: questions } : null;
+  });
+  const [idx, setIdx] = useState(resume ? Math.min(resume.answered, questions.length - 1) : 0);
   const [selected, setSelected] = useState(null);   // MCQ selected index
   const [typedResult, setTypedResult] = useState(null); // 'correct' | 'wrong' | null
   // ⚠️ Running out of time sets `selected` to the CORRECT index so the right
@@ -206,9 +215,9 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
     () => questionSeconds(questions?.[idx], timerSecondsOverride || 20),
     [questions, idx, timerSecondsOverride],
   );
-  const [score, setScore] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [bestStreak, setBestStreak] = useState(0);
+  const [score, setScore] = useState(resume ? resume.score : 0);
+  const [streak, setStreak] = useState(resume ? resume.streak : 0);
+  const [bestStreak, setBestStreak] = useState(resume ? resume.bestStreak : 0);
   // Mobile in-run streak beat (scouting panel): the qd-meta streak pill is
   // desktop-only, so on a phone a 5-in-a-row passed in silence until the
   // results screen. A transient fixed-position pill at 3 and 5 gives the
@@ -218,7 +227,7 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   const streakBeatTimeoutRef = useRef(null);
   useEffect(() => () => clearTimeout(streakBeatTimeoutRef.current), []);
   const [timeLeft, setTimeLeft] = useState(timerDuration);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(!!resume && resume.answered >= questions.length);
   const timerRef = useRef(null);
   // The per-question auto-advance timeout must be cancellable the moment an
   // answer registers; otherwise it can fire during the result/hint dwell and
@@ -289,7 +298,10 @@ export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOv
   // mutation does not re-render. Two stores, two jobs; cheap (one boolean per
   // question) and it keeps the ref's terminal-read contract intact.
   const [marks, setMarks] = useState([]);
-  useEffect(() => { wrongAnswersRef.current = []; allAnswersRef.current = []; setMarks([]); }, [questions]);
+  useEffect(() => {
+    const r = resume && resume.qs === questions ? resume : null; // a resumed Daily 7 keeps its records
+    wrongAnswersRef.current = r ? r.wrong : []; allAnswersRef.current = r ? r.all : []; setMarks(r ? r.all.map(a => a.isCorrect === true) : []);
+  }, [questions]);
   useEffect(() => {
     Sentry.addBreadcrumb({ category: 'game', message: 'quiz started', level: 'info', data: { mode, diff: diff || null, total: questions?.length || 0 } });
     // Sprint #61 DD3: tag the mode for the duration of the quiz. On unmount
@@ -434,7 +446,7 @@ const CTA_INSET = (() => {
   // Mode names: quiz.mode.* in en.js; Daily 7 is a product name, Survival is Home's tile name.
   const QD_MODE_BADGE = { classic:"quiz.mode.classic", speed:"quiz.mode.speed", legends:"quiz.mode.legends", chaos:"quiz.mode.chaos", survival:"home.mode.survival", local:"quiz.mode.local" };
   const qdBadge = quizLabel || (mode === "daily" ? "Daily 7" : QD_MODE_BADGE[mode] ? t(QD_MODE_BADGE[mode]) : t("home.quiz.title"));
-  const qdCat = q ? (catLabel(t, q.cat) || "") : "";
+  const qdCat = q ? (chipLabel(t, q.cat) || "") : "";
   const qdCounter = mode === "survival" ? t("quiz.q", { n: idx + 1 }) : t("quiz.qOf", { n: String(idx + 1).padStart(2, "0"), total });
   const qdPct = total > 0 ? ((idx + (answered ? 1 : 0)) / total) * 100 : 0;
   const QD_RING_C = 2 * Math.PI * 33; // r=33 → circumference ≈ 207.35
@@ -450,11 +462,12 @@ const CTA_INSET = (() => {
     }
     if (idx + 1 >= total) {
       Sentry.addBreadcrumb({ category: 'game', message: 'quiz ended', level: 'info', data: { mode, score: ns, total } });
+      if (dailyDay) clearDailyRun();
       setDone(true); onCompleteRef.current({ score: ns, total, bestStreak: nb, wrongAnswers: wrongAnswersRef.current, allAnswers: allAnswersRef.current }); return;
     }
     setIdx(i => i + 1); setSelected(null); setTypedResult(null); setTimedOut(false); setShowNext(false);
     if (timed) setTimeLeft(timerDuration);
-  }, [idx, total, mode, timed]);
+  }, [idx, total, mode, timed, dailyDay]);
 
   const advance = useCallback((ns, nb, correct) => {
     if (mode === "survival" && !correct) { doAdvance(ns, nb, correct); return; }
@@ -468,6 +481,9 @@ const CTA_INSET = (() => {
     setShowNext({ ns, nb, correct });
   }, [mode, doAdvance]);
   useEffect(() => { advanceRef.current = advance; }, [advance]);
+  // All seven were answered but the last "Next" was never pressed: finish now,
+  // exactly as that press would have (doAdvance's guard makes it fire once).
+  useEffect(() => { if (resume && resume.answered >= total) doAdvance(resume.score, resume.bestStreak, true); }, []);
 
   const registerAnswer = useCallback((correct, userAnswerText, userIndex) => {
     clearInterval(timerRef.current);
@@ -533,10 +549,14 @@ const CTA_INSET = (() => {
         timedOut: false,
       }];
     }
+    // 10 Nov 2026: leaving Daily 7 lost the run and let a player replay seen
+    // answers, so every answer is saved the moment it registers (Daily 7 is
+    // untimed, so there is no timeout path and no clock to save).
+    if (dailyDay && correct !== "timeout") saveDailyRun(dailyDay, questions, { answered: idx + 1, score: ns, streak: nst, bestStreak: nb, wrong: wrongAnswersRef.current, all: allAnswersRef.current });
     // A timeout is recorded by the timer effect's own capture path, not here.
     if (correct !== "timeout") setMarks(m => [...m, correct === true]);
     advance(ns, nb, correct);
-  }, [score, streak, bestStreak, advance, mode]);
+  }, [score, streak, bestStreak, advance, mode, dailyDay]);
 
   const handleMCQ = useCallback((i) => {
     if (answered || done) return;
@@ -749,11 +769,13 @@ const CTA_INSET = (() => {
           <span className="q-ctr">{mode === "survival" ? t("quiz.qTight", { n: idx + 1 }) : `${idx + 1}/${total}`}</span>
           {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}>?</button>}
         </div>
+        {/* Over the header row, absolutely placed so nothing reflows (28 Oct 2026:
+            as position:fixed at a guessed 66px it sat on the question card's edge). */}
+        {streakBeat > 0 && (
+          <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.inARow", { n: streakBeat })}</div>
+        )}
       </div>
 
-      {streakBeat > 0 && (
-        <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.inARow", { n: streakBeat })}</div>
-      )}
       {mode === "survival" && (
         <div className="streak-bar">
           <div className="streak-n"><Flame size={18} strokeWidth={2.4} aria-hidden="true" />{streak}</div>
@@ -821,7 +843,9 @@ const CTA_INSET = (() => {
             red LA LIGA chip sat under an orange LAL tile on the same screen.
             catColour() resolves the card's own colour; lift() keeps a dark
             brand hue readable on the dark chip. */}
-        <div className="q-tag" style={qTagStyle(q.cat)}>{catLabel(t, q.cat)}</div>
+        {/* A club round already names the club in the header above; a second
+            "CLUB QUIZ" chip on every card said it twice (sim tour, 27 Oct). */}
+        {q.cat !== "ClubQuiz" && <div className="q-tag" style={qTagStyle(q.cat)}>{chipLabel(t, q.cat)}</div>}
         {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
         <div className="q-text" style={{fontSize:18}}>{noBreakScores(qv.q)}</div>
       </div>
@@ -844,7 +868,7 @@ const CTA_INSET = (() => {
               else { bg = "var(--s2)"; border = "2px solid var(--border)"; color = "var(--t3)"; }
             }
             return (
-              <button key={String(val)} disabled={isAnswered}
+              <button key={`${idx}-${val}`} disabled={isAnswered}
                 onClick={() => { haptic("select"); handleMCQ(val ? 1 : 0); }}
                 onPointerDown={e => { if (!isAnswered) e.currentTarget.style.transform = "scale(0.97)"; }}
                 onPointerUp={e => { e.currentTarget.style.transform = ""; }}
@@ -877,7 +901,7 @@ const CTA_INSET = (() => {
               // now it does. aria-disabled (not `disabled`) keeps the control
               // focusable and clickable while still announcing it as unavailable
               // for answering; the paired CSS rules key off it for cursor/hover.
-              <button key={i} className={cls} aria-disabled={answered || undefined}
+              <button key={`${idx}-${i}`} className={cls} aria-disabled={answered || undefined}
                 onClick={() => {
                   if (!answered) { handleMCQ(i); return; }
                   if (showNext) doAdvance(showNext.ns, showNext.nb, showNext.correct);

@@ -390,10 +390,9 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     // emoji text came out as one long bar of blocks in a chat (23 Oct).
     if (shareCard) {
       const toast = (m) => window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: m }));
-      await shareCard("top10", { num: number, title: list.title, found: g.found, lives: g.lives, hints: (day.hints || []).length, deepLink: "/top10" }, { textFallback: shareText, onToast: toast });
-      return;
+      return shareCard("top10", { num: number, title: list.title, found: g.found, lives: g.lives, hints: (day.hints || []).length, deepLink: "/top10" }, { textFallback: shareText, onToast: toast });
     }
-    try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return; }
+    try { if (navigator.share) { await navigator.share({ text: shareText }); return; } } catch { return false; }
     try {
       await navigator.clipboard.writeText(shareText);
       window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: `📋 ${tNow("game.copied")}` }));

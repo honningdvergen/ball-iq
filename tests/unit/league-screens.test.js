@@ -115,12 +115,34 @@ describe('the results panel', () => {
     const block = DD.slice(DD.indexOf('if (!isArchive) {'), DD.indexOf('await recordDailyResult('));
     expect(block).toMatch(/import\("\.\.\/lib\/leagueResults\.js"\)\.then\(\(m\) => m\.recordLeagueResult\(\{ game, edition, bucket, won \}\)\)/);
     expect(block).not.toMatch(/await import/);
-    expect(block).toMatch(/!isNativeShell\(\)/);
+    // Phase 2 (29 Oct 2026): the native shell sends results too.
+    expect(block).not.toMatch(/isNativeShell/);
   });
-  it('"Make it a league?" is a hairline under the head-to-head, never a second solid button', () => {
-    // "Make it a league?" is the dd.league key since i18n step 4.
-    expect(DD).toMatch(/className="dd-share-alt" onClick=\{makeLeague\}>\{t\("dd\.league"\)\}/);
+  it('the league offer is one quiet pill under the share, never a second solid button, and reaches a player with no head-to-head', () => {
+    // "Make it a league?" (dd.league) with a rival; "Start a league with your
+    // mates" (dd.leagueStart) for anyone not yet in one. 7 Nov 2026: the
+    // underlined 12.5px line was tapped 0 times in 178 shows, so it is now a
+    // full-width hairline pill (dd-league), still no fill.
+    // 10 Nov 2026: still a hairline BUTTON, but compact and first in the row of
+    // quiet options (two full-width bars under each other read as clutter).
+    expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueShort"\)\}/);
+    expect(DD.indexOf('className="dd-share-alts"')).toBeLessThan(DD.indexOf('className="dd-league"'));
+    expect(read('../../src/components/dailyDone.css')).toMatch(/\.dd-league\{[^}]*border:1px solid var\(--border2\);background:var\(--s2\)/);
     expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
-    expect(DD).toMatch(/const leagueOffer = !!rival && !isNativeShell\(\);/);
+    expect(DD).toMatch(/const leagueOffer = leagueGame && \(!!rival \|\| !inLeague\(\)\);/);
+    expect(DD).not.toMatch(/isNativeShell/);
+  });
+});
+
+describe('the open table keeps up (10 Nov 2026)', () => {
+  it('reads the table again when the app comes back to the foreground, without a loading flash', () => {
+    const src = read('../../src/screens/LeagueScreen.jsx');
+    const m = src.match(/const onVis = \(\) => \{[\s\S]*?\};\n/);
+    expect(m, 'a visibility handler in LeagueScreen').toBeTruthy();
+    expect(m[0]).toContain('document.visibilityState !== "visible"');
+    expect(m[0]).toContain('getLeagueTable(leagueId)');
+    expect(m[0]).toContain('setData(t)');
+    expect(m[0]).not.toContain('setState("loading")');
+    expect(src).toContain('document.removeEventListener("visibilitychange", onVis)');
   });
 });

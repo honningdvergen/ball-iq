@@ -1,4 +1,5 @@
 import React from "react";
+import { swatchEdge } from '../lib/colourMath.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
@@ -10,6 +11,7 @@ import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD, msToNextLocalMidnight } from "../lib/date.js";
+import { dailyRunAnswered } from "../lib/dailyRun.js";
 import { countdownText, levelName } from "../i18n/names.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
@@ -19,6 +21,7 @@ import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
 import { useT, useLang, fmtLocale } from "../i18n/index.js";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
@@ -99,7 +102,7 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
           {matches.length === 0 && <div className="cf-empty">{t("home.finder.empty", { q: q.trim() })} <button type="button" className="cf-link" onClick={onAllClubs}>{t("home.finder.seeAll")}</button></div>}
           {matches.map(({ key, pack }) => (
             <button key={key} type="button" role="option" className="cf-row" onMouseDown={(e) => e.preventDefault()} onClick={() => pick(key)}>
-              <span className="cf-abbr" style={{ background: pack.color || "var(--s2)", color: abbrInk(pack.color) }}>{clubAbbr?.[key] || pack.name.slice(0, 3).toUpperCase()}</span>
+              <span className="cf-abbr" style={{ background: pack.color || "var(--s2)", color: abbrInk(pack.color), boxShadow: swatchEdge(pack.color) || undefined }}>{clubAbbr?.[key] || pack.name.slice(0, 3).toUpperCase()}</span>
               <span className="cf-name">{pack.name}</span>
               <span className="cf-go">{t("home.finder.play")}</span>
             </button>
@@ -113,7 +116,7 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
             {/* Club colour on the badge (Alex, 2026-09-06: "should we not add
                 color to the clubs?") — the finder sits below Today now, so the
                 reds no longer compete with the first Play. */}
-            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color) }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
+            <span className="cf-abbr" style={{ background: clubPacks[k].color || "var(--s2)", color: abbrInk(clubPacks[k].color), boxShadow: swatchEdge(clubPacks[k].color) || undefined }}>{clubAbbr?.[k] || k.slice(0, 3).toUpperCase()}</span>
             <span className="cf-chip-name">{clubPacks[k].name}</span>
           </button>
         ))}
@@ -144,6 +147,24 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
 // is a presentational orchestrator, not a state owner.
 // The Draft's NEW label shows to everyone until this date (1.8.1, 15 Oct 2026).
 const DRAFT_NEW_UNTIL = new Date('2026-11-15T00:00:00').getTime();
+
+/**
+ * "New in 5h 12m" on the all-done strip: the time to local midnight, when all
+ * four dailies change (each one's day is the LOCAL date). ⚠️ IT TICKS ON ITS
+ * OWN. It used to read `new Date()` inside Home's render, so it said whatever
+ * it said when Home last rendered and then sat still (review, 14 Oct 2026).
+ * Its own 30s clock, like DailyDone's: minute granularity, and only this span
+ * re-renders, not Home.
+ */
+function NextDailiesIn() {
+  const t = useT();
+  const [now, setNow] = React.useState(() => new Date());
+  React.useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(id);
+  }, []);
+  return <span className="dds-next">{t("home.done.next", { time: countdownText(msToNextLocalMidnight(now)) })}</span>;
+}
 
 function HomeScreenImpl({
   // False when the web app bar is on screen — it carries its own gear, and two
@@ -182,6 +203,7 @@ function HomeScreenImpl({
   // Mates' leagues: the App passes this on the web only (never in a native
   // shell, phase 1), so its absence hides the card everywhere else.
   onOpenLeague,
+  onStartLeague,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
   const t = useT();
@@ -409,6 +431,9 @@ function HomeScreenImpl({
         const mysteryRes = loadMysteryResult(new Date());
         const mysteryDone = !!(mysteryRes?.won || mysteryRes?.gaveUp);
         const mysteryGuesses = mysteryDone ? 0 : (mysteryRes?.guesses?.length || 0);
+        // 10 Nov 2026: an unfinished Daily 7 is kept (lib/dailyRun.js), so the
+        // row says Continue with the count, like Footle's.
+        const dailyAnswered = dailyDone ? 0 : dailyRunAnswered(dateToYMD(new Date()));
         const top10Day = top10Live ? loadTop10Day(dateToYMD(new Date())) : null;
         const top10Done = top10Day?.status === "done";
         const top10Found = top10Day?.score || 0;
@@ -467,10 +492,14 @@ function HomeScreenImpl({
                 },
                 {
                   key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
-                  done: dailyDone,
-                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` }) : t("home.daily7.sub"),
+                  done: dailyDone, open: dailyAnswered > 0,
+                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` })
+                    : dailyAnswered > 0 ? withStrong(t("home.daily7.inProgress"), { n: dailyAnswered })
+                    : t("home.daily7.sub"),
                   onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
-                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore }) : t("home.daily7.ariaPlay"),
+                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore })
+                    : dailyAnswered > 0 ? t("home.daily7.ariaOpen", { n: dailyAnswered })
+                    : t("home.daily7.ariaPlay"),
                 },
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
@@ -521,7 +550,7 @@ function HomeScreenImpl({
                     <div className="dds-head">
                       <CircleCheck size={20} strokeWidth={2.2} aria-hidden="true" className="dds-tick" />
                       <span className="dds-title">{total === 4 ? t("home.done.titleFour") : t("home.done.title", { n: total })}</span>
-                      <span className="dds-next">{t("home.done.next", { time: countdownText(msToNextLocalMidnight(new Date())) })}</span>
+                      <NextDailiesIn />
                     </div>
                     <div className="dds-chips">
                       {rows.map((r) => (
@@ -534,10 +563,12 @@ function HomeScreenImpl({
                   </div>
                 );
               }
+              // The next unplayed game is the one tinted Play (calmer Home, 28 Oct).
+              const nextKey = rows.find((x) => !x.done)?.key;
               return rows.map((r) => (
                 <button
                   key={r.key}
-                  className={`todays-seven-secondary is-mode ${r.key}-row${r.done ? " is-done" : ""}`}
+                  className={`todays-seven-secondary is-mode ${r.key}-row${r.done ? " is-done" : ""}${r.key === nextKey ? " is-next" : ""}`}
                   style={{ "--mode": r.accent, "--mode-rgb": r.rgb }}
                   onClick={r.onTap}
                   aria-label={r.aria}
@@ -556,10 +587,20 @@ function HomeScreenImpl({
         );
       })()}
 
-      {/* ── MATES' LEAGUE ── directly under the daily zone, members only. */}
-      {leagueCardOn && (
-        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} /></React.Suspense>
-      )}
+      {/* ── WITH YOUR MATES ── the league and Multiplayer under one heading
+          (11 Nov 2026). They were two loose cards between the dailies and
+          "Find a quiz". A heading, as "Find a quiz" and "More modes" have, and
+          not a second bordered box: the box is what marks the dailies as the
+          thing to do every day (Alex asked; this was the verdict). */}
+      <div className="home-mates">
+      <div className="home-section-title">{t("home.mates")}</div>
+      {/* The league: the card for a member, the way in for everyone else. */}
+      {leagueCardOn ? (
+        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} onStart={onStartLeague} /></React.Suspense>
+      ) : onStartLeague ? (
+        // In no league: the way in (LeagueStartRow says why it is here).
+        <LeagueStartRow onStart={onStartLeague} />
+      ) : null}
 
       {/* ── PLAY WITH FRIENDS — one row, same anatomy as the Today rows
           (2026-09-06 critique: it had the loudest button on the screen and the
@@ -586,6 +627,7 @@ function HomeScreenImpl({
         onOpen={() => setTab("online")}
         showToast={showToast}
       />
+      </div>
       </div>
 
       {/* ─────────── RIGHT RAIL (desktop-only, render-always/CSS-reveal) ─────────── */}

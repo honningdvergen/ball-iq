@@ -126,8 +126,8 @@ export const TRAIL_PLAYERS = [
     clubs: ["Bayern Munich","Man Utd","Chicago Fire"],
     loans: [false,false,false] },
   { key: "SILVA_DAV", display: ["David","Silva"], nat: "Spain",
-    clubs: ["Valencia","Eibar","Celta Vigo","Man City","Real Sociedad"],
-    loans: [false,true,true,false,false] },
+    clubs: ["Valencia","Eibar","Celta Vigo","Man City","Real Sociedad","Sha Tin"],
+    loans: [false,true,true,false,false,false] },
   { key: "KHEDIRA", display: ["Sami","Khedira"], nat: "Germany",
     clubs: ["VfB Stuttgart","Real Madrid","Juventus","Hertha BSC"],
     loans: [false,false,false,false] },
@@ -351,8 +351,8 @@ export const TRAIL_PLAYERS = [
     clubs: ["Benfica","Fafe","Fiorentina","AC Milan","Benfica"],
     loans: [false,true,false,false,false] },
   { key: "BARRY", display: ["Gareth","Barry"], nat: "England",
-    clubs: ["Aston Villa","Man City","Everton","West Brom"],
-    loans: [false,false,false,false] },
+    clubs: ["Aston Villa","Man City","Everton","West Brom","Hurstpierpoint"],
+    loans: [false,false,false,false,false] },
   { key: "BONIEK", display: ["Zbigniew","Boniek"], nat: "Poland",
     clubs: ["Zawisza Bydgoszcz","Widzew Łódź","Juventus","Roma"],
     loans: [false,false,false,false] },
@@ -568,7 +568,12 @@ export const TRAIL_PLAYERS = [
   { key: "OSIMHEN", display: ["Victor","Osimhen"], nat: "Nigeria",
     clubs: ["VfL Wolfsburg","Charleroi","Lille","Napoli","Galatasaray"],
     loans: [false,false,false,false,false] },
-  { key: "KONNO", display: ["Yasuyuki","Konno"], nat: "Japan",
+  // RETIRED 7 Nov 2026 (Ball IQ HQ): too obscure to win from his trail. He
+  // stays in the roster because day #28 (index 27) was served and must still
+  // resolve; `retired` keeps him out of every future day (the planner skips
+  // him, and trail-schedule.test.js fails if he appears past the frozen days).
+  // His one future day, index 213, went to POGBA.
+  { key: "KONNO", display: ["Yasuyuki","Konno"], nat: "Japan", retired: true,
     clubs: ["Consadole Sapporo","FC Tokyo","Gamba Osaka","Júbilo Iwata","Nankatsu SC"],
     loans: [false,false,false,false,false] },
   { key: "ISAK", display: ["Alexander","Isak"], nat: "Sweden",
@@ -787,7 +792,10 @@ export const TRAIL_ANSWER_LOG = [
   // ⚠️ Entries 1..87 are copied through UNCHANGED — those puzzles have been
   // played and their grids shared. Everything after is re-planned, which is
   // safe precisely because nobody has seen it. Deterministic LCG, seed 20260812.
-  // Minimum gap between repeats: 121 days.
+  // Minimum gap between repeats, measured 7 Nov 2026: 111 days inside the log
+  // (STOJKOVIC), and 35 across the wrap from the last entry back to the first
+  // (ERIKSEN). The "121 days" this line used to claim was never true of the
+  // re-planned log.
   "TORRES",
   "GILBERTO_SILVA",
   "RONALDO_C",
@@ -890,7 +898,7 @@ export const TRAIL_ANSWER_LOG = [
   "SAGNA",
   "RIQUELME",
   "RIJKAARD",
-  "STOJKOVIC",
+  "HAZARD",
   "BALE",
   "HERNANDEZ",
   "BARRY",
@@ -911,7 +919,7 @@ export const TRAIL_ANSWER_LOG = [
   "PLATINI",
   "LEHMANN",
   "ALBIOL",
-  "HAZARD",
+  "STOJKOVIC",
   "FONTAINE",
   "ROBERTO",
   "JESUS",
@@ -1001,7 +1009,7 @@ export const TRAIL_ANSWER_LOG = [
   "TORRES_FER",
   "AFELLAY",
   "MATUIDI",
-  "KONNO",
+  "POGBA", // index 213: was KONNO, retired 7 Nov 2026 (Pogba's third use, see trail-schedule.test.js)
   "SAKAI_HIR",
   "STEGEN",
   "DONNARUMMA",
@@ -1263,55 +1271,55 @@ export const TRAIL_POSITIONS = {
   // some older entries carry: a correct broad hint beats a guessed precise one.
   "ZIDANE": "Midfielder",
   "BECKHAM": "Midfielder",
-  "BECKENBAUER": "Midfielder",
+  "BECKENBAUER": "Defender",
   "INIESTA": "Midfielder",
   "PLATINI": "Midfielder",
   "HAZARD": "Forward",
   "PIQUE": "Defender",
-  "MULLER": "Midfielder",
-  "STEFANO": "Midfielder",
-  "LINEKER": "Midfielder",
-  "SHEVCHENKO": "Midfielder",
-  "PIERO": "Midfielder",
+  "MULLER": "Forward",
+  "STEFANO": "Forward",
+  "LINEKER": "Forward",
+  "SHEVCHENKO": "Forward",
+  "PIERO": "Forward",
   "CHARLTON": "Midfielder",
-  "MARCELO": "Midfielder",
+  "MARCELO": "Defender",
   "TERRY": "Defender",
   "VARANE": "Defender",
   "VIDIC": "Defender",
-  "BERGKAMP": "Midfielder",
-  "SAR": "Midfielder",
+  "BERGKAMP": "Forward",
+  "SAR": "Goalkeeper",
   "SCHWEINSTEIGER": "Midfielder",
-  "SILVA_DAV": "Forward",
+  "SILVA_DAV": "Midfielder",
   "KHEDIRA": "Midfielder",
   "HUMMELS": "Defender",
-  "SHEARER": "Midfielder",
+  "SHEARER": "Forward",
   "VALDES": "Goalkeeper",
-  "THURAM": "Midfielder",
-  "FERDINAND": "Midfielder",
+  "THURAM": "Defender",
+  "FERDINAND": "Defender",
   "GOMEZ": "Forward",
-  "KEEGAN": "Midfielder",
+  "KEEGAN": "Forward",
   "ARSHAVIN": "Forward",
-  "ZANETTI": "Midfielder",
+  "ZANETTI": "Defender",
   "JOTA": "Forward",
-  "TURAN": "Forward",
+  "TURAN": "Midfielder",
   "ARBELOA": "Defender",
   "RIJKAARD": "Midfielder",
   "CARRICK": "Midfielder",
-  "ZOFF": "Midfielder",
+  "ZOFF": "Goalkeeper",
   "ALBIOL": "Defender",
   "UMTITI": "Defender",
   "KUYT": "Forward",
-  "SCHILLACI": "Midfielder",
+  "SCHILLACI": "Forward",
   "WALCOTT": "Forward",
   "ALABA": "Defender",
   "VARDY": "Forward",
   "MERTESACKER": "Defender",
   "AZPILICUETA": "Defender",
-  "LEHMANN": "Midfielder",
-  "SOLSKJAER": "Midfielder",
-  "NAVAS": "Defender",
+  "LEHMANN": "Goalkeeper",
+  "SOLSKJAER": "Forward",
+  "NAVAS": "Winger",
   "GATTUSO": "Midfielder",
-  "RUMMENIGGE": "Midfielder",
+  "RUMMENIGGE": "Forward",
   "NEDVED": "Midfielder",
   "IVANOVIC": "Defender",
   "ENDO": "Midfielder",
@@ -1322,20 +1330,20 @@ export const TRAIL_POSITIONS = {
   "MUSTAFI": "Defender",
   "SAGNA": "Defender",
   "KEANE": "Midfielder",
-  "DESAILLY": "Midfielder",
+  "DESAILLY": "Defender",
   "BREITNER": "Midfielder",
-  "BARTHEZ": "Midfielder",
-  "MILITO": "Midfielder",
+  "BARTHEZ": "Goalkeeper",
+  "MILITO": "Forward",
   "FELLAINI": "Midfielder",
   "BRAVO": "Goalkeeper",
   "WILSHERE": "Midfielder",
   "MOTTA": "Midfielder",
-  "FONTAINE": "Midfielder",
+  "FONTAINE": "Forward",
   "TOURE": "Defender",
-  "NATALE": "Midfielder",
-  "NESTA": "Midfielder",
+  "NATALE": "Forward",
+  "NESTA": "Defender",
   "SMALLING": "Defender",
-  "VOLLER": "Midfielder",
+  "VOLLER": "Forward",
   "SRNA": "Defender",
   "MARCHISIO": "Midfielder",
   "ROSICKY": "Midfielder",
@@ -1347,7 +1355,7 @@ export const TRAIL_POSITIONS = {
   "CORLUKA": "Defender",
   "HOWEDES": "Defender",
   "MEIRELES": "Midfielder",
-  "LIZARAZU": "Midfielder",
+  "LIZARAZU": "Defender",
   "COMAN": "Forward",
   "OLMO": "Midfielder",
   "JESUS": "Forward",
@@ -1362,7 +1370,7 @@ export const TRAIL_POSITIONS = {
   "ROBERTO": "Midfielder",
   "CALHANOGLU": "Midfielder",
   "DIER": "Defender",
-  "GALLAS": "Midfielder",
+  "GALLAS": "Defender",
   "HERNANDEZ": "Defender",
   "VLAHOVIC": "Forward",
   "TCHOUAMENI": "Midfielder",
@@ -1535,9 +1543,34 @@ export function guessMatchesPlayer(guess, player) {
  */
 export const TRAIL_OPENING_CLUBS = 2;
 // `opening`: Stitch-up lets the sender choose how many clubs show at the start
-// (two or more); the daily always opens on two.
+// (two or more); the daily opens on two, or on three for the careers in
+// TRAIL_OPEN_THREE.
 export function cluesShown(misses, careerLength, opening = TRAIL_OPENING_CLUBS) {
   return Math.min(Math.max(TRAIL_OPENING_CLUBS, opening) + Math.max(0, misses), careerLength);
+}
+
+// ── Three-club openings (29 Oct 2026) ─────────────────────────────────────────
+// Fitted on 35 played editions (docs/TODO.md, "Fewer bad days"): a Trail's win
+// rate follows the answer's fame, EXCEPT that a career opening on Japanese
+// clubs ran at 6-11% against a 60-80% norm (Shibasaki, Osako, Muto). The first
+// two rungs are the whole puzzle until a miss, and "Kashima Antlers > Tenerife"
+// gives a British or American player nothing to hold. These careers open on
+// THREE clubs: the third rung is the first one most players recognise. Every
+// key here has at least four rungs, so a three-club opening still hides one.
+// Only new builds know this set (older installs open on two, same answer), so
+// it is a difficulty split, never an answer split.
+export const TRAIL_OPEN_THREE = new Set([
+  // Japanese starts (the measured signal)
+  "ENDO", "NAGATOMO", "MINAMINO", "OSAKO", "YOSHIDA", "UCHIDA", "SHIBASAKI",
+  "SAKAI", "MUTO", "SAKAI_HIR", "KONNO", "PARK",
+  // Two obscure rungs before the first known club
+  "STOJKOVIC", "VIDIC", "IVANOVIC", "MODRI", "CORLUKA", "NATALE", "VARDY",
+  "MEIRELES", "CECH", "BONIEK", "BLASZCZYKOWSKI", "STEFANO", "GILBERTO_SILVA",
+  "FERNANDEZ", "KANTE", "KLOSE", "BALLACK", "DYBALA", "MILITO",
+]);
+/** How many clubs the daily shows before the first guess for this answer. */
+export function openingFor(player) {
+  return player && TRAIL_OPEN_THREE.has(player.key) ? 3 : TRAIL_OPENING_CLUBS;
 }
 
 /** The hint unlocks once three guesses are gone. */

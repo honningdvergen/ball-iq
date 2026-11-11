@@ -11,7 +11,9 @@
  * Never blocks. Every lookup has a short timeout and fails quiet: a slow network
  * must not delay a session, and a missing `gh` just drops those lines.
  */
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 const cwd = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 const run = (cmd, args, ms = 4000) => {
@@ -40,6 +42,33 @@ for (const [wf, label] of [['deploy-check.yml', 'Production deploy'], ['ci.yml',
   const bad = status === 'completed' && conclusion !== 'success';
   lines.push(`${bad ? '🚨 ' : ''}${label}: ${status === 'completed' ? conclusion : status} on ${sha}${bad ? ' — FIX THIS FIRST; a red gate left red becomes noise (CI was red 40 pushes running)' : ''}`);
 }
+
+// App Store state, from a cache refreshed in the background (never waits on Apple).
+const state = (f) => { try { return JSON.parse(readFileSync(path.join(cwd, '.claude/state', f), 'utf8')); } catch { return null; } };
+const ago = (t) => { const h = (Date.now() - t) / 36e5; return h < 1 ? 'under an hour ago' : h < 48 ? `${Math.round(h)} h ago` : `${Math.round(h / 24)} days ago`; };
+const store = state('store.json');
+if (!store || Date.now() - store.time > 2 * 36e5) {
+  try { spawn('node', [path.join(cwd, '.claude/hooks/store-state.mjs')], { cwd, detached: true, stdio: 'ignore' }).unref(); } catch { /* skip */ }
+}
+if (store?.live) {
+  const parts = [`App Store: ${store.live.v} live`];
+  if (store.pending) parts.push(`${store.pending.v} ${store.pending.state}`);
+  if (store.newestBuild) parts.push(`newest build ${store.newestBuild.build} (${store.newestBuild.state})`);
+  lines.push(`${parts.join(' · ')} — read ${ago(store.time)}; confirm with \`node scripts/asc.mjs versions\` before quoting it`);
+}
+const gsc = state('gsc-last-read.json');
+const gscDays = gsc ? (Date.now() - gsc.time) / 864e5 : Infinity;
+lines.push(`${gscDays > 1 ? '⚠️ ' : ''}Search Console last read: ${gsc ? ago(gsc.time) : 'never recorded'}${gscDays > 1 ? ' — the Google-drop watch reads it daily (project_google_drop_oct20)' : ''}`);
+
+// Free disk. Alex 28 Oct: "make sure we have disk space always". A native build
+// or simulator boot on a nearly full disk fails in confusing ways, so say it here.
+try {
+  const kb = Number(spawnSync('df', ['-k', '/'], { timeout: 3000 }).stdout.toString().trim().split('\n').pop().split(/\s+/)[3]);
+  const gb = Math.round(kb / 1048576);
+  lines.push(gb < 20
+    ? `⚠️ Disk: ${gb} GB free — under 20 GB. Clear caches first (npm cache clean --force, Xcode DerivedData, brew cleanup -s); old renders under ~/shithousery-hq/social/out are Alex's content, never delete them.`
+    : `Disk: ${gb} GB free`);
+} catch {}
 
 if (lines.length) {
   process.stdout.write(JSON.stringify({

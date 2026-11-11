@@ -51,3 +51,32 @@ export function liveStreak(record, today = localDayNow(), shields = 0) {
   if (lastDay === today - 2 && shields > 0) return streak;
   return 0;
 }
+
+/**
+ * Does a signed-in player's day still need crediting to the account's streak?
+ *
+ * ⚠️ THE STREAK TICKS ONLY WHEN A DAILY IS FINISHED, AND THAT MISSED ONE CASE:
+ * a daily finished BEFORE the account was there. A new player plays as a guest,
+ * finishes a daily (the guest streak ticks locally), then signs in. Sign-in
+ * replaces the local record with the account's, the finish event is long gone,
+ * and nothing ever tells the server about today. History then read "0 day
+ * streak - play one puzzle to light it" beside a lit TODAY square, the Home
+ * flame disappeared, and a player who had already finished all four dailies
+ * could not earn the day at all. Seen on the simulator on 10 Nov 2026, on a
+ * new player's first evening, which is when people sign in.
+ *
+ * This is NOT ticking on open: it is true only when a daily was really
+ * finished today on this device (or the account already holds today's score)
+ * and the account's record has not counted today yet. The RPC stays the one
+ * writer and is idempotent per local day.
+ *
+ * @param {object|null} record       the account's login_streak as hydrated ({streak, lastDay, best}) or null
+ * @param {boolean}     playedToday  a daily was finished today
+ * @param {number}      today        local day number (localDayNow())
+ */
+export function needsTodayCredit(record, playedToday, today = localDayNow()) {
+  if (!playedToday) return false;
+  const lastDay = Number(record?.lastDay);
+  if (!Number.isFinite(lastDay)) return true;   // no record yet: today is the first day
+  return lastDay < today;                        // today (or a legacy day ahead of it) is already counted
+}

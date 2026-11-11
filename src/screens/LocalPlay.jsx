@@ -5,7 +5,7 @@
 // props and reaches into nothing else.
 import { useState, useEffect } from "react";
 import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull, CircleAlert, Loader, Gamepad2 } from "lucide-react";
-import { catLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
+import { chipLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
 import "../i18n/en.js";
 import { useT } from "../i18n/index.js";
 import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx";
@@ -13,7 +13,7 @@ import { CLUB_PACK_TO_QB } from "../data/clubPacks.js";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { loadQuestions } from "../questions-loader.js";
 import { useQuestionText, useLiveQuestion } from "../i18n/questionText.js";
-import { RETIRED_TAGS } from "../lib/quiz.js";
+import { RETIRED_TAGS, optionOrder } from "../lib/quiz.js";
 import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
 
 // Six players, six marks. A number in a coloured ring — not an emoji avatar
@@ -169,7 +169,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           const noEasyPool = pool.filter(q => q.diff !== "easy");
           const freshPool = applySeenFilter(noEasyPool.length >= 10 ? noEasyPool : pool, target, qbHistKey);
           raw = shuffle([...freshPool]).slice(0, target).map(q => {
-            const idx = shuffle([0, 1, 2, 3].slice(0, q.o.length));
+            const idx = optionOrder(q.o.slice(0, 4), shuffle);
             return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
           });
         } else if (String(topic).startsWith("cat:")) {
@@ -473,7 +473,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{t("lp.turn", { name: currentPlayer?.name })}
         </div>
         <div className="q-card" style={qCardStyle(currentQ.cat)}>
-          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{catLabel(t, currentQ.cat)}</div>
+          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{chipLabel(t, currentQ.cat)}</div>
           <div className="q-text">{shownQ.q}</div>
         </div>
         <div className="opts">
@@ -482,7 +482,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
             if (phase === "locked" && lastPick && i === lastPick.optIdx) cls += " locked";
             else if (phase === "locked") cls += " neutral-after";
             return (
-              <button key={i} className={cls} onClick={() => pick(i)} disabled={phase === "locked"}>
+              <button key={`${currentQIdx}-${currentPlayer?.id}-${i}`} className={cls} onClick={() => pick(i)} disabled={phase === "locked"}>
                 <span className="opt-l">{["A","B","C","D"][i]}</span>{opt}
               </button>
             );

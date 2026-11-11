@@ -44,7 +44,7 @@
  * added to it on 14 Oct 2026 when the bar first produced him.
  */
 import { careerOf, clubsOf, mainClub } from '../src/lib/mysteryCareer.js';
-import { hintPosition } from '../src/lib/mysteryPlayer.js';
+import { hintPosition, puzzleYear, MYSTERY_ANCHOR_DAY } from '../src/lib/mysteryPlayer.js';
 
 /** Index 73 = Mystery Player No. 74, 15 Oct 2026: the first famous-only day.
  *  Days before it are public record and keep whatever they served. */
@@ -54,6 +54,20 @@ export const FAME_MIN = 55;
 export const STAR = 95;
 export const ELITE_YEARS = 3;
 export const MAX_GAP = 2;
+
+/* Gaps longer than MAX_GAP that are REAL, not missing data (Ball IQ HQ, 7 Nov
+   2026). MAX_GAP exists to catch careers whose spells were never recorded;
+   these players truly had no club. Each entry is ONE exact gap, keyed by
+   Wikidata id and named, so it cannot be widened by accident: the gap must
+   run from `after` (the last year before it) to `until` (the first year
+   after it). Any other gap, for this player or anyone else, still fails. */
+export const REAL_GAPS = {
+  // Keisuke Honda: Süduva to Dec 2021, no club 2022-23 while coaching
+  // Cambodia, Paro (Bhutan) from 2024. worldfootball.net
+  // (worldfootball.net/player_summary/keisuke-honda/), HEROs
+  // (heroe.jp/athlete/keisuke-honda/).
+  Q202054: { player: 'Keisuke Honda', after: 2021, until: 2024 },
+};
 export const FIRST_CLUB_BY = 20;
 export const LAST_SEEN_BY = 28;
 // 45, not 42 (16 Oct 2026): restoring second spells gave Rivaldo his Mogi
@@ -115,9 +129,11 @@ export function answerBar(p, { careers, roles, exclusions, pool = null }) {
     const first = career.find((s) => s.from != null);
     if (first && p.born && first.from - p.born > FIRST_CLUB_BY) why.push(`first senior club at ${first.from - p.born}`);
     let reach = null, gap = 0;
+    const allowed = REAL_GAPS[p.id];
     for (const s of career) {
       if (s.from == null) continue;
-      if (reach != null) gap = Math.max(gap, s.from - reach);
+      const real = allowed && reach === allowed.after && s.from === allowed.until;
+      if (reach != null && !real) gap = Math.max(gap, s.from - reach);
       reach = Math.max(reach ?? s.from, s.to ?? 2026);
     }
     if (gap > MAX_GAP) why.push(`a ${gap}-year hole in the career record`);
@@ -145,4 +161,35 @@ export function answerBar(p, { careers, roles, exclusions, pool = null }) {
   if (!hintPosition(p, roles)) why.push('no position the clue can print');
   if (!mainClub(p, careers)) why.push('no club for the club clue');
   return { ok: why.length === 0, why };
+}
+
+/**
+ * THE CLUB CLUE'S SPREAD: no main club twice inside CLUB_SPACING days (the
+ * generator's rule since 14 Oct 2026). Returns every break as
+ * { day, earlier, club }, judged as players will see it: the corrected careers
+ * and each day's own puzzle year.
+ *
+ * ⚠️ WHY IT IS CHECKED AFTER THE DRAW, NOT ONLY DURING IT (review, 14 Oct
+ * 2026). Zlatan (day 75) and Nesta (day 83) both clue AC Milan, eight days
+ * apart. The draw was right: Zlatan's main club was Inter Milan then. His
+ * first AC Milan spell was restored in mysteryCareerFixes.json AFTERWARDS,
+ * which made AC Milan his main club. A career fix, or a new year making a
+ * running spell longer, changes a day's club clue without anyone redrawing.
+ * Days 75 and 83 are served and stay as they are; this is for the days to come.
+ */
+export const CLUB_SPACING = 10;
+export function clubSpacingBreaks(schedule, byId, careers, { from = 0, to = schedule.length - 1 } = {}) {
+  const clubOn = (i) => {
+    const p = byId.get(schedule[i]);
+    return p ? mainClub(p, careers, puzzleYear(MYSTERY_ANCHOR_DAY + i)) : null;
+  };
+  const out = [];
+  for (let day = from; day <= to && day < schedule.length; day++) {
+    const club = clubOn(day);
+    if (!club) continue;
+    for (let j = Math.max(0, day - CLUB_SPACING); j < day; j++) {
+      if (clubOn(j) === club) { out.push({ day, earlier: j, club }); break; }
+    }
+  }
+  return out;
 }

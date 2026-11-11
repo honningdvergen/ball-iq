@@ -28,6 +28,13 @@ const NAMES = {
   'Grenoble Foot 38': 'Grenoble',
   'U.F.C.I. Tomar': 'União de Tomar',
   'Al Ahli SC (Doha)': 'Al Ahli Doha',
+  // Two different clubs printed "Al Ahli" and gave a false "Shared Al Ahli"
+  // (Ball IQ HQ, 7 Nov 2026): "Al Ahli SC" is the Qatari club (Guardiola,
+  // Draxler, de Jong…); "Al Ahli FC" (Jeddah: Mahrez, Firmino) stays "Al Ahli".
+  'Al Ahli SC': 'Al Ahli Doha',
+  // Honda's current club (2026). The HEAD rule would print "Jurong", the same
+  // as the older, different "Jurong FC".
+  'FC Jurong': 'FC Jurong',
   'Stade Brestois 29': 'Brest',
   'SD Eibar': 'Eibar',
   'Al Jazira Club': 'Al Jazira',
@@ -183,6 +190,15 @@ function clubKeys(careers) {
   return k;
 }
 
+/**
+ * The year a running spell ("2023–now") is counted up to, when the caller has
+ * no puzzle date to give. ⚠️ A MYSTERY DAY PASSES ITS OWN YEAR (review, 14 Oct
+ * 2026): this was the only year, so every 2027 day counted running spells a
+ * year short, which moved the club clue, teammate years and the ranks.
+ * MysteryPlayer.jsx and the schedule scripts pass puzzleYear(dayIndex)
+ * (lib/mysteryPlayer.js), the year of the puzzle's date, never the clock: an
+ * archive replay of a 2026 day must read as it did in 2026.
+ */
 export const NOW_YEAR = 2026;
 
 /**
@@ -216,7 +232,7 @@ export function withCareerFixes(careers, fixes) {
  * starts at nine, Messi's Newell's at eight. A spell that ends before the
  * player turned seventeen is a boy's.
  */
-export function careerOf(player, careers) {
+export function careerOf(player, careers, year = NOW_YEAR) {
   const spells = player && careers?.p?.[player.id];
   if (!spells || !spells.length) return [];
   const keys = clubKeys(careers);
@@ -231,7 +247,7 @@ export function careerOf(player, careers) {
     if (from == null && to == null) continue;
     out.push({ club, from: from ?? null, to: to ?? null });
   }
-  out.sort((a, b) => (a.from ?? a.to ?? 0) - (b.from ?? b.to ?? 0) || (a.to ?? NOW_YEAR) - (b.to ?? NOW_YEAR));
+  out.sort((a, b) => (a.from ?? a.to ?? 0) - (b.from ?? b.to ?? 0) || (a.to ?? year) - (b.to ?? year));
   return out;
 }
 
@@ -239,10 +255,10 @@ export function careerOf(player, careers) {
  * Clubs as a Map: fan name -> { years, spells }. `years` sums every spell at
  * that club, so two stints count together.
  */
-export function clubsOf(player, careers) {
+export function clubsOf(player, careers, year = NOW_YEAR) {
   const m = new Map();
-  for (const sp of careerOf(player, careers)) {
-    const yrs = sp.from == null ? 0 : Math.max(0, (sp.to ?? NOW_YEAR) - sp.from);
+  for (const sp of careerOf(player, careers, year)) {
+    const yrs = sp.from == null ? 0 : Math.max(0, (sp.to ?? year) - sp.from);
     const cur = m.get(sp.club) || { years: 0, spells: [] };
     cur.years += yrs;
     cur.spells.push(sp);
@@ -266,8 +282,8 @@ export function clubsOf(player, careers) {
  * Leverkusen years). "Better known" is how many players in the file have
  * played there, which is a fair proxy for how many people have heard of it.
  */
-export function mainClub(player, careers) {
-  const clubs = [...clubsOf(player, careers)];
+export function mainClub(player, careers, year = NOW_YEAR) {
+  const clubs = [...clubsOf(player, careers, year)];
   if (!clubs.length) return null;
   const longest = Math.max(...clubs.map(([, c]) => c.years));
   const size = clubSizes(careers);
@@ -293,24 +309,24 @@ function clubSizes(careers) {
 }
 
 /** Years two spells overlapped. Unknown starts never overlap. */
-export function overlapYears(a, b) {
+export function overlapYears(a, b, year = NOW_YEAR) {
   if (a.from == null || b.from == null) return 0;
-  return Math.max(0, Math.min(a.to ?? NOW_YEAR, b.to ?? NOW_YEAR) - Math.max(a.from, b.from));
+  return Math.max(0, Math.min(a.to ?? year, b.to ?? year) - Math.max(a.from, b.from));
 }
 
 /**
  * Clubs both played for, best link first: [{ club, together }], where
  * `together` is the most years any two of their spells there overlapped.
  */
-export function sharedClubs(a, b, careers, aClubs = null) {
-  const mine = aClubs || clubsOf(a, careers);
-  const theirs = clubsOf(b, careers);
+export function sharedClubs(a, b, careers, aClubs = null, year = NOW_YEAR) {
+  const mine = aClubs || clubsOf(a, careers, year);
+  const theirs = clubsOf(b, careers, year);
   const out = [];
   for (const [club, t] of theirs) {
     const m = mine.get(club);
     if (!m) continue;
     let together = 0;
-    for (const x of m.spells) for (const y of t.spells) together = Math.max(together, overlapYears(x, y));
+    for (const x of m.spells) for (const y of t.spells) together = Math.max(together, overlapYears(x, y, year));
     out.push({ club, together, years: m.years });
   }
   out.sort((x, y) => (y.together - x.together) || (y.years - x.years) || x.club.localeCompare(y.club));

@@ -1,21 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Flame, ShieldCheck, Bell, Share, Check, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords } from "lucide-react";
+import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users } from "lucide-react";
 import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
 import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel } from "../lib/gameChallenge.js";
-// Mates' leagues (phase 1, web only). The results lib is loaded on demand: a
-// static import here put it in the chunk Home loads eagerly (+4 KB measured
-// against scripts/audit-home-budget.mjs). Same detection as leagueResults.js.
-const isNativeShell = () => {
-  try {
-    if (typeof location !== "undefined" && location.protocol === "capacitor:") return true;
-    if (typeof document !== "undefined" && document.documentElement?.classList?.contains("native-app")) return true;
-    const C = typeof window !== "undefined" ? window.Capacitor : null;
-    return !!(C && typeof C.isNativePlatform === "function" && C.isNativePlatform());
-  } catch { return false; }
-};
+// Mates' leagues (phase 2: web and the app). The results lib is loaded on
+// demand: a static import here put it in the chunk Home loads eagerly (+4 KB
+// measured against scripts/audit-home-budget.mjs).
 const LEAGUE_GAMES = ["footle", "daily7", "trail", "top10"];
+// Set by lib/leagues.js on this device once the player is in a league. Read
+// here so the finish panel can offer a league to everyone who is not.
+const inLeague = () => { try { return localStorage.getItem("biq_league_member") === "1"; } catch { return false; } };
 
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
@@ -52,7 +47,7 @@ import "./dailyDone.css";
 //   onShare     async () => void   (host builds the text / card)
 //   waText      web-only WhatsApp fallback text (omit on native)
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
-//   nextUp      [{ key, name, onTap? , href? }] — today's other unplayed dailies
+//   nextUp      [{ key, name, onTap? , href?, open? }] — today's other unplayed dailies (open: started, so the button says Continue)
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
 //   stump       () => void | null — "Stump a mate" under Share (the app's k-factor lever)
 //   stitch      () => void | null — "Stitch up a mate" under Share (Trail, web only)
@@ -174,8 +169,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         // Both panels' callbacks run one after the other once the module is
         // in, and the lib takes its claim synchronously, before its first
         // await, so the second finds it taken (leagueResults.js). Archive
-        // plays never go; native shells never load it.
-        if (LEAGUE_GAMES.includes(game) && !isNativeShell()) {
+        // plays never go.
+        if (LEAGUE_GAMES.includes(game)) {
           import("../lib/leagueResults.js").then((m) => m.recordLeagueResult({ game, edition, bucket, won })).catch(() => {});
         }
         // Both the record and the play-hour note live behind one synchronous
@@ -201,19 +196,26 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const myScore = game === "top10" ? (bucket || 0) : (won ? bucket || 0 : 0);
   const rival = useMemo(() => (canChallenge ? readChallenge(game, edition) : null), [canChallenge, game, edition]);
   const [challengeState, setChallengeState] = useState("");
-  // "Make it a league?" (mates' leagues, web only): wherever the head-to-head
-  // line shows. Measure whether to limit it to wins (spec section 8).
-  const leagueOffer = !!rival && !isNativeShell();
+  // LAST of the state hooks on purpose: the render tests address the others by their order.
+  const [distOpen, setDistOpen] = useState(false);
+  // The league offer. With a head-to-head on the panel it is "Make it a
+  // league?"; otherwise, for a player who is not in one, "Start a league with
+  // your mates" (29 Oct 2026: in 13 days on the web nobody made a league, and
+  // the only offer sat behind a challenge link almost nobody had). Live
+  // league games only; a member sees the table on Home instead.
+  const leagueGame = LEAGUE_GAMES.includes(game) && !isArchive;
+  const leagueOffer = leagueGame && (!!rival || !inLeague());
   useEffect(() => {
     if (!leagueOffer) return;
     const key = `${game}:${edition}`;
     if (leagueOfferClaims.has(key)) return;
     leagueOfferClaims.add(key);
-    track?.("league-offer-shown", { game });
-  }, [leagueOffer, game, edition, track]);
+    track?.("league-offer-shown", { game, h2h: !!rival });
+  }, [leagueOffer, game, edition, rival, track]);
   const makeLeague = () => {
-    track?.("league-make-tap", { game });
-    openLeagueCreate({ h2hGame: game, vs: rival?.name || "", from: "h2h", h2h: { game, edition, mine: myScore, theirs: rival?.score ?? 0 } });
+    track?.("league-make-tap", { game, h2h: !!rival });
+    if (rival) openLeagueCreate({ h2hGame: game, vs: rival.name || "", from: "h2h", h2h: { game, edition, mine: myScore, theirs: rival.score ?? 0 } });
+    else openLeagueCreate({ h2hGame: game, vs: "", from: "finish", h2h: null });
   };
   const doChallenge = async () => {
     const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
@@ -272,7 +274,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const doShare = async () => {
     if (busy) return;
     setBusy(true); track?.("dd-share", { game });
-    try { await onShare?.(); setShared(true); setTimeout(() => setShared(false), 2200); }
+    // A dismissed sheet resolves false: no "Shared" tick for a share that never happened.
+    try { const ok = await onShare?.(); if (ok !== false) { setShared(true); setTimeout(() => setShared(false), 2200); } }
     finally { setBusy(false); }
   };
   const doRemind = async () => {
@@ -308,16 +311,16 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               : streakN >= 1 ? rich(t("dd.tomorrow"), { n: <strong className="dd-num">{streakN + 1}</strong>, ko: <strong className="dd-num">{ko}</strong> })
               : rich(t("dd.newIn"), { ko: <strong className="dd-num">{ko}</strong> })}
           </div>
-          {/* THE REMINDER LIVES ON THE STREAK IT PROTECTS (16 Oct 2026). As a row in
-              the footer it drew 12 taps in 14 days against ~1,774 finish views. Here
-              it is a third line of the streak itself: a pill beside the title
-              wrapped "12-day daily streak" onto three lines at 375px. */}
-          {remind && remind.state === "off" && !isArchive && (
-            <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
-              <Bell size={13} strokeWidth={2.4} aria-hidden="true" />{rich(t("dd.remind"), { h: reminderHourLabel() })}
-            </button>
-          )}
         </div>
+        {/* THE REMINDER IS A BELL ON THE STREAK ROW (calm pass, 10 Nov 2026). It
+            was a third line under the streak ("Remind me at 19:00"), which made
+            the block three lines tall on every finish. The bell keeps it on the
+            streak it protects; once set it becomes the hour pill below. */}
+        {remind && remind.state === "off" && !isArchive && (
+          <button type="button" className="dd-bell" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
+            <Bell size={17} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        )}
         {remind && remind.state === "on" && (
           <span className="dd-pill is-set" aria-label={t("dd.remindSet", { h: reminderHourLabel() })}>
             {/* A bell, not a tick: a tick and "19:00" beside the streak said nothing about
@@ -376,13 +379,21 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
-      {(waText || stump || stitch || canChallenge || leagueOffer) && (
+      {(leagueOffer || waText || stump || stitch || canChallenge) && (
         <div className="dd-share-alts">
+          {/* The league offer. 7 Nov 2026: as a 12.5px underlined line it was
+              shown 178 times to 48 web visitors and tapped by none, so it became
+              a full-width pill. 10 Nov: Alex on the panel, "cluttery and busy";
+              two full-width bars stacked under each other was part of it. It
+              stays a hairline BUTTON (not a link again), but compact and first
+              in this row, so Share is the only full-width thing. */}
+          {leagueOffer && (
+            <button type="button" className="dd-league" onClick={makeLeague}>
+              <Users size={15} strokeWidth={2.4} aria-hidden="true" /> {t(rival ? "dd.league" : "dd.leagueShort")}
+            </button>
+          )}
           {rival && (
             <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : "dd.shareResult")}</button>
-          )}
-          {leagueOffer && (
-            <button type="button" className="dd-share-alt" onClick={makeLeague}>{t("dd.league")}</button>
           )}
           {waText && (
             <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>{t("dd.wa")}</a>
@@ -425,39 +436,38 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           const c = MODE_ACCENT[modeOf(n.key)] || "var(--accent)";
           return <T key={n.key} className={cls} style={{ "--dd-rgb": rgb, "--dd-c": c }} href={n.href} onClick={() => go(n)} {...(n.href ? {} : { type: "button" })}>{inner}</T>;
         };
+        // The day's progress rides on the card's top line (10 Nov 2026). It was
+        // its own row under the card, so a clean sweep read "All 4 done today"
+        // and, right under it, "4 of 4 done today".
+        const dayBar = keys.length > 1 ? (
+          <span className="dd-day-bar" role="img" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
+            {keys.map((k) => (
+              <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
+            ))}
+          </span>
+        ) : null;
         return (
           <>
             <div className="dd-hr" aria-hidden="true" />
             <div {...g()}>
             {first ? card(first, "dd-up", (
               <>
-                <span className="dd-up-k">{t("dd.nextUp")}</span>
+                <span className="dd-up-top"><span className="dd-up-k">{t("dd.nextUp")}{keys.length > 1 ? <> · {rich(t("dd.dayDoneShort"), { n: doneN, total: keys.length })}</> : null}</span>{dayBar}</span>
                 <span className="dd-up-main">
                   <span className="dd-well" aria-hidden="true">{first.icon || DEFAULT_ICON[modeOf(first.key)] || null}</span>
                   <span className="dd-up-body">
                     <span className="dd-up-name">{first.name}</span>
                     <span className="dd-up-hook">{lostHere ? <><span className="dd-up-seg">{t("dd.winBack").trim()}</span>{" "}</> : ""}{HOOK[modeOf(first.key)] ? <span className="dd-up-seg">{t(`dd.hook.${modeOf(first.key)}`)}</span> : ""}</span>
                   </span>
-                  <span className="dd-up-go">{t("common.play")}</span>
+                  <span className="dd-up-go">{t(first.open ? "home.row.continue" : "common.play")}</span>
                 </span>
               </>
             )) : keys.length > 0 && doneN >= keys.length ? (
               <div className="dd-up is-sweep">
-                <span className="dd-up-k">{t("dd.sweep")}</span>
+                <span className="dd-up-top"><span className="dd-up-k">{t("dd.sweep")}</span>{dayBar}</span>
                 <span className="dd-up-name">{rich(t("dd.allDone"), { n: keys.length })}</span>
               </div>
             ) : null}
-            {keys.length > 1 && (
-              <div className="dd-day" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
-                <span className="dd-day-bar" aria-hidden="true">
-                  {keys.map((k) => (
-                    <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
-                  ))}
-                </span>
-                {/* The countdown lives on the streak line at the top; once is enough. */}
-                <span className="dd-day-tx">{rich(t("dd.dayDone"), { n: <strong className="dd-num">{rich(t("dd.nOf"), { n: doneN, total: keys.length })}</strong> })}</span>
-              </div>
-            )}
             {rest.length > 0 && (
               <div className="dd-up-more">
                 {rest.map((n) => card(n, "dd-chip", (
@@ -487,9 +497,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             {streakN >= 2
               ? <div className="dd-sub">{rich(t("dd.saveStreak"), {
                   days: <strong className="dd-num">{rich(t("dd.saveDays"), { n: streakN })}</strong>,
-                  and: save.line ? <>{t("dd.saveAnd")}<strong className="dd-num">{save.line}</strong></> : null,
-                  // English agrees "live"/"lives" with what is saved; Spanish has no {s}.
-                  s: save.line ? "" : "s",
+                  // The streak alone (11 Nov 2026): with the XP joined on, the
+                  // line ran to three. English "lives"; Spanish has no {s}.
+                  and: null,
+                  s: "s",
                 })}</div>
               : <div className="dd-sub">{rich(t("dd.saveLine"), { line: <strong className="dd-num">{save.line}</strong> })}</div>}
           </div>
@@ -508,48 +519,47 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           here, and a small room is a reason to leave. Below SHOW_COUNTS_FROM
           results the panel speaks only in percentages (which are just as true);
           above it the real numbers come back, because then they are an asset. */}
+      {/* ONE LINE, BARS ON A TAP (calm pass, 10 Nov 2026). The block was a
+          title, up to eleven bars and a summary on every finish; Alex: "looks
+          cluttery and busy". The summary line is the answer most people want
+          ("Average 3.0/7"); the bars open under it. The frame while loading is
+          the same one line, so nothing moves when the numbers land. */}
       {!distReady ? (
-        // The frame: same head, same rows, same one-line sub, no numbers.
         <div className="dd-dist is-loading" aria-busy="true" aria-label={t("dd.distLoading")}>
-          <div className="dd-dist-head"><div className="dd-title">{t("dd.dist")}</div></div>
-          <div className="dd-bars" aria-hidden="true">
-            {bars.map((r) => (
-              <React.Fragment key={r.k}>
-                <span className="dd-bar-k">{r.label}</span>
-                <span className="dd-bar"><i style={{ width: 0 }} /></span>
-                <span className="dd-bar-v">{"\u00a0"}</span>
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="dd-sub" aria-hidden="true">{"\u00a0"}</div>
+          <div className="dd-dist-tog" aria-hidden="true"><span className="dd-sub">{"\u00a0"}</span></div>
         </div>
       ) : summary && (
         <div className={`dd-dist${yesterday ? " is-yesterday" : ""}`} aria-label={yesterday ? yLabel : showCounts ? t("dd.distN", { n: summary.n }) : t("dd.dist")}>
-          <div className="dd-dist-head">
-            <div className="dd-title">{yesterday ? yLabel : t("dd.dist")}</div>
-            {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{rich(t("dd.played"), { n: summary.n.toLocaleString(fmtLocale()) })}</div>
-              : !yesterday ? <div className="dd-dist-cap">{t("dd.early")}</div> : null}
-          </div>
-          <div className="dd-bars">
-            {bars.map((r) => (
-              <React.Fragment key={r.k}>
-                <span className={`dd-bar-k${r.mine ? " is-mine" : ""}`}>{r.label}</span>
-                <span className={`dd-bar${r.mine ? " is-mine" : ""}`} role="img" aria-label={`${r.label}: ${barValue(r)}`}><i style={{ width: `${r.pct}%` }} /></span>
-                <span className={`dd-bar-v${r.mine ? " is-mine" : ""}`}>{barValue(r)}</span>
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="dd-sub">
-            {yesterday
-              // One line, like today's (the frame reserves one): two lines here
-              // moved everything under the block by a line when it landed.
-              ? rich(t("dd.earlyToday"), { x: summary.outOf != null
-                ? rich(t("dd.ydayAvg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong> })
-                : rich(t("dd.ydaySolved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong> }) })
-              : summary.outOf != null
-                ? rich(t("dd.avg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })
-                : rich(t("dd.solved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })}
-          </div>
+          <button type="button" className="dd-dist-tog" aria-expanded={distOpen} onClick={() => { setDistOpen((v) => !v); if (!distOpen) track?.("dd-dist-open", { game }); }}>
+            <span className="dd-sub">
+              {yesterday
+                ? rich(t("dd.earlyToday"), { x: summary.outOf != null
+                  ? rich(t("dd.ydayAvg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong> })
+                  : rich(t("dd.ydaySolved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong> }) })
+                : summary.outOf != null
+                  ? rich(t("dd.avg"), { avg: <strong className="dd-num">{fmtFixed(summary.avg, 1)}/{summary.outOf}</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })
+                  : rich(t("dd.solved"), { pct: <strong className="dd-num">{summary.solvedPct}%</strong>, line: summary.line ? <> · <strong>{summary.line}</strong></> : null })}
+            </span>
+            <span className="dd-dist-more">{t("dd.distShort")}<ChevronDown size={15} strokeWidth={2.4} aria-hidden="true" /></span>
+          </button>
+          {distOpen && (
+            <>
+              <div className="dd-dist-head">
+                <div className="dd-title">{yesterday ? yLabel : t("dd.dist")}</div>
+                {showCounts && !yesterday ? <div className="dd-dist-cap dd-num">{rich(t("dd.played"), { n: summary.n.toLocaleString(fmtLocale()) })}</div>
+                  : !yesterday ? <div className="dd-dist-cap">{t("dd.early")}</div> : null}
+              </div>
+              <div className="dd-bars">
+                {bars.map((r) => (
+                  <React.Fragment key={r.k}>
+                    <span className={`dd-bar-k${r.mine ? " is-mine" : ""}`}>{r.label}</span>
+                    <span className={`dd-bar${r.mine ? " is-mine" : ""}`} role="img" aria-label={`${r.label}: ${barValue(r)}`}><i style={{ width: `${r.pct}%` }} /></span>
+                    <span className={`dd-bar-v${r.mine ? " is-mine" : ""}`}>{barValue(r)}</span>
+                  </React.Fragment>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
 

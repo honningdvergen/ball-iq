@@ -165,7 +165,16 @@ export const CLUB_PACK_COLOURS = {"Premier League":"#3D195B",
 "Southampton":"#D71920",
 "Stoke City":"#E03A3E",
 "Swansea City":"#121212",
-"Wrexham":"#DA291C"};
+"Wrexham":"#DA291C",
+"Molde":"#0B4F9C",
+"Brann":"#D7141A",
+"Malmö FF":"#6CABDD",
+"Brøndby":"#FFD200",
+"AZ Alkmaar":"#DB0021",
+"Standard Liège":"#D50032",
+"Estudiantes":"#E2001A",
+"Vélez Sarsfield":"#0047AB",
+"Inter Miami":"#F7B5CD"};
 
 export const CLUB_PACK_ABBR = {"Fluminense":"FLU",
 "Botafogo":"BOT",
@@ -304,7 +313,16 @@ export const CLUB_PACK_ABBR = {"Fluminense":"FLU",
 "Leverkusen":"B04",
 "Lyon":"OL",
 "Parma":"PAR",
-"Monaco":"ASM"};
+"Monaco":"ASM",
+"Molde":"MOL",
+"Brann":"BRN",
+"Malmo":"MFF",
+"Brondby":"BIF",
+"AZ":"AZ",
+"Standard":"STL",
+"Estudiantes":"EDL",
+"Velez":"VEL",
+"InterMiami":"MIA"};
 
 // CLUB_NAME_TO_COMP: bank club name -> its LEAGUE cat (PL/LaLiga/SerieA/…), or
 // Clubs for a country whose league has no face. Folded at read time, not here.
@@ -455,4 +473,13 @@ export const CLUB_NAME_TO_COMP = {"Fluminense":"Clubs",
 "Bayer Leverkusen":"Bundesliga",
 "Olympique Lyonnais":"Ligue1",
 "Parma":"SerieA",
-"AS Monaco":"Ligue1"};
+"AS Monaco":"Ligue1",
+"Molde":"Clubs",
+"Brann":"Clubs",
+"Malmö FF":"Clubs",
+"Brøndby":"Clubs",
+"AZ Alkmaar":"Clubs",
+"Standard Liège":"Clubs",
+"Estudiantes":"Clubs",
+"Vélez Sarsfield":"Clubs",
+"Inter Miami":"Clubs"};

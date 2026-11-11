@@ -14,6 +14,7 @@ import { groupTop10Lists, listStatus, myTop10Club, setMyTop10Club } from "../lib
 import { useTop10Data } from "./Top10.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./top10.css";
+import { swatchEdge } from "../lib/colourMath.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT, getLang, fmtLocale } from "../i18n/index.js";
 import { rich } from "../i18n/rich.jsx";
@@ -91,7 +92,7 @@ const isLight = (hex) => {
 function ClubMark({ info }) {
   const light = isLight(info.color);
   return (
-    <span className={`t10lib-mark${light ? " is-light" : ""}`} style={{ background: info.color || "var(--s3)" }} aria-hidden="true">{info.abbr}</span>
+    <span className={`t10lib-mark${light ? " is-light" : ""}`} style={{ background: info.color || "var(--s3)", boxShadow: swatchEdge(info.color) || undefined }} aria-hidden="true">{info.abbr}</span>
   );
 }
 

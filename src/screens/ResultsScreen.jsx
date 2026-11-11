@@ -94,7 +94,7 @@ function CardDeltaRow({ d }) {
   );
 }
 
-export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone, cardDelta }) {
+export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta }) {
   const t = useT();
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
@@ -199,7 +199,16 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
 
       {/* Final score eyebrow + huge green number + caption */}
       <div style={{textAlign:"center", padding:"20px 0 8px"}}>
-        <div className="ds-eyebrow">{t("rs.final")}</div>
+        {/* A CLUB OR LEAGUE QUIZ SAYS WHOSE IT WAS (11 Nov 2026). The result read
+            "Final score" for every quiz, so a Liverpool fan finishing the
+            Liverpool quiz saw nothing of Liverpool: found on the simulator
+            walk. The badge and name from the quiz screen's banner lead here. */}
+        {label ? (
+          <div style={{display:"inline-flex", alignItems:"center", gap:8, maxWidth:"100%"}}>
+            {badge && <span aria-hidden="true" style={{flex:"none", width:26, height:26, borderRadius:8, background:badge.color, color:badge.fg, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:9.5, fontWeight:900, letterSpacing:0.2}}>{badge.abbr}</span>}
+            <span className="ds-eyebrow" style={{overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>{label}</span>
+          </div>
+        ) : <div className="ds-eyebrow">{t("rs.final")}</div>}
         <div
           className="numeric"
           style={{
@@ -212,7 +221,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             color: scoreEarned ? "var(--accent)" : hugeScore > 0 ? "var(--text)" : "var(--t2)",
             letterSpacing:"-0.03em",
             lineHeight:1,
-            textShadow: scoreEarned ? "0 8px 32px rgba(88,204,2,0.35)" : "none",
+            textShadow: scoreEarned ? "0 8px 32px rgba(88,204,2,0.18)" : "none",
           }}
         >
           <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />

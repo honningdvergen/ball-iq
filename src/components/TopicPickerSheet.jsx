@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { clubInitials, clubReadableText, catLabel } from "../App.jsx";
 import { CLUB_PACK_TO_QB, CLUB_PACKS, CLUB_ABBR } from "../data/clubPacks.js";
+import { swatchEdge } from "../lib/colourMath.js";
 import "../i18n/en.js";
 import { t as tNow, useT } from "../i18n/index.js";
 
@@ -144,7 +145,7 @@ export function TopicPickerSheet({ value, onDone, onClose }) {
                 ...(sel ? {background:"rgba(88,204,2,0.1)",border:"1.5px solid rgba(88,204,2,0.55)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
                   {it.abbr
-                    ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "var(--grn-soft)" : "var(--t1)"),boxShadow:it.color ? `0 2px 8px ${it.color}55` : undefined}}>{it.abbr}</span>
+                    ? <span style={{width:34,height:34,borderRadius:10,background:it.color || (sel ? "rgba(88,204,2,0.14)" : "var(--s2)"),display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,letterSpacing:"0.04em",color:it.fg || (sel ? "var(--grn-soft)" : "var(--t1)"),boxShadow:[swatchEdge(it.color), it.color ? `0 2px 8px ${it.color}55` : ""].filter(Boolean).join(", ") || undefined}}>{it.abbr}</span>
                     : <span style={{fontSize:24}}>{it.icon}</span>}
                   {sel && <span style={{width:19,height:19,borderRadius:"50%",background:"var(--accent)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:11,color:"var(--grn-ink)",fontWeight:900}}>✓</span>}
                 </div>

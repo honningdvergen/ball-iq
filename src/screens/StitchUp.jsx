@@ -24,7 +24,7 @@ import "./stitch.css";
 import TransferTrail from "./TransferTrail.jsx";
 import { stitchPlayers, findStitchPlayer, stitchHashOf, stitchShownRange, searchStitchPlayers, stitchIdeas } from "../lib/stitch.js";
 import { STITCH_TAUNTS, makeStitchToken, parseStitchToken, stitchScore, cleanStitchName } from "../lib/stitchToken.js";
-import { clubColour, clubAbbr, onColour } from "../lib/clubColour.js";
+import { clubColour, clubAbbr, crestPaint } from "../lib/clubColour.js";
 import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
 import { isNativeShell } from "../lib/inAppBrowser.js";
 import { getTrailAnswer, loadTrailDay, finishedBefore } from "../lib/trail.js";
@@ -146,7 +146,7 @@ export function StitchBuilder({ onBack, onMade, back = null, defaultName = "", n
               {i === shown && <div className="st-cut" role="separator">{t("su.cut")}</div>}
               <div className={`st-club${hidden ? " is-hidden" : ""}`}>
                 <span className="st-club-n">{i + 1}</span>
-                <span className="st-crest" aria-hidden="true" style={{ background: col || "var(--s3)", color: col ? onColour(col) : "var(--t3)" }}>{clubAbbr(club, CLUB_PACK_ABBR)}</span>
+                <span className="st-crest" aria-hidden="true" style={{ background: col ? crestPaint(col).bg : "var(--s3)", color: col ? crestPaint(col).ink : "var(--t3)" }}>{clubAbbr(club, CLUB_PACK_ABBR)}</span>
                 <span className="st-club-name">{club}</span>
                 {player.loans?.[i] && <span className="st-club-tag" style={{ color: "var(--gold)", WebkitTextFillColor: "var(--gold)" }}>{t("su.loan")}</span>}
                 {hidden && <span className="st-club-tag"><EyeOff size={13} strokeWidth={2.3} aria-hidden="true" /> {t("su.hidden")}</span>}

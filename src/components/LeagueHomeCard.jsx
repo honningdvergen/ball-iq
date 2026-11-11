@@ -4,6 +4,7 @@ import "../screens/league.css";
 import { getMyLeagues, homeCardLine } from "../lib/leagues.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
+import { LeagueStartRow } from "./LeagueStartRow.jsx";
 
 // The league on Home (mates' leagues, phase 1, web only). One hairline card,
 // the whole card is the tap; no solid button, Home's stays the daily. Lazy, so
@@ -12,7 +13,7 @@ import { t, useT } from "../i18n/index.js";
 // applied): it draws nothing.
 //
 // Several leagues: the one with the latest activity, and a quiet "+1 more".
-export default function LeagueHomeCard({ onOpen }) {
+export default function LeagueHomeCard({ onOpen, onStart }) {
   useT();
   const [list, setList] = useState(null);
   useEffect(() => {
@@ -25,6 +26,8 @@ export default function LeagueHomeCard({ onOpen }) {
     });
     return () => { alive = false; };
   }, []);
+  // Checked and in none: the way in, where the card would have been.
+  if (Array.isArray(list) && list.length === 0 && onStart) return <LeagueStartRow onStart={onStart} />;
   if (!Array.isArray(list) || list.length === 0) return null;
   const l = list[0];
   const todayAt = (l.today ?? 0) - (l.week_start ?? 0);

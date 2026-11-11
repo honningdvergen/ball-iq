@@ -223,3 +223,16 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(APP.slice(APP.indexOf('const dailyDoneServices'), APP.indexOf('const footleServices'))).not.toMatch(/\bplayDaily\b/);
   });
 });
+
+describe('Next up says Continue for a daily already started (10 Nov 2026)', () => {
+  it('the card reads the item\'s open flag', () => {
+    expect(DD).toContain('t(first.open ? "home.row.continue" : "common.play")');
+    expect(EN['home.row.continue']).toBe('Continue');
+  });
+  it('the app marks Footle, Daily 7 and Top 10 as open when they are in progress', () => {
+    expect(APP).toMatch(/name: tl\("dd\.contToday", \{ g: "Footle" \}\), open: true/);
+    expect(APP).toMatch(/d7Open = dailyRunAnswered\(dateToYMD\(new Date\(\)\)\) > 0/);
+    expect(APP).toMatch(/today\("daily7", "Daily 7"\), open: d7Open/);
+    expect(APP).toMatch(/today\("top10", "Top 10"\), open: \(t10\?\.picks\?\.length \|\| 0\) > 0/);
+  });
+});

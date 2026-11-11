@@ -229,3 +229,41 @@ export function questionSeconds(row, base = 20) {
     + (Array.isArray(row.o) ? row.o.reduce((n, o) => n + String(o || "").length, 0) : 0);
   return base + Math.max(0, Math.min(10, Math.round((chars - 150) / 25)));
 }
+
+// ─── Option order ────────────────────────────────────────────────────────────
+// Every mode shuffles a question's options so the answer's slot is no tell.
+// Number options are the exception (27 Oct 2026): "Four, One, Two, Three" or
+// "1998, 1995, 1997, 1996" reads as a mistake, and a player scanning a scale
+// expects it in order. Options count as numbers when each one starts with a
+// number (digits, or a number word up to twenty) and the rest of the text is
+// the same in every option: "Ten points", "6th", "2004-05", "€1", "21".
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];
+function numericKey(opt) {
+  const s = String(opt).trim().toLowerCase();
+  // A season ("2004-05") is its first year. A scoreline ("6-5") is not a
+  // number at all: sorting by the home score would freeze the answer's slot.
+  if (/^\d{4}[-–/]\d{2,4}$/.test(s)) return { v: Number(s.slice(0, 4)), rest: "season" };
+  if (/^\d+\s*[-–:]\s*\d+/.test(s)) return null;
+  const d = s.match(/^([€£$]?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
+  if (d) return { v: Number(d[2].replace(/,/g, "")), rest: d[1] + "|" + d[3].replace(/^(st|nd|rd|th)\b/, "#") };
+  const w = s.match(/^([a-z]+)(.*)$/);
+  if (w && NUMBER_WORDS.includes(w[1])) return { v: NUMBER_WORDS.indexOf(w[1]), rest: w[2] };
+  return null;
+}
+/** True when every option is a number on the same scale (see above). */
+export function isNumericScale(opts) {
+  if (!Array.isArray(opts) || opts.length < 2) return false;
+  const keys = opts.map(numericKey);
+  if (keys.some((k) => !k || !Number.isFinite(k.v))) return false;
+  return keys.every((k) => k.rest === keys[0].rest);
+}
+/**
+ * The order to show a question's options in, as indices into `opts`:
+ * ascending for a number scale, else `shuffle` of the indices.
+ */
+export function optionOrder(opts, shuffle) {
+  const idx = opts.map((_, i) => i);
+  if (!isNumericScale(opts)) return shuffle(idx);
+  const v = opts.map((o) => numericKey(o).v);
+  return idx.sort((a, b) => v[a] - v[b] || a - b);
+}
