@@ -452,7 +452,6 @@ export default {
   'ki.wrong.q': 'A question seems factually wrong',
   'ld.clubs': 'Loading clubs',
   'ld.draft': 'Loading Draft',
-  'ld.grid': 'Loading Tiki Taka Toe',
   'ld.footle': 'Loading Footle',
   'ld.history': 'Loading history',
   'ld.loading': 'Loading',
