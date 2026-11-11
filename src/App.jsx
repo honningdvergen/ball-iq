@@ -7602,12 +7602,14 @@ function AppInner() {
             onDone={(startGame) => {
               setHasOnboarded(true);
               // They answered the sample question and pressed "Let's play", so
-              // put them IN a game rather than in front of a menu. Footle is
-              // the choice because it is where the habit forms (94% of players
-              // reaching three active days got there through it) and because
-              // it needs nobody else, unlike a room. Deferred a tick so the
-              // onboarding unmount completes first.
-              if (startGame === true) setTimeout(() => { try { setScreen("wordle"); } catch { /* stay on home */ } }, 0);
+              // put them IN a game rather than in front of a menu. Daily 7 since
+              // 11 Nov 2026: the first screen has just asked a football question,
+              // and seven more of those is what the button promises. Footle (the
+              // choice until then, because the habit forms there) is a word game
+              // with its own rules to learn, a change of subject in the first
+              // minute; it is the next row on the finish panel. Deferred a tick
+              // so the onboarding unmount completes first.
+              if (startGame === true) setTimeout(() => { try { playDaily(); } catch { /* stay on home */ } }, 0);
               // The component has already written biq_onboarded + any chosen fav_club / skill_level.
               // Pull through the new default difficulty so it takes effect immediately.
               try {
