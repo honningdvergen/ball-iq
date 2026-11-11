@@ -184,7 +184,7 @@ describe('English that only appears after a tap or is built from parts', () => {
     expect(t('dd.shieldsAria', { count: 2 })).toBe('2 streak shields banked: each covers one missed day');
     expect(t('dd.today', { g: 'Top 10' }) + ' / ' + t('dd.contToday', { g: 'Footle' })).toBe("Today's Top 10 / Continue today's Footle");
     expect(`Non-League · 120 XP${t('dd.toNext', { n: 180, name: 'Championship' })}`).toBe('Non-League · 120 XP · 180 to Championship');
-    expect(t('hi.gapN', { a: 'Oct 12', b: 'Oct 17', n: 6 })).toBe('Oct 12 to Oct 17 · 6 days not played');
+    expect(t('hi.gapN', { a: 'Oct 12', b: 'Oct 17', n: 6 })).toBe('6 days off');
     expect(t('pf.badgeAria', { name: 'Scholar', s: t('pf.locked') })).toBe('Scholar — locked. Tap for details.');
     expect(t('cf.prov', { c: 'International', r: 61, n: 4, min: 10 })).toBe('International 61, provisional — 4 of 10 answered');
   });
@@ -248,7 +248,7 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('History', () => {
     const h = unq(now['history: two weeks with gaps, yesterday open']);
-    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '15 oct – 16 oct · 2 días sin jugar', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
+    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '>2 días libres<', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
     expect(unq(now['history: all done today, yesterday open, streak broke'])).toContain('>Se rompió tu racha de 9 días<');
     expect(unq(now['history: a new player, nothing played'])).toContain('Termina cualquiera de los cuatro retos de hoy');
   });
