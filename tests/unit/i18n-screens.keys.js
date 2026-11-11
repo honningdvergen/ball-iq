@@ -520,6 +520,8 @@ export const STEP4_EN = {
   'bd.world_class': "Globetrotter",
   'bd.world_class.d': "100 International Qs",
   'cf.noRating': "No rating yet",
+  'cf.goldIn_one': "Gold in {n} more answer",
+  'cf.goldIn_other': "Gold in {n} more answers",
   'cf.more_one': "{n} MORE TO GET RATED",
   'cf.more_other': "{n} MORE TO GET RATED",
   'cf.answer': "ANSWER {n} TO GET RATED",

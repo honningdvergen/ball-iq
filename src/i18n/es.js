@@ -938,6 +938,8 @@ export default {
   // Spelt out: audit-no-question-count bans a digit before "preguntas".
   'bd.world_class.d': 'Cien preguntas de selecciones',
   'cf.noRating': 'Aún sin media',
+  'cf.goldIn_one': 'Oro en {n} respuesta más',
+  'cf.goldIn_other': 'Oro en {n} respuestas más',
   // Short: the card's empty state is one line at 320 px.
   'cf.more_one': 'TE FALTA {n}',
   'cf.more_other': 'TE FALTAN {n}',

@@ -982,6 +982,8 @@ export default registerEnglish({
   'bd.world_class.d': '100 International Qs',
   // The Ball IQ card face (components/BallIqCardFace.jsx); {c} a competition.
   'cf.noRating': 'No rating yet',
+  'cf.goldIn_one': 'Gold in {n} more answer',
+  'cf.goldIn_other': 'Gold in {n} more answers',
   'cf.more_one': '{n} MORE TO GET RATED',
   'cf.more_other': '{n} MORE TO GET RATED',
   'cf.answer': 'ANSWER {n} TO GET RATED',
