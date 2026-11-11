@@ -4137,7 +4137,7 @@ function AppInner() {
   }, [dailyDone, loginStreak, top10Tick]);
   useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
 
-  const tickLoginStreak = useCallback(async () => {
+  const tickLoginStreak = useCallback(async ({ onPanel = false } = {}) => {
     // Calendar day in the USER'S timezone (days since epoch of the local
     // date). The previous UTC day (Date.now()/DAY_MS client-side,
     // current_date server-side) broke streaks for anyone west of UTC playing
@@ -4251,11 +4251,19 @@ function AppInner() {
       haptic("heavy");
       playSound("streak");
     } else if (result.ticked && result.streak > 1) {
-      if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
-      setStreakToast(result.streak);
+      // ONE TELLING (11 Nov 2026). A finished daily lands on a panel whose
+      // first row IS the streak ("3-day daily streak"); the gold toast said it
+      // again on top of that row, and on day 3, 7, 30 and 100 the milestone
+      // toast below made it three. The toast now shows only where no panel
+      // does (the credit after a sign-in), and never beside a milestone's.
+      const milestone = [3, 7, 30, 100].includes(result.streak);
+      if (!onPanel && !milestone) {
+        if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
+        setStreakToast(result.streak);
+        streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
+      }
       haptic("heavy");
       playSound("streak");
-      streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
     } else if (result.streak < prevKnownStreak && prevKnownStreak >= 3) {
       // The streak died since this device last ticked (normally streak === 1
       // after a reset; a stale multi-device cache can land higher). Without
@@ -6014,8 +6022,9 @@ function AppInner() {
       // finishing is the habit we want to reward.
       //
       // The RPC is idempotent per local day (lastDay === today → ticked:false),
-      // so solving all four modes ticks once and shows one toast.
-      tickLoginStreak();
+      // so solving all four modes ticks once. The finish panel states the
+      // streak, so the toast stays away (onPanel).
+      tickLoginStreak({ onPanel: true });
       // The daily_complete chord + heavy haptic used to be Daily 7's private
       // reward (it fires them in handleComplete, whose dispatch above carries
       // no `game` field — hence the named-game gate, which also keeps this
@@ -8015,7 +8024,7 @@ function AppInner() {
             <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>{t("lu.go")}</button>
           </div>
         )}
-        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
+        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><Flame size={15} strokeWidth={2.6} aria-hidden="true" /><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
 
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (
