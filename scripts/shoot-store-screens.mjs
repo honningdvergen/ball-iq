@@ -270,7 +270,7 @@ const SHOTS = [
   // match the shared PNG, so the screen marker moved to the tier row. `verify`
   // carries the real proof: the seeded 88 has to be on screen, which is what
   // catches a card that rendered empty or fell back to a default palette.
-  { name: '06-profile',        expect: 'OVERALL', settle: true,
+  { name: '06-profile',        expect: 'BALL IQ', settle: true,
     verify: async (p) => (await p.evaluate(() => /\b88\b/.test(document.body.innerText)
       && /GOLD/.test(document.body.innerText)
       // ⚠️ MATCH THE COPY THAT IS ACTUALLY ON SCREEN. This asserted on "Create a
