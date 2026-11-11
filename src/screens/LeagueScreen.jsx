@@ -187,7 +187,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
       <div className="lg-table" role="table" aria-label={t(final ? "lg.ariaFinal" : "lg.ariaWeek", { name: meta.name })}>
         {rows.map((r, idx) => (
           <div key={idx} className={`lg-row${r.is_me ? " is-me" : ""}`} role="row">
-            <span className={`lg-rank${r.rank === 1 ? " is-first" : ""}`} role="cell">{rankText(r.rank, r.tied)}</span>
+            <span className={`lg-rank${r.rank === 1 ? " is-first" : r.rank === 2 ? " is-second" : r.rank === 3 ? " is-third" : ""}`} role="cell">{rankText(r.rank, r.tied)}</span>
             <div className="lg-mid" role="cell">
               <div className="lg-name-line">
                 <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
@@ -199,7 +199,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
                 {DAY_LETTERS.map((_, i) => { const c = cell(r, i); return <span key={i} className={`lg-cell ${c.cls}${!final && meta.week_start + i === meta.today ? " is-today" : ""}`} style={c.h ? { "--h": c.h.toFixed(2) } : undefined}>{c.t && c.t !== "·" ? <span className="lg-sr">{c.t}</span> : null}</span>; })}
               </div>
             </div>
-            <span className="lg-total" role="cell">{r.points}</span>
+            <span className={`lg-total${r.rank === 1 && r.points > 0 ? " is-first" : ""}`} role="cell">{r.points}</span>
           </div>
         ))}
         {rows.length === 1 && <p className="lg-alone">{t("lg.alone")}</p>}
