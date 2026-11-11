@@ -2038,7 +2038,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                       {r.action && (
                         <button type="button" onClick={r.action.onTap} aria-label={t("pf.playQuiz", { c: r.action.name })}
                           // Lifted toward white: the PL's #3D195B is invisible on --s1 as-is.
-                          style={{ padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 800, fontFamily: "inherit", cursor: "pointer", flexShrink: 0,
+                          // 15px clear of the value (9 + 6): Alex, 11 Nov 2026, "CLUBS · 70 sits a bit too close to Play".
+                          style={{ marginLeft: 6, padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 800, fontFamily: "inherit", cursor: "pointer", flexShrink: 0,
                                    background: `color-mix(in srgb, ${r.action.color} 22%, transparent)`, color: `color-mix(in srgb, ${r.action.color} 40%, #F0F1F5)`, border: `1px solid color-mix(in srgb, ${r.action.color} 55%, transparent)` }}>
                           {r.action.label}
                         </button>
