@@ -382,6 +382,7 @@ export default {
   'mp.mates': 'Compañeros en {c}',
   'mp.shared': 'Ambos en {c}',
   'mp.samePos': 'Misma posición',
+  'mp.otherPos': 'Otra posición',
   'mp.sameEra': 'Misma época',
   'mp.sameEraBorn': 'Misma época, nació {w}',
   'mp.bornYears': 'Nació {n} años {w}',
