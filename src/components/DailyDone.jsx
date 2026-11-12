@@ -3,7 +3,8 @@ import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ClipboardList, Rou
 import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
-import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel } from "../lib/gameChallenge.js";
+import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel, replyName } from "../lib/gameChallenge.js";
+import { MateNameAsk } from "./MateNameAsk.jsx";
 // Mates' leagues (phase 2: web and the app). The results lib is loaded on
 // demand: a static import here put it in the chunk Home loads eagerly (+4 KB
 // measured against scripts/audit-home-budget.mjs).
@@ -209,8 +210,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     if (!canChallenge) return;
     loadRepliesLib().then((m) => {
       if (!m || !rival?.rid) return;
-      // The library drops the name in an installed app (see there).
-      const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
+      // The name this player goes by: one typed for a mate before, else the
+      // account's. The library drops it in an installed app (see there), and
+      // only the ask itself (MateNameAsk) ever sends a name as "typed here".
+      const who = replyName() || (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
       m.recordChallengeReply({ rid: rival.rid, game, edition, score: myScore, name: who });
     });
   }, [canChallenge, rival, game, edition, myScore, day]);
@@ -241,7 +244,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     else openLeagueCreate({ h2hGame: game, vs: "", from: "finish", h2h: null });
   };
   const sendChallenge = async () => {
-    const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
+    // The name on the link: the account's, else the one typed for a mate.
+    const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })() || replyName();
     const token = challengeToken(game, edition, myScore, who);
     if (!token) return;
     // The way back (lib/challengeReplies.js): an id on the link, so this
@@ -377,10 +381,16 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         const r = compareScores(game, myScore, rival.score);
         const name = rival.name || t("dd.yourMate");
         return (
-          <div className={`dd-h2h${r > 0 ? " is-win" : r < 0 ? " is-loss" : ""}`} role="status">
-            <span>{rich(t("dd.h2h"), { me: <strong className="dd-num">{scoreLabel(game, myScore, t)}</strong>, name, them: <strong className="dd-num">{scoreLabel(game, rival.score, t)}</strong> })}</span>
-            <strong>{t(r > 0 ? "dd.beat" : r < 0 ? "dd.lost" : "dd.level", { name })}</strong>
-          </div>
+          <>
+            <div className={`dd-h2h${r > 0 ? " is-win" : r < 0 ? " is-loss" : ""}`} role="status">
+              <span>{rich(t("dd.h2h"), { me: <strong className="dd-num">{scoreLabel(game, myScore, t)}</strong>, name, them: <strong className="dd-num">{scoreLabel(game, rival.score, t)}</strong> })}</span>
+              <strong>{t(r > 0 ? "dd.beat" : r < 0 ? "dd.lost" : "dd.level", { name })}</strong>
+            </div>
+            {/* The sender is told who played: one line, joined to this box. */}
+            {rival.rid && !isArchive && (
+              <MateNameAsk rival={rival} game={game} edition={edition} score={myScore} />
+            )}
+          </>
         );
       })()}
       </div>

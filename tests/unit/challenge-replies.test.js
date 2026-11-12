@@ -96,6 +96,73 @@ describe('the mate reports back', () => {
     expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'trail', edition: 102, score: 2, name: 'Jonas' })).toBe(true);
     expect(calls[0].body).toMatchObject({ p_game: 'trail', p_score: 2, p_name: '' });
   });
+  it('a name typed afterwards goes on the same key, once, and is remembered as confirmed', async () => {
+    const m = await load();
+    expect(m.sendsNameUnasked()).toBe(true);
+    await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 });
+    expect(calls[0].body.p_name).toBe('');
+    expect(m.replyNamed('ABCDEFGHJKLM')).toBe('');
+    // The player types "Jonas" and taps Tell Alex: sent although the result is already marked done.
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas', explicit: true })).toBe(true);
+    expect(calls).toHaveLength(2);
+    expect(calls[1].body.p_name).toBe('Jonas');
+    expect(calls[1].body.p_replier).toBe(calls[0].body.p_replier);
+    expect(m.replyNamed('ABCDEFGHJKLM')).toBe('Jonas');
+    // The same name again says nothing new: no call. A reload does not resend either.
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas', explicit: true })).toBe(true);
+    const again = await load();
+    expect(await again.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas' })).toBe(true);
+    expect(calls).toHaveLength(2);
+  });
+  it('a name that failed to send is not claimed as told, and the result stays reported', async () => {
+    const m = await load();
+    await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 });
+    recordAnswer = false;
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas', explicit: true })).toBe(false);
+    expect(m.replyNamed('ABCDEFGHJKLM')).toBe('');
+    recordAnswer = true;
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 })).toBe(true);
+    expect(calls).toHaveLength(2);
+  });
+  it('where storage cannot be written, a second send still uses the same key', async () => {
+    const m = await load();
+    const real = localStorage.setItem;
+    localStorage.setItem = () => { throw new Error('quota'); };
+    await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 });
+    await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas', explicit: true });
+    localStorage.setItem = real;
+    expect(calls).toHaveLength(2);
+    expect(calls[1].body.p_replier).toBe(calls[0].body.p_replier);
+  });
+  it('an installed app sends no name on its own, and its ask is off', async () => {
+    vi.stubGlobal('window', { Capacitor: { isNativePlatform: () => true } });
+    vi.stubGlobal('location', { hostname: 'localhost', protocol: 'capacitor:' });
+    const m = await load();
+    expect(m.sendsNameUnasked()).toBe(false);
+    store.set('biq_reply_name', 'Jonas');
+    await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas' });
+    expect(calls[0].body.p_name).toBe('');
+    expect(read('src/components/MateNameAsk.jsx')).toMatch(/if \(!lib \|\| !lib\.sendsNameUnasked\(\) \|\| lib\.isOwnLink\(rid\)\) return null;/);
+  });
+  it('a reply seen without a name is shown again once it has one', async () => {
+    const m = await load();
+    const rid = m.replyIdFor('footle', 193, 4);
+    replyRows = [{ cid: rid, game: 'footle', edition: 193, score: 6, name: null, at: '2026-11-12T12:00:00Z' }];
+    const first = await m.fetchNewReplies();
+    m.markReplySeen(first[0]);
+    expect(await m.fetchNewReplies({ force: true })).toEqual([]);
+    replyRows = [{ cid: rid, game: 'footle', edition: 193, score: 6, name: 'Jonas', at: '2026-11-12T12:00:00Z' }];
+    expect((await m.fetchNewReplies({ force: true })).map((r) => r.name)).toEqual(['Jonas']);
+  });
+  it('the typed name is kept on the device, cleaned', async () => {
+    vi.resetModules();
+    const g = await import('../../src/lib/gameChallenge.js');
+    expect(g.replyName()).toBe('');
+    expect(g.saveReplyName('  Jørgen <3 ')).toBe('Jørgen 3');
+    expect(g.replyName()).toBe('Jørgen 3');
+    expect(g.saveReplyName('<>')).toBe('');
+    expect(g.replyName()).toBe('Jørgen 3');
+  });
   it('never reports on a link this device sent itself', async () => {
     const m = await load();
     const rid = m.replyIdFor('footle', 193, 4);
@@ -188,6 +255,47 @@ describe('the link, the redirect and the boot agree on the id', () => {
   });
 });
 
+describe('say it was you (the name ask)', () => {
+  const DD = read('src/components/DailyDone.jsx');
+  const ASK = read('src/components/MateNameAsk.jsx');
+  it('sits under the head-to-head only for a link that can be answered, never on a practice replay', () => {
+    expect(DD).toMatch(/\{rival\.rid && !isArchive && \(\s*<MateNameAsk /);
+    expect(DD.indexOf('className={`dd-h2h')).toBeLessThan(DD.indexOf('<MateNameAsk '));
+  });
+  it('keeps its state out of DailyDone, and loads the library with import()', () => {
+    expect(ASK).toMatch(/const loadLib = \(\) => import\("\.\.\/lib\/challengeReplies\.js"\)/);
+    expect(ASK).not.toMatch(/^import [^\n]*challengeReplies/m);
+    expect((ASK.match(/useState\(/g) || []).length).toBe(4);
+    // It says a name was told only when the library has it confirmed for this link.
+    expect(ASK).toMatch(/setTold\(m\.replyNamed\(rid\)\)/);
+    expect(ASK).not.toMatch(/useState\(\(\) => replyName\(\)\);\s*\/\/ told/);
+  });
+  it('is one line: a field and one quiet button, no sheet and no solid fill', () => {
+    expect(ASK).toMatch(/<form className="dd-name" onSubmit=\{submit\}>/);
+    expect(ASK).not.toMatch(/role="dialog"|dd-share|lg-solid/);
+    const CSS = read('src/components/dailyDone.css');
+    expect(CSS).toMatch(/\.dd-h2h:has\(\+ \.dd-name\)\{border-radius:12px 12px 0 0;\}/);
+    // 16px in the field: anything smaller makes iOS zoom the page on focus.
+    expect(CSS).toMatch(/\.dd-name-in\{[^}]*font-size:16px/);
+  });
+  it('a typed name is sent as the player\'s choice, and goes on the links they send', () => {
+    expect(ASK).toMatch(/recordChallengeReply\(\{ rid, game, edition, score, name: clean, explicit: true \}\)/);
+    // Only the ask sends a name as typed here: the panel's own report never does.
+    expect(DD).not.toMatch(/explicit/);
+    expect(DD).toMatch(/\|\| replyName\(\);/);
+  });
+  const SQL4 = read('supabase/migrations/v3_4_challenge_reply_name.sql');
+  it('the follow-up migration only teaches the stored row a name, by the same key', () => {
+    expect(SQL4).toMatch(/update public\.challenge_replies set name = v_name\s+where cid = p_cid and replier = p_replier and name is distinct from v_name;/);
+    expect(SQL4).not.toMatch(/create table|drop |alter table|create policy/i);
+    expect((SQL4.match(/create or replace function/g) || []).length).toBe(1);
+    expect(SQL4).toMatch(/security definer\s+set search_path to 'public'/);
+    expect(SQL4.trimEnd().endsWith('revoke all on function public.record_challenge_reply(text, text, integer, integer, text, uuid) from public;')).toBe(true);
+    // Everything v3_3 checked is still in the function.
+    for (const needle of ['>= 2000', '>= 8', 'pg_advisory_xact_lock(hashtext(p_cid))', 'v_day < v_today - 1 or v_day > v_today + 1', 'on conflict (cid, replier) do update', 'set name = coalesce(excluded.name, cr.name)', 'returns boolean']) expect(SQL4, needle).toContain(needle);
+  });
+});
+
 describe('the migration keeps the standing rules', () => {
   const SQL = read('supabase/migrations/v3_3_challenge_replies.sql');
   it('the table has RLS, no policy and no client grant', () => {
@@ -218,5 +326,17 @@ describe('the migration keeps the standing rules', () => {
     expect(SQL).toContain("unnest((coalesce(p_cids, '{}'::text[]))[1:12])");
     expect(SQL).not.toMatch(/text\[\]\)\[1:12\]/);
     expect(SQL).toMatch(/public\._league_clean_name\(p_name, 22\)/);
+  });
+});
+
+describe('the privacy text says so', () => {
+  it('both copies cover the reply and the optional first name', () => {
+    for (const p of ['public/privacy.html', 'src/screens/PrivacyScreen.jsx']) {
+      const src = read(p);
+      expect(src, p).toContain('If a friend sends you a puzzle and you finish it, your result is sent back');
+      expect(src, p).toContain('on the website you can add a first name to it if you choose');
+      expect(src, p).toContain('deleted after seven days');
+      expect(src, p).not.toContain('We do not collect your real name,');
+    }
   });
 });

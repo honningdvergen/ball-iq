@@ -75,7 +75,7 @@ export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
             `new Date().toLocaleDateString()` which falsely claimed the
             policy was updated every day the user viewed it. Bump this
             string whenever the policy content materially changes. */}
-        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>Last updated: 30 October 2026</div>
+        <div style={{fontSize: 13, color: "var(--t2)", marginBottom: 28}}>Last updated: 12 November 2026</div>
 
         <div style={{
           background: "var(--s2)", borderRadius: 16,
@@ -89,7 +89,7 @@ export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
         </div>
 
         <h2 style={privacyH2}>1. Two ways to play</h2>
-        <p style={privacyP}><strong>Guest mode</strong> — open {APP_NAME} without signing in. Your scores, streaks, settings and game history are stored only in your device's local storage. The one thing sent to our servers is your result when you finish a daily puzzle, so the “how everyone did” panel works: from the app it carries no identifier at all, and on the website it carries the random visitor identifier described in §4. If you clear your browser data or uninstall the app, your progress is gone. If you join a game or a league from an invite link without signing in, we create a temporary guest account with a username so the game works; it is deleted automatically after 30 days without use.</p>
+        <p style={privacyP}><strong>Guest mode</strong> — open {APP_NAME} without signing in. Your scores, streaks, settings and game history are stored only in your device's local storage. The one thing sent to our servers is your result when you finish a daily puzzle, so the “how everyone did” panel works: from the app it carries no identifier at all, and on the website it carries the random visitor identifier described in §4. If you clear your browser data or uninstall the app, your progress is gone. If you join a game or a league from an invite link without signing in, we create a temporary guest account with a username so the game works; it is deleted automatically after 30 days without use. If a friend sends you a puzzle and you finish it, your result is sent back so they can see how you did; on the website you can add a first name to it if you choose. It is stored against a random code from that link, not against you, and deleted after seven days.</p>
         <p style={privacyP}><strong>Signed-in mode</strong> — sign in with email, Apple or Google to back up your progress, play online multiplayer and join leagues. We store the minimum needed to deliver those features (detail in §2 below). You can delete your account at any time from Settings → Account → Delete Account. That deletes your account, profile, scores, game history, friends, league memberships, notification settings and email history, and removes your link to anything that stays in our database: your past daily puzzle results remain only as anonymous counts, and any question you reported stays as an anonymous report about that question.</p>
 
         <h2 style={privacyH2}>2. What we store when you sign in</h2>
@@ -104,7 +104,7 @@ export const PrivacyScreen = React.memo(function PrivacyScreen({ onClose }) {
           <li style={privacyLi}><strong>Onboarded flag</strong> — a single timestamp so we don't replay onboarding on every device.</li>
           <li style={privacyLi}><strong>Where you first found us</strong> — if you create your account on the website, we keep the campaign tag and referring site of your first visit (for example <code>utm_source=instagram</code> or <code>google.com</code>) and the page you landed on, so we can tell which channels bring players. Only the site’s name, never the full address you came from. It is not visible to anyone, including you, and accounts created in the app don’t have it.</li>
         </ul>
-        <p style={privacyP}>That's the full list. We do not collect your real name, location, device fingerprint, or any contact list. We never sell or share this data with third parties for marketing.</p>
+        <p style={privacyP}>That's the full list. We do not ask for your real name (a first name you choose to give a friend who sent you a puzzle is the one exception), and we do not collect your location, device fingerprint, or any contact list. We never sell or share this data with third parties for marketing.</p>
 
         <h2 style={privacyH2}>3. Error monitoring</h2>
         <p style={privacyP}>We use Sentry to catch crashes and bugs. When something goes wrong in the app, Sentry receives a stack trace, the browser version, and a short trail of recent actions ("breadcrumbs") — no question text, no personal data. We strip your email and auth tokens from every event before it leaves your device. We use this only to fix bugs, never for tracking.</p>

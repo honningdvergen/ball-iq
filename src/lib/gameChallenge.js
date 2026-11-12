@@ -21,6 +21,21 @@ const KEY = 'biq_game_challenge';
 
 const cleanName = (s) => String(s || '').replace(/[^\p{L}\p{N} '._-]/gu, '').trim().slice(0, 22);
 
+// The first name a player typed to tell a mate who they are (MateNameAsk.jsx).
+// Typed, so theirs to send: it goes with their replies and on the links they
+// send, in the installed apps too. Kept on this device only.
+const NAME_KEY = 'biq_reply_name';
+/** What a name keeps: letters, digits, space and ' . _ - , 22 at most. */
+export const cleanMateName = (s) => cleanName(s);
+export function replyName() {
+  try { return cleanName(localStorage.getItem(NAME_KEY) || ''); } catch { return ''; }
+}
+export function saveReplyName(s) {
+  const n = cleanName(s);
+  try { if (n) localStorage.setItem(NAME_KEY, n); } catch { /* private mode */ }
+  return n;
+}
+
 /** The link a player sends. `score`: guesses or clubs used (0 = missed), or the Top 10 score. */
 export function challengeToken(game, edition, score, name = '') {
   const code = GAME_CODES[game];

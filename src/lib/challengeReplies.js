@@ -108,34 +108,60 @@ export function replyIdFor(game, edition, score) {
 }
 
 const claimed = new Set();
+// The reply key per link, in memory too: where storage cannot be written a
+// second call must still use the SAME key, or the server stores a second row.
+const keyFor = new Map();
 /**
  * The mate's side: this device finished a puzzle it was sent. Sent once per
  * link. Never for a link this device sent itself (opening your own link and
  * looking at your own finished puzzle is not a mate playing it).
  */
-export async function recordChallengeReply({ rid, game, edition, score, name = '' }) {
+/** The name the server has for this device's reply to a link, or '' (nothing confirmed). */
+export function replyNamed(rid) {
+  const keys = readJson(RKEY_KEY, {});
+  const e = keys && typeof keys === 'object' ? keys[rid] : null;
+  return e && e.done && typeof e.name === 'string' ? e.name : '';
+}
+/** A link this device sent itself: nobody to tell. */
+export const isOwnLink = (rid) => sentChallenges().some((c) => c.rid === rid);
+
+/** May a name go with a reply without the player typing it here? The website: yes. An installed app: no. */
+export const sendsNameUnasked = () => !isNative();
+
+/**
+ * `explicit`: the player typed this name to say who they are (MateNameAsk).
+ * That is their choice, so it is sent from an installed app too, and it goes
+ * even when the result itself was reported earlier: the server puts a name
+ * that arrives later on the stored row (v3_4_challenge_reply_name.sql).
+ */
+export async function recordChallengeReply({ rid, game, edition, score, name = '', explicit = false }) {
   if (!isReplyId(rid) || !REPLY_GAMES.includes(game) || !Number.isInteger(edition)) return false;
   if (synthetic() || !KEY_) return false;
   if (sentChallenges().some((c) => c.rid === rid)) return false;
   // Two finish panels mount per result (phone and desktop): claim before the first await.
-  if (claimed.has(rid)) return true;
-  claimed.add(rid);
   const keys = readJson(RKEY_KEY, {});
   const entry = keys && typeof keys === 'object' ? keys[rid] : null;
-  if (entry && entry.done) return true;
-  let key = entry && entry.key;
+  // The name as it will go: none from an installed app unless typed for this.
+  const sending = (isNative() && !explicit) ? '' : cleanName(name);
+  // Done, and nothing new to say: a typed name goes again only when it is not
+  // the one already stored with the reply.
+  if (entry && entry.done && (!explicit || entry.name === sending)) return true;
+  if (claimed.has(rid) && !explicit) return true;
+  claimed.add(rid);
+  let key = (entry && entry.key) || keyFor.get(rid);
   if (!key) {
     try { key = crypto.randomUUID(); } catch { key = null; }
     if (!key) { claimed.delete(rid); return false; }
   }
+  keyFor.set(rid, key);
   const save = (done) => {
     const all = readJson(RKEY_KEY, {});
-    const next = { ...(all && typeof all === 'object' ? all : {}), [rid]: { key, done, at: Date.now() } };
+    const next = { ...(all && typeof all === 'object' ? all : {}), [rid]: { key, done, name: done ? sending : ((entry && entry.name) || ''), at: Date.now() } };
     // Keep the newest 20: these are per-link keys, not a history.
     const trimmed = Object.fromEntries(Object.entries(next).sort((a, b) => (b[1].at || 0) - (a[1].at || 0)).slice(0, 20));
     writeJson(RKEY_KEY, trimmed);
   };
-  save(false);
+  if (!(entry && entry.done)) save(false);
   try {
     // true: stored. false: the server turned it away (its hourly backstop, or
     // the link is full), so this is NOT marked done and the next finish panel
@@ -147,16 +173,22 @@ export async function recordChallengeReply({ rid, game, edition, score, name = '
       // nothing about the player leaves the phone unasked, and a signed-out
       // player never agreed to this one. The sender's card says "A mate". The
       // website sends the name the player goes by, as its challenge links do.
-      p_name: isNative() ? '' : cleanName(name), p_replier: key,
+      p_name: sending, p_replier: key,
     });
-    if (ok === true) { save(true); return true; }
-    claimed.delete(rid);
+    if (ok === true) {
+      save(true);
+      // The ask on the finish panel (both of its mounted copies) follows this.
+      try { if (sending) window.dispatchEvent(new CustomEvent('biq:reply-named', { detail: { rid, name: sending } })); } catch { /* no window */ }
+      return true;
+    }
+    if (!(entry && entry.done)) claimed.delete(rid);
     return false;
-  } catch { claimed.delete(rid); return false; }
+  } catch { if (!(entry && entry.done)) claimed.delete(rid); return false; }
 }
 
 export const replyKey = (r) => `${r.rid}:${r.at}`;
-const seenId = replyKey;
+// A reply that was shown without a name is shown again once it has one.
+const seenId = (r) => `${r.rid}:${r.at}:${r.name ? 'n' : ''}`;
 
 let lastFetch = 0;
 let lastResult = [];
@@ -201,4 +233,4 @@ export function markReplySeen(reply) {
 }
 
 // Tests reset the module's memory between cases.
-export function __resetChallengeRepliesForTests() { claimed.clear(); lastFetch = 0; lastResult = []; }
+export function __resetChallengeRepliesForTests() { claimed.clear(); keyFor.clear(); lastFetch = 0; lastResult = []; }
