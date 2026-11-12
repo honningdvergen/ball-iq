@@ -145,7 +145,8 @@ const BALL_SRC = "/marketing/ball.png";
 // by react/jsx-no-undef, which was enabled minutes earlier for exactly this.
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { canRateInStore, openStoreRating, ratingStore } from '../lib/review.js';
-import { loopEvent, peekGuestDisplayName, setGuestDisplayName } from '../App.jsx';
+import { peekGuestDisplayName, setGuestDisplayName } from '../App.jsx';
+import { loopEvent } from '../lib/funnel.js';
 // THE FACE ON THE CARD IS FRAMED, NOT OUTLINED (11 Nov 2026). A 2.5px line
 // drawn straight on the picture read as a default avatar dropped on a card.
 // A dark gap, then a fine ring in the tier's colour with a little of its

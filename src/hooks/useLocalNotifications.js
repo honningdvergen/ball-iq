@@ -4,7 +4,7 @@ import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { registerPush } from "../lib/push.js";
 import { webPushPermission, webPushSupported } from "../lib/webpush.js";
 import { enableVisitorPush, visitorRemindState, visitorRemindEvent, lastVisitorPushReason } from "../lib/webpushVisitor.js";
-import { loopEvent } from "../App.jsx";
+import { loopEvent } from "../lib/funnel.js";
 import { t, useLang } from "../i18n/index.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Inputs: the user, whether

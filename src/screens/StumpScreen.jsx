@@ -1,7 +1,8 @@
 // The recipient side of "Stump a mate": one question, then the door to the app.
 // Extracted from App.jsx on 2026-09-06 (review E16).
 import { useState, useEffect } from "react";
-import { haptic, loopEvent } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
+import { loopEvent } from "../lib/funnel.js";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path

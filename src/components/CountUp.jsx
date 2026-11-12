@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { haptic } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
 
 // Animated count-up for score numbers. Moved out of App.jsx on 2026-09-06
 // (review E16). `haptic` comes from App along the seam the screens already use.
