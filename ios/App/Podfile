@@ -33,18 +33,8 @@ end
 
 post_install do |installer|
   assertDeploymentTarget(installer)
-  # Xcode 27 rejects any target below iOS 15.0 ("the range of supported
-  # deployment target versions is 15.0 to 27.0.x"), and archiving 1.7.5
-  # failed on it (2026-09-21). Capacitor's assertDeploymentTarget above only
-  # lifts targets BELOW 13.0 up to 13.0, and every plugin podspec here
-  # declares 13.0 — so the platform line alone leaves them all at 13.0.
-  # iOS 15 runs on exactly the same iPhones as iOS 13 (6s / SE 1st gen and
-  # later), so this drops no hardware. Remove once Capacitor's own floor is 15+.
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 15.0
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
-      end
-    end
-  end
+  # Xcode 27 rejects any target below iOS 15.0 (archiving 1.7.5 failed on it,
+  # 2026-09-21). Capacitor 8's assertDeploymentTarget above now lifts every pod
+  # below 15.0 to 15.0 itself (apple-sign-in 7.1.0 still declares 14.0), so the
+  # loop that used to follow here was removed with the Capacitor 8 upgrade.
 end
