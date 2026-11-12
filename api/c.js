@@ -94,7 +94,10 @@ export default async function handler(req) {
     const ogQ = new URLSearchParams({ t: 'gch', g: g[1], s: String(s), no: String(no) });
     if (gName) ogQ.set('n', gName);
     const gImage = `${origin}/api/og?${ogQ.toString()}`;
-    const gUrl = `${origin}/play?game=${game}&gc=${encodeURIComponent(token)}`;
+    // The sender's reply id (?r=…, src/lib/challengeReplies.js) rides through
+    // to the app as gr, so the mate's device can report its result back.
+    const rid = (url.searchParams.get('r') || '').trim();
+    const gUrl = `${origin}/play?game=${game}&gc=${encodeURIComponent(token)}${/^[A-Z2-7]{12}$/.test(rid) ? `&gr=${rid}` : ''}`;
     const gHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>

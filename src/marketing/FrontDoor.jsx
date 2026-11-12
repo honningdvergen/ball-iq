@@ -44,6 +44,11 @@ import { keyForDate, dateToYMD, msToNextLocalMidnight, formatCountdown } from '.
 import { marketingEvent } from '../lib/marketingEvent.js';
 import FootleBand from './FootleBand.jsx';
 import { StoreBadge, detectStore } from '../components/StoreBadge.jsx';
+// "Jonas played your Footle": the reply to a challenge this browser sent
+// (components/MateReplyCard.jsx). Loaded only where one was sent lately; the
+// key is read inline so this page's first load carries none of that library.
+const MateReplyCard = React.lazy(() => import('../components/MateReplyCard.jsx'));
+const hasSentChallenge = () => { try { const v = localStorage.getItem('biq_sent_challenges'); return !!v && v.length > 4; } catch { return false; } };
 
 const PLAY = '/play';
 // ⚠️ NO DAILY USES door() ANY MORE. All four now open their own served page —
@@ -281,6 +286,9 @@ export default function FrontDoor() {
                   : <span><b>{streak.days} days in a row.</b> Safe for today.</span>)
                 : <span><b>{streak.before} {streak.before === 1 ? 'day' : 'days'} in a row.</b> Play one today to make it {streak.before + 1}.</span>}
             </p>
+          )}
+          {hasSentChallenge() && (
+            <React.Suspense fallback={null}><MateReplyCard /></React.Suspense>
           )}
           <div className="fd-today">
             {/* ⚠️ FOUR EQUAL ROWS, BY DECISION. This morning's A/B chose B — Footle

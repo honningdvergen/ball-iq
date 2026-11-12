@@ -1,0 +1,217 @@
+// The sender hears back (12 Nov 2026): src/lib/challengeReplies.js, the reply
+// id on the link, and supabase/migrations/v3_3_challenge_replies.sql.
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const read = (p) => readFileSync(fileURLToPath(new URL(`../../${p}`, import.meta.url)), 'utf8');
+
+let store;
+let calls;
+let replyRows;
+let recordAnswer;
+beforeEach(() => {
+  store = new Map();
+  calls = [];
+  replyRows = [];
+  recordAnswer = true;
+  vi.stubEnv('VITE_SUPABASE_KEY', 'anon-key');
+  vi.stubGlobal('localStorage', {
+    getItem: (k) => (store.has(k) ? store.get(k) : null),
+    setItem: (k, v) => { store.set(k, String(v)); },
+    removeItem: (k) => { store.delete(k); },
+  });
+  vi.stubGlobal('navigator', { webdriver: false });
+  vi.stubGlobal('location', { hostname: 'balliq.app', protocol: 'https:' });
+  vi.stubGlobal('window', {});
+  vi.stubGlobal('fetch', vi.fn(async (url, init) => {
+    const name = String(url).split('/rpc/')[1];
+    calls.push({ name, body: JSON.parse(init.body) });
+    return { ok: true, text: async () => (name === 'get_challenge_replies' ? JSON.stringify(replyRows) : JSON.stringify(recordAnswer)) };
+  }));
+});
+afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.resetModules(); });
+
+const load = async () => {
+  vi.resetModules();
+  return import('../../src/lib/challengeReplies.js');
+};
+
+describe('the id on the link', () => {
+  it('is 12 characters of A-Z and 2-7, and the same id for the same puzzle', async () => {
+    const m = await load();
+    const a = m.replyIdFor('footle', 193, 4);
+    expect(a).toMatch(/^[A-Z2-7]{12}$/);
+    expect(m.replyIdFor('footle', 193, 4)).toBe(a);
+    expect(m.replyIdFor('trail', 102, 2)).not.toBe(a);
+    expect(m.sentChallenges().map((c) => c.game).sort()).toEqual(['footle', 'trail']);
+  });
+  it('is not made for Daily 7 or a bad puzzle number', async () => {
+    const m = await load();
+    expect(m.replyIdFor('daily7', 20770, 5)).toBe(null);
+    expect(m.replyIdFor('footle', 1.5, 3)).toBe(null);
+  });
+  it('forgets what was sent after three days', async () => {
+    const m = await load();
+    m.replyIdFor('footle', 193, 4);
+    expect(m.sentChallenges(Date.now() + 4 * 86400000)).toEqual([]);
+  });
+});
+
+describe('the mate reports back', () => {
+  it('sends the result once per link, with a key made for that link and no visitor id', async () => {
+    const m = await load();
+    store.set('biq_vid', '11111111-1111-4111-8111-111111111111');
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas' })).toBe(true);
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jonas' })).toBe(true);
+    expect(calls).toHaveLength(1);
+    expect(calls[0].name).toBe('record_challenge_reply');
+    expect(calls[0].body).toMatchObject({ p_cid: 'ABCDEFGHJKLM', p_game: 'footle', p_edition: 193, p_score: 5, p_name: 'Jonas' });
+    expect(calls[0].body.p_replier).toMatch(/^[0-9a-f-]{36}$/);
+    expect(calls[0].body.p_replier).not.toBe('11111111-1111-4111-8111-111111111111');
+    // A reload: the stored flag stops a second send.
+    const again = await load();
+    expect(await again.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 })).toBe(true);
+    expect(calls).toHaveLength(1);
+  });
+  it('a reply the server turned away is not marked done: the next finish tries again', async () => {
+    const m = await load();
+    recordAnswer = false;
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 })).toBe(false);
+    recordAnswer = true;
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5 })).toBe(true);
+    expect(calls).toHaveLength(2);
+    // The same reply key both times: one device, one row.
+    expect(calls[1].body.p_replier).toBe(calls[0].body.p_replier);
+  });
+  it('a name carries nothing a challenge link could not', async () => {
+    const m = await load();
+    await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 5, name: 'Jørgen <b> http://x.y/z\u202E' });
+    expect(calls[0].body.p_name).toBe('Jørgen b httpx.yz');
+  });
+  it('an installed app sends the score and no name', async () => {
+    vi.stubGlobal('window', { Capacitor: { isNativePlatform: () => true } });
+    vi.stubGlobal('location', { hostname: 'localhost', protocol: 'capacitor:' });
+    const m = await load();
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'trail', edition: 102, score: 2, name: 'Jonas' })).toBe(true);
+    expect(calls[0].body).toMatchObject({ p_game: 'trail', p_score: 2, p_name: '' });
+  });
+  it('never reports on a link this device sent itself', async () => {
+    const m = await load();
+    const rid = m.replyIdFor('footle', 193, 4);
+    expect(await m.recordChallengeReply({ rid, game: 'footle', edition: 193, score: 4 })).toBe(false);
+    expect(calls).toHaveLength(0);
+  });
+  it('sends nothing for a bad id, from a dev host, or from an automated browser', async () => {
+    const m = await load();
+    expect(await m.recordChallengeReply({ rid: 'short', game: 'footle', edition: 193, score: 4 })).toBe(false);
+    vi.stubGlobal('location', { hostname: 'localhost', protocol: 'http:' });
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 4 })).toBe(false);
+    vi.stubGlobal('location', { hostname: 'balliq.app', protocol: 'https:' });
+    vi.stubGlobal('navigator', { webdriver: true });
+    expect(await m.recordChallengeReply({ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 193, score: 4 })).toBe(false);
+    expect(calls).toHaveLength(0);
+  });
+});
+
+describe('the sender is told', () => {
+  it('asks for nothing when nothing was sent, and drops a stale list so Home stops loading the card', async () => {
+    const m = await load();
+    store.set('biq_sent_challenges', JSON.stringify([{ rid: 'ABCDEFGHJKLM', game: 'footle', edition: 100, score: 3, at: Date.now() - 5 * 86400000 }]));
+    expect(await m.fetchNewReplies()).toEqual([]);
+    expect(calls).toHaveLength(0);
+    expect(store.has('biq_sent_challenges')).toBe(false);
+  });
+  it('pairs a reply with what was sent, and shows it once', async () => {
+    const m = await load();
+    const rid = m.replyIdFor('footle', 193, 4);
+    replyRows = [
+      { cid: rid, game: 'footle', edition: 193, score: 6, name: 'Jonas', at: '2026-11-12T12:00:00Z' },
+      { cid: rid, game: 'trail', edition: 193, score: 2, name: 'Wrong game', at: '2026-11-12T12:01:00Z' },
+      { cid: 'ZZZZZZZZZZZZ', game: 'footle', edition: 193, score: 1, name: 'Not ours', at: '2026-11-12T12:02:00Z' },
+    ];
+    const got = await m.fetchNewReplies();
+    expect(calls[0]).toEqual({ name: 'get_challenge_replies', body: { p_cids: [rid] } });
+    expect(got).toEqual([{ rid, game: 'footle', edition: 193, mine: 4, theirs: 6, name: 'Jonas', at: '2026-11-12T12:00:00Z' }]);
+    // Within the minute: no second call, same answer.
+    expect(await m.fetchNewReplies()).toEqual(got);
+    expect(calls).toHaveLength(1);
+    m.markReplySeen(got[0]);
+    expect(await m.fetchNewReplies()).toEqual([]);
+    expect(await m.fetchNewReplies({ force: true })).toEqual([]);
+  });
+  it('a failed call shows nothing', async () => {
+    const m = await load();
+    m.replyIdFor('footle', 193, 4);
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 404, text: async () => '' })));
+    expect(await m.fetchNewReplies()).toEqual([]);
+  });
+});
+
+describe('the link, the redirect and the boot agree on the id', () => {
+  it('the finish panel puts ?r= on the link it sends', () => {
+    const DD = read('src/components/DailyDone.jsx');
+    expect(DD).toMatch(/const rid = repliesLib \? repliesLib\.replyIdFor\(game, edition, myScore\) : null;/);
+    // Never a static import: that has landed in Home's eager chunk before.
+    expect(DD).not.toMatch(/^import [^\n]*challengeReplies/m);
+    expect(DD).toContain('`https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`');
+    expect(DD).toMatch(/if \(!m \|\| !rival\?\.rid\) return;/);
+  });
+  it('api/c.js passes it on as gr, and the app keeps it with the stored challenge', () => {
+    expect(read('api/c.js')).toContain("${/^[A-Z2-7]{12}$/.test(rid) ? `&gr=${rid}` : ''}");
+    const APP = read('src/App.jsx');
+    expect(APP).toContain('storeChallenge(/^[A-Z2-7]{12}$/.test(gr) ? { ...gc, rid: gr } : gc);');
+    expect(APP).toContain('u.searchParams.delete("gr"); u.searchParams.delete("r");');
+  });
+  it('Home loads the card only for a device that has sent a challenge', () => {
+    const HOME = read('src/screens/HomeScreen.jsx');
+    expect(HOME).toMatch(/const MateReplyCard = React\.lazy\(\(\) => import\("\.\.\/components\/MateReplyCard\.jsx"\)\);/);
+    expect(HOME).toMatch(/\{hasSentChallenge\(\) && \(/);
+    expect(HOME).not.toMatch(/from ["']\.\.\/lib\/challengeReplies\.js["']/);
+  });
+  it('the website shows it too: a browser never sees the app Home, so the front door mounts the same card', () => {
+    const FD = read('src/marketing/FrontDoor.jsx');
+    expect(FD).toMatch(/const MateReplyCard = React\.lazy\(\(\) => import\('\.\.\/components\/MateReplyCard\.jsx'\)\);/);
+    expect(FD).toMatch(/\{hasSentChallenge\(\) && \(/);
+    expect(FD).not.toMatch(/from ['"]\.\.\/lib\/challengeReplies\.js['"]/);
+    // Every colour in the card's stylesheet has a fallback: the front door names its tokens differently.
+    const CSS = read('src/components/mateReply.css').replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(CSS.match(/var\(--[a-z0-9]+\)/g)).toBe(null);
+  });
+  it('the card has no solid button', () => {
+    expect(read('src/components/MateReplyCard.jsx')).not.toMatch(/dd-share|lg-solid|t7s-cta/);
+  });
+});
+
+describe('the migration keeps the standing rules', () => {
+  const SQL = read('supabase/migrations/v3_3_challenge_replies.sql');
+  it('the table has RLS, no policy and no client grant', () => {
+    expect(SQL).toMatch(/alter table public\.challenge_replies enable row level security;/);
+    expect(SQL).toMatch(/revoke all on table public\.challenge_replies from anon, authenticated, public;/);
+    expect(SQL).not.toMatch(/create policy/i);
+    expect(SQL).not.toMatch(/grant [a-z, ]+ on table/i);
+  });
+  it('both functions are security definer with a pinned search_path, and end revoked from public', () => {
+    expect((SQL.match(/security definer/g) || []).length).toBe(2);
+    expect((SQL.match(/set search_path to 'public'/g) || []).length).toBe(2);
+    expect(SQL.trimEnd().endsWith('revoke all on function public.get_challenge_replies(text[]) from public;')).toBe(true);
+    expect(SQL).toMatch(/revoke all on function public\.record_challenge_reply\(text, text, integer, integer, text, uuid\) from public;/);
+  });
+  it('the id pattern is the client\'s', () => {
+    expect((SQL.match(/\^\[A-Z2-7\]\{12\}\$/g) || []).length).toBeGreaterThanOrEqual(3);
+    expect(read('src/lib/challengeReplies.js')).toContain('const RID = /^[A-Z2-7]{12}$/;');
+  });
+  it('a reply only lands for a live puzzle, once per key, eight per link, 500 an hour', () => {
+    expect(SQL).toMatch(/v_day < v_today - 1 or v_day > v_today \+ 1/);
+    expect(SQL).toMatch(/on conflict \(cid, replier\) do nothing/);
+    expect(SQL).toMatch(/where cid = p_cid\) >= 8/);
+    expect(SQL).toMatch(/interval '1 hour'\) >= 2000/);
+    expect(SQL).toMatch(/pg_advisory_xact_lock\(hashtext\(p_cid\)\)/);
+    expect(SQL).toMatch(/delete from public\.challenge_replies where created_at < now\(\) - interval '7 days';/);
+    expect(SQL).toMatch(/returns boolean/);
+    // A subscript on a function call must be parenthesised, or the file does not apply.
+    expect(SQL).toContain("unnest((coalesce(p_cids, '{}'::text[]))[1:12])");
+    expect(SQL).not.toMatch(/text\[\]\)\[1:12\]/);
+    expect(SQL).toMatch(/public\._league_clean_name\(p_name, 22\)/);
+  });
+});

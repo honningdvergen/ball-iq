@@ -26,6 +26,11 @@ import { HomeGreeting } from "../components/HomeGreeting.jsx";
 import { useT, useLang, fmtLocale } from "../i18n/index.js";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
 const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
+// "Jonas played your Footle": loaded only for a device that has sent a
+// challenge link lately (lib/challengeReplies.js keeps the list under this
+// key). Read inline so Home's eager path carries no part of that library.
+const MateReplyCard = React.lazy(() => import("../components/MateReplyCard.jsx"));
+const hasSentChallenge = () => { try { const v = localStorage.getItem("biq_sent_challenges"); return !!v && v.length > 4; } catch { return false; } };
 
 // ── CLUB FINDER (front door, 2026-09-03) ─────────────────────────────────────
 // Club quizzes are the largest single volume on the site — 763 anonymous plays
@@ -410,6 +415,11 @@ function HomeScreenImpl({
             ×
           </button>
         </div>
+      )}
+
+      {/* The reply to a challenge this device sent, when there is one. */}
+      {hasSentChallenge() && (
+        <React.Suspense fallback={null}><MateReplyCard onStartLeague={onStartLeague} /></React.Suspense>
       )}
 
       {/* ── TODAY ZONE ──

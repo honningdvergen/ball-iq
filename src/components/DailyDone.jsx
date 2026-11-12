@@ -89,6 +89,13 @@ const modeOf = (k) => (k === "daily" ? "daily7" : k);
 const shownClaims = new Set();
 // "Make it a league?" was seen: once per result, the same double-mount guard.
 const leagueOfferClaims = new Set();
+// The way back for a challenge (lib/challengeReplies.js). Loaded with import(),
+// never statically: a static lib import in this file has landed in Home's
+// eager chunk before (see leagueResults.js above). The panel asks for it as it
+// mounts, so it is here long before anyone can tap Send; a tap that somehow
+// beats it sends the link without an id, which is the link as it always was.
+let repliesLib = null;
+const loadRepliesLib = () => import("../lib/challengeReplies.js").then((m) => { repliesLib = m; return m; }).catch(() => null);
 let challengeBusy = false;
 
 // Opens the league create sheet. Inside the app, App.jsx registers the opener;
@@ -195,6 +202,18 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const myScore = game === "top10" ? (bucket || 0) : (won ? bucket || 0 : 0);
   const rival = useMemo(() => (canChallenge ? readChallenge(game, edition) : null), [canChallenge, game, edition]);
   const [challengeState, setChallengeState] = useState("");
+  // This device was sent the puzzle and has now finished it: tell the sender
+  // (their Home shows "… played your Footle"). Once per link; never for a
+  // practice replay, and the library refuses a link this device sent itself.
+  useEffect(() => {
+    if (!canChallenge) return;
+    loadRepliesLib().then((m) => {
+      if (!m || !rival?.rid) return;
+      // The library drops the name in an installed app (see there).
+      const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
+      m.recordChallengeReply({ rid: rival.rid, game, edition, score: myScore, name: who });
+    });
+  }, [canChallenge, rival, game, edition, myScore, day]);
   // LAST of the state hooks on purpose: the render tests address the others by their order.
   const [distOpen, setDistOpen] = useState(false);
   // The league offer. With a head-to-head on the panel it is "Make it a
@@ -225,7 +244,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
     const token = challengeToken(game, edition, myScore, who);
     if (!token) return;
-    const url = `https://balliq.app/c/${token}`;
+    // The way back (lib/challengeReplies.js): an id on the link, so this
+    // device can be told when the mate has played. One id per puzzle.
+    const rid = repliesLib ? repliesLib.replyIdFor(game, edition, myScore) : null;
+    const url = `https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`;
     const what = { footle: "Footle", trail: "Transfer Trail", top10: "Top 10" }[game];
     // In the sharer's language (i18n step 5). English is the same line as before:
     // scoreLabel's English words are the gc.* keys' English.

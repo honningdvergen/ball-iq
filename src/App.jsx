@@ -5191,9 +5191,12 @@ function AppInner() {
         const gcRaw = new URLSearchParams(window.location.search).get("gc") || (window.location.pathname.match(/^\/c\/([ftx]\.[^/?#]+)/) || [])[1];
         const gc = parseChallengeToken(gcRaw);
         if (gc) {
-          storeChallenge(gc);
+          // gr: the sender's reply id (api/c.js passes ?r= on as gr), so this
+          // device can report its result back (lib/challengeReplies.js).
+          const gr = new URLSearchParams(window.location.search).get("gr") || new URLSearchParams(window.location.search).get("r") || "";
+          storeChallenge(/^[A-Z2-7]{12}$/.test(gr) ? { ...gc, rid: gr } : gc);
           const u = new URL(window.location.href);
-          u.searchParams.delete("gc"); u.searchParams.delete("game");
+          u.searchParams.delete("gc"); u.searchParams.delete("game"); u.searchParams.delete("gr"); u.searchParams.delete("r");
           window.history.replaceState({}, "", (u.pathname.startsWith("/c/") ? "/play" : u.pathname) + u.search + u.hash);
           setScreen(gc.game === "footle" ? "wordle" : gc.game);
           return;
