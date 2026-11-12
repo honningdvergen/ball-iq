@@ -341,6 +341,40 @@
     (window.requestAnimationFrame || setTimeout)(syncVisibility, 0);
   }
 
+  /* THE BAR NEVER LANDS ON THE SHARE BUTTON (12 Nov 2026). After a finished
+   * daily the bar rose straight over the finish panel's share group: at
+   * 375x812 the button sat at y 681 to 727 and the bar's top edge at 669, so a
+   * first-time visitor saw the streak row and then the bar (WebKit run, shot
+   * firstvisit-with-consent-webkit.png). The nine-second delay in
+   * FootballWordle.jsx gave the result some time alone; it did not stop the
+   * bar covering the one button we want pressed. reserveSpace has already
+   * padded the page by the bar's height, so there is room: if the share group
+   * is on screen and would be under the bar, the page moves up just far
+   * enough to put it above the bar. Nothing moves when the group is not on
+   * screen, and a page with no finish panel is untouched. */
+  function keepShareClear() {
+    try {
+      if (bar.style.display === 'none') return;
+      var groups = document.querySelectorAll('.dd .dd-share-alts, .dd .dd-share');
+      var vh = window.innerHeight || 0;
+      var barTop = bar.getBoundingClientRect().top;
+      var still = false;
+      try { still = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+      for (var i = 0; i < groups.length; i++) {
+        var el = groups[i];
+        var r = el.getBoundingClientRect();
+        // Two panels mount per result (phone and desktop); the hidden one has no box.
+        if (!r.width || !r.height) continue;
+        if (r.top >= vh || r.bottom <= 0) continue;   // not on screen: leave the page alone
+        if (r.bottom <= barTop - 12) continue;        // already clear of the bar
+        var prev = el.style.scrollMarginBottom;
+        el.style.scrollMarginBottom = (bar.offsetHeight + 12) + 'px';
+        el.scrollIntoView({ block: 'nearest', behavior: still ? 'auto' : 'smooth' });
+        el.style.scrollMarginBottom = prev;
+      }
+    } catch (e) { /* a nicety: the bar still asks without it */ }
+  }
+
   function mount() {
     // Again at mount: a deferred banner arrives long after the app picked its language.
     applyCopy();
@@ -348,6 +382,7 @@
     // After append, so offsetHeight is the real wrapped height — it differs
     // between one and two lines of text, and between phone and desktop.
     reserveSpace(bar);
+    keepShareClear();
     if (window.ResizeObserver) {
       try { new ResizeObserver(function () { reserveSpace(bar); }).observe(bar); } catch (e) {}
     }
