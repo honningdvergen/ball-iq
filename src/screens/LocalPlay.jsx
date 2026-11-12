@@ -5,7 +5,8 @@
 // props and reaches into nothing else.
 import { useState, useEffect } from "react";
 import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull, CircleAlert, Loader, Gamepad2 } from "lucide-react";
-import { chipLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle, haptic, playSound } from "../App.jsx";
+import { chipLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle } from "../App.jsx";
+import { haptic, playSound } from "../lib/feedback.js";
 import "../i18n/en.js";
 import { useT } from "../i18n/index.js";
 import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx";

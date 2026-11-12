@@ -53,6 +53,8 @@ const TOP10 = JSON.parse(readFileSync(resolve('public/data/top10.json'), 'utf8')
 // Pinned to 14 Oct 2026 (No. 3, England caps: names every buyer knows); the shot
 // fixes the page clock to the same day, so the list typed is the list shown.
 const TOP10_DAY = new Date('2026-10-14T12:00:00');
+// The page clock back at 9:41 today, for a shot that follows one with a fixed day.
+const clockToday = async (p) => { try { const t = new Date(); t.setHours(9, 41, 0, 0); await p.clock.setFixedTime(t); } catch { /* older Playwright */ } };
 const TOP10_LIST = TOP10.lists[TOP10.log[dayIndexForDate(TOP10_DAY) - TOP10.anchor]];
 const TOP10_TODAY = TOP10_LIST.slots.map((x) => x.name);
 const TOP10_WRONG = ['Gary Neville', 'Gareth Bale', 'Kevin De Bruyne'].find((n) => !TOP10_TODAY.includes(n));
@@ -270,7 +272,7 @@ const SHOTS = [
   // match the shared PNG, so the screen marker moved to the tier row. `verify`
   // carries the real proof: the seeded 88 has to be on screen, which is what
   // catches a card that rendered empty or fell back to a default palette.
-  { name: '06-profile',        expect: 'OVERALL', settle: true,
+  { name: '06-profile',        expect: 'BALL IQ', settle: true,
     verify: async (p) => (await p.evaluate(() => /\b88\b/.test(document.body.innerText)
       && /GOLD/.test(document.body.innerText)
       // ⚠️ MATCH THE COPY THAT IS ACTUALLY ON SCREEN. This asserted on "Create a
@@ -455,6 +457,11 @@ const SHOTS = [
     verify: async (p) => (await p.evaluate(() =>
       [...document.querySelectorAll('.wd-tile')].filter((t) => (t.textContent || '').trim()).length)) >= 20,
     go: async (p) => {
+      // ⚠️ BACK TO TODAY FIRST. The Top 10 shots fix the page clock to 14 Oct and
+      // the page is reused, so the board was that day's puzzle (No. 164) while
+      // the names typed here aimed at TODAY'S answer: five real surnames and no
+      // solve. Found 11 Nov 2026, after Alex asked "what is that nonsense footle?"
+      await clockToday(p);
       const answer = getWordleAnswer();
       await gotoApp(p, '/play?game=footle');
       await p.waitForTimeout(1800);
@@ -532,6 +539,7 @@ const SHOTS = [
         && !/Save your progress|Continue with Apple/i.test(t);
     })),
     go: async (p) => {
+      await clockToday(p); // same trap as the Footle shot: the answers picked below are today's
       const wanted = pickDailyQuestions(QB, dayIndexForDate(new Date()));
       const WRONG_ON = new Set([3, 6]);          // 5 of 7 correct
       // ⚠️ NOT BARE /play. main.jsx redirects a browser visitor on bare /play to

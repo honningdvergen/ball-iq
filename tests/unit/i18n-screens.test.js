@@ -184,7 +184,7 @@ describe('English that only appears after a tap or is built from parts', () => {
     expect(t('dd.shieldsAria', { count: 2 })).toBe('2 streak shields banked: each covers one missed day');
     expect(t('dd.today', { g: 'Top 10' }) + ' / ' + t('dd.contToday', { g: 'Footle' })).toBe("Today's Top 10 / Continue today's Footle");
     expect(`Non-League · 120 XP${t('dd.toNext', { n: 180, name: 'Championship' })}`).toBe('Non-League · 120 XP · 180 to Championship');
-    expect(t('hi.gapN', { a: 'Oct 12', b: 'Oct 17', n: 6 })).toBe('Oct 12 to Oct 17 · 6 days not played');
+    expect(t('hi.gapN', { a: 'Oct 12', b: 'Oct 17', n: 6 })).toBe('6 days off');
     expect(t('pf.badgeAria', { name: 'Scholar', s: t('pf.locked') })).toBe('Scholar — locked. Tap for details.');
     expect(t('cf.prov', { c: 'International', r: 61, n: 4, min: 10 })).toBe('International 61, provisional — 4 of 10 answered');
   });
@@ -216,12 +216,12 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the finish panel', () => {
     const won = unq(now['dd: footle won in 3, everything on, loading']);
-    for (const s of ['Mañana serán <', '> · nuevos retos en <', ' Avísame a las 19:00', 'Asciendes a <strong>Regional<', ' Compartir resultado<', '>Reta a un colega<', '>Ahora toca<', '>Siete preguntas · 3 min<', '>Jugar<', '> hechos hoy<', '>Cómo le fue a todos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
+    for (const s of ['Mañana serán <', '> · nuevos retos en <', 'aria-label="Activar un aviso diario a las 19:00"', 'Asciendes a <strong>Regional<', ' Compartir resultado<', '>Reta a un colega<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
     expect(unq(now['dd: footle lost, streak safe, reminder on, early numbers'])).toContain('>Racha a salvo<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>Mejor que el 44%<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>4,6/7<');
-    expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>1240 jugadas<');
-    expect(unq(now['dd: trail won on 2, yesterday stands in'])).toContain('>Ayer, N.º 74<');
+    expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('1240');
+    expect(unq(now['dd: trail won on 2, yesterday stands in'])).toContain('"Ayer, N.º 74"');
     expect(unq(now['dd: trail won on 2, yesterday stands in'])).toContain('Llegas pronto hoy. <strong class="dd-num">77%</strong> resolvió el de ayer.');
     expect(unq(now['dd: top 10 on 7, a mate beat it'])).toContain('>Esta la gana Sam<');
     expect(unq(now['dd: trail missed, mate got it on 1'])).toContain('>fallado<');
@@ -237,18 +237,18 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['results: classic 3/10, daily open (the daily is the primary), one more to rate'])).toContain('Te falta 1 respuesta para tener media');
     expect(unq(now['results: survival 12, new best over 8'])).toContain('>12 seguidas antes del primer fallo<');
     expect(unq(now['results: daily 7 on 5, the panel'])).toContain('>Hoy había alguna difícil.<');
-    expect(unq(now['hot streak: first run, 3'])).toContain('⚡🔥 Crono');
+    expect(unq(now['hot streak: first run, 3'])).toContain('>Crono<');
     expect(unq(now['true or false: perfect 10'])).toContain('>Nivel Balón de Oro<');
   });
   it('the review', () => {
     const r = unq(now['review: daily 7 today, full review, day 1 streak']);
-    for (const s of ['>Hoy · martes, 20 de octubre<', '>Repaso completo<', '>P1<', '>Selecciones<', '>VERDADERO<', '>tu respuesta<', '>sin tiempo<', '>Escribiste: <', '>mié<']) expect(r, s).toContain(s);
+    for (const s of ['>Hoy · martes, 20 de octubre<', '>Repaso completo<', '>VERDADERO<', '>Tu respuesta: ', '>Se acabó el tiempo<', '>Escribiste: <', '>mié<']) expect(r, s).toContain(s);
     expect(unq(now['review: footle lost'])).toContain('>Mañana será otro día<');
     expect(unq(now['review: footle won in 4, clue, hard'])).toContain('>Resuelto en 4 intentos<');
   });
   it('History', () => {
     const h = unq(now['history: two weeks with gaps, yesterday open']);
-    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '15 oct – 16 oct · 2 días sin jugar', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
+    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '>2 días libres<', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
     expect(unq(now['history: all done today, yesterday open, streak broke'])).toContain('>Se rompió tu racha de 9 días<');
     expect(unq(now['history: a new player, nothing played'])).toContain('Termina cualquiera de los cuatro retos de hoy');
   });

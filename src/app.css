@@ -1462,7 +1462,7 @@ html.is-android .tab-bar{ bottom:56px; }
 .profile-avatar-wrap{position:relative;}
 .profile-avatar{width:72px;height:72px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent-b);display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;transition:all 0.2s;}
 .profile-avatar:active{transform:scale(0.93);}
-.profile-avatar-edit{position:absolute;bottom:-2px;right:-2px;width:28px;height:28px;border-radius:50%;background:var(--accent);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:13px;color:#0a1a00;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:transform 0.12s;}
+.profile-avatar-edit{position:absolute;bottom:-2px;right:-2px;width:28px;height:28px;border-radius:50%;background:var(--s2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--t1);font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:transform 0.12s;}
 .profile-avatar-edit:hover{transform:scale(1.05);}
 .profile-avatar-edit:active{transform:scale(0.95);}
 .profile-name{font-size:20px;font-weight:800;letter-spacing:-0.3px;cursor:pointer;}
@@ -1663,7 +1663,13 @@ button.friends-lb-row:hover{background:var(--s3);}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
 .stat-tile{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;contain:layout paint style;}
-.st-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.1;}
+/* The numerals are the app's own face, as on the rating card above them (10 Nov 2026).
+   They were JetBrains Mono, a second number style right under the card; Alex: "the
+   fonts of these numbers just looks wrong". */
+.st-val{font-family:inherit;font-variant-numeric:tabular-nums;font-size:26px;font-weight:800;letter-spacing:-0.03em;line-height:1.1;}
+/* One line per label, so every tile in the grid is the same height. */
+.stat-grid{grid-auto-rows:1fr;}
+.stat-tile .st-key{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0.08em;}
 /* .st-key — layout-only; visual tokens from .ds-eyebrow. */
 .st-key{margin-top:4px;}
 /* DAILY 4-STAT ROW removed Sprint #16 Stage 6 — replaced by the
@@ -1684,16 +1690,17 @@ button.friends-lb-row:hover{background:var(--s3);}
 details[open] .wr-summary::before{transform:rotate(90deg);}
 
 .wrong-review{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
-.wr-item{padding:10px 0;border-bottom:1px solid var(--border);}
+.wr-head{margin:0 2px 10px;font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--t1);}
+.wr-item{display:flex;align-items:flex-start;gap:10px;padding:14px 0;border-bottom:1px solid var(--border);}
+.wr-item:first-child{padding-top:2px;}
 .wr-item:last-child{border-bottom:none;padding-bottom:0;}
-.wr-q{font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:5px;}
-.wr-a{font-size:13px;font-weight:700;color:var(--green-ink);display:flex;align-items:center;gap:6px;}
-/* Explained-answer under a missed question — turns the review from a bare
-   scoreboard into an "I actually learned something" moment. */
-.wr-why{font-size:12.5px;color:var(--t2);line-height:1.55;margin-top:6px;padding-left:12px;border-left:2px solid var(--border);}
-.wr-tick{width:18px;height:18px;background:var(--green);color:#0a1a00;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
-.wr-user{font-size:13px;font-weight:700;color:var(--red);display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.wr-x{width:18px;height:18px;background:var(--red);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+.wr-n{flex:none;width:16px;font-size:12px;font-weight:700;line-height:1.45;color:var(--t3);font-variant-numeric:tabular-nums;}
+.wr-body{flex:1;min-width:0;}
+.wr-q{font-size:13px;color:var(--t2);line-height:1.45;}
+.wr-a{margin-top:6px;font-size:15.5px;font-weight:800;line-height:1.3;color:var(--green-ink);overflow-wrap:anywhere;}
+.wr-user{margin-top:2px;font-size:12.5px;font-weight:500;line-height:1.4;color:var(--t3);overflow-wrap:anywhere;}
+.wr-why{margin-top:8px;font-size:13px;color:var(--t2);line-height:1.5;}
+.wr-flag-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
 
 /* ── DAILY REVIEW: full per-question cards (Phase 5x) ── */
 .dr-list{display:flex;flex-direction:column;gap:12px;margin-bottom:18px;}
@@ -2382,6 +2389,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    than one list. Same doubled-spacing shape as the results card's "24pt of
    doubled flex margins". In a list the gap owns the rhythm. */
 .mp-friend-list .mp-row{margin:0;}
+/* "With your mates" on Home: the two rows sit as one group under their heading. */
+.home-mates .home-section-title{margin-bottom:12px;}
+.home-mates > .mp-row,.home-mates > .lg-home{margin-bottom:8px;}
+.home-mates > .mp-row:last-child{margin-bottom:22px;}
 /* Multiplayer keeps its green icon well (Alex, 2026-09-09: "no colour at all
    to the multiplayer icon? are you sure?" — he was right; a colourless well
    reads as DISABLED, the lesson Mystery taught). The daily well above now
@@ -3766,6 +3777,8 @@ html.biq-cb .fh-tile-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-c
 .cf-link{background:none;border:none;padding:0;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
 .cf-abbr{flex:0 0 auto;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#fff;}
 .cf-abbr-quiet{background:var(--s2);color:var(--t2);border:1px solid var(--border2);}
+/* In a pill the badge is a circle sharing the pill end's centre (radius 22, badge 15, 7 in); as a rounded square its corners crowded the curve, as the finish panel's did (11 Nov 2026). */
+.cf-chip .cf-abbr{border-radius:50%;}
 .cf-chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px;mask-image:linear-gradient(90deg,#000 92%,transparent);}
 .cf-chips::-webkit-scrollbar{display:none;}
 .cf-chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 12px 6px 6px;border-radius:999px;background:var(--s1);border:1px solid var(--border);color:var(--t1);font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s;}

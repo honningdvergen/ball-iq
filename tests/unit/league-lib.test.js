@@ -12,9 +12,14 @@ import {
 describe('the invite token', () => {
   it('round-trips a code, a league name and an inviter', () => {
     const t = leagueInviteToken('K7QM2XPA', 'The Lads', 'Alex');
-    expect(t).toBe('K7QM2XPA.The%20Lads.Alex');
+    expect(t).toBe('K7QM2XPA.The-Lads.Alex');
     expect(parseLeagueInviteToken(t)).toEqual({ code: 'K7QM2XPA', name: 'The Lads', inviter: 'Alex' });
-    expect(leagueInviteUrl('K7QM2XPA', 'The Lads', 'Alex')).toBe('https://balliq.app/l/K7QM2XPA.The%20Lads.Alex');
+    expect(leagueInviteUrl('K7QM2XPA', 'The Lads', 'Alex')).toBe('https://balliq.app/l/K7QM2XPA.The-Lads.Alex');
+    // The default name: no apostrophe and no %20 in a link a mate reads in a chat.
+    expect(leagueInviteUrl('K7QM2XPA', "Mates' league", 'Wonder Keeper 25')).toBe('https://balliq.app/l/K7QM2XPA.Mates-league.Wonder-Keeper-25');
+    expect(parseLeagueInviteToken('K7QM2XPA.Mates-league.Wonder-Keeper-25')).toEqual({ code: 'K7QM2XPA', name: 'Mates league', inviter: 'Wonder Keeper 25' });
+    // A link made before 11 Nov 2026 still opens.
+    expect(parseLeagueInviteToken("K7QM2XPA.Mates'%20league.Alex")).toEqual({ code: 'K7QM2XPA', name: "Mates' league", inviter: 'Alex' });
   });
 
   it('reads the decoded form a query string hands over, and a lower-case code', () => {

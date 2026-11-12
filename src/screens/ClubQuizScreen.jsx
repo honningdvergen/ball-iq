@@ -4,7 +4,8 @@ import { CLUB_COLOUR_ALIASES } from "../lib/clubColour.js";
 import { prefetchQuestions } from "../questions-loader.js";
 import { useModalA11y } from "../useModalA11y.js";
 import React, { useRef } from "react";
-import { clubHexToRgba, clubInitials, clubReadableText, haptic, norm } from "../App.jsx";
+import { clubHexToRgba, clubInitials, clubReadableText, norm } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
 import { swatchEdge } from "../lib/colourMath.js";
 import { CLUB_ABBR, CLUB_LEAGUES, CLUB_LEAGUE_SECTIONS, CLUB_ORDER, CLUB_PACKS, CLUB_SEARCH_NICKNAMES } from "../data/clubPacks.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path

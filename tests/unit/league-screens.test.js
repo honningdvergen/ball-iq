@@ -123,10 +123,26 @@ describe('the results panel', () => {
     // mates" (dd.leagueStart) for anyone not yet in one. 7 Nov 2026: the
     // underlined 12.5px line was tapped 0 times in 178 shows, so it is now a
     // full-width hairline pill (dd-league), still no fill.
-    expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueStart"\)\}/);
+    // 10 Nov 2026: still a hairline BUTTON, but compact and first in the row of
+    // quiet options (two full-width bars under each other read as clutter).
+    expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueShort"\)\}/);
+    expect(DD.indexOf('className="dd-share-alts"')).toBeLessThan(DD.indexOf('className="dd-league"'));
     expect(read('../../src/components/dailyDone.css')).toMatch(/\.dd-league\{[^}]*border:1px solid var\(--border2\);background:var\(--s2\)/);
     expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
     expect(DD).toMatch(/const leagueOffer = leagueGame && \(!!rival \|\| !inLeague\(\)\);/);
     expect(DD).not.toMatch(/isNativeShell/);
+  });
+});
+
+describe('the open table keeps up (10 Nov 2026)', () => {
+  it('reads the table again when the app comes back to the foreground, without a loading flash', () => {
+    const src = read('../../src/screens/LeagueScreen.jsx');
+    const m = src.match(/const onVis = \(\) => \{[\s\S]*?\};\n/);
+    expect(m, 'a visibility handler in LeagueScreen').toBeTruthy();
+    expect(m[0]).toContain('document.visibilityState !== "visible"');
+    expect(m[0]).toContain('getLeagueTable(leagueId)');
+    expect(m[0]).toContain('setData(t)');
+    expect(m[0]).not.toContain('setState("loading")');
+    expect(src).toContain('document.removeEventListener("visibilitychange", onVis)');
   });
 });

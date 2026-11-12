@@ -327,4 +327,4 @@ export function packColourMap(packs) {
 
 // The painting maths lives in colourMath.js (dependency-free, so Home can
 // import it without these tables); re-exported so this stays the one door.
-export { tint, lift, onColour, contrast, inkOn } from './colourMath.js';
+export { tint, lift, onColour, crestPaint, contrast, inkOn } from './colourMath.js';

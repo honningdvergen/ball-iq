@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
 import { STADIUM_LEAGUES, matchStadium } from "../data/stadiums.js";
-import { Confetti, haptic, playSound, LEAGUE_QUIZ_BY_CAT } from "../App.jsx";
+import { LEAGUE_QUIZ_BY_CAT } from "../App.jsx";
+import { Confetti } from "../components/Confetti.jsx";
+import { haptic, playSound } from "../lib/feedback.js";
 import { CLUB_ABBR, CLUB_PACKS } from "../data/clubPacks.js";
-import { clubColour, clubAbbr, packColourMap, tint, lift, onColour } from "../lib/clubColour.js";
+import { clubColour, clubAbbr, packColourMap, tint, lift, onColour, crestPaint } from "../lib/clubColour.js";
 import { Lightbulb } from "lucide-react";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
@@ -457,7 +459,7 @@ function StadiumBoard({ league, onExit, shareCard }) {
                   width: 28, height: 28, flexShrink: 0, borderRadius: 8,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: 10.5, fontWeight: 800, letterSpacing: "0.02em",
-                  background: col || "var(--s3, var(--s2))", color: col ? onColour(col) : "var(--t3, var(--t2))",
+                  background: col ? crestPaint(col).bg : "var(--s3, var(--s2))", color: col ? crestPaint(col).ink : "var(--t3, var(--t2))",
                   border: col ? "none" : "1px solid var(--border)",
                 }}>{clubAbbr(c.club, CLUB_ABBR)}</span>
               )}

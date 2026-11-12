@@ -231,7 +231,11 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
         <div className="dr-intro">
           <h2>{t("dr.introH")}</h2>
           <ol>
-            {[1, 2, 3, 4].map((i) => <li key={i}>{rich(t(`dr.i${i}`), { b: <b>{t(`dr.i${i}b`)}</b> })}</li>)}
+            {/* Four EQUAL rows: a title and one short line each (10 Nov 2026). They
+                were sentences of two and three lines with a bold lead-in that ran
+                into the grey text, so no two rows had the same shape. Alex: "the
+                4 point list just looks untidy". */}
+            {[1, 2, 3, 4].map((i) => <li key={i}><b>{t(`dr.i${i}b`)}</b><span>{t(`dr.i${i}`)}</span></li>)}
           </ol>
           <label className="dr-hard">
             <input type="checkbox" checked={g.hard} onChange={(e) => { const hard = e.target.checked; update((cur) => ({ ...cur, hard })); }} />
@@ -287,7 +291,12 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
             return (
               <section key={pos} className={`dr-line${free > 0 ? "" : " is-full"}${spinLanded ? " dr-in" : " dr-wait"}`}>
                 <h3>{t(`dr.pos.${pos}`)}<span>{free > 0 ? t("dr.open", { count: free, n: free }) : t("dr.full")}</span></h3>
-                {free > 0 && rows.map((p) => {
+                {/* ONE CARD PER LINE (12 Nov 2026). Every player was his own
+                    bordered box, fifteen and more down the screen, with his
+                    numbers as a grey sentence ("33 of 38 · 24 goals"). The
+                    line's players now share a card, and games and goals stand
+                    in two columns so they can be read down as well as across. */}
+                {free > 0 && <div className="dr-rows">{rows.map((p) => {
                   const ok = open.can(p);
                   return (
                     <button key={p.id} type="button" disabled={!ok}
@@ -296,10 +305,10 @@ function DraftGame({ D, day, isPractice, onBack, services, onAnother }) {
                       <span className="dr-row-name">{p.n}</span>
                       {!ok ? <span className="dr-row-num">{t("dr.yours")}</span>
                         : g.hard ? null
-                          : <span className="dr-row-num">{rich(t("dr.of", { total: GAMES }), { n: <b>{games(p, sq)}</b> })}{pos === "GK" ? "" : <> · {rich(t("dr.goals", { count: p.g }), { n: <b>{p.g}</b> })}</>}</span>}
+                          : <span className="dr-row-num"><span className="dr-n">{rich(t("dr.of", { total: GAMES }), { n: <b>{games(p, sq)}</b> })}</span>{pos === "GK" ? null : <span className="dr-n dr-n-g">{rich(t("dr.goals", { count: p.g }), { n: <b>{p.g}</b> })}</span>}</span>}
                     </button>
                   );
-                })}
+                })}</div>}
               </section>
             );
           })}
@@ -460,7 +469,7 @@ function Season({ shareCard, result, number, picks, shown, played, hard, isPract
               <div key={p.id} className="dr-xi-row">
                 <span className="dr-xi-pos">{t(`dr.ab.${p.p}`)}</span>
                 <span className="dr-xi-who"><b>{p.n}</b><i>{t("dr.xiFinished", { season: sq.season, club: sq.club, pos: ord(sq.pos) })}</i></span>
-                <span className="dr-xi-num">{games(p, sq)}<small>{t("dr.ofSmall", { total: GAMES })}</small>{p.p !== "GK" && <> · {p.g}<small>{t("dr.goalSmall", { count: p.g })}</small></>}</span>
+                <span className="dr-xi-num"><span>{games(p, sq)}<small>{t("dr.ofSmall", { total: GAMES })}</small></span><span>{p.p !== "GK" && <>{p.g}<small>{t("dr.goalSmall", { count: p.g })}</small></>}</span></span>
               </div>
             ))}
           </div>

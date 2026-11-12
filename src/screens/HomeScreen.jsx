@@ -11,6 +11,7 @@ import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { dateToYMD, msToNextLocalMidnight } from "../lib/date.js";
+import { dailyRunAnswered } from "../lib/dailyRun.js";
 import { countdownText, levelName } from "../i18n/names.js";
 import { ProfilePic } from '../components/ProfilePic.jsx';
 import { computeCard, CARD_TIERS, tierPalette } from "../lib/ballIqCard.js";
@@ -20,6 +21,7 @@ import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
 import { useT, useLang, fmtLocale } from "../i18n/index.js";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
@@ -201,6 +203,7 @@ function HomeScreenImpl({
   // Mates' leagues: the App passes this on the web only (never in a native
   // shell, phase 1), so its absence hides the card everywhere else.
   onOpenLeague,
+  onStartLeague,
 }) {
   const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
   const t = useT();
@@ -428,6 +431,9 @@ function HomeScreenImpl({
         const mysteryRes = loadMysteryResult(new Date());
         const mysteryDone = !!(mysteryRes?.won || mysteryRes?.gaveUp);
         const mysteryGuesses = mysteryDone ? 0 : (mysteryRes?.guesses?.length || 0);
+        // 10 Nov 2026: an unfinished Daily 7 is kept (lib/dailyRun.js), so the
+        // row says Continue with the count, like Footle's.
+        const dailyAnswered = dailyDone ? 0 : dailyRunAnswered(dateToYMD(new Date()));
         const top10Day = top10Live ? loadTop10Day(dateToYMD(new Date())) : null;
         const top10Done = top10Day?.status === "done";
         const top10Found = top10Day?.score || 0;
@@ -486,10 +492,14 @@ function HomeScreenImpl({
                 },
                 {
                   key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
-                  done: dailyDone,
-                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` }) : t("home.daily7.sub"),
+                  done: dailyDone, open: dailyAnswered > 0,
+                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` })
+                    : dailyAnswered > 0 ? withStrong(t("home.daily7.inProgress"), { n: dailyAnswered })
+                    : t("home.daily7.sub"),
                   onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
-                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore }) : t("home.daily7.ariaPlay"),
+                  aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore })
+                    : dailyAnswered > 0 ? t("home.daily7.ariaOpen", { n: dailyAnswered })
+                    : t("home.daily7.ariaPlay"),
                 },
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
@@ -577,10 +587,20 @@ function HomeScreenImpl({
         );
       })()}
 
-      {/* ── MATES' LEAGUE ── directly under the daily zone, members only. */}
-      {leagueCardOn && (
-        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} /></React.Suspense>
-      )}
+      {/* ── WITH YOUR MATES ── the league and Multiplayer under one heading
+          (11 Nov 2026). They were two loose cards between the dailies and
+          "Find a quiz". A heading, as "Find a quiz" and "More modes" have, and
+          not a second bordered box: the box is what marks the dailies as the
+          thing to do every day (Alex asked; this was the verdict). */}
+      <div className="home-mates">
+      <div className="home-section-title">{t("home.mates")}</div>
+      {/* The league: the card for a member, the way in for everyone else. */}
+      {leagueCardOn ? (
+        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} onStart={onStartLeague} /></React.Suspense>
+      ) : onStartLeague ? (
+        // In no league: the way in (LeagueStartRow says why it is here).
+        <LeagueStartRow onStart={onStartLeague} />
+      ) : null}
 
       {/* ── PLAY WITH FRIENDS — one row, same anatomy as the Today rows
           (2026-09-06 critique: it had the loudest button on the screen and the
@@ -607,6 +627,7 @@ function HomeScreenImpl({
         onOpen={() => setTab("online")}
         showToast={showToast}
       />
+      </div>
       </div>
 
       {/* ─────────── RIGHT RAIL (desktop-only, render-always/CSS-reveal) ─────────── */}

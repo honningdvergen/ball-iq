@@ -190,6 +190,29 @@ export function reasonLine(x) {
 }
 
 /**
+ * The same three facts as reasonLine, one each, with whether the guess shares
+ * it with the answer: [{ text, hit }] for club, position, era. The guess list
+ * prints them as marks (lit or hollow), so all three are always said, a miss
+ * included ("Other position"), where the sentence form leaves a miss out.
+ */
+export function reasonMarks(x) {
+  if (!x) return [];
+  const marks = [];
+  if (x.shared.length) {
+    const mates = x.shared.filter((c) => c.together >= 1).map((c) => c.club);
+    const only = x.shared.filter((c) => c.together < 1).map((c) => c.club);
+    marks.push({ text: mates.length ? t('mp.mates', { c: listClubs(mates) }) : t('mp.shared', { c: listClubs(only) }), hit: true });
+  } else marks.push({ text: t('mp.noClub'), hit: false });
+  marks.push({ text: t(x.samePosition ? 'mp.samePos' : 'mp.otherPos'), hit: x.samePosition });
+  const w = x.bornWhen ? t(`mp.${x.bornWhen}`) : '';
+  const era = x.era === 'same' ? (x.bornWhen ? t('mp.sameEraBorn', { w }) : t('mp.sameEra'))
+    : x.era === 'near' ? (x.bornWhen ? t('mp.bornYears', { n: x.gap, w }) : t('mp.bornApart', { n: x.gap }))
+      : x.era === 'far' ? t(x.bornWhen === 'earlier' ? 'mp.earlierEra' : x.bornWhen === 'later' ? 'mp.laterEra' : 'mp.otherEra') : '';
+  if (era) marks.push({ text: era, hit: x.era === 'same' });
+  return marks;
+}
+
+/**
  * Does this guess have a VISIBLE reason to be close? A shared club, or the
  * same position in the same era. The ranking is built so that nobody without
  * one reaches the boiling band; the unit tests hold it to that.

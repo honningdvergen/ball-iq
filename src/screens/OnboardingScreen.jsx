@@ -3,7 +3,8 @@ import { supabase } from "../supabase.js";
 import * as Sentry from "@sentry/react";
 import { Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { haptic, loopEvent } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
+import { loopEvent } from "../lib/funnel.js";
 import { useT } from "../i18n/index.js";
 
 // ─── ONBOARDING ───────────────────────────────────────────────────────────────
@@ -144,6 +145,12 @@ export function OnboardingScreen({ onDone }) {
   // answering has not declined anything; they have said "get on with it", and
   // handing them the menu is the momentum death this whole block exists to
   // stop. Skip still goes to Home, exactly as before.
+  // THE FIRST SCREEN WAS NEVER COUNTED (11 Nov 2026). Only leaving it by a
+  // button wrote an event (onboard-done-answered / -skipped), so a player who
+  // closed the app on this screen left no trace, and "do we need this question
+  // at all?" (Alex) could not be answered from data. One row per showing.
+  useEffect(() => { loopEvent("onboard-shown"); }, []);
+
   const next = () => {
     haptic("soft");
     persistAndFinish(true);
@@ -244,7 +251,16 @@ export function OnboardingScreen({ onDone }) {
                 a step number — there is no next step to go to. */}
             <div className="onboard-actions">
               <button className="onboard-skip" onClick={skip}>{t(sampleAnswered !== null && sampleAnswered !== undefined && sampleAnswered !== false ? "ob.later" : "ob.skip")}</button>
-              <button className="onboard-btn onboard-btn-inline" onClick={next}>{t(sampleAnswered === null ? "ob.start" : "ob.play")}</button>
+              {/* THE QUESTION IS THE ONE THING TO DO (11 Nov 2026). A solid green
+                  "Start playing" sat here from the first frame, louder than the
+                  four answers above it, so the eye went to the way past the
+                  question; about a third of first screens ended without an
+                  answer (onboard-done-skipped, 30 days to 11 Nov). The green
+                  button now arrives WITH the verdict, as the next step; before
+                  that the only other control is a quiet Skip. */}
+              {sampleAnswered !== null && (
+                <button className="onboard-btn onboard-btn-inline" onClick={next}>{t("ob.play")}</button>
+              )}
             </div>
           </div>
         </div>

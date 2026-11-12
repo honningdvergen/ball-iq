@@ -5,7 +5,8 @@
 // way the lazy screens already import them.
 import { useEffect } from "react";
 import { Star, Trophy } from "lucide-react";
-import { haptic, Confetti } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
+import { Confetti } from "../components/Confetti.jsx";
 import { DailyDone } from "../components/DailyDone.jsx";
 import { CountUp } from "../components/CountUp.jsx";
 import ResultFoot from "../components/ResultFoot.jsx";
@@ -19,7 +20,7 @@ import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
-import { loopEvent } from "../App.jsx";
+import { loopEvent } from "../lib/funnel.js";
 
 // TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
 // return loop is one component for all four dailies — components/DailyDone.jsx.
@@ -94,7 +95,7 @@ function CardDeltaRow({ d }) {
   );
 }
 
-export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, onReport, photoNudge, dailyDone, cardDelta }) {
+export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta }) {
   const t = useT();
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
@@ -199,7 +200,16 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
 
       {/* Final score eyebrow + huge green number + caption */}
       <div style={{textAlign:"center", padding:"20px 0 8px"}}>
-        <div className="ds-eyebrow">{t("rs.final")}</div>
+        {/* A CLUB OR LEAGUE QUIZ SAYS WHOSE IT WAS (11 Nov 2026). The result read
+            "Final score" for every quiz, so a Liverpool fan finishing the
+            Liverpool quiz saw nothing of Liverpool: found on the simulator
+            walk. The badge and name from the quiz screen's banner lead here. */}
+        {label ? (
+          <div style={{display:"inline-flex", alignItems:"center", gap:8, maxWidth:"100%"}}>
+            {badge && <span aria-hidden="true" style={{flex:"none", width:26, height:26, borderRadius:8, background:badge.color, color:badge.fg, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:9.5, fontWeight:900, letterSpacing:0.2}}>{badge.abbr}</span>}
+            <span className="ds-eyebrow" style={{overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>{label}</span>
+          </div>
+        ) : <div className="ds-eyebrow">{t("rs.final")}</div>}
         <div
           className="numeric"
           style={{
