@@ -1,5 +1,5 @@
 {
-  "captured": "2026-11-08",
+  "captured": "2026-11-12",
   "project": "blcisypmngimqkwxrrdm",
   "source": "has_function_privilege(role, oid, EXECUTE) over pg_proc in schema public (prokind f), read-only via the Supabase MCP connector",
   "refresh": "Re-run the query in tests/unit/rpc-grants.test.js header and replace this file; the test then tells you what changed.",
@@ -153,6 +153,13 @@
       "authenticated": true
     },
     {
+      "name": "get_challenge_replies",
+      "args": "p_cids text[]",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
       "name": "get_daily_distribution",
       "args": "p_game text, p_edition integer",
       "security_definer": true,
@@ -291,6 +298,13 @@
     {
       "name": "record_challenge_event",
       "args": "p_event text, p_date text, p_score integer, p_name text, p_my_score integer, p_sender uuid",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "record_challenge_reply",
+      "args": "p_cid text, p_game text, p_edition integer, p_score integer, p_name text, p_replier uuid",
       "security_definer": true,
       "anon": true,
       "authenticated": true
