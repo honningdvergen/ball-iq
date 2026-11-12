@@ -216,7 +216,7 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the finish panel', () => {
     const won = unq(now['dd: footle won in 3, everything on, loading']);
-    for (const s of ['Mañana serán <', '> · nuevos retos en <', 'aria-label="Activar un aviso diario a las 19:00"', 'Asciendes a <strong>Regional<', ' Compartir resultado<', '>Reta a un colega<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
+    for (const s of ['Mañana serán <', '> · nuevos retos en <', 'aria-label="Activar un aviso diario a las 19:00"', 'Asciendes a <strong>Regional<', ' Envíaselo a un colega<', '>Recibe el mismo reto e intenta ganarte.<', '>Solo compartir mi resultado<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
     expect(unq(now['dd: footle lost, streak safe, reminder on, early numbers'])).toContain('>Racha a salvo<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>Mejor que el 44%<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>4,6/7<');

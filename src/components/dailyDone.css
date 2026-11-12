@@ -22,6 +22,7 @@
    and surface only; the share above it stays the single solid fill. */
 .dd-league{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:6px 13px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-league:active{transform:scale(0.98);}
+.dd-share-note{margin:0;font-size:12.5px;line-height:1.4;text-align:center;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-share-alts{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 18px;}
 .dd-share-alt{display:inline-block;padding:0;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 /* How everyone did: one bar per bucket, yours in green. */

@@ -118,7 +118,10 @@ describe('the results panel', () => {
     // Phase 2 (29 Oct 2026): the native shell sends results too.
     expect(block).not.toMatch(/isNativeShell/);
   });
-  it('the league offer is one quiet pill under the share, never a second solid button, and reaches a player with no head-to-head', () => {
+  it('the league offer is one quiet pill under the share, never a second solid button, and waits for a head-to-head', () => {
+    // 12 Nov 2026: with no rival the offer is off this panel (296 shows to 80
+    // people, no tap outside our own testing); the solid button sends the
+    // puzzle to a mate instead, and the plain result is one quiet link.
     // "Make it a league?" (dd.league) with a rival; "Start a league with your
     // mates" (dd.leagueStart) for anyone not yet in one. 7 Nov 2026: the
     // underlined 12.5px line was tapped 0 times in 178 shows, so it is now a
@@ -128,8 +131,10 @@ describe('the results panel', () => {
     expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueShort"\)\}/);
     expect(DD.indexOf('className="dd-share-alts"')).toBeLessThan(DD.indexOf('className="dd-league"'));
     expect(read('../../src/components/dailyDone.css')).toMatch(/\.dd-league\{[^}]*border:1px solid var\(--border2\);background:var\(--s2\)/);
-    expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
-    expect(DD).toMatch(/const leagueOffer = leagueGame && \(!!rival \|\| !inLeague\(\)\);/);
+    expect((DD.match(/className="dd-share"/g) || []).length).toBe(3); // Send it back | Send it to a mate | Share result
+    expect(DD).toMatch(/const leagueOffer = leagueGame && !!rival;/);
+    expect(DD).toMatch(/className="dd-share" onClick=\{doChallenge\}>\s*<Swords[^>]*\/> \{t\([^)]*"dd\.sendMate"\)\}/);
+    expect(DD).not.toMatch(/wa\.me/);
     expect(DD).not.toMatch(/isNativeShell/);
   });
 });

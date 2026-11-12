@@ -10,7 +10,6 @@ import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel } 
 const LEAGUE_GAMES = ["footle", "daily7", "trail", "top10"];
 // Set by lib/leagues.js on this device once the player is in a league. Read
 // here so the finish panel can offer a league to everyone who is not.
-const inLeague = () => { try { return localStorage.getItem("biq_league_member") === "1"; } catch { return false; } };
 
 // Results in a day before the panel shows headcounts instead of shares.
 const SHOW_COUNTS_FROM = 300;
@@ -45,7 +44,6 @@ import "./dailyDone.css";
 //   streak      { count, label, keepsOnLoss? } — the app passes its one streak; islands the game's.
 //               keepsOnLoss: the host's streak ticks on any finish, so a loss keeps it ("Streak safe")
 //   onShare     async () => void   (host builds the text / card)
-//   waText      web-only WhatsApp fallback text (omit on native)
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
 //   nextUp      [{ key, name, onTap? , href?, open? }] — today's other unplayed dailies (open: started, so the button says Continue)
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
@@ -91,6 +89,7 @@ const modeOf = (k) => (k === "daily" ? "daily7" : k);
 const shownClaims = new Set();
 // "Make it a league?" was seen: once per result, the same double-mount guard.
 const leagueOfferClaims = new Set();
+let challengeBusy = false;
 
 // Opens the league create sheet. Inside the app, App.jsx registers the opener;
 // on the static islands there is none, so the link carries the head-to-head
@@ -105,7 +104,7 @@ function openLeagueCreate(opts) {
   } catch { /* nothing to do */ }
 }
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, waText, remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
   const t = useT();
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -204,7 +203,12 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   // the only offer sat behind a challenge link almost nobody had). Live
   // league games only; a member sees the table on Home instead.
   const leagueGame = LEAGUE_GAMES.includes(game) && !isArchive;
-  const leagueOffer = leagueGame && (!!rival || !inLeague());
+  // 12 Nov 2026: with no head-to-head the offer is gone from this panel. Shown
+  // 296 times to 80 people in two weeks, tapped by nobody outside our own
+  // testing: a stranger does not name a league before they have a rival. The
+  // one button is "Send it to a mate" now; "Make it a league?" stays for the
+  // moment a rival exists. Home keeps its Mates' league row.
+  const leagueOffer = leagueGame && !!rival;
   useEffect(() => {
     if (!leagueOffer) return;
     const key = `${game}:${edition}`;
@@ -217,7 +221,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     if (rival) openLeagueCreate({ h2hGame: game, vs: rival.name || "", from: "h2h", h2h: { game, edition, mine: myScore, theirs: rival.score ?? 0 } });
     else openLeagueCreate({ h2hGame: game, vs: "", from: "finish", h2h: null });
   };
-  const doChallenge = async () => {
+  const sendChallenge = async () => {
     const who = (() => { try { return day?.who?.() || ""; } catch { return ""; } })();
     const token = challengeToken(game, edition, myScore, who);
     if (!token) return;
@@ -234,6 +238,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       if (e && (e.name === "AbortError" || /cancel/i.test(e?.message || ""))) return;
       try { await navigator.clipboard.writeText(`${text} ${url}`); setChallengeState("copied"); } catch { /* nothing to do */ }
     }
+  };
+  const doChallenge = async () => {
+    // One share sheet at a time: a second tap while it is open made
+    // navigator.share throw, and the fallback then said "Link copied".
+    if (challengeBusy) return;
+    challengeBusy = true;
+    try { await sendChallenge(); } finally { challengeBusy = false; }
   };
 
   // `lang`: the summary carries a sentence (comparisonLine) in the active language.
@@ -374,12 +385,26 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         <button type="button" className="dd-share" onClick={doChallenge} aria-label={t("dd.sendBackAria")}>
           <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : rival ? "dd.sendBack" : "dd.challenge")}
         </button>
+      ) : canChallenge ? (
+        /* ONE THING TO DO (12 Nov 2026, Alex's yes on the before and after).
+           Under Share sat a league pill, a WhatsApp link and "Challenge a
+           mate": four ways to share at once, and in 30 days 196 people saw the
+           panel, 8 shared and nobody outside our own testing tapped the other
+           three. The solid button now sends the puzzle itself to a mate (the
+           same /c/ link "Challenge a mate" made); the plain result is the one
+           quiet link under it. */
+        <>
+          <button type="button" className="dd-share" onClick={doChallenge}>
+            <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : "dd.sendMate")}
+          </button>
+          <p className="dd-share-note">{t("dd.sendMateNote")}</p>
+        </>
       ) : (
         <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label={t("dd.shareAria")}>
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
-      {(leagueOffer || waText || stump || stitch || canChallenge) && (
+      {(leagueOffer || stump || stitch || canChallenge) && (
         <div className="dd-share-alts">
           {/* The league offer. 7 Nov 2026: as a 12.5px underlined line it was
               shown 178 times to 48 web visitors and tapped by none, so it became
@@ -392,11 +417,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               <Users size={15} strokeWidth={2.4} aria-hidden="true" /> {t(rival ? "dd.league" : "dd.leagueShort")}
             </button>
           )}
-          {rival && (
-            <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : "dd.shareResult")}</button>
-          )}
-          {waText && (
-            <a className="dd-share-alt" href={`https://wa.me/?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" onClick={() => track?.("dd-share-wa", { game })}>{t("dd.wa")}</a>
+          {(rival || canChallenge) && (
+            <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : rival ? "dd.shareResult" : "dd.shareOnly")}</button>
           )}
           {/* The k-factor lever lives under Share, where sharing is. It was a
               third full-width button below the panel. */}
@@ -407,9 +429,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               a Trail of your own for a mate. A link, like the others here. */}
           {stitch && (
             <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stitch", { game }); stitch(); }}>{t("dd.stitch")}</button>
-          )}
-          {canChallenge && !rival && (
-            <button type="button" className="dd-share-alt" onClick={doChallenge} aria-label={t("dd.challengeAria")}>{t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : rival ? "dd.sendBack" : "dd.challenge")}</button>
           )}
         </div>
       )}
