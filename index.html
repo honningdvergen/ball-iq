@@ -447,6 +447,16 @@
               if (/^\/footle\/?$/.test(location.pathname)) {
                 window.__biqConsentDefer = 'game';
               }
+              /* ⚠️ CHALLENGE ARRIVALS TOO (12 Nov 2026). A mate who taps a
+                 "Send it to a mate" link lands on /play?game=footle&gc=TOKEN
+                 (api/c.js). The deep-link test above looks for c=, and gc= is
+                 not that, so nothing deferred: the bar was up one second after
+                 arrival, under the board, for the whole puzzle (WebKit walk,
+                 375x812). Same 'game' mode as /footle: asked when the game
+                 ends or the player goes Home, never mid-puzzle. */
+              if (/[?&]gc=/.test(location.search)) {
+                window.__biqConsentDefer = 'game';
+              }
               var b = document.createElement('script');
               b.src = '/consent.js';
               b.defer = true;
