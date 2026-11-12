@@ -219,6 +219,7 @@ export const STEP3_EN = {
   'mp.mates': "Teammates at {c}",
   'mp.shared': "Shared {c}",
   'mp.samePos': "Same position",
+  'mp.otherPos': "Other position",
   'mp.sameEra': "Same era",
   'mp.sameEraBorn': "Same era, born {w}",
   'mp.bornYears': "Born {n} years {w}",

@@ -13,7 +13,7 @@ import {
   rankPool, bandFor, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
-  explainGuess, reasonLine, clueLadder, CLUE_AFTER, paidCluesFromSave, topShare, puzzleYear,
+  explainGuess, reasonMarks, clueLadder, CLUE_AFTER, paidCluesFromSave, puzzleYear,
 } from '../lib/mysteryPlayer.js';
 import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
@@ -587,41 +587,47 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
         {!done && rows.length === 0 && yesterdayName && (
           <p className="mp-yday">{rich(t('mp.yesterday'), { name: <strong>{yesterdayName}</strong> })}</p>
         )}
-        {rows.map((g) => {
-          const st = BAND_STYLE[g.band];
-          // WHY it is here: shared clubs, position, era. The same three things
-          // the rank is computed from (lib/mysteryPlayer.js), so they agree.
-          const why = g.rank === 1 ? t('mp.secret') : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS, year)) : '');
-          return (
-            <div key={g.id} className={`mp-guess${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ background: st.bg, border: `1px solid ${st.bd}` }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="mp-guess-name">{g.name}</div>
-                {/* Each reason holds together, and the dot stays at the end of
-                    the line it closes, so a wrap never starts a line with "·". */}
-                {why && (
-                  <div className="mp-guess-why">
-                    {why.split(' · ').map((part, i, all) => (
-                      <React.Fragment key={part}>
-                        <span className="mp-why-part">{part}{i < all.length - 1 ? ' ·' : ''}</span>{i < all.length - 1 ? ' ' : ''}
-                      </React.Fragment>
-                    ))}
+        {/* ONE LIST, ONE NUMBER PER GUESS (12 Nov 2026). Every guess was its own
+            bordered, tinted box that said how close it was four times: a rank,
+            "top 2%", WARM, and a bar; and why in a run of grey prose. Six
+            guesses made the densest screen in the app (Alex asked which modes
+            needed surgery; this was the first). Now the guesses share one card.
+            A row is the name, the rank in its band's colour with the band's
+            word under it, and the three things the rank is made of (club,
+            position, era) as marks: lit when the guess shares it with the
+            answer, hollow when it does not. The bar is the line between rows. */}
+        {rows.length > 0 && (
+          <div className="mp-glist">
+            {rows.map((g) => {
+              const st = BAND_STYLE[g.band];
+              // WHY it is here: shared clubs, position, era. The same three things
+              // the rank is computed from (lib/mysteryPlayer.js), so they agree.
+              const marks = g.rank === 1 ? [{ text: t('mp.secret'), hit: true }]
+                : (answer && CAREERS ? reasonMarks(explainGuess(byId.get(g.id), answer, CAREERS, year)) : []);
+              return (
+                <div key={g.id} className={`mp-g${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ '--g': st.fg }}>
+                  <div className="mp-g-main">
+                    <div className="mp-g-name">{g.name}</div>
                   </div>
-                )}
-                <div className="mp-guess-bar" aria-hidden="true">
-                  <div style={{ width: `${Math.round(closeness(g.rank, POOL.length || 1) * 100)}%`, background: st.fg }} />
+                  <div className="mp-g-rank">
+                    <span className="mp-g-num">{num(g.rank)}</span>
+                    <span className="mp-g-band">{bandWord(t, g.band)}</span>
+                  </div>
+                  {marks.length > 0 && (
+                    <div className="mp-g-facts">
+                      {marks.map((m) => (
+                        <span key={m.text} className={`mp-fact${m.hit ? ' is-hit' : ''}`}>{m.text}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mp-g-bar" aria-hidden="true">
+                    <i style={{ width: `${Math.max(2, Math.round(closeness(g.rank, POOL.length || 1) * 100))}%` }} />
+                  </div>
                 </div>
-              </div>
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{num(g.rank)}</div>
-                {/* In proportion, not "of 9,030": see topShare. */}
-                {POOL.length > 0 && g.rank > 1 && (
-                  <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>{topShare(g.rank, POOL.length)}</div>
-                )}
-                <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{bandWord(t, g.band)}</div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        )}
 
         {/* Below the guess list, not beside the input: a give-up at eye level
             competes with playing. */}

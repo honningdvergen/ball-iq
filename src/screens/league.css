@@ -18,12 +18,20 @@
 /* 9 Nov 2026, second pass (Alex: "still cluttery"): three things per row,
    rank, name and total. The week is a thin bar strip under the name, shaded by
    score, no numbers; labels are quiet words, not pills; no avatars. */
-.lg-row{display:grid;grid-template-columns:20px 1fr auto;column-gap:14px;align-items:center;padding:16px 18px;border-top:1px solid var(--border);position:relative;}
+.lg-row{display:grid;grid-template-columns:28px 1fr auto;column-gap:12px;align-items:center;padding:16px 18px;border-top:1px solid var(--border);position:relative;}
 .lg-row:first-child{border-top:0;}
 .lg-row.is-me{background:rgba(88,204,2,0.06);}
 .lg-row.is-me::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--accent);}
 .lg-rank{font-size:14px;font-weight:800;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;text-align:center;}
-.lg-rank.is-first{color:var(--gold);-webkit-text-fill-color:var(--gold);}
+/* THE TOP THREE WEAR A MEDAL (12 Nov 2026). The table was correct and flat:
+   five grey numerals and five white totals, nothing saying who is winning
+   until the names are read. Gold, silver and bronze discs for the first three
+   and the leader's total in gold; everyone else stays a plain numeral. */
+.lg-rank.is-first,.lg-rank.is-second,.lg-rank.is-third{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;font-size:13px;font-weight:900;}
+.lg-rank.is-first{color:#221a00;-webkit-text-fill-color:#221a00;background:radial-gradient(circle at 32% 28%, #FFE27A 0%, var(--gold) 55%, #C99400 100%);box-shadow:0 0 0 1px rgba(255,214,90,0.35), 0 6px 14px -6px rgba(255,193,7,0.7);}
+.lg-rank.is-second{color:#12161c;-webkit-text-fill-color:#12161c;background:radial-gradient(circle at 32% 28%, #F4F7FB 0%, #C3CCD8 55%, #8E99A8 100%);}
+.lg-rank.is-third{color:#1f1206;-webkit-text-fill-color:#1f1206;background:radial-gradient(circle at 32% 28%, #F0B98A 0%, #C8854E 55%, #8F5A2E 100%);}
+.lg-total.is-first{color:var(--gold);-webkit-text-fill-color:var(--gold);}
 .lg-mid{min-width:0;display:flex;flex-direction:column;gap:9px;}
 .lg-name-line{display:flex;align-items:baseline;gap:10px;min-width:0;}
 .lg-name{font-size:16px;font-weight:800;letter-spacing:-0.2px;color:var(--t1);-webkit-text-fill-color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:0 1 auto;}
@@ -57,6 +65,8 @@
 .lg-help dd{margin:2px 0 0;font-size:13px;line-height:1.4;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 
 .lg-foot{display:flex;flex-direction:column;gap:10px;padding-top:4px;border-top:1px solid var(--border);padding-top:14px;}
+/* With nothing to say the foot drew its hairline alone, a stray rule under the links. */
+.lg-foot:empty{display:none;}
 .lg-save{display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .lg-pill{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 14px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;}
 
