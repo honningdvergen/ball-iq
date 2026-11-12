@@ -20,6 +20,7 @@ import { CLUBS } from './seo/clubs.mjs';
 import { PLAYERS } from './seo/players.mjs';
 import { NATIONS } from './seo/nations.mjs';
 import { PRUNED } from './seo/prune.mjs';
+import { DAILY_BUILT_PATHS } from './seo/lastmod.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const arg = (name, dflt) => {
@@ -182,6 +183,7 @@ check('Sitemap lastmod matches scripts/seo/lastmod.json; no changefreq/priority'
     const want = store[path]?.d;
     // Pages served by an api/ function (the dailies) change every day, so the build date
     // is their honest lastmod (Ball IQ HQ, 26 Oct). Built pages still need a store entry.
+    if (DAILY_BUILT_PATHS.has(path)) { if (want) fail(`${relative(ROOT, LASTMOD)} still stores ${path}; daily pages take the build date`); continue; }
     if (!want && servedBy(path)) notes.push(`${e.loc} is served by ${servedBy(path)}; lastmod ${got} is the build date (allowed for api-served pages)`);
     else if (!want) fail(`sitemap.xml: ${e.loc} has no entry in ${relative(ROOT, LASTMOD)} (run a local build and commit the store)`);
     else if (got !== want) fail(`sitemap.xml: ${e.loc} <lastmod>${got}</lastmod> but ${relative(ROOT, LASTMOD)} says ${want}`);

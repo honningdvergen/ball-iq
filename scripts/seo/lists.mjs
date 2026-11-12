@@ -24,13 +24,13 @@
 export const LISTS = [
   {
     "slug": "ballon-dor-winners",
-    "h1": "Every Ballon d'Or Winner (1956–2025)",
-    "title": "Ballon d'Or Winners: Complete List 1956–2025 | Ball IQ",
-    "description": "The complete list of every men's Ballon d'Or winner from 1956 to 2025, with the club and nationality of each winner, year by year.",
+    "h1": "Every Ballon d'Or Winner (1956–2026)",
+    "title": "Ballon d'Or Winners: Complete List 1956–2026 | Ball IQ",
+    "description": "The complete list of every men's Ballon d'Or winner from 1956 to 2026, with the club and nationality of each winner, year by year.",
     "intro": [
       "The Ballon d'Or is football's most prestigious individual prize, first handed to England winger Stanley Matthews in 1956. Originally awarded by France Football to the best player in Europe, it later opened up to players worldwide and, from 2010 to 2015, merged with FIFA's award to become the FIFA Ballon d'Or before returning to France Football control. This page lists every men's winner in order, alongside the club they were at when they lifted the trophy and their nationality.",
       "The modern era belongs to two players: Lionel Messi holds the record with eight Ballons d'Or, while Cristiano Ronaldo has won five. Between 2008 and 2023 the pair claimed the award 13 times in 16 years — the run broken only by Luka Modrić (2018), Karim Benzema (2022) and the cancelled 2020 edition. Kaká (2007) was the last winner before the duopoly took hold, and Rodri (2024) the first to follow it. No award was given in 2020, when the ceremony was cancelled during the COVID-19 pandemic — the only blank year in the award's history.",
-      "A few names stand out for rarity: Lev Yashin remains the only goalkeeper ever to win it, in 1963, and Michel Platini, Johan Cruyff and Marco van Basten are the three players to have won it three times each. The most recent winner is Ousmane Dembélé, who took the 2025 award after leading Paris Saint-Germain to their first Champions League title."
+      "A few names stand out for rarity: Lev Yashin remains the only goalkeeper ever to win it, in 1963, and Michel Platini, Johan Cruyff and Marco van Basten are the three players to have won it three times each. Ousmane Dembélé took the 2025 award after leading Paris Saint-Germain to their first Champions League title, and the most recent winner is Harry Kane, who won the 2026 award at Bayern Munich, the first English winner since Michael Owen in 2001."
     ],
     "columns": [
       "Year",
@@ -458,6 +458,12 @@ export const LISTS = [
         "Ousmane Dembélé",
         "Paris Saint-Germain",
         "France"
+      ],
+      [
+        "2026",
+        "Harry Kane",
+        "Bayern Munich",
+        "England"
       ]
     ],
     "faq": [
@@ -474,11 +480,11 @@ export const LISTS = [
         "a": "France Football cancelled the 2020 award because of the COVID-19 pandemic, which disrupted the football calendar. It is the only year since 1956 that no winner was crowned."
       },
       {
-        "q": "Who won the 2024 and 2025 Ballon d'Or?",
-        "a": "Rodri of Manchester City won the 2024 award, becoming the first Spanish men's winner since 1960. Ousmane Dembélé of Paris Saint-Germain won in 2025 after leading PSG to the Champions League title."
+        "q": "Who won the 2024, 2025 and 2026 Ballon d'Or?",
+        "a": "Rodri of Manchester City won the 2024 award, becoming the first Spanish men's winner since 1960. Ousmane Dembélé of Paris Saint-Germain won in 2025 after leading PSG to the Champions League title. Harry Kane of Bayern Munich won in 2026, the first English winner since Michael Owen in 2001."
       }
     ],
-    "updated": "2026-07-20",
+    "updated": "2026-10-29",
     "ctaName": "football's greatest players"
   },
   {

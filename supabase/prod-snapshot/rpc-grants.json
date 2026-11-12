@@ -1,0 +1,511 @@
+{
+  "captured": "2026-11-08",
+  "project": "blcisypmngimqkwxrrdm",
+  "source": "has_function_privilege(role, oid, EXECUTE) over pg_proc in schema public (prokind f), read-only via the Supabase MCP connector",
+  "refresh": "Re-run the query in tests/unit/rpc-grants.test.js header and replace this file; the test then tells you what changed.",
+  "functions": [
+    {
+      "name": "_league_clean_name",
+      "args": "p_name text, p_max integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_day_index",
+      "args": "p_game text, p_edition integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_final_rows",
+      "args": "p_league_id uuid, p_week_start integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_is_final",
+      "args": "p_league_id uuid, p_week_start integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_points",
+      "args": "p_game text, p_bucket integer, p_won boolean",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_public_rows",
+      "args": "p_rows jsonb, p_me uuid, p_final boolean",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_standings",
+      "args": "p_league_id uuid, p_week_start integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_today",
+      "args": "p_tz text",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_week_start",
+      "args": "p_day integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "_league_whistle",
+      "args": "p_league_id uuid, p_week_start integer",
+      "security_definer": false,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "advance_question",
+      "args": "p_code text, p_expected_question integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "claim_rematch",
+      "args": "p_code text, p_name text, p_avatar text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "cleanup_funnel_events",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "cleanup_stale_anon_users",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "create_league",
+      "args": "p_name text, p_tz text, p_display_name text, p_seed text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "create_room",
+      "args": "p_capacity integer, p_name text, p_avatar text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "create_user_game_state_for_new_profile",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false,
+      "returns": "trigger"
+    },
+    {
+      "name": "delete_user_account",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "end_game",
+      "args": "p_code text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "enqueue_web_daily_reminders",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "get_block_mask",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "get_daily_distribution",
+      "args": "p_game text, p_edition integer",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "get_league_table",
+      "args": "p_league_id uuid, p_week_start integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "get_my_leagues",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "handle_new_user",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false,
+      "returns": "trigger"
+    },
+    {
+      "name": "increment_score",
+      "args": "user_id uuid, score_delta integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "increment_xp",
+      "args": "user_id uuid, xp_delta integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "is_profane_username",
+      "args": "p_name text",
+      "security_definer": false,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "is_room_member",
+      "args": "p_room_id uuid",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "join_league",
+      "args": "p_code text, p_display_name text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "join_room",
+      "args": "p_code text, p_name text, p_avatar text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "league_claim",
+      "args": "p_token text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "league_issue_claim",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "leave_league",
+      "args": "p_league_id uuid",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "leave_room",
+      "args": "p_code text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "log_club_quiz",
+      "args": "p_club text, p_total smallint, p_correct smallint, p_rounds smallint, p_easy_c smallint, p_easy_t smallint, p_med_c smallint, p_med_t smallint, p_hard_c smallint, p_hard_t smallint, p_kind text, p_lang text",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "notify_friendship_event",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false,
+      "returns": "trigger"
+    },
+    {
+      "name": "played_on",
+      "args": "p_user uuid, p_day date",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "profiles_check_profanity",
+      "args": "",
+      "security_definer": false,
+      "anon": true,
+      "authenticated": true,
+      "returns": "trigger"
+    },
+    {
+      "name": "reap_stale_rooms",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "record_challenge_event",
+      "args": "p_event text, p_date text, p_score integer, p_name text, p_my_score integer, p_sender uuid",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "record_daily_result",
+      "args": "p_game text, p_edition integer, p_bucket integer, p_won boolean, p_visitor uuid",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "record_funnel_event",
+      "args": "p_event text, p_meta jsonb, p_visitor uuid, p_anon boolean",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "record_league_result",
+      "args": "p_game text, p_edition integer, p_bucket integer, p_won boolean",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "register_device_token",
+      "args": "p_token text, p_platform text, p_tz_offset integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "repair_login_streak",
+      "args": "p_local_day integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "report_question",
+      "args": "p_question_id text, p_question_text text, p_picked text, p_correct text, p_mode text, p_reason text",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "reset_user_stats",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "reveal_question",
+      "args": "p_code text, p_question_idx integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "room_lookup",
+      "args": "p_code text",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "select_activate_candidates",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "select_day2_email_candidates",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "select_winback_candidates",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false
+    },
+    {
+      "name": "send_play_invite",
+      "args": "p_addressee uuid, p_code text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "set_league_display_name",
+      "args": "p_league_id uuid, p_name text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "set_player_name",
+      "args": "p_code text, p_name text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "set_player_ready",
+      "args": "p_code text, p_ready boolean",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "set_reminder_hour",
+      "args": "p_hour integer, p_local boolean",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "set_room_mode",
+      "args": "p_code text, p_mode text",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "set_updated_at",
+      "args": "",
+      "security_definer": false,
+      "anon": true,
+      "authenticated": true,
+      "returns": "trigger"
+    },
+    {
+      "name": "start_game",
+      "args": "p_code text, p_questions jsonb, p_capacity integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "start_next_round",
+      "args": "p_code text, p_questions jsonb",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "submit_answer",
+      "args": "p_code text, p_question_idx integer, p_answer_idx integer, p_lock_time integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "subscribe_web_push",
+      "args": "p_visitor uuid, p_subscription jsonb, p_endpoint text, p_tz integer, p_hour integer",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "sync_profile_anon_flag",
+      "args": "",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": false,
+      "returns": "trigger"
+    },
+    {
+      "name": "tick_login_streak",
+      "args": "p_local_day integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "unsubscribe_web_push",
+      "args": "p_endpoint text",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
+      "name": "upsert_daily_all_answers",
+      "args": "p_ymd text, p_answers jsonb",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "upsert_daily_score",
+      "args": "p_ymd text, p_score integer",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "upsert_daily_wrong_answers",
+      "args": "p_ymd text, p_wrongs jsonb",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    },
+    {
+      "name": "upsert_wordle_state",
+      "args": "p_ymd text, p_state jsonb",
+      "security_definer": true,
+      "anon": false,
+      "authenticated": true
+    }
+  ]
+}

@@ -15,6 +15,7 @@ import { BiqNav } from './BiqNav.jsx';
 import { AppBar } from './components/AppBar.jsx';
 import { SiteHeader } from './marketing/SiteHeader.jsx';
 import { loadQuestions, prefetchQuestions, loadQuestionIndex, prefetchQuestionIndex } from './questions-loader.js';
+import { appDayEvent, playDays } from './lib/cohort.js';
 // Pure + tested. seededShuffle's integer maths is load-bearing (Math.sin differs
 // between JavaScriptCore and V8); pickDailyQuestions is what keeps every player
 // on the same Daily 7. See tests/unit/quiz.test.js.
@@ -46,9 +47,10 @@ import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drai
 // The club tables are LAZY (src/data/clubPacks.js); this is the only way in.
 import { loadClubData, useClubData } from './lib/clubData.js';
 import { CLUB_INDEX } from './marketing/clubIndex.js';
-import { liveStreak, localDayNow, shieldsAvailable } from './lib/streak.js';
+import { liveStreak, localDayNow, needsTodayCredit, shieldsAvailable } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
+import { dailyRunAnswered } from './lib/dailyRun.js';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
 import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
@@ -180,7 +182,6 @@ import { HomeScreen } from './screens/HomeScreen.jsx';
 import { currentAvatarId } from './lib/currentAvatar.js';
 import { isIOSUA, isAndroidUA } from './components/StoreBadge.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { App as CapApp } from '@capacitor/app';
@@ -197,6 +198,10 @@ const NativeShareCard = registerPlugin('ShareCard');
 
 // Sprint #90 EEE1: cold-start instrumentation (toggle in ./lib/perf.js).
 import { perfMark } from './lib/perf.js';
+import { IS_NATIVE } from './lib/platform.js';
+import { playSound, haptic } from './lib/feedback.js';
+import { loopEvent, isSyntheticTraffic } from './lib/funnel.js';
+import { Confetti } from './components/Confetti.jsx';
 perfMark('module-load: App.jsx parsed');
 
 export const TIMINGS = {
@@ -828,6 +833,12 @@ export const CAT_LABELS = {
 // CAT_LABELS name, the same in both languages (Premier League, La Liga …).
 // LEAGUE_QUIZ_SECTIONS' names are the same words for the same cat.
 export const catLabel = (t, c) => (hasEnglish(`cat.${c}`) ? t(`cat.${c}`) : CAT_LABELS[c] || c);
+// The chip ABOVE a question (28 Oct 2026). cat:"UCL" is the bank's bucket for all
+// European club football: 224 of its questions are about the UEFA Cup, Europa
+// League or Cup Winners' Cup, so a chip reading "Champions League" over "Which
+// competition did PSV win in 1978?" pointed players at the wrong answer (Alex
+// caught it in Daily 7). The chip says "Europe"; the topic keeps its name.
+export const chipLabel = (t, c) => (c === "UCL" ? t("cat.chip.UCL") : catLabel(t, c));
 const CATS = ["All","WorldCup","Euros","UCL","PL","LaLiga","Bundesliga","SerieA","Ligue1","Transfers","Managers","Records","Legends"];
 
 
@@ -944,108 +955,26 @@ export const LEAGUE_QUIZ_BY_CAT = Object.fromEntries(LEAGUE_QUIZ_SECTIONS.flatMa
 
 
 
-// ─── SOUND EFFECTS ────────────────────────────────────────────────────────────
-// Pure Web-Audio sound synthesis. Honours biq_settings.sound and no-ops on
-// environments without AudioContext or with the setting disabled. Reuses a
-// single AudioContext across calls (iOS Safari limits to ~4 concurrent ones).
-let _audioCtx = null;
-function _getAudioCtx() {
+// ⚠️ ANDROID HAS NO navigator.share (28 Oct 2026, Android 16 WebView). A dozen
+// share buttons (Daily 7, Top 10, Trail, Mystery, Draft, invites, rooms) call
+// only navigator.share, so on the Android app every one of them fell back to
+// "copied" and the share sheet never opened. Give the WebView one, backed by
+// the native sheet. Text and link only: no canShare, so file shares keep their
+// own native path (shareCard → ShareCardPlugin). iOS's WKWebView has its own
+// navigator.share and is left alone.
+if (IS_NATIVE && typeof navigator !== "undefined" && typeof navigator.share !== "function") {
   try {
-    if (_audioCtx) return _audioCtx;
-    const AC = typeof window !== "undefined" && (window.AudioContext || window.webkitAudioContext);
-    if (!AC) return null;
-    _audioCtx = new AC();
-    return _audioCtx;
-  } catch { return null; }
-}
-export function playSound(type) {
-  try {
-    // Honour user sound preference (read synchronously so we can be called from anywhere)
-    let enabled = false;
-    try {
-      const raw = localStorage.getItem("biq_settings");
-      if (raw) enabled = JSON.parse(raw)?.sound === true;
-    } catch {}
-    if (!enabled) return;
-
-    const ctx = _getAudioCtx();
-    if (!ctx) return;
-    // iOS Safari often keeps the context in "suspended" state until a user gesture.
-    // Calling resume() inside a touch handler (where playSound usually fires) is safe.
-    if (ctx.state === "suspended" && typeof ctx.resume === "function") {
-      try { ctx.resume(); } catch {}
-    }
-    const now = ctx.currentTime;
-
-    // Helper: schedule a single sine note with a short attack + exponential release
-    const note = (freq, start, dur, vol = 0.13, wave = "sine") => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = wave;
-      osc.frequency.value = freq;
-      const t0 = now + start;
-      const tAttackEnd = t0 + 0.02;
-      const tEnd = t0 + dur;
-      gain.gain.setValueAtTime(0.0001, t0);
-      gain.gain.exponentialRampToValueAtTime(vol, tAttackEnd);
-      gain.gain.exponentialRampToValueAtTime(0.0001, tEnd);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(t0);
-      osc.stop(tEnd + 0.05);
+    navigator.share = async ({ title, text, url } = {}) => {
+      try {
+        await CapShare.share({ title, text, url });
+      } catch (e) {
+        // Callers treat AbortError as "sheet dismissed", exactly as on the web.
+        if (/cancel/i.test(e?.message || "")) throw new DOMException("Share canceled", "AbortError");
+        throw e;
+      }
     };
-
-    if (type === "correct") {
-      // Two-tone ascending chime: C5 → G5, ~600ms total
-      note(523.25, 0,    0.28, 0.15);
-      note(783.99, 0.22, 0.38, 0.15);
-    } else if (type === "wrong") {
-      // Soft sine glide 300 → 200Hz over 400ms — gentle, not harsh
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(300, now);
-      osc.frequency.linearRampToValueAtTime(200, now + 0.4);
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.09, now + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.45);
-    } else if (type === "streak") {
-      // C5 → E5 → G5, each 150ms, overlapping slightly
-      note(523.25, 0.00, 0.22, 0.14);
-      note(659.25, 0.12, 0.22, 0.14);
-      note(783.99, 0.24, 0.30, 0.14);
-    } else if (type === "daily_complete") {
-      // Warm celebratory C-major chord with 800ms soft fade
-      note(523.25, 0, 0.8, 0.09);
-      note(659.25, 0, 0.8, 0.09);
-      note(783.99, 0, 0.8, 0.09);
-    } else if (type === "levelup") {
-      // Ascending 4-note fanfare, 120ms each
-      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-        note(freq, i * 0.12, 0.20, 0.13);
-      });
-    } else if (type === "soft") {
-      // Sprint #78 UU1: short UI-tap tick. Used by local multiplayer's
-      // option-pick handler. Was previously falling through to the silent
-      // path because no "soft" case existed — soft taps had no audio
-      // feedback even with sound enabled. ~60ms 700Hz, low volume.
-      note(700, 0, 0.06, 0.08, "triangle");
-    }
   } catch {}
 }
-
-// Sprint #87: native iOS haptics via @capacitor/haptics. navigator.vibrate is a
-// silent no-op on iOS WKWebView so the web-only path produced zero feedback on
-// the installed app. On native (Capacitor.isNativePlatform()) we dispatch to the
-// system Taptic engine; on the web we keep the navigator.vibrate fallback so
-// Android Chrome / installed Android PWAs still buzz.
-// Sprint #89 #2: gated on settings.haptics (defaults true). Read synchronously
-// from localStorage so the helper can be called from anywhere (matches the
-// playSound pattern at line 3082). OS-level haptics disabled silently no-ops
-// inside the plugin itself, so no extra guard needed for that case.
-export const IS_NATIVE = typeof Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
 function challengeEventOnce(kind, ch) {
   // Robots must not vote here either. All three record_challenge_event writes
   // go through this helper, so the gate belongs IN it rather than at each call
@@ -1084,163 +1013,27 @@ function removePrebootOnboard() {
   } catch {}
 }
 
-// A stable per-device id so a funnel can be followed across a visit without
-// anything resembling a fingerprint. Random, client-issued, and it never
-// leaves localStorage — same approach challenge_events already uses.
-function visitorId() {
-  try {
-    let v = localStorage.getItem("biq_vid");
-    if (!v) { v = (crypto?.randomUUID?.() || String(Math.random()).slice(2)); localStorage.setItem("biq_vid", v); }
-    return /^[0-9a-f-]{36}$/i.test(v) ? v : null;
-  } catch { return null; }
-}
-
-// ⚠️ This used to fire into Clarity and NOWHERE ELSE, which made it
-// write-only: Clarity's export API returns only its own auto-detected smart
-// events, so a query for onboard-done-answered / first-game-started /
-// clubq-play comes back empty. Three features shipped in August that could
-// not be read, and every recommendation about them in scouting report #2 was
-// therefore reasoning rather than measurement.
-// Now it fans out to BOTH — Clarity keeps session replay lined up with the
-// numbers, and funnel_events makes the numbers answerable in SQL forever.
-// Fire-and-forget on purpose: measurement must never delay or break a game.
-// ⚠️ SYNTHETIC TRAFFIC MUST NOT REACH THE FUNNEL.
-//
-// Measured 2026-08-21, three hours after funnel_events went live: 905 rows,
-// of which 767 were `first-game-started` at ~250/hour, exactly one per
-// visitor, arriving in precisely the hours the Playwright suite was running —
-// against a real DAU of 13-17. One row was literally named `probe-e2e`.
-//
-// The cause is a seam, not a bug in anything: the e2e suite runs against
-// localhost:4173, localhost reads .env.local, and .env.local points at
-// PRODUCTION Supabase because there is no staging project. So every local run
-// and every CI run wrote test events into the table the product's decisions
-// are supposed to come from. A green suite was quietly corrupting the
-// instrument it shares a repo with.
-//
-// This is worse than having no data, because it looks like data. 767 synthetic
-// rows would have drowned real signal at a ratio of roughly 50:1 and made
-// every funnel number read as a triumph.
-//
-// Two signals, both deliberately conservative — when in doubt, DON'T record:
-//   navigator.webdriver  is set by every automation driver (Playwright,
-//                        Selenium, Puppeteer) and by nothing else.
-//   localhost/127.0.0.1  is Alex's own dev browsing, which is not a user
-//                        journey either and never should have counted.
-// Native builds have neither, so real app traffic is untouched.
-function isSyntheticTraffic() {
-  try {
-    if (IS_NATIVE) return false;
-    if (typeof navigator !== "undefined" && navigator.webdriver === true) return true;
-    const h = typeof location !== "undefined" ? location.hostname : "";
-    return h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h.endsWith(".local");
-  } catch { return false; }
-}
-
-// ⭐ The ONE exception to "native sends the name and nothing else" (below):
-// the rating funnel, and only a fixed set of low-cardinality words.
-//
-// ASO deep-dive, 2026-10-04: native logged 103 rate-prompt-shown against 668
-// rate-prompt-skipped in five weeks, skips rising every week — and every one of
-// those rows reads {native, anon}, so nobody can say whether the cooldown, a
-// bad moment or a screen change eats 87% of the happy moments. Ratings are
-// also per STORE, and the rows could not even tell iOS from Android.
-//
-// Why this still keeps the promise in privacy §4 ("no identifier of any
-// kind… nothing links one count to another"): every value here is one word
-// from a short closed list (cooldown, footle, ios…). There is no id, no club
-// slug, no surface path, no number — nothing that varies per person, so no
-// combination of these fields can single anyone out or join two rows. Keys
-// outside the list, and values that are not a short lowercase word, are
-// dropped rather than trusted, so a future call site cannot widen it by
-// accident.
-const NATIVE_RATE_EVENT = /^rate-(prompt|link)-/;
-const NATIVE_RATE_KEYS = ["reason", "trigger", "engine", "store", "surface"];
-const NATIVE_RATE_WORD = /^[a-z][a-z-]{0,23}$/;
-function nativeRateMeta(name, meta) {
-  const out = { native: true, anon: true };
-  if (!NATIVE_RATE_EVENT.test(name)) return out;
-  try {
-    const p = Capacitor.getPlatform?.();
-    if (p === "ios" || p === "android") out.platform = p;
-    if (meta) for (const k of NATIVE_RATE_KEYS) {
-      const v = meta[k];
-      if (typeof v === "string" && NATIVE_RATE_WORD.test(v)) out[k] = v;
-    }
-  } catch {}
-  return out;
-}
-
-// Exported so lazy screens can report into the SAME funnel rather than growing
-// their own. OnlineMultiplayer needs it for the rivalry prompt; scouting report
-// #4's item 5 was "instrument the rating funnel — it has ZERO loopEvents", and
-// the way that happens is a feature shipping in a file that could not reach
-// this function.
-export function loopEvent(name, meta) {
-  // Gate BOTH sinks. Clarity session replays of a robot are as useless as
-  // funnel rows from one, and Clarity's own quota is finite.
-  if (isSyntheticTraffic()) return;
-  try {
-    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.clarity === "function") window.clarity("event", name);
-  } catch {}
-  // PostHog mirror (web only, consent-gated: biqTrack exists only once
-  // public/ph.js has been allowed to load).
-  try {
-    if (!IS_NATIVE && typeof window !== "undefined" && typeof window.biqTrack === "function") window.biqTrack(name, meta);
-  } catch {}
-  try {
-    // ⚠️ NATIVE IS COUNTED, BUT NEVER IDENTIFIED — and the privacy policy says
-    // so in those words. Decision recorded 2026-08-23 (Alex, from three
-    // options: guard native entirely / anonymous counts / full funnel).
-    //
-    // The guard above covers Clarity but NOT this RPC, so shipping 1.6.5 as it
-    // stood would have made three separate declarations false at once: privacy
-    // §4's "does not measure how you use it… this is enforced in code", the
-    // App Store privacy label, and the Play Data safety form. Nobody could
-    // have caught it after the fact either — funnel_events holds zero native
-    // rows precisely because no shipped build has ever had this code, so the
-    // contradiction only appears once it is too late to stop.
-    //
-    // So native sends the event NAME and nothing else: no biq_vid, no meta
-    // (the rating funnel's closed word list in nativeRateMeta is the only
-    // exception, and it carries no identifier either).
-    // We learn which modes get used and where people stop; we cannot follow a
-    // person, because there is no key to follow them by. Dropping meta as well
-    // as the id is deliberate — meta carries club slugs and surfaces, and a
-    // rich enough meta rebuilds a fingerprint even without an explicit id.
-    const anon = IS_NATIVE === true;
-    supabase.rpc("record_funnel_event", {
-      p_event: name,
-      p_meta: anon
-        ? nativeRateMeta(name, meta)
-        : (meta ? { ...meta, native: false } : { native: false }),
-      p_visitor: anon ? null : visitorId(),
-      // ⚠️ Belt AND braces, and the braces are the load-bearing half. Passing
-      // p_visitor: null is not enough on its own — the function also records
-      // auth.uid(), so a signed-in native player would still be named by their
-      // ACCOUNT id, a stronger identifier than the one we just withheld.
-      // p_anon makes the server null both, so the guarantee survives a stale
-      // bundle or a future call site that forgets. See
-      // supabase/migrations/v1_6_funnel_anon_native_and_rate_cap.sql.
-      p_anon: anon,
-    }).then(({ error }) => {
-      // ⚠️ supabase.rpc() RESOLVES on error rather than rejecting — a bare
-      // .catch() would silently swallow every failure, which is exactly how
-      // two write paths were lost before. Check the error explicitly.
-      if (error) Sentry.addBreadcrumb({ category: 'funnel', message: `record_funnel_event failed: ${error.message}`, level: 'warning' });
-    });
-  } catch {}
-}
 // Belt-and-braces for index.html's head script: re-apply the native-app class
 // (hides the desktop rail and the static site header inside the native shell).
 // Covers any case where the bridge wasn't injected before the head script ran.
 if (IS_NATIVE) { try { document.documentElement.classList.add("native-app"); } catch {} }
 
-// ── MATES' LEAGUES: WEB ONLY IN PHASE 1 ──
-// Installed apps carry the web code they were built with, so phase 1 must not
-// reach them: every league surface is gated on this, detected the way the
-// rest of the app detects a native shell (capacitor: protocol, the
-// html.native-app class, or the bridge itself).
+// ── MATES' LEAGUES: ON EVERYWHERE (phase 2, 29 Oct 2026) ──
+// Phase 1 (16 Oct) was web only, and in 13 days nobody created a league: the
+// players are in the app (30-35 signed-in a week), and the web card only ever
+// showed to someone already in one. Every league surface now runs in the
+// native shell too; the next native build carries it. The /l/ Universal Link
+// stays OUT of apple-app-site-association until that build is live (an older
+// install would catch the link and land on Home); the Android intent filter
+// ships inside the build, so it is already in the manifest.
+// ⚠️ 10 Nov 2026: phase 2 added this flag but left the sheets, the table screen
+// and the result sync on LEAGUES_WEB (web only), so in the app "Start a league"
+// set state that nothing rendered and the player landed on Home. Found on the
+// simulator walk. Every LEAGUE gate reads LEAGUES_ON; only Stitch-up reads LEAGUES_WEB.
+const LEAGUES_ON = true;
+// Stitch-up is still web only: it is gated on this, detected the way the rest
+// of the app detects a native shell (capacitor: protocol, the html.native-app
+// class, or the bridge itself).
 const LEAGUES_WEB = (() => {
   try {
     return !IS_NATIVE && window.location.protocol !== "capacitor:" && !document.documentElement.classList.contains("native-app");
@@ -1301,67 +1094,6 @@ export function FootleGetAppCTA({ style }) {
 // checked at call time, same lazy-read pattern as haptic()'s settings gate.
 export function CB_MODE() {
   try { return document.documentElement.classList.contains("biq-cb"); } catch { return false; }
-}
-
-// ⚠️ EVERY CALL IS A NATIVE BRIDGE ROUND TRIP, AND THEY SERIALISE.
-// From Alex's device log while tab switching felt slow — ~57 of these back to
-// back, each a full JS -> native -> JS hop, with
-// `WebProcessProxy::didBecomeUnresponsive` in the same log:
-//
-//     ⚡️ To Native ->  Haptics impact 120633433
-//     ⚡️ TO JS undefined
-//     ⚡️ To Native ->  Haptics impact 120633434
-//     ⚡️ TO JS undefined      … x57
-//
-// No amount of browser profiling can see this: there is no bridge in Chrome,
-// which is why three rounds of CSS measurement kept saying the app was fine
-// while the phone said otherwise. Capacitor builds a fresh
-// UIImpactFeedbackGenerator per call and iOS charges latency for one that has
-// not been prepare()d, so a burst of taps queues a burst of hops in front of
-// the UI work.
-//
-// 55ms floor for the LIGHT taps only. Two impacts closer together than that
-// are not distinguishable by a fingertip anyway, so nothing is lost — while a
-// spammed tab bar or a fast Footle typist stops flooding the bridge. The
-// meaningful, once-per-moment haptics (correct, wrong, levelup, hardCorrect)
-// are deliberately exempt: those must never be swallowed.
-let _lastLightHapticAt = 0;
-export function haptic(type) {
-  try {
-    if (type === "soft" || type === "select") {
-      const now = Date.now();
-      if (now - _lastLightHapticAt < 55) return;
-      _lastLightHapticAt = now;
-    }
-    let enabled = true;
-    try {
-      const raw = localStorage.getItem("biq_settings");
-      if (raw) {
-        const v = JSON.parse(raw)?.haptics;
-        enabled = v !== false; // default-on: missing/undefined => true
-      }
-    } catch {}
-    if (!enabled) return;
-    if (IS_NATIVE) {
-      if (type === "correct") Haptics.impact({ style: ImpactStyle.Medium });
-      else if (type === "wrong") Haptics.notification({ type: NotificationType.Error });
-      else if (type === "soft" || type === "select") Haptics.impact({ style: ImpactStyle.Light });
-      else if (type === "heavy") Haptics.impact({ style: ImpactStyle.Heavy });
-      else if (type === "hardCorrect") Haptics.notification({ type: NotificationType.Success });
-      else if (type === "levelup") {
-        Haptics.notification({ type: NotificationType.Success });
-        setTimeout(() => { try { Haptics.impact({ style: ImpactStyle.Heavy }); } catch {} }, 220);
-      }
-      return;
-    }
-    if (typeof navigator === "undefined" || !navigator.vibrate) return;
-    if (type === "correct") navigator.vibrate(40);
-    else if (type === "wrong") navigator.vibrate([30, 20, 30]);
-    else if (type === "soft" || type === "select") navigator.vibrate(15);
-    else if (type === "heavy") navigator.vibrate(100);
-    else if (type === "hardCorrect") navigator.vibrate([30, 40, 30, 40, 60]);
-    else if (type === "levelup") navigator.vibrate([50, 30, 50, 30, 100]);
-  } catch {}
 }
 
 /**
@@ -1509,7 +1241,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
         <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>{t("hs.pts")}</span></div>
       </div>
       <div className="q-card">
-        <div className="q-tag">{catLabel(t, q.cat)}</div>
+        <div className="q-tag">{chipLabel(t, q.cat)}</div>
         <div className="q-text">{qv.q}</div>
       </div>
       <div className="opts">
@@ -1686,10 +1418,11 @@ function TrueFalseEngine({ questions, onComplete, onBack, onHowToPlay }) {
         <div className="q-text" style={{fontSize:18,lineHeight:1.5}}>{qv?.s || qv?.q}</div>
       </div>
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginTop:16}}>
-        <button onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
+        {/* Keyed by statement, so the last answer's green/red does not fade over the next one (as 13cd7b49 did for the other quizzes). */}
+        <button key={`${idx}-true`} onClick={() => answer(true)} disabled={!!picked} style={tfStyle(true)}>
           {"✓ " + t("quiz.true")}
         </button>
-        <button onClick={() => answer(false)} disabled={!!picked} style={tfStyle(false)}>
+        <button key={`${idx}-false`} onClick={() => answer(false)} disabled={!!picked} style={tfStyle(false)}>
           {"✗ " + t("quiz.false")}
         </button>
       </div>
@@ -1769,6 +1502,11 @@ export function getGuestDisplayName() {
   const name = `${GUEST_ADJECTIVES[Math.floor(Math.random() * GUEST_ADJECTIVES.length)]} ${GUEST_NOUNS[Math.floor(Math.random() * GUEST_NOUNS.length)]} ${Math.floor(Math.random() * 90) + 10}`;
   try { localStorage.setItem(GUEST_NAME_KEY, name); } catch {}
   return name;
+}
+/** The guest name if one was ever made, WITHOUT making one: the profile reads
+    this so a guest already named in a league or a room sees that name. */
+export function peekGuestDisplayName() {
+  try { return localStorage.getItem(GUEST_NAME_KEY) || ""; } catch { return ""; }
 }
 export function setGuestDisplayName(name) {
   const v = String(name || "").trim().slice(0, 20);
@@ -2100,50 +1838,6 @@ export async function shareCard(type, data, opts = {}) {
 // ─── CONFETTI ─────────────────────────────────────────────────────────────────
 // ─── COUNT-UP ANIMATION ───────────────────────────────────────────────────────
 // Animates a number from 0 to `value` over `duration` ms. Triggers haptic on finish.
-export function Confetti() {
-  const canvasRef = useRef(null);
-  useEffect(() => {
-    // Honor prefers-reduced-motion (vestibular disorders / migraine): skip the
-    // full-viewport confetti animation entirely. (medical, accessibility.)
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    // visualViewport reflects the actual visible area (excludes a collapsed
-    // mobile URL bar). innerWidth/Height fall back for older WebViews.
-    canvas.width = window.visualViewport?.width ?? window.innerWidth;
-    canvas.height = window.visualViewport?.height ?? window.innerHeight;
-    const pieces = Array.from({length:80}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height - canvas.height,
-      w: Math.random() * 10 + 5,
-      h: Math.random() * 6 + 3,
-      r: Math.random() * Math.PI * 2,
-      dr: (Math.random() - 0.5) * 0.2,
-      vy: Math.random() * 3 + 2,
-      vx: (Math.random() - 0.5) * 2,
-      color: ["#58CC02","#FFC800","#FF4B4B","#1CB0F6","#CE82FF","#FF9600"][Math.floor(Math.random()*6)],
-    }));
-    let alive = true;
-    const draw = () => {
-      if (!alive) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pieces.forEach(p => {
-        p.y += p.vy; p.x += p.vx; p.r += p.dr;
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
-        ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - p.y / canvas.height);
-        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-        ctx.restore();
-      });
-      if (pieces.some(p => p.y < canvas.height)) requestAnimationFrame(draw);
-    };
-    requestAnimationFrame(draw);
-    return () => { alive = false; };
-  }, []);
-  return <canvas ref={canvasRef} aria-hidden="true" style={{position:"fixed",top:0,left:0,pointerEvents:"none",zIndex:500,width:"100%",height:"100%"}} />;
-}
-
-
 // ─── DAILY SOCIAL PROOF ───────────────────────────────────────────────────────
 // Shows "You beat X% of players today" based on mock score distribution.
 // Uses seeded randomness so the number doesn't change between views.
@@ -2209,6 +1903,27 @@ export function ReviewQuestionCard({ a, index }) {
   const { q, type, cat, options, userIdx, correctIdx, userText, correctText, isCorrect, timedOut } = useQuestionText().answer(a);
   // A true-or-false question stores its options as TRUE / FALSE.
   const optLabel = (opt) => (type === 'tf' && (opt === 'TRUE' || opt === 'FALSE') ? t(opt === 'TRUE' ? 'quiz.true' : 'quiz.false') : opt);
+  // THE CALM LIST (11 Nov 2026). Each question was a card in a red or green
+  // border with all four options stacked and YOUR PICK / CORRECT pills: seven
+  // of them made the oldest-looking screen in the app, a day after the finish
+  // screen's "N you missed" list was tidied. Same row here: the right answer
+  // leads in green, a wrong pick is a grey "You said", and a tick in place of
+  // the number marks the ones they got.
+  if ((type === 'mcq' || type === 'tf') && Array.isArray(options)) {
+    const right = options[correctIdx] != null ? optLabel(options[correctIdx]) : correctText;
+    const said = !isCorrect && userIdx != null && options[userIdx] != null ? optLabel(options[userIdx]) : null;
+    return (
+      <div className="wr-item">
+        <span className="wr-n" aria-hidden="true">{isCorrect ? <Check size={13} strokeWidth={3} style={{ color: "var(--green-ink)", verticalAlign: "-2px" }} /> : index + 1}</span>
+        <div className="wr-body">
+          <div className="wr-q">{q}</div>
+          <div className="wr-a">{right}</div>
+          {said && <div className="wr-user">{t('rs.youSaid', { a: said })}</div>}
+          {!isCorrect && !said && timedOut && <div className="wr-user">{t('rw.timedOutLine')}</div>}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`dr-q ${isCorrect ? 'dr-q-right' : 'dr-q-wrong'}`}>
       <div className="dr-q-head">
@@ -2426,7 +2141,7 @@ function NotificationCenter({ open, requests, invites = [], onClose, onRespond, 
         </div>
         {isEmpty ? (
           <div className="notif-empty">
-            <div className="notif-empty-ic" aria-hidden="true">🔔</div>
+            <div className="notif-empty-ic" aria-hidden="true"><Bell size={26} strokeWidth={1.9} /></div>
             <div className="notif-empty-t">{tl("nc.empty")}</div>
             <div className="notif-empty-s">{tl("nc.emptySub")}</div>
           </div>
@@ -3228,7 +2943,7 @@ function AppInner() {
   // Stitch-up: the link's token (null = the builder). Web only (LEAGUES_WEB).
   const [stitchToken, setStitchToken] = useState(null);
   const [leagueSheet, setLeagueSheetRaw] = useState(() => {
-    if (!LEAGUES_WEB) return null;
+    if (!LEAGUES_ON) return null;
     const v = readLeagueUiInline();
     return v && (v.kind === "join" || v.kind === "create") ? v : null;
   });
@@ -3242,7 +2957,7 @@ function AppInner() {
   // A join or a create announces the table (lib/leagues.js announceLeagueOpen),
   // possibly from a sheet that this remount replaced: honour it either way.
   useEffect(() => {
-    if (!LEAGUES_WEB) return undefined;
+    if (!LEAGUES_ON) return undefined;
     const v = readLeagueUiInline();
     if (v && v.kind === "open" && v.id) openLeagueTable(v.id);
     const onOpen = (e) => openLeagueTable(e?.detail?.id);
@@ -3261,6 +2976,10 @@ function AppInner() {
       try { delete window.__biqOpenLeague; } catch {}
     };
   }, [openLeagueTable, setLeagueSheet]);
+  const openLeagueCreateFromHome = useCallback(() => {
+    loopEvent("league-create-open", { from: "home" });
+    setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
+  }, [setLeagueSheet]);
   const openLeagueCreateFromDaily = useCallback(() => {
     loopEvent("league-create-open", { from: "daily" });
     setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
@@ -3278,13 +2997,13 @@ function AppInner() {
   const leagueDisplayName = useMemo(() => {
     const u = authProfile?.username;
     if (user && !isAnonUser && u && !/^player_/i.test(u)) return u;
-    return LEAGUES_WEB ? getGuestDisplayName() : "";
+    return LEAGUES_ON ? getGuestDisplayName() : "";
   }, [user, isAnonUser, authProfile?.username]);
   // Results that waited for a session go once there is one, sent with the
   // session's own token (lib/leagueResults.js, reached through lib/leagues.js).
   const leagueUid = user?.id || null;
   useEffect(() => {
-    if (!LEAGUES_WEB || !leagueUid) return;
+    if (!LEAGUES_ON || !leagueUid) return;
     import("./lib/leagues.js").then((m) => {
       m.setLeagueTokenSource(async () => {
         try { return (await supabase.auth.getSession()).data.session?.access_token || null; } catch { return null; }
@@ -3403,7 +3122,7 @@ function AppInner() {
       if (path === "/footle" || path === "/footle/" || /^\/c\/./.test(path)) return true;
       // A league invite (/l/TOKEN, or ?league= from api/l.js) shows its join
       // screen first: the card promised "free", not a tour.
-      if (LEAGUES_WEB && (/^\/l\/./.test(path) || /[?&](league|leaguenew)=/.test(BOOT_SEARCH))) return true;
+      if (LEAGUES_ON && (/^\/l\/./.test(path) || /[?&](league|leaguenew)=/.test(BOOT_SEARCH))) return true;
       // The code itself survives the deferral: the pendingJoinCode initializer
       // below persists it to localStorage (biq_pending_join) before stripping
       // the path, so the join modal / auto-join still fire. Validated through
@@ -3580,7 +3299,7 @@ function AppInner() {
   // closed.
   const [challengeResult, setChallengeResult] = useState(null);
   // "Make it a league?" was offered under the Daily 7 head-to-head.
-  useEffect(() => { if (LEAGUES_WEB && challengeResult) loopEvent("league-offer-shown", { game: "daily7" }); }, [challengeResult]);
+  useEffect(() => { if (LEAGUES_ON && challengeResult) loopEvent("league-offer-shown", { game: "daily7" }); }, [challengeResult]);
   // Social-webview escape hatch (task #22, Alex steer 2026-07-17: "if people
   // share their result it is okay to push the app"). A /c/ challenge tapped
   // inside Snapchat/IG opens their in-app browser, which swallows the Universal
@@ -3628,6 +3347,17 @@ function AppInner() {
             setPendingChallenge(ch);
             setChallengeIntro(true);
           }
+          return;
+        }
+        // Mates' league invite — balliq.app/l/CODE.Name.Inviter (api/l.js on
+        // the web). The token goes to the join sheet exactly as the web boot
+        // hands it over; the sheet validates it (lib/leagues.js).
+        const lm = u.pathname.match(/^\/l\/([^/?#]+)/);
+        if (lm && LEAGUES_ON) {
+          let tok = lm[1];
+          try { tok = decodeURIComponent(tok); } catch { /* keep it raw */ }
+          try { localStorage.setItem("biq_league_invite", JSON.stringify({ token: tok, at: Date.now() })); } catch {}
+          setLeagueSheet({ kind: "join", token: tok });
         }
       } catch {}
     };
@@ -3645,6 +3375,61 @@ function AppInner() {
   const [tab, setTab] = useState("home");
   // 4th usage counter: opening the Profile tab is the stats-appetite signal.
   useEffect(() => { if (tab === 'profile') bumpUsage('stats-view'); }, [tab]);
+  // ── EACH TAB KEEPS ITS OWN SCROLL (Alex, 7 Nov 2026: "can we make tab
+  // switching smoother and faster?"). The four panes share the page scroll and
+  // a hidden pane is display:none, so leaving a long tab clamped the page to
+  // the top and coming back landed there too: scroll Home, peek at History,
+  // return, and Home was at the top again (measured: 420 → 0 → 0). Every
+  // scroll is noted against the tab it happened on, and a tab switch puts the
+  // page back where that tab was, in a layout effect, before the frame paints.
+  // A switch that comes with a SCREEN change (back from a game) is left to the
+  // [screen] effect below, which puts Home at the top on purpose (QA S-03).
+  // The return counter (lib/cohort.js): one "app-day" event per calendar day,
+  // at start and whenever the app comes back to the foreground (most people
+  // resume rather than relaunch). Install week + bucket + league flag only.
+  useEffect(() => {
+    const send = () => { const e = appDayEvent(); if (e) loopEvent(e.name, e.meta); };
+    send();
+    const onVis = () => { if (document.visibilityState === "visible") send(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+  const tabScrollRef = useRef({});
+  const tabNowRef = useRef(tab);
+  const tabScreenRef = useRef(screen);
+  useEffect(() => {
+    const note = () => { tabScrollRef.current[tabNowRef.current] = window.scrollY; };
+    window.addEventListener("scroll", note, { passive: true });
+    return () => window.removeEventListener("scroll", note);
+  }, []);
+  useLayoutEffect(() => {
+    const tabChanged = tabNowRef.current !== tab;
+    const screenChanged = tabScreenRef.current !== screen;
+    tabNowRef.current = tab;
+    tabScreenRef.current = screen;
+    if (!tabChanged || screenChanged || screen !== "home") return;
+    const y = tabScrollRef.current[tab] || 0;
+    try { window.scrollTo({ top: y, left: 0, behavior: "instant" }); } catch { try { window.scrollTo(0, y); } catch {} }
+    // A restore is not the player scrolling down: tell the tab bar, or its
+    // hide-on-scroll would tuck it away under the finger that just tapped it
+    // (hooks/useScrollAwareTabBar.js).
+    try { window.dispatchEvent(new Event("biq:tab-restore")); } catch {}
+  }, [tab, screen]);
+  // Tapping the tab you are on scrolls it to the top, as phone apps do.
+  // ⚠️ THE SWITCH STAYS ON CLICK, NOT TOUCH-DOWN (tried and reverted, 7 Nov
+  // 2026). Switching on pointerdown saves the length of a tap, but a tab that
+  // opens a full-screen sheet on arrival (Profile's sample card for a player
+  // with no games) then receives the click of the same finger lifting: the
+  // test tapped Profile and started a Daily 7. The switch itself costs about
+  // 30-40ms of work at phone speed (measured), so there was little to win.
+  // No haptic here, ever (tests/unit/tab-switch-no-haptic.test.js).
+  const selectTab = useCallback((id) => {
+    if (id === tabNowRef.current) {
+      try { window.scrollTo({ top: 0, left: 0, behavior: "smooth" }); } catch { try { window.scrollTo(0, 0); } catch {} }
+      return;
+    }
+    setTab(id);
+  }, []);
   const [profile, setProfileState] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_profile");
@@ -3979,6 +3764,9 @@ function AppInner() {
   // when the RPC/guest tick reports an un-shielded break stamped today;
   // consumed by repairLoginStreak below.
   const [streakRepair, setStreakRepair] = useState(null);
+  // What the account's streak record held at the last hydrate; read by the
+  // credit effect beside the hydrate handler (needsTodayCredit, lib/streak.js).
+  const [hydratedStreak, setHydratedStreak] = useState(null);
 
   // Android widget sync (1.6.2). done-count reads per-mode completion the
   // same way the Daily hub does, but from storage directly so this works
@@ -4012,7 +3800,7 @@ function AppInner() {
   }, [dailyDone, loginStreak, top10Tick]);
   useEffect(() => { syncDailyWidget(); }, [syncDailyWidget]);
 
-  const tickLoginStreak = useCallback(async () => {
+  const tickLoginStreak = useCallback(async ({ onPanel = false } = {}) => {
     // Calendar day in the USER'S timezone (days since epoch of the local
     // date). The previous UTC day (Date.now()/DAY_MS client-side,
     // current_date server-side) broke streaks for anyone west of UTC playing
@@ -4126,11 +3914,19 @@ function AppInner() {
       haptic("heavy");
       playSound("streak");
     } else if (result.ticked && result.streak > 1) {
-      if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
-      setStreakToast(result.streak);
+      // ONE TELLING (11 Nov 2026). A finished daily lands on a panel whose
+      // first row IS the streak ("3-day daily streak"); the gold toast said it
+      // again on top of that row, and on day 3, 7, 30 and 100 the milestone
+      // toast below made it three. The toast now shows only where no panel
+      // does (the credit after a sign-in), and never beside a milestone's.
+      const milestone = [3, 7, 30, 100].includes(result.streak);
+      if (!onPanel && !milestone) {
+        if (streakToastTimerRef.current) clearTimeout(streakToastTimerRef.current);
+        setStreakToast(result.streak);
+        streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
+      }
       haptic("heavy");
       playSound("streak");
-      streakToastTimerRef.current = setTimeout(() => setStreakToast(null), TIMINGS.STREAK_TOAST);
     } else if (result.streak < prevKnownStreak && prevKnownStreak >= 3) {
       // The streak died since this device last ticked (normally streak === 1
       // after a reset; a stale multi-device cache can land higher). Without
@@ -4899,8 +4695,12 @@ function AppInner() {
       weekEpoch: currentWeekEpoch,
       catStats,
       shieldsUsed: stats.shieldsUsed || 0,
-      // Only count standard quiz scores toward bestScore (max 10)
-      bestScore: isSpecialMode ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score),
+      // Only count standard quiz scores toward bestScore (max 10). Survival is
+      // not one: its score is the length of the run, so an eleven-answer run
+      // wrote 11 here and a friend's profile read "Best score 11/10" (seen on
+      // the simulator, 10 Nov 2026). It also handed out the "perfect" badge.
+      // The cap heals a stored value above 10 on the next save.
+      bestScore: Math.min(10, (isSpecialMode || mode === "survival") ? (stats.bestScore || 0) : Math.max(stats.bestScore || 0, newResult.score)),
       bestStreak: Math.max(stats.bestStreak || 0, newStreak),
       // Both halves of the accuracy ratio move together or not at all — see
       // scoreIsCorrectCount. Counting one and not the other is how the
@@ -5341,12 +5141,12 @@ function AppInner() {
         setScreen("wordle");
         return;
       }
-      // Mates' leagues (web only): /l/TOKEN or ?league=TOKEN (api/l.js) opens
-      // the join screen; ?leaguenew=SEED, from "Make it a league?" on a static
-      // island, opens the create sheet. The /l/ path is NOT in the deep-link
-      // files on purpose (spec section 10): old app builds would catch it.
+      // Mates' leagues: /l/TOKEN or ?league=TOKEN (api/l.js) opens the join
+      // screen; ?leaguenew=SEED, from "Make it a league?" on a static island,
+      // opens the create sheet. In the native shell the same link arrives
+      // through the appUrlOpen capture below.
       try {
-        if (LEAGUES_WEB) {
+        if (LEAGUES_ON) {
           const lsp = new URLSearchParams(window.location.search);
           const pathTok = (window.location.pathname.match(/^\/l\/([^/?#]+)/) || [])[1];
           let lt = lsp.get("league");
@@ -5612,20 +5412,23 @@ function AppInner() {
     try {
       const ws = readWordleTodayStatus();
       if (ws.kind === "ready" || ws.kind === "in-progress") {
-        nextUp.push({ ...(ws.kind === "in-progress" ? { key: "footle", name: tl("dd.contToday", { g: "Footle" }) } : today("footle", "Footle")),
+        nextUp.push({ ...(ws.kind === "in-progress" ? { key: "footle", name: tl("dd.contToday", { g: "Footle" }), open: true } : today("footle", "Footle")),
           icon: <span className="fh-tile fh-tile-green" style={{ "--fh-tile": "22px", borderRadius: 6 }} aria-hidden="true">F</span>,
           onTap: () => setScreen("wordle") });
       }
     } catch {}
-    if (!dailyDone) nextUp.push({ ...today("daily7", "Daily 7"), icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
+    // `open`: started and left, so the card's button says Continue as Home's row does (10 Nov 2026).
+    let d7Open = false; try { d7Open = dailyRunAnswered(dateToYMD(new Date())) > 0; } catch {}
+    if (!dailyDone) nextUp.push({ ...today("daily7", "Daily 7"), open: d7Open, icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
     try {
       if (getTrailAnswer() && !["won", "lost"].includes(loadTrailDay()?.status)) {
         nextUp.push({ ...today("trail", "Transfer Trail"), icon: <Route size={18} strokeWidth={2.2} />, onTap: () => setScreen("trail") });
       }
     } catch {}
     try {
-      if (isTop10Live() && loadTop10Day(dateToYMD(new Date()))?.status !== "done") {
-        nextUp.push({ ...today("top10", "Top 10"), icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
+      const t10 = isTop10Live() ? loadTop10Day(dateToYMD(new Date())) : null;
+      if (isTop10Live() && t10?.status !== "done") {
+        nextUp.push({ ...today("top10", "Top 10"), open: (t10?.picks?.length || 0) > 0, icon: <ListOrdered size={18} strokeWidth={2.2} />, onTap: () => setScreen("top10") });
       }
     } catch {}
     try {
@@ -5658,11 +5461,12 @@ function AppInner() {
         // already has, and it lived three screens away on Profile ("192 XP to
         // go"). It now rides the line the player reads for a minute (critique
         // 2026-09-08, F1). getLevelInfo already computes it — no new data.
-        line: ((stats?.gamesPlayed || 0) >= 2 || xp > 0) ? (() => {
-          const li = getLevelInfo(xp);
-          const toNext = li.nextLevel ? Math.max(0, (li.nextLevel.xpNeeded || 0) - xp) : 0;
-          return `${levelName(li.level.name)} · ${xp} XP${li.nextLevel && toNext > 0 ? tl("dd.toNext", { n: toNext, name: levelName(li.nextLevel.name) }) : ''}`;
-        })() : null,
+        // SHORT SINCE 11 Nov 2026. The line carried the level, the XP and the
+        // next rung ("Sunday League · 20 XP · 80 to Non-League") on top of the
+        // streak: three lines of dots and bold in the quiet footer, and the
+        // Save beside it had not been tapped once in 208 views. One thing a
+        // guest would lose, in one line; the rung lives on Profile.
+        line: xp > 0 ? `${xp} XP` : null,
       } : null,
       nextUp,
       // A promotion this daily finish earned; DailyDone shows it only under
@@ -5881,8 +5685,9 @@ function AppInner() {
       // finishing is the habit we want to reward.
       //
       // The RPC is idempotent per local day (lastDay === today → ticked:false),
-      // so solving all four modes ticks once and shows one toast.
-      tickLoginStreak();
+      // so solving all four modes ticks once. The finish panel states the
+      // streak, so the toast stays away (onPanel).
+      tickLoginStreak({ onPanel: true });
       // The daily_complete chord + heavy haptic used to be Daily 7's private
       // reward (it fires them in handleComplete, whose dispatch above carries
       // no `game` field — hence the named-game gate, which also keeps this
@@ -5915,6 +5720,30 @@ function AppInner() {
       // Never prompt over a LOSS (Trail/Mystery dispatch positive:false).
       // The event has carried the flag all along; the ask now honors it.
       const askedNotif = e?.detail?.positive === false ? false : maybePromptNotif();
+      // ⭐ TRAIL, TOP 10 AND MYSTERY ASK TOO (8 Nov 2026). Only Footle and the
+      // quiz results screen ever asked, so most daily play never met the
+      // rating sheet, and the app sat on seven UK ratings while the apps
+      // above it in "football quiz" had hundreds to thousands (7 Nov report).
+      // Same manners as Footle: native only, a good result (Trail and Mystery
+      // solved, Top 10 half or better), never over the notification sheet,
+      // and only for a phone that has played on three different days, so the
+      // ask reaches people who come back. lib/review.js and Apple still decide
+      // whether anything shows. Apple allows no "do you like it?" screen in
+      // front of its sheet, so the moment is the only lever.
+      if (IS_NATIVE && ["trail", "top10", "mystery"].includes(e?.detail?.game) && e.detail.positive === true) {
+        const trigger = e.detail.game;
+        Promise.resolve(askedNotif).then((notifOpened) => {
+          if (notifOpened) return;
+          if (playDays() < 3) return;
+          celebrationTimeoutsRef.current.push(setTimeout(() => {
+            if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger }); return; }
+            const blocked = nativeAskBlockedReason();
+            if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger }); return; }
+            loopEvent("rate-prompt-shown", { engine: "native", trigger });
+            maybeRequestReview();
+          }, 3500));
+        });
+      }
       if (e?.detail?.game === 'footle' && e.detail.won === true) {
         Promise.resolve(askedNotif).then((notifOpened) => {
           if (notifOpened) return;
@@ -6934,6 +6763,11 @@ function AppInner() {
       // already stored is still alive today; the RPC keeps ownership of
       // ticking it. `best` is taken straight through, since a personal best
       // does not expire.
+      // What the account held when it was read, for the credit check below
+      // (lib/streak.js needsTodayCredit). A new object every hydrate, so the
+      // effect runs once per sign-in or refresh, not once per render.
+      setHydratedStreak({ rec: (detail.loginStreak && typeof detail.loginStreak === 'object') ? detail.loginStreak : null,
+        scoredToday: !!(detail.dailyScores && typeof detail.dailyScores === 'object' && dateToYMD(new Date()) in detail.dailyScores) });
       if (detail.loginStreak && typeof detail.loginStreak === 'object') {
         const rec = detail.loginStreak;
         let xpVal = 0, used = 0;
@@ -6957,6 +6791,29 @@ function AppInner() {
     window.addEventListener('biq:hydrated', onHydrated);
     return () => window.removeEventListener('biq:hydrated', onHydrated);
   }, []);
+  // A DAILY FINISHED BEFORE THE ACCOUNT WAS THERE STILL COUNTS (10 Nov 2026).
+  // Played as a guest, then signed in: the account's streak never heard about
+  // today (see needsTodayCredit). An effect, not a line in the handler above:
+  // that handler is bound once and would call a tick that still thinks nobody
+  // is signed in. Runs once per hydrate; the RPC is idempotent per day.
+  useEffect(() => {
+    if (!hydratedStreak || !user?.id) return;
+    let playedToday = hydratedStreak.scoredToday || dailyDone;
+    if (!playedToday) {
+      try {
+        const ymd = dateToYMD(new Date());
+        const ws = readWordleTodayStatus();
+        const trail = JSON.parse(localStorage.getItem(`biq_trail_${ymd}`) || "null");
+        const mystery = JSON.parse(localStorage.getItem(`biq_mystery_${ymd}`) || "null");
+        playedToday = ws.kind === "won" || ws.kind === "lost"
+          || trail?.status === "won" || trail?.status === "lost"
+          || (isTop10Live() ? loadTop10Day(ymd)?.status === "done" : !!(mystery && (mystery.won || mystery.gaveUp)));
+      } catch { /* unreadable storage: nothing to credit */ }
+    }
+    if (needsTodayCredit(hydratedStreak.rec, playedToday)) tickLoginStreak();
+    // Once per hydrate on purpose: dailyDone and the tick are read as they are then.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydratedStreak, user?.id]);
   // Past-7-days activity for the home Streak tile pulse. Recompute when a
   // game completes (gamesPlayed bumps) or the streak changes (day rollover).
   const streakPulseDays = useMemo(
@@ -7423,12 +7280,14 @@ function AppInner() {
             onDone={(startGame) => {
               setHasOnboarded(true);
               // They answered the sample question and pressed "Let's play", so
-              // put them IN a game rather than in front of a menu. Footle is
-              // the choice because it is where the habit forms (94% of players
-              // reaching three active days got there through it) and because
-              // it needs nobody else, unlike a room. Deferred a tick so the
-              // onboarding unmount completes first.
-              if (startGame === true) setTimeout(() => { try { setScreen("wordle"); } catch { /* stay on home */ } }, 0);
+              // put them IN a game rather than in front of a menu. Daily 7 since
+              // 11 Nov 2026: the first screen has just asked a football question,
+              // and seven more of those is what the button promises. Footle (the
+              // choice until then, because the habit forms there) is a word game
+              // with its own rules to learn, a change of subject in the first
+              // minute; it is the next row on the finish panel. Deferred a tick
+              // so the onboarding unmount completes first.
+              if (startGame === true) setTimeout(() => { try { playDaily(); } catch { /* stay on home */ } }, 0);
               // The component has already written biq_onboarded + any chosen fav_club / skill_level.
               // Pull through the new default difficulty so it takes effect immediately.
               try {
@@ -7521,7 +7380,7 @@ function AppInner() {
                 "Name the Stadium" header on every phone (player-reported
                 2026-08-21). The list is the contract: if your screen draws its
                 own title, it belongs in it. */}
-            {!["settings", "home", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {!["settings", "home", "league", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
@@ -7717,7 +7576,7 @@ function AppInner() {
           </div>
         )}
         {/* Mates' leagues (web only): the create and join sheets, lazy. */}
-        {LEAGUES_WEB && leagueSheet?.kind === "join" && (
+        {LEAGUES_ON && leagueSheet?.kind === "join" && (
           <TabErrorBoundary name="league-join" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={leagueSheetFallback()}><LeagueJoinSheet
             token={leagueSheet.token}
             displayName={leagueDisplayName}
@@ -7728,7 +7587,7 @@ function AppInner() {
             track={loopEvent}
           /></React.Suspense></TabErrorBoundary>
         )}
-        {LEAGUES_WEB && leagueSheet?.kind === "create" && (
+        {LEAGUES_ON && leagueSheet?.kind === "create" && (
           <TabErrorBoundary name="league-create" onExit={() => setLeagueSheet(null)}><React.Suspense fallback={leagueSheetFallback()}><LeagueCreateSheet
             seed={leagueSheet.seed}
             vs={leagueSheet.vs}
@@ -7780,8 +7639,8 @@ function AppInner() {
               >
                 {t("ch.sendBack")}
               </button>
-              {/* Mates' leagues (web only): the same seed as the results panel's. */}
-              {LEAGUES_WEB && (
+              {/* Mates' leagues: the same seed as the results panel's. */}
+              {LEAGUES_ON && (
                 <button
                   type="button"
                   onClick={() => {
@@ -7828,7 +7687,7 @@ function AppInner() {
             <button onClick={() => setLevelUpOverlay(null)} style={{marginTop:40,padding:"12px 32px",background:"var(--accent)",color:"var(--grn-ink)",border:"none",borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",fontSize:15,fontWeight:700,cursor:"pointer"}}>{t("lu.go")}</button>
           </div>
         )}
-        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><span>🔥</span><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
+        {streakToast && <div className="streak-toast" role="status" aria-live="polite"><Flame size={15} strokeWidth={2.6} aria-hidden="true" /><span>{rich(t("ts.dayStreak"), { s: <strong>{t("ts.dayStreakB", { n: streakToast })}</strong> })}</span></div>}
 
         {/* ── PLAY WITH FRIENDS SHEET ── */}
         {showFriendsPicker && (
@@ -7909,7 +7768,8 @@ function AppInner() {
               clubAbbr={clubs?.CLUB_ABBR}
               launchClubQuiz={launchClubQuiz}
               firstSession={showFirstQuizTip}
-              onOpenLeague={LEAGUES_WEB ? openLeagueTable : undefined}
+              onOpenLeague={LEAGUES_ON ? openLeagueTable : undefined}
+              onStartLeague={LEAGUES_ON ? openLeagueCreateFromHome : undefined}
             />
             </TabErrorBoundary>
           </div>
@@ -7939,7 +7799,7 @@ function AppInner() {
               dailyDone={dailyDone}
               dailyScore={dailyScore}
               playDailyForDate={playDailyForDate}
-              onStartLeague={LEAGUES_WEB ? openLeagueCreateFromDaily : undefined}
+              onStartLeague={LEAGUES_ON ? openLeagueCreateFromDaily : undefined}
             />
             </TabErrorBoundary>
           </div>
@@ -8315,7 +8175,7 @@ function AppInner() {
             onPlayTrail={() => { setArchiveDate(null); setScreen("trail"); }}
           /></React.Suspense></TabErrorBoundary>
         )}
-        {screen === "league" && LEAGUES_WEB && leagueId && (
+        {screen === "league" && LEAGUES_ON && leagueId && (
           <TabErrorBoundary name="league" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading the table" />}><LeagueScreen
             key={leagueId}
             leagueId={leagueId}
@@ -8413,6 +8273,9 @@ function AppInner() {
               key={mode}
               questions={questions}
               mode={mode}
+              // Today's Daily 7 only (not an archive day): the engine saves and
+              // resumes the run under this day (10 Nov 2026, lib/dailyRun.js).
+              dailyDay={mode === "daily" && dateToYMD(activeDailyDate || new Date()) === dateToYMD(new Date()) ? dateToYMD(new Date()) : undefined}
               timerEnabled={settings.timer !== false}
               timerSecondsOverride={activeClub ? 15 : undefined}
               soundEnabled={settings.sound === true}
@@ -8490,7 +8353,7 @@ function AppInner() {
             onReport={reportQuestion}
             askedQuestions={questions}
             dailyDone={dailyDoneServices}
-            photoNudge={(user?.id && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
+            photoNudge={(user?.id && !isAnonUser && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
                 <div style={{width:44,height:44,flexShrink:0}}>
                   <ProfilePic value={authProfile?.avatar_id} url={authProfile?.avatar_url} name={authProfile?.username} />
@@ -8501,7 +8364,7 @@ function AppInner() {
                 </div>
                 <button
                   onClick={() => { dismissPhotoNudge(); loopEvent('photo-nudge-tap'); setTab('profile'); setScreen('home'); }}
-                  style={{flexShrink:0,padding:"9px 15px",borderRadius:999,background:"var(--accent)",border:"none",color:"var(--grn-ink)",WebkitTextFillColor:"var(--grn-ink)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
+                  style={{flexShrink:0,padding:"8px 14px",borderRadius:999,background:"var(--s2)",border:"1px solid var(--border2)",color:"var(--t1)",WebkitTextFillColor:"var(--t1)",fontFamily:"inherit",fontSize:13,fontWeight:800,cursor:"pointer"}}
                 >
                   {t("pn.add")}
                 </button>
@@ -8518,6 +8381,11 @@ function AppInner() {
             classicBest={stats.bestScore || 0}
             label={activePack ? activePack.name
               : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? catLabel(t, activeLeague)
+              : null}
+            // The club's (or league's) own badge, as on the quiz screen's banner,
+            // so the result says whose quiz this was (11 Nov 2026).
+            badge={activePack ? { abbr: clubs.CLUB_ABBR[activeClub] || clubInitials(activePack.name), color: activePack.color, fg: clubReadableText(activePack.color) }
+              : activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] ? { abbr: LEAGUE_QUIZ_BY_CAT[activeLeague].abbr, color: LEAGUE_QUIZ_BY_CAT[activeLeague].color, fg: clubReadableText(LEAGUE_QUIZ_BY_CAT[activeLeague].color) }
               : null}
             onShare={() => (mode === "daily"
               // Daily shares route through shareDaily — the (previously
@@ -8574,7 +8442,7 @@ function AppInner() {
               { id:"daily",    Icon: CalendarDays, label:t("tab.daily"), badge: false },
               { id:"profile",  Icon: User,         label:t("tab.profile") },
             ].map(({ id, Icon, label, badge }) => (
-              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => setTab(id)}>
+              <button key={id} className={`tab-item${tab===id?" active":""}`} aria-current={tab===id ? "page" : undefined} onClick={() => selectTab(id)}>
                 <span className="tab-svg"><Icon size={22} strokeWidth={2.25} aria-hidden="true" /></span>
                 <span className="tab-label">{label}</span>
                 {badge && <span className="tab-badge" />}

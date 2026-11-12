@@ -97,7 +97,8 @@ describe('a bruising session suppresses the rating ask', () => {
     // ⚠️ Every "rate-prompt-shown" must be preceded by the policy check, or the
     // number counts suppressed asks as real ones.
     const shows = [...APP.matchAll(/loopEvent\("rate-prompt-shown", \{ engine: "native"/g)];
-    expect(shows.length, 'both native ask sites should still be instrumented').toBe(2);
+    // Three since 8 Nov 2026: results, Footle, and Trail/Top 10/Mystery.
+    expect(shows.length, 'all three native ask sites should still be instrumented').toBe(3);
     for (const m of shows) {
       const before = APP.slice(Math.max(0, m.index - 400), m.index);
       expect(

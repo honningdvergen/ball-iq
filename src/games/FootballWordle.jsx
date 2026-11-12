@@ -185,8 +185,10 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   const [shake, setShake] = useState(false);
   // HARD MODE (Alex, 14 Oct 2026): opt-in, only a real footballer's name
   // counts as a guess. The default stays as it was, any letters accepted, on
-  // purpose: a strict Footle was too hard for most players. The choice is made
-  // before the first guess and kept with the day's record (`state.hard`); the
+  // purpose: a strict Footle was too hard for most players. The switch works
+  // at any point in the game (Alex, 28 Oct: he wanted out after his first row).
+  // The day's record (`state.hard`) stays true only while EVERY guess so far was
+  // made in hard mode, so turning it on late cannot earn the "Hard" result. The
   // names (src/data/footleNames.json, scripts/gen-footle-names.mjs) load only
   // when hard mode is on.
   const [hardPref, setHardPref] = useState(() => { try { return localStorage.getItem("biq_footle_hard") === "1"; } catch { return false; } });
@@ -329,7 +331,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   }, [dateKey, isArchive]);
 
   // Never on an archive replay: the switch is not offered there.
-  const hardNow = !isArchive && (state.guesses.length === 0 ? hardPref : !!state.hard);
+  const hardNow = !isArchive && hardPref;
   useEffect(() => {
     if (!hardNow || hardNames) return undefined;
     let live = true;
@@ -339,10 +341,16 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       .catch(() => { if (live) setHardNames("failed"); });
     return () => { live = false; };
   }, [hardNow, hardNames]);
-  const toggleHard = () => setHardPref((v) => {
-    try { localStorage.setItem("biq_footle_hard", v ? "0" : "1"); } catch { /* private mode */ }
-    return !v;
-  });
+  const toggleHard = () => {
+    const v = !hardPref;
+    setHardPref(v);
+    try { localStorage.setItem("biq_footle_hard", v ? "1" : "0"); } catch { /* private mode */ }
+    // Mid-game, say what the switch does to today's result.
+    if (state.guesses.length > 0) {
+      const msg = !v ? (state.hard ? "footle.hardOff" : null) : (state.hard ? null : "footle.hardLate");
+      if (msg) { try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: t(msg) })); } catch { /* no toast here */ } }
+    }
+  };
 
   const submitGuess = useCallback(() => {
     if (state.status !== "playing") return;
@@ -362,7 +370,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     if (current === answer) newStatus = "won";
     else if (newGuesses.length >= 6) newStatus = "lost";
     // Spread, not a fresh object: `clue` rides in the same record.
-    setState({ ...state, guesses: newGuesses, status: newStatus, ...(state.guesses.length === 0 && !isArchive ? { hard: hardPref } : {}) });
+    setState({ ...state, guesses: newGuesses, status: newStatus, ...(!isArchive ? { hard: state.guesses.length === 0 ? hardPref : !!state.hard && hardPref } : {}) });
     setCurrent("");
     // The reveal belongs to this row alone. Cleared after the last tile lands
     // (delay of the final tile + the 500ms flip) plus a little slack, so the
@@ -643,30 +651,30 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             an iPhone 17 Pro Max, 12 Oct 2026). */}
         {state.status === "playing" && (
           <div className="wd-slot">
-            {clueOffer ? (
-              <button type="button" className="wd-clue wd-clue--offer" onClick={takeClue}>
-                <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
-                {t("footle.clueOffer")}
-              </button>
-            ) : clueShown ? (
-              <div className="wd-clue wd-clue--shown" role="status">
-                <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
-                {footleClue(answer)}
-              </div>
-            ) : (
-              <div className="wd-slot-row">
-                <div className="wd-legend" aria-hidden="true" style={showLegend ? undefined : { visibility: "hidden" }}>
+            <div className="wd-slot-row">
+              {clueOffer ? (
+                <button type="button" className="wd-clue wd-clue--offer" onClick={takeClue}>
+                  <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
+                  {t("footle.clueOffer")}
+                </button>
+              ) : clueShown ? (
+                <div className="wd-clue wd-clue--shown" role="status">
+                  <Lightbulb size={16} strokeWidth={2} aria-hidden="true" />
+                  {footleClue(answer)}
+                </div>
+              ) : showLegend ? (
+                <div className="wd-legend" aria-hidden="true">
                   <span className="wd-legend-item"><i className="wd-legend-chip is-green" />{t("footle.rightSpot")}</span>
                   <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />{t("footle.wrongSpot")}</span>
                 </div>
-                {/* Chosen before the first guess; after it, the sub line says so. */}
-                {state.guesses.length === 0 && !isArchive && (
-                  <button type="button" className={`wd-hard${hardPref ? " is-on" : ""}`} aria-pressed={hardPref} onClick={toggleHard}>
-                    {t(hardPref ? "footle.hardOn" : "footle.hard")}
-                  </button>
-                )}
-              </div>
-            )}
+              ) : null}
+              {/* The switch stays for the whole game, beside whatever holds the slot. */}
+              {!isArchive && (
+                <button type="button" className={`wd-hard${hardPref ? " is-on" : ""}`} aria-pressed={hardPref} onClick={toggleHard}>
+                  {t(hardPref ? "footle.hardOn" : "footle.hard")}
+                </button>
+              )}
+            </div>
           </div>
         )}
         {rows}

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 const INVITE_LIFE_MS = 2 * 60 * 60 * 1000;
 import * as Sentry from "@sentry/react";
 import { supabase } from "../supabase.js";
-import { loopEvent } from "../App.jsx";
+import { loopEvent } from "../lib/funnel.js";
 import { t } from "../i18n/index.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16). Inputs: the signed-in

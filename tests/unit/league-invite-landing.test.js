@@ -88,8 +88,12 @@ describe('the league invite landing', () => {
     // Beside its sibling /c/, and nothing earlier can swallow /l/….
     expect(rw.indexOf('/l/:token')).toBe(rw.indexOf('/c/:token') + 1);
     expect(rw.slice(0, rw.indexOf('/l/:token')).filter((src) => /^\/(\(\.\*\)|:)/.test(src))).toEqual([]);
-    // Old app builds would catch /l/ and land on Home (spec section 10).
+    // Phase 2 (29 Oct 2026): the Android intent filter ships inside the build,
+    // so it lists /l/. apple-app-site-association is served to EVERY install,
+    // so /l/ stays out of it until the first build with the league handler is
+    // live in the App Store (an older install would catch the link and land on
+    // Home). Flip this line on that release day.
     expect(read('../../public/.well-known/apple-app-site-association')).not.toMatch(/"\/l\//);
-    expect(read('../../android/app/src/main/AndroidManifest.xml')).not.toMatch(/pathPrefix="\/l/);
+    expect(read('../../android/app/src/main/AndroidManifest.xml')).toMatch(/pathPrefix="\/l\/"/);
   });
 });

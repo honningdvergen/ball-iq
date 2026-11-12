@@ -27,8 +27,8 @@
    which works for a 766-player pool. Ours is nine thousand, all eras.)
 
    What the ranking now pays for, and nothing else:
-     · SHARED CLUBS, most: 300 for each club both played for, +200 scaled by
-       the years they were there TOGETHER (full at 6), best three clubs.
+     · SHARED CLUBS, most: 200 for each club both played for, +300 scaled by
+       the years they were there TOGETHER (full at 5), best three clubs.
        Torres-at-Atlético still counts for something; Koke counts for more.
      · SAME POSITION: 250, by line (GK / DF / MF / FW). The specific word
        ("centre-back", "wing half") is a Wikidata ranking token that is wrong
@@ -41,8 +41,8 @@
    teammates by their real years), the position word.
 
    The consequence that matters: with no shared club, the best a guess can do
-   is same line + same era, 425 — below anyone who played at the answer's club
-   in his time. The reasons line under each guess (explainGuess) says exactly
+   is same line + same era + age, 425 — below anyone who was the answer's
+   teammate for four years or more on the club alone (200 + 300 × 4/5 = 440). The reasons line under each guess (explainGuess) says exactly
    these three things, so the rank and its explanation always agree. */
 import { foldLetters } from './letterFold.js';
 import { clubsOf, sharedClubs, mainClub, initials } from './mysteryCareer.js';
@@ -86,12 +86,12 @@ function ageShare(p, answer) {
  * A scoring function for one answer. The answer's clubs are worked out once,
  * so ranking nine thousand players does not rebuild them nine thousand times.
  */
-export function makeScorer(answer, careers = null) {
-  const answerClubs = careers ? clubsOf(answer, careers) : null;
+export function makeScorer(answer, careers = null, year = undefined) {
+  const answerClubs = careers ? clubsOf(answer, careers, year) : null;
   return (p) => {
     let s = 0;
     if (answerClubs && answerClubs.size) {
-      const shared = sharedClubs(answer, p, careers, answerClubs);
+      const shared = sharedClubs(answer, p, careers, answerClubs, year);
       for (const x of shared.slice(0, W.sharedClubMax)) {
         s += W.sharedClub + W.together * Math.min(x.together, W.togetherFull) / W.togetherFull;
       }
@@ -104,8 +104,8 @@ export function makeScorer(answer, careers = null) {
 }
 
 /** Similarity of `p` to the secret `answer`. Higher is closer. */
-export function similarity(p, answer, careers = null) {
-  return makeScorer(answer, careers)(p);
+export function similarity(p, answer, careers = null, year = undefined) {
+  return makeScorer(answer, careers, year)(p);
 }
 
 /**
@@ -116,8 +116,8 @@ export function similarity(p, answer, careers = null) {
  * the same puzzle produces the same ranks on every device — the Daily 7 was
  * bitten by exactly this when a sort depended on engine-specific behaviour.
  */
-export function rankPool(pool, answer, careers = null) {
-  const score = makeScorer(answer, careers);
+export function rankPool(pool, answer, careers = null, year = undefined) {
+  const score = makeScorer(answer, careers, year);
   const scored = pool.map((p) => ({ id: p.id, name: p.name, s: p.id === answer.id ? Infinity : score(p) }));
   scored.sort((a, b) => (b.s - a.s) || a.name.localeCompare(b.name));
   const ranks = new Map();
@@ -138,9 +138,9 @@ export function rankPool(pool, answer, careers = null) {
  *   bornWhen     'earlier' | 'later' | null: the GUESS was born before or
  *                after the answer (null when the years match or one is unknown)
  */
-export function explainGuess(p, answer, careers = null) {
+export function explainGuess(p, answer, careers = null, year = undefined) {
   if (!p || !answer || p.id === answer.id) return null;
-  const shared = careers ? sharedClubs(answer, p, careers) : [];
+  const shared = careers ? sharedClubs(answer, p, careers, null, year) : [];
   const gap = p.born && answer.born ? Math.abs(p.born - answer.born) : null;
   const era = gap == null ? null : gap <= SAME_ERA_YEARS ? 'same' : gap <= NEAR_ERA_YEARS ? 'near' : 'far';
   const bornWhen = !gap ? null : p.born < answer.born ? 'earlier' : 'later';
@@ -187,6 +187,29 @@ export function reasonLine(x) {
   if (!x.shared.length) parts.unshift(none);
   if (eraWord) parts.push(eraWord);
   return parts.join(' · ');
+}
+
+/**
+ * The same three facts as reasonLine, one each, with whether the guess shares
+ * it with the answer: [{ text, hit }] for club, position, era. The guess list
+ * prints them as marks (lit or hollow), so all three are always said, a miss
+ * included ("Other position"), where the sentence form leaves a miss out.
+ */
+export function reasonMarks(x) {
+  if (!x) return [];
+  const marks = [];
+  if (x.shared.length) {
+    const mates = x.shared.filter((c) => c.together >= 1).map((c) => c.club);
+    const only = x.shared.filter((c) => c.together < 1).map((c) => c.club);
+    marks.push({ text: mates.length ? t('mp.mates', { c: listClubs(mates) }) : t('mp.shared', { c: listClubs(only) }), hit: true });
+  } else marks.push({ text: t('mp.noClub'), hit: false });
+  marks.push({ text: t(x.samePosition ? 'mp.samePos' : 'mp.otherPos'), hit: x.samePosition });
+  const w = x.bornWhen ? t(`mp.${x.bornWhen}`) : '';
+  const era = x.era === 'same' ? (x.bornWhen ? t('mp.sameEraBorn', { w }) : t('mp.sameEra'))
+    : x.era === 'near' ? (x.bornWhen ? t('mp.bornYears', { n: x.gap, w }) : t('mp.bornApart', { n: x.gap }))
+      : x.era === 'far' ? t(x.bornWhen === 'earlier' ? 'mp.earlierEra' : x.bornWhen === 'later' ? 'mp.laterEra' : 'mp.otherEra') : '';
+  if (era) marks.push({ text: era, hit: x.era === 'same' });
+  return marks;
 }
 
 /**
@@ -238,7 +261,7 @@ export function birthDecade(born) {
   return Number.isFinite(born) && born > 1800 ? `${Math.floor(born / 10) * 10}s` : null;
 }
 
-export function clueLadder(answer, careers = null, roles = null) {
+export function clueLadder(answer, careers = null, roles = null, year = undefined) {
   if (!answer) return [];
   const free = [];
   const pos = hintPosition(answer, roles);
@@ -246,7 +269,7 @@ export function clueLadder(answer, careers = null, roles = null) {
   const decade = birthDecade(answer.born);
   if (decade) free.push({ key: 'born', label: 'Born', value: decade });
   const paid = [];
-  const club = careers ? mainClub(answer, careers) : null;
+  const club = careers ? mainClub(answer, careers, year) : null;
   if (club) paid.push({ key: 'club', label: 'Played for', value: club });
   const ini = initials(answer.name);
   // A one-name player (Eusébio, Neymar) gets one letter, and says so: a lone
@@ -459,6 +482,15 @@ export const MYSTERY_ENABLED = true;
  */
 export function mysteryDayIndex(now = new Date()) {
   return Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+}
+/**
+ * The year of a puzzle's own date, for counting its running spells ("2023–now"
+ * runs to this year). From the day index, not the clock, so an archive replay
+ * reads as it did on its day. Same calendar as mysteryDayIndex: a day index is
+ * UTC midnight of the local date, so its UTC year is the local year.
+ */
+export function puzzleYear(dayIndex) {
+  return new Date(dayIndex * 86400000).getUTCFullYear();
 }
 export function mysteryNumber(now = new Date()) {
   return mysteryDayIndex(now) - MYSTERY_ANCHOR_DAY + 1;

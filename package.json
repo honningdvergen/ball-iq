@@ -23,6 +23,7 @@
     "test:spikes": "node scripts/spike-1-realtime.mjs && node scripts/spike-2-advance-race.mjs",
     "test:unit": "vitest run",
     "test:site": "node scripts/test-site.mjs",
+    "test:structured-data": "node scripts/test-structured-data.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "gen:index": "node scripts/gen-questions-index.mjs",
@@ -58,9 +59,12 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@adobe/structured-data-validator": "^1.7.0",
+    "@axe-core/playwright": "^4.14.0",
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.2.1",
     "@eslint/js": "^9.39.4",
+    "@marbec/web-auto-extractor": "^2.2.1",
     "@playwright/test": "^1.59.1",
     "@sentry/vite-plugin": "^2.23.1",
     "@vitejs/plugin-react": "^4.2.1",

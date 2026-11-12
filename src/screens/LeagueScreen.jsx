@@ -3,13 +3,14 @@ import { ChevronLeft, Copy, Check, Crown, TrendingDown, Ghost, Trophy, Users, Sh
 import "./league.css";
 import {
   getLeagueTable, createLeague, joinLeague, leaveLeague, leagueInviteUrl, parseLeagueInviteToken,
-  inviteShareText, h2hShareText, finalShareText, whistleLine, rankText, weekOfLabelEnglish, DAY_LETTERS, dayLetters,
+  inviteShareText, h2hShareText, finalShareText, whistleLine, rankText, weekOfLabelEnglish, DAY_LETTERS,
   LABEL_COPY, labelText, errorText, membersBucket, markFinalSeen, clearLeagueInvite, h2hLeagueName,
   saveLeagueUi, readLeagueUi, announceLeagueOpen,
 } from "../lib/leagues.js";
-import { avatarColour } from "../lib/avatarColour.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
+import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
+import { isNativeShell } from "../lib/leagueResults.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
 
@@ -25,7 +26,10 @@ import { t, useT } from "../i18n/index.js";
 // rest). How points work: lg.help.<n> and lg.help.<n>.d.
 const POINTS_HELP = [1, 2, 3, 4];
 
-const isMobileWeb = () => { try { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || ""); } catch { return false; } };
+// A phone BROWSER, not the app: the shell has a phone user agent too, and there
+// the table told the player "points arrive in the next update" beside points
+// that had just arrived (10 Nov 2026, simulator walk).
+const isMobileWeb = () => { try { return !isNativeShell() && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || ""); } catch { return false; } };
 
 // `text` carries the link already (the share lines end with it).
 async function shareOrCopy({ text, files }) {
@@ -36,11 +40,6 @@ async function shareOrCopy({ text, files }) {
     if (e && (e.name === "AbortError" || /cancel/i.test(e.message || ""))) return null;
   }
   try { await navigator.clipboard.writeText(text); return "copy"; } catch { return null; }
-}
-
-function Avatar({ name }) {
-  const c = avatarColour(null, name || "?");
-  return <span className="lg-av" style={{ background: c.bg, color: c.ink, WebkitTextFillColor: c.ink }} aria-hidden="true">{String(name || "?").trim().charAt(0).toUpperCase()}</span>;
 }
 
 function LabelChip({ label, joint }) {
@@ -72,6 +71,19 @@ export default function LeagueScreen({ leagueId, onBack, track, ...rest }) {
     });
     return () => { alive = false; };
   }, [leagueId, track]);
+
+  // Back from another app (the invite was just sent, a mate has just joined):
+  // read the table again, quietly. Until 10 Nov 2026 it stayed as it was first
+  // drawn, "Just you so far" with two in the league, until the screen was reopened.
+  useEffect(() => {
+    let alive = true;
+    const onVis = () => {
+      if (document.visibilityState !== "visible") return;
+      getLeagueTable(leagueId).then((t) => { if (alive && t && t.meta) setData(t); }).catch(() => {});
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { alive = false; document.removeEventListener("visibilitychange", onVis); };
+  }, [leagueId]);
 
   if (state === "loading") {
     return <div className="lg-screen" aria-busy="true"><div className="lg-top"><button type="button" className="lg-back" onClick={onBack} aria-label={t("game.back")}><ChevronLeft size={22} strokeWidth={2.4} /></button></div><div className="lg-skel" /></div>;
@@ -140,6 +152,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
 
   const final = !!meta.is_final;
   const joint = rows.filter((r) => r.labels?.includes("crown")).length > 1;
+  const maxDay = Math.max(0, ...rows.flatMap((r) => (r.per_day || []).filter((v) => typeof v === "number")));
   const cell = (r, i) => {
     const day = meta.week_start + i;
     const v = r.per_day?.[i];
@@ -147,8 +160,12 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
     if (day < (r.joined_day ?? -Infinity)) return { cls: "is-before", t: "" };
     // Today is still open: nothing yet is not a miss.
     if (v == null && !final && day === meta.today) return { cls: "is-future", t: "" };
-    if (v == null) return { cls: "is-miss", t: "–" };
-    return { cls: v >= 30 ? "is-big" : "", t: String(v) };
+    if (v == null) return { cls: "is-miss", t: "·" };
+    // 9 Nov 2026 (Alex: "not tidy and premium enough", then "still cluttery"):
+    // each day is a thin bar shaded by its score against the best day on the
+    // table, no number printed. The week reads as one streak; the number stays
+    // for screen readers.
+    return { cls: v >= 30 ? "is-big" : "", t: String(v), h: maxDay ? Math.max(0.12, Math.min(1, v / maxDay)) : 0 };
   };
   const last = data.last_week;
   const solid = final
@@ -168,25 +185,21 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
       </header>
 
       <div className="lg-table" role="table" aria-label={t(final ? "lg.ariaFinal" : "lg.ariaWeek", { name: meta.name })}>
-        <div className="lg-days" aria-hidden="true">
-          <span /><span />
-          <span className="lg-cells">{dayLetters().map((d, i) => <span key={i} className={!final && meta.week_start + i === meta.today ? "is-today" : ""}>{d}</span>)}</span>
-          <span className="lg-days-t">{t("lg.ptsHead")}</span>
-        </div>
         {rows.map((r, idx) => (
           <div key={idx} className={`lg-row${r.is_me ? " is-me" : ""}`} role="row">
-            <span className="lg-rank" role="cell">{rankText(r.rank, r.tied)}</span>
-            <Avatar name={r.name} />
+            <span className={`lg-rank${r.rank === 1 ? " is-first" : r.rank === 2 ? " is-second" : r.rank === 3 ? " is-third" : ""}`} role="cell">{rankText(r.rank, r.tied)}</span>
             <div className="lg-mid" role="cell">
-              <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
-              {final && r.labels?.length > 0 && (
-                <div className="lg-chips">{r.labels.map((l) => <LabelChip key={l} label={l} joint={joint} />)}</div>
-              )}
+              <div className="lg-name-line">
+                <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
+                {final && r.labels?.length > 0 && (
+                  <div className="lg-chips">{r.labels.map((l) => <LabelChip key={l} label={l} joint={joint} />)}</div>
+                )}
+              </div>
               <div className="lg-cells" aria-label={t("lg.cellsAria")}>
-                {DAY_LETTERS.map((_, i) => { const c = cell(r, i); return <span key={i} className={`lg-cell ${c.cls}${!final && meta.week_start + i === meta.today ? " is-today" : ""}`}>{c.t}</span>; })}
+                {DAY_LETTERS.map((_, i) => { const c = cell(r, i); return <span key={i} className={`lg-cell ${c.cls}${!final && meta.week_start + i === meta.today ? " is-today" : ""}`} style={c.h ? { "--h": c.h.toFixed(2) } : undefined}>{c.t && c.t !== "·" ? <span className="lg-sr">{c.t}</span> : null}</span>; })}
               </div>
             </div>
-            <span className="lg-total" role="cell">{r.points}</span>
+            <span className={`lg-total${r.rank === 1 && r.points > 0 ? " is-first" : ""}`} role="cell">{r.points}</span>
           </div>
         ))}
         {rows.length === 1 && <p className="lg-alone">{t("lg.alone")}</p>}
@@ -237,9 +250,15 @@ function Sheet({ label, onClose, full = false, children }) {
   const ref = useRef(null);
   // Focus trap, Escape and the back button, as every other sheet in the app.
   useModalA11y({ isOpen: true, onClose, ref });
+  // 10 Nov 2026 (simulator walk): the first time these sheets ran in the app,
+  // the name field took focus and the keyboard covered the whole sheet. The
+  // scrim is position:fixed and the native shell never resizes the viewport
+  // (Keyboard "resize":"none"), so a bottom-anchored sheet sits UNDER the
+  // keyboard. Lift it by the keyboard's height, and cap it to what is left.
+  const { kbInset } = useKeyboardAwareInput();
   return (
-    <div className={`lg-scrim${full ? " is-full" : ""}`} onClick={onClose}>
-      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} className="lg-sheet" onClick={(e) => e.stopPropagation()}>
+    <div className={`lg-scrim${full ? " is-full" : ""}`} onClick={onClose} style={kbInset ? { paddingBottom: kbInset } : undefined}>
+      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} className="lg-sheet" onClick={(e) => e.stopPropagation()} style={kbInset && !full ? { maxHeight: `calc(92vh - ${kbInset}px)` } : undefined}>
         {children}
       </div>
     </div>

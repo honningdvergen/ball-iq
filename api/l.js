@@ -1,5 +1,5 @@
 // Mates' league invite landing (phase 1). Mirrors api/c.js: real HTML with
-// preview tags, so balliq.app/l/K7QM2XPA.The%20Lads.Alex unfurls as an invite
+// preview tags, so balliq.app/l/K7QM2XPA.The-Lads.Alex unfurls as an invite
 // card in WhatsApp / iMessage / X, and a person is sent on to
 // /play?league=TOKEN, where the app's boot opens the join screen.
 //
@@ -16,21 +16,26 @@
 // compares them): importing that file would pull the Supabase client into this
 // edge bundle.
 //
-// ⚠️ /l/ IS NOT IN THE DEEP-LINK FILES on purpose (apple-app-site-association,
-// assetlinks, the Android intent filters). Old app builds would catch the link
-// and land on Home; in the browser the web join works. Add /l/* there only once
-// build 1.9 is widely installed (spec section 10).
+// ⚠️ /l/ IS NOT YET IN apple-app-site-association on purpose: an iOS install
+// older than the first build with the league handler (29 Oct 2026, App.jsx
+// tryCapture) would catch the link and land on Home; in the browser the web
+// join works. Add /l/* there the day that build is live in the App Store. The
+// Android intent filter already lists /l/ (it ships inside the build).
 
 export const config = { runtime: 'edge' };
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const cleanLabel = (s, max) => String(s || '').replace(/\./g, ' ').replace(/[^\p{L}\p{N} '_-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, max);
-const enc = (s) => encodeURIComponent(s).replace(/\./g, '%2E');
+// A label in the link reads as words: spaces travel as hyphens and an
+// apostrophe is dropped, so "Mates' league" is Mates-league, not
+// Mates'%20league (a chat app can also end a link at the apostrophe). The
+// label is only the preview; the real name comes from the server.
+const enc = (s) => encodeURIComponent(String(s).replace(/'/g, '').replace(/ /g, '-')).replace(/\./g, '%2E');
 
 export function parseInvite(token) {
   const m = /^([23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8})(?:\.([^.]*))?(?:\.([^.]*))?$/i.exec(String(token || '').trim());
   if (!m) return null;
-  const dec = (s) => { try { return decodeURIComponent(s || ''); } catch { return s || ''; } };
+  const dec = (s) => { let v; try { v = decodeURIComponent(s || ''); } catch { v = s || ''; } return v.replace(/-/g, ' '); };
   return { code: m[1].toUpperCase(), name: cleanLabel(dec(m[2]), 32), inviter: cleanLabel(dec(m[3]), 22) };
 }
 

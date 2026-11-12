@@ -46,7 +46,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { hintPosition, roleLine } from '../src/lib/mysteryPlayer.js';
-import { answerBar, FIRST_FAMOUS_DAY } from './mystery-answer-bar.mjs';
+import { answerBar, FIRST_FAMOUS_DAY, clubSpacingBreaks, CLUB_SPACING } from './mystery-answer-bar.mjs';
 import { withCareerFixes } from '../src/lib/mysteryCareer.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
@@ -93,6 +93,21 @@ if (rationPct > RATION_MAX) {
   problems.push(
     `manager ration is ${(rationPct * 100).toFixed(1)}% (${rationCount}/${SCHEDULE.length}) — cap is ${RATION_MAX * 100}%`,
   );
+}
+
+// 9. The club clue's spread (warning, not a failure). The generator keeps a
+//    main club out of any ten-day window, but a career fix or a new year can
+//    move a day's club clue after the draw (Zlatan, day 75, became AC Milan
+//    eight days before Nesta). Only the days after the served, career-checked
+//    ones (to index 128) can still be redrawn, so only those are listed. Not a
+//    build failure: the cure is a redraw of the unchecked days
+//    (gen-mystery-schedule.mjs --from <first unchecked index>), which is an
+//    editorial run, not something a build should force.
+const FIRST_REDRAWABLE = 129;
+const spacing = clubSpacingBreaks(SCHEDULE, byId, CAREERS, { from: FIRST_REDRAWABLE });
+if (spacing.length) {
+  console.warn(`⚠️  Mystery club clue repeats inside ${CLUB_SPACING} days (redraw from the first unchecked day to clear):`);
+  for (const b of spacing) console.warn(`    day ${b.day} repeats day ${b.earlier}: ${b.club}`);
 }
 
 const all = [...problems, ...unresolved];

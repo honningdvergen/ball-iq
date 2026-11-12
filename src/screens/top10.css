@@ -215,6 +215,13 @@
   border-color: rgba(var(--t10-rgb), 0.6);
 }
 .t10-cell.is-found .t10-rank { background: var(--t10-medal, var(--t10)); color: var(--t10-medal-ink, #2A1009); }
+/* FOUND STANDS FORWARD, OPEN STEPS BACK (12 Nov 2026). Both kinds of cell sat
+   on the same grey card, so a board at six of ten read as ten grey tiles with
+   some orange edges. An open place is now a faint outline and a found one
+   carries a little of the game's light under it. (No coral fill: it turns the
+   dark surface brown, see above.) */
+.t10-cell.is-open { background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.07); }
+.t10-cell.is-found { box-shadow: 0 8px 18px -12px rgba(var(--t10-rgb), 0.75); }
 .t10-cell.is-found .t10-clue { color: var(--t10); }
 
 /* The reveal. While a pick is held the open ranks ripple in order, as if the

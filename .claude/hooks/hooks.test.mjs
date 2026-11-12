@@ -74,6 +74,11 @@ fs.rmSync(P2, { recursive: true, force: true }); spawnSync('git', ['clone', '-q'
 sh(P2, 'config', 'user.email', 't@t'); sh(P2, 'config', 'user.name', 't');
 fs.writeFileSync(`${P2}/docs/n.md`, '2'); sh(P2, 'commit', '-qam', 'docs only');
 fs.writeFileSync(`${P}/src/a.js`, '2'); sh(P, 'commit', '-qam', 'app change');
+const P4 = '/tmp/hk_push_native';
+fs.rmSync(P4, { recursive: true, force: true }); spawnSync('git', ['clone', '-q', R, P4]);
+sh(P4, 'config', 'user.email', 't@t'); sh(P4, 'config', 'user.name', 't');
+fs.mkdirSync(`${P4}/android/app`, { recursive: true }); fs.writeFileSync(`${P4}/android/app/build.gradle`, 'versionCode 62');
+sh(P4, 'add', 'android/app/build.gradle'); sh(P4, 'commit', '-qm', 'android bump');
 const P3 = '/tmp/hk_push_built';
 fs.rmSync(P3, { recursive: true, force: true }); spawnSync('git', ['clone', '-q', R, P3]);
 sh(P3, 'config', 'user.email', 't@t'); sh(P3, 'config', 'user.name', 't');
@@ -95,6 +100,7 @@ cases.push(
   [B, { tool_input: { command: 'git push origin claude/feature-x' } }, { CLAUDE_PROJECT_DIR: P }, 'allow'],
   [B, { tool_input: { command: 'git push origin main' } }, { CLAUDE_PROJECT_DIR: P2 }, 'allow'],
   [B, { tool_input: { command: 'git push origin main' } }, { CLAUDE_PROJECT_DIR: P3 }, 'allow'],
+  [B, { tool_input: { command: 'git push origin main' } }, { CLAUDE_PROJECT_DIR: P4 }, 'allow'],
   // ── 6. sweeping stages and amend on main
   [B, { tool_input: { command: 'git add -A' } }, { CLAUDE_PROJECT_DIR: '/tmp/hk_clean' }, 'deny'],
   [B, { tool_input: { command: 'git add .' } }, { CLAUDE_PROJECT_DIR: '/tmp/hk_clean' }, 'deny'],

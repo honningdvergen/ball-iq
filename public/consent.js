@@ -32,6 +32,39 @@
   var KEY = 'biq_consent_analytics';
   var CLARITY_TAG = 'https://www.clarity.ms/tag/xqwevk9brq';
 
+  /* CHANGE MY CHOICE (30 Oct 2026). Withdrawing consent must be as easy as
+   * giving it, and until now the only way was "clear this site's data". The
+   * privacy page's button sets window.__biqConsentReset and injects this file
+   * again: forget the stored answer, switch off Clarity and PostHog on this
+   * page, delete their identifiers from this browser, and ask again at once.
+   * It lives here, not in a file of its own, because the service worker
+   * already serves this file network-only (see public/sw.js). */
+  if (window.__biqConsentReset) {
+    window.__biqConsentReset = false;
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    try { if (window.posthog && typeof window.posthog.opt_out_capturing === 'function') window.posthog.opt_out_capturing(); } catch (e) {}
+    try { if (typeof window.clarity === 'function') window.clarity('consent', false); } catch (e) {}
+    try {
+      var host = location.hostname.replace(/^www\./, '');
+      document.cookie.split(';').forEach(function (c) {
+        var n = c.split('=')[0].trim();
+        if (/^(_clck|_clsk|CLID|ph_)/.test(n)) {
+          document.cookie = n + '=; Max-Age=0; path=/';
+          document.cookie = n + '=; Max-Age=0; path=/; domain=.' + host;
+        }
+      });
+    } catch (e) {}
+    try {
+      for (var i = localStorage.length - 1; i >= 0; i--) {
+        var k = localStorage.key(i);
+        if (k && /^(ph_|_cl)/.test(k)) localStorage.removeItem(k);
+      }
+    } catch (e) {}
+    window.__biqConsentDefer = false;
+    var old = document.getElementById('biq-consent');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+  }
+
   if (document.getElementById('biq-consent')) return;
 
   function remember(value) {
