@@ -137,7 +137,7 @@ const claimed = new Set();
 /** Fire-and-forget from the results panel. Resolves true when it was sent (now or before). */
 export async function recordLeagueResult({ game, edition, bucket, won = true }) {
   const r = { game, edition, bucket, won };
-  if (!valid(r) || isNativeShell()) return false;
+  if (!valid(r)) return false;
   try { if (typeof navigator !== 'undefined' && navigator.webdriver === true) return false; } catch { /* no navigator */ }
   const key = `${game}:${edition}`;
   if (claimed.has(key)) return true;   // the sibling panel already has this one
@@ -165,7 +165,7 @@ export function flushLeagueOutbox() {
   if (flushing) return flushing;
   flushing = (async () => {
     const list = readLeagueOutbox();
-    if (!list.length || isNativeShell() || !KEY_) return 0;
+    if (!list.length || !KEY_) return 0;
     const token = await leagueAccessToken();
     if (!token) return 0;
     let n = 0;

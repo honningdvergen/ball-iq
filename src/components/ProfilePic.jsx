@@ -65,7 +65,14 @@ export function ProfilePic({ value, url, name, seed, className, style }) {
     <div
       aria-hidden="true"
       className={className}
-      style={{ width: "100%", height: "100%", borderRadius: "50%", background: c.bg,
+      style={{ width: "100%", height: "100%", borderRadius: "50%",
+               /* A LIT BADGE, NOT A FLAT DISC (10 Nov 2026). The colourway is the
+                  player's own and stays; a soft light from the top left and a
+                  shade toward the bottom right give it the same single light the
+                  rating card has, so a default avatar on a card stops looking
+                  like a sticker on it. Alex: the card "still looks somewhat
+                  assembled". */
+               background: `radial-gradient(circle at 30% 22%, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 58%), linear-gradient(155deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.34) 100%), ${c.bg}`,
                overflow: "hidden", display: "block",
                /* Any fill can land against any ring — the profile and Online VS
                   circles are ringed in brand green, and a green colourway inside

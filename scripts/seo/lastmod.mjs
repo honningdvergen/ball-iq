@@ -40,8 +40,14 @@ export function contentKeyOf(material) {
   return createHash('sha1').update(typeof material === 'string' ? material : JSON.stringify(material)).digest('hex').slice(0, 16);
 }
 
+// Built pages that show TODAY's puzzle, so their content changes every day and
+// the build date is their honest lastmod (9 Nov 2026: a stored date here made
+// every CI build on a new day fail the sitemap check). Kept out of the store.
+export const DAILY_BUILT_PATHS = new Set(['/football-wordle/', '/football-grid/']);
+
 /** Register a page's content key and get its last-changed date (YYYY-MM-DD). */
 export function lastmodFor(path, key) {
+  if (DAILY_BUILT_PATHS.has(path)) return TODAY;
   const hit = seen.get(path);
   if (hit) return hit.d;
   const prev = stored[path];

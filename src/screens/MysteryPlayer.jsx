@@ -13,7 +13,7 @@ import {
   rankPool, bandFor, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
   saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
-  explainGuess, reasonLine, clueLadder, CLUE_AFTER, paidCluesFromSave, topShare,
+  explainGuess, reasonMarks, clueLadder, CLUE_AFTER, paidCluesFromSave, puzzleYear,
 } from '../lib/mysteryPlayer.js';
 import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
 import { usePlayerPool } from '../lib/usePlayerPool.js';
@@ -24,10 +24,14 @@ import { useKeyboardAwareInput, useDropdownMaxHeight } from '../lib/useKeyboardA
 // The day's answer: from the schedule the SITE serves when an installed app
 // has kept a good copy (lib/scheduleRemote.js), else the bundled schedule.
 import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
+import { rich } from '../i18n/rich.jsx';
 import ROLES from '../data/mysteryRoles.json';
 import { t as tNow, useT, useLang, fmtLocale } from '../i18n/index.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
 import './mystery.css';
+import ANSWER_IDS from "../data/mysteryAnswers.json";
+
+const KNOWN_PLAYERS = new Set(ANSWER_IDS);
 
 /* ⚠️ `nat` IS NOT RELIABLY NATIONALITY — do not surface it without checking.
    Measured 2026-08-15 against the live pool:
@@ -107,6 +111,9 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // yesterday's slot and cannot overwrite today's board.
   const dayIndex = mysteryDayIndex(date);
   const isArchive = dayIndex !== mysteryDayIndex();
+  // A running spell ("2023–now") counts up to the PUZZLE's year, not the
+  // clock's: the club clue, teammate years and ranks of a 2027 day count 2027.
+  const year = puzzleYear(dayIndex);
   // Best first: the kept site copy's id, then the bundled one. Read once per
   // day, so a fetch landing mid-game never swaps the answer under the board.
   const answerIds = useMemo(() => mysteryAnswerIds(dayIndex), [dayIndex]);
@@ -124,11 +131,40 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     return null;
   }, [POOL, answerIds]);
   const byId = useMemo(() => new Map(POOL.map((p) => [p.id, p])), [POOL]);
+  // Yesterday's player, named at the foot of the empty start: closure for
+  // anyone who gave up on him, and a floor for the screen (11 Nov 2026).
+  const yesterdayName = useMemo(() => {
+    if (!POOL.length || !(dayIndex > 0)) return '';
+    for (const id of mysteryAnswerIds(dayIndex - 1)) { const p = POOL.find((x) => x.id === id); if (p) return p.name; }
+    return '';
+  }, [POOL, dayIndex]);
+  // THREE FIRST MOVES (11 Nov 2026). Before the first guess the screen was a
+  // search box over nine thousand names and two thirds of empty black (Alex's
+  // "empty lower half", worst on a tall phone). These are the three most
+  // famous players who fit the two FREE clues (position, birth decade), never
+  // the answer itself, so they give away nothing the clues have not. A tap
+  // makes the guess; the rows show where guesses will land and what one costs.
+  const starters = useMemo(() => {
+    if (!answer || !POOL.length) return [];
+    const dec = (y) => Math.floor((Number(y) || 0) / 10);
+    // Only players the game itself would set as an answer (mysteryAnswers.json,
+    // known first as footballers). The guessable pool is every footballer with
+    // a Wikidata record, ordered here by fame, and fame is page views: the
+    // first build of this offered Viktor Orbán, a prime minister who played
+    // for Budapesti EAC, as the opening guess for "forward, born 1960s".
+    return POOL
+      .filter((p) => KNOWN_PLAYERS.has(p.id) && p.id !== answer.id && p.slot === answer.slot && dec(p.born) === dec(answer.born))
+      .sort((a, b) => (b.fame || 0) - (a.fame || 0))
+      .slice(0, 8)
+      // Three of the eight best known, a different three each day: with a fixed
+      // top three, the day's answer would be the famous name that is missing.
+      .filter((_, i, all) => all.length <= 3 || [0, 1, 2].some((k) => (dayIndex + k * 3) % all.length === i));
+  }, [POOL, answer, dayIndex]);
 
   // Rank the pool once per puzzle, not per keystroke.
   const ranks = useMemo(
-    () => (answer && CAREERS ? rankPool(POOL, answer, CAREERS) : null),
-    [POOL, CAREERS, answer],
+    () => (answer && CAREERS ? rankPool(POOL, answer, CAREERS, year) : null),
+    [POOL, CAREERS, answer, year],
   );
 
   // Restore today's game. Without this a refresh — or backgrounding the PWA
@@ -193,7 +229,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // nationality (see above), and never `answer.position` directly:
   // hintPosition prints only a checked role.
   // `lang`: the initials rung's "(one name)" is worded by clueLadder.
-  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES) : CLUE_PLACEHOLDER), [answer, CAREERS, lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  const CLUES = useMemo(() => (answer && CAREERS ? clueLadder(answer, CAREERS, ROLES, year) : CLUE_PLACEHOLDER), [answer, CAREERS, lang, year]); // eslint-disable-line react-hooks/exhaustive-deps
   const PAID = CLUES.filter((c) => !c.free);
   const nextClue = PAID[hintsUsed];
   const clueReady = !done && !!answer && !!nextClue && guesses.length >= nextClue.after;
@@ -223,8 +259,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const dropMax = useDropdownMaxHeight(inputRef, { gap: 26, kbInset });
 
   // The reveal: his senior career, oldest first, with the club the clue named.
-  const career = useMemo(() => (answer && CAREERS ? careerOf(answer, CAREERS) : []), [answer, CAREERS]);
-  const keyClub = useMemo(() => (answer && CAREERS ? mainClub(answer, CAREERS) : null), [answer, CAREERS]);
+  const career = useMemo(() => (answer && CAREERS ? careerOf(answer, CAREERS, year) : []), [answer, CAREERS, year]);
+  const keyClub = useMemo(() => (answer && CAREERS ? mainClub(answer, CAREERS, year) : null), [answer, CAREERS, year]);
 
   if (ready && (!answer || !ranks)) {
     // No puzzle scheduled for today. The home card is gated on the same
@@ -325,13 +361,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     if (shareCard) {
       const toast = (m) => window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: m }));
       const bands = [...rows].sort((a, b) => b.rank - a.rank).map((g) => g.band);
-      await shareCard('mystery', { num: mysteryNumber(date), won: w, bands, streak: w ? streak : 0, deepLink: '/mystery' }, { textFallback: text, onToast: toast });
-      return;
+      return shareCard('mystery', { num: mysteryNumber(date), won: w, bands, streak: w ? streak : 0, deepLink: '/mystery' }, { textFallback: text, onToast: toast });
     }
     try {
       if (navigator.share) await navigator.share({ text });
       else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('game.copiedShort') })); } catch {} }
-    } catch { /* dismissed or blocked — nothing to recover */ }
+    } catch { return false; /* dismissed or blocked — nothing to recover */ }
   };
   const revealPos = hintPosition(answer, ROLES);
   const n = guesses.length;
@@ -538,41 +573,61 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             2026). Four dashed bands explained ranks nobody had yet. Each guess
             row carries its own word (boiling / warm / cold) and its share
             ("top 3%"), so the key is said where it is needed and nowhere else. */}
-        {rows.map((g) => {
-          const st = BAND_STYLE[g.band];
-          // WHY it is here: shared clubs, position, era. The same three things
-          // the rank is computed from (lib/mysteryPlayer.js), so they agree.
-          const why = g.rank === 1 ? t('mp.secret') : (answer && CAREERS ? reasonLine(explainGuess(byId.get(g.id), answer, CAREERS)) : '');
-          return (
-            <div key={g.id} className={`mp-guess${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ background: st.bg, border: `1px solid ${st.bd}` }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="mp-guess-name">{g.name}</div>
-                {/* Each reason holds together, and the dot stays at the end of
-                    the line it closes, so a wrap never starts a line with "·". */}
-                {why && (
-                  <div className="mp-guess-why">
-                    {why.split(' · ').map((part, i, all) => (
-                      <React.Fragment key={part}>
-                        <span className="mp-why-part">{part}{i < all.length - 1 ? ' ·' : ''}</span>{i < all.length - 1 ? ' ' : ''}
-                      </React.Fragment>
-                    ))}
+        {!done && rows.length === 0 && starters.length > 0 && (
+          <div className="mp-start">
+            <div className="mp-start-k">{t('mp.startK')}</div>
+            {starters.map((p) => (
+              <button key={p.id} type="button" className="mp-start-row" onClick={() => submit(p)}>
+                <span className="mp-start-name">{p.name}</span>
+                <span className="mp-start-go">{t('mp.startTap')}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        {!done && rows.length === 0 && yesterdayName && (
+          <p className="mp-yday">{rich(t('mp.yesterday'), { name: <strong>{yesterdayName}</strong> })}</p>
+        )}
+        {/* ONE LIST, ONE NUMBER PER GUESS (12 Nov 2026). Every guess was its own
+            bordered, tinted box that said how close it was four times: a rank,
+            "top 2%", WARM, and a bar; and why in a run of grey prose. Six
+            guesses made the densest screen in the app (Alex asked which modes
+            needed surgery; this was the first). Now the guesses share one card.
+            A row is the name, the rank in its band's colour with the band's
+            word under it, and the three things the rank is made of (club,
+            position, era) as marks: lit when the guess shares it with the
+            answer, hollow when it does not. The bar is the line between rows. */}
+        {rows.length > 0 && (
+          <div className="mp-glist">
+            {rows.map((g) => {
+              const st = BAND_STYLE[g.band];
+              // WHY it is here: shared clubs, position, era. The same three things
+              // the rank is computed from (lib/mysteryPlayer.js), so they agree.
+              const marks = g.rank === 1 ? [{ text: t('mp.secret'), hit: true }]
+                : (answer && CAREERS ? reasonMarks(explainGuess(byId.get(g.id), answer, CAREERS, year)) : []);
+              return (
+                <div key={g.id} className={`mp-g${!done && last?.id === g.id && rows.length > 1 ? ' is-latest' : ''}`} style={{ '--g': st.fg }}>
+                  <div className="mp-g-main">
+                    <div className="mp-g-name">{g.name}</div>
                   </div>
-                )}
-                <div className="mp-guess-bar" aria-hidden="true">
-                  <div style={{ width: `${Math.round(closeness(g.rank, POOL.length || 1) * 100)}%`, background: st.fg }} />
+                  <div className="mp-g-rank">
+                    <span className="mp-g-num">{num(g.rank)}</span>
+                    <span className="mp-g-band">{bandWord(t, g.band)}</span>
+                  </div>
+                  {marks.length > 0 && (
+                    <div className="mp-g-facts">
+                      {marks.map((m) => (
+                        <span key={m.text} className={`mp-fact${m.hit ? ' is-hit' : ''}`}>{m.text}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mp-g-bar" aria-hidden="true">
+                    <i style={{ width: `${Math.max(2, Math.round(closeness(g.rank, POOL.length || 1) * 100))}%` }} />
+                  </div>
                 </div>
-              </div>
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontSize: 16, fontWeight: 900, color: st.fg, fontVariantNumeric: 'tabular-nums' }}>{num(g.rank)}</div>
-                {/* In proportion, not "of 9,030": see topShare. */}
-                {POOL.length > 0 && g.rank > 1 && (
-                  <div style={{ fontSize: 10, color: 'var(--t3)', fontVariantNumeric: 'tabular-nums' }}>{topShare(g.rank, POOL.length)}</div>
-                )}
-                <div style={{ fontSize: 10, fontWeight: 800, color: st.fg, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 1 }}>{bandWord(t, g.band)}</div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        )}
 
         {/* Below the guess list, not beside the input: a give-up at eye level
             competes with playing. */}

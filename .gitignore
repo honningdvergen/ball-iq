@@ -102,3 +102,8 @@ screenshots/social/
 
 # Social media work lives in the private shithousery-hq repo, never here (public repo)
 social/
+
+# build-stamp.mjs: local record of the last green build (read by .claude/hooks/bash-gates.mjs)
+.build-ok
+# hook state: cached App Store status, last Search Console read
+.claude/state/

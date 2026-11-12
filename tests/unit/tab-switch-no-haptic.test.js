@@ -27,8 +27,17 @@ describe("tab switching", () => {
     const at = APP.indexOf("<button key={id} className={`tab-item");
     expect(at, "tab bar button not found — did the markup change?").toBeGreaterThan(-1);
     const tag = APP.slice(at, APP.indexOf("\n", at));
-    expect(tag).toMatch(/onClick=\{\(\) => setTab\(id\)\}/);
+    // 7 Nov 2026: the click goes through selectTab (re-tap scrolls to the
+    // top). It stays a click: a touch-down switch let the lifting finger tap
+    // a sheet that opened on arrival. Neither the button nor selectTab buzzes.
+    expect(tag).toMatch(/onClick=\{\(\) => selectTab\(id\)\}/);
+    expect(tag).not.toMatch(/onPointerDown|onTouchStart/);
     expect(tag).not.toMatch(/haptic/);
+    for (const fn of ['const selectTab = useCallback']) {
+      const s = APP.indexOf(fn);
+      expect(s, fn).toBeGreaterThan(-1);
+      expect(APP.slice(s, APP.indexOf('}, [', s)), fn).not.toMatch(/haptic\(/);
+    }
   });
 
   it("no tab-switch handler anywhere pairs setTab with a haptic on the same line", () => {

@@ -6,7 +6,9 @@ import { Share as CapShare } from "@capacitor/share";
 import { avatarColour } from "../lib/avatarColour.js";
 import { firstLetter as firstLetterOf } from "../components/ProfilePic.jsx";
 import { t, getLang } from "../i18n/index.js";
-import { loopEvent, shareCard, IS_NATIVE, INVITE_BASE_URL, LEAGUE_QUIZ_BY_CAT, CAT_TO_QUIZ_SLUG } from "../App.jsx";
+import { shareCard, INVITE_BASE_URL, LEAGUE_QUIZ_BY_CAT, CAT_TO_QUIZ_SLUG } from "../App.jsx";
+import { loopEvent } from "../lib/funnel.js";
+import { IS_NATIVE } from "../lib/platform.js";
 // A club result only exists after launchClubQuiz has awaited the lazy club
 // tables, so a share reads them synchronously (an await could spend the tap).
 import { clubData } from "../lib/clubData.js";
@@ -107,7 +109,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     } catch (e) {
       // Cancelling the sheet is not a failure and must not produce a
       // "Copied to clipboard" toast for a share that never happened.
-      if (e && e.name === "AbortError") { loopEvent("share-daily-cancel"); return; }
+      if (e && e.name === "AbortError") { loopEvent("share-daily-cancel"); return false; }
     }
     try {
       await navigator.clipboard.writeText(text);
@@ -120,7 +122,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
   const shareDaily = useCallback(() => {
     loopEvent("share-daily");
     const who = resolveChallengerName();
-    if (!who) { setShareNameDraft(""); askShareNameRef.current = true; setAskShareName(true); return undefined; }
+    if (!who) { setShareNameDraft(""); askShareNameRef.current = true; setAskShareName(true); return false; }
     return performDailyShare(who);
   }, [resolveChallengerName, performDailyShare]);
   const submitShareName = useCallback((who) => {

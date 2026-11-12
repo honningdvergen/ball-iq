@@ -174,7 +174,7 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
           the only block in the app without a section head — Home has "Today",
           "Find a quiz", "More modes". Naming them also tells a guest that the
           two things they CAN do without an account are right here. */}
-      <div className="home-section-title" style={{marginTop:18, marginBottom:2}}>{t("oh.noAccount")}</div>
+      <div className="home-section-title" style={{marginTop:18, marginBottom:2}}>{t(needsAccount ? "oh.noAccount" : "oh.joinHead")}</div>
       {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
           sits dimmed until there's input, lights green once typing starts. */}
       <div style={{display:"flex",gap:9,marginTop:10}}>

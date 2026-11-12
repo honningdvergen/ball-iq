@@ -154,6 +154,10 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [showPw, setShowPw] = useState(false)
+  // Age confirmation (30 Oct 2026). The privacy policy says accounts are for
+  // 13+, Norway's digital age of consent; until now nothing asked. Required for
+  // every email sign-up, including a guest saving their progress.
+  const [ageOk, setAgeOk] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -193,6 +197,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
           setError(t('au.userBad')); setLoading(false); return
         }
         if (password.length < 6) { setError(t('au.pwShort')); setLoading(false); return }
+        if (!ageOk) { setError(t('au.ageReq')); setLoading(false); return }
         if (isAnonUser) {
           // v1.6 guest entry — upgrade the anonymous account IN PLACE
           // (same auth.uid(), stats carry over) instead of creating a
@@ -443,7 +448,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                 {prompt?.hardGate ? t('au.later') : t('au.guest')}
               </button>
               <div style={{ textAlign: 'center', fontSize: 11.5, lineHeight: 1.5, color: C.legal, marginTop: 4 }}>
-                {rich(t('au.terms'), {
+                {rich(t('au.termsAge'), {
                   terms: <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>{t('au.termsLink')}</a>,
                   privacy: <a href="/privacy.html" target="_blank" rel="noopener" style={{ color: C.t2, textDecoration: 'none' }}>{t('au.privacyLink')}</a>,
                 })}
@@ -513,6 +518,15 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
                   </button>
                 </span>
               </label>
+
+              {isSignup && (
+                <label style={{ display: 'flex', alignItems: 'center', gap: 10, minHeight: 44, fontSize: 14, color: C.t1b, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}>
+                  <input type="checkbox" name="age13" checked={ageOk}
+                    onChange={(e) => { setAgeOk(e.target.checked); if (e.target.checked && error === t('au.ageReq')) setError('') }}
+                    style={{ width: 20, height: 20, margin: 0, flex: '0 0 auto', accentColor: 'var(--accent)', cursor: 'pointer' }} />
+                  <span>{t('au.age13')}</span>
+                </label>
+              )}
 
               {error && <div style={S.err}>{error}</div>}
               {message && <div style={S.msg}>{message}</div>}

@@ -9,10 +9,14 @@ import { useProfilePhotos } from '../lib/profilePhotos.js';
 import { useAuth } from '../useAuth.jsx';
 import { gameEverStarted } from '../lib/mpRoom.js';
 import { useMpRetryStatus, mpCreateRoom, mpClaimRematch, mpJoinRoom, mpRevealQuestion, mpSetPlayerName, mpSetPlayerReady, mpStartNextRound } from '../multiplayerRpc.js';
-import { Confetti, LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, haptic, playSound, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, setGuestDisplayName, loopEvent} from '../App.jsx';
+import { LETTERS, QUESTION_DURATION_MS, INVITE_BASE_URL, buildInviteUrl, pickMultiplayerQuestions, recordMpQuestionsSeen, readMpHistory, recordMpResult, getMpXP, setGuestDisplayName } from '../App.jsx';
+import { Confetti } from '../components/Confetti.jsx';
+import { haptic, playSound } from '../lib/feedback.js';
+import { loopEvent } from '../lib/funnel.js';
 import { topicMeta, TopicPickerSheet } from '../components/TopicPickerSheet.jsx';
 import { maybeRequestReview } from '../lib/review.js';
 import { ProfilePic } from '../components/ProfilePic.jsx';
+import { Dices, Flag, Gamepad2, Link2, Pencil, Skull, Target, Zap } from 'lucide-react';
 // The invite and result share texts are in the sharer's language (i18n step
 // 6), and since step 7 the whole lobby, game and podium (the mp.* keys; each
 // component subscribes with useT and prints through tNow). The questions are
@@ -215,7 +219,7 @@ function OnlineEntry({ onBack, onLobbyEnter, defaultName, defaultAvatar, autoJoi
           disabled={busy}
           style={{ width: "100%", marginBottom: 12 }}
         >
-          {creating ? tNow("lg.creating") : tNow("mp.createBtn")}
+          {creating ? tNow("lg.creating") : <><Gamepad2 size={18} strokeWidth={2.2} aria-hidden="true" style={{ marginRight: 7 }} />{tNow("mp.createBtn")}</>}
         </button>
         {!showCodeInput ? (
           <button
@@ -725,21 +729,22 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             onClick={onShareInvite}
             style={{
               marginTop: 10,
-              padding: "8px 16px",
-              background: "transparent",
-              border: "1px solid var(--accent-b)",
-              borderRadius: 10,
-              color: "var(--accent)",
+              display: "inline-flex", alignItems: "center", gap: 7,
+              padding: "8px 16px", minHeight: 36,
+              background: "var(--s2)",
+              border: "1px solid var(--border2)",
+              borderRadius: 999,
+              color: "var(--t1)", WebkitTextFillColor: "var(--t1)",
               fontFamily: "inherit",
               fontSize: 13,
-              fontWeight: 700,
+              fontWeight: 800,
               cursor: "pointer",
               touchAction: "manipulation",
               WebkitTapHighlightColor: "transparent",
             }}
             aria-label={tNow("mp.shareInviteAria")}
           >
-            {tNow("mp.shareInvite")}
+            <Link2 size={15} strokeWidth={2.4} aria-hidden="true" />{tNow("mp.shareInvite")}
           </button>
           {copyToast && (
             <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 6 }}>{copyToast}</div>
@@ -768,7 +773,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                   <div style={{ flex: 1, fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
                     {p.name}
                     {isMe(p) && <span style={{ fontSize: 11, color: "var(--t3)", fontWeight: 500, marginLeft: 6 }}>{tNow("mp.you")}</span>}
-                    {p.user_id === room.host_id && <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.06em", color: "var(--accent)", background: "rgba(88,204,2,0.12)", border: "1px solid rgba(88,204,2,0.3)", borderRadius: 999, padding: "2px 8px", marginLeft: 8, verticalAlign: "middle" }} aria-label={tNow("mp.hostAria")}>{tNow("mp.host")}</span>}
+                    {p.user_id === room.host_id && <span style={{ fontSize: 11, fontWeight: 700, color: "var(--t2)", background: "var(--s2)", border: "1px solid var(--border2)", borderRadius: 999, padding: "2px 8px", marginLeft: 8, verticalAlign: "middle" }} aria-label={tNow("mp.hostAria")}>{tNow("mp.host")}</span>}
                   </div>
                 </div>
               ))}
@@ -824,7 +829,7 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
                 onClick={() => { setNameDraft(myRow.name || ""); setNameError(""); setEditingName(true); }}
                 style={{ background: "none", border: "none", padding: "4px 0", fontFamily: "inherit", fontSize: 12.5, fontWeight: 600, color: "var(--t2)", cursor: "pointer" }}
               >
-                {rich(tNow("mp.playingAs"), { name: <span style={{ color: "var(--text)" }}>{myRow.name}</span> })}
+                <Pencil size={12} strokeWidth={2.4} aria-hidden="true" style={{ marginRight: 6, verticalAlign: "-1px" }} />{rich(tNow("mp.playingAs"), { name: <span style={{ color: "var(--text)" }}>{myRow.name}</span> })}
               </button>
             )}
           </div>
@@ -833,7 +838,8 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
         {/* Scoring mode — shown to EVERYONE (room.mode broadcasts) so joiners
             know what they're playing before the host hits Start. */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-          <span style={{ display: "inline-flex", alignItems: "center", padding: "7px 14px", borderRadius: 999, background: "var(--s1)", border: "1px solid var(--border)", fontSize: 12.5, fontWeight: 700, color: "var(--t2)" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 14px", borderRadius: 999, background: "var(--s1)", border: "1px solid var(--border)", fontSize: 12.5, fontWeight: 700, color: "var(--t2)" }}>
+            {activeMode === "survival" ? <Skull size={14} strokeWidth={2.2} aria-hidden="true" /> : <Flag size={14} strokeWidth={2.2} aria-hidden="true" />}
             {activeMode === "survival"
               ? tNow("mp.modeSurvival")
               : tNow("mp.modeRace")}
@@ -849,12 +855,12 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             <>
               <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>{tNow("mp.topic")}</div>
               <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
-                <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || t.icon}</span>
+                <span style={{width:46,height:46,borderRadius:13,background:t.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:t.abbr ? 12 : 21,fontWeight:t.abbr ? 900 : 400,letterSpacing:t.abbr ? "0.04em" : 0,color:t.fg || "var(--t1)",flexShrink:0,boxShadow:t.color ? `0 2px 8px ${t.color}55` : undefined}}>{t.abbr || ((!pack || pack === "mixed") ? <Dices size={22} strokeWidth={2} aria-hidden="true" /> : t.icon)}</span>
                 <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
                   <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{t.label}</span>
                   <span style={{fontSize:12,color:"var(--t3)"}}>{t.sub}</span>
                 </div>
-                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{tNow("mp.change")}</button>
+                <button onClick={() => setTopicOpen(true)} disabled={starting} style={{border:"1px solid var(--border2)",borderRadius:999,padding:"8px 15px",fontSize:13,fontWeight:800,color:"var(--t1)",WebkitTextFillColor:"var(--t1)",background:"var(--s2)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{tNow("mp.change")}</button>
               </div>
             </>
           );
@@ -868,15 +874,19 @@ function LobbyView({ room, players, isHost, isMe, onCopy, onShareInvite, onStart
             <div className="ds-eyebrow" style={{ margin: "12px 0 8px" }}>{tNow("mp.format")}</div>
             <div style={{display:"flex",gap:9,marginBottom:16}}>
               {[
-                { id: "classic",  title: tNow("mp.fClassic"),  sub: tNow("mp.fClassicSub") },
-                { id: "sprint",   title: tNow("mp.fSprint"),   sub: tNow("mp.fSprintSub") },
-                { id: "survival", title: tNow("mp.fSurvival"), sub: tNow("mp.fSurvivalSub") },
+                { id: "classic",  Icon: Target, title: tNow("mp.fClassic"),  sub: tNow("mp.fClassicSub") },
+                { id: "sprint",   Icon: Zap,    title: tNow("mp.fSprint"),   sub: tNow("mp.fSprintSub") },
+                { id: "survival", Icon: Skull,  title: tNow("mp.fSurvival"), sub: tNow("mp.fSurvivalSub") },
               ].map(f => {
                 const sel = mode === f.id;
                 return (
                   <button key={f.id} type="button" onClick={() => pickFormat(f.id)} disabled={starting} aria-pressed={sel}
                     style={{flex:1,borderRadius:14,padding:"12px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:"pointer",fontFamily:"inherit",
                       ...(sel ? {background:"rgba(88,204,2,0.08)",border:"1.5px solid rgba(88,204,2,0.5)"} : {background:"var(--s1)",border:"1px solid var(--border)"})}}>
+                    {/* Line icons, as everywhere else in the app (10 Nov 2026). The names
+                        carried emoji (a dartboard, a bolt, a skull); Alex: the lobby
+                        "does not seem to fit with the rest of the design anymore". */}
+                    <f.Icon size={18} strokeWidth={2.2} aria-hidden="true" style={{ color: sel ? "var(--grn-soft)" : "var(--t3)", marginBottom: 3 }} />
                     <span style={{fontSize:14,fontWeight:800,color:sel ? "var(--grn-soft)" : "var(--t2)"}}>{f.title}</span>
                     <span style={{fontSize:11.5,color:sel ? "#5F9E3B" : "var(--t3)",fontVariantNumeric:"tabular-nums"}}>{f.sub}</span>
                   </button>

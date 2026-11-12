@@ -11,27 +11,38 @@
 
 .mp-intro { margin: 2px 0 14px; color: var(--t2); font-size: 13.5px; line-height: 1.5; text-wrap: pretty; }
 
-/* ── A guess ───────────────────────────────────────────────────────────── */
-.mp-guess {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 14px; border-radius: 12px;
+/* ── The guesses: one card, a row each ─────────────────────────────────── */
+.mp-glist { border: 1px solid var(--border); border-radius: 16px; background: var(--s1); overflow: hidden; }
+.mp-g {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px;
+  padding: 12px 16px 15px;
 }
-.mp-guess-name {
-  font-size: 14.5px; font-weight: 800; color: var(--t1);
+.mp-g-main { min-width: 0; }
+.mp-g-name {
+  font-size: 15px; font-weight: 800; color: var(--t1); letter-spacing: -0.01em;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-/* The reason. Two lines at most on a 360pt phone, then it wraps rather than
-   cutting the club name, which is the part that matters. */
-.mp-guess-why {
-  margin-top: 3px; font-size: 12px; line-height: 1.35; font-weight: 600;
-  color: var(--t2); text-wrap: pretty;
+/* Club, position, era. A lit mark is something the guess shares with the
+   answer; a hollow one is a miss. They wrap whole, never mid-phrase. */
+.mp-g-facts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 3px 12px; margin-top: 6px; }
+.mp-fact {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+  font-size: 12px; line-height: 1.3; font-weight: 600; color: var(--t3);
 }
-.mp-why-part { display: inline-block; max-width: 100%; }
-.mp-guess-bar {
-  margin-top: 7px; height: 4px; border-radius: 2px; overflow: hidden;
-  background: rgba(255, 255, 255, 0.07);
+.mp-fact::before {
+  content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%;
+  border: 1.5px solid var(--border2); box-sizing: border-box;
 }
-.mp-guess-bar > div { height: 100%; border-radius: 2px; }
+.mp-fact.is-hit { color: var(--t1); }
+.mp-fact.is-hit::before { border-color: var(--grn-soft, #7BD63A); background: var(--grn-soft, #7BD63A); }
+.mp-g-rank { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.mp-g-num { font-size: 19px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; color: var(--g); font-variant-numeric: tabular-nums; }
+.mp-g-band { font-size: 9.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g); opacity: 0.8; }
+/* The line between two rows IS the measure: its lit part is how close. */
+.mp-g-bar { position: absolute; left: 16px; right: 16px; bottom: 0; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+.mp-g-bar > i { display: block; height: 100%; border-radius: 2px; background: var(--g); }
+.mp-g:last-child .mp-g-bar { bottom: 6px; }
+.mp-g:last-child { padding-bottom: 19px; }
 
 /* ── The clue ladder ───────────────────────────────────────────────────── */
 /* Two by two: the free starting clues on top, the two that wait below.
@@ -59,7 +70,8 @@
   font-size: 19px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; color: var(--t1);
   overflow-wrap: anywhere;
 }
-.mp-clue.is-locked { border-style: dashed; background: transparent; }
+/* Solid like its neighbours, only quieter: a dashed box read as unfinished. */
+.mp-clue.is-locked { background: transparent; }
 .mp-clue.is-locked .mp-clue-value { font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--t3); }
 .mp-clue.is-ready {
   cursor: pointer; border-color: rgba(var(--mp-rgb), 0.6);
@@ -83,8 +95,9 @@
 }
 .mp-trend:empty { display: none; }
 .mp-trend > svg { color: var(--mp); flex-shrink: 0; }
-/* The guess the line above is about. An outline, so the band colours stay. */
-.mp-guess.is-latest { box-shadow: 0 0 0 2px rgba(var(--mp-rgb), 0.55); }
+/* The guess the line above is about: a tint and a mark on its edge. */
+.mp-g.is-latest { background: rgba(var(--mp-rgb), 0.09); }
+.mp-g.is-latest::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--mp); }
 
 /* ── The reveal ────────────────────────────────────────────────────────── */
 .mp-reveal {
@@ -134,3 +147,19 @@
   .mp-clue { transition: none; }
   .mp-clue.is-ready:active { transform: none; }
 }
+
+/* Three first moves, before the first guess: dashed rows where guesses will land (11 Nov 2026). */
+.mp-start { display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
+.mp-start-k { margin: 0 2px 2px; font-size: 12.5px; font-weight: 700; color: var(--t2); }
+.mp-start-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 48px; padding: 10px 14px; border-radius: 12px;
+  background: transparent; border: 1.5px dashed var(--border2);
+  font-family: inherit; text-align: left; cursor: pointer;
+  -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.mp-start-row:active { background: var(--s1); }
+.mp-start-name { font-size: 14.5px; font-weight: 800; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mp-start-go { flex: none; font-size: 12px; font-weight: 700; color: var(--t3); }
+.mp-yday { margin: auto 2px 0; padding-top: 18px; text-align: center; font-size: 12.5px; color: var(--t3); }
+.mp-yday strong { color: var(--t2); font-weight: 700; }

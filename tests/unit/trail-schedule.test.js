@@ -162,6 +162,30 @@ describe("Trail schedule is frozen", () => {
     "VERMAELEN",          // #92 · 2026-11-02 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "MARCELO",            // #93 · 2026-11-03 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
     "DYBALA",             // #94 · 2026-11-04 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "NESTA",              // #95 · 2026-11-05 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SILVA_DAV",          // #96 · 2026-11-06 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DEMBL",              // #97 · 2026-11-07 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GOMEZ",              // #98 · 2026-11-08 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "KANTE",              // #99 · 2026-11-09 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SAGNA",              // #100 · 2026-11-10 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "RIQUELME",           // #101 · 2026-11-11 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "RIJKAARD",           // #102 · 2026-11-12 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HAZARD",             // #103 · 2026-11-13 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BALE",               // #104 · 2026-11-14 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HERNANDEZ",          // #105 · 2026-11-15 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BARRY",              // #106 · 2026-11-16 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "SRNA",               // #107 · 2026-11-17 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BARTHEZ",            // #108 · 2026-11-18 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "CALHANOGLU",         // #109 · 2026-11-19 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "WILSHERE",           // #110 · 2026-11-20 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "CHIESA",             // #111 · 2026-11-21 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "BONIEK",             // #112 · 2026-11-22 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ZIDANE",             // #113 · 2026-11-23 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "JOAQUIN",            // #114 · 2026-11-24 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "DRAXLER",            // #115 · 2026-11-25 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "GNDOAN",             // #116 · 2026-11-26 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "ARSHAVIN",           // #117 · 2026-11-27 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
+    "HOWEDES",            // #118 · 2026-11-28 — pre-frozen ahead of serving, verified against getTrailAnswerForDayIndex
   ];
 
   it("no already-published day ever moves", () => {
@@ -206,12 +230,43 @@ describe("Trail schedule is frozen", () => {
     expect(adjacent).toEqual([]);
   });
 
-  it("uses every career an equal number of times", () => {
+  // Spares: active careers allowed ONE extra use, each with its reason. Adding
+  // a name here is a decision, not a fix for a red test.
+  const SPARES = {
+    POGBA: "took Konno's 4 Mar 2027 day (index 213) when Konno was retired, 7 Nov 2026",
+  };
+
+  it("uses every active career an equal number of times (named spares aside)", () => {
     const counts = {};
     for (const k of TRAIL_ANSWER_LOG) counts[k] = (counts[k] || 0) + 1;
-    const seen = Object.values(counts);
-    expect(Math.min(...seen)).toBe(Math.max(...seen));
+    const active = TRAIL_PLAYERS.filter((p) => !p.retired).map((p) => p.key);
+    const base = active.filter((k) => !(k in SPARES)).map((k) => counts[k] || 0);
+    expect(Math.min(...base)).toBe(Math.max(...base));
+    for (const k of Object.keys(SPARES)) expect(counts[k], `${k} spare`).toBe(base[0] + 1);
     expect(Object.keys(counts).length).toBe(TRAIL_PLAYERS.length);
+  });
+
+  it("a retired career is used only on its frozen days", () => {
+    // Retiring a player and leaving him in the future is the mistake this stops.
+    const retired = TRAIL_PLAYERS.filter((p) => p.retired).map((p) => p.key);
+    expect(retired.length).toBeGreaterThan(0);
+    for (const k of retired) {
+      const frozenUses = PUBLISHED.filter((x) => x === k).length;
+      const allUses = TRAIL_ANSWER_LOG.filter((x) => x === k).length;
+      expect(allUses, `${k} uses`).toBe(frozenUses);
+    }
+  });
+
+  it("no retired key appears at or beyond the frozen horizon", () => {
+    const retired = new Set(TRAIL_PLAYERS.filter((p) => p.retired).map((p) => p.key));
+    const late = TRAIL_ANSWER_LOG
+      .map((k, i) => [k, i])
+      .filter(([k, i]) => i >= PUBLISHED.length && retired.has(k));
+    expect(late).toEqual([]);
+  });
+
+  it("a retired career still resolves on the day it was served", () => {
+    expect(getTrailAnswerForDayIndex(TRAIL_ANCHOR_DAY + 27)?.key).toBe("KONNO");
   });
 
   it("obeys the locked editorial rules on every career", () => {

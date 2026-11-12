@@ -247,7 +247,7 @@ export const TOP10_SPECS = [
   { id: 'england-caps', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Most England caps (men)',
     note: 'England men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-09',
+    asOf: '2026-07-19',
     source: 'Englandstats.com, every cap numbered; the FA, 6 Oct 2026; RSSSF',
     slots: [
       { name: 'Peter Shilton', clue: '125 caps' },
@@ -647,7 +647,7 @@ export const TOP10_SPECS = [
   { id: 'spain-caps', checked: '2026-10-09', until: '2027-06-01', kind: 'player',
     title: 'Most Spain caps (men)',
     note: 'Spain men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-09',
+    asOf: '2026-07-19',
     source: 'RFEF player pages; RSSSF, 14 Mar 2026; Transfermarkt (read 9 Oct 2026)',
     slots: [
       { name: 'Sergio Ramos', clue: '180 caps' },
@@ -682,7 +682,7 @@ export const TOP10_SPECS = [
   { id: 'france-caps', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
     title: 'Most France caps (men)',
     note: 'France men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-11',
+    asOf: '2026-07-19',
     source: 'FFF statistics page of 18 Sep 2026; RSSSF; Transfermarkt (read 11 Oct 2026)',
     slots: [
       { name: 'Hugo Lloris', clue: '145 caps' },
@@ -707,7 +707,7 @@ export const TOP10_SPECS = [
   { id: 'france-top-scorers', checked: '2026-10-11', until: '2027-06-01', kind: 'player',
     title: 'France’s top scorers (men)',
     note: 'Goals for France at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-11',
+    asOf: '2026-07-19',
     source: 'FFF statistics page of 18 Sep 2026; RSSSF; Transfermarkt (read 11 Oct 2026)',
     slots: [
       { name: 'Kylian Mbappé', clue: '66 goals' },
@@ -984,7 +984,7 @@ export const TOP10_SPECS = [
   { id: 'spain-top-scorers', checked: '2026-10-14', kind: 'player', clueLabel: 'Goals',
     title: 'Spain’s top scorers (men)',
     note: 'Goals for Spain at the end of the 2026 World Cup.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'RSSSF, 14 Mar 2026, plus each 2026 goal checked match by match; Wikipedia records table, 6 Oct 2026',
     until: '2027-06-01',
     slots: [
@@ -1052,7 +1052,7 @@ export const TOP10_SPECS = [
   { id: 'portugal-top-scorers', checked: '2026-10-14', kind: 'player', clueLabel: 'Goals',
     title: 'Portugal’s top scorers (men)',
     note: 'Goals for Portugal at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'Wikipedia Portugal records (eu-football, 24 Sep 2026); RSSSF record internationals and João Pinto goal list; Transfermarkt (read 14 Oct 2026)',
     until: '2027-06-01',
     slots: [
@@ -1166,7 +1166,7 @@ export const TOP10_SPECS = [
   { id: 'germany-caps', checked: '2026-10-14', kind: 'player', clueLabel: 'Caps',
     title: 'Most Germany caps (men)',
     note: 'Germany and West Germany, not East, at the end of the 2026 World Cup. Level in order reached.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'DFB record players, stamped 14 Oct 2026; RSSSF; Wikipedia, rev 5 Oct 2026; Transfermarkt match logs',
     until: '2027-06-01',
     slots: [
@@ -1189,7 +1189,7 @@ export const TOP10_SPECS = [
   { id: 'netherlands-caps', checked: '2026-10-14', kind: 'player', clueLabel: 'Caps',
     title: 'Most Netherlands caps (men)',
     note: 'Netherlands caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'RSSSF, to 17 Nov 2025; Transfermarkt match logs (read 14 Oct 2026); Wikipedia, rev 12 Oct 2026',
     until: '2027-06-01',
     slots: [
@@ -1212,7 +1212,7 @@ export const TOP10_SPECS = [
   { id: 'netherlands-top-scorers', checked: '2026-10-14', kind: 'player', clueLabel: 'Goals',
     title: 'Netherlands’ top scorers (men)',
     note: 'Netherlands goals at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'RSSSF, to 17 Nov 2025; Transfermarkt (read 14 Oct 2026); Wikipedia, rev 12 Oct 2026',
     until: '2027-06-01',
     slots: [
@@ -1349,7 +1349,7 @@ export const TOP10_SPECS = [
   { id: 'belgium-caps', checked: '2026-10-14', kind: 'player', clueLabel: 'Caps',
     title: 'Most Belgium caps (men)',
     note: 'Belgium men’s caps on the RBFA’s count, at the end of the 2026 World Cup.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'RBFA count via Wikipedia (as of 5 Oct 2026), less post-World Cup caps; RSSSF to 18 Nov 2025 plus 2026 World Cup line-ups',
     until: '2027-06-01',
     slots: [
@@ -1372,7 +1372,7 @@ export const TOP10_SPECS = [
   { id: 'croatia-caps', checked: '2026-10-14', kind: 'player', clueLabel: 'Caps',
     title: 'Most Croatia caps (men)',
     note: 'Croatia men’s caps at the end of the 2026 World Cup. Ties go to whoever got there first.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'RSSSF to Portugal v Croatia, 2 Jul 2026; HNS count via Wikipedia (6 Oct 2026) less four Nations League games',
     until: '2027-06-01',
     slots: [
@@ -1395,7 +1395,7 @@ export const TOP10_SPECS = [
   { id: 'uruguay-caps', checked: '2026-10-14', kind: 'player', clueLabel: 'Caps',
     title: 'Most Uruguay caps (men)',
     note: 'Uruguay men’s caps at the end of the 2026 World Cup.',
-    asOf: '2026-10-14',
+    asOf: '2026-07-19',
     source: 'Wikipedia (6 Oct 2026) and Transfermarkt (14 Oct 2026), less post-World Cup caps; RSSSF; Uruguayan press (ESPN, El Observador)',
     until: '2027-06-01',
     slots: [
@@ -2052,7 +2052,7 @@ export const TOP10_SPECS = [
   { id: 'scotland-caps', checked: '2026-10-16', until: '2027-12-31', kind: 'player',
     title: 'Most Scotland caps (men)',
     note: 'Scotland men’s caps at the end of the 2026 World Cup.',
-    asOf: '2026-10-16',
+    asOf: '2026-07-19',
     source: 'RSSSF Scotland record internationals (to 24 Jun 2026); Wikipedia list (SFA profiles) less the autumn 2026 caps, from RSSSF line-ups; Transfermarkt agrees on the ten and the cut',
     slots: [
       { name: 'Kenny Dalglish', clue: '102 caps' },

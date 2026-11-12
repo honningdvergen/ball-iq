@@ -98,11 +98,12 @@ const QB = QB_ALL.filter((q) => !q.tag || !RETIRED_TAGS.has(q.tag));
 import { rootCss } from '../src/design/tokens.js';
 import { shellHeader, shellFooter, SHELL_CSS } from './seo/shell.mjs';
 import { shellStrings } from './seo/shell-i18n.mjs';
-import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE, GAMES_PAGE } from './seo/content.mjs';
+import { SITE, HUB, CATEGORIES, LISTICLES, ABOUT, CONTACT, TERMS, FOOTLE_PAGE, MYSTERY_PAGE, TRAIL_PAGE, DAILY7_PAGE, GAMES_PAGE, XI_PAGE } from './seo/content.mjs';
 import { GAMES_NAV } from '../src/marketing/siteNav.js';
 import { recentFootleAnswers } from './seo/footle-answer-page.mjs';
 import { recentDailyDays } from './seo/daily-answers-page.mjs';
 import { CLUBS } from './seo/clubs.mjs';
+import { MOVED_QUESTION_SLUGS } from './seo/moved-questions.mjs';
 import { CURATED_FACTS as FUN_FACTS } from './seo/funFactsCurated.js';
 import { tiersFor, DEFAULT_TIERS } from './seo/clubTiers.mjs';
 import { BQ_SUPABASE_URL, BQ_PUBLISHABLE_KEY, BQ_CSS, BQ_JS, renderQuizSet, shuffleOptions, seedFromId } from './seo/quiz-widget.mjs';
@@ -523,7 +524,15 @@ function badgeFor(slug, name) {
   if (slug === HUB.slug) return { text: '⚽', emoji: true };
   if (CLUB_BADGE[slug]) return { text: CLUB_BADGE[slug], emoji: false };
   if (CAT_EMOJI[slug]) return { text: CAT_EMOJI[slug], emoji: true };
-  return { text: '❓', emoji: true }; // listicles / anything else
+  // Player tiles carry the player's initials (29 Oct 2026: every player tile
+  // on the hub showed a red ❓, which reads as a missing image, not a badge).
+  const player = PLAYERS.find((p) => p.slug === slug);
+  if (player) {
+    const parts = player.name.split(/\s+/).filter(Boolean);
+    const text = parts.length > 1 ? parts[0][0] + parts[parts.length - 1][0] : player.name.slice(0, 2);
+    return { text: text.toUpperCase(), emoji: false };
+  }
+  return { text: '📝', emoji: true }; // listicles / anything else
 }
 
 // ── shared chrome ─────────────────────────────────────────────────────────────
@@ -1266,17 +1275,32 @@ const SHOWN_CAP = 40;
 // weeks of daily sets, and the rest wait in the app.
 const WIDGET_CAP = 60;
 
-function renderAnswerList(name, rows, { spread = 0 } = {}) {
+// `fold`: show this many answers open and the rest under ONE disclosure
+// ("Show the other N"), so a 58-question club page is not 25 phone screens
+// of answers while nothing is hidden behind a per-question button.
+function renderAnswerList(name, rows, { spread = 0, fold = 0 } = {}) {
   const picked = spreadPick(rows, spread);
+  // Answers are VISIBLE (29 Oct 2026). The searches that brought these pages
+  // their traffic were "liverpool quiz with answers", "arsenal quiz with
+  // answers", "premier league quiz questions and answers": people want the
+  // answer on the page, for a pub quiz or an argument. Behind a "Show answer"
+  // button every answer and explanation (60% of the page's words) was hidden
+  // until tapped, which served neither them nor a crawler weighing the page.
+  // The paced widget above still hides its answers, so the game is intact.
   const sub = picked.length < rows.length
-    ? 'A selection from the quiz above, spread from the easiest to the hardest. Play it first; each answer stays folded until you open it.'
-    : 'Every question from the quiz above. Play it first; each answer stays folded until you open it.';
-  const items = picked.map((r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><details class="ans-show"><summary>Show answer</summary><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></details></li>`);
+    ? 'A selection from the quiz above, from the easiest to the hardest, each with its answer and the reason it is right. Play the quiz first if you want a clean score.'
+    : 'Every question from the quiz above, each with its answer and the reason it is right. Play the quiz first if you want a clean score.';
+  const item = (r) => `<li><p class="ans-q">${nbHtml(r.q)}</p><p class="ans-a"><b>${nbHtml(r.o[r.a])}.</b>${r.hint ? ` ${esc(r.hint)}` : ''}</p></li>`;
+  const open = fold > 0 && picked.length > fold + 4 ? picked.slice(0, fold) : picked;
+  const rest = picked.slice(open.length);
+  const more = rest.length
+    ? `\n<li class="ans-more"><details><summary>Show the other ${rest.length} questions</summary><ol class="ans-list" start="${open.length + 1}">\n${rest.map(item).join('\n')}\n</ol></details></li>`
+    : '';
   return `<section class="sec narrow" id="answers">
 <h2>${esc(name)} quiz answers, explained</h2>
 <p class="sub">${sub}</p>
 <ol class="ans-list">
-${items.join('\n')}
+${open.map(item).join('\n')}${more}
 </ol>
 </section>`;
 }
@@ -1520,11 +1544,11 @@ function head({ title, description, canonical, ld, ads = false, ogImage = SITE.o
      wherever they are, and reading that as non-European would silently track
      exactly the visitors most likely to object. See index.html. */
   try { var tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
-        needsConsent = tz.indexOf('Europe/') === 0 || tz === 'UTC' || tz === ''; }
+        needsConsent = tz.indexOf('Europe/') === 0 || ' Atlantic/Reykjavik Atlantic/Canary Atlantic/Madeira Atlantic/Azores Atlantic/Jan_Mayen Arctic/Longyearbyen Asia/Nicosia Asia/Famagusta Africa/Ceuta Indian/Reunion Indian/Mayotte America/Guadeloupe America/Martinique America/Cayenne America/Marigot America/St_Barthelemy '.indexOf(' ' + tz + ' ') > -1 || tz === 'UTC' || tz === ''; }
   catch (e) { needsConsent = true; }
   var choice = null;
   try { choice = localStorage.getItem('biq_consent_analytics'); } catch (e) {}
-  if (!needsConsent || choice === 'granted') {
+  if (choice !== 'denied' && (!needsConsent || choice === 'granted')) {
     var c = document.createElement('script');
     c.async = true;
     c.src = 'https://www.clarity.ms/tag/xqwevk9brq';
@@ -1843,11 +1867,14 @@ ${SHELL_CSS}
   .ans-list li{border-top:1px solid #1A1D27;padding:16px 2px}
   .ans-list li:last-child{border-bottom:1px solid #1A1D27}
   .ans-q{margin:0 0 10px;color:#fff;font-size:16px;line-height:1.5;font-weight:600;max-width:68ch}
-  .ans-show summary{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--bd2);border-radius:10px;color:var(--tx3);font-size:14px;font-weight:700;cursor:pointer;list-style:none}
-  .ans-show summary::-webkit-details-marker{display:none}
-  .ans-show[open] summary{color:var(--grn);border-color:rgba(88,204,2,.4)}
-  .ans-a{margin:10px 0 0;color:#CDD3DE;font-size:15.5px;line-height:1.65;max-width:68ch}
+  .ans-a{margin:6px 0 0;padding-left:14px;border-left:3px solid rgba(88,204,2,.45);color:#CDD3DE;font-size:15.5px;line-height:1.65;max-width:68ch}
   .ans-a b{color:#fff}
+  .ans-more{padding:16px 2px 0;border-top:1px solid #1A1D27}
+  .ans-more summary{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--bd2);border-radius:12px;color:var(--tx1);font-size:14px;font-weight:700;cursor:pointer;list-style:none}
+  .ans-more summary::-webkit-details-marker{display:none}
+  .ans-more details[open] summary{display:none}
+  .ans-more .ans-list{margin-top:0}
+  .ans-more .ans-list li:first-child{border-top:0}
   .check-line{margin:0;color:var(--tx3);font-size:15px;line-height:1.65;max-width:68ch}
   .check-line a{color:var(--grn);font-weight:700}
   .stats{display:inline-block;font-size:13px;font-variant-numeric:tabular-nums;color:var(--tx3);background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-top:6px}
@@ -2627,7 +2654,7 @@ ${/* Prose AFTER the band + mesh, per the ACTION BEFORE PROSE note above: the
      write-up is now open and on the page, which is what the reviewer needed;
      it does not need to push the install band and the mesh below the cliff. */''}
 ${renderClubAbout(cfg.name, rest)}
-${renderAnswerList(cfg.name, quizRows)}
+${renderAnswerList(cfg.name, quizRows, { fold: 20 })}
 ${clubCheckLine()}
 <section class="sec narrow">
 <h2 id="faq">${esc(cfg.name)} quiz — FAQ</h2>
@@ -4220,7 +4247,16 @@ ${NAV}
 <nav class="crumbs" aria-label="Breadcrumb"><a href="${SITE.base}/">Home</a> › <span>Guess the XI</span></nav>
 ${XI_MARKUP}
 </section>
+<section class="sec narrow" id="how"><h2>How to play</h2><div class="prose">${XI_PAGE.how.map(([t, d], i) => `<p><strong>${i + 1}. ${esc(t)}.</strong> ${esc(d)}</p>`).join('\n')}</div></section>
+<section class="sec narrow"><h2>What makes it different</h2><div class="prose">${XI_PAGE.body.map((pp) => `<p>${esc(pp)}</p>`).join('\n')}</div></section>
+<section class="sec narrow"><h2>The other daily games</h2><div class="prose">
+<p><a href="${SITE.base}/football-wordle/">Footle</a> — the daily football Wordle — guess the footballer's surname in six.</p>
+<p><a href="${SITE.base}/daily-football-quiz/">Daily 7</a> — seven questions, the same for everyone, once a day.</p>
+<p><a href="${SITE.base}/transfer-trail/">Transfer Trail</a> — name the player from his career path, one club at a time.</p>
+<p><a href="${SITE.base}/mystery-player/">Mystery Player</a> — one secret footballer, unlimited guesses, every guess ranked by closeness.</p>
+</div></section>
 ${appCtaBand('football')}
+<section class="sec narrow"><h2>Guess the XI — FAQ</h2>${renderFaq(XI_PAGE.faq)}</section>
 </main>
 ${footer()}
 <script>${XI_JS}</script>`;
@@ -4623,7 +4659,7 @@ ${GAMES_CSS}
 </section>
 ${island.script}
 <section class="sec gm-sec" id="daily" aria-labelledby="gm-daily-h">
-<h2 class="gm-h" id="gm-daily-h">Today's four</h2>
+<h2 class="gm-h" id="gm-daily-h">Today's puzzles</h2>
 <p class="gm-sub">The same puzzles for everyone, new ones in <b id="gm-countdown">a few hours</b>.</p>
 <div class="gm-grid">
 ${dailies.map(card).join('\n')}
@@ -6385,6 +6421,30 @@ async function main() {
   // sitemap again (21 Oct 2026, after the 20 Oct drop): see buildClubQuestionsPage.
   const sitemapUrls = buildSitemap([...livePages, ...clubPages, ...playerPages, ...nationPages], listPages, builtEs, [], builtHubs);
   buildLlmsTxt(livePages, clubPages, playerPages, listPages);
+  // TEMPORARY (10 Nov 2026, ends by itself after 31 Dec 2026): a second sitemap
+  // that lists the OLD /questions/ URLs (and, from 11 Nov, the pruned pages). They have redirected to their
+  // /quiz/ twins since 26 Oct, but Google only learns that when it re-crawls
+  // each one, and on 10 Nov some were still indexed as duplicates from an
+  // 18 Oct crawl. Listing moved URLs in a sitemap is Google's own advice for
+  // getting redirects seen. Submitted by hand in Search Console; it is NOT in
+  // robots.txt and NOT part of sitemap.xml (the orphan gate reads that one).
+  // Delete this block and scripts/seo/moved-questions.mjs in January 2027.
+  if (new Date() < new Date('2027-01-01')) {
+    // ⚠️ THE PRUNED PAGES NEED THE SAME DOOR (11 Nov 2026). URL inspection on
+    // 11 Nov: Rosenborg, Lincoln City, Rennes and Union Berlin were all last
+    // crawled on 20 Oct at 02:35 UTC, hours before the drop, and Google still
+    // holds that copy as "Submitted and indexed", old quiz markup included.
+    // The 26 Oct prune took them out of sitemap.xml in the same commit that
+    // made them noindex, so nothing has asked Google to come back and read
+    // the noindex. Listed here until Google has seen it; same end date.
+    const moved = [
+      ...MOVED_QUESTION_SLUGS.map((s) => `/questions/${s}-quiz-questions-and-answers/`),
+      ...PRUNED,
+    ].map((path) =>
+      `  <url>\n    <loc>${SITE.base}${path}</loc>\n    <lastmod>2026-10-26</lastmod>\n  </url>`).join('\n');
+    writeFileSync(resolve(DIST, 'sitemap-moved.xml'),
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${moved}\n</urlset>\n`, 'utf8');
+  }
   const moved = flushLastmodStore();
   if (moved) console.log(`[gen-seo] lastmod: ${moved} page(s) changed content since the stored date`);
   await pingIndexNow(sitemapUrls);

@@ -44,6 +44,11 @@ import { keyForDate, dateToYMD, msToNextLocalMidnight, formatCountdown } from '.
 import { marketingEvent } from '../lib/marketingEvent.js';
 import FootleBand from './FootleBand.jsx';
 import { StoreBadge, detectStore } from '../components/StoreBadge.jsx';
+// "Jonas played your Footle": the reply to a challenge this browser sent
+// (components/MateReplyCard.jsx). Loaded only where one was sent lately; the
+// key is read inline so this page's first load carries none of that library.
+const MateReplyCard = React.lazy(() => import('../components/MateReplyCard.jsx'));
+const hasSentChallenge = () => { try { const v = localStorage.getItem('biq_sent_challenges'); return !!v && v.length > 4; } catch { return false; } };
 
 const PLAY = '/play';
 // ⚠️ NO DAILY USES door() ANY MORE. All four now open their own served page —
@@ -282,6 +287,9 @@ export default function FrontDoor() {
                 : <span><b>{streak.before} {streak.before === 1 ? 'day' : 'days'} in a row.</b> Play one today to make it {streak.before + 1}.</span>}
             </p>
           )}
+          {hasSentChallenge() && (
+            <React.Suspense fallback={null}><MateReplyCard /></React.Suspense>
+          )}
           <div className="fd-today">
             {/* ⚠️ FOUR EQUAL ROWS, BY DECISION. This morning's A/B chose B — Footle
                 as a lead card with a live board. By evening Alex had seen it on
@@ -295,8 +303,10 @@ export default function FrontDoor() {
                 now the app's own Footle mark — an F on the green tile, the same
                 one the app home draws. The worked example lives on the Footle
                 page itself. */}
+            {/* The next unplayed game is the one tinted Play; "Get app" keeps
+                the page's one solid button (calmer Home, 28 Oct 2026). */}
             {dailies.map((d) => (
-              <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)} style={{ '--mode': MODE_ACCENT[d.k === 'daily' ? 'daily7' : d.k] }}>
+              <a key={d.k} className={`fd-card fd-daily${d.done ? ' is-done' : ''}${d.k === dailies.find((x) => !x.done)?.k ? ' is-next' : ''}`} href={d.href} onClick={() => go(`fd-today-${d.k}`, d.href)} style={{ '--mode': MODE_ACCENT[d.k === 'daily' ? 'daily7' : d.k] }}>
                 {d.k === 'footle' ? (
                   <span className="fd-card-ic fd-fmark" aria-hidden="true">F</span>
                 ) : (

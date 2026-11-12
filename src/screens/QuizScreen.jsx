@@ -24,10 +24,12 @@
 // Lazy on purpose: this file and quiz.css are off Home's eager budget
 // (scripts/audit-home-budget.mjs); Home only carries the row that opens it.
 import React from "react";
+import { swatchEdge } from '../lib/colourMath.js';
 import { ArrowLeft, ArrowRight, Check, LandPlot, ScrollText, Sparkles, Timer } from "lucide-react";
 import { prefetchQuestions } from "../questions-loader.js";
 import { faceAbbrForCat } from "../lib/ballIqCard.js";
-import { haptic, LEAGUE_QUIZ_SECTIONS } from "../App.jsx";
+import { LEAGUE_QUIZ_SECTIONS } from "../App.jsx";
+import { haptic } from "../lib/feedback.js";
 import { useT } from "../i18n/index.js";
 import en from "../i18n/en.js";
 import "./quiz.css";
@@ -114,7 +116,7 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
               const on = topic === it.cat;
               return (
                 <button key={it.cat} type="button" className={`cf-chip qz-chip${on ? " is-on" : ""}`} aria-pressed={on} onClick={() => pick(it.cat)}>
-                  <span className="cf-abbr" style={{ background: it.color, color: "#fff" }} aria-hidden="true">{it.abbr}</span>
+                  <span className="cf-abbr" style={{ background: it.color, color: "#fff", boxShadow: swatchEdge(it.color) || undefined }} aria-hidden="true">{it.abbr}</span>
                   <span className="cf-chip-name">{chipName(t, it)}</span>
                   {on && <Check className="qz-tick" size={15} strokeWidth={2.6} aria-hidden="true" />}
                 </button>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { loopEvent, normalizeJoinCode } from "../App.jsx";
+import { normalizeJoinCode } from "../App.jsx";
+import { loopEvent } from "../lib/funnel.js";
 
 // Extracted from AppInner on 2026-09-06 (review E16): the pending join code
 // read from the URL, the boot-time dead-code drop, the auto-join route, the

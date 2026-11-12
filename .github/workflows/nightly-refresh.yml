@@ -1,0 +1,42 @@
+# Nightly refresh — one small commit a night so Vercel rebuilds the static site.
+#
+# WHY THIS EXISTS. The daily pages are rendered at BUILD time: the Footle
+# landing's "Recent Footle answers", the Daily 7 page's "Yesterday's seven",
+# the "Today's set" dates on every quiz page. Nothing rebuilt the site between
+# deploys, so on a quiet day the site drifted: on 29 Oct 2026 the Footle page
+# still listed No. 177 as the latest finished puzzle when 178 had been and
+# gone. Vercel deploys on every push to main, so a dated stamp file is the
+# simplest trigger that needs no Vercel credential in this repo.
+#
+# The stamp is the only change, so sitemap lastmod (scripts/seo/lastmod.json,
+# written by LOCAL builds only) stays honest: a nightly rebuild does not claim
+# any page changed.
+#
+# Runs at 23:20 UTC = 00:20 Oslo in winter (01:20 in summer), after the day's
+# puzzles have rolled over at local midnight.
+
+name: Nightly refresh
+
+on:
+  schedule:
+    - cron: '20 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Stamp and push
+        run: |
+          date -u +%Y-%m-%dT%H:%MZ > .nightly-refresh
+          git config user.name 'ball-iq-nightly'
+          git config user.email 'nightly@balliq.app'
+          git add .nightly-refresh
+          git commit -m "Nightly refresh $(date -u +%Y-%m-%d): rebuild the daily pages"
+          git push origin HEAD:main

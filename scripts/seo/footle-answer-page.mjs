@@ -141,7 +141,7 @@ ${nextIsOpen(now) ? `<p class="prose" style="margin-top:14px">Already past midni
 </section>
 <section class="sec narrow"><h2>What Footle is</h2><div class="prose">
 <p><strong>Footle</strong> is the football Wordle: one hidden surname of a real footballer each day, six guesses, and after each guess the tiles turn green (right letter, right place), yellow (in the name, wrong place) or grey (not in it). The length changes from day to day. A new name drops at midnight, and the same one is served to everyone, so a result is worth comparing.</p>
-<p>It is one of four daily puzzles on <a href="${SITE.base}/">Ball IQ</a>, alongside the Daily 7, Transfer Trail and Mystery Player — all free, in the browser, no account needed.</p>
+<p>It is one of the daily puzzles on <a href="${SITE.base}/">Ball IQ</a>, alongside the Daily 7, Transfer Trail and Mystery Player — all free, in the browser, no account needed.</p>
 </div></section>
 <section class="sec narrow"><h2>Past Footle answers</h2>
 <p>Every puzzle has its own page, most recent first.</p>

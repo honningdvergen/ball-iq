@@ -72,7 +72,9 @@ for (const c of candidates) {
   fresh.push({ ...c, key });
 }
 
-const roster = [...TRAIL_PLAYERS.map((p) => p.key), ...fresh.map((p) => p.key)];
+// Retired careers (retired: true in trail.js) keep their served days but are
+// never planned again.
+const roster = [...TRAIL_PLAYERS.filter((p) => !p.retired).map((p) => p.key), ...fresh.map((p) => p.key)];
 console.log(`roster ${TRAIL_PLAYERS.length} -> ${roster.length} careers (+${fresh.length})`);
 
 // ── re-plan days 11..end ────────────────────────────────────────────────────

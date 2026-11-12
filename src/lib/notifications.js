@@ -88,6 +88,12 @@ let _localWindowOn = false;
 async function syncReminderHour() {
   try {
     const { supabase } = await import('../supabase.js');
+    // Signed-in players only (7 Nov 2026): the function is granted to
+    // `authenticated`, and a guest's call came back 401 about twenty times a
+    // day in the API logs. A guest's reminder fires locally; there is no row
+    // for the server to keep.
+    const { data: { session } = {} } = await supabase.auth.getSession();
+    if (!session) return;
     supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: true })
       .then(({ error }) => { if (error) console.warn('[reminders] set_reminder_hour', error.message); })
       .catch(() => {});
