@@ -178,6 +178,11 @@ describe('the link, the redirect and the boot agree on the id', () => {
     const CSS = read('src/components/mateReply.css').replace(/\/\*[\s\S]*?\*\//g, '');
     expect(CSS.match(/var\(--[a-z0-9]+\)/g)).toBe(null);
   });
+  it('a reply with no name has its own words, never "Level with A mate"', () => {
+    const CARD = read('src/components/MateReplyCard.jsx');
+    expect(CARD).toMatch(/: t\(r > 0 \? "mr\.beatAnon" : r < 0 \? "mr\.lostAnon" : "mr\.levelAnon"\)/);
+    expect(CARD).toMatch(/t\(reply\.name \? "dd\.h2h" : "mr\.h2hAnon"\)/);
+  });
   it('the card has no solid button', () => {
     expect(read('src/components/MateReplyCard.jsx')).not.toMatch(/dd-share|lg-solid|t7s-cta/);
   });

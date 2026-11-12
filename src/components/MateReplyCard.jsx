@@ -75,8 +75,13 @@ export default function MateReplyCard({ onStartLeague }) {
         <span className="mr-kicker"><Swords size={14} strokeWidth={2.4} aria-hidden="true" /> {t("mr.played", { name, what: WHAT[reply.game] })}</span>
         <button type="button" className="mr-x" onClick={putAway} aria-label={t("mr.close")}><X size={16} strokeWidth={2.4} aria-hidden="true" /></button>
       </div>
-      <div className="mr-head">{t(r > 0 ? "dd.beat" : r < 0 ? "dd.lost" : "dd.level", { name })}</div>
-      <div className="mr-vs">{rich(t("dd.h2h"), { me: <strong>{scoreLabel(reply.game, reply.mine, t)}</strong>, name, them: <strong>{scoreLabel(reply.game, reply.theirs, t)}</strong> })}</div>
+      {/* No name is the common case (an installed app sends none, and most
+          web players have never set one): "Level with A mate" read wrong on
+          the first live run, so the nameless card has its own words. */}
+      <div className="mr-head">{reply.name
+        ? t(r > 0 ? "dd.beat" : r < 0 ? "dd.lost" : "dd.level", { name })
+        : t(r > 0 ? "mr.beatAnon" : r < 0 ? "mr.lostAnon" : "mr.levelAnon")}</div>
+      <div className="mr-vs">{rich(t(reply.name ? "dd.h2h" : "mr.h2hAnon"), { me: <strong>{scoreLabel(reply.game, reply.mine, t)}</strong>, name, them: <strong>{scoreLabel(reply.game, reply.theirs, t)}</strong> })}</div>
       {!inLeague() && (
         <div className="mr-acts">
           <button type="button" className="mr-league" onClick={league}>{t("mr.league")}</button>
