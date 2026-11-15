@@ -67,6 +67,24 @@ describe('consent bar language', () => {
     expect(es.text).toMatch(/Sin anuncios, y no vendemos nada\. $/);
   });
 
+  it('a translated quiz page gets the bar in its own language, Decline first', () => {
+    // A third of Google clicks land on /it/quiz/juventus/ and /it/quiz/ac-milan/ (15 Nov 2026).
+    const want = { it: ['Rifiuta', 'Consenti'], de: ['Ablehnen', 'Erlauben'], fr: ['Refuser', 'Autoriser'], nl: ['Weigeren', 'Toestaan'], pt: ['Recusar', 'Permitir'], tr: ['Reddet', 'İzin ver'], id: ['Tolak', 'Izinkan'] };
+    for (const [lang, buttons] of Object.entries(want)) {
+      const got = run({ htmlLang: lang, root: null });
+      expect(got.buttons, lang).toEqual(buttons);
+      expect(got.text, lang).toMatch(/Microsoft Clarity/);
+      expect(got.text, lang).toMatch(/PostHog/);
+      expect(got.text, `${lang}: the disclosure names what Clarity records`).not.toBe(ENGLISH.text);
+      expect(got.policy, lang).not.toBe('Privacy policy');
+      expect(got.aria, lang).not.toBe('Analytics consent');
+    }
+    expect(run({ htmlLang: 'it-IT', root: null }).buttons).toEqual(['Rifiuta', 'Consenti']);
+    // A language with no wording, and English itself, stay English.
+    expect(run({ htmlLang: 'sv', root: null })).toEqual(ENGLISH);
+    expect(run({ htmlLang: 'en-GB', root: null })).toEqual(ENGLISH);
+  });
+
   it('before the app paints, the pre-boot rule decides (same as index.html)', () => {
     expect(run({ store: { biq_lang: 'es' } }).buttons).toEqual(['Rechazar', 'Permitir']);
     expect(run({ store: { biq_i18n_live: '1' }, device: 'es-ES' }).buttons).toEqual(['Rechazar', 'Permitir']);

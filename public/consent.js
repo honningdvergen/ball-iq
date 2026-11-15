@@ -163,12 +163,13 @@
     '@media (prefers-reduced-motion:reduce){#biq-consent{transition:none}}',
   ].join('');
 
-  /* Spanish, in the app only. The app sets <html lang> once its language is
+  /* Spanish in the app. The app sets <html lang> once its language is
      picked; before that (this file can run before React) the same rule as the
      pre-boot shell in index.html decides: an explicit biq_lang, else the device
-     language while Spanish is live (biq_i18n_live). The static SEO pages have no
-     #root and are English, so they always get English. The wording below is
-     the disclosure: a change to one language is a change to both. */
+     language while Spanish is live (biq_i18n_live). The static pages have no
+     #root: the English ones get English, the translated ones their own
+     language (below). The wording is the disclosure: a change to one language
+     is a change to all of them. */
   var COPY = {
     en: {
       aria: 'Analytics consent',
@@ -187,12 +188,85 @@
       policy: 'Política de privacidad',
       decline: 'Rechazar',
       allow: 'Permitir'
+    },
+    /* THE TRANSLATED QUIZ PAGES (15 Nov 2026). /it/, /de/, /fr/, /nl/, /pt/,
+       /tr/ and /id/ carry <html lang>, and a third of all Google clicks land
+       on two Italian pages (Juventus, Milan): each got this bar in English
+       across the bottom third of an otherwise Italian page. Same disclosure,
+       same order, Decline first and equal in weight, in the page's language.
+       Portuguese is Brazilian, as those pages are. The policy itself is in
+       English; the link says what it is. */
+    it: {
+      aria: 'Consenso per le statistiche',
+      text: 'Vorremmo usare Microsoft Clarity e PostHog per capire come le persone ' +
+        'si muovono su Ball IQ, così da sistemare ciò che confonde. Clarity registra ' +
+        'replay anonimi delle sessioni. Niente pubblicità, e non vendiamo nulla. ',
+      policy: 'Informativa sulla privacy',
+      decline: 'Rifiuta',
+      allow: 'Consenti'
+    },
+    de: {
+      aria: 'Einwilligung zur Analyse',
+      text: 'Wir würden gern Microsoft Clarity und PostHog einsetzen, um zu sehen, wie ' +
+        'sich Menschen durch Ball IQ bewegen, und so zu verbessern, was verwirrt. Clarity ' +
+        'zeichnet anonyme Sitzungswiedergaben auf. Keine Werbung, und nichts wird verkauft. ',
+      policy: 'Datenschutzerklärung',
+      decline: 'Ablehnen',
+      allow: 'Erlauben'
+    },
+    fr: {
+      aria: 'Consentement aux statistiques',
+      text: 'Nous aimerions utiliser Microsoft Clarity et PostHog pour voir comment les ' +
+        'gens naviguent sur Ball IQ, afin de corriger ce qui prête à confusion. Clarity ' +
+        'enregistre des rediffusions de session anonymes. Pas de publicité, et rien n’est vendu. ',
+      policy: 'Politique de confidentialité',
+      decline: 'Refuser',
+      allow: 'Autoriser'
+    },
+    nl: {
+      aria: 'Toestemming voor statistieken',
+      text: 'We willen graag Microsoft Clarity en PostHog gebruiken om te zien hoe mensen ' +
+        'door Ball IQ bewegen, zodat we kunnen verbeteren wat verwarrend is. Clarity maakt ' +
+        'anonieme sessieopnames. Geen advertenties, en er wordt niets verkocht. ',
+      policy: 'Privacybeleid',
+      decline: 'Weigeren',
+      allow: 'Toestaan'
+    },
+    pt: {
+      aria: 'Consentimento de análise',
+      text: 'Gostaríamos de usar o Microsoft Clarity e o PostHog para ver como as pessoas ' +
+        'navegam no Ball IQ e assim corrigir o que confunde. O Clarity grava repetições ' +
+        'anônimas das sessões. Sem anúncios, e nada é vendido. ',
+      policy: 'Política de privacidade',
+      decline: 'Recusar',
+      allow: 'Permitir'
+    },
+    tr: {
+      aria: 'Analiz izni',
+      text: 'İnsanların Ball IQ’da nasıl gezindiğini görmek ve kafa karıştıran yerleri ' +
+        'düzeltmek için Microsoft Clarity ve PostHog kullanmak istiyoruz. Clarity anonim ' +
+        'oturum kayıtları tutar. Reklam yok, hiçbir şey satılmaz. ',
+      policy: 'Gizlilik politikası',
+      decline: 'Reddet',
+      allow: 'İzin ver'
+    },
+    id: {
+      aria: 'Persetujuan analitik',
+      text: 'Kami ingin menggunakan Microsoft Clarity dan PostHog untuk melihat bagaimana ' +
+        'orang menjelajahi Ball IQ, agar kami bisa memperbaiki bagian yang membingungkan. ' +
+        'Clarity merekam tayangan ulang sesi secara anonim. Tanpa iklan, dan tidak ada yang dijual. ',
+      policy: 'Kebijakan privasi',
+      decline: 'Tolak',
+      allow: 'Izinkan'
     }
   };
   function pickLang() {
     var h = '';
     try { h = document.documentElement.getAttribute('lang') || ''; } catch (e) {}
     if (/^es/i.test(h)) return 'es';
+    // A translated static page says its language itself (<html lang="it">).
+    var two = h.slice(0, 2).toLowerCase();
+    if (two !== 'en' && Object.prototype.hasOwnProperty.call(COPY, two)) return two;
     var root = document.getElementById('root');
     // Once the app has painted, <html lang> is its answer.
     if (!root || root.firstChild) return 'en';
