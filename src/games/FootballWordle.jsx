@@ -534,20 +534,26 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // The URL is also passed via navigator.share's `url` field so apps that
   // recognise it (Snapchat, WhatsApp, iMessage, Twitter) render it as a
   // tappable link rather than inline text.
-  const shareText = useMemo(() => {
+  // The coloured grid on its own: the share text carries it, and so does the
+  // message "Send it to a mate" puts in a chat (DailyDone challengeGrid).
+  const shareGrid = useMemo(() => {
     if (state.status === "playing") return "";
-    const won = state.status === "won";
-    const grid = state.guesses.map((g) => {
+    return state.guesses.map((g) => {
       const grades = gradeWordleGuess(g, answer);
       return grades.map((c) => (c === "green" ? (CB_MODE() ? "🟧" : "🟩") : c === "yellow" ? (CB_MODE() ? "🟦" : "🟨") : "⬛")).join("");
     }).join("\n");
+  }, [state.status, state.guesses, answer]);
+  const shareText = useMemo(() => {
+    if (state.status === "playing") return "";
+    const won = state.status === "won";
+    const grid = shareGrid;
     const streak = won ? computeFootleStreak(new Date()) : 0;
     // One head for all three share builders (lib/wordle.js) — one puzzle,
     // one share format, and a clued solve says so.
     const head = footleShareHead(APP_NAME, getFootleNumber(), won, state.guesses.length, !!state.clue, !!state.hard);
     const streakLine = won && streak > 0 ? `\n${t("share.footleStreak", { count: streak, n: streak })}` : "";
     return `${head}${streakLine}\n\n${grid}\n\nballiq.app/footle`;
-  }, [state, answer]);
+  }, [state, answer, shareGrid]);
 
   const onShare = useCallback(async () => {
     if (!shareText) return;
@@ -772,6 +778,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             streak={dailyDone?.streak || { count: state.status === "won" ? computeFootleStreak(date) : 0, label: t("dd.l.footle") }}
             promoted={dailyDone?.promoted}
             onShare={onShare}
+            challengeGrid={shareGrid}
             remind={dailyDone?.remind}
             nextUp={dailyDone?.nextUp || []}
             day={dailyDone?.day}

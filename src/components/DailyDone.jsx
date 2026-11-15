@@ -45,6 +45,7 @@ import "./dailyDone.css";
 //   streak      { count, label, keepsOnLoss? } — the app passes its one streak; islands the game's.
 //               keepsOnLoss: the host's streak ticks on any finish, so a loss keeps it ("Streak safe")
 //   onShare     async () => void   (host builds the text / card)
+//   challengeGrid  the result as coloured squares, one row per line (Footle); goes in the "Send it to a mate" message
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
 //   nextUp      [{ key, name, onTap? , href?, open? }] — today's other unplayed dailies (open: started, so the button says Continue)
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
@@ -112,7 +113,7 @@ function openLeagueCreate(opts) {
   } catch { /* nothing to do */ }
 }
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
   const t = useT();
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -255,14 +256,20 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     const what = { footle: "Footle", trail: "Transfer Trail", top10: "Top 10" }[game];
     // In the sharer's language (i18n step 5). English is the same line as before:
     // scoreLabel's English words are the gc.* keys' English.
-    const text = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });
+    // THE GRID GOES WITH IT (15 Nov 2026). "Send it to a mate" became the one
+    // button, and what it put in the chat was a bare line of text: the coloured
+    // grid, the thing people actually recognise and tap, only went with the
+    // quiet "Just share my result". A host that has a grid (Footle) passes it,
+    // and it sits under the line. It shows colours only, never letters.
+    const line = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });
+    const text = challengeGrid ? `${line}\n\n${challengeGrid}\n` : line;
     track?.("dd-challenge", { game, rival: !!rival });
     try {
       if (navigator.share) { await navigator.share({ text, url }); setChallengeState("sent"); return; }
-      await navigator.clipboard.writeText(`${text} ${url}`); setChallengeState("copied");
+      await navigator.clipboard.writeText(challengeGrid ? `${text}\n${url}` : `${text} ${url}`); setChallengeState("copied");
     } catch (e) {
       if (e && (e.name === "AbortError" || /cancel/i.test(e?.message || ""))) return;
-      try { await navigator.clipboard.writeText(`${text} ${url}`); setChallengeState("copied"); } catch { /* nothing to do */ }
+      try { await navigator.clipboard.writeText(challengeGrid ? `${text}\n${url}` : `${text} ${url}`); setChallengeState("copied"); } catch { /* nothing to do */ }
     }
   };
   const doChallenge = async () => {

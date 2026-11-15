@@ -321,7 +321,7 @@ describe('no copy left behind in the source', () => {
     }
   });
   it('the share texts: step 5 put them in the sharer\'s language (i18n-leftovers.test.js pins their English); the card verdict stays English', () => {
-    expect(read('components/DailyDone.jsx')).toContain('const text = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });');
+    expect(read('components/DailyDone.jsx')).toContain('const line = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });');
     expect(en['share.challenge']).toBe('{what} No. {edition}: {score}. Can you beat it?');
     expect(read('screens/SettingsScreen.jsx')).toContain('const text = t("share.app");');
     expect(en['share.app']).toBe('⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get');
