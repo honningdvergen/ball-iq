@@ -116,7 +116,9 @@ export function loadQuestions() {
     // here so subsequent reads are O(1).
     // (The former QB_WC2026 slice was retired with the World Cup event mode —
     // those questions keep their cat and surface via the general pool.)
-    const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos"));
+    // Flagged rows are withheld here as in every other draw (lib/quiz.js,
+    // RETIRED_TAGS): the Chaos mode plays this slice directly.
+    const QB_CHAOS  = QB.filter(q => q && (q.cat === "chaos" || q.tag === "chaos") && !q.flag);
 
     cache = { QB, TF_STATEMENTS, QB_CHAOS, conflictsWith };
     indexEnglishBank(cache);

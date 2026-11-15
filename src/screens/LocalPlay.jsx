@@ -164,7 +164,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           const clubName = CLUB_PACK_TO_QB[String(topic).slice(5)];
           // Retired packs withheld here too — pass-and-play draws the bank directly.
           const pool = QB.filter(q => q && q.club === clubName && q.type === "mcq" && Array.isArray(q.o)
-            && (!q.tag || !RETIRED_TAGS.has(q.tag)));
+            && (!q.tag || !RETIRED_TAGS.has(q.tag)) && !q.flag);
           // No "easy" in club games (invested fans); keep full pool only if the
           // no-easy pool is too thin to fill the round.
           const noEasyPool = pool.filter(q => q.diff !== "easy");

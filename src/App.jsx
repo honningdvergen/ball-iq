@@ -531,7 +531,8 @@ export async function getQs({ cat, tag, diff, onlyDiff, n = 10, ramp = false, in
   // ⚠️ Retired packs are withheld from EVERY draw. Nulling TOPICAL_PACK removes
   // the tile, not the questions — they each carry a real `cat`, so without this
   // they keep arriving in Classic and category quizzes. See RETIRED_TAGS.
-  pool = pool.filter(q => !q.tag || !RETIRED_TAGS.has(q.tag));
+  // So is anything the verifier flagged (lib/quiz.js, under RETIRED_TAGS).
+  pool = pool.filter(q => (!q.tag || !RETIRED_TAGS.has(q.tag)) && !q.flag);
   // Phase 6c.1: gate cat:"Legends" by default. Legends-cat is the
   // "classic football" bucket spanning 1950s-2010s; casual modes
   // (Classic, Speed, Hot Streak, Daily 7, etc.) should feel modern.
@@ -1536,7 +1537,7 @@ export async function pickMultiplayerQuestions(count = 10, packId = "mixed", { e
     q.type === "mcq" &&
     Array.isArray(q.o) && q.o.length === 4 &&
     typeof q.a === "number" &&
-    (!q.tag || !RETIRED_TAGS.has(q.tag))
+    (!q.tag || !RETIRED_TAGS.has(q.tag)) && !q.flag
   );
   // Host-selected pack ("cat:PL" / "club:Arsenal"): narrow the pool to one
   // competition or one club. Falls back to the full mixed pool if the pack
@@ -4960,7 +4961,7 @@ function AppInner() {
           // not reach it — 26 of the summer-2026 rows still carry a `club`.
           // The second implementation of the same rule, applied at the same time.
           const verified = QB.filter(q => q && q.club === qbName && q.type === "mcq" && Array.isArray(q.o)
-            && (!q.tag || !RETIRED_TAGS.has(q.tag)));
+            && (!q.tag || !RETIRED_TAGS.has(q.tag)) && !q.flag);
           // Club quizzes are for die-hard fans — never serve "easy" (casual-obvious
           // or telegraphed). Fall back to the full pool only if a club is too thin
           // on medium+hard to fill 10 (none currently are; thinnest is ~16).
@@ -5048,7 +5049,7 @@ function AppInner() {
       // Retired packs withheld here too — the league draw bypasses getQs, and
       // the summer-2026 rows carry real cats (Transfers, WorldCup, Managers…).
       const pool = QB.filter(q => q && q.cat === catKey && q.type === "mcq" && Array.isArray(q.o)
-        && (!q.tag || !RETIRED_TAGS.has(q.tag)));
+        && (!q.tag || !RETIRED_TAGS.has(q.tag)) && !q.flag);
       // League quizzes are for invested fans — never serve "easy". Fall back to
       // the full pool only if the no-easy pool can't fill 10 (none currently).
       const noEasy = pool.filter(q => q.diff !== "easy");

@@ -105,6 +105,53 @@ describe('a retired pack reaches nobody', () => {
     ).toEqual([]);
   });
 
+  it('EVERY direct bank draw withholds what the verifier flagged', () => {
+    // ⚠️ 15 Nov 2026. Seven verifier sweeps marked questions `flag: true` and
+    // reported them as "leaving rotation". No code read the field, so all 325
+    // were still being drawn. The same doors as above, the same rule: each
+    // `QB.filter(` must carry `!q.flag` in its own filter or on the next line.
+    const draws = [...DRAW_SOURCES.matchAll(/QB\.filter\(/g)];
+    const unguarded = [];
+    for (const m of draws) {
+      const window = DRAW_SOURCES.slice(m.index, m.index + 500);
+      if (!/!q\.flag\b/.test(window)) {
+        unguarded.push(DRAW_SOURCES.slice(m.index, m.index + 90).replace(/\s+/g, ' '));
+      }
+    }
+    expect(
+      unguarded,
+      '\n  A draw path without `!q.flag` serves questions the verifier could not\n' +
+      '  confirm, or found wrong, as if they had passed.\n',
+    ).toEqual([]);
+    // The window above can be satisfied by a NEIGHBOUR's check, so also pair
+    // them off: wherever the retired-tag rule is written, the flag rule is too.
+    const retiredChecks = (DRAW_SOURCES.match(/RETIRED_TAGS\.has\(q\.tag\)/g) || []).length;
+    const flagChecks = (DRAW_SOURCES.match(/!q\.flag\b/g) || []).length;
+    expect(flagChecks, 'one `!q.flag` beside every retired-tag check').toBe(retiredChecks);
+    // Chaos plays a slice cut in the loader, not a QB.filter in App.jsx.
+    const loader = readFileSync(fileURLToPath(new URL('../../src/questions-loader.js', import.meta.url)), 'utf8');
+    expect(loader).toMatch(/QB_CHAOS\s*=\s*QB\.filter\([^\n]*!q\.flag\b/);
+  });
+
+  it('withholding the flagged leaves every club pack enough to play', () => {
+    // The club draw serves ten and wants sixteen to choose from (see the note
+    // at the draw: a pool of 11 or 12 leaks answers between questions). A
+    // sweep that flags a pack below ten would turn its tile into a dead end.
+    const live = (q) => q && q.type === 'mcq' && Array.isArray(q.o) && (!q.tag || !RETIRED_TAGS.has(q.tag)) && !q.flag;
+    const perClub = new Map();
+    for (const q of QB) if (q?.club && live(q)) perClub.set(q.club, (perClub.get(q.club) || 0) + 1);
+    const clubs = new Set(QB.filter((q) => q?.club).map((q) => q.club));
+    const thin = [...clubs].filter((c) => (perClub.get(c) || 0) < 16).map((c) => `${c}: ${perClub.get(c) || 0}`);
+    expect(thin, 'club packs with fewer than 16 playable questions once flags are withheld').toEqual([]);
+    // The league draw serves ten from a category and shows "no questions" under
+    // that; the same headroom applies.
+    const perCat = new Map();
+    for (const q of QB) if (q?.cat && live(q)) perCat.set(q.cat, (perCat.get(q.cat) || 0) + 1);
+    const cats = new Set(QB.filter((q) => q?.cat && q.type === 'mcq').map((q) => q.cat));
+    const thinCats = [...cats].filter((c) => (perCat.get(c) || 0) < 16).map((c) => `${c}: ${perCat.get(c) || 0}`);
+    expect(thinCats, 'categories with fewer than 16 playable questions once flags are withheld').toEqual([]);
+  });
+
   it('no retired question can survive the withhold predicate', () => {
     // The predicate every door uses, applied to the real bank.
     const survives = (q) => !q.tag || !RETIRED_TAGS.has(q.tag);

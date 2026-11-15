@@ -206,6 +206,17 @@ export const TOPICAL_PACK = null;
 // "duplicate": a question that asks the same fact as a sibling in its club
 // pack (26 Oct 2026, the strict two-pass check; the better-worded one stays).
 export const RETIRED_TAGS = new Set(["summer2026", "unverified", "duplicate"]);
+// ⚠️ `flag: true` WITHHOLDS TOO (15 Nov 2026). The bank-verifier sweeps mark a
+// question it could not confirm, or whose stem, hint or distractor it found
+// wrong, with `flag: true`, and every sweep reported those as "leaving
+// rotation". Nothing read the field: 325 flagged questions were still being
+// drawn when this was found. Each draw now carries `&& !q.flag` beside its
+// retired-tag check (tests/unit/retired-pack-withheld.test.js counts the
+// doors). A flag is cleared by fixing the question and removing the marker.
+// NOT covered, on purpose: the Daily 7 (a logged day resolves its questions by
+// id and must not change under players comparing scores) and the static quiz
+// pages (scripts/gen-seo-pages.mjs), whose content is left alone until the
+// flagged rows are fixed.
 
 /**
  * How long a question's clock should run, given how much there is to read.
