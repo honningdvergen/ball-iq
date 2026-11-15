@@ -801,7 +801,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             <div className="wd-kb-row" key={ri}>
               {row.map((k) => {
                 const isAction = k === "DEL";
-                const st = isAction ? null : getWordleKeyState(k, state.guesses, answer);
+                // THE KEYS WAIT FOR THE TILES (15 Nov 2026). A key took its colour
+                // the instant ENTER was pressed, while the row's tiles were still
+                // turning one by one: the keyboard gave the result away before
+                // the board showed it. While a row is flipping (animRow), the
+                // keys are graded on the rows before it; they catch up when the
+                // last tile has landed.
+                const st = isAction ? null : getWordleKeyState(k, animRow >= 0 ? state.guesses.slice(0, animRow) : state.guesses, answer);
                 const cls = isAction ? `wd-key wd-key-action` : `wd-key wd-key-${st || "idle"}`;
                 // Append the key's revealed state so SR users get the same
                 // feedback the colors carry (medical accessibility).
