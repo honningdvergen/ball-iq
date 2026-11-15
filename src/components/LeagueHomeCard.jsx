@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Trophy, ChevronRight } from "lucide-react";
 import "../screens/league.css";
-import { getMyLeagues, homeCardLine } from "../lib/leagues.js";
+import { getMyLeagues, homeCardLine, leagueInviteUrl, inviteShareText } from "../lib/leagues.js";
+import { loopEvent } from "../lib/funnel.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
 import { LeagueStartRow } from "./LeagueStartRow.jsx";
@@ -13,9 +14,27 @@ import { LeagueStartRow } from "./LeagueStartRow.jsx";
 // applied): it draws nothing.
 //
 // Several leagues: the one with the latest activity, and a quiet "+1 more".
+//
+// A LEAGUE OF ONE ASKS FOR A MATE (15 Nov 2026). In the first three days of
+// leagues in the installed apps, 14 were created and 12 still had one member;
+// two invites were sent in all. Mates who did get a link joined (6 of 14 who
+// opened one). The card for a league with nobody else in it said "Points from
+// today, Monday to Sunday" and gave no hint that anything was missing. It now
+// says so and carries the invite itself, one tap from Home: the share sheet
+// where there is one, the link on the clipboard where there is not.
+async function shareInvite(text) {
+  try { if (navigator.share) { await navigator.share({ text }); return "share"; } }
+  catch (e) { if (e && (e.name === "AbortError" || /cancel/i.test(e.message || ""))) return null; }
+  try { await navigator.clipboard.writeText(text); return "copy"; } catch { return null; }
+}
+
 export default function LeagueHomeCard({ onOpen, onStart }) {
   useT();
   const [list, setList] = useState(null);
+  const [copied, setCopied] = useState(false);
+  // One share sheet at a time: a second tap while it is open throws, and the
+  // fallback would then claim "Link copied" and count a second invite.
+  const sharing = useRef(false);
   useEffect(() => {
     let alive = true;
     getMyLeagues().then((l) => {
@@ -29,10 +48,37 @@ export default function LeagueHomeCard({ onOpen, onStart }) {
   // Checked and in none: the way in, where the card would have been.
   if (Array.isArray(list) && list.length === 0 && onStart) return <LeagueStartRow onStart={onStart} />;
   if (!Array.isArray(list) || list.length === 0) return null;
-  const l = list[0];
+  // A league with mates in it comes first: a just-made league of one sorts to
+  // the top by activity and would otherwise hide a real table behind it.
+  const solo = (x) => x.members === 1 && !x.is_final;
+  const l = list.find((x) => !solo(x)) ?? list[0];
   const todayAt = (l.today ?? 0) - (l.week_start ?? 0);
   const days = Array.from({ length: 7 }, (_, i) => l.my_days?.[i] != null);
   const line = homeCardLine(l);
+  if (solo(l)) {
+    const invite = async () => {
+      const url = leagueInviteUrl(l.code, l.name, "");
+      if (!url || sharing.current) return;
+      sharing.current = true;
+      let via = null;
+      try { via = await shareInvite(inviteShareText(l.name, url)); } finally { sharing.current = false; }
+      if (!via) return;
+      loopEvent("league-invite-share", { via, from: "home" });
+      if (via === "copy") { setCopied(true); setTimeout(() => setCopied(false), 2200); }
+    };
+    return (
+      <div className="lg-solo" role="group" aria-label={l.name}>
+        <button type="button" className="lg-solo-open" onClick={() => onOpen?.(l.id)} aria-label={t("lg.cardAria", { name: l.name, line: t("lg.soloLine") })}>
+          <span className="lg-home-ic" aria-hidden="true"><Trophy size={20} strokeWidth={2.2} /></span>
+          <span className="lg-home-body">
+            <span className="lg-home-name">{l.name}</span>
+            <span className="lg-home-line">{t("lg.soloLine")}</span>
+          </span>
+        </button>
+        <button type="button" className="lg-solo-invite" onClick={invite}>{t(copied ? "lg.linkCopied" : "lg.soloInvite")}</button>
+      </div>
+    );
+  }
   return (
     <button type="button" className="lg-home" onClick={() => onOpen?.(l.id)} aria-label={t("lg.cardAria", { name: l.name, line })}>
       <span className="lg-home-ic" aria-hidden="true"><Trophy size={20} strokeWidth={2.2} /></span>

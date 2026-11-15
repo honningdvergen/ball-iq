@@ -137,6 +137,8 @@ export const STEP7_EN = {
   'lg.whistle': '{week} · Final whistle Sun midnight ({city})',
   'lg.finalIn': 'Final table is in',
   'lg.pointsFrom': 'Points from today, Monday to Sunday',
+  'lg.soloLine': 'Only you so far',
+  'lg.soloInvite': 'Invite a mate',
   'lg.behind': '{place} · {gap} behind {name}',
   'lg.level': '{place} · level with {name}',
   'lg.pts_one': '{place} · {n} point',

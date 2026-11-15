@@ -105,4 +105,10 @@
 .lg-dots i.is-on{background:var(--accent);}
 .lg-dots i.is-today{background:transparent;box-shadow:inset 0 0 0 1.5px var(--accent);}
 .lg-dots i.is-today.is-on{background:var(--accent);}
+.lg-solo{display:flex;align-items:center;gap:10px;width:100%;min-height:72px;margin:0 0 12px;padding:12px 14px;border-radius:16px;border:1px solid var(--border);background:var(--s1);box-sizing:border-box;}
+.lg-solo-open{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:0;border:0;background:none;color:inherit;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+/* Tinted, not solid: Home's one solid thing stays the next daily's Play. */
+.lg-solo-invite{flex:none;min-height:44px;padding:8px 13px;border-radius:999px;border:1px solid rgba(88,204,2,0.45);background:rgba(88,204,2,0.12);color:var(--accent);-webkit-text-fill-color:var(--accent);font-family:inherit;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.lg-solo-invite:active{transform:scale(0.98);}
+@media (prefers-reduced-motion: reduce){.lg-solo-invite:active{transform:none;}}
 .lg-home-chev{flex-shrink:0;color:var(--t3);-webkit-text-fill-color:var(--t3);}

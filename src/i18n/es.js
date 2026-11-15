@@ -1349,6 +1349,8 @@ export default {
   'lg.whistle': '{week} · Pitido final el domingo a medianoche ({city})',
   'lg.finalIn': 'Ya está la clasificación final',
   'lg.pointsFrom': 'Puntos desde hoy, de lunes a domingo',
+  'lg.soloLine': 'De momento solo estás tú',
+  'lg.soloInvite': 'Invita a un colega',
   'lg.behind': '{place} · a {gap} de {name}',
   'lg.level': '{place} · empatado con {name}',
   'lg.pts_one': '{place} · {n} punto',
