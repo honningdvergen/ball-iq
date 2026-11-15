@@ -55,6 +55,7 @@
 2026-09-06	source	loopEvent("join-token-dead"
 2026-10-16	source	loopEvent("league-claim"
 2026-10-16	source	loopEvent("league-create-open"
+2026-11-15	source	loopEvent("league-invite-share"
 2026-10-16	source	loopEvent("league-make-tap"
 2026-10-16	source	loopEvent("league-offer-shown"
 2026-11-12	source	loopEvent("mate-reply-league"
