@@ -28,7 +28,10 @@ export default function ChallengeBanner({ game, edition, finished }) {
         position: "fixed", left: "50%", transform: "translateX(-50%)", zIndex: 60,
         top: "calc(env(safe-area-inset-top, 0px) + 10px)", maxWidth: "min(92vw, 420px)", width: "max-content",
         display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderRadius: 999,
-        background: "var(--s1, #15171f)", border: `1px solid rgba(${rgb},0.5)`, boxShadow: "0 12px 32px rgba(0,0,0,0.45)",
+        // The 10px ring in the page's own colour: the pill sits over the game's
+        // title, and the line under the title used to peek out below it, cut
+        // in half (seen on the mate's arrival, 12 Nov 2026).
+        background: "var(--s1, #15171f)", border: `1px solid rgba(${rgb},0.5)`, boxShadow: "0 0 0 10px var(--bg, #0b0c10), 0 12px 32px rgba(0,0,0,0.45)",
         color: "var(--t1)", WebkitTextFillColor: "var(--t1)", fontFamily: "inherit", fontSize: 14, fontWeight: 600, textAlign: "left", cursor: "pointer",
       }}>
       <Swords size={17} strokeWidth={2.3} color={MODE_ACCENT[game]} aria-hidden="true" style={{ flexShrink: 0 }} />
