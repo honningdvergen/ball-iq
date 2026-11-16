@@ -7115,14 +7115,14 @@ function AppInner() {
   // Dismissing the name sheet (ESC / backdrop / back) must still SHARE — the
   // user asked to share, not to fill in a form. Closing without sharing would
   // turn a growth prompt into a growth blocker.
-  // Stable identity, deliberately: useModalA11y's effect deps are
-  // [isOpen, onClose, ref], so an inline arrow re-runs the whole effect on
-  // EVERY AppInner render while the sheet is open — each re-run does a
-  // pushState + a cleanup history.back(). Two cleanups landing before the
-  // first popstate arrives overflow the module's single `inhibitNextPopstate`
-  // boolean, and the second popstate closes the modal. That is exactly what
-  // ate the auto-opened Footle rules sheet: opening during the burst of
-  // renders after a screen transition closed it again in the same tick.
+  // Stable identity, from when it had to be: until 16 Nov 2026 useModalA11y
+  // listed onClose as a dependency, so an inline arrow re-ran its whole effect
+  // on EVERY AppInner render while the sheet was open (a pushState and a
+  // cleanup history.back() each time), and a burst of renders closed the
+  // sheet. That ate the auto-opened Footle rules sheet, and later a guest's
+  // first league sheet. The hook now reads onClose through a ref, so a
+  // caller's inline arrow is safe; this one stays stable because it costs
+  // nothing.
   const closeHowToPlay = useCallback(() => setHowToPlay(null), []);
   useModalA11y({ isOpen: !!howToPlay, onClose: closeHowToPlay, ref: howToPlayRef });
   useModalA11y({ isOpen: !!(pendingJoinCode && (!user || isGuest) && !playing), onClose: clearPendingJoin, ref: joinGateRef });

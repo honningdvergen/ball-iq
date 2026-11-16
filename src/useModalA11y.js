@@ -42,11 +42,11 @@
 //     own history.back() (the entry is already gone).
 //   - When the modal closes for any other reason (button click, ESC, backdrop
 //     tap), cleanup sees via-popstate=false → calls history.back() to clean
-//     up the pushed entry. A one-shot `inhibitNextPopstate` flag suppresses
+//     up the pushed entry. A list of owed events (`owedPopstates`) suppresses
 //     the resulting popstate event so it doesn't try to close the next modal
 //     underneath.
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 
@@ -59,15 +59,51 @@ function getFocusables(container) {
 // every modal mount on the page.
 const modalStack = []
 let popstateInstalled = false
-let inhibitNextPopstate = false
+// The popstate events our own history.back() calls still owe us, as the time
+// each was asked for. A LIST, not a flag (16 Nov 2026): two cleanups before
+// the first event arrived left the second event looking like a real back
+// press, and it closed whatever sheet was open (see the note on the effect
+// below). Each one EXPIRES: WebKit answers two quick back() calls with one
+// event (measured), and an event that never comes must not swallow the
+// player's next real back press.
+const owedPopstates = []
+const OWED_MS = 1500
+// A sheet whose onClose declined (a form mid-submit) is still open after a
+// back press took its history entry: it gets a new one after this long.
+const REFUSED_MS = 400
+// Sheets that mounted while one of our back() calls was still in flight.
+// MEASURED in Chromium and WebKit, 16 Nov 2026: back() followed at once by
+// pushState() lands on the entry BELOW the one back() was called from, and the
+// new entry is left ahead as a forward entry. The open sheet then has no
+// history entry under it: the back button leaves the page, or does nothing at
+// all in a native shell. So such a sheet pushes its entry only once the
+// traversal has landed (or its owed event has expired).
+let waitingToPush = []
+
+const liveOwed = () => {
+  const now = Date.now()
+  while (owedPopstates.length && now - owedPopstates[0] > OWED_MS) owedPopstates.shift()
+  return owedPopstates.length
+}
+function pushEntry(entry) {
+  if (entry.pushed || !entry.mounted) return
+  try { window.history.pushState({ biq_modal: 1, biq_modal_id: entry.myId }, ''); entry.pushed = true } catch {}
+}
+function pushWaiting() {
+  if (liveOwed() > 0) return
+  const list = waitingToPush
+  waitingToPush = []
+  for (const e of list) pushEntry(e)
+}
 
 function ensurePopstateListener() {
   if (popstateInstalled) return
   popstateInstalled = true
   window.addEventListener('popstate', () => {
     // Programmatic history.back() from a modal's cleanup → suppress.
-    if (inhibitNextPopstate) {
-      inhibitNextPopstate = false
+    if (liveOwed() > 0) {
+      owedPopstates.shift()
+      pushWaiting()
       return
     }
     // User back gesture (or browser back button) → close the topmost open
@@ -77,7 +113,17 @@ function ensurePopstateListener() {
     const top = modalStack.pop()
     if (!top) return
     top.viaPopstate = true
+    top.pushed = false
     try { top.onClose() } catch {}
+    // Still open a moment later: onClose declined. Before 16 Nov 2026 the
+    // effect ran again on the next render and put the sheet back by accident;
+    // now it is put back on purpose, so the back button keeps answering.
+    setTimeout(() => {
+      if (!top.mounted || modalStack.includes(top)) return
+      top.viaPopstate = false
+      modalStack.push(top)
+      pushEntry(top)
+    }, REFUSED_MS)
   })
 }
 
@@ -104,6 +150,18 @@ export function closeTopModal() {
 }
 
 export function useModalA11y({ isOpen, onClose, ref }) {
+  // ⚠️ onClose IS READ THROUGH A REF, AND IS NOT A DEPENDENCY (16 Nov 2026).
+  // Most callers pass a new function every render. With onClose in the
+  // dependency list the whole effect ran again on EVERY render of an open
+  // sheet: history.back() for the old entry, pushState for a new one. A burst
+  // of renders queued several back() calls, the one-shot flag swallowed the
+  // first popstate only, and the next one closed the sheet as if the player
+  // had pressed back. Found on the 1.8.7 Android walk: a guest's FIRST league
+  // never showed its "ready, share the invite" step, because the sign-in
+  // remount re-rendered the restored sheet several times within 250 ms.
+  // Reproduced in Chromium with three quick renders of the open sheet.
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
   useEffect(() => {
     if (!isOpen) return
     const container = ref.current
@@ -128,14 +186,21 @@ export function useModalA11y({ isOpen, onClose, ref }) {
     // on real unmount could try to back past an entry that's no longer
     // ours and over-pop, exiting the app entirely.
     const myId = `m${Math.random().toString(36).slice(2)}`
-    const stackEntry = { onClose, viaPopstate: false, myId }
+    const stackEntry = { onClose: () => onCloseRef.current?.(), viaPopstate: false, myId, mounted: true, pushed: false }
     modalStack.push(stackEntry)
-    try { window.history.pushState({ biq_modal: 1, biq_modal_id: myId }, '') } catch {}
+    if (liveOwed() > 0) {
+      // One of our own back() calls is still in flight (the app's remount:
+      // the old sheet went a moment ago). Wait for it; see waitingToPush.
+      waitingToPush.push(stackEntry)
+      setTimeout(pushWaiting, OWED_MS + 50)
+    } else {
+      pushEntry(stackEntry)
+    }
 
     function handleKey(e) {
       if (e.key === 'Escape') {
         e.preventDefault()
-        onClose()
+        onCloseRef.current?.()
         return
       }
       if (e.key !== 'Tab') return
@@ -170,6 +235,7 @@ export function useModalA11y({ isOpen, onClose, ref }) {
       // Remove from stack. If popstate already removed us (back gesture),
       // viaPopstate is true; if we're being cleaned up via programmatic
       // close (button / ESC / backdrop), the entry is still there.
+      stackEntry.mounted = false
       const idx = modalStack.indexOf(stackEntry)
       if (idx !== -1) modalStack.splice(idx, 1)
       if (!stackEntry.viaPopstate) {
@@ -179,13 +245,12 @@ export function useModalA11y({ isOpen, onClose, ref }) {
         // and could exit the app entirely.
         const cur = (() => { try { return window.history.state } catch { return null } })()
         if (cur && cur.biq_modal_id === stackEntry.myId) {
-          inhibitNextPopstate = true
-          try { window.history.back() } catch {}
+          try { window.history.back(); owedPopstates.push(Date.now()) } catch {}
         }
       }
       if (previousActive && typeof previousActive.focus === 'function') {
         try { previousActive.focus() } catch {}
       }
     }
-  }, [isOpen, onClose, ref])
+  }, [isOpen, ref]) // not onClose: see the note above
 }
