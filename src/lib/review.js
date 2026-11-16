@@ -34,14 +34,23 @@ const MIN_DAYS_BETWEEN = 14;
 const MAX_LIFETIME = 24;
 
 const KEY_BAD = 'biq_review_bad_at';
-const BAD_MOMENT_COOLDOWN_H = 24;
+// ⚠️ SIX HOURS, NOT A DAY (16 Nov 2026). The point is "never in a session
+// where something just went wrong". At 24 it also swallowed the NEXT day's
+// good moment for anyone who plays at about the same time each day: lose
+// Footle at 08:05, solve it at 08:00 tomorrow, and the ask was still blocked.
+// And one mark (a lost Footle, a quit quiz, a bruising round) silenced all
+// five triggers for the rest of that day and the next morning. Read 2 to 15
+// Nov: 140 asks turned away as bad-moment against 83 shown. Six hours still
+// covers the sitting it happened in and the rest of that evening.
+const BAD_MOMENT_COOLDOWN_H = 6;
 
 // Sentiment suppression (review panel, 2026-08-19): never spend a rating ask
 // on a session where something just went wrong. A player who reported a bad
 // question or hit an error boundary is the one predicted 1-star source with
 // the prompt as their nearest outlet — route that energy to feedback instead,
-// and simply skip the ask for a day. Callers: the question-report flow and the
-// tab error boundary.
+// and simply skip the ask for the rest of that sitting (BAD_MOMENT_COOLDOWN_H).
+// Callers: the question-report flow, the error boundaries, a lost Footle, a
+// quit quiz and a bruising round.
 export function markBadReviewMoment() {
   try { localStorage.setItem(KEY_BAD, String(Date.now())); } catch {}
 }
