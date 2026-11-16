@@ -13,6 +13,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- Capacitor 8's SystemBars paints the strips behind the status bar and the
+             navigation bar with the window background whenever it pads the WebView
+             (WebView older than 140, or a page without viewport-fit=cover). The
+             DayNight default is white in light mode, which gave a dark app two white
+             bars with unreadable icons (Android 16 emulator, WebView 133, 15 Nov 2026).
+             The app is dark in both modes, so the window is too. -->
+        <item name="android:windowBackground">@color/appBackground</item>
     </style>
 
 
