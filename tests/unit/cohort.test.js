@@ -70,6 +70,12 @@ describe('the rating ask reaches the dailies', () => {
   it('counts distinct days played across the five dailies', () => {
     const ls = store({ 'biq_trail_2026-11-01': '{}', 'biq_wordle_2026-11-01': '{}', 'biq_mystery_2026-11-03': '{}', 'biq_top10_2026-11-05': '{}', biq_other: 'x' });
     expect(playDays(ls)).toBe(3);
+    // A game finished a moment ago, whose own key is not written yet, counts
+    // as its day; a day already counted is not counted twice.
+    expect(playDays(ls, 'biq_daily_2031-01-09')).toBe(4);
+    expect(playDays(ls, '2031-01-09')).toBe(4);
+    expect(playDays(ls, 'not a key')).toBe(3);
+    expect(playDays(ls, 'biq_daily_2026-11-01')).toBe(3);
   });
   it('Trail, Top 10 and Mystery ask natively on a good result, for a phone with three play days', () => {
     const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');

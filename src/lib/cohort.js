@@ -106,10 +106,15 @@ export function appDayEvent(today = new Date(), ls = globalThis.localStorage) {
  * daily keys). The rating ask uses it: ask people who come back, not people
  * on their first go (8 Nov 2026).
  */
-export function playDays(ls = globalThis.localStorage) {
+export function playDays(ls = globalThis.localStorage, also = null) {
   try {
     const days = new Set();
     for (let i = 0; i < ls.length; i++) { const m = DAY_RE.exec(ls.key(i) || ''); if (m) days.add(m[1]); }
+    // `also`: a dated daily key (or a bare YYYY-MM-DD) for a game finished a
+    // moment ago whose own key is not written yet. The Daily 7 saves its day
+    // AFTER it decides about the ask, so without this today did not count.
+    const m = also ? (DAY_RE.exec(also) || /^(\d{4}-\d{2}-\d{2})$/.exec(also)) : null;
+    if (m) days.add(m[1]);
     return days.size;
   } catch { return 0; }
 }

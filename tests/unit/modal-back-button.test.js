@@ -59,7 +59,7 @@ function mount(useModalA11y, container) {
   return { render, unmount };
 }
 
-let browser, useModalA11y, closeTopModal;
+let browser, useModalA11y, closeTopModal, anyModalOpen;
 const container = { querySelectorAll: () => [], focus() {}, contains: () => true };
 beforeEach(async () => {
   vi.useFakeTimers({ now: 1_800_000_000_000 });
@@ -67,7 +67,7 @@ beforeEach(async () => {
   browser = makeBrowser();
   globalThis.window = browser.win;
   globalThis.document = { activeElement: null };
-  ({ useModalA11y, closeTopModal } = await import('../../src/useModalA11y.js'));
+  ({ useModalA11y, closeTopModal, anyModalOpen } = await import('../../src/useModalA11y.js'));
 });
 
 describe('an open sheet and the back button', () => {
@@ -162,5 +162,13 @@ describe('an open sheet and the back button', () => {
     sheet.unmount(); browser.flush();
     expect(browser.depth()).toBe(0);
     expect(closed).not.toHaveBeenCalled();
+  });
+  it('says whether any sheet is open (the rating ask never lands on one)', () => {
+    expect(anyModalOpen()).toBe(false);
+    const sheet = mount(useModalA11y, container);
+    sheet.render({ isOpen: true, onClose: () => {} });
+    expect(anyModalOpen()).toBe(true);
+    sheet.unmount(); browser.flush();
+    expect(anyModalOpen()).toBe(false);
   });
 });

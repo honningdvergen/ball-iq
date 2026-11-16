@@ -149,6 +149,11 @@ export function closeTopModal() {
   return true
 }
 
+/** True while any sheet or dialog that uses this hook is open. */
+export function anyModalOpen() {
+  return modalStack.length > 0
+}
+
 export function useModalA11y({ isOpen, onClose, ref }) {
   // ⚠️ onClose IS READ THROUGH A REF, AND IS NOT A DEPENDENCY (16 Nov 2026).
   // Most callers pass a new function every render. With onClose in the

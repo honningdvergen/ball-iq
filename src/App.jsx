@@ -24,7 +24,7 @@ import { MYSTERY_ENABLED } from './lib/mysteryPlayer.js';
 import { Timer, Flame, Zap, ScrollText, Brain, Sparkles, Trophy, Share, Home, CalendarDays, User, Globe, Users, KeyRound, Gamepad2, Settings, Bell, Lightbulb, Star, Mail, ArrowUpRight, Check, X, ClipboardList, Route, ListOrdered, UserRoundSearch, CircleX, CircleHelp, Pencil, Moon, BrickWall, Flag, Handshake, Smartphone } from 'lucide-react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { mpCreateRoom, mpJoinRoom, mpLeaveRoom, mpLookupRoom, useMpRetryStatus } from './multiplayerRpc.js';
-import { useModalA11y, closeTopModal } from './useModalA11y.js';
+import { useModalA11y, closeTopModal, anyModalOpen } from './useModalA11y.js';
 import VersionBanner from './VersionBanner.jsx';
 import { useInstallPrompt, useInstallBanner } from './installPrompt.js';
 import { FOOTLE_SHORT } from './lib/modeCopy.js';
@@ -3734,6 +3734,16 @@ function AppInner() {
   const screenRef = useRef(screen);
   screenRef.current = screen;
   const ratingAskAllowed = useCallback(() => !RATING_ASK_BLOCKED.has(screenRef.current), []);
+  // The second half of "is this a lull?" (16 Nov 2026): never over another
+  // sheet, never over the level-up overlay. A league sheet, the head-to-head
+  // result, a report or a join gate may have opened in the 3.5 s the ask
+  // waits, and Apple's card on top of one of ours is two modals at once (the
+  // collision the notification sheet once lost). Returns the reason to log,
+  // or null. Nothing is spent on a held ask: the cooldown is stamped only
+  // when the request goes out, so the next good moment gets it.
+  const levelUpRef = useRef(null);
+  levelUpRef.current = levelUpOverlay;
+  const ratingAskHeld = useCallback(() => (anyModalOpen() ? "sheet-open" : levelUpRef.current ? "level-up" : null), []);
   // Single cleanup on unmount: clear any in-flight toast/overlay timers so
   // tabbing away mid-toast doesn't leave dangling setState callbacks.
   useEffect(() => () => {
@@ -5762,6 +5772,7 @@ function AppInner() {
           if (playDays() < 3) return;
           celebrationTimeoutsRef.current.push(setTimeout(() => {
             if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger }); return; }
+            const held = ratingAskHeld(); if (held) { loopEvent("rate-prompt-skipped", { reason: held, engine: "native", trigger }); return; }
             const blocked = nativeAskBlockedReason();
             if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger }); return; }
             loopEvent("rate-prompt-shown", { engine: "native", trigger });
@@ -5776,6 +5787,7 @@ function AppInner() {
           if (IS_NATIVE) {
             celebrationTimeoutsRef.current.push(setTimeout(() => {
               if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger: "footle" }); return; }
+              const held = ratingAskHeld(); if (held) { loopEvent("rate-prompt-skipped", { reason: held, engine: "native", trigger: "footle" }); return; }
               // ⚠️ ASK THE POLICY BEFORE CLAIMING WE SHOWED ANYTHING. maybeRequestReview
               // returns false in silence on a bad moment / cooldown / lifetime cap, so
               // logging "shown" first counted every suppressed ask as a real one — and
@@ -5804,6 +5816,7 @@ function AppInner() {
             setRatePromptShown(true);
             celebrationTimeoutsRef.current.push(setTimeout(() => {
               if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", trigger: "footle" }); return; }
+              const held = ratingAskHeld(); if (held) { setRatePromptShown(false); loopEvent("rate-prompt-skipped", { reason: held, engine: "web", trigger: "footle" }); return; }
               markWebRatePromptShown();
               loopEvent("rate-prompt-shown", { engine: "web", trigger: "footle" });
               setRateView("ask"); setShowRatePrompt(true);
@@ -6132,38 +6145,64 @@ function AppInner() {
     // enforces a long cooldown + lifetime cap (and iOS rate-limits further), so
     // this only actually prompts occasionally. Delayed to land at a lull after
     // the celebration. Skips daily (which already shows the notif pre-prompt).
+    // ⭐ A STRONG DAILY 7 IS A GREAT MOMENT TOO (16 Nov 2026). The flagship
+    // daily asked once in fourteen days (funnel_events, 2 to 15 Nov: 1 shown).
+    // Seven questions can never reach the "10 or more at 90%" line, so only a
+    // perfect seven or a streak milestone counted. Five of seven does now, with
+    // the manners Trail, Top 10 and Mystery have: only for a phone that has
+    // played on three different days (today counts: its key is written
+    // further down, so playDays is told about it).
+    const strongDaily = mode === "daily" && res.total >= 5 && res.score / res.total >= 0.7 && playDays(undefined, todayKey) >= 3;
     const hadGreatMoment =
       (res.score === res.total && res.total >= 5) ||
       (res.total >= 10 && res.score / res.total >= 0.9) ||
-      [7, 30, 100].includes(loginStreak);
+      [7, 30, 100].includes(loginStreak) ||
+      strongDaily;
     // ⚠️ Daily 7 was EXCLUDED from the native ask (`mode !== "daily"`), which
     // silently killed most streak-milestone asks too — streaks tick on daily
     // completions, so the 7/30/100 trigger above and the exclusion cancelled
     // each other out. The #2 mode by players never asked (review panel,
-    // 2026-08-19). Daily now asks, with the SAME yields the auth nudge below
-    // already documents for this moment: the notification pre-prompt owns a
-    // native first-daily, a settling challenge owns its results screen, and
-    // guests keep the save-your-progress nudge instead — signing up beats a
-    // rating while retention is the binding constraint.
-    const notifOwnsDailyMoment = IS_NATIVE && mode === "daily"
-      && localStorage.getItem('biq_notif_enabled') !== '1'
-      && parseInt(localStorage.getItem('biq_notif_asks_v2') || '0', 10) < 2;
+    // 2026-08-19). Daily now asks, with one yield: a settling challenge owns
+    // its results screen.
+    // ⚠️ GUESTS ARE ASKED TOO (16 Nov 2026). They were excluded so the
+    // save-your-progress sheet could own this moment, but that sheet was
+    // removed on 6 Sep 2026 (a quiet "Save it" row took its place, see the
+    // nudge below) and the exclusion stayed behind. Nearly every app player
+    // is a guest, so the Daily 7 asked almost nobody.
+    // ⚠️ AND THE NOTIFICATION SHEET NO LONGER OWNS IT EITHER. The ask also
+    // yielded to the notification pre-prompt for every player with reminders
+    // off. That bottom sheet was retired the same day (6 Sep 2026: the results
+    // panel carries "Remind me", and maybePromptNotif opens nothing), and its
+    // ask counter is never written any more, so the yield was permanent for
+    // everyone who had not switched reminders on. An independent review found
+    // it; my first pass at this fix had left it in.
     const challengeOwnsDailyMoment = mode === "daily" && !!pendingChallenge
       && challengeDayOffset(pendingChallenge.date) <= 1;
-    const willAskNativeReview = hadGreatMoment && newTotal >= 5
-      && (mode !== "daily" || (!isGuest && !notifOwnsDailyMoment && !challengeOwnsDailyMoment));
+    // Native only: on the web nativeAskBlockedReason() answers "not-native"
+    // every time, which only wrote noise into the funnel.
+    const willAskNativeReview = IS_NATIVE && hadGreatMoment && newTotal >= 5
+      && (mode !== "daily" || !challengeOwnsDailyMoment);
     if (willAskNativeReview) {
-      celebrationTimeoutsRef.current.push(setTimeout(() => {
-        if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger: "results" }); return; }
+      // The Daily 7 is counted on its own, apart from the quiz results.
+      const trigger = mode === "daily" ? "daily" : "results";
+      const askAfterResults = (waited) => {
+        if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", engine: "native", trigger }); return; }
+        // The level-up overlay is up from 1.6 s to 5.1 s after a result that
+        // crosses a level (awardXp), which is exactly when this fires, and a
+        // level-up round is among the best moments there are. Wait it out
+        // once instead of losing the ask.
+        if (!waited && ratingAskHeld() === "level-up") { celebrationTimeoutsRef.current.push(setTimeout(() => askAfterResults(true), 2400)); return; }
+        const held = ratingAskHeld(); if (held) { loopEvent("rate-prompt-skipped", { reason: held, engine: "native", trigger }); return; }
         // ⚠️ ASK THE POLICY BEFORE CLAIMING WE SHOWED ANYTHING. maybeRequestReview
         // returns false in silence on a bad moment / cooldown / lifetime cap, so
         // logging "shown" first counted every suppressed ask as a real one — and
         // the suppression levers added all week are exactly what would inflate it.
         const blocked = nativeAskBlockedReason();
-        if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger: "results" }); return; }
-        loopEvent("rate-prompt-shown", { engine: "native", trigger: "results" });
+        if (blocked) { loopEvent("rate-prompt-skipped", { reason: blocked, engine: "native", trigger }); return; }
+        loopEvent("rate-prompt-shown", { engine: "native", trigger });
         maybeRequestReview();
-      }, 3500));
+      };
+      celebrationTimeoutsRef.current.push(setTimeout(() => askAfterResults(false), 3500));
     }
 
     // 🏅 PERSONAL BEST celebration — only for standard quiz modes (not daily)
@@ -6216,13 +6255,14 @@ function AppInner() {
       && stats.gamesPlayed >= 4
       && res.score >= 9
       && mode === "classic"
-      && !(IS_NATIVE && willAskNativeReview)
+      && !willAskNativeReview
       && webRatePromptEligible();
     if (shouldShowRate) {
       // Budget spent at render, not at schedule — see the Footle twin above.
       setRatePromptShown(true);
       celebrationTimeoutsRef.current.push(setTimeout(() => {
         if (!ratingAskAllowed()) { loopEvent("rate-prompt-skipped", { reason: "screen-changed", trigger: "classic" }); return; }
+        const held = ratingAskHeld(); if (held) { setRatePromptShown(false); loopEvent("rate-prompt-skipped", { reason: held, engine: "web", trigger: "classic" }); return; }
         markWebRatePromptShown();
         loopEvent("rate-prompt-shown", { engine: "web", trigger: "classic" });
         setRateView("ask"); setShowRatePrompt(true);
