@@ -650,7 +650,8 @@ describe('The player-facing faults of 13 Oct', () => {
     expect(quiz).toMatch(/Math\.min\(timerDuration, Math\.max\(0, Math\.ceil\(\(deadline - Date\.now\(\)\) \/ 1000\)\)\)/);
   });
   it('Transfer Trail is a new screen on a new day, and History shows today to a player with no past days', () => {
-    expect(read('App.jsx')).toMatch(/<TransferTrail key=\{dateToYMD\(day\)\}/);
+    // (16 Nov 2026: the key also counts game challenge links opened in a native shell.)
+    expect(read('App.jsx')).toContain('<TransferTrail key={`${dateToYMD(day)}:${challengeSeen}`}');
     expect(read('screens/DailyScreen.jsx')).toMatch(/const historyRows = pastDays\.length \? pastDays : \(playedCount > 0 \? matchdays\.filter\(m => m\.isToday\) : \[\]\);/);
   });
 });

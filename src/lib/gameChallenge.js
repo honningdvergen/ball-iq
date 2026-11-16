@@ -56,6 +56,25 @@ export function parseChallengeToken(token) {
   return { game, edition: parseInt(m[2], 10), score, name: cleanName(name) };
 }
 
+/**
+ * The challenge in a full link, for the installed apps: a universal link
+ * reaches a native shell as a URL string (appUrlOpen / getLaunchUrl) and never
+ * as window.location, so the web boot's capture cannot see it.
+ *   https://balliq.app/c/f.197.4.Alex?r=REPLYID -> { game, edition, score, name, rid? }
+ * null for anything else, the Daily 7's /c/SCORE.YYYYMMDD included. `rid` is
+ * the sender's reply id (lib/challengeReplies.js), kept only when well formed.
+ */
+export function challengeFromUrl(url) {
+  try {
+    const u = new URL(url);
+    const m = u.pathname.match(/^\/c\/([ftx]\.[^/?#]+)/);
+    const c = m && parseChallengeToken(m[1]);
+    if (!c) return null;
+    const r = u.searchParams.get('r') || u.searchParams.get('gr') || '';
+    return /^[A-Z2-7]{12}$/.test(r) ? { ...c, rid: r } : c;
+  } catch { return null; }
+}
+
 /** Lower is better for Footle and Trail (0 = missed, the worst); higher for Top 10. */
 export function compareScores(game, mine, theirs) {
   if (game === 'top10') return Math.sign(mine - theirs);

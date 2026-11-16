@@ -70,7 +70,7 @@ import {
   gradeWordleGuess, computeFootleStreak, getFootleNumber,
 } from './lib/wordle.js';
 import { PlatformStoreBadge } from './components/StoreBadge.jsx';
-import { parseChallengeToken, storeChallenge } from './lib/gameChallenge.js';
+import { parseChallengeToken, storeChallenge, challengeFromUrl } from './lib/gameChallenge.js';
 import { getFootleXP } from './lib/footleXp.js';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
@@ -3308,6 +3308,12 @@ function AppInner() {
   // Dismissible (the challenge stays guest-playable for the app-less), iOS-web
   // only, and the app-scheme URL deep-links code-intact on the LIVE binary.
   const [challengeAppNudgeDismissed, setChallengeAppNudgeDismissed] = useState(false);
+  // Counts the game challenge links a native shell has opened; part of the
+  // three game screens' keys (see tryCapture below).
+  const [challengeSeen, setChallengeSeen] = useState(0);
+  // The archive day being replayed, null = today (playArchive, further down,
+  // says why it exists and why it must reset).
+  const [archiveDate, setArchiveDate] = useState(null);
 
   // Sprint #92 GGG3: Universal Links handler for the installed iOS app.
   // Web users hit /?join=CODE via the original capture above; native users
@@ -3340,6 +3346,21 @@ function AppInner() {
         // 1.1: async challenge deep link — balliq.app/c/SCORE.YYYYMMDD[.Name]
         const cm = u.pathname.match(/^\/c\/([^/?#]+)/);
         if (cm) {
+          // A Footle / Trail / Top 10 challenge (f. t. x. tokens) comes first:
+          // parseChallengeStr below knows the Daily 7 form only, so until
+          // 1.8.7 a "send it to a mate" link opened plain Home in the apps.
+          const gc = challengeFromUrl(url);
+          if (gc) {
+            storeChallenge(gc);
+            // Today's puzzle, never an archive day or a named list left selected.
+            setArchiveDate(null); setTop10ListId(null);
+            // A new screen even when that game is already open (an app left
+            // on its finish panel): the banner and the head-to-head read the
+            // stored challenge when they mount.
+            setChallengeSeen((n) => n + 1);
+            setScreen(gc.game === "footle" ? "wordle" : gc.game);
+            return;
+          }
           const ch = parseChallengeStr(cm[1]);
           if (ch) {
             const fRaw = u.searchParams.get('f');
@@ -6843,7 +6864,8 @@ function AppInner() {
   // Null means "today" everywhere downstream, so nothing changes for a normal
   // play. It MUST reset on exit or the next tap on Footle would silently open
   // yesterday's board.
-  const [archiveDate, setArchiveDate] = useState(null);
+  // (The state itself is declared up with the challenge state: the native
+  // link handler there resets it too, and must not use it before its const.)
   const playArchive = useCallback((mode, date) => {
     setArchiveDate(date);
     setScreen(mode);
@@ -8145,7 +8167,7 @@ function AppInner() {
         )}
 
         {/* ── FOOTBALL WORDLE ── */}
-        {screen === "wordle" && <FootballWordle date={archiveDate || undefined} onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onReport={reportQuestion} services={footleServices} />}
+        {screen === "wordle" && <FootballWordle key={challengeSeen} date={archiveDate || undefined} onBack={goHome} userId={user?.id} onHowToPlay={openFootleRules} onReport={reportQuestion} services={footleServices} />}
         {screen === "trail" && (() => {
           // ⚠️ The player MUST be resolved for the SAME day the screen is told
           // it is showing. Passing an archive date alongside today's player
@@ -8162,10 +8184,10 @@ function AppInner() {
           // Keyed by the day: the screen holds its attempts in state, so an app
           // left open past midnight showed the new day's clubs with yesterday's
           // guesses and guard (review, 12 Oct 2026). A new day is a new screen.
-          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail key={dateToYMD(day)} player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail key={`${dateToYMD(day)}:${challengeSeen}`} player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "top10" && (
-          <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={top10ListId || "day"} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+          <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={`${top10ListId || "day"}:${challengeSeen}`} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stitch" && LEAGUES_WEB && (
           <TabErrorBoundary name="stitch" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stitch-up" />}><StitchUp
