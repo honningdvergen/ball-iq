@@ -215,6 +215,13 @@ function HomeScreenImpl({
   useLang(); // the dateline and the XP follow the language (fmtLocale)
   // The card fetches for a member on this browser, or once a session for a
   // signed-in player (a membership made on another device).
+  // Drawn again when a league is made, joined or left in this session: the
+  // member flag below is read from storage, which React does not watch.
+  const [, leaguesChanged] = React.useReducer((n) => n + 1, 0);
+  React.useEffect(() => {
+    window.addEventListener("biq:leagues-changed", leaguesChanged);
+    return () => window.removeEventListener("biq:leagues-changed", leaguesChanged);
+  }, []);
   const leagueCardOn = !!onOpenLeague && (() => {
     try { return localStorage.getItem("biq_league_member") === "1" || (!!user && sessionStorage.getItem("biq_league_checked") !== "1"); } catch { return false; }
   })();

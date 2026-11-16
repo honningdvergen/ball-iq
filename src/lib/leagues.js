@@ -226,11 +226,21 @@ async function call(name, args) {
 }
 const errCode = (r) => (r?.error ? (r.error.code === 'unavailable' || missing ? 'unavailable' : 'offline') : r?.data?.error || null);
 
+// Home's league card fetched once when it mounted, so a league made, joined or
+// left in the same session did not show until the app restarted (found on the
+// 1.8.7 Android walk: the "Invite a mate" pill could never appear for the
+// league a player had just made). HomeScreen and LeagueHomeCard listen for
+// this by its literal name, to keep this file out of Home's eager graph.
+function announceLeaguesChanged() {
+  try { window.dispatchEvent(new CustomEvent('biq:leagues-changed')); } catch { /* old WebView */ }
+}
+
 export async function createLeague({ name, displayName, seed = 'manual' }) {
   const r = await call('create_league', { p_name: name, p_tz: leagueTz(), p_display_name: displayName, p_seed: seed });
   const err = errCode(r) || (!r.data ? 'unavailable' : null);
   if (err) return { error: err };
   setLeagueMember(true);
+  announceLeaguesChanged();
   flushLeagueOutbox().catch(() => {});
   return r.data;
 }
@@ -239,11 +249,12 @@ export async function joinLeague({ code, displayName }) {
   const err = errCode(r) || (!r.data ? 'unavailable' : null);
   if (err) return { error: err };
   setLeagueMember(true);
+  announceLeaguesChanged();
   // Results finished before joining were waiting for a session.
   flushLeagueOutbox().catch(() => {});
   return r.data;
 }
-export async function leaveLeague(id) { const r = await call('leave_league', { p_league_id: id }); return !r.error; }
+export async function leaveLeague(id) { const r = await call('leave_league', { p_league_id: id }); if (!r.error) announceLeaguesChanged(); return !r.error; }
 /** [] when not in any, null when the call failed or leagues are not live. */
 export async function getMyLeagues() {
   const r = await call('get_my_leagues');
@@ -284,7 +295,7 @@ export async function redeemLeagueClaim(userId) {
   const r = await call('league_claim', { p_token: c.t });
   set(CLAIM_KEY, null);
   const moved = Number(r.data) || 0;
-  if (moved > 0) setLeagueMember(true);
+  if (moved > 0) { setLeagueMember(true); announceLeaguesChanged(); }
   return moved;
 }
 export const hasPendingLeagueClaim = () => !!get(CLAIM_KEY);

@@ -37,13 +37,20 @@ export default function LeagueHomeCard({ onOpen, onStart }) {
   const sharing = useRef(false);
   useEffect(() => {
     let alive = true;
-    getMyLeagues().then((l) => {
-      if (!alive) return;
+    // Only the newest fetch may answer: a slow first one must not put an
+    // empty list back over the league that was just made.
+    let asked = 0;
+    const load = () => { const mine = ++asked; return getMyLeagues().then((l) => {
+      if (!alive || mine !== asked) return;
       // Checked once a session for a signed-in player who is in none.
       if (Array.isArray(l) && l.length === 0) { try { sessionStorage.setItem("biq_league_checked", "1"); } catch { /* private mode */ } }
-      setList(l);
-    });
-    return () => { alive = false; };
+      // A refetch that failed keeps what is on screen.
+      setList((was) => (l == null && was != null ? was : l));
+    }); };
+    load();
+    // A league made, joined or left while Home is up (lib/leagues.js).
+    window.addEventListener("biq:leagues-changed", load);
+    return () => { alive = false; window.removeEventListener("biq:leagues-changed", load); };
   }, []);
   // Checked and in none: the way in, where the card would have been.
   if (Array.isArray(list) && list.length === 0 && onStart) return <LeagueStartRow onStart={onStart} />;

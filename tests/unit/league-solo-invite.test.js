@@ -39,3 +39,47 @@ describe('the Home card for a league of one', () => {
     expect(CSS).toMatch(/\.lg-solo-invite\{[^}]*min-height:44px/);
   });
 });
+
+// 1.8.7 Android walk, 16 Nov 2026: after making a league from Home the row
+// still said "Mates' league / Start" until the app restarted. The card
+// fetched once on mount and nothing told it a league now existed, so the
+// invite pill could never appear in the session that made the league.
+describe('Home learns about a league made, joined or left in this session', () => {
+  const LIB = read('lib/leagues.js');
+  const HOME = read('screens/HomeScreen.jsx');
+  const fn = (name) => {
+    const from = LIB.indexOf(`export async function ${name}(`);
+    expect(from).toBeGreaterThan(-1);
+    const next = LIB.indexOf('\nexport ', from + 1);
+    return LIB.slice(from, next === -1 ? undefined : next);
+  };
+  it('create, join and leave each announce the change, only after they succeeded', () => {
+    expect(LIB).toContain("window.dispatchEvent(new CustomEvent('biq:leagues-changed'))");
+    for (const name of ['createLeague', 'joinLeague']) {
+      const body = fn(name);
+      expect(body.indexOf('announceLeaguesChanged();')).toBeGreaterThan(body.indexOf('if (err) return { error: err };'));
+    }
+    expect(fn('leaveLeague')).toContain('if (!r.error) announceLeaguesChanged();');
+    // A guest's leagues moving to an account at sign-in is the same change.
+    expect(fn('redeemLeagueClaim')).toContain('if (moved > 0) { setLeagueMember(true); announceLeaguesChanged(); }');
+    // Never before the early return on an error.
+    for (const name of ['createLeague', 'joinLeague']) expect(fn(name).split('announceLeaguesChanged();').length).toBe(2);
+  });
+  it('the card fetches again on that event and stops listening when it goes', () => {
+    expect(CARD).toContain('window.addEventListener("biq:leagues-changed", load);');
+    expect(CARD).toContain('window.removeEventListener("biq:leagues-changed", load);');
+  });
+  it('only the newest fetch answers', () => {
+    expect(CARD).toContain('const load = () => { const mine = ++asked; return getMyLeagues().then((l) => {');
+    expect(CARD).toContain('if (!alive || mine !== asked) return;');
+  });
+  it('a refetch that fails keeps the card that is on screen', () => {
+    expect(CARD).toContain('setList((was) => (l == null && was != null ? was : l));');
+  });
+  it('Home draws again, so the way in gives place to the card', () => {
+    expect(HOME).toContain('window.addEventListener("biq:leagues-changed", leaguesChanged);');
+    expect(HOME).toContain('window.removeEventListener("biq:leagues-changed", leaguesChanged);');
+    // Home must not pull the league library into its eager graph for this.
+    expect(HOME).not.toMatch(/from ["']\.\.\/lib\/leagues\.js["']/);
+  });
+});
