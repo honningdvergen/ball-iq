@@ -152,6 +152,37 @@ describe('the league row and its sheet sit still', () => {
   });
 });
 
+// 17 Nov 2026, the emulator walk of build 66: with the keyboard up the "Start
+// a league" sheet was a 149 px strip and Create was out of view. Android had
+// already taken the keyboard off the window (915 to 527) and the sheet took it
+// off again (336).
+describe('the sheet lifts by what the keyboard still covers, not by its height', () => {
+  it('the numbers from the walk, and the platforms that do not resize', async () => {
+    const { keyboardCover, keyboardLine } = await import('../../src/lib/useKeyboardAwareInput.js');
+    // Android, window already resized: the line is the window's own bottom, nothing left to lift by.
+    expect(keyboardCover(527, keyboardLine(527, 915, 336), 336)).toBe(0);
+    // Android, the keyboard reported a moment before the resize lands: lift now, drop it on the resize.
+    expect(keyboardCover(915, keyboardLine(915, 915, 336), 336)).toBe(336);
+    // iOS never resizes: the whole keyboard.
+    expect(keyboardCover(852, 852 - 336, 336)).toBe(336);
+    // The web: the visual viewport's bottom edge.
+    expect(keyboardCover(800, 480, 320)).toBe(320);
+    // No keyboard: nothing, whatever the browser's own bars are doing.
+    expect(keyboardCover(800, 760, 0)).toBe(0);
+    // Never more than the keyboard, never negative.
+    expect(keyboardCover(900, 400, 336)).toBe(336);
+    expect(keyboardCover(500, 527, 336)).toBe(0);
+  });
+  it('the sheet uses it for both the lift and the cap, and draws again on a resize', () => {
+    const SHEET = read('../../src/screens/LeagueScreen.jsx');
+    const sheet = SHEET.slice(SHEET.indexOf('function Sheet('), SHEET.indexOf('// ── CREATE AND INVITE'));
+    expect(sheet).toMatch(/const kbInset = typeof window === "undefined" \? 0 : keyboardCover\(window\.innerHeight, visibleBottom\(kbHeight\), kbHeight\);/);
+    expect(sheet).toMatch(/window\.addEventListener\("resize", resized\)/);
+    expect(sheet).toMatch(/style=\{kbInset \? \{ paddingBottom: kbInset \} : undefined\}/);
+    expect(sheet).toMatch(/maxHeight: `calc\(92vh - \$\{kbInset\}px\)`/);
+  });
+});
+
 describe('the results panel', () => {
   const DD = read('../../src/components/DailyDone.jsx');
   it('sends the league result for a live puzzle only, before the daily record\'s await, without awaiting it', () => {

@@ -179,6 +179,14 @@ const IS_ANDROID = typeof navigator !== 'undefined' && /android/i.test(navigator
 let fullHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
 if (typeof window !== 'undefined') window.addEventListener('orientationchange', () => { fullHeight = 0; });
 export const keyboardLine = (inner, full, kb) => (kb > 0 ? Math.min(inner, Math.max(full, inner) - kb) : inner);
+// How much of the window AS IT IS NOW the keyboard still covers: what a
+// bottom-anchored, position:fixed sheet has to lift itself by. Not the same as
+// the keyboard's height: on Android the window has already lost the keyboard
+// (see above), so the answer there is 0 and lifting by the full height took
+// the keyboard off twice (the league sheet, 17 Nov 2026: crushed to a 149 px
+// strip with Create out of view, on the emulator walk of build 66). Never
+// more than the keyboard itself, so iOS and the web keep exactly kbInset.
+export const keyboardCover = (inner, line, kb) => (kb > 0 ? Math.min(kb, Math.max(0, Math.round(inner - line))) : 0);
 export function visibleBottom(kbInset) {
   if (typeof window === 'undefined') return 0;
   if (IS_NATIVE) {

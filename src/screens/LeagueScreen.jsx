@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { ChevronLeft, Copy, Check, Crown, TrendingDown, Ghost, Trophy, Users, Share } from "lucide-react";
 import "./league.css";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../lib/leagues.js";
 import { isProfaneUsername } from "../lib/profanity.js";
 import { useModalA11y } from "../useModalA11y.js";
-import { useKeyboardAwareInput } from "../lib/useKeyboardAwareInput.js";
+import { useKeyboardAwareInput, visibleBottom, keyboardCover } from "../lib/useKeyboardAwareInput.js";
 import { isNativeShell } from "../lib/leagueResults.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
@@ -266,7 +266,22 @@ function Sheet({ label, onClose, full = false, calm = false, children }) {
   // scrim is position:fixed and the native shell never resizes the viewport
   // (Keyboard "resize":"none"), so a bottom-anchored sheet sits UNDER the
   // keyboard. Lift it by the keyboard's height, and cap it to what is left.
-  const { kbInset } = useKeyboardAwareInput();
+  //
+  // 17 Nov 2026 (emulator walk of build 66): on ANDROID that lift counted the
+  // keyboard twice. There the shell does resize the window (915 to 527 on the
+  // walk's phone), so the sheet was already above the keyboard, and the lift
+  // squeezed it into a 149 px strip with Create out of view. The lift is now
+  // what the keyboard still covers of the window as it is (keyboardCover): the
+  // keyboard's height on iOS and the web, nothing once Android has resized.
+  // Drawn again on every resize, because the window can shrink a moment after
+  // the keyboard is reported.
+  const { kbInset: kbHeight } = useKeyboardAwareInput();
+  const [, resized] = useReducer((n) => n + 1, 0);
+  useEffect(() => {
+    window.addEventListener("resize", resized);
+    return () => window.removeEventListener("resize", resized);
+  }, []);
+  const kbInset = typeof window === "undefined" ? 0 : keyboardCover(window.innerHeight, visibleBottom(kbHeight), kbHeight);
   const [scrolls, setScrolls] = useState(false);
   useEffect(() => {
     const measure = () => { const el = ref.current; if (el) setScrolls(el.scrollHeight > el.clientHeight + 1); };
