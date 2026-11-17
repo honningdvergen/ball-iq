@@ -246,19 +246,83 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
 }
 
 // ── SHEET FRAME ──────────────────────────────────────────────────────────────
-function Sheet({ label, onClose, full = false, children }) {
+function Sheet({ label, onClose, full = false, calm = false, children }) {
   const ref = useRef(null);
   // Focus trap, Escape and the back button, as every other sheet in the app.
-  useModalA11y({ isOpen: true, onClose, ref });
+  // calm: the sheet opens with the focus on itself (see the create sheet).
+  useModalA11y({ isOpen: true, onClose, ref, focusContainer: calm });
+  // 17 Nov 2026 (Alex's recording of build 181): he tried to swipe the sheet
+  // away, and the gesture scrolled Home behind it instead. Two halves:
+  // 1. league.css: a touch on the scrim or on the sheet pans nothing
+  //    (touch-action:none), so the page behind stays still. A sheet that is
+  //    taller than its box (the keyboard is up, or a small screen) gets
+  //    .can-scroll and pans itself; `scrolls` is measured after every render
+  //    and on every resize.
+  // 2. Here: a bottom sheet that does not scroll follows a downward drag and
+  //    closes when it is let go past a third of its height. No preventDefault
+  //    anywhere, so a tap on a button is never swallowed.
   // 10 Nov 2026 (simulator walk): the first time these sheets ran in the app,
   // the name field took focus and the keyboard covered the whole sheet. The
   // scrim is position:fixed and the native shell never resizes the viewport
   // (Keyboard "resize":"none"), so a bottom-anchored sheet sits UNDER the
   // keyboard. Lift it by the keyboard's height, and cap it to what is left.
   const { kbInset } = useKeyboardAwareInput();
+  const [scrolls, setScrolls] = useState(false);
+  useEffect(() => {
+    const measure = () => { const el = ref.current; if (el) setScrolls(el.scrollHeight > el.clientHeight + 1); };
+    measure();
+    // A turned phone, or a keyboard whose resize lands after its inset.
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [children, kbInset]);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+  const swipe = !full && !scrolls;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !swipe) return undefined;
+    let y0 = null, dy = 0, dragging = false, timer = 0;
+    const rest = () => { dragging = false; el.style.transition = "transform .18s ease-out"; el.style.transform = ""; };
+    const start = (e) => {
+      if (dragging) rest(); // a second finger: the sheet goes back
+      y0 = null; dy = 0;
+      if (e.touches.length !== 1 || e.target.closest?.("input, textarea, select")) return;
+      y0 = e.touches[0].clientY;
+    };
+    const move = (e) => {
+      if (y0 == null) return;
+      dy = Math.max(0, e.touches[0].clientY - y0);
+      if (!dragging && dy < 6) return; // a tap that wobbles is still a tap
+      // Once it follows the finger it follows it all the way back up too.
+      dragging = true;
+      el.style.transition = "none";
+      el.style.transform = `translateY(${dy}px)`;
+    };
+    const end = () => {
+      y0 = null;
+      if (!dragging) return;
+      if (dy <= Math.min(120, el.offsetHeight / 3)) { rest(); return; }
+      dragging = false;
+      el.style.transition = "transform .18s ease-out";
+      el.style.transform = "translateY(105%)";
+      timer = setTimeout(() => onCloseRef.current?.(), 170);
+    };
+    el.addEventListener("touchstart", start, { passive: true });
+    el.addEventListener("touchmove", move, { passive: true });
+    el.addEventListener("touchend", end);
+    el.addEventListener("touchcancel", end);
+    return () => {
+      clearTimeout(timer);
+      el.style.transition = ""; el.style.transform = "";
+      el.removeEventListener("touchstart", start);
+      el.removeEventListener("touchmove", move);
+      el.removeEventListener("touchend", end);
+      el.removeEventListener("touchcancel", end);
+    };
+  }, [swipe]);
   return (
     <div className={`lg-scrim${full ? " is-full" : ""}`} onClick={onClose} style={kbInset ? { paddingBottom: kbInset } : undefined}>
-      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} className="lg-sheet" onClick={(e) => e.stopPropagation()} style={kbInset && !full ? { maxHeight: `calc(92vh - ${kbInset}px)` } : undefined}>
+      <div ref={ref} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} className={`lg-sheet${scrolls ? " can-scroll" : ""}`} onClick={(e) => e.stopPropagation()} style={kbInset && !full ? { maxHeight: `calc(92vh - ${kbInset}px)` } : undefined}>
         {children}
       </div>
     </div>
@@ -318,8 +382,13 @@ export function LeagueCreateSheet({ seed = "manual", vs = "", h2h = null, displa
     try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2200); track?.("league-invite-share", { via: "copy" }); } catch { /* the field shows it */ }
   };
 
+  // calm (17 Nov 2026): the name field is already filled in ("Mates' league"),
+  // and giving it the first focus raised the keyboard the moment the sheet
+  // opened: the sheet slid in, then jumped up over the keyboard, and the way
+  // out ("Not now", the dimmed page) shrank to a strip. It now opens at rest
+  // with Create one tap away; tapping the name still brings the keyboard.
   return (
-    <Sheet label={made ? t("lg.inviteTitle") : t("lg.start")} onClose={close}>
+    <Sheet label={made ? t("lg.inviteTitle") : t("lg.start")} onClose={close} calm={!made}>
       <span className="lg-well" aria-hidden="true"><Trophy size={22} strokeWidth={2.2} /></span>
       {!made ? (
         <>

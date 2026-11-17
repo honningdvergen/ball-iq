@@ -71,8 +71,12 @@
 .lg-pill{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 14px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;}
 
 /* Sheets. */
-.lg-scrim{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.72);display:flex;align-items:flex-end;justify-content:center;animation:lg-fade .2s ease;}
-.lg-sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);border-top:1px solid var(--border);border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:14px;box-sizing:border-box;animation:lg-up .3s cubic-bezier(0.22,1,0.36,1);outline:none;}
+/* touch-action:none on the scrim and the sheet: a drag on either pans nothing,
+   so the page behind an open sheet stays still (LeagueScreen.jsx, Sheet). A
+   sheet with more than fits (.can-scroll, or a full one) pans itself. */
+.lg-scrim{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.72);display:flex;align-items:flex-end;justify-content:center;animation:lg-fade .2s ease;touch-action:none;}
+.lg-sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);border-top:1px solid var(--border);border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:14px;box-sizing:border-box;animation:lg-up .3s cubic-bezier(0.22,1,0.36,1);outline:none;touch-action:none;overscroll-behavior:contain;}
+.lg-sheet.can-scroll,.lg-scrim.is-full .lg-sheet{touch-action:pan-y;}
 .lg-scrim.is-full{align-items:stretch;}
 .lg-scrim.is-full .lg-sheet{max-height:none;height:100%;border-radius:0;border-top:0;justify-content:center;padding-top:calc(24px + env(safe-area-inset-top, 0px));}
 .lg-well{align-self:center;width:52px;height:52px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.28);color:var(--gold);-webkit-text-fill-color:var(--gold);}

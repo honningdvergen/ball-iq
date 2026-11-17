@@ -29,6 +29,7 @@ import { ordinalText } from '../i18n/names.js';
 export { isNativeShell, flushLeagueOutbox, setLeagueTokenSource };
 export const LEAGUE_CODE_RE = /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{8}$/;
 const MEMBER_KEY = 'biq_league_member';
+const HOME_KEY = 'biq_league_home';
 const INVITE_KEY = 'biq_league_invite';
 const CLAIM_KEY = 'biq_league_claim';
 const SEEN_FINAL_PREFIX = 'biq_league_seen_';
@@ -72,6 +73,16 @@ const set = (k, v) => { try { if (v == null) localStorage.removeItem(k); else lo
 /** Whether this browser is in a league: gates the Home card's fetch for guests. */
 export const isLeagueMember = () => get(MEMBER_KEY) === '1';
 export const setLeagueMember = (on) => set(MEMBER_KEY, on ? '1' : null);
+/**
+ * The last answer of getMyLeagues that had a league in it, or null. The Home
+ * card draws it at once and the network corrects it a moment later, so a
+ * member's card is there with the rest of Home and stays when the phone is
+ * offline (17 Nov 2026). Written and cleared by getMyLeagues only; an explicit
+ * sign-out clears it too (useAuth, USER_SCOPED_STATIC_KEYS).
+ */
+export function cachedLeagues() {
+  try { const v = JSON.parse(get(HOME_KEY) || 'null'); return Array.isArray(v) && v.length ? v : null; } catch { return null; }
+}
 export function storeLeagueInvite(token) { if (parseLeagueInviteToken(token)) set(INVITE_KEY, JSON.stringify({ token, at: Date.now() })); }
 export function readLeagueInvite() {
   try {
@@ -260,6 +271,7 @@ export async function getMyLeagues() {
   const r = await call('get_my_leagues');
   if (r.error || !Array.isArray(r.data)) return null;
   setLeagueMember(r.data.length > 0);
+  set(HOME_KEY, r.data.length ? JSON.stringify(r.data) : null);
   return r.data;
 }
 /** A new name on the profile is the name in every league table too. */

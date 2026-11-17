@@ -222,9 +222,23 @@ function HomeScreenImpl({
     window.addEventListener("biq:leagues-changed", leaguesChanged);
     return () => window.removeEventListener("biq:leagues-changed", leaguesChanged);
   }, []);
-  const leagueCardOn = !!onOpenLeague && (() => {
-    try { return localStorage.getItem("biq_league_member") === "1" || (!!user && sessionStorage.getItem("biq_league_checked") !== "1"); } catch { return false; }
-  })();
+  const leagueMember = (() => { try { return localStorage.getItem("biq_league_member") === "1"; } catch { return false; } })();
+  const leagueCardOn = !!onOpenLeague && (leagueMember || (() => {
+    try { return !!user && sessionStorage.getItem("biq_league_checked") !== "1"; } catch { return false; }
+  })());
+  // THE LEAGUE ROW HOLDS ITS PLACE FROM THE FIRST FRAME (17 Nov 2026). The card
+  // is a lazy chunk and then a fetch, and until both had answered it drew
+  // nothing: on every cold start the row arrived about a second after the rest
+  // of Home and pushed Multiplayer and "Find a quiz" down (Alex's recording of
+  // build 181). What stands there meanwhile: the way in for a phone that is in
+  // no league, which is also what the fetch nearly always answers. For a
+  // member, an empty card of the same height, but only when the card has an
+  // answer remembered to draw the moment its chunk arrives (lib/leagues.js,
+  // cachedLeagues): a box that might be followed by nothing would be a jump
+  // of its own.
+  const leagueSeen = leagueMember && (() => { try { return !!localStorage.getItem("biq_league_home"); } catch { return false; } })();
+  const leagueWait = leagueMember ? (leagueSeen ? <div className="lg-home-wait" aria-hidden="true" /> : null)
+    : onStartLeague ? <LeagueStartRow onStart={onStartLeague} /> : null;
 
   // Cold-start race: on native the session restores from Preferences AFTER first
   // paint, so there's a brief guest window before `user` is set during which the
@@ -613,7 +627,7 @@ function HomeScreenImpl({
       <div className="home-section-title">{t("home.mates")}</div>
       {/* The league: the card for a member, the way in for everyone else. */}
       {leagueCardOn ? (
-        <React.Suspense fallback={null}><LeagueHomeCard onOpen={onOpenLeague} onStart={onStartLeague} /></React.Suspense>
+        <React.Suspense fallback={leagueWait}><LeagueHomeCard onOpen={onOpenLeague} onStart={onStartLeague} wait={leagueWait} /></React.Suspense>
       ) : onStartLeague ? (
         // In no league: the way in (LeagueStartRow says why it is here).
         <LeagueStartRow onStart={onStartLeague} />

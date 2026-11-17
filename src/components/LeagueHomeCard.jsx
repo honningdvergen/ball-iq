@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Trophy, ChevronRight } from "lucide-react";
 import "../screens/league.css";
-import { getMyLeagues, homeCardLine, leagueInviteUrl, inviteShareText } from "../lib/leagues.js";
+import { getMyLeagues, homeCardLine, leagueInviteUrl, inviteShareText, isLeagueMember, cachedLeagues } from "../lib/leagues.js";
 import { loopEvent } from "../lib/funnel.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
@@ -28,9 +28,12 @@ async function shareInvite(text) {
   try { await navigator.clipboard.writeText(text); return "copy"; } catch { return null; }
 }
 
-export default function LeagueHomeCard({ onOpen, onStart }) {
+export default function LeagueHomeCard({ onOpen, onStart, wait = null }) {
   useT();
-  const [list, setList] = useState(null);
+  // undefined: not answered yet. null: the fetch failed. An array: the answer,
+  // or, until it comes, the last answer this phone had (a member's card is
+  // then on Home from the first frame, and stays if the fetch fails).
+  const [list, setList] = useState(() => cachedLeagues() ?? undefined);
   const [copied, setCopied] = useState(false);
   // One share sheet at a time: a second tap while it is open throws, and the
   // fallback would then claim "Link copied" and count a second invite.
@@ -54,7 +57,13 @@ export default function LeagueHomeCard({ onOpen, onStart }) {
   }, []);
   // Checked and in none: the way in, where the card would have been.
   if (Array.isArray(list) && list.length === 0 && onStart) return <LeagueStartRow onStart={onStart} />;
-  if (!Array.isArray(list) || list.length === 0) return null;
+  // Not answered yet: whatever Home put in the row's place stays there, so
+  // nothing below it moves when the answer lands (HomeScreen, leagueWait).
+  if (list === undefined) return wait;
+  // The fetch failed with nothing remembered: the way in stays for a phone in
+  // no league (it was already on screen); a member gets nothing, as before.
+  if (!Array.isArray(list)) return isLeagueMember() ? null : wait;
+  if (list.length === 0) return null;
   // A league with mates in it comes first: a just-made league of one sorts to
   // the top by activity and would otherwise hide a real table behind it.
   const solo = (x) => x.members === 1 && !x.is_final;

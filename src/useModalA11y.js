@@ -154,7 +154,7 @@ export function anyModalOpen() {
   return modalStack.length > 0
 }
 
-export function useModalA11y({ isOpen, onClose, ref }) {
+export function useModalA11y({ isOpen, onClose, ref, focusContainer = false }) {
   // ⚠️ onClose IS READ THROUGH A REF, AND IS NOT A DEPENDENCY (16 Nov 2026).
   // Most callers pass a new function every render. With onClose in the
   // dependency list the whole effect ran again on EVERY render of an open
@@ -167,6 +167,12 @@ export function useModalA11y({ isOpen, onClose, ref }) {
   // Reproduced in Chromium with three quick renders of the open sheet.
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
+  // focusContainer: the first focus goes to the sheet itself, not to its first
+  // field. For a sheet whose first focusable is a text field that is already
+  // filled in: focusing it raises the keyboard over a form that is ready to
+  // send (the league sheet, 17 Nov 2026). Read when the sheet opens.
+  const focusContainerRef = useRef(focusContainer)
+  focusContainerRef.current = focusContainer
   useEffect(() => {
     if (!isOpen) return
     const container = ref.current
@@ -176,7 +182,7 @@ export function useModalA11y({ isOpen, onClose, ref }) {
 
     const previousActive = document.activeElement
     const focusables = getFocusables(container)
-    if (focusables.length > 0) {
+    if (focusables.length > 0 && !focusContainerRef.current) {
       focusables[0].focus()
     } else if (typeof container.focus === 'function') {
       container.focus()
@@ -224,7 +230,9 @@ export function useModalA11y({ isOpen, onClose, ref }) {
         first.focus()
         return
       }
-      if (e.shiftKey && active === first) {
+      // The container itself can hold the focus (focusContainer): Shift+Tab
+      // from it wraps to the last control, as it does from the first.
+      if (e.shiftKey && (active === first || active === container)) {
         e.preventDefault()
         last.focus()
       } else if (!e.shiftKey && active === last) {

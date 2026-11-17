@@ -2391,7 +2391,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .mp-friend-list .mp-row{margin:0;}
 /* "With your mates" on Home: the two rows sit as one group under their heading. */
 .home-mates .home-section-title{margin-bottom:12px;}
-.home-mates > .mp-row,.home-mates > .lg-home{margin-bottom:8px;}
+.home-mates > .mp-row,.home-mates > .lg-home,.home-mates > .lg-solo,.home-mates > .lg-home-wait{margin-bottom:8px;}
+/* A member's league card while it loads: the same box, empty (league.css is
+   in the lazy chunk, so this one lives here). */
+.lg-home-wait{min-height:72px;border-radius:16px;border:1px solid var(--border);background:var(--s1);box-sizing:border-box;}
 .home-mates > .mp-row:last-child{margin-bottom:22px;}
 /* Multiplayer keeps its green icon well (Alex, 2026-09-09: "no colour at all
    to the multiplayer icon? are you sure?" — he was right; a colourless well

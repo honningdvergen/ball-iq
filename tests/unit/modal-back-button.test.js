@@ -163,6 +163,24 @@ describe('an open sheet and the back button', () => {
     expect(browser.depth()).toBe(0);
     expect(closed).not.toHaveBeenCalled();
   });
+  // 17 Nov 2026: the league sheet's name field is already filled in, and giving
+  // it the first focus raised the keyboard as the sheet opened (Alex's
+  // recording of build 181: the sheet slid in, then jumped up).
+  it('gives the first focus to the first control, or to the sheet itself when asked', () => {
+    const field = { disabled: false, offsetParent: {}, focus: vi.fn() };
+    const box = { querySelectorAll: () => [field], focus: vi.fn(), contains: () => true };
+    const usual = mount(useModalA11y, box);
+    usual.render({ isOpen: true, onClose: () => {} });
+    expect(field.focus).toHaveBeenCalledTimes(1);
+    expect(box.focus).not.toHaveBeenCalled();
+    usual.unmount(); browser.flush();
+    field.focus.mockClear();
+    const calm = mount(useModalA11y, box);
+    calm.render({ isOpen: true, onClose: () => {}, focusContainer: true });
+    expect(field.focus).not.toHaveBeenCalled();
+    expect(box.focus).toHaveBeenCalledTimes(1);
+    calm.unmount(); browser.flush();
+  });
   it('says whether any sheet is open (the rating ask never lands on one)', () => {
     expect(anyModalOpen()).toBe(false);
     const sheet = mount(useModalA11y, container);

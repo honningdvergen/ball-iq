@@ -88,6 +88,7 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_last_email',
   'biq_mp_history', // Online-tab h2h ledger — per-user W/L record, must not leak across accounts
   'biq_ledger_reconcile_at', // per-user delta-reconcile throttle — a stale one would suppress the next user's reconcile
+  'biq_league_home', // the Home league card's last answer (lib/leagues.js cachedLeagues): one account's league must not show for the next
 ]
 const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']
 
