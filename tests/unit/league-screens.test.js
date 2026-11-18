@@ -48,8 +48,26 @@ describe('the league table', () => {
     expect(solids(html)).toBe(1);
     expect(html).toMatch(/class="lg-solid"[^>]*>(<svg[^>]*>.*?<\/svg>)? ?Invite a mate/);
     expect(html).toMatch(/class="lg-ghost"[^>]*>Play today/);
-    expect((html.match(/class="lg-row is-seat"/g) || []).length).toBe(2);
-    expect(html).toContain('Just you so far');
+    // Two seats that say what they are and invite on a tap; the line that said it a third time is gone.
+    expect((html.match(/<button type="button" class="lg-row is-seat"/g) || []).length).toBe(2);
+    expect((html.match(/class="lg-seat-name">Waiting for a mate</g) || []).length).toBe(2);
+    expect(html).not.toContain('Just you so far');
+    // One invite button, no second row of buttons, and nobody is "first" in a league of one.
+    expect(html).not.toMatch(/class="lg-tool"/);
+    expect(html).not.toMatch(/Copy invite link/);
+    expect(html).not.toMatch(/lg-rank is-first/);
+    // The rules are laid out from the start, each with its game's mark; Leave is last.
+    expect(html).toMatch(/class="lg-rules"><h2 class="lg-rules-title">How points work<\/h2>/);
+    expect((html.match(/class="lg-mark[ "]/g) || []).length).toBe(5); // Footle, Trail, Daily 7, Top 10, and the day you skip
+    // One mark a row: Footle and Transfer Trail each have their own (Alex: two marks side by side "looks really bad").
+    expect((html.match(/<li><span class="lg-mark[^>]*>(?:F|<svg[^>]*>.*?<\/svg>)<\/span><span class="lg-help-text">/g) || []).length).toBe(5);
+    expect(html).toMatch(/<strong>Footle<\/strong>/);
+    expect(html).toMatch(/<strong>Transfer Trail<\/strong><span>Scored the same as Footle\.<\/span>/);
+    // A seat's name for a screen reader carries the words on it.
+    expect(html).toMatch(/class="lg-row is-seat" aria-label="Waiting for a mate\. Invite a mate"/);
+    expect(html).not.toContain('Footle and Transfer Trail');
+    expect(html).toMatch(/class="lg-mark is-f"[^>]*>F</);
+    expect(html.indexOf('lg-leave')).toBeGreaterThan(html.indexOf('lg-rules'));
     // Nothing left to play: no quiet button, the invite stays the solid one.
     const done = renderToStaticMarkup(h(LeagueTableView, { data: solo, nextUp: [] }));
     expect(solids(done)).toBe(1);
@@ -59,14 +77,28 @@ describe('the league table', () => {
     for (const final of [false, true]) {
       const html = renderToStaticMarkup(h(LeagueTableView, { data: table(final), nextUp: [{ key: 'trail' }] }));
       expect(html).not.toMatch(/is-seat|lg-ghost/);
+      // With mates: two outlined buttons, the rules shut until asked for, the leader in gold, Leave last.
+      expect((html.match(/class="lg-tool"/g) || []).length).toBe(2);
+      expect(html).toMatch(/class="lg-tool"[^>]*>(<svg[^>]*>.*?<\/svg>)?Copy invite link/);
+      expect(html).toMatch(/aria-expanded="false"[^>]*>How points work/);
+      expect(html).not.toMatch(/lg-rules/);
+      expect(html).toMatch(/lg-rank is-first/);
+      expect(html).toMatch(/class="lg-link lg-leave"/);
     }
+    // A week that ended with one player: no seats to fill any more, and the plain line says why.
     const soloFinal = { ...table(true), rows: [{ ...rows(true)[0] }] };
-    expect(renderToStaticMarkup(h(LeagueTableView, { data: soloFinal, nextUp: [] }))).not.toMatch(/is-seat|lg-ghost/);
+    const sf = renderToStaticMarkup(h(LeagueTableView, { data: soloFinal, nextUp: [] }));
+    expect(sf).not.toMatch(/is-seat|lg-ghost/);
+    expect(sf).toContain('Just you so far');
   });
   it('leaving is asked with two real buttons, staying first', () => {
     const SRC = read('../../src/screens/LeagueScreen.jsx');
     expect(SRC).toMatch(/<button type="button" className="lg-pill" onClick=\{\(\) => setConfirmLeave\(false\)\}>\{t\("lg\.stay"\)\}<\/button>\s*<button type="button" className="lg-pill is-danger" onClick=\{leave\} disabled=\{busy\}>/);
     expect(read('../../src/screens/league.css')).toMatch(/\.lg-confirm-links \.lg-pill\{flex:1;min-height:46px;/);
+    // While it is asked, the rules step aside and their button says so; alone, the rules need no button.
+    expect(SRC).toContain('const helpOpen = alone || help;');
+    expect(SRC).toContain('const rulesShown = helpOpen && !confirmLeave;');
+    expect(SRC).toMatch(/setHelp\(confirmLeave \? true : !help\); setConfirmLeave\(false\); \}\} aria-expanded=\{rulesShown\}/);
   });
 
   it('live, all played: the solid button invites', () => {

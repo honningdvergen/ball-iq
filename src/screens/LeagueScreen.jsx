@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { ChevronLeft, Copy, Check, Crown, TrendingDown, Ghost, Trophy, Users, Share } from "lucide-react";
+import { ChevronLeft, ChevronDown, Copy, Check, Crown, TrendingDown, Ghost, Trophy, Users, Share, Plus, ClipboardList, Route, ListOrdered, Minus } from "lucide-react";
+import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import "./league.css";
 import {
   getLeagueTable, createLeague, joinLeague, leaveLeague, leagueInviteUrl, parseLeagueInviteToken,
@@ -24,7 +25,43 @@ import { t, useT } from "../i18n/index.js";
 
 // The words are t() since i18n step 7 (the lg.* keys; lib/leagues.js has the
 // rest). How points work: lg.help.<n> and lg.help.<n>.d.
-const POINTS_HELP = [1, 2, 3, 4];
+// How points work, a row a rule, each marked with the game it is about in that
+// game's own colour, as Home draws it (18 Nov 2026: it was four paragraphs of
+// grey text in a box). The last row is no game: a day you skip.
+// One row a game, one mark a row (Alex, 18 Nov 2026, on Footle and Transfer
+// Trail sharing a row with two marks side by side: "looks really bad").
+const POINTS_HELP = [
+  { n: 1, mark: "footle" },
+  { n: 5, mark: "trail" },
+  { n: 2, mark: "daily7" },
+  { n: 3, mark: "top10" },
+  { n: 4, mark: null },
+];
+const MARK_ICON = { daily7: ClipboardList, trail: Route, top10: ListOrdered };
+function PointsMark({ mode }) {
+  const Icon = MARK_ICON[mode];
+  const rgb = MODE_RGB[mode];
+  // Footle's mark is its solid green letter tile, as on Home.
+  if (!Icon) return <span className="lg-mark is-f" aria-hidden="true">F</span>;
+  return (
+    <span className="lg-mark" aria-hidden="true" style={{ background: `rgba(${rgb},0.14)`, boxShadow: `inset 0 0 0 1px rgba(${rgb},0.34)`, color: MODE_ACCENT[mode], WebkitTextFillColor: MODE_ACCENT[mode] }}>
+      <Icon size={15} strokeWidth={2.3} />
+    </span>
+  );
+}
+function PointsRules() {
+  useT();
+  return (
+    <ul className="lg-help">
+      {POINTS_HELP.map(({ n, mark }) => (
+        <li key={n}>
+          {mark ? <PointsMark mode={mark} /> : <span className="lg-mark is-none" aria-hidden="true"><Minus size={15} strokeWidth={2.3} /></span>}
+          <span className="lg-help-text"><strong>{t(`lg.help.${n}`)}</strong><span>{t(`lg.help.${n}.d`)}</span></span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 // A phone BROWSER, not the app: the shell has a phone user agent too, and there
 // the table told the player "points arrive in the next update" beside points
@@ -174,6 +211,9 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
   // member. Alone, the solid button is the invite, playing is the quiet one
   // under it, and the table shows the seats that are waiting.
   const alone = !final && rows.length === 1;
+  // Alone there is no button to open the rules with, so they are simply there.
+  const helpOpen = alone || help;
+  const rulesShown = helpOpen && !confirmLeave;
   const solid = final
     ? <button type="button" className="lg-solid" onClick={shareFinal} disabled={busy}><Share size={18} strokeWidth={2.4} aria-hidden="true" /> {t("lg.shareFinal")}</button>
     : alone
@@ -195,7 +235,7 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
       <div className="lg-table" role="table" aria-label={t(final ? "lg.ariaFinal" : "lg.ariaWeek", { name: meta.name })}>
         {rows.map((r, idx) => (
           <div key={idx} className={`lg-row${r.is_me ? " is-me" : ""}`} role="row">
-            <span className={`lg-rank${r.rank === 1 ? " is-first" : r.rank === 2 ? " is-second" : r.rank === 3 ? " is-third" : ""}`} role="cell">{rankText(r.rank, r.tied)}</span>
+            <span className={`lg-rank${alone ? "" : r.rank === 1 ? " is-first" : r.rank === 2 ? " is-second" : r.rank === 3 ? " is-third" : ""}`} role="cell">{rankText(r.rank, r.tied)}</span>
             <div className="lg-mid" role="cell">
               <div className="lg-name-line">
                 <div className="lg-name">{r.name}{r.is_me ? <span className="lg-you">{t("lg.you")}</span> : null}</div>
@@ -210,24 +250,31 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
             <span className={`lg-total${r.rank === 1 && r.points > 0 ? " is-first" : ""}`} role="cell">{r.points}</span>
           </div>
         ))}
+        {/* The seats say what they are and take the tap (they were two dashed
+            bars that read as something still loading). */}
         {alone && [2, 3].map((n) => (
-          <div key={n} className="lg-row is-seat" aria-hidden="true">
-            <span className="lg-rank">{n}</span>
-            <div className="lg-mid"><i className="lg-seat" /></div>
-            <span className="lg-total">·</span>
-          </div>
+          <button key={n} type="button" className="lg-row is-seat" onClick={invite} aria-label={`${t("lg.seat")}. ${t("lg.soloInvite")}`}>
+            <span className="lg-seat-plus" aria-hidden="true"><Plus size={15} strokeWidth={2.6} /></span>
+            <span className="lg-mid"><span className="lg-seat-name">{t("lg.seat")}</span></span>
+            <span aria-hidden="true" />
+          </button>
         ))}
-        {rows.length === 1 && <p className="lg-alone">{t("lg.alone")}</p>}
+        {rows.length === 1 && !alone && <p className="lg-alone">{t("lg.alone")}</p>}
       </div>
 
       <div className="lg-actions">
         {solid}
         {alone && playable.length > 0 && <button type="button" className="lg-ghost" onClick={() => playable[0].onTap?.()}>{t("lg.playToday")}</button>}
-        <div className="lg-links">
-          <button type="button" className="lg-link" onClick={copyLink}>{t("lg.copyLink")}</button>
-          <button type="button" className="lg-link" onClick={() => setHelp((h) => !h)} aria-expanded={help}>{t("lg.how")}</button>
-          <button type="button" className="lg-link" onClick={() => setConfirmLeave(true)}>{t("lg.leave")}</button>
-        </div>
+        {/* Two quiet buttons a thumb can hit (they were three grey words in a
+            row, 32 px tall, with Leave beside the two you actually want). */}
+        {/* Alone, the green button is already the invite and the rules are
+            laid out below: no second row of buttons. */}
+        {!alone && (
+          <div className="lg-tools">
+            <button type="button" className="lg-tool" onClick={copyLink}><Copy size={15} strokeWidth={2.3} aria-hidden="true" />{t("lg.copyLink")}</button>
+            <button type="button" className="lg-tool" onClick={() => { setHelp(confirmLeave ? true : !help); setConfirmLeave(false); }} aria-expanded={rulesShown}>{t("lg.how")}<ChevronDown size={15} strokeWidth={2.3} aria-hidden="true" className={rulesShown ? "is-up" : ""} /></button>
+          </div>
+        )}
         {note && <p className="lg-note" role="status">{note}</p>}
         {confirmLeave && (
           <div className="lg-confirm" role="group" aria-label={t("lg.leaveQ")}>
@@ -238,11 +285,14 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
             </span>
           </div>
         )}
-        {help && (
-          <dl className="lg-help">
-            {POINTS_HELP.map((n) => <div key={n}><dt>{t(`lg.help.${n}`)}</dt><dd>{t(`lg.help.${n}.d`)}</dd></div>)}
-          </dl>
+        {rulesShown && (
+          <section className="lg-rules">
+            {alone && <h2 className="lg-rules-title">{t("lg.how")}</h2>}
+            <PointsRules />
+          </section>
         )}
+        {/* Last and plain: the one thing here nobody should hit by accident. */}
+        {!confirmLeave && <button type="button" className="lg-link lg-leave" onClick={() => setConfirmLeave(true)}>{t("lg.leave")}</button>}
       </div>
 
       <footer className="lg-foot">

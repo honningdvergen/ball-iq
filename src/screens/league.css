@@ -67,13 +67,29 @@
 /* The quiet second button under a solid one. */
 .lg-ghost{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;padding:11px 18px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;}
 .lg-ghost:active{transform:scale(0.98);}
-/* The seats a league of one is waiting to fill. */
-.lg-row.is-seat .lg-rank,.lg-row.is-seat .lg-total{opacity:0.35;}
-.lg-seat{display:block;width:46%;height:12px;border-radius:6px;background:var(--s2);border:1px dashed var(--border2);box-sizing:border-box;}
-.lg-row.is-seat + .lg-row.is-seat .lg-seat{width:34%;}
-.lg-help{margin:0;display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid var(--border);border-radius:12px;}
-.lg-help dt{font-size:13px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.lg-help dd{margin:2px 0 0;font-size:13px;line-height:1.4;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* The seats a league of one is waiting to fill: each says so and invites. */
+button.lg-row.is-seat{width:100%;border-left:0;border-right:0;border-bottom:0;background:none;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;padding-top:13px;padding-bottom:13px;}
+.lg-seat-plus{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1.5px dashed var(--border2);color:var(--t3);-webkit-text-fill-color:var(--t3);box-sizing:border-box;}
+.lg-seat-name{font-size:15px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.lg-row.is-seat + .lg-row.is-seat{opacity:0.6;}
+.lg-tools{display:flex;gap:10px;}
+.lg-tool{flex:1;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:8px 10px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--t2);-webkit-text-fill-color:var(--t2);font-family:inherit;font-size:13.5px;font-weight:700;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.lg-tool svg{flex-shrink:0;transition:transform .18s ease;}
+.lg-tool svg.is-up{transform:rotate(180deg);}
+.lg-leave{align-self:center;min-height:44px;padding:10px 16px;margin-top:6px;}
+/* The rules as a list, not another box: a hairline between rows, each row
+   marked with its game in the game's own colour. */
+.lg-rules{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.lg-rules-title{margin:0 0 2px;font-size:15px;font-weight:800;letter-spacing:-0.1px;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.lg-help{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;}
+.lg-help > li{display:grid;grid-template-columns:32px 1fr;column-gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--border);}
+.lg-help > li:first-child{border-top:0;}
+.lg-mark{width:32px;height:32px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;box-sizing:border-box;}
+.lg-mark.is-f{background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);}
+.lg-mark.is-none{background:var(--s2);color:var(--t3);-webkit-text-fill-color:var(--t3);box-shadow:inset 0 0 0 1px var(--border2);}
+.lg-help-text{min-width:0;display:flex;flex-direction:column;gap:1px;}
+.lg-help-text > strong{font-size:14px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.lg-help-text > span{font-size:13px;line-height:1.4;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 
 .lg-foot{display:flex;flex-direction:column;gap:10px;padding-top:4px;border-top:1px solid var(--border);padding-top:14px;}
 /* With nothing to say the foot drew its hairline alone, a stray rule under the links. */
