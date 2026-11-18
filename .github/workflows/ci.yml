@@ -95,7 +95,13 @@ jobs:
     # in a way that demanded attention, it was just always yellow and always
     # slow, so nobody looked. A job that cannot fail loudly must at least be
     # unable to run forever.
-    timeout-minutes: 20
+    # 35, not 20 (18 Nov 2026): three runs in one day were cancelled inside
+    # "Install Playwright browsers" with no test having run. The browsers
+    # download in seconds; the system packages behind --with-deps come from
+    # the runner's Ubuntu mirror, which that day served 125 MB in 15 min 21 s
+    # (136 kB/s). A normal run is about 12 minutes, so 35 still stops a job
+    # that hangs, and a slow mirror now costs time instead of the result.
+    timeout-minutes: 35
     # ⚠️ continue-on-error was REMOVED 2026-08-21. It had been on since the job
     # was created, and the job failed on 30 CONSECUTIVE runs while GitHub
     # reported conclusion=success — so the only automated check on the
