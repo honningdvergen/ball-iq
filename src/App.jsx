@@ -244,6 +244,15 @@ export const normalizeJoinCode = s => (s || "").toUpperCase().replace(/[^A-HJ-NP
 // was seen" ref reset to false, suppressing onboarding for the whole session.
 // Spent-once + seen-across-remounts fixes both halves.
 let bootDeferralSpent = false;
+// THE LINK THE APP WAS STARTED FROM IS HANDLED ONCE PER START (18 Nov 2026).
+// Capacitor's getLaunchUrl() keeps answering with the cold-start link for the
+// life of the process, and AppInner asked it on every mount. AppInner mounts
+// again when a guest signs in, which is what making a first league does: so a
+// player who came in on a mate's challenge, played it, went Home and made a
+// league was thrown back onto the game behind the "is ready" sheet, with a
+// blank frame on the way (the walk of builds 183 and 68; the same code was in
+// 180 to 182). An invite or a room link was re-applied the same way.
+let launchUrlHandled = false;
 let bootStagedScreenSeen = false;
 
 
@@ -3383,9 +3392,20 @@ function AppInner() {
         }
       } catch {}
     };
-    CapApp.getLaunchUrl().then(r => tryCapture(r?.url)).catch(() => {});
+    // Once per start (launchUrlHandled, above). An AppInner that is gone
+    // before the answer arrives leaves the link for the one that replaces it:
+    // its setState calls would land nowhere.
+    let alive = true;
+    if (!launchUrlHandled) {
+      CapApp.getLaunchUrl().then((r) => {
+        if (!alive || launchUrlHandled) return;
+        launchUrlHandled = true;
+        tryCapture(r?.url);
+      }).catch(() => {});
+    }
     let handlePromise = CapApp.addListener('appUrlOpen', e => tryCapture(e?.url));
     return () => {
+      alive = false;
       Promise.resolve(handlePromise).then(h => h?.remove?.()).catch(() => {});
     };
   }, []);

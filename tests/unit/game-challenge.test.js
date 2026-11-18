@@ -49,6 +49,25 @@ describe('gameChallenge', () => {
     expect(challengeFromUrl('not a url')).toBe(null);
     expect(challengeFromUrl(undefined)).toBe(null);
   });
+  // 18 Nov 2026, the walk of builds 183 and 68: getLaunchUrl() answers with the
+  // cold-start link for the life of the process, AppInner asked it on every
+  // mount, and a guest's first league remounts AppInner. The game came back
+  // behind the "is ready" sheet.
+  it('the link the app was started from is handled once per start, not once per mount', () => {
+    const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');
+    // Remembered outside the component, so a remount cannot forget it.
+    const flag = APP.indexOf('\nlet launchUrlHandled = false;\n');
+    expect(flag).toBeGreaterThan(-1);
+    expect(flag).toBeLessThan(APP.indexOf('const tryCapture = (url) => {'));
+    const at = APP.indexOf('CapApp.getLaunchUrl()');
+    expect(APP.indexOf('CapApp.getLaunchUrl()', at + 1)).toBe(-1); // asked in one place only
+    const eff = APP.slice(APP.lastIndexOf('let alive = true;', at), APP.indexOf('}, []);', at));
+    expect(eff).toMatch(/if \(!launchUrlHandled\) \{\s*CapApp\.getLaunchUrl\(\)\.then\(\(r\) => \{\s*if \(!alive \|\| launchUrlHandled\) return;\s*launchUrlHandled = true;\s*tryCapture\(r\?\.url\);/);
+    // An instance unmounted before the answer leaves the link for the next one.
+    expect(eff).toMatch(/return \(\) => \{\s*alive = false;/);
+    // A link opened while the app is running is still handled every time.
+    expect(eff).toContain("CapApp.addListener('appUrlOpen', e => tryCapture(e?.url))");
+  });
   it('the native link handler tries the game challenge before the Daily 7 parser', () => {
     const APP = readFileSync(fileURLToPath(new URL('../../src/App.jsx', import.meta.url)), 'utf8');
     const from = APP.indexOf('const tryCapture = (url) => {');
