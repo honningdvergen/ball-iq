@@ -59,7 +59,7 @@ describe('Home learns about a league made, joined or left in this session', () =
       const body = fn(name);
       expect(body.indexOf('announceLeaguesChanged();')).toBeGreaterThan(body.indexOf('if (err) return { error: err };'));
     }
-    expect(fn('leaveLeague')).toContain('if (!r.error) announceLeaguesChanged();');
+    expect(fn('leaveLeague')).toContain('if (!r.error) { forgetLeft(id); announceLeaguesChanged(); }');
     // A guest's leagues moving to an account at sign-in is the same change.
     expect(fn('redeemLeagueClaim')).toContain('if (moved > 0) { setLeagueMember(true); announceLeaguesChanged(); }');
     // Never before the early return on an error.

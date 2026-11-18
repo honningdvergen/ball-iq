@@ -131,6 +131,8 @@ describe('the league row and its sheet sit still', () => {
     // and every league row on Home has the one bottom margin.
     expect(APP_CSS).toMatch(/\.home-mates > \.lg-home,\.home-mates > \.lg-solo,\.home-mates > \.lg-home-wait\{margin-bottom:8px;\}/);
     expect(APP_CSS).toMatch(/\.lg-home-wait\{min-height:72px;/);
+    // ...and every form of the row is as tall as the Start row it can replace.
+    expect(APP_CSS).toMatch(/\.home-mates > \.lg-home,\.home-mates > \.lg-solo,\.home-mates > \.lg-home-wait\{min-height:76px;\}/);
     expect(CSS).toMatch(/\.lg-home\{[^}]*min-height:72px/);
     expect(CSS).toMatch(/\.lg-solo\{[^}]*min-height:72px/);
   });
@@ -143,6 +145,12 @@ describe('the league row and its sheet sit still', () => {
     expect(CSS).toMatch(/\.lg-scrim\{[^}]*touch-action:none;\}/);
     expect(CSS).toMatch(/\.lg-sheet\{[^}]*touch-action:none;overscroll-behavior:contain;\}/);
     expect(CSS).toMatch(/\.lg-sheet\.can-scroll,\.lg-scrim\.is-full \.lg-sheet\{touch-action:pan-y;\}/);
+  });
+  it('a bottom sheet slides up solid: the scrim dims by colour, never by opacity', () => {
+    expect(CSS).toMatch(/\.lg-scrim\{[^}]*animation:lg-dim /);
+    expect(CSS).toMatch(/@keyframes lg-dim\{from\{background-color:rgba\(0,0,0,0\);\}\}/);
+    expect(CSS).toMatch(/@keyframes lg-up\{from\{transform:translateY\(100%\);\}\}/);
+    expect(CSS).toMatch(/\.lg-scrim\.is-full\{animation-name:lg-fade;\}/);
   });
   it('the swipe never cancels a touch, so a tap on a button always lands', () => {
     const sheet = SHEET.slice(SHEET.indexOf('function Sheet('), SHEET.indexOf('// ── CREATE AND INVITE'));

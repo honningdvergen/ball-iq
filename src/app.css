@@ -2395,6 +2395,10 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 /* A member's league card while it loads: the same box, empty (league.css is
    in the lazy chunk, so this one lives here). */
 .lg-home-wait{min-height:72px;border-radius:16px;border:1px solid var(--border);background:var(--s1);box-sizing:border-box;}
+/* Every form of the league row is as tall as the "Start" row it can replace
+   (76px, as Multiplayer under it), so making or leaving a league moves
+   nothing below it. */
+.home-mates > .lg-home,.home-mates > .lg-solo,.home-mates > .lg-home-wait{min-height:76px;}
 .home-mates > .mp-row:last-child{margin-bottom:22px;}
 /* Multiplayer keeps its green icon well (Alex, 2026-09-09: "no colour at all
    to the multiplayer icon? are you sure?" — he was right; a colourless well

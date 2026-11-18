@@ -83,6 +83,26 @@ export const setLeagueMember = (on) => set(MEMBER_KEY, on ? '1' : null);
 export function cachedLeagues() {
   try { const v = JSON.parse(get(HOME_KEY) || 'null'); return Array.isArray(v) && v.length ? v : null; } catch { return null; }
 }
+// Making or leaving a league changes what Home should draw before any fetch
+// has answered (Alex's recording of build 182, 18 Nov 2026): after Create the
+// league row vanished for a moment behind the sheet, and after Leave the old
+// card stood on Home until the network said otherwise. So the remembered
+// answer is edited on the spot: a league just made goes in as a league of one
+// (all the solo card reads is its id, code and name), a league just left
+// comes out, and the member flag follows when it was the last.
+function rememberMade(l) {
+  if (!l || !l.id || !l.code) return;
+  const was = (cachedLeagues() || []).filter((x) => x.id !== l.id);
+  set(HOME_KEY, JSON.stringify([{ id: l.id, code: l.code, name: l.name || '', members: 1, is_final: false }, ...was]));
+}
+function forgetLeft(id) {
+  const had = cachedLeagues();
+  if (!had) return;
+  const left = had.filter((x) => x.id !== id);
+  if (left.length === had.length) return;
+  set(HOME_KEY, left.length ? JSON.stringify(left) : null);
+  if (!left.length) setLeagueMember(false);
+}
 export function storeLeagueInvite(token) { if (parseLeagueInviteToken(token)) set(INVITE_KEY, JSON.stringify({ token, at: Date.now() })); }
 export function readLeagueInvite() {
   try {
@@ -251,6 +271,7 @@ export async function createLeague({ name, displayName, seed = 'manual' }) {
   const err = errCode(r) || (!r.data ? 'unavailable' : null);
   if (err) return { error: err };
   setLeagueMember(true);
+  rememberMade(r.data);
   announceLeaguesChanged();
   flushLeagueOutbox().catch(() => {});
   return r.data;
@@ -261,11 +282,18 @@ export async function joinLeague({ code, displayName }) {
   if (err) return { error: err };
   setLeagueMember(true);
   announceLeaguesChanged();
+  // Home is not on screen while a league is joined: fetch now, so the card is
+  // remembered and stands there with the rest when the player gets back.
+  getMyLeagues().catch(() => {});
   // Results finished before joining were waiting for a session.
   flushLeagueOutbox().catch(() => {});
   return r.data;
 }
-export async function leaveLeague(id) { const r = await call('leave_league', { p_league_id: id }); if (!r.error) announceLeaguesChanged(); return !r.error; }
+export async function leaveLeague(id) {
+  const r = await call('leave_league', { p_league_id: id });
+  if (!r.error) { forgetLeft(id); announceLeaguesChanged(); }
+  return !r.error;
+}
 /** [] when not in any, null when the call failed or leagues are not live. */
 export async function getMyLeagues() {
   const r = await call('get_my_leagues');

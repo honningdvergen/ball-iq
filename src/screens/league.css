@@ -74,8 +74,8 @@
 /* touch-action:none on the scrim and the sheet: a drag on either pans nothing,
    so the page behind an open sheet stays still (LeagueScreen.jsx, Sheet). A
    sheet with more than fits (.can-scroll, or a full one) pans itself. */
-.lg-scrim{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.72);display:flex;align-items:flex-end;justify-content:center;animation:lg-fade .2s ease;touch-action:none;}
-.lg-sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);border-top:1px solid var(--border);border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:14px;box-sizing:border-box;animation:lg-up .3s cubic-bezier(0.22,1,0.36,1);outline:none;touch-action:none;overscroll-behavior:contain;}
+.lg-scrim{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.72);display:flex;align-items:flex-end;justify-content:center;animation:lg-dim .22s ease;touch-action:none;}
+.lg-sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);border-top:1px solid var(--border);border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;gap:14px;box-sizing:border-box;animation:lg-up .32s cubic-bezier(0.22,1,0.36,1);outline:none;touch-action:none;overscroll-behavior:contain;}
 .lg-sheet.can-scroll,.lg-scrim.is-full .lg-sheet{touch-action:pan-y;}
 .lg-scrim.is-full{align-items:stretch;}
 .lg-scrim.is-full .lg-sheet{max-height:none;height:100%;border-radius:0;border-top:0;justify-content:center;padding-top:calc(24px + env(safe-area-inset-top, 0px));}
@@ -93,8 +93,19 @@
 .lg-linkbox .lg-input{font-size:14px;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .lg-copy{flex-shrink:0;width:46px;min-height:46px;border-radius:12px;border:1px solid var(--border2);background:var(--s1);color:var(--t1);-webkit-text-fill-color:var(--t1);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;}
 .lg-err{margin:0;font-size:13px;font-weight:700;color:var(--red);-webkit-text-fill-color:var(--red);text-align:center;}
+/* A BOTTOM SHEET COMES UP FROM THE BOTTOM, SOLID (18 Nov 2026). It used to
+   fade in almost in place: the scrim faded by opacity, which fades the sheet
+   inside it too, so for a fifth of a second Home showed through the sheet and
+   the two sets of words lay on top of each other (Alex's recording of build
+   182). Now the dimming is the scrim's own colour, and the sheet slides up its
+   full height at full strength. A full-screen sheet has no edge to slide from
+   and keeps the old fade. */
 @keyframes lg-fade{from{opacity:0;}}
-@keyframes lg-up{from{transform:translateY(24px);opacity:0;}}
+@keyframes lg-dim{from{background-color:rgba(0,0,0,0);}}
+@keyframes lg-up{from{transform:translateY(100%);}}
+@keyframes lg-in{from{transform:translateY(24px);opacity:0;}}
+.lg-scrim.is-full{animation-name:lg-fade;}
+.lg-scrim.is-full .lg-sheet{animation-name:lg-in;}
 @media (prefers-reduced-motion: reduce){.lg-scrim,.lg-sheet{animation:none;}}
 
 /* The Home card (components/LeagueHomeCard.jsx) lives with the screen it opens. */
