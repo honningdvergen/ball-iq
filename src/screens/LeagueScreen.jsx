@@ -168,8 +168,16 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
     return { cls: v >= 30 ? "is-big" : "", t: String(v), h: maxDay ? Math.max(0.12, Math.min(1, v / maxDay)) : 0 };
   };
   const last = data.last_week;
+  // A LEAGUE OF ONE NEEDS A MATE BEFORE IT NEEDS A SCORE (18 Nov 2026). With
+  // only the maker in it the solid button was "Play today's" and the way to
+  // invite was a grey link; 12 of the first 14 leagues never got a second
+  // member. Alone, the solid button is the invite, playing is the quiet one
+  // under it, and the table shows the seats that are waiting.
+  const alone = !final && rows.length === 1;
   const solid = final
     ? <button type="button" className="lg-solid" onClick={shareFinal} disabled={busy}><Share size={18} strokeWidth={2.4} aria-hidden="true" /> {t("lg.shareFinal")}</button>
+    : alone
+      ? <button type="button" className="lg-solid" onClick={invite}><Users size={18} strokeWidth={2.4} aria-hidden="true" /> {t("lg.soloInvite")}</button>
     : playable.length
       ? <button type="button" className="lg-solid" onClick={() => playable[0].onTap?.()}>{t("lg.playToday")}</button>
       : <button type="button" className="lg-solid" onClick={invite}><Users size={18} strokeWidth={2.4} aria-hidden="true" /> {t("lg.invite")}</button>;
@@ -202,11 +210,19 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
             <span className={`lg-total${r.rank === 1 && r.points > 0 ? " is-first" : ""}`} role="cell">{r.points}</span>
           </div>
         ))}
+        {alone && [2, 3].map((n) => (
+          <div key={n} className="lg-row is-seat" aria-hidden="true">
+            <span className="lg-rank">{n}</span>
+            <div className="lg-mid"><i className="lg-seat" /></div>
+            <span className="lg-total">·</span>
+          </div>
+        ))}
         {rows.length === 1 && <p className="lg-alone">{t("lg.alone")}</p>}
       </div>
 
       <div className="lg-actions">
         {solid}
+        {alone && playable.length > 0 && <button type="button" className="lg-ghost" onClick={() => playable[0].onTap?.()}>{t("lg.playToday")}</button>}
         <div className="lg-links">
           <button type="button" className="lg-link" onClick={copyLink}>{t("lg.copyLink")}</button>
           <button type="button" className="lg-link" onClick={() => setHelp((h) => !h)} aria-expanded={help}>{t("lg.how")}</button>
@@ -217,8 +233,8 @@ export function LeagueTableView({ data, leagueId, onBack, nextUp = [], isAnon = 
           <div className="lg-confirm" role="group" aria-label={t("lg.leaveQ")}>
             <span>{t("lg.leaveBody", { name: meta.name })}</span>
             <span className="lg-confirm-links">
-              <button type="button" className="lg-link" onClick={leave} disabled={busy}>{t("lg.leaveYes")}</button>
-              <button type="button" className="lg-link" onClick={() => setConfirmLeave(false)}>{t("lg.stay")}</button>
+              <button type="button" className="lg-pill" onClick={() => setConfirmLeave(false)}>{t("lg.stay")}</button>
+              <button type="button" className="lg-pill is-danger" onClick={leave} disabled={busy}>{t("lg.leaveYes")}</button>
             </span>
           </div>
         )}

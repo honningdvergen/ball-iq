@@ -40,6 +40,35 @@ describe('the league table', () => {
     expect(html).toContain('Last week: Alex won on 214');
   });
 
+  // 18 Nov 2026: alone in a league the solid button was "Play today's" and
+  // the invite a grey link. 12 of the first 14 leagues never got a second member.
+  it('a league of one: the solid button invites, playing is the quiet one, and two seats wait', () => {
+    const solo = { ...table(false), rows: [{ ...rows(false)[1], rank: 1, tied: false }], last_week: null };
+    const html = renderToStaticMarkup(h(LeagueTableView, { data: solo, nextUp: [{ key: 'trail', name: "Today's Transfer Trail" }] }));
+    expect(solids(html)).toBe(1);
+    expect(html).toMatch(/class="lg-solid"[^>]*>(<svg[^>]*>.*?<\/svg>)? ?Invite a mate/);
+    expect(html).toMatch(/class="lg-ghost"[^>]*>Play today/);
+    expect((html.match(/class="lg-row is-seat"/g) || []).length).toBe(2);
+    expect(html).toContain('Just you so far');
+    // Nothing left to play: no quiet button, the invite stays the solid one.
+    const done = renderToStaticMarkup(h(LeagueTableView, { data: solo, nextUp: [] }));
+    expect(solids(done)).toBe(1);
+    expect(done).not.toMatch(/lg-ghost/);
+  });
+  it('with mates in it, or once the week is final, there are no waiting seats and no quiet button', () => {
+    for (const final of [false, true]) {
+      const html = renderToStaticMarkup(h(LeagueTableView, { data: table(final), nextUp: [{ key: 'trail' }] }));
+      expect(html).not.toMatch(/is-seat|lg-ghost/);
+    }
+    const soloFinal = { ...table(true), rows: [{ ...rows(true)[0] }] };
+    expect(renderToStaticMarkup(h(LeagueTableView, { data: soloFinal, nextUp: [] }))).not.toMatch(/is-seat|lg-ghost/);
+  });
+  it('leaving is asked with two real buttons, staying first', () => {
+    const SRC = read('../../src/screens/LeagueScreen.jsx');
+    expect(SRC).toMatch(/<button type="button" className="lg-pill" onClick=\{\(\) => setConfirmLeave\(false\)\}>\{t\("lg\.stay"\)\}<\/button>\s*<button type="button" className="lg-pill is-danger" onClick=\{leave\} disabled=\{busy\}>/);
+    expect(read('../../src/screens/league.css')).toMatch(/\.lg-confirm-links \.lg-pill\{flex:1;min-height:46px;/);
+  });
+
   it('live, all played: the solid button invites', () => {
     const html = renderToStaticMarkup(h(LeagueTableView, { data: table(false), nextUp: [] }));
     expect(solids(html)).toBe(1);
