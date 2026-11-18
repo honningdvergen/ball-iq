@@ -578,7 +578,6 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
 
   return (
     <div className={`wd-screen${inApp.src ? " has-inapp" : ""}`}>
-      {!isArchive && <ChallengeBanner game="footle" edition={getFootleNumber(date)} finished={state.status !== "playing"} />}
       {/* Social in-app browsers only (no Smart App Banner there). A row the
           height budget pays for: has-inapp -> --wd-inapp-h in footle.css. */}
       <InAppStrip src={inApp.src} onDismiss={inApp.dismiss} />
@@ -609,7 +608,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               lines at 360-390px and three at 320 (measured 2026-10-04, header
               44px -> 54/69px). The puzzle number is what a finished player
               shares and compares, and it fits on one line at every width. */}
-          <div className="wd-sub">{isArchive ? t("footle.archive") : state.status !== "playing" ? t(state.hard ? "footle.todayHard" : "footle.today") : hardNow && state.guesses.length > 0 ? t("footle.hardSub") : t("mode.footle.short")}</div>
+          <div className="wd-sub"><ChallengeBanner game="footle" edition={isArchive ? -1 : getFootleNumber(date)} finished={state.status !== "playing"}>{isArchive ? t("footle.archive") : state.status !== "playing" ? t(state.hard ? "footle.todayHard" : "footle.today") : hardNow && state.guesses.length > 0 ? t("footle.hardSub") : t("mode.footle.short")}</ChallengeBanner></div>
         </div>
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label={t("footle.howTo")} title={t("game.howTo")}>?</button>

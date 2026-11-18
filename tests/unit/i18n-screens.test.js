@@ -7,7 +7,9 @@
 //     in i18n-screens.scenarios.js and compared with i18n-screens.golden.json:
 //     the markup the same scenarios produced on main before step 4 (12708880).
 //     Do not regenerate the golden to make this pass: a diff here IS an
-//     English regression.
+//     English regression. (The five "challenge banner" entries were replaced
+//     on purpose on 18 Nov 2026, when the floating pill became the header's
+//     second line: ChallengeBanner.jsx says why. Nothing else was touched.)
 //   • Every key step 4 added is pinned to its exact English
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
@@ -228,7 +230,8 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['dd: mystery won, all done today (clean sweep)'])).toContain('>Pleno<');
     expect(unq(now['dd: guest save, 4-day streak, no line'])).toContain('>Tu racha de <strong class="dd-num">4 días</strong>: solo en este móvil.<');
     expect(unq(now['dd: shared, no label'])).toContain('>2 días de racha<');
-    expect(unq(now['challenge banner: trail on 3 clubs'])).toContain('>Sam lo sacó con 3 clubes<');
+    expect(unq(now['challenge banner: trail on 3 clubs'])).toContain('>· 3 clubes<');
+    expect(unq(now['challenge banner: trail on 3 clubs'])).toContain('>¿Le ganas?<');
     expect(unq(now['resultfoot: career report and the way out'])).toContain('¿Trayectoria errónea? Avísanos');
   });
   it('the results', () => {

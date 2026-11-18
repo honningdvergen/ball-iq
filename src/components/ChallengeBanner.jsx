@@ -1,43 +1,42 @@
-// The line a friend sees when they arrive from a challenge link (16 Oct 2026):
-// "Alex solved it in 3 · Can you beat it?". Shown only on the same puzzle and
-// only before they finish; the finish panel then shows the head-to-head.
+// The score a mate set, for a friend who arrives from a challenge link:
+// "Jonas · 7/10  Beat it?". Shown only on the same puzzle and only before they
+// finish; the finish panel then shows the head-to-head.
 //
-// ⚠️ AN OVERLAY, NOT A ROW. Footle and Top 10 budget their height so ENTER and
-// the keyboard stay on a small phone's screen (--wd-chrome); a row above the
-// board would push them off. It floats at the top, then leaves after a few
-// seconds or on a tap.
-import React, { useEffect, useMemo, useState } from "react";
+// ⚠️ IN THE HEADER'S OWN SECOND LINE, NOT OVER IT (18 Nov 2026). It was a pill
+// floating over the top of the screen for six seconds: on Alex's phone it
+// covered the game's title ("To," was what was left of "Top 10") and half the
+// line under it, at the moment a new player is finding out what the screen
+// is. It could not be a row of its own (Footle and Top 10 budget their height
+// so ENTER and the keyboard stay on a small phone's screen, --wd-chrome), so
+// it takes the place of the line under the title, at that line's own height,
+// and stays for the whole game: the number to beat is worth more on minute
+// two than in the first six seconds. Wrap the header's usual line in it; with
+// no challenge it draws that line.
+//
+// One line, always: a long name trims, the score never does, and "Beat it?"
+// drops off whole when there is no room for it (it wraps to a second line the
+// fixed height hides), rather than being cut mid-word.
+import React, { useMemo } from "react";
 import { Swords } from "lucide-react";
-import { readChallenge, challengeLine } from "../lib/gameChallenge.js";
-import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
+import { readChallenge, scoreLabel } from "../lib/gameChallenge.js";
+import { MODE_ACCENT } from "../lib/accents.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 
-export default function ChallengeBanner({ game, edition, finished }) {
+export default function ChallengeBanner({ game, edition, finished, children = null }) {
   const t = useT();
   const c = useMemo(() => readChallenge(game, edition), [game, edition]);
-  const [open, setOpen] = useState(true);
-  useEffect(() => { const id = setTimeout(() => setOpen(false), 6000); return () => clearTimeout(id); }, []);
-  if (!c || finished || !open) return null;
-  const rgb = MODE_RGB[game] || "88,204,2";
-  // First name only: the score is the point of the line and must never be the part that trims.
-  const line = challengeLine({ ...c, name: String(c.name || "").split(" ")[0] });
+  if (!c || finished) return children;
+  const who = String(c.name || "").split(" ")[0] || t("gc.aMate");
+  const accent = MODE_ACCENT[game];
   return (
-    <button type="button" onClick={() => setOpen(false)} aria-label={t("gc.bannerAria", { line })}
-      style={{
-        position: "fixed", left: "50%", transform: "translateX(-50%)", zIndex: 60,
-        top: "calc(env(safe-area-inset-top, 0px) + 10px)", maxWidth: "min(92vw, 420px)", width: "max-content",
-        display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderRadius: 999,
-        // The 10px ring in the page's own colour: the pill sits over the game's
-        // title, and the line under the title used to peek out below it, cut
-        // in half (seen on the mate's arrival, 12 Nov 2026).
-        background: "var(--s1, #15171f)", border: `1px solid rgba(${rgb},0.5)`, boxShadow: "0 0 0 10px var(--bg, #0b0c10), 0 12px 32px rgba(0,0,0,0.45)",
-        color: "var(--t1)", WebkitTextFillColor: "var(--t1)", fontFamily: "inherit", fontSize: 14, fontWeight: 600, textAlign: "left", cursor: "pointer",
-      }}>
-      <Swords size={17} strokeWidth={2.3} color={MODE_ACCENT[game]} aria-hidden="true" style={{ flexShrink: 0 }} />
-      {/* One line, always: a long name trims with an ellipsis, "Beat it?" never does. */}
-      <span style={{ minWidth: 0, flex: "0 1 auto", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{line}</span>
-      <strong style={{ flexShrink: 0, whiteSpace: "nowrap", color: MODE_ACCENT[game], WebkitTextFillColor: MODE_ACCENT[game] }}>{t("gc.beatIt")}</strong>
-    </button>
+    <span className="ch-line" style={{ display: "flex", flexWrap: "wrap", columnGap: 8, height: "1.35em", lineHeight: 1.35, overflow: "hidden", color: "var(--t1)", WebkitTextFillColor: "var(--t1)", fontWeight: 700 }}>
+      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, minWidth: 0, maxWidth: "100%" }}>
+        <Swords size={13} strokeWidth={2.4} color={accent} aria-hidden="true" style={{ flexShrink: 0 }} />
+        <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{who}</span>
+        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>· {scoreLabel(game, c.score, t)}</span>
+      </span>
+      <strong style={{ whiteSpace: "nowrap", color: accent, WebkitTextFillColor: accent }}>{t("gc.beatIt")}</strong>
+    </span>
   );
 }

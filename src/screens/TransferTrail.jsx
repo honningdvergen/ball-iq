@@ -331,7 +331,6 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
       {/* Only for a solve made now. It used to fall again on every review of a
           solved Trail. */}
       {won && !finishedBefore(savedAtMount.current.status) && Confetti ? <Confetti /> : null}
-      {daily && !isArchive && <ChallengeBanner game="trail" edition={number} finished={done} />}
 
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
@@ -349,7 +348,9 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           <div style={{ flex: 1, minWidth: 0 }}>
             <GameTitle no={number}>{daily ? "Transfer Trail" : t("su.title")}</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
-              {done ? t(won ? "trail.solved" : "trail.notThisTime") : (stitch?.sub || t("trail.sub"))}
+              <ChallengeBanner game="trail" edition={daily && !isArchive ? number : -1} finished={done}>
+                {done ? t(won ? "trail.solved" : "trail.notThisTime") : (stitch?.sub || t("trail.sub"))}
+              </ChallengeBanner>
             </div>
           </div>
         )}

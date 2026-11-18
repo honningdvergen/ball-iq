@@ -30,8 +30,31 @@ describe('"Send it to a mate" carries the coloured grid', () => {
   });
 });
 
-describe('the challenge banner', () => {
-  it('has a ring in the page colour, so nothing under it peeks out', () => {
-    expect(read('components/ChallengeBanner.jsx')).toContain('boxShadow: "0 0 0 10px var(--bg, #0b0c10), 0 12px 32px rgba(0,0,0,0.45)"');
+// 18 Nov 2026: the pill floated over the top of the screen for six seconds and
+// covered the game's title on Alex's phone ("To," was what was left of
+// "Top 10"). The score to beat is now the header's own second line.
+describe('the score to beat sits in the header, over nothing', () => {
+  const BANNER = read('components/ChallengeBanner.jsx');
+  const code = BANNER.slice(BANNER.indexOf('export default function ChallengeBanner'));
+  it('is in the flow, never fixed, and has no timer to take it away', () => {
+    expect(code).not.toMatch(/position:\s*"fixed"/);
+    expect(code).not.toMatch(/setTimeout|zIndex/);
+    expect(code).toContain('if (!c || finished) return children;');
+  });
+  it('the name is the part that trims; the score and "Beat it?" never are', () => {
+    expect(code).toMatch(/textOverflow: "ellipsis", whiteSpace: "nowrap" \}\}>\{who\}<\/span>/);
+    expect(code).toMatch(/flexShrink: 0, whiteSpace: "nowrap" \}\}>· \{scoreLabel\(game, c\.score, t\)\}<\/span>/);
+    // One line high: "Beat it?" wraps to a second line the fixed height hides, whole.
+    expect(code).toMatch(/flexWrap: "wrap"[^}]*height: "1\.35em"[^}]*overflow: "hidden"/);
+  });
+  it('each game puts it where its usual second line was, and only on the live puzzle', () => {
+    expect(read('screens/Top10.jsx')).toContain('sub={isArchive || embedded ? sub : <ChallengeBanner game="top10" edition={number} finished={g.done}>{sub}</ChallengeBanner>}');
+    expect(read('screens/TransferTrail.jsx')).toContain('<ChallengeBanner game="trail" edition={daily && !isArchive ? number : -1} finished={done}>');
+    expect(read('games/FootballWordle.jsx')).toContain('<div className="wd-sub"><ChallengeBanner game="footle" edition={isArchive ? -1 : getFootleNumber(date)} finished={state.status !== "playing"}>');
+    // Top 10 hides its second line when a short phone has the keyboard up: not when it is the score to beat.
+    expect(read('screens/top10.css')).toContain('.t10.is-tight .t10-head-sub:has(.ch-line) { display: block; }');
+    for (const f of ['screens/Top10.jsx', 'screens/TransferTrail.jsx', 'games/FootballWordle.jsx']) {
+      expect((read(f).match(/<ChallengeBanner /g) || []).length, f).toBe(1);
+    }
   });
 });

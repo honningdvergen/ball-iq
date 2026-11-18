@@ -203,6 +203,10 @@
    The question stays; the lines that explain it go until the keyboard does. */
 .t10.is-tight .t10-head { padding-top: 2px; padding-bottom: 2px; }
 .t10.is-tight .t10-head-sub, .t10.is-tight .t10-q-note, .t10.is-tight .t10-q-meta { display: none; }
+/* Except a mate's score to beat (ChallengeBanner): it is the reason this
+   player is here, and it costs no room, since the 44px back button sets the
+   header's height with or without a second line (18 Nov 2026). */
+.t10.is-tight .t10-head-sub:has(.ch-line) { display: block; }
 .t10.is-tight .t10-q-title { font-size: 17px; }
 .t10.is-tight .t10-entry { margin-top: 6px; }
 .t10.is-tight .t10-input { padding-top: 9px; padding-bottom: 9px; }
