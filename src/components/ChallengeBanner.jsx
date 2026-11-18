@@ -19,7 +19,7 @@
 import React, { useMemo } from "react";
 import { Swords } from "lucide-react";
 import { readChallenge, scoreLabel } from "../lib/gameChallenge.js";
-import { MODE_ACCENT } from "../lib/accents.js";
+import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 
@@ -29,12 +29,17 @@ export default function ChallengeBanner({ game, edition, finished, children = nu
   if (!c || finished) return children;
   const who = String(c.name || "").split(" ")[0] || t("gc.aMate");
   const accent = MODE_ACCENT[game];
+  const rgb = MODE_RGB[game] || "88,204,2";
+  // A tinted chip a size up from the grey line it replaces (18 Nov 2026: on
+  // Alex's phone the first version was "small and really unnoticed"). It is
+  // the reason this player opened the link, so it has to be seen in the first
+  // second; the chip is 20 px tall, which the header's 44 px row still holds.
   return (
-    <span className="ch-line" style={{ display: "flex", flexWrap: "wrap", columnGap: 8, height: "1.35em", lineHeight: 1.35, overflow: "hidden", color: "var(--t1)", WebkitTextFillColor: "var(--t1)", fontWeight: 700 }}>
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, minWidth: 0, maxWidth: "100%" }}>
-        <Swords size={13} strokeWidth={2.4} color={accent} aria-hidden="true" style={{ flexShrink: 0 }} />
+    <span className="ch-line" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", columnGap: 8, height: 20, lineHeight: "20px", overflow: "hidden", fontSize: 13.5, color: "var(--t1)", WebkitTextFillColor: "var(--t1)", fontWeight: 800 }}>
+      <span className="ch-chip" style={{ display: "inline-flex", alignItems: "center", gap: 5, minWidth: 0, maxWidth: "100%", height: 20, padding: "0 9px 0 7px", borderRadius: 999, background: `rgba(${rgb},0.16)`, boxShadow: `inset 0 0 0 1px rgba(${rgb},0.45)`, boxSizing: "border-box" }}>
+        <Swords size={13} strokeWidth={2.5} color={accent} aria-hidden="true" style={{ flexShrink: 0 }} />
         <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{who}</span>
-        <span style={{ flexShrink: 0, whiteSpace: "nowrap" }}>· {scoreLabel(game, c.score, t)}</span>
+        <span style={{ flexShrink: 0, whiteSpace: "nowrap", color: accent, WebkitTextFillColor: accent }}>{scoreLabel(game, c.score, t)}</span>
       </span>
       <strong style={{ whiteSpace: "nowrap", color: accent, WebkitTextFillColor: accent }}>{t("gc.beatIt")}</strong>
     </span>

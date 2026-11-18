@@ -43,14 +43,18 @@ describe('the score to beat sits in the header, over nothing', () => {
   });
   it('the name is the part that trims; the score and "Beat it?" never are', () => {
     expect(code).toMatch(/textOverflow: "ellipsis", whiteSpace: "nowrap" \}\}>\{who\}<\/span>/);
-    expect(code).toMatch(/flexShrink: 0, whiteSpace: "nowrap" \}\}>· \{scoreLabel\(game, c\.score, t\)\}<\/span>/);
+    expect(code).toMatch(/flexShrink: 0, whiteSpace: "nowrap", color: accent, WebkitTextFillColor: accent \}\}>\{scoreLabel\(game, c\.score, t\)\}<\/span>/);
     // One line high: "Beat it?" wraps to a second line the fixed height hides, whole.
-    expect(code).toMatch(/flexWrap: "wrap"[^}]*height: "1\.35em"[^}]*overflow: "hidden"/);
+    expect(code).toMatch(/flexWrap: "wrap"[^}]*height: 20, lineHeight: "20px", overflow: "hidden"/);
+    // A chip a size up (18 Nov 2026, on Alex's phone the plain line was "small and really unnoticed").
+    expect(code).toMatch(/className="ch-chip"[^>]*height: 20[^>]*background: `rgba\(\$\{rgb\},0\.16\)`/);
   });
   it('each game puts it where its usual second line was, and only on the live puzzle', () => {
     expect(read('screens/Top10.jsx')).toContain('sub={isArchive || embedded ? sub : <ChallengeBanner game="top10" edition={number} finished={g.done}>{sub}</ChallengeBanner>}');
     expect(read('screens/TransferTrail.jsx')).toContain('<ChallengeBanner game="trail" edition={daily && !isArchive ? number : -1} finished={done}>');
     expect(read('games/FootballWordle.jsx')).toContain('<div className="wd-sub"><ChallengeBanner game="footle" edition={isArchive ? -1 : getFootleNumber(date)} finished={state.status !== "playing"}>');
+    // The chip is 20px where Footle's own line is 17px: the gap above it goes, so the header stays 44px.
+    expect(read('games/footle.css')).toContain('.wd-sub:has(.ch-line){margin-top:0;}');
     // Top 10 hides its second line when a short phone has the keyboard up: not when it is the score to beat.
     expect(read('screens/top10.css')).toContain('.t10.is-tight .t10-head-sub:has(.ch-line) { display: block; }');
     for (const f of ['screens/Top10.jsx', 'screens/TransferTrail.jsx', 'games/FootballWordle.jsx']) {

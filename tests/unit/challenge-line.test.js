@@ -26,19 +26,21 @@ describe('the score to beat, or the usual line', () => {
   it('a challenge for this puzzle: the mate, the score, "Beat it?"', () => {
     storeChallenge({ game: 'top10', edition: 38, score: 7, name: 'Jonas Berg' });
     const html = draw({ game: 'top10', edition: 38, finished: false });
-    expect(text(html)).toBe('Jonas · 7/10 Beat it?');
+    expect(text(html)).toBe('Jonas 7/10 Beat it?');
     expect(html).toContain('class="ch-line"');
+    // The name and the score sit together in one tinted chip, the score in the game's colour.
+    expect(html).toMatch(/class="ch-chip"[^>]*background:rgba\(255,138,101,0\.16\)/);
     expect(html).not.toContain('Name all ten');
   });
   it('each game reads its own score, and a miss is a miss', () => {
     storeChallenge({ game: 'footle', edition: 199, score: 5, name: 'Jonas' });
-    expect(text(draw({ game: 'footle', edition: 199, finished: false }))).toBe('Jonas · 5/6 Beat it?');
+    expect(text(draw({ game: 'footle', edition: 199, finished: false }))).toBe('Jonas 5/6 Beat it?');
     storeChallenge({ game: 'footle', edition: 199, score: 0, name: '' });
-    expect(text(draw({ game: 'footle', edition: 199, finished: false }))).toBe('A mate · X/6 Beat it?');
+    expect(text(draw({ game: 'footle', edition: 199, finished: false }))).toBe('A mate X/6 Beat it?');
     storeChallenge({ game: 'trail', edition: 108, score: 3, name: '  ' });
-    expect(text(draw({ game: 'trail', edition: 108, finished: false }))).toBe('A mate · 3 clubs Beat it?');
+    expect(text(draw({ game: 'trail', edition: 108, finished: false }))).toBe('A mate 3 clubs Beat it?');
     storeChallenge({ game: 'trail', edition: 108, score: 0, name: 'Sam' });
-    expect(text(draw({ game: 'trail', edition: 108, finished: false }))).toBe('Sam · missed Beat it?');
+    expect(text(draw({ game: 'trail', edition: 108, finished: false }))).toBe('Sam missed Beat it?');
   });
   it('another puzzle, another game, an archive day (-1) or a finished game: the usual line', () => {
     storeChallenge({ game: 'top10', edition: 38, score: 7, name: 'Jonas' });

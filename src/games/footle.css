@@ -44,6 +44,10 @@
 .wd-header-text{flex:1;min-width:0;}
 .wd-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
 .wd-sub{font-size:12.5px;font-weight:400;color:var(--t2);margin-top:2px;letter-spacing:0;}
+/* A mate's score to beat (ChallengeBanner) is a 20px chip where this line is
+   17px: without the gap above it the header stays the back button's 44px,
+   which the ENTER-on-screen budget counts on (--wd-chrome). */
+.wd-sub:has(.ch-line){margin-top:0;}
 /* 320px phones: 13px wrapped "Surname of a footballer" to two lines (header 44 -> 54px). 12px fits with 7px to spare in Chromium; nowrap keeps a wider font (SF on iOS) to one line. */
 @media (max-width:340px){.wd-sub{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}}
 /* ⚠️ THE SLOT IS PAID FOR. It is 34px (the clue pill's height) plus a 4px
