@@ -471,6 +471,7 @@ export default {
   'ld.slow': 'This is taking longer than it should. It may need a connection.',
   'ld.stadiums': 'Loading Stadiums',
   'ld.stitch': 'Loading Stitch-up',
+  'ld.ballpark': 'Loading Ballpark',
   'ld.table': 'Loading the table',
   'ld.top10': 'Loading Top 10',
   'ld.top10lib': 'Loading Top 10 lists',

@@ -1,0 +1,111 @@
+/* Ballpark (prototype, web only). One solid button per state (.bp-solid);
+   everything else is type, space, a hairline or a link. Sentence case: nothing
+   here turns text into capitals. Numbers are tabular wherever they change or
+   align. Teal is the mode's own colour: no mode in lib/accents.js sits near it.
+
+   Alex, 20 Nov 2026: "make sure things look AMAZING, greatly spaced, no clutter".
+   So: no boxes inside the screen (the result is not a card, the keys have no
+   outlines), one loud thing per state (the question, then the true number, then
+   the total), and the space between blocks is set here, block by block, instead
+   of one gap for everything. The screen fills the phone under the web header,
+   so the keys and the button sit low, in the thumb's half. */
+
+.bp-screen{--bp:#56DCC8;--bp-rgb:86,220,200;--tc:var(--accent);max-width:480px;margin:0 auto;padding:6px 16px calc(24px + env(safe-area-inset-bottom, 0px));display:flex;flex-direction:column;min-height:calc(100vh - 152px);min-height:calc(100dvh - 152px);box-sizing:border-box;}
+.bp-top{display:flex;align-items:center;gap:6px;min-height:44px;}
+.bp-back{width:44px;height:44px;margin-left:-10px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);cursor:pointer;border-radius:12px;-webkit-tap-highlight-color:transparent;}
+.bp-name{flex:1;min-width:0;font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.bp-num{font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
+.bp-pips{display:flex;gap:5px;flex-shrink:0;}
+.bp-pip{width:20px;height:4px;border-radius:2px;background:var(--border2);}
+.bp-pip.is-done{background:var(--bp);}
+.bp-pip.is-now{background:var(--t1);}
+
+/* The question: the heading while it is being answered, a quiet line once it has been. */
+.bp-q{margin:18px 0 0;font-size:24px;line-height:1.24;font-weight:800;letter-spacing:-0.4px;color:var(--t1);-webkit-text-fill-color:var(--t1);text-wrap:balance;overflow-wrap:anywhere;}
+.bp-q.is-asked{margin-top:14px;font-size:14px;line-height:1.5;font-weight:500;letter-spacing:0;color:var(--t3);-webkit-text-fill-color:var(--t3);text-wrap:pretty;}
+
+/* ── Ask ── the figure sits low, right above the keys. */
+.bp-fig{margin-top:auto;padding-top:28px;display:flex;flex-direction:column;gap:4px;min-height:66px;justify-content:flex-end;}
+.bp-fig-n{font-size:clamp(34px,10vw,44px);line-height:1.05;font-weight:900;letter-spacing:-0.025em;font-variant-numeric:tabular-nums;color:var(--t1);-webkit-text-fill-color:var(--t1);white-space:nowrap;}
+/* Twelve characters or more: one size down, still on one line. */
+.bp-fig-n.is-long{font-size:clamp(25px,7.4vw,33px);}
+.bp-fig-n.is-empty{color:var(--border2);-webkit-text-fill-color:var(--border2);}
+.bp-fig-u{font-size:14px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);font-variant-numeric:tabular-nums;}
+
+/* Keys without outlines: twelve quiet tiles, not twelve boxes. */
+.bp-pad{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.bp-key{min-height:56px;display:flex;align-items:center;justify-content:center;border-radius:16px;border:0;background:var(--s1);font-family:inherit;font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t1);-webkit-text-fill-color:var(--t1);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+.bp-key:active{background:var(--s2);transform:scale(0.97);}
+
+.bp-actions{margin-top:20px;display:flex;flex-direction:column;gap:12px;}
+.bp-solid{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:12px 18px;border-radius:999px;border:0;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.bp-solid:disabled{opacity:0.4;cursor:default;}
+.bp-solid:active:not(:disabled){transform:scale(0.98);}
+.bp-solid:focus-visible,.bp-key:focus-visible,.bp-link:focus-visible,.bp-back:focus-visible,.bp-src:focus-visible{outline:2px solid var(--bp);outline-offset:2px;}
+.bp-rule{margin:0;text-align:center;font-size:12.5px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+
+/* Short phones: the Lock button has to stay on the first screen under the web
+   header, so the keys and the type give a little. */
+@media (max-height:720px){.bp-q{margin-top:10px;font-size:20px;}.bp-fig{padding-top:14px;min-height:56px;}.bp-pad{margin-top:12px;}.bp-key{min-height:44px;font-size:21px;}.bp-actions{margin-top:12px;gap:8px;}.bp-solid{min-height:50px;}}
+
+/* ── The card ── a pitch, mown in stripes: the one object on the reveal and on
+   the score, and the thing a player would screenshot. Everything on it is white
+   on green; the page's greys do not come onto the grass. */
+.bp-card{margin-top:18px;padding:22px 20px 20px;border-radius:24px;background:repeating-linear-gradient(90deg,#0F4A2C 0 44px,#125231 44px 88px);color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 18px 40px -22px rgba(0,0,0,0.9),inset 0 0 0 1px rgba(255,255,255,0.07);}
+.bp-truth{display:flex;flex-direction:column;gap:6px;}
+.bp-truth-n{font-size:clamp(46px,14vw,64px);line-height:1;font-weight:900;letter-spacing:-0.035em;font-variant-numeric:tabular-nums;white-space:nowrap;}
+/* Nine characters or more step down, twelve or more step down again, so a
+   figure in the billions stays on one line at 375px. */
+.bp-truth-n.is-mid{font-size:clamp(36px,10.8vw,50px);letter-spacing:-0.03em;}
+.bp-truth-n.is-long{font-size:clamp(25px,7.4vw,36px);letter-spacing:-0.025em;}
+.bp-truth-u{font-size:14.5px;font-weight:600;color:rgba(255,255,255,0.74);-webkit-text-fill-color:rgba(255,255,255,0.74);}
+
+/* The goal, and where the guesses went. Chalk-white lines, white balls. */
+.bp-map{display:block;width:100%;height:auto;margin-top:6px;overflow:visible;}
+.bp-map-net line{stroke:rgba(255,255,255,0.13);stroke-width:1;}
+.bp-map-ground{stroke:rgba(255,255,255,0.5);stroke-width:1.5;stroke-linecap:round;}
+.bp-map-frame{fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;}
+.bp-ball circle{fill:#fff;stroke:rgba(4,30,17,0.55);stroke-width:1.5;}
+.bp-ball text{fill:#0B3B22;-webkit-text-fill-color:#0B3B22;font-size:10.5px;font-weight:900;font-variant-numeric:tabular-nums;}
+/* The reveal's one moment: the shot leaves the penalty spot as the number counts. */
+.bp-ball.is-fly{transition:transform .85s cubic-bezier(.16,1,.3,1);}
+.bp-map-side{fill:rgba(255,255,255,0.62);-webkit-text-fill-color:rgba(255,255,255,0.62);font-size:9.5px;font-weight:700;}
+
+.bp-verdict{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px;}
+.bp-tier{font-size:26px;line-height:1.1;font-weight:900;letter-spacing:-0.5px;}
+.bp-pts{flex-shrink:0;font-size:14.5px;font-weight:700;color:rgba(255,255,255,0.74);-webkit-text-fill-color:rgba(255,255,255,0.74);font-variant-numeric:tabular-nums;}
+.bp-pts strong{font-size:21px;font-weight:900;color:#fff;-webkit-text-fill-color:#fff;}
+.bp-said{margin:7px 0 0;font-size:14.5px;line-height:1.4;font-weight:500;color:rgba(255,255,255,0.82);-webkit-text-fill-color:rgba(255,255,255,0.82);font-variant-numeric:tabular-nums;}
+
+.bp-why{margin-top:24px;display:flex;flex-direction:column;align-items:flex-start;gap:4px;}
+.bp-why-t{margin:0;font-size:14.5px;line-height:1.55;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);text-wrap:pretty;}
+.bp-why-t strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.bp-src{display:inline-flex;align-items:center;gap:4px;min-height:44px;font-size:13px;font-weight:700;color:var(--bp);-webkit-text-fill-color:var(--bp);text-decoration:none;border-radius:8px;}
+.bp-screen.is-reveal .bp-actions{margin-top:auto;padding-top:16px;}
+
+/* ── Done ── the score on the same card, then the three rows on the page. */
+.bp-total{margin:0;display:flex;align-items:baseline;gap:12px;font-weight:inherit;}
+.bp-total-n{font-size:clamp(76px,23vw,96px);line-height:0.9;font-weight:900;letter-spacing:-0.05em;font-variant-numeric:tabular-nums;}
+.bp-total-of{font-size:16px;font-weight:600;color:rgba(255,255,255,0.74);-webkit-text-fill-color:rgba(255,255,255,0.74);}
+.bp-total-v{margin:12px 0 0;font-size:20px;line-height:1.25;font-weight:800;letter-spacing:-0.3px;}
+/* Three rows on hairlines, not in a box. The number on each row is the number
+   on its ball. */
+.bp-rows{list-style:none;margin:22px 0 0;padding:0;}
+.bp-row{display:flex;align-items:flex-start;gap:14px;padding:15px 2px;border-bottom:1px solid var(--border);}
+.bp-row:last-child{border-bottom:0;}
+.bp-row-n{width:24px;height:24px;margin-top:1px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#fff;color:#0B3B22;-webkit-text-fill-color:#0B3B22;font-size:12.5px;font-weight:900;font-variant-numeric:tabular-nums;}
+.bp-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
+.bp-row-q{font-size:14px;line-height:1.4;font-weight:600;color:var(--t1);-webkit-text-fill-color:var(--t1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.bp-row-nums{display:flex;flex-wrap:wrap;column-gap:12px;row-gap:2px;font-size:12.5px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
+.bp-row-nums span{white-space:nowrap;}
+.bp-row-pts{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+.bp-row-pts strong{font-size:19px;line-height:1.1;font-weight:900;color:var(--t1);-webkit-text-fill-color:var(--t1);font-variant-numeric:tabular-nums;}
+.bp-row-pts span{font-size:11.5px;font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);white-space:nowrap;}
+.bp-screen.is-done .bp-actions{margin-top:18px;}
+
+.bp-proto{margin-top:auto;padding-top:30px;display:flex;flex-direction:column;gap:12px;}
+.bp-proto-h{margin:0;font-size:12.5px;font-weight:600;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.bp-proto-days{display:flex;flex-wrap:wrap;gap:8px;}
+.bp-link{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+
+@media (prefers-reduced-motion:reduce){.bp-ball.is-fly{transition:none;}.bp-key:active,.bp-solid:active:not(:disabled){transform:none;}}

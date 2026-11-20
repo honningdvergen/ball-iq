@@ -176,6 +176,9 @@ const LeagueScreen = React.lazy(() => import('./screens/LeagueScreen.jsx'));
 // Stitch-up (web only, 16 Oct 2026): build a Trail for a mate. Lazy, like the
 // leagues: nothing of it is in Home's eager graph but this line and the route.
 const StitchUp = React.lazy(() => import('./screens/StitchUp.jsx'));
+// Ballpark (prototype, web only, 20 Nov 2026): three football numbers a day.
+// Nothing links to it; /play?ballpark=1 opens it. Lazy, so Home pays nothing.
+const Ballpark = React.lazy(() => import('./screens/Ballpark.jsx'));
 const LeagueCreateSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueCreateSheet');
 const LeagueJoinSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueJoinSheet');
 import { HomeScreen } from './screens/HomeScreen.jsx';
@@ -2470,7 +2473,7 @@ const LOADING_KEY = {
   "Loading settings": "ld.settings", "Loading review": "ld.review", "Loading clubs": "ld.clubs",
   "Loading quiz": "ld.quiz", "Loading profile": "ld.profile", "Loading multiplayer": "ld.multiplayer",
   "Loading lobby": "ld.lobby", "Loading Transfer Trail": "ld.trail", "Loading Top 10": "ld.top10",
-  "Loading Stitch-up": "ld.stitch", "Loading the table": "ld.table", "Loading Top 10 lists": "ld.top10lib",
+  "Loading Stitch-up": "ld.stitch", "Loading Ballpark": "ld.ballpark", "Loading the table": "ld.table", "Loading Top 10 lists": "ld.top10lib",
   "Loading Draft": "ld.draft", "Loading Mystery Player": "ld.mystery", "Loading Stadiums": "ld.stadiums",
   "Getting your questions": "ld.questions",
 };
@@ -2952,6 +2955,8 @@ function AppInner() {
   const [leagueId, setLeagueId] = useState(null);
   // Stitch-up: the link's token (null = the builder). Web only (LEAGUES_WEB).
   const [stitchToken, setStitchToken] = useState(null);
+  // Ballpark prototype: the ?day=N a tester asked for (null = today's).
+  const [ballparkDay, setBallparkDay] = useState(null);
   const [leagueSheet, setLeagueSheetRaw] = useState(() => {
     if (!LEAGUES_ON) return null;
     const v = readLeagueUiInline();
@@ -5233,6 +5238,17 @@ function AppInner() {
           window.history.replaceState({}, "", "/play");
           setStitchToken(st === "new" ? null : st.slice(0, 80));
           setScreen("stitch");
+          return;
+        }
+      } catch {}
+      // Ballpark (prototype, web only): /play?ballpark=1, and &day=N to open
+      // one of its frozen days. Nothing in the app links here yet.
+      try {
+        const bq = LEAGUES_WEB && new URLSearchParams(window.location.search);
+        if (bq && bq.get("ballpark")) {
+          window.history.replaceState({}, "", "/play");
+          setBallparkDay(parseInt(bq.get("day"), 10) || null);
+          setScreen("ballpark");
           return;
         }
       } catch {}
@@ -8248,6 +8264,13 @@ function AppInner() {
         })()}
         {screen === "top10" && (
           <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={`${top10ListId || "day"}:${challengeSeen}`} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
+        )}
+        {screen === "ballpark" && LEAGUES_WEB && (
+          <TabErrorBoundary name="ballpark" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Ballpark" />}><Ballpark
+            forceDay={ballparkDay}
+            onBack={goHome}
+            track={loopEvent}
+          /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stitch" && LEAGUES_WEB && (
           <TabErrorBoundary name="stitch" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stitch-up" />}><StitchUp

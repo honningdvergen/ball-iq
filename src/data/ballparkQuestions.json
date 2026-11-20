@@ -1,0 +1,197 @@
+{
+ "days": [
+  [
+   "wc-trophy-kg",
+   "pl-goals-2324",
+   "bigcount-players"
+  ],
+  [
+   "shane-long-seconds",
+   "wc-matches-total",
+   "pl-spend-summer-2023"
+  ],
+  [
+   "longest-goal-m",
+   "fergie-games",
+   "wc94-attendance"
+  ],
+  [
+   "fifa-members",
+   "vds-minutes",
+   "barca-wolfsburg-crowd"
+  ],
+  [
+   "ball-weight-g",
+   "wc-goals-total",
+   "wc18-final-viewers"
+  ]
+ ],
+ "questions": [
+  {
+   "id": "wc-trophy-kg",
+   "q": "How heavy is the FIFA World Cup trophy, in kilograms?",
+   "answer": 6.175,
+   "unit": "kg",
+   "how": "It is 18-carat gold but only 36.8 centimetres tall.",
+   "source": {
+    "name": "FIFA",
+    "url": "https://www.fifa.com/en/articles/world-cup-trophy-in-numbers-fifa-world-cup-qatar-2022"
+   }
+  },
+  {
+   "id": "pl-goals-2324",
+   "q": "How many goals were scored in the 2023-24 Premier League season?",
+   "answer": 1246,
+   "unit": "goals",
+   "how": "380 matches at 3.28 goals a game.",
+   "source": {
+    "name": "Premier League",
+    "url": "https://www.premierleague.com/en/news/4029394"
+   }
+  },
+  {
+   "id": "bigcount-players",
+   "q": "FIFA's Big Count in 2006 put the number of people who play football worldwide at how many?",
+   "answer": 265000000,
+   "unit": "players",
+   "how": "About four in every hundred people on Earth at the time.",
+   "source": {
+    "name": "FIFA Big Count 2006",
+    "url": "https://digitalhub.fifa.com/m/114402613edaae50/original/zq7qokz0hgq1g7jlosqk-pdf.pdf"
+   }
+  },
+  {
+   "id": "shane-long-seconds",
+   "q": "Shane Long scored for Southampton at Watford in April 2019 with the match barely started. How many seconds after kick-off?",
+   "answer": 7.69,
+   "unit": "seconds",
+   "how": "He charged down Craig Cathcart's clearance and chipped Ben Foster.",
+   "source": {
+    "name": "Premier League",
+    "url": "https://www.premierleague.com/news/1195500"
+   }
+  },
+  {
+   "id": "wc-matches-total",
+   "q": "How many matches were played at the men's World Cups from 1930 to 2022, 22 tournaments in all?",
+   "answer": 964,
+   "unit": "matches",
+   "how": "The first had 18 matches. From 1998 to 2022 each had 64.",
+   "source": {
+    "name": "Olympics.com",
+    "url": "https://olympics.com/en/news/fifa-world-cup-2022-total-goals-team-list"
+   }
+  },
+  {
+   "id": "pl-spend-summer-2023",
+   "q": "According to Deloitte, how much did Premier League clubs spend in gross transfer fees in the summer 2023 window?",
+   "answer": 2360000000,
+   "unit": "pounds",
+   "prefix": "£",
+   "how": "Twenty clubs averaging about 118 million pounds each.",
+   "source": {
+    "name": "Deloitte",
+    "url": "https://www.deloitte.com/uk/en/about/press-room/records-eclipsed-as-premier-league-clubs-spend-over-p2bn-for-the.html"
+   }
+  },
+  {
+   "id": "longest-goal-m",
+   "q": "Newport County goalkeeper Tom King scored straight from a goal kick in January 2021. How far did the ball travel, in metres?",
+   "answer": 96.01,
+   "unit": "metres",
+   "how": "Almost the whole length of the pitch, with the wind behind it.",
+   "source": {
+    "name": "Guinness World Records",
+    "url": "https://www.guinnessworldrecords.com/world-records/111981-longest-goal-scored-in-a-competitive-football-soccer-match"
+   }
+  },
+  {
+   "id": "fergie-games",
+   "q": "How many matches did Sir Alex Ferguson manage Manchester United in all competitions?",
+   "answer": 1500,
+   "unit": "matches",
+   "how": "Twenty-six and a half seasons at fifty to sixty games each.",
+   "source": {
+    "name": "Manchester United",
+    "url": "https://www.manutd.com/en/news/detail/inside-story-of-sir-alex-ferguson-farewell-as-man-utd-manager-v-west-brom"
+   }
+  },
+  {
+   "id": "wc94-attendance",
+   "q": "How many people in total attended matches at the 1994 World Cup in the USA?",
+   "answer": 3587538,
+   "unit": "people",
+   "how": "52 matches averaging about 69,000.",
+   "source": {
+    "name": "Guinness World Records",
+    "url": "https://www.guinnessworldrecords.com/world-records/90679-largest-attendance-at-a-football-soccer-fifa-world-cup-finals"
+   }
+  },
+  {
+   "id": "fifa-members",
+   "q": "As of November 2026, how many member associations does FIFA have?",
+   "answer": 211,
+   "unit": "associations",
+   "how": "More than the United Nations, which has 193 member states.",
+   "source": {
+    "name": "FIFA",
+    "url": "https://inside.fifa.com/associations/news/fifa-member-associations-in-focus-april-2026"
+   }
+  },
+  {
+   "id": "vds-minutes",
+   "q": "How many minutes did Edwin van der Sar go without conceding a Premier League goal in 2008-09?",
+   "answer": 1311,
+   "unit": "minutes",
+   "how": "Fourteen clean sheets in a row is 1,260 minutes before you add the rest.",
+   "source": {
+    "name": "Manchester United",
+    "url": "https://www.manutd.com/en/news/detail/on-this-day-18-february-2009-edwin-van-der-sar-keeps-14th-straight-clean-sheet"
+   }
+  },
+  {
+   "id": "barca-wolfsburg-crowd",
+   "q": "How many people watched Barcelona v Wolfsburg in the Women's Champions League at Camp Nou in April 2022?",
+   "answer": 91648,
+   "unit": "people",
+   "how": "A few weeks earlier, 91,553 had come to the same ground for the Real Madrid game.",
+   "source": {
+    "name": "FC Barcelona",
+    "url": "https://www.fcbarcelona.com/en/news/2585994/camp-nou-does-it-again-and-beats-the-world-record-for-attendance-with-91648-fans"
+   }
+  },
+  {
+   "id": "ball-weight-g",
+   "q": "What is the most a match football may weigh at kick-off, in grams?",
+   "answer": 450,
+   "unit": "grams",
+   "how": "The Laws of the Game allow 410 to 450 grams.",
+   "source": {
+    "name": "IFAB Laws of the Game",
+    "url": "https://www.theifab.com/laws/latest/the-ball/"
+   }
+  },
+  {
+   "id": "wc-goals-total",
+   "q": "How many goals were scored at the men's World Cups from 1930 to 2022, 22 tournaments in all?",
+   "answer": 2720,
+   "unit": "goals",
+   "how": "964 matches at about 2.8 goals each.",
+   "source": {
+    "name": "Olympics.com",
+    "url": "https://olympics.com/en/news/fifa-world-cup-2022-total-goals-team-list"
+   }
+  },
+  {
+   "id": "wc18-final-viewers",
+   "q": "According to FIFA, what was the combined global audience for the 2018 World Cup final?",
+   "answer": 1120000000,
+   "unit": "viewers",
+   "how": "FIFA put the audience for the whole tournament at about 3.57 billion.",
+   "source": {
+    "name": "FIFA",
+    "url": "https://inside.fifa.com/news/more-than-half-the-world-watched-record-breaking-2018-world-cup"
+   }
+  }
+ ]
+}
