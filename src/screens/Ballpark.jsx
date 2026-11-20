@@ -22,7 +22,7 @@
 // play it on his phone before anything is decided. The schedule is a short
 // frozen list that repeats (lib/ballpark.js says what it needs before launch).
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, Delete, ArrowRight, Share, Check, ArrowUpRight } from "lucide-react";
+import { ChevronLeft, Delete, ArrowRight, Share, Check, ArrowUpRight, Users } from "lucide-react";
 import "./ballpark.css";
 import {
   BALLPARK_PER_DAY, BALLPARK_MAX, BALLPARK_DAYS,
@@ -30,6 +30,7 @@ import {
   ballparkVerdict, ballparkTotal, ballparkSquares, shotSpot, SHOT_BOX,
   pressKey, keypadValue, keypadShown, fullNumber, roundedParts, loadBallpark, saveBallpark,
 } from "../lib/ballpark.js";
+import { crowdStanding, crowdLine } from "../lib/ballparkCrowd.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT, fmtLocale } from "../i18n/index.js";
 
@@ -202,6 +203,15 @@ function Reveal({ q, guess, last, onNext }) {
   const chars = money(q, fullNumber(q.answer, locale)).length;
   const size = chars >= 12 ? " is-long" : chars >= 9 ? " is-mid" : "";
   const shots = useMemo(() => [{ guess, answer: q.answer }], [guess, q.answer]);
+  // How the guess stands against everyone else's. It arrives a moment after
+  // the reveal; its line is held open on the card so nothing below it moves,
+  // and stays empty if there is nothing true to say (offline, a test browser).
+  const [crowd, setCrowd] = useState(null);
+  useEffect(() => {
+    let live = true;
+    crowdStanding({ id: q.id, guess, answer: q.answer }).then((st) => { if (live) setCrowd(crowdLine(st)); });
+    return () => { live = false; };
+  }, [q.id, q.answer, guess]);
   // Enter moves on from a desk keyboard. The button is not focused for it: a
   // focused button fires on every repeat of a held key, and the Enter that
   // locked the guess would skip the reveal it had just opened.
@@ -234,6 +244,9 @@ function Reveal({ q, guess, last, onNext }) {
           <span className="bp-pts"><strong>{pts}</strong> {t("bp.ofHundred")}</span>
         </div>
         <p className="bp-said">{said}</p>
+        <p className={`bp-crowd${crowd ? " is-in" : ""}`} aria-live="polite">
+          {crowd ? <><Users size={15} strokeWidth={2.4} aria-hidden="true" />{t(crowd.key, { ...crowd.vars, n: (crowd.vars.n ?? 0).toLocaleString(locale) })}</> : "\u00a0"}
+        </p>
       </div>
 
       <div className="bp-why">

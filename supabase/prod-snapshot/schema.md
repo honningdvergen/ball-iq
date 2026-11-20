@@ -158,3 +158,20 @@ revoke all on table public.league_weeks      from anon, authenticated, public;
 revoke all on table public.league_claims     from anon, authenticated, public;
 revoke all on table public.league_join_tries from anon, authenticated, public;
 ```
+
+## Ballpark guesses (v3_5, applied 2026-11-20)
+One table, RLS on, NO policies, every grant revoked from anon/authenticated/public (and usage on its sequence). Clients reach it only through `ballpark_guess()`, security definer, granted to anon and authenticated. No user id is stored; web only.
+
+```sql
+create table if not exists public.ballpark_guesses (
+  id          bigserial primary key,
+  question    text             not null check (question ~ '^[a-z0-9][a-z0-9-]{1,62}$'),
+  guess       double precision not null check (guess >= 0.001 and guess <= 1e12),  -- v3_6
+  visitor_id  uuid             not null,
+  created_at  timestamptz      not null default now()
+);
+-- One guess a question a device; also the index every read goes through.
+create unique index if not exists ballpark_guesses_one_per_visitor
+  on public.ballpark_guesses (question, visitor_id);
+```
+Indexes: `ballpark_guesses_one_per_visitor` unique (question, visitor_id); `ballpark_guesses_created_at` (created_at), v3_6.

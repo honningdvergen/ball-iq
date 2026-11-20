@@ -77,6 +77,14 @@
 .bp-pts strong{font-size:21px;font-weight:900;color:#fff;-webkit-text-fill-color:#fff;}
 .bp-said{margin:7px 0 0;font-size:14.5px;line-height:1.4;font-weight:500;color:rgba(255,255,255,0.82);-webkit-text-fill-color:rgba(255,255,255,0.82);font-variant-numeric:tabular-nums;}
 
+/* Against everyone else: one line, held open so the card does not grow when
+   the answer comes back, fading in when it does. */
+.bp-crowd{display:flex;align-items:center;gap:7px;min-height:21px;margin:12px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,0.14);font-size:14px;line-height:1.4;font-weight:700;color:#fff;-webkit-text-fill-color:#fff;font-variant-numeric:tabular-nums;opacity:0;transition:opacity .35s ease-out;}
+.bp-crowd.is-in{opacity:1;}
+/* Under 390px the longer lines ("Closer than 3 of the 7 others so far.") wrap,
+   so two lines are held open there instead of one. */
+@media (max-width:389px){.bp-crowd{min-height:40px;align-items:flex-start;}.bp-crowd svg{margin-top:2px;}}
+.bp-crowd svg{flex-shrink:0;opacity:0.8;}
 .bp-why{margin-top:24px;display:flex;flex-direction:column;align-items:flex-start;gap:4px;}
 .bp-why-t{margin:0;font-size:14.5px;line-height:1.55;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);text-wrap:pretty;}
 .bp-why-t strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
@@ -108,4 +116,4 @@
 .bp-proto-days{display:flex;flex-wrap:wrap;gap:8px;}
 .bp-link{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:inherit;font-size:13px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 
-@media (prefers-reduced-motion:reduce){.bp-ball.is-fly{transition:none;}.bp-key:active,.bp-solid:active:not(:disabled){transform:none;}}
+@media (prefers-reduced-motion:reduce){.bp-ball.is-fly{transition:none;}.bp-crowd{transition:none;}.bp-key:active,.bp-solid:active:not(:disabled){transform:none;}}

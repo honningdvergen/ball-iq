@@ -244,3 +244,27 @@ create-or-replace of delete_user_account that adds the league sweep (body re-rea
 first; identical apart from the new block). Verified after: anon table grants in public = 0;
 client grants on league tables = 0; 6 league tables with RLS on; every helper closed to anon and
 authenticated; every client RPC authenticated-only; delete_user_account unchanged in access.
+
+## v3_5_ballpark_guesses — APPLIED 2026-11-20 (Alex: "Yes, build it", to "Add 'closer than X% of players' next? It needs a new database table.")
+Applied verbatim via the Supabase MCP connector (comment header trimmed). Creates
+ballpark_guesses (question, guess, visitor_id; one row per question per device, no user id)
+and ballpark_guess(text, double precision, double precision, uuid), granted to anon and
+authenticated and revoked from public. Additive only: no existing row, table or function is
+touched. Dry-run first inside a transaction that was rolled back (4 test devices: counts, ties,
+malformed input and grants all as designed). Verified after: RLS on, 0 policies, 0 rows; table
+grantees postgres and service_role only; anon has no sequence usage; anon table grants in
+public still 0; PUBLIC cannot execute the function. rpc-grants.json has the new function.
+
+## v3_6_ballpark_guess_safe — APPLIED 2026-11-20 (corrective, same afternoon as v3_5, before any client that calls it shipped)
+An independent review of v3_5 found that one request storing a denormal guess (1e-310) made every
+later call for that question overflow float8 and error. Applied verbatim via the Supabase MCP
+connector (comment header trimmed): the guess CHECK and the function guards are now 0.001 to 1e12
+(what the keypad can type), distances are compared as |ln(guess) - ln(answer)|, the caps are only
+counted when a row is to be stored, a question may take 1,000 new rows an hour of the table's
+5,000, an index on created_at, and search_path is 'public, pg_temp'. The table was empty (0 rows),
+so nothing was cleaned. Dry-run first in a rolled-back transaction: the attack call returns null
+and stores nothing; the keypad's extremes against each other do not error; a tie is not a win; the
+per-question cap holds at 1,000 and the call past it is still answered. Verified after: same
+grants as v3_5, anon table grants in public still 0. NOT closed, and required before the game is
+public: device ids are free, so made-up guesses can skew a question up to the caps; the fix is the
+question ids and answers in a table and a rate limit that sees more than a device id.

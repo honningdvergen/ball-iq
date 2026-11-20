@@ -1803,3 +1803,51 @@ begin
 end;
 $function$;
 
+-- ════ v3_5_ballpark_guesses + v3_6_ballpark_guess_safe (applied 2026-11-20) ════
+create or replace function public.ballpark_guess(
+  p_question text,
+  p_guess    double precision,
+  p_answer   double precision,
+  p_visitor  uuid
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path to 'public', 'pg_temp'
+as $function$
+declare
+  my_dist  double precision;
+  n_others integer;
+  n_beaten integer;
+begin
+  if p_question is null or p_question !~ '^[a-z0-9][a-z0-9-]{1,62}$' then return null; end if;
+  -- NaN sorts above every number in Postgres, so "<= 1e12" turns it away too.
+  if p_guess is null or not (p_guess >= 0.001 and p_guess <= 1e12) then return null; end if;
+  if p_answer is null or not (p_answer >= 0.001 and p_answer <= 1e12) then return null; end if;
+  if p_visitor is null then return null; end if;
+
+  -- Store the first guess this device locked for the question. The caps are
+  -- only counted when there is something to store. Past a cap the guess is not
+  -- stored but is still answered.
+  if not exists (select 1 from public.ballpark_guesses
+                  where question = p_question and visitor_id = p_visitor) then
+    if (select count(*) from public.ballpark_guesses
+         where created_at > now() - interval '1 hour') < 5000
+       and (select count(*) from public.ballpark_guesses
+             where question = p_question and created_at > now() - interval '1 hour') < 1000 then
+      insert into public.ballpark_guesses (question, guess, visitor_id)
+      values (p_question, p_guess, p_visitor)
+      on conflict (question, visitor_id) do nothing;
+    end if;
+  end if;
+
+  my_dist := abs(ln(p_guess) - ln(p_answer));
+  select count(*),
+         count(*) filter (where abs(ln(guess) - ln(p_answer)) > my_dist + 1e-9)
+    into n_others, n_beaten
+    from public.ballpark_guesses
+   where question = p_question and visitor_id <> p_visitor;
+
+  return jsonb_build_object('n', n_others, 'beat', n_beaten);
+end;
+$function$;

@@ -73,6 +73,10 @@ for (const dir of DIRS) {
 // The functions anon may execute, by decision. Widening this is a security
 // decision taken in a migration and then here, never one that slips in.
 const ANON_CALLABLE = [
+  // 20 Nov 2026 (v3_5_ballpark_guesses): a signed-out web player's guess is
+  // kept and compared with everyone else's. Counts only come back; the rows
+  // themselves are closed to every client role.
+  'ballpark_guess',
   // 12 Nov 2026 (v3_3_challenge_replies): a signed-out mate reports a result,
   // a signed-out sender reads the replies to their own links, by the
   // unguessable id on the link.

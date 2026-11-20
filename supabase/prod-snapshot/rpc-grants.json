@@ -82,6 +82,13 @@
       "authenticated": true
     },
     {
+      "name": "ballpark_guess",
+      "args": "p_question text, p_guess double precision, p_answer double precision, p_visitor uuid",
+      "security_definer": true,
+      "anon": true,
+      "authenticated": true
+    },
+    {
       "name": "claim_rematch",
       "args": "p_code text, p_name text, p_avatar text",
       "security_definer": true,

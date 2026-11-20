@@ -189,3 +189,9 @@ export function comparisonLine(entries, total, { outOf, mine, won }) {
   }
   return null;
 }
+
+// Ballpark's "closer than N others" (lib/ballparkCrowd.js) follows the same
+// rules as the results above, so it uses the same two pieces rather than a copy
+// that could drift: what counts as a test browser, and how the RPC is called.
+export { rpc, synthetic };
+export const hasBackend = () => !!(URL_ && KEY_);
