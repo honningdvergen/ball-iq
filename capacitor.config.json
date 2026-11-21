@@ -27,6 +27,9 @@
       "splashImmersive": true,
       "splashFullScreen": true
     },
+    "SystemBars": {
+      "style": "DARK"
+    },
     "StatusBar": {
       "style": "DARK",
       "backgroundColor": "#0B0C10",
