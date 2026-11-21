@@ -858,6 +858,7 @@ export const STEP7_EN = {
   // Ballpark (prototype, web only, 20 Nov 2026): screens/Ballpark.jsx. New strings,
   // not replacements: pinned so an edit to en.js is made here too, on purpose.
   'footle.short': 'Today\'s name has {n} letters',
+  'dd.remindBtn': 'Remind me each day at {h}',
   'ld.ballpark': 'Loading Ballpark',
   'bp.title': 'Ballpark',
   'bp.of': 'Question {n} of {m}',

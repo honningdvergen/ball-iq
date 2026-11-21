@@ -89,6 +89,47 @@ const modeOf = (k) => (k === "daily" ? "daily7" : k);
 // double every denominator it produces and quietly halve the conversion rate
 // it exists to measure.
 const shownClaims = new Set();
+// The labelled reminder button: on how many different days it has been offered
+// on this phone, so it can step back after a few. "n:day", day = local days
+// since 1970. Device-level on purpose: it describes what this phone has shown.
+export const REMIND_ASK_DAYS = 5;
+const OFFER_KEY = "biq_remind_offer";
+const offerClaims = new Set();
+const localDay = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000); };
+export function readOfferDays(storage) {
+  try {
+    // Resolved in here, not as a default: touching localStorage can itself throw.
+    const [n, day] = String((storage || globalThis.localStorage).getItem(OFFER_KEY) || "").split(":").map((x) => parseInt(x, 10));
+    return { n: Number.isFinite(n) && n > 0 ? n : 0, day: Number.isFinite(day) ? day : -1 };
+  } catch { return { n: 0, day: -1 }; }
+}
+// One count a day, however many dailies are finished that day.
+export function noteOfferDay(seen, storage, today = localDay()) {
+  if (seen.day === today) return seen;
+  const next = { n: seen.n + 1, day: today };
+  try { (storage || globalThis.localStorage).setItem(OFFER_KEY, `${next.n}:${next.day}`); } catch { /* private mode: it is offered again, which is fine */ }
+  return next;
+}
+// Words for the first five days it is offered, the whole of the fifth day
+// included: the count is written the moment the button first shows, so "five
+// reached today" still means today.
+export function asksInWords(seen, today = localDay()) {
+  return seen.n < REMIND_ASK_DAYS || (seen.n === REMIND_ASK_DAYS && seen.day === today);
+}
+// The labelled button was shown: count the day, and say so once per result.
+// Keyed like dd-shown (game and edition), so an app left open overnight still
+// counts tomorrow's offer.
+export function noteOfferShown({ seen, game, edition, track, storage, today = localDay() }) {
+  noteOfferDay(seen, storage, today);
+  const claim = `${game}:${edition}`;
+  if (offerClaims.has(claim)) return false;
+  offerClaims.add(claim);
+  // Counted by name, with nothing attached: phones send the event name only,
+  // so "offered in words" has to be its own event to be readable against
+  // dd-remind (the tap).
+  track?.("dd-remind-offer");
+  return true;
+}
 // "Make it a league?" was seen: once per result, the same double-mount guard.
 const leagueOfferClaims = new Set();
 // The way back for a challenge (lib/challengeReplies.js). Loaded with import(),
@@ -127,6 +168,22 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const [distReady, setDistReady] = useState(false);
   const [busy, setBusy] = useState(false);
   const [shared, setShared] = useState(false);
+
+  // THE REMINDER IS ASKED FOR IN WORDS AGAIN (21 Nov 2026).
+  // The ask shrank twice: a sheet until 6 Sep, a line of text until 10 Nov, then
+  // a grey bell with no label. Taps on it per finished daily fell with each
+  // step: about 2 in 100 in mid-September, 1 in 1,263 in the week of 16 Nov,
+  // and no phone at all said yes to notifications that week. For a daily game
+  // the reminder is the way back in, so for a player's first few days of
+  // finishes it is a labelled button under the streak it protects. After that
+  // it steps back to the bell: someone who has seen the offer on five different
+  // days and passed has answered, and the panel goes quiet for them again.
+  const [offerDays] = useState(() => readOfferDays());
+  const canRemind = !!remind && remind.state === "off" && !isArchive;
+  const askInWords = canRemind && asksInWords(offerDays);
+  useEffect(() => {
+    if (askInWords) noteOfferShown({ seen: offerDays, game, edition, track });
+  }, [askInWords, offerDays, game, edition, track]);
 
   // CAREFUL — 30s, NOT 1s. `now` feeds exactly one thing — `ko`, via formatCountdown,
   // which has MINUTE granularity ("2h 46m") and never prints seconds. At 1s
@@ -360,7 +417,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             was a third line under the streak ("Remind me at 19:00"), which made
             the block three lines tall on every finish. The bell keeps it on the
             streak it protects; once set it becomes the hour pill below. */}
-        {remind && remind.state === "off" && !isArchive && (
+        {canRemind && !askInWords && (
           <button type="button" className="dd-bell" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
             <Bell size={17} strokeWidth={2.2} aria-hidden="true" />
           </button>
@@ -373,6 +430,11 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           </span>
         )}
       </div>
+      {askInWords && (
+        <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} title={t("dd.remindTitle")}>
+          <Bell size={16} strokeWidth={2.3} aria-hidden="true" />{t("dd.remindBtn", { h: reminderHourLabel() })}
+        </button>
+      )}
 
       {/* "Promoted to", never "Level up to": the ladder reads Sunday League ->
           Non-League -> Championship, and "Level up! Non-League" read as a

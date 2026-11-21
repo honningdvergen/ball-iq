@@ -11,6 +11,11 @@
 //     on purpose on 18 Nov 2026, twice: when the floating pill became the
 //     header's second line, and when that line became a chip. ChallengeBanner.jsx
 //     says why. Nothing else was touched.)
+//     (Three finish-panel entries were replaced on purpose on 21 Nov 2026, when
+//     the reminder's unlabelled bell became a labelled button under the streak
+//     row for a player's first days: "dd: footle won in 3, everything on,
+//     loading" and the two Daily 7 results. DailyDone.jsx says why. The only
+//     difference in each is that button.)
 //   • Every key step 4 added is pinned to its exact English
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
@@ -219,7 +224,7 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the finish panel', () => {
     const won = unq(now['dd: footle won in 3, everything on, loading']);
-    for (const s of ['Mañana serán <', '> · nuevos retos en <', 'aria-label="Activar un aviso diario a las 19:00"', 'Asciendes a <strong>Regional<', ' Envíaselo a un colega<', '>Recibe el mismo reto e intenta ganarte.<', '>Solo compartir mi resultado<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
+    for (const s of ['Mañana serán <', '> · nuevos retos en <', '>Recuérdamelo cada día a las 19:00<', 'Asciendes a <strong>Regional<', ' Envíaselo a un colega<', '>Recibe el mismo reto e intenta ganarte.<', '>Solo compartir mi resultado<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
     expect(unq(now['dd: footle lost, streak safe, reminder on, early numbers'])).toContain('>Racha a salvo<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>Mejor que el 44%<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>4,6/7<');

@@ -10,7 +10,7 @@
 .dd-sub{font-size:12.5px;line-height:1.35;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-sub-even{text-wrap:balance;}
 .dd-sub strong,.dd-title strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.dd-num{font-variant-numeric:tabular-nums;}
+.dd-num{font-variant-numeric:tabular-nums;white-space:nowrap;}
 /* Pills: one green primary (share), quiet pills for everything else. */
 .dd-pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 13px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;flex-shrink:0;letter-spacing:0.01em;}
 .dd-pill:disabled{opacity:0.6;cursor:default;}
@@ -142,12 +142,21 @@
 .dd-promo{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;padding:6px 11px;border-radius:10px;background:var(--gold-l);border:1px solid rgba(255,193,7,0.28);color:var(--gold);-webkit-text-fill-color:var(--gold);font-size:12.5px;font-weight:600;line-height:1.3;animation:dd-in .34s cubic-bezier(0.22,1,0.36,1) both;}
 .dd-promo strong{font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 @media (prefers-reduced-motion: reduce){.dd-promo{animation:none;}}
-.dd-remind{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;margin-top:3px;padding:3px 0;min-height:28px;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:800;color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
-.dd-remind:disabled{opacity:0.6;}
 
 /* Calm pass, 10 Nov 2026: the reminder bell, the day's progress on the Next up card, the crowd on one line. */
 .dd-bell{flex:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-bell:disabled{opacity:0.6;}
+/* The reminder asked for in words (21 Nov 2026): one button under the streak
+   row, in the streak's own amber, tinted and never solid, so the green Share
+   below stays the panel's one solid thing. */
+.dd-remind{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;padding:10px 16px;border-radius:999px;border:1px solid rgba(255,170,0,0.42);background:rgba(255,170,0,0.10);color:var(--gold);-webkit-text-fill-color:var(--gold);font-family:inherit;font-size:14px;font-weight:800;letter-spacing:-0.1px;line-height:1.2;text-align:center;text-wrap:balance;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.dd-remind svg{flex:none;}
+/* The smallest phones (320 wide): the label stays on one line. */
+@media (max-width: 359px){.dd-remind{font-size:13px;padding:10px;gap:6px;}}
+.dd-remind:active:not(:disabled){transform:scale(0.98);}
+.dd-remind:disabled{opacity:0.6;cursor:default;}
+.dd-remind:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){.dd-remind:active:not(:disabled){transform:none;}}
 .dd-up-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .dd-up-top .dd-day-bar{flex:0 0 72px;}
 .dd-dist-tog{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:40px;padding:0;border:0;background:none;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}

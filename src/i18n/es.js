@@ -1819,6 +1819,7 @@ export default {
   'ld.stitch': 'Cargando la encerrona',
   // Ballpark (prototipo, solo web, 20 nov 2026): screens/Ballpark.jsx.
   'footle.short': 'El nombre de hoy tiene {n} letras',
+  'dd.remindBtn': 'Recuérdamelo cada día a las {h}',
   'ld.ballpark': 'Cargando Ballpark',
   'bp.title': 'Ballpark',
   'bp.of': 'Pregunta {n} de {m}',
