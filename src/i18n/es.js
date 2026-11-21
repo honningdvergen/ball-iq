@@ -1818,6 +1818,7 @@ export default {
   'ld.top10': 'Cargando Top 10',
   'ld.stitch': 'Cargando la encerrona',
   // Ballpark (prototipo, solo web, 20 nov 2026): screens/Ballpark.jsx.
+  'footle.short': 'El nombre de hoy tiene {n} letras',
   'ld.ballpark': 'Cargando Ballpark',
   'bp.title': 'Ballpark',
   'bp.of': 'Pregunta {n} de {m}',

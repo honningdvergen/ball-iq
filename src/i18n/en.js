@@ -1877,6 +1877,8 @@ export default registerEnglish({
   'ld.top10': 'Loading Top 10',
   'ld.stitch': 'Loading Stitch-up',
   // Ballpark (prototype, web only, 20 Nov 2026): screens/Ballpark.jsx.
+  // Footle: a guess that is too short is told why (21 Nov 2026).
+  'footle.short': 'Today\'s name has {n} letters',
   'ld.ballpark': 'Loading Ballpark',
   'bp.title': 'Ballpark',
   'bp.of': 'Question {n} of {m}',

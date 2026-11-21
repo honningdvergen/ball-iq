@@ -357,6 +357,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     if (current.length !== answer.length) {
       setShake(true);
       timeoutsRef.current.push(setTimeout(() => setShake(false), 450));
+      // Say why. Until 21 Nov 2026 a short guess only shook the row: Clarity
+      // counted 298 taps on ENTER in one week that changed nothing on screen,
+      // the most of any control on the page. A player who types SALAH into an
+      // eight-letter row was never told the name has eight letters.
+      try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: t("footle.short", { n: answer.length }) })); } catch { /* no toast here */ }
       return;
     }
     if (hardNow && hardNames !== "failed" && current !== answer && !(hardNames && hardNames.has(current))) {
