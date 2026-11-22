@@ -4518,9 +4518,15 @@ function AppInner() {
       // Placed after the question index and before the full bank: the index
       // renders the pickers, the bank is the heavy one, and a tab tap is far
       // likelier than a direct mode tap.
+      // ⚠️ .catch, NOT try/catch (22 Nov 2026). import() fails by REJECTING,
+      // which a try block never sees, so a warm-up that lost its connection
+      // (or whose WebView was paused mid-fetch) surfaced as an unhandled
+      // rejection: Sentry BALL-IQ-W, 30 events from one Android phone since
+      // August, all from this line. Nothing broke for the player; the real
+      // load happens again when the screen opens.
       const idleTabs = () => {
-        try { import('./screens/ProfileScreen.jsx'); } catch { /* prefetch is best-effort */ }
-        try { import('./screens/OnlineMultiplayer.jsx'); } catch { /* prefetch is best-effort */ }
+        import('./screens/ProfileScreen.jsx').catch(() => { /* prefetch is best-effort */ });
+        import('./screens/OnlineMultiplayer.jsx').catch(() => { /* prefetch is best-effort */ });
       };
       // ⚠️ NOT ON A GAME DOOR, AND NOT ON A SLOW LINK. Measured 2026-09-04 on
       // /play?game=footle under PageSpeed's mobile profile (1.6 Mbps): the
@@ -4651,7 +4657,9 @@ function AppInner() {
   // PRE-EXISTING limitation of biq_onboarded being device-scoped, not
   // worsened by X2. Real fix is per-user-keyed local storage, out of scope.
   useEffect(() => {
-    if (!authProfile || !user?.id) return;
+    // Only the real row: the stand-in shown while it loads has no
+    // onboarded_at by design (useAuth.jsx loadProfile, 22 Nov 2026).
+    if (!authProfile || authProfile._placeholder || !user?.id) return;
     const localOnboarded = (() => {
       try { return localStorage.getItem("biq_onboarded") === "1"; } catch { return false; }
     })();

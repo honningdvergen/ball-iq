@@ -384,6 +384,15 @@ export function AuthProvider({ children }) {
       total_score: 0,
       games_played: 0,
       correct_answers: 0,
+      // ⚠️ A STAND-IN, NOT THE ROW (22 Nov 2026). Shown while the real
+      // profile loads, and it has no onboarded_at. The onboarding sync in
+      // App.jsx read that as "this account never finished the intro" and
+      // wrote the date at once, often before the session token was ready
+      // (the slow-start path restores the user from disk first), so the
+      // database answered as to a stranger: "permission denied for table
+      // profiles" (Sentry BALL-IQ-36 and -37, 15 events from 10 players).
+      // Anything that writes back must wait for the real row.
+      _placeholder: true,
     }
     setProfile(fallbackProfile)
 
