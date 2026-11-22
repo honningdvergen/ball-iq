@@ -30,28 +30,48 @@ describe('the return counter', () => {
 
   it('a brand-new phone starts today and says so once a day', () => {
     const ls = store();
-    expect(appDayEvent(day('2026-11-08'), ls)).toEqual({ name: 'app-day', meta: { w: '2026-W45', b: '0', lg: '0' } });
+    expect(appDayEvent(day('2026-11-08'), ls)).toEqual({ name: 'app-day', meta: { w: '2026-W45', b: '0', lg: '0', f: '1' } });
     expect(appDayEvent(day('2026-11-08'), ls)).toBeNull();
-    expect(appDayEvent(day('2026-11-09'), ls).meta).toEqual({ w: '2026-W45', b: '1', lg: '0' });
+    expect(appDayEvent(day('2026-11-09'), ls).meta).toEqual({ w: '2026-W45', b: '1', lg: '0', f: '1' });
     expect(ls.getItem(INSTALL_KEY)).toBe('2026-11-08');
   });
 
   it('an existing phone dates itself from its earliest stored daily, not from the update', () => {
     const ls = store({ biq_first_game_played: '1', 'biq_trail_2026-10-03': '{}', 'biq_wordle_2026-10-20': '{}', biq_league_member: '1' });
-    expect(appDayEvent(day('2026-11-08'), ls).meta).toEqual({ w: '2026-W40', b: '31+', lg: '1' });
+    expect(appDayEvent(day('2026-11-08'), ls).meta).toEqual({ w: '2026-W40', b: '31+', lg: '1', f: '1' });
     expect(installDay(day('2026-11-09'), ls)).toBe('2026-10-03');
   });
 
   it('a phone that played but kept no dated history is "pre", never new', () => {
     const ls = store({ biq_first_game_played: '1' });
-    expect(appDayEvent(day('2026-11-08'), ls).meta).toEqual({ w: 'pre', b: '31+', lg: '0' });
+    expect(appDayEvent(day('2026-11-08'), ls).meta).toEqual({ w: 'pre', b: '31+', lg: '0', f: '1' });
   });
 
   it('carries nothing but week, bucket and the league flag, and the native filter drops anything else', () => {
     const e = appDayEvent(day('2026-11-08'), store());
-    expect(Object.keys(e.meta).sort()).toEqual(['b', 'lg', 'w']);
+    expect(Object.keys(e.meta).sort()).toEqual(['b', 'f', 'lg', 'w']);
     expect(cleanAppDayMeta({ w: '2026-W45', b: '0', lg: '1', club: 'arsenal', vid: 'x' })).toEqual({ w: '2026-W45', b: '0', lg: '1' });
-    expect(cleanAppDayMeta({ w: 'Arsenal', b: '9', lg: 'yes' })).toEqual({});
+    expect(cleanAppDayMeta({ w: 'Arsenal', b: '9', lg: 'yes', f: 'true' })).toEqual({});
+    expect(cleanAppDayMeta({ w: '2026-W45', b: '4-7', lg: '0', f: '1' })).toEqual({ w: '2026-W45', b: '4-7', lg: '0', f: '1' });
+  });
+
+  it('counts phones, not days: f is "1" the first time a phone reports in a bucket (22 Nov 2026)', () => {
+    const ls = store();
+    const f = (d) => { const e = appDayEvent(day(d), ls); return e && `${e.meta.b}:${e.meta.f}`; };
+    expect(f('2026-11-08')).toBe('0:1');   // first day
+    expect(f('2026-11-09')).toBe('1:1');   // next day
+    expect(f('2026-11-10')).toBe('2-3:1'); // first day inside 2-3
+    expect(f('2026-11-11')).toBe('2-3:0'); // second day inside it
+    expect(f('2026-11-12')).toBe('4-7:1');
+    expect(f('2026-11-13')).toBe('4-7:0');
+    expect(f('2026-11-15')).toBe('4-7:0');
+    expect(f('2026-11-20')).toBe('8-14:1'); // skipped days still land in the right bucket
+    expect(f('2026-12-20')).toBe('31+:1');
+    expect(f('2026-12-25')).toBe('31+:0');
+    // A phone updating from a build without the flag reports "1" once.
+    const old = store({ biq_install_day: '2026-11-01', biq_app_day_sent: '2026-11-05' });
+    expect(appDayEvent(day('2026-11-06'), old).meta).toEqual({ w: '2026-W44', b: '4-7', lg: '0', f: '1' });
+    expect(appDayEvent(day('2026-11-07'), old).meta.f).toBe('0');
   });
 
   it('a storage failure sends nothing rather than a guess', () => {

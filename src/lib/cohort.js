@@ -21,9 +21,22 @@
 //
 // Read it with: select meta->>'w' as week, meta->>'b' as bucket, count(*)
 //   from funnel_events where event = 'app-day' group by 1, 2 order by 1, 2;
+//
+// PHONES, NOT DAYS (22 Nov 2026). A phone that opens on days 4, 5, 6 and 7
+// sends four "4-7" events, so the count above could not say how many PHONES
+// of a week came back in that window, only how many days of use there were.
+// Each event now also carries f: "1" the first time this phone reports in a
+// bucket, "0" after. One bit, the same for everyone, so it links nothing; the
+// first day itself still never leaves the phone. Then
+//   count(b = '4-7' and f = '1') / count(b = '0')   per week
+// is the share of that week's new phones seen again in days 4 to 7. Rows from
+// before this have no f; a phone already inside a bucket when it updates
+// reports f = "1" once more, so read whole weeks that started after the
+// build carrying this reached the stores.
 
 export const INSTALL_KEY = 'biq_install_day';
 export const SENT_KEY = 'biq_app_day_sent';
+export const BUCKET_KEY = 'biq_app_day_bucket';
 export const BUCKETS = ['0', '1', '2-3', '4-7', '8-14', '15-30', '31+'];
 const DAY_RE = /^biq_(?:trail|daily|wordle|mystery|top10)_(\d{4}-\d{2}-\d{2})$/;
 const FIRST_PLAUSIBLE = '2026-06-01';
@@ -94,8 +107,10 @@ export function appDayEvent(today = new Date(), ls = globalThis.localStorage) {
     const w = first === 'pre' ? 'pre' : isoWeek(first);
     const b = first === 'pre' ? '31+' : bucketFor(daysBetween(first, todayYmd));
     const lg = ls.getItem('biq_league_member') === '1' ? '1' : '0';
+    const f = ls.getItem(BUCKET_KEY) === b ? '0' : '1';
     ls.setItem(SENT_KEY, todayYmd);
-    return { name: 'app-day', meta: { w, b, lg } };
+    ls.setItem(BUCKET_KEY, b);
+    return { name: 'app-day', meta: { w, b, lg, f } };
   } catch {
     return null;
   }
@@ -126,5 +141,6 @@ export function cleanAppDayMeta(meta) {
   if (typeof meta.w === 'string' && (/^\d{4}-W\d{2}$/.test(meta.w) || meta.w === 'pre')) out.w = meta.w;
   if (BUCKETS.includes(meta.b)) out.b = meta.b;
   if (meta.lg === '0' || meta.lg === '1') out.lg = meta.lg;
+  if (meta.f === '0' || meta.f === '1') out.f = meta.f;
   return out;
 }
