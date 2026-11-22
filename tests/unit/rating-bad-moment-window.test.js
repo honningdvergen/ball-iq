@@ -32,13 +32,38 @@ describe('a bad moment and the rating ask', () => {
     vi.setSystemTime(new Date('2026-11-17T08:00:00Z')); // solved it at 08:00 the next day
     expect(nativeAskBlockedReason()).toBe(null);
   });
-  it('a real ask still starts the 14-day cooldown', async () => {
-    const { maybeRequestReview, nativeAskBlockedReason } = await import('../../src/lib/review.js');
+  it('a real ask still starts a cooldown: three days, then a week, then a fortnight (22 Nov 2026)', async () => {
+    const { maybeRequestReview, nativeAskBlockedReason, reviewGapDays } = await import('../../src/lib/review.js');
+    expect([0, 1, 2, 3, 4, 24].map(reviewGapDays)).toEqual([0, 3, 7, 14, 14, 14]);
+    expect([NaN, -1, undefined].map(reviewGapDays)).toEqual([0, 0, 0]);
+    const day = 86400000;
+    // First ask: blocked for three days, not fourteen.
     expect(await maybeRequestReview()).toBe(true);
     expect(nativeAskBlockedReason()).toBe('cooldown');
-    vi.advanceTimersByTime(13 * 86400000);
+    vi.advanceTimersByTime(3 * day - 1000);
     expect(nativeAskBlockedReason()).toBe('cooldown');
-    vi.advanceTimersByTime(86400000 + 1000);
+    expect(await maybeRequestReview()).toBe(false);
+    vi.advanceTimersByTime(2000);
     expect(nativeAskBlockedReason()).toBe(null);
+    // Second ask: a week.
+    expect(await maybeRequestReview()).toBe(true);
+    vi.advanceTimersByTime(7 * day - 1000);
+    expect(nativeAskBlockedReason()).toBe('cooldown');
+    vi.advanceTimersByTime(2000);
+    expect(nativeAskBlockedReason()).toBe(null);
+    // Third ask and every one after: the old fortnight.
+    expect(await maybeRequestReview()).toBe(true);
+    vi.advanceTimersByTime(13 * day);
+    expect(nativeAskBlockedReason()).toBe('cooldown');
+    vi.advanceTimersByTime(day + 1000);
+    expect(nativeAskBlockedReason()).toBe(null);
+  });
+  it('a bad moment still wins inside a short gap', async () => {
+    const { maybeRequestReview, markBadReviewMoment, nativeAskBlockedReason } = await import('../../src/lib/review.js');
+    expect(await maybeRequestReview()).toBe(true);
+    vi.advanceTimersByTime(3 * 86400000 + 1000);
+    markBadReviewMoment();
+    expect(nativeAskBlockedReason()).toBe('bad-moment');
+    expect(await maybeRequestReview()).toBe(false);
   });
 });

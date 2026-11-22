@@ -17,6 +17,21 @@ const KEY_COUNT = 'biq_review_asked_count';
 // and Apple still caps what renders. The number that must stay conservative
 // is the WEB prompt's (below), because that one always renders.
 const MIN_DAYS_BETWEEN = 14;
+// ⚠️ THE FIRST TWO GAPS ARE SHORT ON PURPOSE (22 Nov 2026). Read 8 to 21 Nov:
+// 92 asks sent to iOS, 446 happy moments turned away by this cooldown, and
+// the UK store stood at eight ratings. Most new phones are gone within a
+// fortnight (about one in five comes back the next day), so a second ticket
+// at day 15 mostly went to nobody. The second ask may now come three days
+// after the first and the third a week after that, while the player is still
+// here. Apple's own limit (three sheets in 365 days, enforced on its side) is
+// untouched and still decides what anyone sees; from the fourth ask on, the
+// gap is the old fourteen days.
+const GAP_DAYS_AFTER = [0, 3, 7];
+/** Days that must pass before the next ask, given how many have been made. */
+export function reviewGapDays(asked) {
+  const n = Number.isFinite(asked) && asked > 0 ? Math.floor(asked) : 0;
+  return n < GAP_DAYS_AFTER.length ? GAP_DAYS_AFTER[n] : MIN_DAYS_BETWEEN;
+}
 
 // ⚠️ THIS NUMBER USED TO BE 4, AND THAT WAS COSTING US RATINGS.
 //
@@ -105,7 +120,7 @@ export function nativeAskBlockedReason() {
     const count = parseInt(localStorage.getItem(KEY_COUNT) || '0', 10) || 0;
     if (count >= MAX_LIFETIME) return 'lifetime-cap';
     const last = parseInt(localStorage.getItem(KEY_LAST) || '0', 10) || 0;
-    if (last && (Date.now() - last) < MIN_DAYS_BETWEEN * 86400000) return 'cooldown';
+    if (last && (Date.now() - last) < reviewGapDays(count) * 86400000) return 'cooldown';
     return null;
   } catch { return 'storage-error'; }
 }

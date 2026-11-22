@@ -1366,7 +1366,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
 
   // ⭐ 5-star ask at a multiplayer emotional peak — winning a LIVE game (>=2
   // players, not a draw) is a genuine high, the same caliber moment solo wins
-  // get. Fires once; maybeRequestReview keeps its 45-day cooldown + lifetime cap
+  // get. Fires once; maybeRequestReview keeps its own cooldown (lib/review.js) + lifetime cap
   // + native-only gating, and shares one budget with the quiz/Footle nudges.
   const reviewAskedRef = useRef(false);
   useEffect(() => {
