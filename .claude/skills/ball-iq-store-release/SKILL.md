@@ -58,10 +58,13 @@ node scripts/asc.mjs builds
 7. **Confirm it landed.** `node scripts/asc.mjs versions` should show WAITING_FOR_REVIEW. When it later shows READY_FOR_SALE, tell Alex it's live.
 
 ## Android: Play
-- Bump `versionCode` and `versionName` in `android/app/build.gradle`. Play rejects a code it has already seen.
-- Build the AAB with `./android/gradlew -p android bundleRelease`. It needs `JAVA_HOME` set to the Android Studio jbr, and the nvm node on PATH; see ball-iq-native-build. Copy the result to `~/ball-iq-release/play-upload/BallIQ-<ver>-<code>.aab`.
-- **Run it before uploading.** Use the emulator and the WebView debug channel (the emulator's screencap lies): see `reference_simulator_and_emulator_traps_2026_10_13`.
-- Release notes go in `~/ball-iq-release/play-notes-<ver>.txt`, in `<en-US>` blocks per language.
+- Bump `versionCode` and `versionName` in `android/app/build.gradle` on main and push. Play rejects a code it has already seen.
+- **Build with the script, never by hand:** copy the newest `~/ball-iq-release/aab-<N>.sh` (from `aab-70.sh` on) and run it with the commit to build. It copies `google-services.json` into the clean clone from `~/ball-iq-release/android-secrets/`, builds the bundle and a release APK, and refuses to finish unless both contain Firebase's `google_app_id`. Never report an Android build without its two lines: `BUNDLE IS <sha>` and `FIREBASE IS IN THE BUNDLE`.
+- **Why (22 Nov 2026):** versions 63 to 69 were built in the clean clone without that git-ignored file. The live 1.8.6 then crashed on launch for every signed-in player who had allowed notifications (`FirebaseApp.getInstance`, about a hundred crashes, eleven players, nine days) and a player wrote in. `build.gradle` now refuses a release without the file, and `tests/unit/android-firebase-config-required.test.js` pins that.
+- **Run it before uploading, and run the path that crashed.** On the emulator: install the release APK, `adb shell pm grant app.balliq android.permission.POST_NOTIFICATIONS`, launch, then over the WebView debug channel call `Capacitor.Plugins.PushNotifications.register()` and wait for the `registration` event. The process must still be alive, a token must arrive, and `adb logcat -d -s AndroidRuntime:E` must hold no FATAL EXCEPTION. Launch it cold a second time. (The emulator's screencap lies: see `reference_simulator_and_emulator_traps_2026_10_13`.)
+- **When a player reports a crash, read the store's own crash data first:** Play Console, Quality, Android vitals, Crashes and ANRs; App Store Connect, Analytics, Metrics, Crashes. A native crash kills the app before Sentry can report, so Sentry being quiet proves nothing.
+- Release notes go in `~/ball-iq-release/play-notes-<ver>.txt`, in `<en-US>` blocks per language, 500 characters at most per language.
+- Play Console, production: Create new release, upload through the hidden file input, paste the notes, Next, Save, then Publishing overview and "Send changes for review". Only on Alex's own word to submit.
 
 ## Traps that have cost real time
 - **Simulator first.** An unsigned simulator build gives a fake black launch; `sim-build.sh` ad-hoc signs it.
