@@ -74,11 +74,28 @@ dependencies {
 
 apply from: 'capacitor.build.gradle'
 
-try {
-    def servicesJSON = file('google-services.json')
-    if (servicesJSON.text) {
-        apply plugin: 'com.google.gms.google-services'
+// ⚠️ A BUILD WITHOUT google-services.json CRASHES ON LAUNCH (22 Nov 2026).
+//
+// This block used to skip the Firebase plugin quietly when the file was
+// missing ("Push Notifications won't work"). It is worse than that: with no
+// Firebase configuration in the app, PushNotifications.register() throws
+// inside Capacitor's bridge thread and takes the whole process down, and the
+// app calls register() on every launch for a player who has allowed
+// notifications. Versions 63 (1.8.6, live from 13 Nov) to 69 were built in the
+// release clone, where this git-ignored file did not exist: Play recorded
+// about a hundred crashes from eleven players in nine days, and one of them
+// wrote in ("it started crashing when I open the app").
+//
+// So a release build without the file is now refused outright. A debug build
+// may still go without it (it warns), because a debug build never ships.
+def servicesJSON = file('google-services.json')
+def hasServices = servicesJSON.exists() && servicesJSON.text.trim().length() > 0
+if (hasServices) {
+    apply plugin: 'com.google.gms.google-services'
+} else {
+    def wanted = gradle.startParameter.taskNames.collect { it.toLowerCase() }
+    if (wanted.any { it.contains('release') || it.contains('bundle') }) {
+        throw new GradleException("android/app/google-services.json is missing. A release built without it crashes on launch for every player who has allowed notifications. Copy the file in (see ~/ball-iq-release/android-secrets/) and build again.")
     }
-} catch(Exception e) {
-    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+    logger.warn("google-services.json not found: this DEBUG build has no Firebase, and PushNotifications.register() will crash it.")
 }
