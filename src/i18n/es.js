@@ -1829,6 +1829,7 @@ export default {
   'rc.played': '{n} han jugado hoy',
   'rc.avgPlayed': 'Media {avg} · {n} han jugado',
   'rc.avg': 'Media {avg}',
+  'rc.footleLost': 'Sin intentos',
   'rc.hard': 'Difícil',
   'rc.hardOne': 'Una de las difíciles de hoy.',
   'rc.noteMany': 'Acertaste {hard}',

@@ -867,6 +867,7 @@ export const STEP7_EN = {
   'rc.played': '{n} played today',
   'rc.avgPlayed': 'Average {avg} · {n} played',
   'rc.avg': 'Average {avg}',
+  'rc.footleLost': 'Out of guesses',
   'rc.hard': 'Hard',
   'rc.hardOne': 'One of today\'s hard ones.',
   'rc.noteMany': 'You got {hard}',

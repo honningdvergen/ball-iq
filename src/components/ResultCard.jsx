@@ -81,13 +81,14 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
   const note = withShares ? noteFor(t, marks, shares) : story ? story.note : null;
   const right = Array.isArray(marks) ? marks.filter(Boolean).length : 0;
   return (
-    <section className="rc" aria-label={t("rc.aria", { title, score, total: outOf })}>
+    <section className="rc" aria-label={score != null ? t("rc.aria", { title, score, total: outOf }) : title}>
       <div className="rc-eye">
         <span>{tag ? `${title} · ${tag}` : title}</span>
         <span className="rc-site">balliq.app</span>
       </div>
-      <div className="rc-hero">
-        <div className="rc-num"><b>{scoreNode ?? score}</b><span>/{outOf}</span></div>
+      <div className={`rc-hero${score == null ? " is-name" : ""}`}>
+        {/* No score on a lost guess game: the answer is the headline then. */}
+        {score != null && <div className="rc-num"><b>{scoreNode ?? score}</b><span>/{outOf}</span></div>}
         {/* Keyed by its words: when the day's numbers land about a second
             after the card, the new sentence fades in rather than snapping, and
             the hero keeps its height (min-height in the stylesheet). */}

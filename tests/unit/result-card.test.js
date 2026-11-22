@@ -186,3 +186,24 @@ describe('the finish panel with the card', () => {
     expect(html).toContain('dd-dist');
   });
 });
+
+describe('Footle ends on the card too', () => {
+  const src = readFileSync(new URL('../../src/games/FootballWordle.jsx', import.meta.url), 'utf8');
+  it('a win: the guess count out of six, the verdict, the answer pinned under it', () => {
+    expect(src).toContain('score: won ? state.guesses.length : null, outOf: 6,');
+    expect(src).toContain('sub: won ? t("footle.answerWas", { name: full }) : t("rc.footleLost"),');
+    expect(src).toContain('pinSub: true,');
+    expect(src).toContain('card={footleCard}');
+  });
+  it('a loss has no score, and the name is the headline at the number\'s size', () => {
+    const html = renderToStaticMarkup(React.createElement(ResultCard, { title: 'Footle', tag: 'No. 203', score: null, outOf: 6, verdict: 'Didier Drogba', sub: 'Out of guesses' }));
+    expect(html).not.toContain('rc-num');
+    expect(html).toContain('<div class="rc-hero is-name">');
+    expect(html).toContain('aria-label="Footle"');
+    const css = readFileSync(new URL('../../src/components/resultCard.css', import.meta.url), 'utf8');
+    expect(css).toMatch(/\.rc-hero\.is-name \.rc-v\{font-size:30px;/);
+  });
+  it('the report link stays, under the panel', () => {
+    expect(src).toMatch(/\{footleCard && onReport && <div className="wd-report-row"><FootleReportButton/);
+  });
+});

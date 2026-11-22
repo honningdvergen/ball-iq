@@ -251,6 +251,25 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // The first guess someone plays now happens without anything on top of it.
   const showLegend = state.status === "playing" && state.guesses.length === 0;
 
+  // The result card's words (components/ResultCard.jsx via DailyDone). A win
+  // shows the guess count out of six with the verdict beside it and the
+  // answer's name under it; a loss has no score, and the name is the
+  // headline. The board above is the picture, so the card draws no strip.
+  const footleCard = (() => {
+    if (state.status === "playing") return null;
+    const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
+    const full = `${prefix ? `${prefix} ` : ""}${surname}`;
+    const won = state.status === "won";
+    return {
+      title: "Footle", tag: `No. ${getFootleNumber(date)}`,
+      score: won ? state.guesses.length : null, outOf: 6,
+      verdict: won ? footleWinWord(state.guesses.length) : full,
+      sub: won ? t("footle.answerWas", { name: full }) : t("rc.footleLost"),
+      pinSub: true,
+      xp: getFootleXP(won, state.guesses.length),
+    };
+  })();
+
   // The clue takes the legend's slot inside the board: the legend retires on
   // the first guess and the clue cannot appear before the third, so the two
   // never compete, and the keyboard geometry (footle-keyboard-geometry gate)
@@ -723,58 +742,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
         })()}
       </div>
 
-      {state.status !== "playing" && revealed && (
-        <div className="wd-result">
-          {/* 1.1: celebrate a fresh solve. Gated on !wasFinishedAtMount so
-              re-opening today's solved puzzle doesn't re-fire the confetti. */}
-          {state.status === "won" && !wasFinishedAtMount.current && Confetti && <Confetti />}
-          {/* A LOSS LEADS WITH THE ANSWER (16 Oct 2026). It read "Better luck
-              tomorrow" in the big type and the name in a 14px line under it:
-              the one thing a beaten player wants to know was the smallest
-              thing in the card. Now the name takes the title's size, on the
-              same two lines the card always had. */}
-          {state.status === "lost" ? (() => {
-            const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
-            return (
-              <>
-                <div className="wd-result-sub">{t("footle.lostSub")}</div>
-                <div className="wd-result-title wd-result-answer">{prefix && <>{prefix} </>}{surname}</div>
-              </>
-            );
-          })() : (
-            <div className="wd-result-title">{footleWinWord(state.guesses.length)}</div>
-          )}
-          {/* Sprint #81 YY2: reveal renders proper-cased full name from
-              WORDLE_FULL_NAMES (tuple [firstNamePrefix, properSurname]).
-              First name (if present) inherits the muted .wd-result-sub
-              color; surname stays accent via <strong>. Empty prefix →
-              single-name brand (Pelé, Neymar) renders just the surname
-              with no leading whitespace. Falls back to raw uppercase
-              answer if a pool entry is unmapped (defensive). */}
-          {state.status === "won" && (() => {
-            const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
-            return (
-              <div className="wd-result-sub">
-                {rich(t("footle.answerWas"), { name: <>{prefix && <>{prefix} </>}<strong>{surname}</strong></> })}
-              </div>
-            );
-          })()}
-          {/* One green achievement pill instead of a bare "+30 XP" line with a
-              10px margin under it. It carries the thing worth being proud of —
-              the guess count — which the panel never showed at all, and it
-              costs one line where the old pair cost two plus a margin. */}
-          <div className="wd-result-earn">
-            {state.status === "won" && <span>{t("footle.solvedIn", { n: state.guesses.length })}</span>}
-            <span>+{getFootleXP(state.status === "won", state.guesses.length)} XP</span>
-          </div>
-          {/* Footle had NO report path. It is the most-played mode in the app and
-              its failure mode is the nastiest we ship: an answer that is
-              misspelled or not a real surname is UNWINNABLE, and the player has
-              no way to tell us — two literally unwinnable answers have shipped
-              before. The daily answer is the whole payload, so one button does it. */}
-          {onReport && <FootleReportButton answer={answer} status={state.status} onReport={onReport} />}
-        </div>
-      )}
+      {/* THE RESULT CARD (22 Nov 2026), same family as the Daily 7's: drawn
+          by DailyDone below, which holds the day's numbers. It replaced this
+          screen's own result block (the win word, "The answer was …", the
+          "Solved in 3/6 · +48 XP" pill). What stays here is the confetti; the
+          report link sits under the panel. */}
+      {state.status === "won" && revealed && !wasFinishedAtMount.current && Confetti && <Confetti />}
 
       {/* The return loop, built once for all four dailies (components/DailyDone.jsx):
           streak · countdown + remind · SHARE · how everyone did · still open today
@@ -805,7 +778,9 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             save={dailyDone?.save}
             GetAppCTA={GetAppCTA}
             track={dailyDone?.track}
+            card={footleCard}
           />
+          {footleCard && onReport && <div className="wd-report-row"><FootleReportButton answer={answer} status={state.status} onReport={onReport} /></div>}
           {/* Sprint #64 FF1: post-Footle install nudge (web only; the hook gates
               on installed / standalone / affordance / 30-day cooldown). */}
           {InstallBanner && <InstallBanner />}

@@ -167,6 +167,9 @@ function openLeagueCreate(opts) {
  *
  * A zero-point-something share also lands here ("Better than 0%").
  *
+ * A host that sets `pinSub` keeps its own line under the verdict whatever the
+ * crowd says (Footle: the answer's name matters more than a headcount).
+ *
  * Headcounts only from SHOW_COUNTS_FROM results, as everywhere on the panel:
  * below that the card speaks in shares and averages.
  */
@@ -177,7 +180,8 @@ export function cardWords(today, card, t, isArchive = false) {
   const n = today.n >= SHOW_COUNTS_FROM ? today.n.toLocaleString(fmtLocale()) : null;
   const avg = today.avg != null ? fmtFixed(today.avg, 1) : null;
   // An old day from the archive was not played "today".
-  const sub = n ? (line || !avg ? t(isArchive ? "dd.played" : "rc.played", { n }) : t("rc.avgPlayed", { avg, n })) : avg ? t("rc.avg", { avg }) : (card.sub ?? null);
+  const sub = card.pinSub ? (card.sub ?? null)
+    : n ? (line || !avg ? t(isArchive ? "dd.played" : "rc.played", { n }) : t("rc.avgPlayed", { avg, n })) : avg ? t("rc.avg", { avg }) : (card.sub ?? null);
   return { verdict: line || card.verdict, sub };
 }
 

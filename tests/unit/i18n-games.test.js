@@ -14,6 +14,10 @@
 //     wrapper replaced, by string (a button, with a screen-reader-only
 //     ". How to play Footle" after the two labels), and nothing else; the
 //     entry with no help button still has the plain key.
+//     INTENDED CHANGE, 22 Nov 2026 (later): a finished Footle ends on the result
+//     card (components/ResultCard.jsx) instead of its own result block; five
+//     entries (won in 1, 3, 6, lost, archive won) were replaced whole after a
+//     check that the card is the only change.
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -234,11 +238,13 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['footle: three guesses (the clue offer)'])).toMatch(/Intento 3 de 6: [A-Z] no está/);
     const won = unq(now['footle: won in 3']);
     expect(won).toContain('>Brillante<');
-    expect(won).toContain('La respuesta era Brad <strong>Friedel</strong>');
-    expect(won).toContain('>Resuelto en 3/6<');
+    // The result card (22 Nov 2026): the answer under the verdict, the count as the score.
+    expect(won).toContain('>La respuesta era Brad Friedel<');
+    expect(won).toContain('<b>3</b><span>/6</span>');
     expect(won).toContain('>El reto de hoy<');
     expect(won).toContain('>Próximo<');
-    expect(unq(now['footle: lost'])).toContain('>Sin intentos. La respuesta era<');
+    // Not "today": the same card shows an old day from the archive.
+    expect(unq(now['footle: lost'])).toContain('>Sin intentos<');
     expect(unq(now['footle: archive, fresh'])).toContain('>Del archivo<');
     expect(unq(now['footle: hard mode, one guess in'])).toContain('>Difícil: solo nombres reales<');
   });
