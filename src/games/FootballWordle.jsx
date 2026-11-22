@@ -673,10 +673,26 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                   {footleClue(answer)}
                 </div>
               ) : showLegend ? (
-                <div className="wd-legend" aria-hidden="true">
-                  <span className="wd-legend-item"><i className="wd-legend-chip is-green" />{t("footle.rightSpot")}</span>
-                  <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />{t("footle.wrongSpot")}</span>
-                </div>
+                // THE KEY IS A WAY IN TO THE RULES (22 Nov 2026). People tap it
+                // expecting more: Clarity counted about 300 taps a week on the
+                // key and the line beside it, and nothing happened. It looks
+                // the same and now does what "?" does: the rules sheet in the
+                // app, a scroll to "How to play" on the static Footle page
+                // (islands/footle.jsx). With no handler at all it stays plain
+                // text. Its spoken name keeps the words on screen and adds
+                // where it leads.
+                onHowToPlay ? (
+                  <button type="button" className="wd-legend wd-legend--tap" onClick={onHowToPlay}>
+                    <span className="wd-legend-item"><i className="wd-legend-chip is-green" />{t("footle.rightSpot")}</span>
+                    <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />{t("footle.wrongSpot")}</span>
+                    <span className="sr-only">{`. ${t("footle.howTo")}`}</span>
+                  </button>
+                ) : (
+                  <div className="wd-legend" aria-hidden="true">
+                    <span className="wd-legend-item"><i className="wd-legend-chip is-green" />{t("footle.rightSpot")}</span>
+                    <span className="wd-legend-item"><i className="wd-legend-chip is-amber" />{t("footle.wrongSpot")}</span>
+                  </div>
+                )
               ) : null}
               {/* The switch stays for the whole game, beside whatever holds the slot. */}
               {!isArchive && (

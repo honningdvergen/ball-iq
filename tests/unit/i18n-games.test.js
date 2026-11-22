@@ -8,6 +8,12 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     INTENDED CHANGE, 22 Nov 2026: Footle's colour key is a button that opens
+//     the rules sheet wherever there is one ("?" in the header). Three entries
+//     (fresh board, fresh board hard mode, archive fresh) had exactly the key's
+//     wrapper replaced, by string (a button, with a screen-reader-only
+//     ". How to play Footle" after the two labels), and nothing else; the
+//     entry with no help button still has the plain key.
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
