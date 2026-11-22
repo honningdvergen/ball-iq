@@ -225,7 +225,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
     const u = authProfile?.username;
     const name = (u && !isDef(u)) ? u
-      : (profile.name && !isDef(profile.name)) ? profile.name
+      : (profile?.name && !isDef(profile?.name)) ? profile?.name
       : `${APP_NAME} Player`;
     const { level } = getLevelInfo(xp);
 
@@ -246,7 +246,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
         im.src = photo;
       });
     }
-    const colourway = avatarColour(profile.avatar, user?.id || name);
+    const colourway = avatarColour(profile?.avatar, user?.id || name);
 
     await shareCard("iq", {
       card, name,
@@ -258,7 +258,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       onToast: showToast,
       textFallback: `${shareLine(card, readCardDelta(), APP_NAME, t)} ${INVITE_BASE_URL}/play`,
     });
-  }, [stats, authProfile?.username, authProfile?.avatar_url, profile.name, profile.avatar, user?.id, xp, showToast]);
+  }, [stats, authProfile?.username, authProfile?.avatar_url, profile?.name, profile?.avatar, user?.id, xp, showToast]);
   const shareProfile = useCallback(async () => {
     // 1.1: share a balliq.app/p?... LINK that renders the player's Ball IQ card as
     // its Open Graph preview (server-rendered via /api/og). On iMessage a single
@@ -274,12 +274,12 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     const params = new URLSearchParams({
       n: (() => {
         // Prefer the server username (where the set name actually lives) over the
-        // local profile.name, mirroring the Home greeting — otherwise a signed-in
+        // local profile?.name, mirroring the Home greeting — otherwise a signed-in
         // user's card shows "<App> Player" instead of their name.
         const isDef = (nm) => !nm || nm === "Player" || /^player_/i.test(nm);
         const u = authProfile?.username;
         if (u && !isDef(u)) return u;
-        if (profile.name && !isDef(profile.name)) return profile.name;
+        if (profile?.name && !isDef(profile?.name)) return profile?.name;
         return `${APP_NAME} Player`;
       })(),
       l: level.name || "",
@@ -291,7 +291,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
       // ⚠️ EMOJI ONLY. api/og.js renders ?e= as text at 100px; avatar_id is now
       // a colourway ('c07'), so passing one through would print "c07" on a
       // share card. Legacy emoji avatars still work; anything else falls back.
-      e: (/^c\d\d$/.test(String(profile.avatar || "")) ? "⚽" : (profile.avatar || "⚽")),
+      e: (/^c\d\d$/.test(String(profile?.avatar || "")) ? "⚽" : (profile?.avatar || "⚽")),
       iq: String(iq || 0),
       // The rating fields are OMITTED until the card is rated. They were sent
       // unconditionally until 2026-09-07, and api/og.js publishes ov at 48px

@@ -145,7 +145,7 @@ const HEAD = /^(FC|F\.C\.|FK|NK|HŠK|AFC|AC|A\.C\.|AS|A\.S\.|SS|S\.S\.|SSC|US|U\
 export function clubName(label) {
   const raw = String(label || '').trim();
   if (!raw) return '';
-  if (Object.hasOwn(NAMES, raw)) return NAMES[raw];
+  if (Object.prototype.hasOwnProperty.call(NAMES, raw)) return NAMES[raw];
   let s = raw;
   for (let i = 0; i < 3; i++) {
     const next = s.replace(TAIL, '').trim();

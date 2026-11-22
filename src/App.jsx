@@ -1116,6 +1116,11 @@ export function CB_MODE() {
  * at module-evaluation time would bake in whatever the platform check said
  * before the native class was applied to <html>.
  */
+// The local profile's shape, and the one test for it (see the note on the
+// profile state in the App component).
+const emptyProfile = () => ({ name: "", avatar: "⚽" });
+const isProfile = (p) => !!p && typeof p === "object" && !Array.isArray(p);
+
 function SETTINGS_DEFAULTS() {
   return { hints: true, timer: true, sound: IS_NATIVE === true, haptics: true, colorBlind: false };
 }
@@ -3477,12 +3482,19 @@ function AppInner() {
     }
     setTab(id);
   }, []);
+  // ⚠️ THE PROFILE IS ALWAYS AN OBJECT (22 Nov 2026). Deleting an account set
+  // it to null, and the very next render read profile.name in the share hook
+  // and took the whole app down to the error screen, on every phone, every
+  // time (Sentry BALL-IQ-3T; a player wrote in about crashes the same week).
+  // Three things now hold it: this state is only ever given an object, the
+  // re-read after sign-in ignores anything that is not one, and the setter
+  // refuses anything else.
   const [profile, setProfileState] = useState(() => {
     try {
       const raw = localStorage.getItem("biq_profile");
-      if (raw) { const p = JSON.parse(raw); if (p && typeof p === "object") return p; }
+      if (raw) { const p = JSON.parse(raw); if (isProfile(p)) return p; }
     } catch {}
-    return { name:"", avatar:"⚽" };
+    return emptyProfile();
   });
   const [mode, setMode] = useState(null);
 
@@ -4149,7 +4161,8 @@ function AppInner() {
 
   const setProfile = useCallback((updater) => {
     setProfileState(prev => {
-      const next = typeof updater === "function" ? updater(prev) : updater;
+      const made = typeof updater === "function" ? updater(prev) : updater;
+      const next = isProfile(made) ? made : emptyProfile();
       safeSetItem("biq_profile", JSON.stringify(next));
       return next;
     });
@@ -4572,7 +4585,7 @@ function AppInner() {
     } catch {}
     try {
       const raw = localStorage.getItem("biq_profile");
-      if (raw !== null) setProfileState(JSON.parse(raw));
+      if (raw !== null) { const p = JSON.parse(raw); if (isProfile(p)) setProfileState(p); }
     } catch {}
     try {
       const raw = localStorage.getItem("biq_xp");
@@ -6532,7 +6545,8 @@ function AppInner() {
     setHotstreakBest(0);
     setLoginStreak(0);
     setXp(0);
-    setProfileState(null);
+    // Never null: see the note on the profile state.
+    setProfileState(emptyProfile());
     showToast(tl("ts.deleted"));
   }, [showToast]);
 

@@ -358,7 +358,7 @@ export function hintPosition(player, roles = null) {
   if (!player) return null;
   // An explicit null is a decision, not a gap: the sources disagree about this
   // player, so the clue is withheld rather than guessed.
-  if (roles && Object.hasOwn(roles, player.id)) return roles[player.id] || null;
+  if (roles && Object.prototype.hasOwnProperty.call(roles, player.id)) return roles[player.id] || null;
   const word = String(player.position || '').toLowerCase();
   return POSITION_LINE[word] && POSITION_LINE[word] === player.slot ? word : null;
 }

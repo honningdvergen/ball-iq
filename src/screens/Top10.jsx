@@ -80,7 +80,7 @@ export function useTop10Data(date, listId, { library = false } = {}) {
         native ? import("../lib/top10Remote.js").catch(() => null) : null,
       ]);
       let data = remote ? remote.pickTop10Data(bundled, remote.cachedTop10()) : bundled;
-      const missing = library ? false : listId ? !Object.hasOwn(data.lists, listId) : getTop10Number(date) > data.log.length;
+      const missing = library ? false : listId ? !Object.prototype.hasOwnProperty.call(data.lists, listId) : getTop10Number(date) > data.log.length;
       if (remote && missing) {
         const got = await remote.refreshTop10({ force: true });
         data = remote.pickTop10Data(bundled, remote.cachedTop10());
@@ -133,7 +133,7 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, onM
   const number = listId ? 0 : getTop10Number(date);
   // hasOwn: `?list=constructor` must be "no such list", not Object's own constructor
   const wanted = data ? (listId || getTop10Id(date, data.log)) : null;
-  const list = wanted && Object.hasOwn(data.lists, wanted) ? data.lists[wanted] : null;
+  const list = wanted && Object.prototype.hasOwnProperty.call(data.lists, wanted) ? data.lists[wanted] : null;
 
   if (!data && !failed) {
     return (

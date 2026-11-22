@@ -316,7 +316,9 @@ describe('who fetches, and when', () => {
     expect(app).toMatch(/addEventListener\('biq:top10-updated', bump\)/);
   });
   it('a list asked for by a name the lists object only inherits is "no such list"', () => {
-    expect(screen).toMatch(/Object\.hasOwn\(data\.lists, wanted\) \? data\.lists\[wanted\] : null/);
+    // An own-property check that old phones can run too: Object.hasOwn crashed
+    // iOS below 15.4 and Android WebView below 93 (22 Nov 2026).
+    expect(screen).toMatch(/Object\.prototype\.hasOwnProperty\.call\(data\.lists, wanted\) \? data\.lists\[wanted\] : null/);
   });
   it('the widget, the next-up rows and the history tab follow Home when the schedule grows', () => {
     expect(app).toMatch(/\[dailyDone, loginStreak, top10Tick\]/);
