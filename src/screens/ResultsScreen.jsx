@@ -16,7 +16,7 @@ import { dayIndexForDate } from "../lib/date.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { getXPForResult } from "../lib/scoring.js";
 import { dailyTierBand, scoreTaglineBand } from "../lib/resultsCopy.js";
-import { useT } from "../i18n/index.js";
+import { useT, fmtLocale } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { stumpLink, shareStumpText } from "../lib/stump.js";
@@ -189,6 +189,26 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
     while (arr.length < result.total) arr.push(false); // timed-out / unanswered → miss
     return arr.slice(0, result.total);
   })();
+  // The Daily 7's result card (phone layout). The seven marks are the player's
+  // own answers in order; the verdict and the line under it are what the card
+  // says before there is a crowd to compare with (the tier copy the text
+  // header used). The day is the edition's own, so an archive day shows its date.
+  const cardFinish = isDaily && !!dailyDone;
+  const dailyCard = cardFinish ? (() => {
+    const band = dailyTierBand(result.score, result.total);
+    const ed = result.dailyEdition ?? dayIndexForDate(new Date());
+    let tag = null;
+    try { tag = new Date(ed * 86400000).toLocaleDateString(fmtLocale(), { day: "numeric", month: "short", timeZone: "UTC" }); } catch { /* no date on the card */ }
+    return {
+      // The strip is drawn only when the answers on hand add up to the score:
+      // a result restored without them must not show seven empty rings.
+      title: "Daily 7", tag, score: result.score, outOf: result.total, marks: rdDots.filter(Boolean).length === result.score ? rdDots : null,
+      scoreNode: <CountUp value={result.score} duration={900} delay={200} triggerHaptic />,
+      verdict: t(`d7.h${band}`), sub: t(`d7.s${band}`), xp: xpEarned,
+      // The bank's difficulty for each of the seven, in order (every answer carries it).
+      levels: Array.isArray(result.allAnswers) && result.allAnswers.length === result.total ? result.allAnswers.map((a) => a.diff || "medium") : null,
+    };
+  })() : null;
   const rdTier = isDaily ? t(`d7.h${dailyTierBand(result.score, result.total)}`) : t(`tag.${scoreTaglineBand(pct)}`);
   const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
 
@@ -198,8 +218,12 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
       <div className="rd-mobile">
       <ResultsCloseBtn onClose={onHome} />
 
+      {/* THE DAILY 7 ENDS ON A CARD (22 Nov 2026, components/ResultCard.jsx):
+          the score, the standing and the seven questions as one object, drawn
+          by the finish panel below because it holds the day's numbers. The
+          text header is for every other mode. */}
       {/* Final score eyebrow + huge green number + caption */}
-      <div style={{textAlign:"center", padding:"20px 0 8px"}}>
+      {!cardFinish && <div style={{textAlign:"center", padding:"20px 0 8px"}}>
         {/* A CLUB OR LEAGUE QUIZ SAYS WHOSE IT WAS (11 Nov 2026). The result read
             "Final score" for every quiz, so a Liverpool fan finishing the
             Liverpool quiz saw nothing of Liverpool: found on the simulator
@@ -272,7 +296,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             {rich(t("rs.xp"), { n: xpEarned })}
           </div>
         )}
-      </div>
+      </div>}
 
       {result.winner && (
         <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:6, margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}><Trophy size={16} strokeWidth={2.4} aria-hidden="true" />{rich(t("rs.wins"), { name: result.winner })}</div>
@@ -296,10 +320,10 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           everyone did, the other open dailies. One component for all four
           dailies (components/DailyDone.jsx); the edition is the day index. */}
       {isDaily && dailyDone && (
-        <div style={{marginTop:18}}>
+        <div style={{marginTop: cardFinish ? 56 : 18}}>
           <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
             streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
-            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} promoted={dailyDone.promoted} />
+            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} promoted={dailyDone.promoted} card={dailyCard} />
         </div>
       )}
 

@@ -162,3 +162,8 @@
 .dd-dist-tog{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:40px;padding:0;border:0;background:none;font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-dist-more{flex:none;display:inline-flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-dist-tog[aria-expanded="true"] .dd-dist-more svg{transform:rotate(180deg);}
+/* With the result card above the panel (22 Nov 2026): the gap between them, and the XP on the streak's title line. */
+.rc + .dd{margin-top:12px;}
+.dd-trow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+.dd-trow .dd-title{min-width:0;}
+.dd-xp{flex:none;font-size:13.5px;line-height:1.2;font-weight:800;color:var(--gold);-webkit-text-fill-color:var(--gold);}

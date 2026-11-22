@@ -19,6 +19,7 @@ import { levelName, countdownText } from "../i18n/names.js";
 import { useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
+import { ResultCard } from "./ResultCard.jsx";
 import "./dailyDone.css";
 
 // DailyDone — ONE return-loop panel under every decided daily (Footle, Daily 7,
@@ -154,7 +155,33 @@ function openLeagueCreate(opts) {
   } catch { /* nothing to do */ }
 }
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null }) {
+/**
+ * What the result card says: the verdict beside the score and the line under
+ * it. `today` is summariseDistribution()'s answer for today's edition, or null
+ * while there is no crowd to speak of; `card` carries the host's own words.
+ *
+ * A HEADLINE MUST NOT RUB IT IN. In the bottom half the comparison is "Better
+ * than 18%", which was fine as a quiet aside on the crowd's row and is unkind
+ * at 20px beside a 1. There the card keeps the host's verdict ("A tough set
+ * today.") and puts the average under it.
+ *
+ * A zero-point-something share also lands here ("Better than 0%").
+ *
+ * Headcounts only from SHOW_COUNTS_FROM results, as everywhere on the panel:
+ * below that the card speaks in shares and averages.
+ */
+export function cardWords(today, card, t, isArchive = false) {
+  if (!today) return { verdict: card.verdict, sub: card.sub ?? null };
+  const rub = today.outOf != null && today.beatPct < 50 && today.line === t("dd.cmp.better", { p: today.beatPct });
+  const line = today.line && !rub ? today.line : null;
+  const n = today.n >= SHOW_COUNTS_FROM ? today.n.toLocaleString(fmtLocale()) : null;
+  const avg = today.avg != null ? fmtFixed(today.avg, 1) : null;
+  // An old day from the archive was not played "today".
+  const sub = n ? (line || !avg ? t(isArchive ? "dd.played" : "rc.played", { n }) : t("rc.avgPlayed", { avg, n })) : avg ? t("rc.avg", { avg }) : (card.sub ?? null);
+  return { verdict: line || card.verdict, sub };
+}
+
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null, card = null }) {
   const t = useT();
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -389,7 +416,20 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   // next, a quiet footer. They arrive one after another (--i staggers them).
   let gi = 0;
   const g = () => ({ className: "dd-g", style: { "--i": gi++ } });
+  // THE RESULT CARD (22 Nov 2026, components/ResultCard.jsx). The host hands
+  // over what only it knows (the game's name, its day, the score, the seven
+  // marks, a verdict for when there is no crowd yet); the standing against
+  // everyone else is this panel's, because it holds the day's distribution.
+  // Only today's numbers go on the card: yesterday's are about another set.
+  const saveShown = !!(save && save.onSave && (streakN >= 2 || save.line));
+  const words = card ? cardWords(today, card, t, isArchive) : null;
+  const cardEl = card ? (
+    <ResultCard title={card.title} tag={card.tag} score={card.score} scoreNode={card.scoreNode} outOf={card.outOf} marks={card.marks} shares={card.shares} levels={card.levels}
+      verdict={words.verdict} sub={words.sub} />
+  ) : null;
   return (
+    <>
+    {cardEl}
     <section className="dd" aria-label={t("dd.aria")}>
       <div {...g()}>
       {/* Streak: the stake tonight names. Flame in the amber well the streak pill
@@ -397,15 +437,23 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       <div className="dd-row" style={{ "--dd-rgb": "255,170,0", "--dd-c": "var(--gold)" }}>
         <span className="dd-well" aria-hidden="true">{streakSafe ? <ShieldCheck size={20} strokeWidth={2.2} /> : <Flame size={20} strokeWidth={2.2} />}</span>
         <div className="dd-body">
-          <div className="dd-title">
-            {streakN >= 2 ? rich(t("dd.streakN"), { n: streakN, label }) : rich(t(streakN === 1 ? "dd.streak1" : "dd.streak0"), { label })}
-            {/* Banked shields, named BEFORE one is needed (16 Oct 2026). */}
-            {!isArchive && streakN >= 1 && streak?.shields > 0 && (
-              <span className="dd-shields" role="img" aria-label={t("dd.shieldsAria", { count: streak.shields })} title={t("dd.shieldTitle")}>
-                {Array.from({ length: streak.shields }, (_, i) => <ShieldCheck key={i} size={13} strokeWidth={2.4} aria-hidden="true" />)}
-              </span>
-            )}
-          </div>
+          {/* With the card above, the XP has no score to sit under: it rides the streak's title line. */}
+          {(() => {
+            const titleEl = (
+              <div className="dd-title">
+                {streakN >= 2 ? rich(t("dd.streakN"), { n: streakN, label }) : rich(t(streakN === 1 ? "dd.streak1" : "dd.streak0"), { label })}
+                {/* Banked shields, named BEFORE one is needed (16 Oct 2026). */}
+                {!isArchive && streakN >= 1 && streak?.shields > 0 && (
+                  <span className="dd-shields" role="img" aria-label={t("dd.shieldsAria", { count: streak.shields })} title={t("dd.shieldTitle")}>
+                    {Array.from({ length: streak.shields }, (_, i) => <ShieldCheck key={i} size={13} strokeWidth={2.4} aria-hidden="true" />)}
+                  </span>
+                )}
+              </div>
+            );
+            return card?.xp > 0
+              ? <div className="dd-trow">{titleEl}<span className="dd-xp dd-num">{rich(t("rs.xp"), { n: card.xp })}</span></div>
+              : titleEl;
+          })()}
           <div className="dd-sub">
             {isArchive ? t("dd.archive")
               : streakSafe ? rich(t("dd.safe"), { safe: <strong>{t("dd.safeWord")}</strong>, ko: <strong className="dd-num">{ko}</strong> })
@@ -601,6 +649,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       })()}
 
 
+      {/* With the result card above, the crowd's row is not drawn at all (the
+          card carries the standing), so the footer can be empty: then neither
+          the hairline nor the group is. */}
+      {(!card || GetAppCTA || saveShown) && <>
       <div className="dd-hr" aria-hidden="true" />
       <div {...g()}>
       {/* THE QUIET FOOTER: reminder, the crowd, the app and the save, below a
@@ -611,7 +663,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
 
 
 
-      {save && save.onSave && (streakN >= 2 || save.line) && (
+      {saveShown && (
         <div className="dd-row">
           <div className="dd-body">
             {streakN >= 2
@@ -644,7 +696,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           cluttery and busy". The summary line is the answer most people want
           ("Average 3.0/7"); the bars open under it. The frame while loading is
           the same one line, so nothing moves when the numbers land. */}
-      {!distReady ? (
+      {card ? null : !distReady ? (
         <div className="dd-dist is-loading" aria-busy="true" aria-label={t("dd.distLoading")}>
           <div className="dd-dist-tog" aria-hidden="true"><span className="dd-sub">{"\u00a0"}</span></div>
         </div>
@@ -685,7 +737,9 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
 
 
       </div>
+      </>}
     </section>
+    </>
   );
 }
 

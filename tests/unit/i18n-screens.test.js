@@ -20,6 +20,12 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 22 Nov 2026: the Daily 7 ends on the result card
+// (components/ResultCard.jsx). In the three "results: daily 7 ..." entries the
+// text header (eyebrow, 88px number, tier lines, XP line) is replaced by the
+// card above the panel, the XP rides the streak's title line, and the crowd's
+// row with its hairline is gone from the panel's foot. Checked entry by entry
+// that the rest of each panel is byte-identical.
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
