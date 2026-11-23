@@ -20,6 +20,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const files = [];
 const walk = (dir) => { for (const f of readdirSync(dir)) { const p = join(dir, f); if (statSync(p).isDirectory()) walk(p); else if (/\.(js|jsx|mjs)$/.test(f)) files.push(p); } };
 walk(join(ROOT, 'src')); walk(join(ROOT, 'api')); files.push(join(ROOT, 'public', 'sw.js'));
+// index.html carries inline scripts that run before the bundle does, on the same phones.
+files.push(join(ROOT, 'index.html'));
 
 // name → what to write instead
 const TOO_NEW = [
@@ -29,7 +31,18 @@ const TOO_NEW = [
   [/\.findLast(Index)?\s*\(/, 'a reverse loop'],
   [/\.(toSorted|toReversed|toSpliced)\s*\(/, 'a copy, then sort/reverse/splice'],
   [/\.replaceAll\s*\(/, '.replace(/…/g, …) or split/join'],
-  [/(?<![\w$])(\w+|\]|\))\.at\s*\(\s*-/, 'arr[arr.length - 1]'],
+  // Any index, not only a negative one (widened 23 Nov 2026): .at() is iOS 15.4+ / WebView 92+.
+  [/(?<![\w$])(\w+|\]|\))\.at\s*\(/, 'arr[i] or arr[arr.length - 1]'],
+  // The worst of them: a lookbehind in a regex LITERAL fails when the file is
+  // PARSED, so the whole chunk never runs (iOS below 16.4). Build one with
+  // new RegExp('…') inside a try if it is ever needed.
+  [new RegExp('\\(\\?<[=!]'), 'a capture group, or new RegExp(...) in a try'],
+  [/\.with\s*\(\s*-?\d/, 'a copy, then assign by index'],
+  [/\.(union|intersection|difference|symmetricDifference|isSubsetOf|isSupersetOf|isDisjointFrom)\s*\(/, 'a loop over the Set'],
+  [/\bPromise\.any\s*\(/, 'Promise.race, or allSettled and pick'],
+  [/\bIntl\.Segmenter\b/, '[...str] for code points'],
+  [/\.(isWellFormed|toWellFormed)\s*\(/, 'leave the string as it is'],
+  [/\bIterator\.from\s*\(|\bSymbol\.(dispose|asyncDispose)\b/, 'an array and a finally'],
   [/\bArray\.fromAsync\s*\(|\bPromise\.withResolvers\s*\(|\bAbortSignal\.(timeout|any)\s*\(/, 'the long form'],
 ];
 

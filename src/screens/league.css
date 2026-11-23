@@ -39,7 +39,9 @@
 .lg-you,.lg-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
 .lg-total{font-size:22px;font-weight:900;letter-spacing:-0.5px;text-align:right;color:var(--t1);-webkit-text-fill-color:var(--t1);font-variant-numeric:tabular-nums;}
 .lg-cells{display:grid;grid-template-columns:repeat(7, 1fr);gap:4px;max-width:168px;}
-.lg-cell{height:5px;border-radius:3px;position:relative;background:color-mix(in srgb, var(--accent) calc(25% + var(--h, 0) * 75%), var(--s2));}
+/* color-mix is iOS 16.2+ / Chrome 111+. On anything older the whole declaration is dropped and a
+   played day drew NOTHING (a row of invisible cells), so the plain green goes first as the fallback. */
+.lg-cell{height:5px;border-radius:3px;position:relative;background:rgba(88,204,2,calc(0.25 + var(--h, 0) * 0.75));background:color-mix(in srgb, var(--accent) calc(25% + var(--h, 0) * 75%), var(--s2));}
 .lg-cell.is-miss{background:rgba(255,255,255,0.07);}
 .lg-cell.is-future,.lg-cell.is-before{background:rgba(255,255,255,0.03);}
 .lg-cell.is-today{box-shadow:0 0 0 1.5px var(--accent);}

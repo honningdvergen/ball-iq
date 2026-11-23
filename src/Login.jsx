@@ -289,7 +289,7 @@ export default function Login({ asOverlay = false, onClose, promptReason = null 
 
   const S = {
     root: {
-      position: 'fixed', inset: 0, zIndex: 1000, overflowY: 'auto',
+      position: 'fixed', top: 0, right: 0, bottom: 0, left: 0, inset: 0, zIndex: 1000, overflowY: 'auto',
       background: C.canvas, color: C.t1,
       display: 'flex', justifyContent: 'center',
       fontFamily: 'Inter, -apple-system, sans-serif',
