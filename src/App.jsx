@@ -1063,6 +1063,16 @@ const leagueSheetFallback = () => <div aria-busy="true" aria-label={tl("ld.loadi
 function readLeagueUiInline() {
   try { const v = JSON.parse(localStorage.getItem(LEAGUE_UI_KEY) || "null"); return v && Date.now() - v.at < 15 * 60000 ? v : null; } catch { return null; }
 }
+// ⚠️ NOT ON TOP OF A GAME (23 Nov 2026). The stored step is there to survive
+// the remount when a guest signs in. It also survived the player leaving:
+// open "Start a league", close the app or follow any link, and for the next
+// fifteen minutes the sheet came back over whatever opened next, a Daily 7
+// in progress included (found on the design walk: it sat on every game
+// screen after one tap on Home). A page opened ON something (a game, a quiz,
+// a challenge, a room) is not a return to the sheet, so the step is dropped.
+function openedOnSomething() {
+  try { return /[?&](game|club|quiz|stump|join|c|tab)=/.test(window.location.search || ""); } catch { return false; }
+}
 function writeLeagueUiInline(v) {
   try { if (v) localStorage.setItem(LEAGUE_UI_KEY, JSON.stringify({ ...v, at: Date.now() })); else localStorage.removeItem(LEAGUE_UI_KEY); } catch {}
 }
@@ -2994,7 +3004,9 @@ function AppInner() {
   const [leagueSheet, setLeagueSheetRaw] = useState(() => {
     if (!LEAGUES_ON) return null;
     const v = readLeagueUiInline();
-    return v && (v.kind === "join" || v.kind === "create") ? v : null;
+    if (!(v && (v.kind === "join" || v.kind === "create"))) return null;
+    if (openedOnSomething()) { writeLeagueUiInline(null); return null; }
+    return v;
   });
   const setLeagueSheet = useCallback((v) => { writeLeagueUiInline(v); setLeagueSheetRaw(v); }, []);
   const openLeagueTable = useCallback((id) => {
@@ -3008,7 +3020,7 @@ function AppInner() {
   useEffect(() => {
     if (!LEAGUES_ON) return undefined;
     const v = readLeagueUiInline();
-    if (v && v.kind === "open" && v.id) openLeagueTable(v.id);
+    if (v && v.kind === "open" && v.id) { if (openedOnSomething()) writeLeagueUiInline(null); else openLeagueTable(v.id); }
     const onOpen = (e) => openLeagueTable(e?.detail?.id);
     const onClaim = (e) => loopEvent("league-claim", { moved: Number(e?.detail?.moved) || 0 });
     window.addEventListener("biq:league-open", onOpen);
