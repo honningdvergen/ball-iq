@@ -1664,7 +1664,9 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
   //    render a big VS board (avatars + the mode metric + winner accent); 3+
   //    players keep the podium list below. All from existing player fields —
   //    no new data. ──
-  const MONO = "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace";
+  // Numbers in Inter with tabular figures, not the mono face: its dotted zero
+  // reads as an eight at score size (app.css, 23 Nov 2026). The name stays.
+  const MONO = "var(--font)";
   const twoPlayer = sorted.length === 2;
   const meP = myUserId ? sorted.find(p => p.user_id === myUserId) : sorted[0];
   const oppP = twoPlayer ? sorted.find(p => p !== meP) : null;
@@ -1926,7 +1928,7 @@ function LobbyEnded({ players, myPlayer, onExit, room, onRematch, onReport, defa
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{
-                    fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace",
+                    fontFamily: "var(--font)",
                     fontSize: 18, fontWeight: 800,
                     color: 'var(--text)',
                     fontVariantNumeric: 'tabular-nums',

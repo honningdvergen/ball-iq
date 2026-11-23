@@ -20,6 +20,9 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 23 Nov 2026: numbers are Inter with tabular figures, not the
+// mono face (its dotted zero read as an eight). Six History entries changed in
+// one inline font-family only, proven by replacing that string in the old golden.
 // INTENDED CHANGE, 22 Nov 2026: the Daily 7 ends on the result card
 // (components/ResultCard.jsx). In the three "results: daily 7 ..." entries the
 // text header (eyebrow, 88px number, tier lines, XP line) is replaced by the

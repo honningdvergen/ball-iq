@@ -167,8 +167,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* Numeric displays (scores, timers, IQ, streak counters). Tabular-nums prevents
    digit jitter. .numeric stays Inter for inline UI copy; .numeric-mono uses
    JetBrains Mono for timers and monospace numeric tickers. */
+/* ⚠️ NOT ANY MORE (23 Nov 2026). JetBrains Mono draws its zero with a dot in the
+   middle, and at score size that zero reads as an eight (Alex, on the Hot Streak
+   score: "zeros that can look a bit like an eight"). Every number the player
+   reads (scores, timers, stats, countdowns) is Inter with tabular figures: a
+   plain zero, digits that still do not jump as they tick. The mono face is kept
+   for room codes only, whose alphabet has no zero in it. */
 .numeric{font-variant-numeric:tabular-nums;font-weight:900;letter-spacing:-0.02em;}
-.numeric-mono{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:700;}
+.numeric-mono{font-family:var(--font);font-variant-numeric:tabular-nums;font-weight:700;}
 
 /* Eyebrow label — small uppercase pill-less header */
 .ds-eyebrow{font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);font-family:var(--font);}
@@ -325,7 +331,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    Subtle by design — celebrating the moment, not demanding attention. */
 .hst-streak.is-pulsing{animation:streakPulse 1.5s cubic-bezier(0.22,1,0.36,1);}
 .hst-flame{display:inline-flex;line-height:1;}
-.hst-num{font-family:'JetBrains Mono',monospace;font-size:15.5px;font-weight:800;color:var(--gold);-webkit-text-fill-color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;}
+.hst-num{font-family:var(--font);font-size:15.5px;font-weight:800;color:var(--gold);-webkit-text-fill-color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;}
 @keyframes streakPulse{
   0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(255,193,7,0.0); }
   18%  { transform: scale(1.08); box-shadow: 0 0 0 4px rgba(255,193,7,0.18), 0 3px 10px rgba(255,193,7,0.28); }
@@ -342,7 +348,7 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
 .hsc-right{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;}
 .home-stat-hint{font-family:var(--font);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-top:2px;}
 .home-stat-label{font-family:var(--font);font-size:10px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
-.home-stat-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:700;color:var(--t1);margin-top:2px;letter-spacing:-0.02em;}
+.home-stat-val{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:18px;font-weight:700;color:var(--t1);margin-top:2px;letter-spacing:-0.02em;}
 .home-stat-val.green{color:var(--accent);}
 .home-stat-val.flame{color:#FF6A00;}
 
@@ -850,7 +856,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
 .timer-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 .timer-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .timer-fill{height:100%;border-radius:2px;transition:width 0.9s linear,background 0.3s;will-change:width;}
-.timer{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;color:var(--t2);min-width:28px;text-align:right;}
+.timer{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;color:var(--t2);min-width:28px;text-align:right;}
 .timer.urgent{color:var(--red);animation:tp 0.5s ease infinite alternate;}
 @keyframes tp{from{opacity:1;}to{opacity:0.4;}}
 /* Slim inline label row for Survival's streak indicator. Demoted from
@@ -902,7 +908,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
    is earned back at 70%+ (.is-strong, set at the call site). */
 .score-big{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:60px;font-weight:700;color:var(--text);line-height:1;margin:12px 0 2px;letter-spacing:-0.02em;}
 .score-big.is-strong{color:var(--accent);}
-.score-pct{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);}
+.score-pct{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:11px;color:var(--t3);}
 .s-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;}
 .sbox{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;animation:sboxIn 0.4s cubic-bezier(0.22,1,0.36,1) both;}
 .s-row .sbox:nth-child(1){animation-delay:0.55s;}
@@ -1032,7 +1038,7 @@ html.native-app ::-webkit-scrollbar{display:none;}
 .local-summary-title{font-size:13px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);text-align:center;margin-bottom:12px;}
 .local-summary-row{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:0.5px solid var(--border);font-size:14px;}
 .local-summary-row:last-child{border-bottom:none;}
-.local-summary-score{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent);}
+.local-summary-score{font-family:var(--font);font-variant-numeric:tabular-nums;font-weight:800;color:var(--accent);}
 
 /* ── LOCAL GAME: LOCKED ANSWER STATE (neutral blue highlight on picked option) ── */
 .opt.locked{border-color:rgba(255,193,7,0.55) !important;background:rgba(255,193,7,0.12) !important;color:#FFD24A !important;}
@@ -1054,9 +1060,9 @@ html.native-app ::-webkit-scrollbar{display:none;}
 .local-reveal-mark{font-size:16px;font-weight:800;width:22px;text-align:right;}
 .local-reveal-row.ok .local-reveal-mark{color:var(--accent);}
 .local-reveal-row.no .local-reveal-mark{color:var(--red);}
-.local-reveal-qn{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;color:var(--t3);width:34px;flex-shrink:0;}
+.local-reveal-qn{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:11px;font-weight:700;color:var(--t3);width:34px;flex-shrink:0;}
 .local-reveal-eliminate{text-align:center;font-size:15px;font-weight:800;color:var(--red);margin-top:4px;padding:10px;border-radius:12px;background:rgba(255,59,48,0.08);border:1px solid rgba(255,59,48,0.2);}
-.local-reveal-tally{text-align:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--accent);margin-top:4px;}
+.local-reveal-tally{text-align:center;font-family:var(--font);font-variant-numeric:tabular-nums;font-size:18px;font-weight:800;color:var(--accent);margin-top:4px;}
 .handoff{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:20px 0;}
 .handoff-chip{padding:5px 11px;border-radius:7px;background:var(--s1);border:1px solid var(--border);font-size:12px;font-weight:500;color:var(--t2);}
 .handoff-chip strong{color:var(--text);}
@@ -1374,7 +1380,7 @@ html.is-android .tab-bar{ bottom:56px; }
 .daily-greet-name.is-loading{opacity:0.4;animation:profileSkeletonPulse 1.4s ease-in-out infinite;font-weight:600;color:var(--t2);}
 .daily-greet-ko{display:inline-flex;align-items:baseline;gap:5px;padding:4px 8px;background:var(--accent-dim);border:1px solid rgba(88,204,2,0.30);border-radius:6px;flex-shrink:0;}
 .daily-greet-ko-lab{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;}
-.daily-greet-ko-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
+.daily-greet-ko-val{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
 
 /* ── DAILY v4 TACTICS CARD (Sprint #24 Stage 2) ──
    Chalkboard navy panel with subtle dotted grid texture overlay.
@@ -1470,7 +1476,7 @@ html.is-android .tab-bar{ bottom:56px; }
 /* .profile-level-badge uses .pill--neutral tokens with a little extra gap/padding for the emoji+text+XP layout. */
 .profile-level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,204,2,0.10);color:var(--green-ink);padding:5px 12px;border-radius:999px;font-family:var(--font);font-size:12px;font-weight:700;letter-spacing:0.04em;}
 .profile-iq-line{font-size:13px;color:var(--t2);}
-.profile-iq-line strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;color:var(--accent);}
+.profile-iq-line strong{font-family:var(--font);font-variant-numeric:tabular-nums;color:var(--accent);}
 .share-profile-btn{width:100%;padding:14px;border-radius:12px;background:transparent;border:1.5px solid var(--accent-b);color:var(--accent);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s;margin-bottom:12px;}
 .share-profile-btn:hover{background:var(--accent-dim);}
 /* ⚠️ NEW CLASSES ON PURPOSE, NOT A REWRITE OF .share-profile-btn.
@@ -1680,7 +1686,7 @@ button.friends-lb-row:hover{background:var(--s3);}
 .xp-bar-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .xp-level-icon{display:inline-flex;align-items:center;line-height:1;}
 .xp-level-name{font-size:13px;font-weight:700;letter-spacing:-0.1px;flex:1;}
-.xp-total{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:11px;color:var(--t2);font-weight:600;}
+.xp-total{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:11px;color:var(--t2);font-weight:600;}
 .xp-track{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
 .xp-fill{height:100%;background:linear-gradient(90deg,var(--accent),#16a34a);border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);will-change:width;}
 .xp-next{font-size:10.5px;color:var(--t3);margin-top:5px;font-weight:500;opacity:0.8;}
@@ -1743,7 +1749,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .iq-hist-bars{display:flex;align-items:flex-end;gap:6px;height:52px;}
 .iq-hist-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
 .iq-hist-bar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height 0.4s cubic-bezier(0.22,1,0.36,1);}
-.iq-hist-n{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;font-size:9px;color:var(--t3);font-weight:500;}
+.iq-hist-n{font-family:var(--font);font-variant-numeric:tabular-nums;font-size:9px;color:var(--t3);font-weight:500;}
 
 
 /* ── SOCIAL HUB ── */
@@ -1965,7 +1971,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .og-progress-mine{text-align:left;}
 .og-progress-opp{text-align:right;}
 .og-progress-label{font-size:10px;font-weight:800;letter-spacing:0.12em;color:var(--t3);text-transform:uppercase;}
-.og-progress-val{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
+.og-progress-val{font-family:var(--font);font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
 .og-progress-bar{height:6px;background:var(--s2);border-radius:999px;overflow:hidden;}
 .og-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#46A302);border-radius:999px;transition:width 0.4s cubic-bezier(0.22,1,0.36,1);}
 
@@ -2283,7 +2289,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .fh-tile.fh-title-f{width:34px;height:34px;border-radius:8px;border:none;
   font-size:21px;font-weight:900;letter-spacing:0;flex:0 0 auto;}
 .fh-score{font-size:18px;font-weight:700;line-height:1.1;margin-top:6px;color:rgba(255,255,255,0.92);font-feature-settings:"tnum";}
-.fh-score strong{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:var(--gold);-webkit-text-fill-color:var(--gold);}
+.fh-score strong{font-family:var(--font);font-variant-numeric:tabular-nums;font-feature-settings:"tnum";font-weight:900;font-size:22px;color:var(--gold);-webkit-text-fill-color:var(--gold);}
 .fh-sub{font-size:12px;line-height:1.4;margin-top:8px;color:rgba(255,255,255,0.78);font-weight:600;}
 .fh-cta-row{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:12px;}
 /* Page hero. Measured on device it was the SMALLEST green control on Home —
@@ -2619,7 +2625,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   }
   .qd-cat { font-size: 14px; color: var(--t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
   .qd-topbar-r { display: flex; align-items: center; gap: 18px; flex: 0 0 auto; }
-  .qd-counter { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 14px; font-weight: 700; color: var(--t2); font-variant-numeric: tabular-nums; }
+  .qd-counter { font-family: var(--font); font-size: 14px; font-weight: 700; color: var(--t2); font-variant-numeric: tabular-nums; }
   .qd-close {
     width: 46px; height: 46px; flex: 0 0 auto; border-radius: 12px;
     background: var(--s2); border: 1px solid var(--border2); color: var(--t2);
@@ -2650,13 +2656,13 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 
   /* Meta row: streak pill · circular timer ring · correct pill. */
   .qd-meta { display: flex; align-items: center; justify-content: center; gap: 26px; margin-bottom: 30px; }
-  .qd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--s1); border: 1px solid var(--border); font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 13.5px; font-weight: 700; }
+  .qd-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--s1); border: 1px solid var(--border); font-family: var(--font); font-variant-numeric: tabular-nums; font-size: 13.5px; font-weight: 700; }
   .qd-pill-streak { color: var(--gold); }
   .qd-pill-ic { font-family:var(--font); font-size: 14px; }
   .qd-pill-correct { color: var(--t2); }
   .qd-pill-num { color: #8AE042; }
   .qd-ring { position: relative; width: 78px; height: 78px; flex: 0 0 auto; }
-  .qd-ring-n { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 26px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+  .qd-ring-n { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-size: 26px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
 
   /* Eyebrow + big centered question (the q-card becomes a bare container). */
   .qd-eyebrow { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #6E7180; }
@@ -2722,7 +2728,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
     font-size: 13px; font-weight: 700; color: var(--gold); }
   .rd-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; }
   .rd-tile { padding: 16px 12px; border-radius: 14px; background: var(--s1); border: 1px solid var(--border); }
-  .rd-tile-v { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+  .rd-tile-v { font-family: var(--font); font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
   .rd-tile-v.rd-amber { color: var(--gold); }
   .rd-tile-v.rd-green { color: #8AE042; }
   .rd-tile-k { font-size: 11.5px; color: var(--t2); margin-top: 3px; }
@@ -3122,7 +3128,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .daily-zone { background: none; border: none; border-radius: 0; padding: 0; margin-bottom: 20px; }
   .daily-zone-head { margin-bottom: 20px; padding: 0; }
   .daily-zone-eyebrow { font-size: 17px; letter-spacing: -0.01em; color: var(--t1); }
-  .daily-zone-status { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 12.5px; color: var(--t3); }
+  .daily-zone-status { font-family: var(--font); font-variant-numeric: tabular-nums; font-size: 12.5px; color: var(--t3); }
   .daily-zone .home-footle-inline { margin-bottom: 20px; }
 
   /* ── Daily 7: tamed amber card (mock) instead of the mobile full-orange bar. ── */
@@ -3146,7 +3152,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .home-col-main .hst-streak {
     background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.25);
     color: var(--gold); -webkit-text-fill-color: var(--gold);
-    font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace;
+    font-family: var(--font); font-variant-numeric: tabular-nums;
     padding: 8px 14px; font-size: 14px; box-shadow: none;
   }
 
@@ -3155,7 +3161,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .hr-yf-rows { display: flex; flex-direction: column; gap: 12px; }
   .hr-yf-row { display: flex; align-items: center; justify-content: space-between; }
   .hr-yf-k { font-size: 14px; color: var(--t2); }
-  .hr-yf-v { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 15px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
+  .hr-yf-v { font-family: var(--font); font-size: 15px; font-weight: 800; color: var(--t1); font-variant-numeric: tabular-nums; }
   .hr-yf-v-green { font-family:var(--font); color: #8AE042; }
   .hr-yf-empty { font-size: 13px; color: var(--t3); line-height: 1.4; }
 
@@ -3216,7 +3222,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .pd-league { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: var(--s1); border: 1px solid var(--border); min-width: 0; }
   .pd-league-flag { font-size: 22px; flex: 0 0 auto; }
   .pd-league-name { flex: 1; min-width: 0; font-size: 14px; font-weight: 700; color: #E8EAF0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pd-league-rating { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; font-size: 18px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
+  .pd-league-rating { font-family: var(--font); font-size: 18px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; flex: 0 0 auto; }
   .pd-league-rating.is-top { color: #8AE042; }
 
   /* ── Scouting report ── */
@@ -3231,7 +3237,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .pd-scout-v { font-size: 14px; font-weight: 800; color: #fff; text-align: right; min-width: 0; }
   .pd-scout-v.is-green { color: #8AE042; }
   .pd-scout-v.is-amber { color: var(--gold); }
-  .pd-scout-v.is-mono { font-family: 'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace; }
+  .pd-scout-v.is-mono { font-family: var(--font); font-variant-numeric: tabular-nums; }
   .pd-scout-v.is-dash { color: var(--t3); font-weight: 700; }
 
   /* ── Share profile card (green outline) ── */

@@ -1259,7 +1259,7 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
             two emoji that stood here: "looks really bad and not in our design"
             (Alex, 23 Nov 2026). */}
         <div style={{display:'flex',alignItems:'center',gap:6,fontSize:12,fontWeight:600,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}><Flame size={14} strokeWidth={2.25} aria-hidden="true" style={{color:'var(--gold)',flex:'none'}} />{t("hs.header")}</div>
-        <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>{t("hs.pts")}</span></div>
+        <div style={{fontFamily:"var(--font)",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>{t("hs.pts")}</span></div>
       </div>
       <div className="q-card">
         <div className="q-tag">{chipLabel(t, q.cat)}</div>

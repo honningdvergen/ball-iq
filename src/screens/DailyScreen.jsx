@@ -831,7 +831,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>{t("tab.daily")}</div>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={t("dd.newIn", { ko })}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>{t("hi.newIn")}</span>
-                <span style={{ fontFamily: "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
+                <span style={{ fontFamily: "var(--font)", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
               </span>
             </div>
 

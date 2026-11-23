@@ -692,7 +692,7 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
               <span style={{width:24,color:"var(--t3)",fontWeight:700,fontVariantNumeric:"tabular-nums"}}>{i + 4}</span>
               <PlayerMark p={p} />
               <span style={{flex:1,color:"var(--t1)",fontWeight:700}}>{p.name}</span>
-              <span style={{fontFamily:"'JetBrains Mono',monospace",fontVariantNumeric:"tabular-nums",fontWeight:700,color:"var(--accent)"}}>{scores[p.id] || 0}</span>
+              <span style={{fontFamily:"var(--font)",fontVariantNumeric:"tabular-nums",fontWeight:700,color:"var(--accent)"}}>{scores[p.id] || 0}</span>
             </div>
           ))}
         </div>
@@ -707,7 +707,7 @@ export function LocalResults({ result, onHome, onRetry, onShare }) {
               if (!p) return null;
               return (
                 <span key={id} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 10px",borderRadius:20,background:"var(--s2)",border:"1px solid var(--border)",fontSize:12,color:"var(--t2)"}}>
-                  <span style={{opacity:0.5,fontFamily:"'JetBrains Mono',monospace"}}>#{i+1}</span>
+                  <span style={{opacity:0.5,fontVariantNumeric:"tabular-nums"}}>#{i+1}</span>
                   <PlayerMark p={p} /> {p.name}
                 </span>
               );
