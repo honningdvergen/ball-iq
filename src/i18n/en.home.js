@@ -256,7 +256,7 @@ export default {
   'quiz.wrong': '✗ Incorrect',
   'quiz.why': 'Why?',
   'tf.label': '✅ True or False',
-  'hs.header': '⚡🔥 Hot Streak',
+  'hs.header': 'Hot Streak',
   'hs.pts': 'pts',
   'hs.skip': 'tap to skip →',
   'ib.label': 'Install Ball IQ',

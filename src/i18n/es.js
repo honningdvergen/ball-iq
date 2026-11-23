@@ -992,7 +992,7 @@ export default {
   'cc.Records.s': 'Récords',
 
   // ── i18n step 5 ──
-  'hs.header': '⚡🔥 Crono',
+  'hs.header': 'Crono',
   'hs.pts': 'pts',
   'hs.skip': 'toca para saltar →',
   'ib.label': 'Instalar Ball IQ',

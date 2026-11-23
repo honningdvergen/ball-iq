@@ -1038,7 +1038,7 @@ export default registerEnglish({
 
   // ── i18n step 5 (pinned in tests/unit/i18n-leftovers.keys.js) ──
   // Hot Streak's and True or False's in-game chrome (App.jsx's two engines).
-  'hs.header': '⚡🔥 Hot Streak',
+  'hs.header': 'Hot Streak',
   'hs.pts': 'pts',
   'hs.skip': 'tap to skip →',
   // The install banner and the Footle store badge's caption (App.jsx).

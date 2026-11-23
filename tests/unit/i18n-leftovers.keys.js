@@ -3,7 +3,7 @@
 // (5a12fb94). Literal on purpose: an edit to en.js has to be made here too, on
 // purpose.
 export const STEP5_EN = {
-  'hs.header': "⚡🔥 Hot Streak",
+  'hs.header': "Hot Streak",
   'hs.pts': "pts",
   'hs.skip': "tap to skip →",
   'ib.label': "Install Ball IQ",

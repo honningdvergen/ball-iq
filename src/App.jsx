@@ -1255,7 +1255,10 @@ function HotStreakEngine({ questions, onComplete, onBack, onHowToPlay, rulesOpen
         {onHowToPlay && <button className="icon-btn" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}>?</button>}
       </div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-        <div style={{fontSize:12,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}>{t("hs.header")}</div>
+        {/* The mode's own icon (the Flame Home shows for Hot Streak), not the
+            two emoji that stood here: "looks really bad and not in our design"
+            (Alex, 23 Nov 2026). */}
+        <div style={{display:'flex',alignItems:'center',gap:6,fontSize:12,fontWeight:600,color:'var(--t2)',fontFamily:"'Inter',sans-serif",letterSpacing:1}}><Flame size={14} strokeWidth={2.25} aria-hidden="true" style={{color:'var(--gold)',flex:'none'}} />{t("hs.header")}</div>
         <div style={{fontFamily:"'JetBrains Mono','SF Mono',ui-monospace,monospace",fontVariantNumeric:"tabular-nums",fontSize:22,fontWeight:700,color:'var(--accent)'}}>{score} <span style={{fontFamily:"'Inter',sans-serif",fontSize:13,color:'var(--t3)',fontWeight:500}}>{t("hs.pts")}</span></div>
       </div>
       <div className="q-card">
