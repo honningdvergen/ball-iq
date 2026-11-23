@@ -48,9 +48,19 @@ describe("a phone that never read the account does not overwrite the account's t
     // and there is no third absolute writer of the totals
     expect((app.match(/from\('profiles'\)\.update\(\{\s*games_played/g) || []).length).toBe(2);
   });
-  it('the marker is set only after the max-merge is written, and cleared at sign-out', () => {
+  it('the marker is set only after the max-merge is written, right before the app hears of it, and cleared at sign-out', () => {
     const set = auth.indexOf('_statsHydratedUserId = userId');
     expect(set).toBeGreaterThan(auth.indexOf("safeSetItem('biq_stats', JSON.stringify(finalStats))"));
+    // Review, 23 Nov: not before the awaited ledger top-up. Each of the two
+    // places it is set is followed at once by the event that updates the app.
+    const sites = [...auth.matchAll(/_statsHydratedUserId = userId/g)].map((m) => m.index);
+    expect(sites.length).toBe(2);
+    for (const at of sites) {
+      const next = auth.slice(at, at + 900);
+      expect(next.indexOf("new CustomEvent('biq:hydrated'")).toBeGreaterThan(-1);
+      expect(next.slice(0, next.indexOf("new CustomEvent('biq:hydrated'"))).not.toMatch(/await /);
+    }
+    expect(auth.lastIndexOf('_statsHydratedUserId = userId')).toBeGreaterThan(auth.indexOf("rpc('increment_score', { user_id: userId, score_delta: scoreDeficit })"));
     expect(auth).toMatch(/activeUserIdRef\.current = null\n\s*_statsHydratedUserId = null/);
     expect(auth).toContain('export function statsHydratedFor(userId) { return !!userId && _statsHydratedUserId === userId }');
   });
@@ -60,13 +70,21 @@ describe("a phone that never read the account does not overwrite the account's t
     expect(auth).toContain('if (attempt >= 2) return');
     expect(auth).toContain('if (activeUserIdRef.current === userId) loadProfile(userId, userObj, attempt + 1)');
   });
+  it('and again when the phone comes back online or to the front, without flashing the stand-in', () => {
+    expect(auth).toContain("window.addEventListener('online', again)");
+    expect(auth).toContain("document.addEventListener('visibilitychange', again)");
+    expect(auth).toContain('if (!userId || activeUserIdRef.current !== userId || statsHydratedFor(userId)) return');
+    expect(auth).toContain('if (Date.now() - at < 15000) return');
+    expect(auth).toContain('if (attempt === 0) setProfile(fallbackProfile)');
+  });
 });
 
 describe('a failed game-state read is not an empty account', () => {
   it('the days are not merged or sent up, and the streak credit does not start', () => {
     expect(auth).toContain('_gameStateUnread: !!gameStateError,');
     const skip = auth.indexOf('if (remoteProfile._gameStateUnread) {');
-    expect(skip).toBeGreaterThan(auth.indexOf('_statsHydratedUserId = userId'));   // totals are still merged
+    expect(skip).toBeGreaterThan(auth.indexOf("safeSetItem('biq_stats', JSON.stringify(finalStats))"));   // totals are still merged
+    expect(auth.slice(skip, skip + 200)).toContain('_statsHydratedUserId = userId');
     expect(skip).toBeLessThan(auth.indexOf("rpc('upsert_daily_score'"));
     expect(skip).toBeLessThan(auth.indexOf("rpc('upsert_wordle_state'"));
     expect(auth.slice(skip, skip + 400)).toContain('partial: true');

@@ -358,7 +358,7 @@ export async function redeemLeagueClaim(userId) {
     r = await call('league_claim', { p_token: c.t });
     if (!r.error) break;
   }
-  if (r.error) { report(r.error, 'league-claim'); return null; }
+  if (r.error) return null;   // each failed call was reported by call()
   set(CLAIM_KEY, null);
   const moved = Number(r.data) || 0;
   if (moved > 0) { setLeagueMember(true); announceLeaguesChanged(); }

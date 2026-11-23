@@ -71,6 +71,9 @@ describe('the phone says its hour again once the token has landed', () => {
     expect(schedule).toBeGreaterThan(-1);
     expect(claim).toBeGreaterThan(schedule);
     const failed = fn.slice(fn.indexOf('} catch (e) {'));
+    // only if this call had already cancelled the old window
+    expect(fn.indexOf('cancelled = true;')).toBeGreaterThan(fn.indexOf('await cancelAllReminders();'));
+    expect(failed).toMatch(/if \(cancelled\) \{\s*_localWindowOn = false;\s*syncReminderHour\(false\);\s*\}/);
     expect(failed).toContain('_localWindowOn = false;');
     expect(failed).toContain('syncReminderHour(false);');
     expect(failed).toContain("Sentry.captureException(e, { tags: { area: 'reminder-schedule' } })");

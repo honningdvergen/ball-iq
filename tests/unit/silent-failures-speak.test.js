@@ -11,7 +11,7 @@ describe('league membership survives a failed call at sign-in', () => {
   const from = leagues.indexOf('export async function redeemLeagueClaim');
   const fn = leagues.slice(from, leagues.indexOf('\n}\n', from));
   it('the token is cleared only after the server has answered', () => {
-    const failed = fn.indexOf("if (r.error) { report(r.error, 'league-claim'); return null; }");
+    const failed = fn.indexOf("if (r.error) return null;");
     expect(failed).toBeGreaterThan(-1);
     expect(fn.lastIndexOf('set(CLAIM_KEY, null);')).toBeGreaterThan(failed);
     expect(fn).toContain('for (const wait of [0, 1500, 5000])');

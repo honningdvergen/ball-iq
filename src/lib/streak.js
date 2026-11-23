@@ -98,12 +98,21 @@ export function needsTodayCredit(record, playedToday, today = localDayNow()) {
 const OWED_KEY = 'biq_streak_owed';
 const OWED_BACK = 2;
 
-export function owedStreakDays(uid, today = localDayNow(), storage = globalThis.localStorage) {
+// ⚠️ THE SERVER MEASURES ITS TWO DAYS FROM ITS OWN DAY (UTC), NOT THE PHONE'S.
+// A day outside that window is not refused: tick_login_streak quietly uses
+// TODAY (UTC) instead. West of UTC in the evening the phone's day is a day
+// behind the server's, so an owed day two back on the phone is three back
+// there, and sending it would bank the server's today: a day ahead of the
+// player, a reset streak, and today's own tick answered "already counted".
+// (Caught in review before this shipped.) So a day must be inside BOTH.
+const utcDayNow = () => Math.floor(Date.now() / 86400000);
+
+export function owedStreakDays(uid, today = localDayNow(), storage = globalThis.localStorage, utcDay = utcDayNow()) {
   if (!uid) return [];
   try {
     const rec = JSON.parse(storage.getItem(OWED_KEY) || 'null');
     if (!rec || rec.uid !== uid || !Array.isArray(rec.days)) return [];
-    return [...new Set(rec.days.filter((d) => Number.isInteger(d) && d <= today && d >= today - OWED_BACK))].sort((a, b) => a - b);
+    return [...new Set(rec.days.filter((d) => Number.isInteger(d) && d <= today && d >= today - OWED_BACK && Math.abs(d - utcDay) <= OWED_BACK))].sort((a, b) => a - b);
   } catch { return []; }
 }
 
@@ -121,8 +130,8 @@ function writeOwed(uid, days, storage) {
  * every day still unsent. Returns the last answer the server gave and the
  * error that stopped it, if any.
  */
-export async function tickOwedStreak(tick, { uid, today = localDayNow(), upTo = null, storage = globalThis.localStorage } = {}) {
-  const want = owedStreakDays(uid, today, storage);
+export async function tickOwedStreak(tick, { uid, today = localDayNow(), upTo = null, storage = globalThis.localStorage, utcDay = utcDayNow() } = {}) {
+  const want = owedStreakDays(uid, today, storage, utcDay);
   if (upTo != null && !want.includes(upTo)) want.push(upTo);
   want.sort((a, b) => a - b);
   let data = null;

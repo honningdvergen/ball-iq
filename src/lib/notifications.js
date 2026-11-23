@@ -108,9 +108,11 @@ export function resyncReminderHour() {
 // the user has already completed today's daily so we don't nag them tonight.
 export async function scheduleReminderWindow({ skipToday = false, streak = 0 } = {}) {
   if (!notificationsSupported()) return;
+  let cancelled = false;
   try {
     if ((await getNotifPermission()) !== 'granted') return;
     await cancelAllReminders();
+    cancelled = true;
     const notifications = [];
     for (let off = skipToday ? 1 : 0; off < WINDOW_DAYS; off++) {
       const at = atFutureLocal(off);
@@ -159,9 +161,12 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
     return true;
   } catch (e) {
     // Nothing is scheduled on this phone now: hand the evening back to the
-    // server's push, and say so.
-    _localWindowOn = false;
-    syncReminderHour(false);
+    // server's push, and say so. Only when this call had already cancelled
+    // the old window; a failure before that left the old reminders in place.
+    if (cancelled) {
+      _localWindowOn = false;
+      syncReminderHour(false);
+    }
     try { Sentry.captureException(e, { tags: { area: 'reminder-schedule' } }); } catch { /* reporting must not throw */ }
     return false;
   }

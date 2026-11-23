@@ -407,7 +407,29 @@ export function AuthProvider({ children }) {
     }, attempt === 0 ? 4000 : 20000)
   }
 
+  // ...and again when the phone comes back: a cold start in a tunnel outlasts
+  // both timers, the token refresh keeps the same user id, and nothing else
+  // re-ran the load, so the whole session went unmerged (and so unsaved, see
+  // statsHydratedFor). At most once every fifteen seconds.
+  const lastLoadRef = useRef({ userId: null, userObj: null, at: 0 })
+  useEffect(() => {
+    const again = () => {
+      const { userId, userObj, at } = lastLoadRef.current
+      if (!userId || activeUserIdRef.current !== userId || statsHydratedFor(userId)) return
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) return
+      if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return
+      if (Date.now() - at < 15000) return
+      loadProfile(userId, userObj, 1)
+    }
+    window.addEventListener('online', again)
+    document.addEventListener('visibilitychange', again)
+    return () => { window.removeEventListener('online', again); document.removeEventListener('visibilitychange', again) }
+    // loadProfile is a fresh function each render but reads only refs and setters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   async function loadProfile(userId, userObj, attempt = 0) {
+    lastLoadRef.current = { userId, userObj, at: Date.now() }
     const metaUsername = userObj?.user_metadata?.username
     const fallbackProfile = {
       id: userId,
@@ -430,7 +452,9 @@ export function AuthProvider({ children }) {
       // Anything that writes back must wait for the real row.
       _placeholder: true,
     }
-    setProfile(fallbackProfile)
+    // Only on the first try: a retry must not flash the stand-in over a
+    // profile that is already on screen.
+    if (attempt === 0) setProfile(fallbackProfile)
 
     try {
       // Phase I cutover: profile metadata + aggregate stats live on `profiles`;
@@ -624,9 +648,6 @@ export function AuthProvider({ children }) {
     // freshly-zeroed or freshly-incremented Supabase values.
     safeSetItem('biq_xp', String(finalXp))
     safeSetItem('biq_stats', JSON.stringify(finalStats))
-    // From here this phone's totals contain the account's: a finished game may
-    // write them back as absolutes (statsHydratedFor).
-    _statsHydratedUserId = userId
 
     // ⚠️ DELTA LEDGERS CANNOT SELF-HEAL — reconcile them here, as deltas.
     // xp and total_score are written by atomic delta RPCs (increment_xp /
@@ -675,6 +696,7 @@ export function AuthProvider({ children }) {
     // day outright: a stale board here could overwrite another phone's win.
     // The totals above are merged; the days wait for the next good read.
     if (remoteProfile._gameStateUnread) {
+      _statsHydratedUserId = userId   // see the note at the full dispatch below
       try {
         window.dispatchEvent(new CustomEvent('biq:hydrated', { detail: { xp: finalXp, stats: finalStats, dailyScores: null, wordleState: null, loginStreak: null, partial: true } }))
       } catch {}
@@ -792,6 +814,13 @@ export function AuthProvider({ children }) {
     // Notify AppInner — its xp/stats/dailyHistory useState initializers
     // already ran with the pre-hydration localStorage values, so they need
     // a kick to pick up the freshly-merged numbers.
+    // From here this phone's totals contain the account's, and the event below
+    // puts them in the app's state in the same breath: a finished game may now
+    // write them back as absolutes (statsHydratedFor). Set HERE, not where the
+    // merge is stored: between the two this function awaits the ledger
+    // top-up, and a game finished in that gap would have written the app's
+    // still-unmerged numbers.
+    _statsHydratedUserId = userId
     try {
       window.dispatchEvent(new CustomEvent('biq:hydrated', {
         detail: {
