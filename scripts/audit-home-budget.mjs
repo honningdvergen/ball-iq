@@ -133,7 +133,19 @@ for (const [f, b] of rows) console.log(`  ${String(Math.round(b / 1024)).padStar
 //   DSN in process.env (Vercel)        SDK and debug IDs are in the bytes: +0
 //   SDK in the eager chunks (.env.local) only Vercel's debug IDs are missing: +6
 //   no SDK anywhere (CI, previews)      charge the whole 72
-const SENTRY_EAGER_KB = 72;
+// ⚠️ RE-MEASURED 23 Nov 2026: THE 72 WAS 18 KB STALE, AND IT TURNED CI RED ON A
+// TREE PRODUCTION ACCEPTED. On commit f02f8cc8 the same script read:
+//   no DSN (CI, and a local build with VITE_SENTRY_DSN= )   839 KB, main 47 KB
+//   DSN in .env.local (the SDK really bundled)              887 KB, main 95 KB
+// so the SDK is 48 KB in Home's eager path today, not the 66 measured on
+// 4 Oct, and with Vercel's ~6 KB of debug IDs the charge is 54. CI had been
+// reading 18 KB over the truth ever since the SDK shrank: "911 KB > 909" in
+// CI while Vercel built and deployed the identical commit (893). A gate that
+// fails where production passes is as wrong as one that passes where it
+// fails; this constant must be the measured difference, nothing else.
+// To re-measure: `VITE_SENTRY_DSN= npm run build` against a normal build, and
+// subtract the two totals printed here before any charge.
+const SENTRY_EAGER_KB = 54;
 const SENTRY_DEBUG_ID_KB = 6;
 const sdkInBuild = [...eager].some((f) => /ingest(\.[a-z]+)?\.sentry\.io/.test(readFileSync(resolve(ASSETS, f), 'utf8')));
 const charge = process.env.VITE_SENTRY_DSN ? 0 : sdkInBuild ? SENTRY_DEBUG_ID_KB : SENTRY_EAGER_KB;
