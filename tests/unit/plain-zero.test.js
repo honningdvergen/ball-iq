@@ -26,6 +26,11 @@ describe('no dotted zero where a player reads a number', () => {
     expect(normalizeJoinCode('000000')).toBeNull();
   });
 
+  it('the share images drawn on canvas use the app font for their numbers too', () => {
+    const src = read('src/lib/shareCardRender.js');
+    expect(src.split('\n').filter((l) => /ctx\.font\s*=/.test(l) && /JetBrains Mono|monospace/.test(l))).toEqual([]);
+  });
+
   it('scores and timers drawn inline use the app font with tabular figures', () => {
     const app = read('src/App.jsx');
     const hs = app.slice(app.indexOf('function HotStreakEngine('), app.indexOf('function HotStreakEngine(') + 9000);

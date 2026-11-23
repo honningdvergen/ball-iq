@@ -176,15 +176,18 @@ export async function generateShareCard(type, data) {
   ctx.font = '500 12px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "right";
-  // The Footle card prints its address once, at the foot, with the path.
-  if (type !== "wordle") ctx.fillText("balliq.app", W - padX, headerY);
+  // The Footle card prints its address once, at the foot, with the path. So
+  // does every card that draws the centred foot below: the address in the
+  // header as well said it twice on one small image (23 Nov 2026).
+  const centredFoot = type !== "wordle" && type !== "league" && type !== "draft" && type !== "top10" && type !== "trail" && type !== "mystery";
+  if (type !== "wordle" && !centredFoot) ctx.fillText("balliq.app", W - padX, headerY);
 
   // Divider
   ctx.fillStyle = "#2F3240";
   ctx.fillRect(padX, 56, W - padX * 2, 1);
 
   // Centered footer URL (the Footle and league cards draw their own foot)
-  if (type !== "wordle" && type !== "league" && type !== "draft" && type !== "top10" && type !== "trail" && type !== "mystery") {
+  if (centredFoot) {
   ctx.font = '500 13px Inter, "Helvetica Neue", Arial, sans-serif';
   ctx.fillStyle = "#9BA0B8";
   ctx.textAlign = "center";
@@ -484,13 +487,16 @@ export async function generateShareCard(type, data) {
     ctx.fillStyle = "#9BA0B8";
     ctx.fillText("balliq.app/play?game=draft", cx, H - 24);
   } else if (type === "hotstreak") {
+    // The numbers on these images are Inter, as on screen (23 Nov 2026): the
+    // mono face they used draws its zero with a dot in it, and a "10" or an
+    // "80" on a shared card read as "18" and "88" (app.css has the full note).
     const score = data?.score ?? 0;
 
     ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
     ctx.fillText("HOT STREAK", cx, 130);
 
-    ctx.font = '900 88px "JetBrains Mono", "Courier New", monospace';
+    ctx.font = '900 88px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FF6A00";
     ctx.fillText(String(score), cx, 260);
 
@@ -557,7 +563,7 @@ export async function generateShareCard(type, data) {
     ctx.fillText("B A L L   I Q", px(40), px(52));
 
     // Rating and avatar: same optical size, held as a pair.
-    ctx.font = `800 ${px(150)}px "JetBrains Mono", "Courier New", monospace`;
+    ctx.font = `800 ${px(150)}px Inter, "Helvetica Neue", Arial, sans-serif`;
     ctx.fillStyle = t.accent;
     // An unrated card prints a dash, never a number. This drew card.overall
     // unconditionally until 2026-09-07, so a player who had answered fewer than
@@ -637,7 +643,7 @@ export async function generateShareCard(type, data) {
       ctx.fillStyle = _tint(t.text, 0.72);
       ctx.fillText(r.abbr, x + px(22), y + px(34));
       ctx.textAlign = "right";
-      ctx.font = `800 ${px(27)}px "JetBrains Mono", "Courier New", monospace`;
+      ctx.font = `800 ${px(27)}px Inter, "Helvetica Neue", Arial, sans-serif`;
       ctx.fillStyle = r.abbr === bestAbbr ? t.accent : _tint(t.text, 0.92);
       ctx.fillText(r.answered >= MIN_RATED_ANSWERS ? String(r.rating) : "—", x + colW, y + px(36));
       ctx.textAlign = "left";
@@ -702,47 +708,53 @@ export async function generateShareCard(type, data) {
     const accuracy = total > 0 ? Math.round((score / total) * 100) : 0;
     const streak = data?.streak;
 
-    ctx.font = '700 13px Inter, "Helvetica Neue", Arial, sans-serif';
+    // ⚠️ ONE LOUD THING, AND NOT TOO LOUD (23 Nov 2026). Alex, on this card:
+    // "is the font and everything almost too big and bold here?" It was: an
+    // 80px weight-900 score, an 18px bold line, a 24px extra-bold verdict and a
+    // bold button, all shouting at once on a 390px card. The score is the one
+    // large thing, at 64px and a step lighter; the rest steps down under it.
+    ctx.font = '600 13px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#9BA0B8";
-    ctx.fillText(modeLabel, cx, 130);
+    ctx.fillText(modeLabel, cx, 150);
 
-    ctx.font = '900 80px "JetBrains Mono", "Courier New", monospace';
+    ctx.font = '800 64px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#58CC02";
     ctx.fillText(`${score}/${total}`, cx, 250);
 
-    ctx.font = '700 18px Inter, "Helvetica Neue", Arial, sans-serif';
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(`${accuracy}% accuracy`, cx, 292);
+    ctx.font = '500 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.fillStyle = "#C9CCDA";
+    ctx.fillText(`${accuracy}% accuracy`, cx, 286);
 
     // Accuracy bar — fills the band with a real visual instead of dead space.
-    const barW = W - padX * 2 - 40, barX = cx - barW / 2, barY = 318, barH = 14;
-    _roundRectPath(ctx, barX, barY, barW, barH, 7);
+    const barW = W - padX * 2 - 80, barX = cx - barW / 2, barY = 308, barH = 8;
+    _roundRectPath(ctx, barX, barY, barW, barH, 4);
     ctx.fillStyle = "rgba(255,255,255,0.08)";
     ctx.fill();
     const fillW = Math.max(barH, Math.round(barW * Math.min(100, Math.max(0, accuracy)) / 100));
-    _roundRectPath(ctx, barX, barY, fillW, barH, 7);
+    _roundRectPath(ctx, barX, barY, fillW, barH, 4);
     ctx.fillStyle = "#58CC02";
     ctx.fill();
 
     // Tier tagline keyed to accuracy.
     const tier = resultVerdict(accuracy);
-    ctx.font = '800 24px Inter, "Helvetica Neue", Arial, sans-serif';
+    ctx.font = '700 21px Inter, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillText(tier, cx, 382);
+    ctx.fillText(tier, cx, 366);
 
     if (streak && streak >= 3) {
-      ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+      ctx.font = '600 14px Inter, "Helvetica Neue", Arial, sans-serif';
       ctx.fillStyle = "#FF6A00";
-      ctx.fillText(`🔥 ${streak} in a row`, cx, 416);
+      ctx.fillText(`${streak} in a row`, cx, 398);
     }
 
-    // CTA — filled green pill (matches the profile card).
-    const ctaText = "Can you beat me? ⚽";
-    ctx.font = '800 16px Inter, "Helvetica Neue", Arial, sans-serif';
-    const ctaW = ctx.measureText(ctaText).width + 46;
-    const ctaH = 42, ctaY = 470;
+    // CTA — filled green pill (matches the profile card). No emoji: the app's
+    // own marks only (Alex, 23 Nov 2026).
+    const ctaText = "Can you beat me?";
+    ctx.font = '700 15px Inter, "Helvetica Neue", Arial, sans-serif';
+    const ctaW = ctx.measureText(ctaText).width + 48;
+    const ctaH = 40, ctaY = 458;
     ctx.fillStyle = "#58CC02";
-    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 21);
+    _roundRectPath(ctx, cx - ctaW / 2, ctaY, ctaW, ctaH, 20);
     ctx.fill();
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#06250F";
