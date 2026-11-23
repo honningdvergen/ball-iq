@@ -61,6 +61,25 @@ export function readWordleTodayStatus() {
 }
 
 /**
+ * THE PHONE'S BOARD IS THE SAME GAME, FURTHER ALONG (23 Nov 2026). Each guess
+ * is sent to the server as it is made and a failed send is not retried, so a
+ * player whose connection dropped after guess three and who solved it on
+ * guess five had "playing, three guesses" on the server. The next sign-in
+ * merge let the server win and wrote that over the solve: the win, the XP
+ * line and the Footle streak day, gone. True only when the server's guesses
+ * are the opening of the phone's own (one board, not two devices' separate
+ * attempts) and the server's day is unfinished; a finished server day stands.
+ */
+export function localBoardLeads(ls, rs) {
+  if (!ls || !rs || typeof ls !== 'object' || typeof rs !== 'object') return false;
+  if (!Array.isArray(ls.guesses) || !Array.isArray(rs.guesses)) return false;
+  const done = (st) => st.status === 'won' || st.status === 'lost';
+  if (done(rs)) return false;
+  if (!rs.guesses.every((g, i) => ls.guesses[i] === g)) return false;
+  return done(ls) || ls.guesses.length > rs.guesses.length;
+}
+
+/**
  * The sign-in merge of Footle day records (useAuth.jsx): the remote record
  * wins, but never drops a local stamp it lacks, the answer the player met
  * (lib/wordle.js footleAnswerFor) or the archive `arc` mark. Records synced
@@ -70,6 +89,7 @@ export function mergeWordleRecords(local = {}, remote = {}) {
   const out = { ...local };
   for (const [ymd, rs] of Object.entries(remote)) {
     const ls = local[ymd];
+    if (localBoardLeads(ls, rs)) continue; // out[ymd] is already the local board
     out[ymd] = (ls && rs && typeof rs === 'object')
       ? { ...rs,
         // The local answer only describes the local guesses: borrow it only

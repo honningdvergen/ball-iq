@@ -1835,6 +1835,7 @@ export default {
   'rc.noteMany': 'Acertaste {hard}',
   'rc.hardMany': '{n} de las {total} difíciles de hoy.',
   'rc.hardAll': 'todas las difíciles de hoy.',
+  'ts.repairFailed': 'No se pudo conectar para reparar tu racha. Revisa la conexión y vuelve a terminar hoy el reto de ayer.',
   'ld.ballpark': 'Cargando Ballpark',
   'bp.title': 'Ballpark',
   'bp.of': 'Pregunta {n} de {m}',

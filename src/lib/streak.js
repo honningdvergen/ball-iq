@@ -80,3 +80,61 @@ export function needsTodayCredit(record, playedToday, today = localDayNow()) {
   if (!Number.isFinite(lastDay)) return true;   // no record yet: today is the first day
   return lastDay < today;                        // today (or a legacy day ahead of it) is already counted
 }
+
+/**
+ * DAYS THE SERVER NEVER HEARD ABOUT (23 Nov 2026). The streak is counted by
+ * one call when a daily is finished. When that call failed (a tunnel, a
+ * flaky connection late in the evening) the app logged a line to the console
+ * and moved on: no report, no second try, nothing kept. The one retry was a
+ * check on a later sign-in merge the SAME day, so an evening failure was a
+ * missed day and the streak reset the next morning, for a player who had
+ * played.
+ *
+ * A day that fails is written down here per account and sent again before
+ * the next tick and at the next sign-in merge. The server takes a day up to
+ * two back, so nothing older is kept. Order matters: an owed day must reach
+ * the server BEFORE a later one, or the later tick resets the streak first.
+ */
+const OWED_KEY = 'biq_streak_owed';
+const OWED_BACK = 2;
+
+export function owedStreakDays(uid, today = localDayNow(), storage = globalThis.localStorage) {
+  if (!uid) return [];
+  try {
+    const rec = JSON.parse(storage.getItem(OWED_KEY) || 'null');
+    if (!rec || rec.uid !== uid || !Array.isArray(rec.days)) return [];
+    return [...new Set(rec.days.filter((d) => Number.isInteger(d) && d <= today && d >= today - OWED_BACK))].sort((a, b) => a - b);
+  } catch { return []; }
+}
+
+function writeOwed(uid, days, storage) {
+  try {
+    if (days.length) storage.setItem(OWED_KEY, JSON.stringify({ uid, days }));
+    else storage.removeItem(OWED_KEY);
+  } catch { /* storage blocked: the day is tried again only this session */ }
+}
+
+/**
+ * Send the owed days (oldest first), then `upTo` if given, through `tick`
+ * (day -> Promise<{ data, error }>). Stops at the first failure, because a
+ * later day sent past a missing one would reset the streak, and writes down
+ * every day still unsent. Returns the last answer the server gave and the
+ * error that stopped it, if any.
+ */
+export async function tickOwedStreak(tick, { uid, today = localDayNow(), upTo = null, storage = globalThis.localStorage } = {}) {
+  const want = owedStreakDays(uid, today, storage);
+  if (upTo != null && !want.includes(upTo)) want.push(upTo);
+  want.sort((a, b) => a - b);
+  let data = null;
+  for (let i = 0; i < want.length; i++) {
+    let res;
+    try { res = await tick(want[i]); } catch (e) { res = { data: null, error: e }; }
+    if (res?.error) {
+      writeOwed(uid, want.slice(i), storage);
+      return { data, error: res.error, sent: want.slice(0, i) };
+    }
+    data = res?.data ?? data;
+  }
+  writeOwed(uid, [], storage);
+  return { data, error: null, sent: want };
+}

@@ -10,7 +10,7 @@ import { SignInWithApple } from '@capacitor-community/apple-sign-in'
 import { supabase, readStoredSession } from './supabase.js'
 import { recordSignupAttribution } from './lib/firstTouch.js'
 import { safeSetItem } from './safeStorage.js'
-import { mergeWordleRecords } from './lib/wordleStatus.js'
+import { mergeWordleRecords, localBoardLeads } from './lib/wordleStatus.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
 import { unregisterPush } from './lib/push.js'
@@ -78,6 +78,7 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_xp',
   'biq_stats',
   'biq_login_streak',
+  'biq_streak_owed', // days the streak call failed for (lib/streak.js); another account must never send them
   'biq_iq_history',
   'biq_hotstreak_best',
   'biq_skill_level',
@@ -103,6 +104,20 @@ export function clearAllUserLocalStorage() {
     for (const k of matches) localStorage.removeItem(k)
   } catch {}
 }
+
+// HAS THIS PHONE'S COPY OF THE TOTALS BEEN MERGED WITH THE ACCOUNT'S, THIS
+// SESSION? (23 Nov 2026.) A finished game writes games played, correct
+// answers and the bests to the profile as ABSOLUTE numbers taken from this
+// phone. That is only safe after hydrateLocalFromRemote has max-merged the
+// account's numbers into the phone's. When the profile read failed at boot
+// (a bad connection on a new phone or a reinstall), nothing was merged, the
+// phone held near-zero, and one finished game replaced the account's bests
+// and its Ball IQ card with that. Writers ask this first and skip the
+// absolute write when the answer is no; the XP and score ledgers are sent as
+// deltas and are unaffected, and the next good sign-in merge catches the
+// totals up.
+let _statsHydratedUserId = null
+export function statsHydratedFor(userId) { return !!userId && _statsHydratedUserId === userId }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -371,7 +386,16 @@ export function AuthProvider({ children }) {
     return () => { clearTimeout(authWatchdog); subscription.unsubscribe() }
   }, [])
 
-  async function loadProfile(userId, userObj) {
+  // A failed profile read is tried again, twice: after 4 s and after 20 s.
+  // Until one succeeds the player sees the stand-in and nothing is merged.
+  function retryLoadProfile(userId, userObj, attempt) {
+    if (attempt >= 2) return
+    setTimeout(() => {
+      if (activeUserIdRef.current === userId) loadProfile(userId, userObj, attempt + 1)
+    }, attempt === 0 ? 4000 : 20000)
+  }
+
+  async function loadProfile(userId, userObj, attempt = 0) {
     const metaUsername = userObj?.user_metadata?.username
     const fallbackProfile = {
       id: userId,
@@ -411,6 +435,10 @@ export function AuthProvider({ children }) {
 
       if (profileError) {
         console.error('[loadProfile] profiles error', { userId, status: profileStatus, code: profileError.code, message: profileError.message, details: profileError.details, hint: profileError.hint })
+        // Not hydrated: statsHydratedFor() stays false, so nothing writes this
+        // phone's totals over the account's (see the note at its definition).
+        Sentry.captureException(profileError, { tags: { area: 'load-profile' } })
+        retryLoadProfile(userId, userObj, attempt)
         return
       }
       if (!profileData) {
@@ -433,6 +461,7 @@ export function AuthProvider({ children }) {
       let gameState = null
       if (gameStateError) {
         console.error('[loadProfile] user_game_state error (non-fatal)', { userId, status: gameStateStatus, code: gameStateError.code, message: gameStateError.message })
+        Sentry.captureException(gameStateError, { tags: { area: 'load-game-state' } })
       } else if (!gameStateData) {
         console.warn('[loadProfile] no user_game_state row for user — trigger should have created one', { userId })
         Sentry.captureMessage('Empty result: user_game_state row missing for authenticated user', {
@@ -457,6 +486,9 @@ export function AuthProvider({ children }) {
         wordle_state:        gameState?.wordle_state,
         login_streak:        gameState?.login_streak,
         username: profileData.username || metaUsername || 'Player',
+        // The game-state READ failed. That is not an account with no days in
+        // it: hydrate must not treat every day on this phone as unsynced.
+        _gameStateUnread: !!gameStateError,
       }
       setProfile(merged)
       // Cross-device sync: max-merge local <-> remote so signing in on a fresh
@@ -464,9 +496,11 @@ export function AuthProvider({ children }) {
       // local progress that hasn't synced yet.
       hydrateLocalFromRemote(userId, merged).catch(e => {
         console.error('[hydrate] failed', e?.message || e)
+        Sentry.captureException(e, { tags: { area: 'hydrate' } })
       })
     } catch (e) {
       console.error('[loadProfile] exception', { userId, error: e })
+      retryLoadProfile(userId, userObj, attempt)
     }
   }
 
@@ -578,6 +612,9 @@ export function AuthProvider({ children }) {
     // freshly-zeroed or freshly-incremented Supabase values.
     safeSetItem('biq_xp', String(finalXp))
     safeSetItem('biq_stats', JSON.stringify(finalStats))
+    // From here this phone's totals contain the account's: a finished game may
+    // write them back as absolutes (statsHydratedFor).
+    _statsHydratedUserId = userId
 
     // ⚠️ DELTA LEDGERS CANNOT SELF-HEAL — reconcile them here, as deltas.
     // xp and total_score are written by atomic delta RPCs (increment_xp /
@@ -603,11 +640,11 @@ export function AuthProvider({ children }) {
           safeSetItem(RECONCILE_FLAG, String(Date.now()))
           if (xpDeficit > 0) {
             const { error } = await supabase.rpc('increment_xp', { user_id: userId, xp_delta: xpDeficit })
-            if (error) console.warn('[hydrate] xp reconcile failed', error.message)
+            if (error) { console.warn('[hydrate] xp reconcile failed', error.message); Sentry.captureException(error, { tags: { area: 'hydrate-xp' } }) }
           }
           if (scoreDeficit > 0) {
             const { error } = await supabase.rpc('increment_score', { user_id: userId, score_delta: scoreDeficit })
-            if (error) console.warn('[hydrate] score reconcile failed', error.message)
+            if (error) { console.warn('[hydrate] score reconcile failed', error.message); Sentry.captureException(error, { tags: { area: 'hydrate-score' } }) }
           }
         }
       }
@@ -619,6 +656,18 @@ export function AuthProvider({ children }) {
     // per-day-keyed, so union-merge is safe — there's no "delete a day"
     // operation that a stale local value could undo. Local-only days
     // back-sync up.
+
+    // ⚠️ ONLY WITH A REAL READ (23 Nov 2026). A failed user_game_state read
+    // arrived here as "no days on the server", so every day on this phone
+    // looked unsynced and was sent up, and upsert_wordle_state replaces the
+    // day outright: a stale board here could overwrite another phone's win.
+    // The totals above are merged; the days wait for the next good read.
+    if (remoteProfile._gameStateUnread) {
+      try {
+        window.dispatchEvent(new CustomEvent('biq:hydrated', { detail: { xp: finalXp, stats: finalStats, dailyScores: null, wordleState: null, loginStreak: null, partial: true } }))
+      } catch {}
+      return
+    }
 
     // Daily scores (score per YMD) AND daily wrongAnswers (array per YMD).
     // Phase 5w followup added the wrongAnswers sync; folded into the same
@@ -674,21 +723,21 @@ export function AuthProvider({ children }) {
     if (localOnlyDailyDays.length > 0) {
       Promise.all(localOnlyDailyDays.map(d =>
         supabase.rpc('upsert_daily_score', { p_ymd: d, p_score: localDailyScores[d] })
-          .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily]', d, error.message) })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
       )).catch(e => console.warn('[hydrate back-sync daily]', e?.message || e))
     }
     const localOnlyDailyWADays = Object.keys(localDailyWA).filter(d => !(d in remoteDailyWA))
     if (localOnlyDailyWADays.length > 0) {
       Promise.all(localOnlyDailyWADays.map(d =>
         supabase.rpc('upsert_daily_wrong_answers', { p_ymd: d, p_wrongs: localDailyWA[d] })
-          .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily wa]', d, error.message) })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily wa]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
       )).catch(e => console.warn('[hydrate back-sync daily wa]', e?.message || e))
     }
     const localOnlyDailyAADays = Object.keys(localDailyAA).filter(d => !(d in remoteDailyAA))
     if (localOnlyDailyAADays.length > 0) {
       Promise.all(localOnlyDailyAADays.map(d =>
         supabase.rpc('upsert_daily_all_answers', { p_ymd: d, p_answers: localDailyAA[d] })
-          .then(({ error }) => { if (error) console.warn('[hydrate back-sync daily aa]', d, error.message) })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily aa]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
       )).catch(e => console.warn('[hydrate back-sync daily aa]', e?.message || e))
     }
 
@@ -698,16 +747,19 @@ export function AuthProvider({ children }) {
     const localWordleState = readLocalMap(/^biq_wordle_(\d{4}-\d{2}-\d{2})$/, p => (
       p && Array.isArray(p.guesses) && typeof p.status === 'string' ? p : null
     ))
-    // Remote wins, but keeps a local answer / arc stamp it lacks (wordleStatus.js).
+    // Remote wins, but keeps a local answer / arc stamp it lacks, and yields
+    // to a local board that is the same game further along (wordleStatus.js).
     const mergedWordleState = mergeWordleRecords(localWordleState, remoteWordleState)
     for (const [ymd, st] of Object.entries(mergedWordleState)) {
       safeSetItem(`biq_wordle_${ymd}`, JSON.stringify(st))
     }
-    const localOnlyWordleDays = Object.keys(localWordleState).filter(d => !(d in remoteWordleState))
+    // Days the server lacks, and days where this phone's board is the same
+    // game further along (wordleStatus.js localBoardLeads).
+    const localOnlyWordleDays = Object.keys(localWordleState).filter(d => !(d in remoteWordleState) || localBoardLeads(localWordleState[d], remoteWordleState[d]))
     if (localOnlyWordleDays.length > 0) {
       Promise.all(localOnlyWordleDays.map(d =>
         supabase.rpc('upsert_wordle_state', { p_ymd: d, p_state: localWordleState[d] })
-          .then(({ error }) => { if (error) console.warn('[hydrate back-sync wordle]', d, error.message) })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync wordle]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
       )).catch(e => console.warn('[hydrate back-sync wordle]', e?.message || e))
     }
 
@@ -1385,6 +1437,7 @@ export function AuthProvider({ children }) {
     // 4. Clear ballIQ_guestMode + isGuest state.
     const signedOutUid = activeUserIdRef.current
     activeUserIdRef.current = null
+    _statsHydratedUserId = null
     clearAllUserLocalStorage()
     // Drop this device's push token BEFORE ending the session — the delete is
     // RLS-gated on auth.uid(), so it must run while still authenticated. Stops

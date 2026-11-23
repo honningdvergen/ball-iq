@@ -1896,6 +1896,7 @@ export default registerEnglish({
   'rc.noteMany': 'You got {hard}',
   'rc.hardMany': '{n} of today\'s {total} hard ones.',
   'rc.hardAll': 'every hard one today.',
+  'ts.repairFailed': 'Couldn\'t reach the server to repair your streak. Check your connection and finish yesterday\'s puzzle again today.',
   'ld.ballpark': 'Loading Ballpark',
   'bp.title': 'Ballpark',
   'bp.of': 'Question {n} of {m}',

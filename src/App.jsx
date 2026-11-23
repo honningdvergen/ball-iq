@@ -1,7 +1,7 @@
 import './app.css';
 import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, useMemo } from "react";
 import * as Sentry from '@sentry/react';
-import { useAuth, clearAllUserLocalStorage } from './useAuth.jsx';
+import { useAuth, clearAllUserLocalStorage, statsHydratedFor } from './useAuth.jsx';
 import { supabase } from './supabase.js';
 import { safeSetItem } from './safeStorage.js';
 import { useMultiplayerRoom } from './useMultiplayerRoom.js';
@@ -47,7 +47,7 @@ import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drai
 // The club tables are LAZY (src/data/clubPacks.js); this is the only way in.
 import { loadClubData, useClubData } from './lib/clubData.js';
 import { CLUB_INDEX } from './marketing/clubIndex.js';
-import { liveStreak, localDayNow, needsTodayCredit, shieldsAvailable } from './lib/streak.js';
+import { liveStreak, localDayNow, needsTodayCredit, owedStreakDays, shieldsAvailable, tickOwedStreak } from './lib/streak.js';
 import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
 import { dailyRunAnswered } from './lib/dailyRun.js';
@@ -3879,8 +3879,16 @@ function AppInner() {
     const localDay = Math.floor((d0.getTime() - d0.getTimezoneOffset() * 60000) / 86400000);
     let result;
     if (user?.id) {
-      const { data, error } = await supabase.rpc('tick_login_streak', { p_local_day: localDay });
-      if (error) { console.warn('[tick_login_streak]', error.message); return; }
+      // Owed days first, oldest first, then today (lib/streak.js). A day that
+      // fails is written down and sent again; it used to be a console line.
+      const { data, error } = await tickOwedStreak(
+        (day) => supabase.rpc('tick_login_streak', { p_local_day: day }),
+        { uid: user.id, today: localDay, upTo: localDay });
+      if (error) {
+        console.warn('[tick_login_streak]', error.message);
+        Sentry.captureException(error, { tags: { area: 'streak-tick' } });
+        return;
+      }
       result = data;
     } else {
       // Guest path — same logic as the RPC, executed client-side.
@@ -4204,8 +4212,21 @@ function AppInner() {
       setMilestoneConfetti(true);
     };
     if (user?.id) {
-      const { data, error } = await supabase.rpc('repair_login_streak', { p_local_day: localDay });
-      if (error) { console.warn('[repair_login_streak]', error.message); return; }
+      // Three tries, then SAY SO. This failed in silence: the player finished
+      // yesterday's puzzle to win the streak back and nothing happened. The
+      // offer stays up (streakRepair is kept) so finishing it again retries.
+      let data = null, error = null;
+      for (const wait of [0, 1500, 5000]) {
+        if (wait) await new Promise((r) => setTimeout(r, wait));
+        ({ data, error } = await supabase.rpc('repair_login_streak', { p_local_day: localDay }).then((r) => r, (e) => ({ data: null, error: e })));
+        if (!error) break;
+      }
+      if (error) {
+        console.warn('[repair_login_streak]', error.message);
+        Sentry.captureException(error, { tags: { area: 'streak-repair' } });
+        showToast(tl("ts.repairFailed"));
+        return;
+      }
       setStreakRepair(null);
       if (!data?.repaired) return;
       setLoginStreak(data.streak);
@@ -4848,7 +4869,10 @@ function AppInner() {
               syncFailed = true;
             }
           }
-          const { error: updErr } = await supabase.from('profiles').update({
+          // ⚠️ ABSOLUTES, SO ONLY AFTER THE MERGE (useAuth statsHydratedFor):
+          // before this phone's totals contain the account's, writing them
+          // would replace the account's bests with whatever is here.
+          const { error: updErr } = !statsHydratedFor(user.id) ? { error: null } : await supabase.from('profiles').update({
             games_played: updated.gamesPlayed,
             correct_answers: updated.totalCorrect,
             stats: {
@@ -5655,6 +5679,8 @@ function AppInner() {
     safeSetItem("biq_stats", JSON.stringify({ ...base, gamesPlayed, totalCorrect, totalAnswered }));
     setStats((prev) => ({ ...prev, gamesPlayed, totalCorrect, totalAnswered }));
     if (!user?.id) return;
+    // Absolutes: only once this phone's totals contain the account's.
+    if (!statsHydratedFor(user.id)) return;
     (async () => {
       try {
         // ⚠️ A query builder RESOLVES on error — destructure, never bare-await.
@@ -5662,7 +5688,7 @@ function AppInner() {
           games_played: gamesPlayed,
           correct_answers: totalCorrect,
         }).eq('id', user.id);
-        if (error) console.warn("[daily stats]", error.message || "Unknown error");
+        if (error) { console.warn("[daily stats]", error.message || "Unknown error"); Sentry.captureException(error, { tags: { area: 'daily-stats' } }); }
       } catch (e) {
         console.warn("[daily stats]", e?.message || "Unknown error");
       }
@@ -6889,7 +6915,9 @@ function AppInner() {
       // What the account held when it was read, for the credit check below
       // (lib/streak.js needsTodayCredit). A new object every hydrate, so the
       // effect runs once per sign-in or refresh, not once per render.
-      setHydratedStreak({ rec: (detail.loginStreak && typeof detail.loginStreak === 'object') ? detail.loginStreak : null,
+      // Not on a partial hydrate (the game-state read failed): "no streak
+      // record" there means unread, not absent, and must not start a credit.
+      if (!detail.partial) setHydratedStreak({ rec: (detail.loginStreak && typeof detail.loginStreak === 'object') ? detail.loginStreak : null,
         scoredToday: !!(detail.dailyScores && typeof detail.dailyScores === 'object' && dateToYMD(new Date()) in detail.dailyScores) });
       if (detail.loginStreak && typeof detail.loginStreak === 'object') {
         const rec = detail.loginStreak;
@@ -6934,6 +6962,24 @@ function AppInner() {
       } catch { /* unreadable storage: nothing to credit */ }
     }
     if (needsTodayCredit(hydratedStreak.rec, playedToday)) tickLoginStreak();
+    // Days an earlier session could not save (lib/streak.js): sent now, before
+    // anything is played today, so the next tick continues the streak instead
+    // of resetting it. Quiet: these days were celebrated when they were played.
+    else if (owedStreakDays(user.id).length) {
+      const today = localDayNow();
+      tickOwedStreak((day) => supabase.rpc('tick_login_streak', { p_local_day: day }), { uid: user.id, today })
+        .then(({ data, error }) => {
+          if (error) { Sentry.captureException(error, { tags: { area: 'streak-owed' } }); }
+          if (!data || typeof data.streak !== 'number') return;
+          let xpVal = 0, used = 0;
+          try { xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0; } catch { /* no local xp */ }
+          try { used = (JSON.parse(localStorage.getItem('biq_stats') || '{}') || {}).shieldsUsed || 0; } catch { /* no local stats */ }
+          const live = liveStreak(data, today, shieldsAvailable(xpVal, used));
+          setLoginStreak(live);
+          setBestLoginStreak((b0) => Math.max(b0 || 0, Number(data.best) || 0, live));
+          try { localStorage.setItem('biq_login_streak', JSON.stringify({ streak: Number(data.streak) || 0, lastDay: Number(data.lastDay) || 0, best: Math.max(Number(data.best) || 0, live) })); } catch { /* shown right this session */ }
+        }).catch(() => { /* tickOwedStreak does not reject; belt and braces */ });
+    }
     // Once per hydrate on purpose: dailyDone and the tick are read as they are then.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydratedStreak, user?.id]);
