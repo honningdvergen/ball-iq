@@ -24,6 +24,10 @@ import { initAds } from './lib/ads.js'
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 import { normalizeSupabaseError } from './lib/sentryNormalize.js'
 
+// What a navigation away leaves behind: the chunk and stylesheet requests it
+// cancelled, each reported as a load failure. Not faults (see __biqLeaving).
+const LEAVING_NOISE = /Unable to preload CSS|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|ChunkLoadError/i
+
 // Sentry initialization — runs before app mount so render errors land in
 // Sentry from the very first paint. DSN is environment-gated: prod builds
 // ship with VITE_SENTRY_DSN set (Vercel env var); dev/preview builds run
@@ -61,6 +65,8 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
     // PII scrub: strip user email + Supabase tokens from breadcrumbs, URLs and
     // event metadata. defaultPII is false; this hardens further.
     beforeSend(event, hint) {
+      // Chunk and stylesheet requests cancelled because the page is leaving.
+      if (window.__biqLeaving && LEAVING_NOISE.test(String(hint?.originalException?.message || event?.exception?.values?.[0]?.value || event?.message || ''))) return null
       event = normalizeSupabaseError(event, hint)
       if (!event) return null
       if (event.user) {
@@ -133,6 +139,18 @@ try {
   }
 } catch {}
 
+// THE PAGE IS LEAVING. Set the moment any navigation away starts (a link, a
+// redirect of ours, a reload), read by the self-heal below and by the Sentry
+// filter above so neither treats the requests a navigation cancels as faults.
+// A mailto:, an app link or a download fires this event without the page
+// going anywhere, so the flag clears itself after four seconds.
+try {
+  window.addEventListener('beforeunload', () => {
+    window.__biqLeaving = true
+    setTimeout(() => { window.__biqLeaving = false }, 4000)
+  })
+} catch {}
+
 // Stale dynamic-import self-heal (web/PWA only — native bundles its chunks
 // locally and can't 404 them). After a deploy prunes the previous build's
 // hashed assets, a long-lived tab's import('./questions.js') can fail with a
@@ -146,6 +164,15 @@ try {
     const isChunkError = (msg) =>
       /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(String(msg || ''))
     const heal = (msg, isLoadFailure = false) => {
+      // A PAGE THAT IS ALREADY LEAVING cancels its own in-flight chunk and
+      // stylesheet requests, and Vite reports each one as a preload error.
+      // Healing that with a reload overrode the navigation: a browser visitor
+      // on bare /play (sent to "/" further down) got the page, a RELOAD of
+      // the page, and only then the redirect — three loads for one, two
+      // errors in Sentry (BALL-IQ-35), and the one reload this session is
+      // allowed was spent, so a real stale chunk later had no cure. Found on
+      // the live site, 23 Nov 2026, in WebKit and Chromium alike.
+      if (window.__biqReloading || window.__biqLeaving) return
       if (!isLoadFailure && !isChunkError(msg)) return
       try {
         if (sessionStorage.getItem(RELOAD_FLAG)) return // one auto-reload per session
@@ -220,7 +247,7 @@ const showMarketing = _isBrowser && !_hasHandoff && _path === '/'
 // ?quiz= / ?join= / ?c= / an OAuth return — and for every installed PWA and
 // native boot, which never see the website and keep the full app home.
 const _barePlay = _isBrowser && !_hasHandoff && /^\/play\/?$/.test(_path) && !_search && !_hash
-if (_barePlay) { try { window.location.replace('/') } catch { /* fall through to the shell */ } }
+if (_barePlay) { try { window.__biqLeaving = true; window.location.replace('/') } catch { /* nothing to fall back to: the branch below renders nothing */ } }
 // A browser visitor who opens /play cold skips the onboarding warm-up ("Quick
 // one — give it a go") and lands on the app under the site header. The
 // front door's game doors already bypass it; a taster before the product is
@@ -245,8 +272,10 @@ const loadGameRoot = () => import('./GameRoot.jsx').then((m) => (m.i18nReady ? m
 const GameRoot = React.lazy(loadGameRoot)
 if (!showMarketing && !_barePlay) loadGameRoot()
 // Same render-cycle head start for the front door — React.lazy waits for
-// first render; a visitor's LCP is inside this chunk.
-else loadFrontDoor()
+// first render; a visitor's LCP is inside this chunk. NOT on bare /play: that
+// page is already navigating to "/", which cancels the fetch and its
+// stylesheets (see the self-heal above for what that used to set off).
+else if (!_barePlay) loadFrontDoor()
 
 // Suspense fallback for the lazily-loaded game tree: reproduces index.html's
 // #root splash markup (the same wordmark + animated bar) so swapping the
