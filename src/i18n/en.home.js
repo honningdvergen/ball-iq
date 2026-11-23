@@ -586,6 +586,7 @@ export default {
   'ts.rematchOne': 'Rematch sent — they\'ve been notified',
   'ts.rematchRoom': 'Rematch room ready — share the link to bring them back',
   'ts.repaired': '🔥 Streak repaired — {n} days and counting',
+  'ts.repairFailed': 'Couldn\'t reach the server to repair your streak. Check your connection and finish yesterday\'s puzzle again today.',
   'ts.reportFail': 'Couldn\'t send that report — we\'ll look into it',
   'ts.reportThanks': 'Thanks — we\'ll double-check this one ⚽',
   'ts.reset': '💔 Streak reset — day {n} of the rebuild. Your best: {best} 🔥',

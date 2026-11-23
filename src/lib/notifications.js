@@ -13,6 +13,7 @@
 
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import * as Sentry from '@sentry/react';
 import { getReminderHour } from './playHour.js';
 import { t } from '../i18n/index.js';
 
@@ -85,7 +86,7 @@ const DAILY_BODIES = ['rem.d0', 'rem.d1', 'rem.d2', 'rem.d3', 'rem.d4', 'rem.d5'
 // repair from this side, called by lib/push.js once the token has landed, so
 // the order the two calls arrive in no longer matters.
 let _localWindowOn = false;
-async function syncReminderHour() {
+async function syncReminderHour(local = true) {
   try {
     const { supabase } = await import('../supabase.js');
     // Signed-in players only (7 Nov 2026): the function is granted to
@@ -94,7 +95,7 @@ async function syncReminderHour() {
     // for the server to keep.
     const { data: { session } = {} } = await supabase.auth.getSession();
     if (!session) return;
-    supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: true })
+    supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: local })
       .then(({ error }) => { if (error) console.warn('[reminders] set_reminder_hour', error.message); })
       .catch(() => {});
   } catch { /* no client on this surface */ }
@@ -110,12 +111,6 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
   try {
     if ((await getNotifPermission()) !== 'granted') return;
     await cancelAllReminders();
-    // Tell the server the hour this device will fire at, and that it fires
-    // LOCALLY — so the push cron pivots on the same hour for web rows and skips
-    // this device rather than sending a second banner for the same evening
-    // (v2_4). Fire-and-forget: a failed sync must not stop the local schedule.
-    _localWindowOn = true;
-    syncReminderHour();
     const notifications = [];
     for (let off = skipToday ? 1 : 0; off < WINDOW_DAYS; off++) {
       const at = atFutureLocal(off);
@@ -150,7 +145,26 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
       });
     }
     if (notifications.length) await LocalNotifications.schedule({ notifications });
-  } catch { /* non-fatal: reminders are best-effort */ }
+    // Tell the server the hour this device will fire at, and that it fires
+    // LOCALLY — so the push cron pivots on the same hour for web rows and skips
+    // this device rather than sending a second banner for the same evening
+    // (v2_4). Fire-and-forget: a failed sync changes nothing on the phone.
+    // ⚠️ ONLY AFTER THE SCHEDULE HAS LANDED (23 Nov 2026). This used to be
+    // sent first, with the schedule call below it inside an empty catch: when
+    // scheduling failed the old reminders were already cancelled, nothing new
+    // was set, and the server had just been told to leave this phone alone.
+    // No reminder from either side, and no report.
+    _localWindowOn = true;
+    syncReminderHour(true);
+    return true;
+  } catch (e) {
+    // Nothing is scheduled on this phone now: hand the evening back to the
+    // server's push, and say so.
+    _localWindowOn = false;
+    syncReminderHour(false);
+    try { Sentry.captureException(e, { tags: { area: 'reminder-schedule' } }); } catch { /* reporting must not throw */ }
+    return false;
+  }
 }
 
 // Tapping any reminder should land on the Daily tab (the notification's

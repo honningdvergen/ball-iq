@@ -1059,7 +1059,7 @@ const LEAGUES_WEB = (() => {
 const LEAGUE_UI_KEY = "biq_league_ui";
 // While the sheet's chunk loads: its backdrop, so the tap visibly landed.
 // A function, so its label is read in the player's language at render time.
-const leagueSheetFallback = () => <div aria-busy="true" aria-label={tl("ld.loading")} style={{ position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.72)" }} />;
+const leagueSheetFallback = () => <div aria-busy="true" aria-label={tl("ld.loading")} style={{ position: "fixed", top: 0, right: 0, bottom: 0, left: 0, inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.72)" }} />;
 function readLeagueUiInline() {
   try { const v = JSON.parse(localStorage.getItem(LEAGUE_UI_KEY) || "null"); return v && Date.now() - v.at < 15 * 60000 ? v : null; } catch { return null; }
 }
@@ -2044,7 +2044,7 @@ function ResetPasswordOverlay() {
     setTimeout(() => clearPasswordRecovery(), 1800);
   };
   return (
-    <div style={{position:"fixed",inset:0,zIndex:1200,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+    <div style={{position:"fixed",top:0,right:0,bottom:0,left:0,inset:0,zIndex:1200,background:"var(--bg)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
       <div style={{width:"100%",maxWidth:360,textAlign:"center"}}>
         <div style={{fontSize:40,marginBottom:10}}>{done ? "✅" : "🔒"}</div>
         <div style={{fontSize:20,fontWeight:900,color:"var(--t1)",marginBottom:6}}>{done ? tl("ap.pwUpdated") : tl("ap.pwSet")}</div>
@@ -2227,7 +2227,7 @@ const HelpScreen = React.memo(function HelpScreen({ onClose }) {
     <div style={{
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
-      inset: 0,
+      top: 0, right: 0, bottom: 0, left: 0, inset: 0, // longhand first: `inset` is Chrome 87+ / Safari 14.1+
       background: "var(--bg)",
       color: "var(--text)",
       zIndex: 1000,
@@ -2305,7 +2305,7 @@ const KnownIssuesScreen = React.memo(function KnownIssuesScreen({ onClose }) {
     <div style={{
       position: "fixed",
       top: 0, right: 0, bottom: 0, left: 0,
-      inset: 0,
+      top: 0, right: 0, bottom: 0, left: 0, inset: 0, // longhand first: `inset` is Chrome 87+ / Safari 14.1+
       background: "var(--bg)",
       color: "var(--text)",
       zIndex: 1000,
@@ -2533,13 +2533,37 @@ function ScreenLoading({ label = "Loading" }) {
   );
 }
 
+// A lazy chunk that failed to load. React.lazy keeps the rejection for the
+// life of the page, so re-rendering can never fix it; only a reload can.
+const CHUNK_LOAD_ERR = /ChunkLoadError|Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|Unable to preload CSS/i;
+
+// AN OVERLAY THAT THROWS CLOSES; IT DOES NOT TAKE THE APP WITH IT (23 Nov
+// 2026). Help, Known Issues, the report sheet, the notification centre and
+// the password overlay sat outside every per-screen boundary, so a render
+// error in any of them reached the root boundary: the full "Something went
+// wrong" screen, over a game in progress. This one reports, asks its owner
+// to close the overlay, and draws nothing. `resetKey` re-arms it for an
+// overlay that stays mounted and opens by a prop.
+class OverlayBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false }; }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error, info) {
+    try { Sentry.captureException(error, { tags: { boundary: "overlay", tab: this.props.name || "unknown" }, contexts: { react: { componentStack: info?.componentStack } } }); } catch { /* reporting must not throw */ }
+    try { this.props.onError?.(); } catch { /* the owner's close must not throw here */ }
+  }
+  componentDidUpdate(prev) {
+    if (this.state.hasError && prev.resetKey !== this.props.resetKey) this.setState({ hasError: false });
+  }
+  render() { return this.state.hasError ? null : this.props.children; }
+}
+
 class TabErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error) {
+    return { hasError: true, chunk: CHUNK_LOAD_ERR.test(String(error?.message || error || "")) };
   }
   componentDidCatch(error, info) {
     if (window.__biqReloading) return; // stale chunk; main.jsx is reloading
@@ -2573,7 +2597,9 @@ class TabErrorBoundary extends React.Component {
             {tl("ap.snagSub")}
           </div>
           <button
-            onClick={() => this.setState({ hasError:false })}
+            // A failed chunk: "Try again" was a dead button, because the lazy
+            // component keeps its rejection. The player asked; reload.
+            onClick={() => { if (this.state.chunk) { try { window.__biqReloading = true; window.location.reload(); return; } catch { /* fall through to a re-render */ } } this.setState({ hasError:false }); }}
             style={{
               padding:"11px 24px", background:"var(--accent)", border:"none",
               borderRadius:999,boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)", fontFamily:"Inter,sans-serif", fontSize:13.5,
@@ -3882,7 +3908,7 @@ function AppInner() {
       // Owed days first, oldest first, then today (lib/streak.js). A day that
       // fails is written down and sent again; it used to be a console line.
       const { data, error } = await tickOwedStreak(
-        (day) => supabase.rpc('tick_login_streak', { p_local_day: day }),
+        (day) => supabase.rpc('tick_login_streak', { p_local_day: day }).then(({ data, error }) => ({ data, error })),
         { uid: user.id, today: localDay, upTo: localDay });
       if (error) {
         console.warn('[tick_login_streak]', error.message);
@@ -4215,10 +4241,12 @@ function AppInner() {
       // Three tries, then SAY SO. This failed in silence: the player finished
       // yesterday's puzzle to win the streak back and nothing happened. The
       // offer stays up (streakRepair is kept) so finishing it again retries.
+      const tryRepair = () => supabase.rpc('repair_login_streak', { p_local_day: localDay })
+        .then(({ data, error }) => ({ data, error }), (e) => ({ data: null, error: e }));
       let data = null, error = null;
       for (const wait of [0, 1500, 5000]) {
         if (wait) await new Promise((r) => setTimeout(r, wait));
-        ({ data, error } = await supabase.rpc('repair_login_streak', { p_local_day: localDay }).then((r) => r, (e) => ({ data: null, error: e })));
+        ({ data, error } = await tryRepair());
         if (!error) break;
       }
       if (error) {
@@ -4590,7 +4618,9 @@ function AppInner() {
 
     try {
       const raw = localStorage.getItem("biq_stats");
-      if (raw !== null) setStats(JSON.parse(raw));
+      // An object or nothing: a stored `null` made stats null and every screen
+      // that reads stats.x threw, on every launch (the initialiser checks; this did not).
+      if (raw !== null) { const v = JSON.parse(raw); if (v && typeof v === "object" && !Array.isArray(v)) setStats(v); }
     } catch {}
     try {
       const raw = localStorage.getItem(todayKey);
@@ -5362,7 +5392,7 @@ function AppInner() {
         loadQuestions().then(({ QB }) => {
           const row = QB.find((r) => r && r.id === stumpId && r.type === "mcq" && Array.isArray(r.o));
           if (row) { setStumpRow(row); setScreen("stump"); }
-        }).catch(() => {});
+        }).catch(() => { showToast(tl("ts.loadFail")); });
         return;
       }
       // The slug map is lazy, so a ?club= link waits for it (already in flight
@@ -6967,7 +6997,7 @@ function AppInner() {
     // of resetting it. Quiet: these days were celebrated when they were played.
     else if (owedStreakDays(user.id).length) {
       const today = localDayNow();
-      tickOwedStreak((day) => supabase.rpc('tick_login_streak', { p_local_day: day }), { uid: user.id, today })
+      tickOwedStreak((day) => supabase.rpc('tick_login_streak', { p_local_day: day }).then(({ data, error }) => ({ data, error })), { uid: user.id, today })
         .then(({ data, error }) => {
           if (error) { Sentry.captureException(error, { tags: { area: 'streak-owed' } }); }
           if (!data || typeof data.streak !== 'number') return;
@@ -8070,17 +8100,19 @@ function AppInner() {
             Rendered at app level because every mode's report button funnels
             into the same sink. */}
         {reportPending && (
+          <OverlayBoundary name="report-sheet" onError={cancelQuestionReport}>
           <ReportReasonSheet
             onPick={(reason) => sendQuestionReport(reportPending, reason)}
             onSkip={() => sendQuestionReport(reportPending, null)}
             onCancel={cancelQuestionReport}
           />
+          </OverlayBoundary>
         )}
 
         {/* ── PRIVACY POLICY (in-app overlay) ── */}
         {showPrivacy && <PrivacyScreen onClose={closePrivacy} />}
-        {showHelp && <HelpScreen onClose={closeHelp} />}
-        {showKnownIssues && <KnownIssuesScreen onClose={closeKnownIssues} />}
+        {showHelp && <OverlayBoundary name="help" onError={closeHelp}><HelpScreen onClose={closeHelp} /></OverlayBoundary>}
+        {showKnownIssues && <OverlayBoundary name="known-issues" onError={closeKnownIssues}><KnownIssuesScreen onClose={closeKnownIssues} /></OverlayBoundary>}
 
         {/* Challenge "open in app" nudge — iOS-web only, dismissible top banner.
             Shows when a friend's Daily 7 challenge is pending; deep-links into
@@ -8381,15 +8413,18 @@ function AppInner() {
           <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} shareCard={shareCard} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stump" && stumpRow && (
+          <TabErrorBoundary name="stump" onExit={goHome}>
           <StumpScreen
             row={stumpRow}
             onPlayFull={() => { const c = stumpRow?.cat; setStumpRow(null); setScreen("home"); if (c) launchLeagueQuiz(c); }}
             onHome={() => { setStumpRow(null); goHome(); }}
           />
+          </TabErrorBoundary>
         )}
 
         {/* ── HOT STREAK ── */}
         {screen === "quiz" && mode === "hotstreak" && (
+          <TabErrorBoundary name="hotstreak" onExit={goHome}>
           <HotStreakEngine
             questions={questions}
             onComplete={handleComplete}
@@ -8397,16 +8432,19 @@ function AppInner() {
             onHowToPlay={openHotStreakRules}
             rulesOpen={howToPlay === "hotstreak"}
           />
+          </TabErrorBoundary>
         )}
 
         {/* ── TRUE OR FALSE ── */}
         {screen === "quiz" && mode === "truefalse" && (
+          <TabErrorBoundary name="truefalse" onExit={goHome}>
           <TrueFalseEngine
             questions={trueFalseQuestions}
             onComplete={handleComplete}
             onBack={goHome}
             onHowToPlay={openTrueFalseRules}
           />
+          </TabErrorBoundary>
         )}
 
         {/* ── QUIZ ── */}
@@ -8630,7 +8668,8 @@ function AppInner() {
         </>}
       </main>
       <OfflineBanner />
-      <ResetPasswordOverlay />
+      <OverlayBoundary name="reset-password"><ResetPasswordOverlay /></OverlayBoundary>
+      <OverlayBoundary name="notification-centre" resetKey={notifOpen} onError={() => setNotifOpen(false)}>
       <NotificationCenter
         open={notifOpen}
         requests={notifRequests}
@@ -8642,6 +8681,7 @@ function AppInner() {
         onClearInvites={clearInvites}
         onOpenFriend={(f) => { setNotifOpen(false); openFriendProfile(f); }}
       />
+      </OverlayBoundary>
     </>
   );
 }

@@ -116,6 +116,18 @@ export function clearAllUserLocalStorage() {
 // absolute write when the answer is no; the XP and score ledgers are sent as
 // deltas and are unaffected, and the next good sign-in merge catches the
 // totals up.
+// THE GUEST FLAG, THROUGH GUARDED STORAGE (23 Nov 2026). These five reads and
+// writes sat bare in AuthProvider's boot effect and its sign-in handlers. In
+// a browser that blocks storage (Safari "Block All Cookies", Chrome with
+// cookies off) reading localStorage THROWS, so the boot effect threw, the
+// player got "Something went wrong", and Restart did it again. "Continue as
+// guest" was a dead button for the same reason.
+const guestFlag = {
+  on() { try { return localStorage.getItem('ballIQ_guestMode') === 'true' } catch { return false } },
+  set() { try { localStorage.setItem('ballIQ_guestMode', 'true') } catch { /* guest for this session only */ } },
+  clear() { try { localStorage.removeItem('ballIQ_guestMode') } catch { /* nothing stored to clear */ } },
+}
+
 let _statsHydratedUserId = null
 export function statsHydratedFor(userId) { return !!userId && _statsHydratedUserId === userId }
 
@@ -157,7 +169,7 @@ export function AuthProvider({ children }) {
     // previously chose guest explicitly. We no longer early-return here —
     // getSession + the auth listener ALWAYS run so a guest can convert to
     // an account on demand (via the auth overlay) and be caught below.
-    if (localStorage.getItem('ballIQ_guestMode') === 'true') setIsGuest(true)
+    if (guestFlag.on()) setIsGuest(true)
 
     perfMark('useAuth: getSession() called');
 
@@ -267,7 +279,7 @@ export function AuthProvider({ children }) {
           } catch {}
           setIsGuest(false)
           setAuthPromptOpen(false)   // close the auth overlay on success
-          localStorage.removeItem('ballIQ_guestMode')
+          guestFlag.clear()
           // Sprint #61 DD3: attach user id to every Sentry event so the 2am
           // launch-day debugger can answer "who hit this?". main.jsx's
           // beforeSend already strips email + username so this stays
@@ -1445,17 +1457,17 @@ export function AuthProvider({ children }) {
     // out. Best-effort, native-only (no-ops on web). (medical auth-session.)
     try { await unregisterPush(signedOutUid) } catch {}
     await supabase.auth.signOut()
-    localStorage.removeItem('ballIQ_guestMode')
+    guestFlag.clear()
     setIsGuest(false)
   }
 
   function continueAsGuest() {
-    localStorage.setItem('ballIQ_guestMode', 'true')
+    guestFlag.set()
     setIsGuest(true)
   }
 
   function exitGuestMode() {
-    localStorage.removeItem('ballIQ_guestMode')
+    guestFlag.clear()
     setIsGuest(false)
   }
 

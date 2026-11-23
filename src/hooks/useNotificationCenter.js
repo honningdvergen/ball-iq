@@ -28,14 +28,19 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
     // Friend requests — incoming pending rows from friendships.
     try {
       const cols = "id,requester_id,requester:profiles!requester_id(id,username,avatar:avatar_id,photo:avatar_url)";
-      const { data } = await supabase
+      // ⚠️ A QUERY THAT FAILS RESOLVES, WITH `error` SET AND `data` NULL. Only
+      // `data` was read, so a failed refresh EMPTIED the bell: a waiting
+      // friend request or play invite vanished, and the friend sat alone in a
+      // lobby. A failure now keeps what the bell already showed and is reported.
+      const { data, error } = await supabase
         .from("friendships")
         .select(cols)
         .eq("addressee_id", user.id)
         .eq("status", "pending")
         .limit(50);
-      setNotifRequests(Array.isArray(data) ? data : []);
-    } catch { /* soft-fail: the bell just shows no badge */ }
+      if (error) Sentry.captureException(error, { tags: { area: 'bell-requests' } });
+      else setNotifRequests(Array.isArray(data) ? data : []);
+    } catch { /* soft-fail: the bell keeps what it had */ }
     // Play invites — unread PLAY_INVITE rows from the notifications table.
     // ⚠️ ONLY play_invite, and only live ones. The same table carries the
     // hourly cron's daily_reminder rows (enqueue_web_daily_reminders writes one
@@ -46,7 +51,7 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
     // room is reaped two hours after it opens, so an older invite is dead.
     try {
       const since = new Date(Date.now() - INVITE_LIFE_MS).toISOString();
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("notifications")
         .select("id,type,actor_name,actor_avatar,payload,created_at")
         .eq("user_id", user.id)
@@ -55,8 +60,9 @@ export function useNotificationCenter({ user, isGuest, showToast, setPendingJoin
         .gte("created_at", since)
         .order("created_at", { ascending: false })
         .limit(20);
-      setNotifInvites(Array.isArray(data) ? data : []);
-    } catch { /* table may not exist yet on older deploys — soft-fail */ }
+      if (error) Sentry.captureException(error, { tags: { area: 'bell-invites' } });
+      else setNotifInvites(Array.isArray(data) ? data : []);
+    } catch { /* soft-fail: the bell keeps what it had */ }
     // Reminders are delivered as pushes and are never shown here; mark them
     // read once a session so the table does not keep a backlog of them.
     if (!remindersCleared.current) {

@@ -174,10 +174,22 @@ try {
       // the live site, 23 Nov 2026, in WebKit and Chromium alike.
       if (window.__biqReloading || window.__biqLeaving) return
       if (!isLoadFailure && !isChunkError(msg)) return
+      // Offline, a reload cannot fetch the new build; it can only swap a page
+      // that works for one that may not come back. A background warm-up that
+      // fails in a tunnel used to do exactly that, mid-game.
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) return
+      // One auto-reload per ten minutes. It was one per session, for ever: a
+      // tab kept open across two deploys healed the first and dead-ended on
+      // the second. And no working guard means no reload at all: with storage
+      // blocked this used to fall through and reload on every failure.
+      let guarded = false
       try {
-        if (sessionStorage.getItem(RELOAD_FLAG)) return // one auto-reload per session
-        sessionStorage.setItem(RELOAD_FLAG, '1')
-      } catch {}
+        const last = Number(sessionStorage.getItem(RELOAD_FLAG)) || 0
+        if (last && Date.now() - last < 10 * 60 * 1000) return
+        sessionStorage.setItem(RELOAD_FLAG, String(Date.now()))
+        guarded = sessionStorage.getItem(RELOAD_FLAG) != null
+      } catch { guarded = false }
+      if (!guarded) return
       // Boundaries read this to stay quiet while the page is going away.
       window.__biqReloading = true
       window.location.reload()

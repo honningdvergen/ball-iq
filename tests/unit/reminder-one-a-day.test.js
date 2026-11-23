@@ -57,7 +57,25 @@ describe('the phone says its hour again once the token has landed', () => {
 
   it('a phone that schedules nothing itself never claims to', () => {
     expect(NOTIF).toMatch(/export function resyncReminderHour\(\) \{\s*if \(_localWindowOn\) syncReminderHour\(\);\s*\}/);
-    expect(NOTIF).toMatch(/_localWindowOn = true;\s*syncReminderHour\(\);/);
+    expect(NOTIF).toMatch(/_localWindowOn = true;\s*syncReminderHour\(true\);/);
+  });
+
+  // 23 Nov 2026: the claim used to be sent BEFORE the schedule call, which sat
+  // below it inside an empty catch. When scheduling failed, the old reminders
+  // were already cancelled, nothing new was set, and the server had just been
+  // told to leave this phone alone: no reminder from either side, no report.
+  it('the claim is made only after the schedule has landed, and withdrawn when it fails', () => {
+    const fn = NOTIF.slice(NOTIF.indexOf('export async function scheduleReminderWindow'), NOTIF.indexOf('export function onReminderTap'));
+    const schedule = fn.indexOf('await LocalNotifications.schedule({ notifications })');
+    const claim = fn.indexOf('syncReminderHour(true)');
+    expect(schedule).toBeGreaterThan(-1);
+    expect(claim).toBeGreaterThan(schedule);
+    const failed = fn.slice(fn.indexOf('} catch (e) {'));
+    expect(failed).toContain('_localWindowOn = false;');
+    expect(failed).toContain('syncReminderHour(false);');
+    expect(failed).toContain("Sentry.captureException(e, { tags: { area: 'reminder-schedule' } })");
+    expect(fn).not.toMatch(/catch \{ \/\* non-fatal/);
+    expect(NOTIF).toContain("supabase.rpc('set_reminder_hour', { p_hour: getReminderHour(), p_local: local })");
   });
 
   it('no reminder text says "tonight": the hour runs from morning to late evening', () => {

@@ -81,7 +81,9 @@ export const setLeagueMember = (on) => set(MEMBER_KEY, on ? '1' : null);
  * sign-out clears it too (useAuth, USER_SCOPED_STATIC_KEYS).
  */
 export function cachedLeagues() {
-  try { const v = JSON.parse(get(HOME_KEY) || 'null'); return Array.isArray(v) && v.length ? v : null; } catch { return null; }
+  // Only real rows: one null in the stored list threw in LeagueHomeCard's
+  // render on every launch, before the fetch that would have repaired it.
+  try { const v = JSON.parse(get(HOME_KEY) || 'null'); const rows = Array.isArray(v) ? v.filter((x) => x && typeof x === 'object') : []; return rows.length ? rows : null; } catch { return null; }
 }
 // Making or leaving a league changes what Home should draw before any fetch
 // has answered (Alex's recording of build 182, 18 Nov 2026): after Create the
@@ -241,21 +243,33 @@ export const leagueThisWeek = (today) => leagueWeekStart(today);
 // ── calls ──
 // Through the app's Supabase client, loaded on demand so this file stays light
 // for the screens that import it. A missing function (migration not applied)
-// is remembered for the session: one quiet miss, then no more calls.
-let missing = false;
+// is remembered for the session: one quiet miss, then no more calls TO THAT
+// FUNCTION. It was one switch for all of them, so a single not-found answer
+// (one function behind on a deploy) turned every league call off until the
+// app was restarted. Any other failure is reported; the player being offline
+// is dropped by the Sentry filter (lib/sentryNormalize.js).
+const missing = new Set();
+const report = (error, area) => {
+  import('@sentry/react').then((S) => S.captureException(error, { tags: { area } })).catch(() => { /* reporting must not throw */ });
+};
 async function call(name, args) {
-  if (missing) return { error: { code: 'unavailable' } };
+  if (missing.has(name)) return { error: { code: 'unavailable' } };
   try {
     const { supabase } = await import('../supabase.js');
     const { data, error } = await supabase.rpc(name, args || {});
     if (error) {
-      if (error.code === 'PGRST202' || error.code === '42883' || /could not find the function/i.test(error.message || '')) missing = true;
+      if (error.code === 'PGRST202' || error.code === '42883' || /could not find the function/i.test(error.message || '')) {
+        missing.add(name);
+        report(error, `league-missing-${name}`);
+        return { error: { code: 'unavailable' } };
+      }
+      report(error, `league-${name}`);
       return { error };
     }
     return { data };
   } catch (e) { return { error: e }; }
 }
-const errCode = (r) => (r?.error ? (r.error.code === 'unavailable' || missing ? 'unavailable' : 'offline') : r?.data?.error || null);
+const errCode = (r) => (r?.error ? (r.error.code === 'unavailable' ? 'unavailable' : 'offline') : r?.data?.error || null);
 
 // Home's league card fetched once when it mounted, so a league made, joined or
 // left in the same session did not show until the app restarted (found on the
@@ -324,6 +338,7 @@ export async function prepareLeagueClaim(fromUserId) {
   if (!fromUserId || !isLeagueMember()) return;
   const r = await call('league_issue_claim');
   if (typeof r.data === 'string' && r.data) set(CLAIM_KEY, JSON.stringify({ t: r.data, from: fromUserId, at: Date.now() }));
+  else if (r.error) report(r.error, 'league-issue-claim');
 }
 /** The number of rows moved, or null when there was nothing to redeem. */
 export async function redeemLeagueClaim(userId) {
@@ -332,7 +347,18 @@ export async function redeemLeagueClaim(userId) {
   if (!c || !c.t) return null;
   if (Date.now() - c.at > 30 * 60000) { set(CLAIM_KEY, null); return null; }
   if (!userId || c.from === userId) return null;
-  const r = await call('league_claim', { p_token: c.t });
+  // ⚠️ THE TOKEN IS ONLY THROWN AWAY ONCE THE SERVER HAS ANSWERED (23 Nov
+  // 2026). It was cleared whatever came back, so one failed call at sign-in
+  // lost a guest's league memberships and results for good. Three tries; a
+  // token still unredeemed is kept and tried again at the next sign-in event
+  // inside its thirty minutes.
+  let r = null;
+  for (const wait of [0, 1500, 5000]) {
+    if (wait) await new Promise((res) => setTimeout(res, wait));
+    r = await call('league_claim', { p_token: c.t });
+    if (!r.error) break;
+  }
+  if (r.error) { report(r.error, 'league-claim'); return null; }
   set(CLAIM_KEY, null);
   const moved = Number(r.data) || 0;
   if (moved > 0) { setLeagueMember(true); announceLeaguesChanged(); }

@@ -114,7 +114,13 @@ export function useMultiplayerRoom(code) {
         if (cancelled) return
         if (roomRes.data) setRoom(roomRes.data)
         if (playersRes.data) setPlayers(playersRes.data)
-      } catch {}
+        // A query that fails RESOLVES with `error` set. Both were ignored, so
+        // the one rescue a stalled game got could fail without a trace.
+        const err = roomRes.error || playersRes.error
+        if (err) Sentry.captureException(err, { tags: { area: 'mp-refetch' } })
+      } catch (e) {
+        try { Sentry.captureException(e, { tags: { area: 'mp-refetch' } }) } catch { /* reporting must not throw */ }
+      }
     }
     refetchRef.current = refetchInitialState
 
@@ -373,11 +379,16 @@ export function useMultiplayerRoom(code) {
   const STALL_MS = 32000
   useEffect(() => {
     if (!room?.id || room.state !== 'playing') return
-    const id = setTimeout(() => {
+    // An interval, not one timeout (23 Nov 2026): the single pull could fail
+    // or land between two server writes, and nothing asked again, so the
+    // player stayed parked on the last question with no results screen. It
+    // now asks every STALL_MS until something changes; any change to the room
+    // re-runs this effect and starts the count over.
+    const id = setInterval(() => {
       if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
       refetchRef.current?.(room.id)
     }, STALL_MS)
-    return () => clearTimeout(id)
+    return () => clearInterval(id)
     // current_question in the deps is the point: each advance rearms the
     // watchdog, so it only ever fires when the game has genuinely stopped.
   }, [room?.id, room?.state, room?.current_question])
