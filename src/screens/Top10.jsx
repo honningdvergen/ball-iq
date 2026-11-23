@@ -399,13 +399,23 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     } catch {}
   }, [shareText, shareCard, number, list.title, g.found, g.lives, day.hints]);
 
-  const verdict = g.perfect
-    ? (g.lives === TOP10_LIVES ? t("top10.allClean") : t("top10.allSpare", { count: g.lives }))
-    : g.out ? t("top10.out")
-      // "You called it there" read oddly over a 0/10 (design pass, 16 Oct 2026):
-      // say something true about the game they had.
-      : g.score === 0 ? t("top10.zero")
-        : t("top10.found", { n: g.score });
+  // The result card's words. Short, because the number sits beside them: the
+  // sentences this replaced said the score again ("You found 7. The rest are
+  // filled in above."). "You called it there" read oddly over a 0/10 (design
+  // pass, 16 Oct 2026), so a zero says something true instead. The line under the
+  // verdict is the list's title, so the card means something on its own; a
+  // perfect game says how clean it was there instead.
+  const top10Card = !g.done ? null : {
+    title: "Top 10", tag: number > 0 ? `No. ${number}` : null,
+    score: g.score, outOf: total,
+    verdict: g.perfect ? t("rc.t10All")
+      : g.score === 0 ? t("rc.t10Hard")
+        : g.out && g.score < 5 ? t("rc.t10Out")
+          : g.score >= 8 ? t("rc.t10Near") : g.score >= 6 ? t("rc.t10Past") : g.score === 5 ? t("rc.t10Half") : t("rc.t10Tough"),
+    sub: g.perfect ? (g.lives === TOP10_LIVES ? t("rc.t10Clean") : t("rc.t10Spare", { count: g.lives })) : list.title,
+    pinSub: true,
+    note: hints.length > 0 ? t(hints.length === 1 ? "top10.hintsOne" : "top10.hintsN", { n: hints.length }) : null,
+  };
   // ⚠️ THE FINISH SAID THE SCORE THREE TIMES: here ("1 of 10"), on the count
   // beside the date ("1/10") and in the large figure under the board (13 Oct
   // 2026). The large figure is the one; the header names the state and the
@@ -522,11 +532,13 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
 
       {g.done && (
         <div className="t10-result">
-          <div className={`t10-score${g.score * 2 >= total ? " is-earned" : ""}`}>{g.score}<small> / {total}</small></div>
-          <div className="t10-verdict">{verdict}{hints.length > 0 ? ` ${t(hints.length === 1 ? "top10.hintsOne" : "top10.hintsN", { n: hints.length })}` : ""}</div>
-          <div style={{ marginTop: 14 }}>
+          {/* THE RESULT CARD (23 Nov 2026), same family as the other dailies:
+              drawn by DailyDone. It replaced the large figure and the sentence
+              under it; the board above is the picture, so it draws no strip. */}
+          <div style={{ textAlign: "left" }}>
             <DailyDone
               game="top10"
+              card={top10Card}
               edition={number}
               won
               bucket={g.score}

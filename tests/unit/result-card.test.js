@@ -207,3 +207,40 @@ describe('Footle ends on the card too', () => {
     expect(src).toMatch(/\{footleCard && onReport && <div className="wd-report-row"><FootleReportButton/);
   });
 });
+
+describe('Transfer Trail and Top 10 end on the card (23 Nov 2026)', () => {
+  const trail = readFileSync(new URL('../../src/screens/TransferTrail.jsx', import.meta.url), 'utf8');
+  const top10 = readFileSync(new URL('../../src/screens/Top10.jsx', import.meta.url), 'utf8');
+  it('Trail: the club it took out of the career, a win word, the name pinned under it; a loss has no score', () => {
+    expect(trail).toContain('score: won ? clubsUsed : null, outOf: career.length,');
+    expect(trail).toContain('verdict: won ? t(`footle.win${misses >= TRAIL_MAX_ATTEMPTS - 1 ? 6 : Math.min(misses + 1, 4)}`) : name,');
+    expect(trail).toContain('sub: won ? `${t("trail.itWas")} ${name}` : t("rc.footleLost"),');
+    expect(trail).toContain('card={trailCard}');
+    // not on the stitch variant, which has its own finish
+    expect(trail).toContain('const trailCard = (!done || stitch) ? null : (() => {');
+    // and the old three lines are only drawn where there is no card
+    expect(trail).toMatch(/\{!trailCard && <>\s*<div style=\{\{ fontSize: 13, color: "var\(--t2\)" \}\}>\{t\("trail\.itWas"\)\}<\/div>/);
+  });
+  it("Trail's own streak is the card's line, in words, with no emoji", () => {
+    // the number says what it counts, in words, because lower is better here
+    expect(trail).toContain('note: won ? [t("trail.gotIt", { count: clubsUsed }), !isArchive && !embedded && streak > 1 ? t("rc.trailStreak", { n: streak }) : null].filter(Boolean).join(" · ") : null,');
+    const html = renderToStaticMarkup(React.createElement(ResultCard, { title: 'Transfer Trail', tag: 'No. 113', score: 3, outOf: 4, verdict: 'Brilliant', sub: 'It was Zinedine Zidane', note: '4-day Trail streak' }));
+    expect(html).toContain('<p class="rc-note">4-day Trail streak</p>');
+    expect(html).toContain('<b>3</b><span>/4</span>');
+    expect(html).not.toContain('rc-kicks');   // no strip: the career above is the picture
+  });
+  it('Top 10: the score out of the list, short words beside it, the list title under it', () => {
+    expect(top10).toContain('score: g.score, outOf: total,');
+    expect(top10).toContain('sub: g.perfect ? (g.lives === TOP10_LIVES ? t("rc.t10Clean") : t("rc.t10Spare", { count: g.lives })) : list.title,');
+    expect(top10).toContain('card={top10Card}');
+    // the large figure and the sentence that said the score a second time are gone
+    expect(top10).not.toContain('className={`t10-score');
+    expect(top10).not.toContain('className="t10-verdict"');
+  });
+  it('the words for each Top 10 outcome', () => {
+    const pick = (g) => (g.perfect ? 'All' : g.score === 0 ? 'Hard' : g.out && g.score < 5 ? 'Out' : g.score >= 8 ? 'Near' : g.score >= 6 ? 'Past' : g.score === 5 ? 'Half' : 'Tough');
+    // the same ladder the screen uses, pinned so a change is deliberate
+    expect(top10).toMatch(/g\.perfect \? t\("rc\.t10All"\)\s*: g\.score === 0 \? t\("rc\.t10Hard"\)\s*: g\.out && g\.score < 5 \? t\("rc\.t10Out"\)\s*: g\.score >= 8 \? t\("rc\.t10Near"\) : g\.score >= 6 \? t\("rc\.t10Past"\) : g\.score === 5 \? t\("rc\.t10Half"\) : t\("rc\.t10Tough"\)/);
+    expect([pick({ perfect: true, score: 10 }), pick({ score: 0 }), pick({ out: true, score: 2 }), pick({ out: true, score: 7 }), pick({ score: 9 }), pick({ score: 5 }), pick({ score: 3 })]).toEqual(['All', 'Hard', 'Out', 'Past', 'Near', 'Half', 'Tough']);
+  });
+});

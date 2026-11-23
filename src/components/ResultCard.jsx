@@ -72,13 +72,14 @@ export function hardStory(t, marks, levels) {
   return { hard, got, note };
 }
 
-export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, marks = null, shares = null, levels = null }) {
+export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, marks = null, shares = null, levels = null, note: hostNote = null }) {
   const t = useT();
   const withShares = Array.isArray(shares) && Array.isArray(marks) && shares.length === marks.length && shares.every((p) => Number.isFinite(p));
   const star = withShares ? starIndex(marks, shares) : -1;
   const story = withShares ? null : hardStory(t, marks, levels);
   const anyHard = !!story && story.hard.some(Boolean);
-  const note = withShares ? noteFor(t, marks, shares) : story ? story.note : null;
+  // A game with no strip (its board is the picture) may hand over its own line.
+  const note = hostNote ?? (withShares ? noteFor(t, marks, shares) : story ? story.note : null);
   const right = Array.isArray(marks) ? marks.filter(Boolean).length : 0;
   return (
     <section className="rc" aria-label={score != null ? t("rc.aria", { title, score, total: outOf }) : title}>

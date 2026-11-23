@@ -14,6 +14,10 @@
 //     wrapper replaced, by string (a button, with a screen-reader-only
 //     ". How to play Footle" after the two labels), and nothing else; the
 //     entry with no help button still has the plain key.
+//     INTENDED CHANGE, 23 Nov 2026: Transfer Trail and Top 10 end on the result
+//     card too. Ten entries (every finished Trail and Top 10 state) were replaced
+//     whole after a check that each now carries the card and none keeps the old
+//     text block or large figure.
 //     INTENDED CHANGE, 22 Nov 2026 (later): a finished Footle ends on the result
 //     card (components/ResultCard.jsx) instead of its own result block; five
 //     entries (won in 1, 3, 6, lost, archive won) were replaced whole after a
@@ -270,9 +274,10 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['trail: one guess left'])).toContain('>1 intento<');
     expect(unq(now['trail: one wrong guess'])).toContain('>↩ vuelve<');
     const won = unq(now['trail: won on the first two clubs']);
-    for (const s of ['>Resuelto<', '>Era<', '>Acertado con 2 clubes<']) expect(won).toContain(s);
-    expect(unq(now['trail: lost'])).toContain('>Sin intentos: vuelve mañana<');
-    expect(unq(now['trail: archive, lost'])).toContain('>Sin intentos: este ya es historia<');
+    // The result card (23 Nov 2026): the club it took as the score, a win word, the name under it.
+    for (const s of ['>Resuelto<', '>Era Xabi Alonso<', '<b>2</b><span>/6</span>', '>¡Por la escuadra!<']) expect(won).toContain(s);
+    expect(unq(now['trail: lost'])).toContain('>Sin intentos<');
+    expect(unq(now['trail: archive, lost'])).toContain('>Sin intentos<');
     // The static page's H1 and lead say it; the masthead is the number alone (declutter, 26 Oct 2026).
     expect(unq(now['trail: embedded (static page), fresh'])).not.toContain('adivina el jugador por su carrera');
     expect(unq(now['trail: embedded, won'])).toContain(' · Resuelto<');
@@ -298,12 +303,13 @@ describe('Spanish (biq_lang=es)', () => {
     const fresh = unq(now['top10: fresh, a player list']);
     for (const s of ['>Nombra los diez. Tres vidas.<', 'A 1 oct 2026 · pista: club', 'aria-label="Te quedan 3 de 3 vidas"', 'aria-label="Los diez"', '>¿No sale? Enséñame la lista<', 'placeholder="Escribe un jugador…"']) expect(fresh).toContain(s);
     expect(unq(now['top10: fresh, a nation list with no clue label or note'])).toContain('placeholder="Escribe un país…"');
-    expect(unq(now['top10: out of lives'])).toContain('>Sin vidas. Arriba tienes los que se te escaparon.<');
+    expect(unq(now['top10: out of lives'])).toContain('>Sin vidas<');
     expect(unq(now['top10: out of lives'])).toContain('>La lista completa<');
-    expect(unq(now['top10: gave up on nought'])).toContain('>Hoy tocaba una difícil. Arriba tienes los diez.<');
+    expect(unq(now['top10: gave up on nought'])).toContain('>Hoy tocaba una difícil<');
     expect(unq(now['top10: perfect, no miss'])).toContain('>Diez de diez<');
-    expect(unq(now['top10: perfect, one life spare'])).toContain('>Los diez, con 1 vida de sobra.<');
-    expect(unq(now['top10: perfect, two lives spare'])).toContain('>Los diez, con 2 vidas de sobra.<');
+    expect(unq(now['top10: perfect, no miss'])).toContain('>Sin un solo fallo<');
+    expect(unq(now['top10: perfect, one life spare'])).toContain('>Con 1 vida de sobra<');
+    expect(unq(now['top10: perfect, two lives spare'])).toContain('>Con 2 vidas de sobra<');
     expect(unq(now['top10: three found, one miss, one near'])).toContain('aria-label="No están entre los diez"');
     expect(unq(now['top10: could not load'])).toContain('No se pudo cargar la lista de hoy');
   });

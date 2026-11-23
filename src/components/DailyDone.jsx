@@ -429,7 +429,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   const words = card ? cardWords(today, card, t, isArchive) : null;
   const cardEl = card ? (
     <ResultCard title={card.title} tag={card.tag} score={card.score} scoreNode={card.scoreNode} outOf={card.outOf} marks={card.marks} shares={card.shares} levels={card.levels}
-      verdict={words.verdict} sub={words.sub} />
+      verdict={words.verdict} sub={words.sub} note={card.note} />
   ) : null;
   return (
     <>

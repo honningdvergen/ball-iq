@@ -288,6 +288,26 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   }, [shown, hint, done, keepInputVisible]);
 
   const streak = useMemo(() => (won && daily ? computeTrailStreak(date) : 0), [won, date, daily]);
+  // The result card's words (components/ResultCard.jsx via DailyDone). A win:
+  // the club it took out of the career's clubs, a word for how early (the
+  // five win words Footle uses for its first five guesses: one voice for the
+  // dailies), and the name under it. A loss has no score and the name is the
+  // headline. The career above is the picture, so the card draws no strip.
+  const trailCard = (!done || stitch) ? null : (() => {
+    const name = (player.display || []).join(" ");
+    return {
+      title: "Transfer Trail", tag: number > 0 ? `No. ${number}` : null,
+      score: won ? clubsUsed : null, outOf: career.length,
+      // A win on the last attempt takes Footle's last-guess word, as there.
+      verdict: won ? t(`footle.win${misses >= TRAIL_MAX_ATTEMPTS - 1 ? 6 : Math.min(misses + 1, 4)}`) : name,
+      sub: won ? `${t("trail.itWas")} ${name}` : t("rc.footleLost"),
+      pinSub: true,
+      // The number alone does not say what it counts, and here lower is better
+      // (review, 23 Nov): the line says it in words. Then the Trail's own
+      // streak; in the app the panel below carries the DAILY one.
+      note: won ? [t("trail.gotIt", { count: clubsUsed }), !isArchive && !embedded && streak > 1 ? t("rc.trailStreak", { n: streak }) : null].filter(Boolean).join(" · ") : null,
+    };
+  })();
   const shareText = useMemo(
     () => (done ? buildTrailShareText({ number, won, clubsUsed, streak }) : ""),
     [done, number, won, clubsUsed, streak]
@@ -545,12 +565,18 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
 
       {done && (
         <div style={{ marginTop: 18, textAlign: "center" }}>
+          {/* THE RESULT CARD (23 Nov 2026), the family the Daily 7 and Footle
+              ended on: drawn by DailyDone below. It carries what these three
+              lines said (the name, "Got it on N clubs", the Trail streak), so
+              they are only drawn where there is no card: the stitch variant. */}
+          {!trailCard && <>
           <div style={{ fontSize: 13, color: "var(--t2)" }}>{t("trail.itWas")}</div>
           <div style={{ fontSize: 26, fontWeight: 900, color: "var(--t1)", marginTop: 2 }}>
             {(player.display || []).join(" ")}
           </div>
+          </>}
           {stitch ? <stitch.Done won={won} clubsUsed={clubsUsed} /> : <>
-          <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6 }}>
+          {!trailCard && <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6 }}>
             {won
               // ⚠️ Archive plays deliberately do NOT tick the streak (see the
               // effect above, which returns early when isArchive), so claiming
@@ -561,14 +587,15 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
               // app the panel carries the daily streak, so this one stays.
               ? `${t("trail.gotIt", { count: clubsUsed })}${!isArchive && !embedded && streak > 1 ? ` · ${t("trail.streak", { n: streak })}` : ""}`
               : t(isArchive ? "trail.outPast" : "trail.out")}
-          </div>
+          </div>}
           {/* The return loop, built once for all four dailies — see
               components/DailyDone.jsx. Carries share, streak, countdown, remind,
               how everyone did and the other open dailies (the Mystery chain a
               loss used to offer is now one of those rows). */}
-          <div style={{ marginTop: 14 }}>
+          <div style={{ marginTop: trailCard ? 0 : 14, textAlign: "left" }}>
             <DailyDone
               game="trail"
+              card={trailCard}
               edition={number}
               won={won}
               bucket={won ? clubsUsed : 0}
