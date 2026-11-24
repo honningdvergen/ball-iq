@@ -23,6 +23,7 @@ import { initAds } from './lib/ads.js'
 // HERE, above the lazy roots, in the statically-imported entry chunk.
 import { ErrorBoundary } from './components/ErrorBoundary.jsx'
 import { normalizeSupabaseError } from './lib/sentryNormalize.js'
+import { scrubBreadcrumb, scrubEvent } from './lib/sentryScrub.js'
 
 // What a navigation away leaves behind: the chunk and stylesheet requests it
 // cancelled, each reported as a load failure. Not faults (see __biqLeaving).
@@ -47,13 +48,6 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
   // sample transactions on web only, never inside the Capacitor app.
   // (2026-07-12 medical, error-observability, medium.)
   const isNative = typeof window !== 'undefined' && window.Capacitor?.isNativePlatform?.() === true
-  // Remove the URL fragment (Supabase returns access_token/refresh_token there
-  // after OAuth/magic-link) and redact token query params so a credential can
-  // never ride into a Sentry event via request.url or a navigation breadcrumb.
-  const scrubUrl = (u) => {
-    if (typeof u !== 'string') return u
-    return u.split('#')[0].replace(/([?&])(access_token|refresh_token|provider_token|code|token|apikey)=[^&]*/gi, '$1$2=REDACTED')
-  }
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: import.meta.env.MODE,
@@ -62,6 +56,13 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
     // Home's eager JS. Crash reporting stays eager.
     integrations: [],
     tracesSampleRate: isNative ? 0 : 0.1,
+    // A breadcrumb is cleaned of Supabase tokens BEFORE it is stored (see
+    // lib/sentryScrub.js: the console breadcrumb keeps every console.log
+    // argument, and the sign-in callback URL was one). If the scrub itself
+    // fails the breadcrumb is dropped, never stored as it came.
+    beforeBreadcrumb(breadcrumb) {
+      try { return scrubBreadcrumb(breadcrumb) } catch { return null }
+    },
     // PII scrub: strip user email + Supabase tokens from breadcrumbs, URLs and
     // event metadata. defaultPII is false; this hardens further.
     beforeSend(event, hint) {
@@ -73,21 +74,14 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
         delete event.user.email
         delete event.user.username
       }
-      if (event.request?.url) event.request.url = scrubUrl(event.request.url)
-      if (event.breadcrumbs) {
-        for (const bc of event.breadcrumbs) {
-          if (bc.data?.headers) {
-            delete bc.data.headers.Authorization
-            delete bc.data.headers.apikey
-          }
-          if (bc.data) {
-            for (const k of ['url', 'to', 'from']) {
-              if (typeof bc.data[k] === 'string') bc.data[k] = scrubUrl(bc.data[k])
-            }
-          }
-        }
-      }
-      return event
+      // The same pass again over the finished event: its URL, every
+      // breadcrumb, the exception text and the extras. scrubEvent removes a
+      // part it cannot clean and keeps the report.
+      return scrubEvent(event)
+    },
+    // Page-load measurements (web only, sampled) never passed beforeSend.
+    beforeSendTransaction(event) {
+      return scrubEvent(event)
     },
   })
   if (!isNative) {

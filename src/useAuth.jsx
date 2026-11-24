@@ -1038,7 +1038,7 @@ export function AuthProvider({ children }) {
           hasCodeChallenge: !!u.searchParams.get('code_challenge'),
         })
       } catch (e) {
-        console.log('[OAuth] could not parse supabase URL', { url: data?.url, err: e?.message })
+        console.log('[OAuth] could not parse supabase URL', { err: e?.message })
       }
       if (data?.url) {
         try {
@@ -1338,11 +1338,13 @@ export function AuthProvider({ children }) {
     // callback as a launch rather than appUrlOpen, especially if the app
     // wasn't running when Apple sign-in started).
     CapApp.getLaunchUrl().then(r => {
-      if (r?.url) console.log('[OAuth] CapApp.getLaunchUrl on mount', { url: r.url })
+      // Never the whole URL: a sign-in callback carries the session in it,
+      // and Sentry keeps console arguments as breadcrumbs.
+      if (r?.url) console.log('[OAuth] CapApp.getLaunchUrl on mount', { url: String(r.url).split(/[?#]/)[0] })
     }).catch(e => console.log('[OAuth] getLaunchUrl failed', e?.message))
     let handlePromise = CapApp.addListener('appUrlOpen', e => {
       const url = e?.url
-      console.log('[OAuth] appUrlOpen fired', { url })
+      console.log('[OAuth] appUrlOpen fired', { url: url ? String(url).split(/[?#]/)[0] : url })
       if (!url) {
         console.log('[OAuth] appUrlOpen: empty url, ignoring')
         return
