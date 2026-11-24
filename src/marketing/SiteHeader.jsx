@@ -45,6 +45,26 @@ function useFinder(q) {
 }
 
 
+// THE PROMPT FITS THE FIELD ON A PHONE (24 Nov 2026). Under 721px the search
+// box is 184px or less and "Find your club or league" was cut to "Find your
+// club or". At the phone header's width (front.css) the placeholder is the
+// finder's own shorter prompt, home.finder.label ("Find your club"); the full
+// sentence stays the field's accessible name. The static pages do the same
+// (scripts/seo/shell.mjs, FIND_SHORT).
+const PHONE_HEADER = '(max-width:720px)';
+function usePhoneHeader() {
+  const [phone, setPhone] = useState(() => typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia(PHONE_HEADER).matches);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+    const mq = window.matchMedia(PHONE_HEADER);
+    const on = () => setPhone(mq.matches);
+    on();
+    mq.addEventListener?.('change', on);
+    return () => mq.removeEventListener?.('change', on);
+  }, []);
+  return phone;
+}
+
 /**
  * @param {{ active?: 'clubs'|'quizzes'|'lists'|'', signedIn?: boolean, onProfile?: () => void }} props
  * signedIn/onProfile: inside the app the right-hand link becomes "Profile".
@@ -58,6 +78,7 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
     try { document.getElementById('biq-static-head')?.remove(); document.getElementById('biq-static-head-css')?.remove(); } catch {}
   }, []);
   const t = useT();
+  const phone = usePhoneHeader();
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -93,7 +114,7 @@ export function SiteHeader({ active = '', signedIn = false, onProfile } = {}) {
         </nav>
         <div className="fd-find" role="search">
           <span className="fd-find-ic"><SearchIcon /></span>
-          <input ref={searchRef} type="search" className="fd-find-in" value={q} placeholder={t('site.find')}
+          <input ref={searchRef} type="search" className="fd-find-in" value={q} placeholder={t(phone ? 'home.finder.label' : 'site.find')}
             aria-label={t('site.find')} autoCapitalize="none" autoCorrect="off" spellCheck={false} enterKeyHint="search"
             onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 120)}
             onKeyDown={(e) => { if (e.key === 'Enter' && hits[0]) { go('fd-find', hits[0].href); window.location.href = hits[0].href; } if (e.key === 'Escape') { setQ(''); setOpen(false); } }} />

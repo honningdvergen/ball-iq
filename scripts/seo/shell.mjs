@@ -41,7 +41,16 @@ const BURGER_ICON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
 // byte-identical; for French it turns "n'" into "n\'" instead of a syntax error.
 const jsq = (s) => esc(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
-const finderScript = (base, t) => {
+// THE PROMPT FITS THE FIELD ON A PHONE (24 Nov 2026). Under 721px the search
+// box is 184px or less and "Find your club or league" was cut to "Find your
+// club or". At that width the placeholder becomes the finder's own shorter
+// prompt, in the app's existing words (src/i18n, home.finder.label; a test
+// holds the two together). The full sentence stays in the markup and stays the
+// field's accessible name. A language with no such string in the app keeps its
+// full prompt: no copy was written for this.
+export const FIND_SHORT = { en: 'Find your club', es: 'Busca tu club' };
+
+const finderScript = (base, t, short = '') => {
   const data = JSON.stringify([
     // A club hit goes to the club's own page, not the app (2026-09-05): the
     // page IS the club quiz on the web, and the critique found the finder was
@@ -50,6 +59,7 @@ const finderScript = (base, t) => {
     ...LEAGUES.map(([s, n]) => [n, t.findLeagueSub, `${base}/quiz/${s}/`]),
   ]);
   return `<script>(function(){var D=${data};var i=document.getElementById('fd-find'),r=document.getElementById('fd-find-res'),n=document.getElementById('fd-nav'),b=document.querySelector('.fd-burger');if(!i||!r)return;
+${short ? `var pS='${jsq(short)}',pL=i.placeholder,pM=window.matchMedia?window.matchMedia('(max-width:720px)'):null;function pF(){i.placeholder=pM.matches?pS:pL}if(pM){pF();if(pM.addEventListener)pM.addEventListener('change',pF)}` : ''}
 function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'');}
 function hits(q){q=norm(q.trim());if(!q)return[];var o=[];for(var k=0;k<D.length;k++){var m=norm(D[k][0]);var rk=m.indexOf(q)===0?0:m.indexOf(q)>=0?1:-1;if(rk>=0)o.push([rk,D[k]]);}o.sort(function(a,c){return a[0]-c[0]||a[1][0].localeCompare(c[1][0]);});return o.slice(0,8).map(function(x){return x[1];});}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -116,7 +126,7 @@ export function shellHeader(site, active = '', lang = 'en', opts = {}) {
 <a class="fd-head-app" href="/get?src=header-pill">${h(t.getAppShort)}</a>
 <button type="button" class="fd-burger" aria-expanded="false" aria-controls="fd-nav" aria-label="${h(t.menuLabel)}">${BURGER_ICON}</button>
 </div></header>
-${finderScript(b, t)}`;
+${finderScript(b, t, FIND_SHORT[t === shellStrings('en') ? 'en' : lang])}`;
 }
 
 /** The sitemap footer: games, four leagues of clubs, lists, discover, the company. */
@@ -313,6 +323,10 @@ export const SHELL_CSS = `
     .fd-find{max-width:none;margin-left:0;position:static;display:flex;align-items:center}
     .fd-find-ic{position:relative;left:auto;top:auto;transform:none;flex:0 0 auto;margin-left:12px;margin-right:-30px;z-index:1}
   .fd-find-in{flex:1 1 auto;min-width:0}
+    /* The short prompt fits down to 320: KEEP IN STEP with front.css, which
+       has the measurements. This header is the narrower of the two. */
+    @media(max-width:379px){.fd-find-in::placeholder{font-size:13px}}
+    @media(max-width:358px){.fd-find-ic{display:none}.fd-find-in{padding:0 8px}.fd-find-in::placeholder{font-size:12px}}
     .fd-head-in{position:relative}
     .fd-find-res{left:12px;right:12px;top:calc(100% - 4px)}
     .fd-find-row{grid-template-columns:1fr auto;row-gap:2px}

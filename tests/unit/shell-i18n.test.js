@@ -121,6 +121,47 @@ describe('the nav folds into the menu before any language can wrap it', () => {
   });
 });
 
+describe('the search prompt fits a phone header (24 Nov 2026)', () => {
+  // A grade of the live pages found the prompt cut to "Find your club or" at
+  // 393 wide: the box has 133px for text there and the sentence needs 183.
+  it('the short prompt is the app\'s own wording, not new copy', async () => {
+    const { FIND_SHORT } = await import('../../scripts/seo/shell.mjs');
+    const enHome = (await import('../../src/i18n/en.home.js')).default;
+    const es = (await import('../../src/i18n/es.js')).default;
+    expect(FIND_SHORT).toEqual({ en: enHome['home.finder.label'], es: es['home.finder.label'] });
+    expect(FIND_SHORT.en).toBe('Find your club');
+  });
+  it('English and Spanish pages swap it in under 721px and keep the full sentence as the field\'s name', async () => {
+    const { FIND_SHORT } = await import('../../scripts/seo/shell.mjs');
+    for (const lang of ['en', 'es']) {
+      const h = shellHeader(SITE, '', lang);
+      const full = SHELL_STRINGS[lang].findPlaceholder;
+      expect(h).toContain(`placeholder="${full}" aria-label="${full}"`);
+      expect(h).toContain(`var pS='${FIND_SHORT[lang]}',pL=i.placeholder,pM=window.matchMedia?window.matchMedia('(max-width:720px)'):null;`);
+      expect(h).toContain('function pF(){i.placeholder=pM.matches?pS:pL}');
+    }
+  });
+  it('a language the app has no short prompt for keeps its full one, and an unknown language gets the English pair', () => {
+    for (const lang of PAGE_LANGS.filter((l) => l !== 'es')) expect(shellHeader(SITE, '', lang), lang).not.toContain('var pS=');
+    expect(shellHeader(SITE, '', 'xx')).toContain("var pS='Find your club'");
+  });
+  it('the React header does the same at the same width', () => {
+    const src = readFileSync(resolve(__dirname, '../../src/marketing/SiteHeader.jsx'), 'utf8');
+    expect(src).toContain("const PHONE_HEADER = '(max-width:720px)';");
+    expect(src).toContain("placeholder={t(phone ? 'home.finder.label' : 'site.find')}");
+    expect(src).toContain("aria-label={t('site.find')}");
+  });
+  it('both stylesheets step the prompt down the same way, and never the typed text (iOS zooms a field under 16px)', async () => {
+    const { SHELL_CSS } = await import('../../scripts/seo/shell.mjs');
+    const front = readFileSync(resolve(__dirname, '../../src/design/front.css'), 'utf8');
+    for (const css of [SHELL_CSS, front]) {
+      expect(css).toMatch(/@media ?\(max-width:379px\)\{\.fd-find-in::placeholder\{font-size:13px\}\}/);
+      expect(css).toMatch(/@media ?\(max-width:358px\)\{\.fd-find-ic\{display:none\}\.fd-find-in\{padding:0 8px\}\.fd-find-in::placeholder\{font-size:12px\}\}/);
+      expect(css).not.toMatch(/\.fd-find-in\{[^}]*font-size:1[0-5]/);
+    }
+  });
+});
+
 describe('the Spanish layer says "en vivo", not "en directo"', () => {
   // ⚠️ IT WAS NEVER A DIALECT CHOICE — IT WAS A CONTRADICTION. Every /es/ page
   // said BOTH: "1v1 en vivo" in the club band (17 places in clubs-es.mjs) and
