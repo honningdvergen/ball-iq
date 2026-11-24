@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -69,4 +70,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Daily-reminder local notifications; runtime-prompted on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- NOT WANTED, so taken back out. @capacitor/local-notifications 8.3 puts
+         SCHEDULE_EXACT_ALARM ("Alarms & reminders") into its own manifest, and the
+         merge would add it to ours: a new permission on the Play listing that this
+         app has never declared. Every reminder is scheduled inexact on purpose
+         (isExactNotification: false in src/lib/notifications.js, which also says
+         why), so the permission would do nothing. Capacitor 8 move, 24 Nov 2026. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
 </manifest>

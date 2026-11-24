@@ -104,6 +104,22 @@ export function resyncReminderHour() {
   if (_localWindowOn) syncReminderHour();
 }
 
+// ⚠️ EVERY NOTIFICATION HERE CARRIES isExactNotification: false, AND MUST.
+// @capacitor/local-notifications 8.3 made "exact" the default on Android, and
+// on Android 12 and later schedule() answers a missing exact-alarm permission
+// by OPENING THE SYSTEM'S "Alarms & reminders" SETTINGS SCREEN, on every call.
+// Android 14 denies that permission to a new install, and this function runs
+// on every app open, so one notification without the flag would throw every
+// Android player out of the app into Settings at launch (read from the
+// plugin's LocalNotificationsPlugin.kt on 24 Nov 2026, the day of the move to
+// Capacitor 8; not seen on a device). false schedules it the way 6.x did on
+// Android 12+: an inexact alarm, allowed while idle, no permission and no
+// prompt. Android 11 and older used to get an exact alarm and now get the
+// same inexact one. iOS ignores the flag. The manifest also strips the
+// SCHEDULE_EXACT_ALARM permission the plugin now brings with it
+// (tests/unit/android-no-exact-alarm-prompt.test.js pins both).
+const INEXACT = false;
+
 // (Re)schedule the rolling window. skipToday omits offset 0 — pass true when
 // the user has already completed today's daily so we don't nag them tonight.
 export async function scheduleReminderWindow({ skipToday = false, streak = 0 } = {}) {
@@ -121,7 +137,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
         id: ID_BASE + off,
         title: 'Ball IQ',
         body: t(DAILY_BODIES[at.getDay() % DAILY_BODIES.length]),
-        schedule: { at, allowWhileIdle: true },
+        schedule: { at, allowWhileIdle: true }, isExactNotification: INEXACT,
       });
     }
     if (!skipToday && streak >= 2 && getReminderHour() < STREAK_RISK_HOUR) {
@@ -132,7 +148,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
           id: STREAK_RISK_ID,
           title: 'Ball IQ',
           body: t('rem.streak', { n: streak }),
-          schedule: { at, allowWhileIdle: true },
+          schedule: { at, allowWhileIdle: true }, isExactNotification: INEXACT,
         });
       }
     }
@@ -143,7 +159,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
         id: ID_BASE + w.off,
         title: 'Ball IQ',
         body: t(w.body),
-        schedule: { at, allowWhileIdle: true },
+        schedule: { at, allowWhileIdle: true }, isExactNotification: INEXACT,
       });
     }
     if (notifications.length) await LocalNotifications.schedule({ notifications });
