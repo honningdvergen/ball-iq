@@ -31,7 +31,12 @@
 /* The question. */
 /* The question is the headline of the screen, so it is set as one: no box
    round it. The colour it used to carry now sits in the meter under it. */
-.t10-q { padding: 2px 4px 0; }
+/* 6px over the title, as Transfer Trail has over its first club: the title
+   began 10px under the back button (Trail's ladder begins 14 under it) and
+   read as touching the header (24 Nov 2026). Where every point is counted
+   (keyboard up on a short phone, a finished board on one) it stays at 2. */
+.t10-q { padding: 6px 4px 0; }
+.t10.is-tight .t10-q, .t10.is-short .t10-q { padding-top: 2px; }
 .t10-q-title {
   margin: 0; font-size: 21px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em;
   color: var(--t1); text-wrap: balance;
