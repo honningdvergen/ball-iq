@@ -50,7 +50,6 @@ import "./dailyDone.css";
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
 //   nextUp      [{ key, name, onTap? , href?, open? }] — today's other unplayed dailies (open: started, so the button says Continue)
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
-//   stump       () => void | null — "Stump a mate" under Share (the app's k-factor lever)
 //   stitch      () => void | null — "Stitch up a mate" under Share (Trail, web only)
 //   GetAppCTA   component | null (islands pass the store badges)
 //   track       (name, meta) => void — optional analytics
@@ -185,7 +184,7 @@ export function cardWords(today, card, t, isArchive = false) {
   return { verdict: line || card.verdict, sub };
 }
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stump, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null, card = null }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null, card = null }) {
   const t = useT();
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -252,9 +251,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       // the line above. Computed from the props, not from `streakN`, which is
       // declared below this effect.
       save: (save && save.onSave && ((streak?.count || 0) >= 2 || save.line)) ? 1 : 0,
-      stump: stump ? 1 : 0,
     });
-  }, [game, edition, remind?.state, isArchive, track, save, stump, streak?.count]);
+  }, [game, edition, remind?.state, isArchive, track, save, streak?.count]);
 
   // Record once (the lib dedupes per visitor per edition), then read the room.
   useEffect(() => {
@@ -557,7 +555,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
-      {(leagueOffer || stump || stitch || canChallenge) && (
+      {(leagueOffer || stitch || canChallenge) && (
         <div className="dd-share-alts">
           {/* The league offer. 7 Nov 2026: as a 12.5px underlined line it was
               shown 178 times to 48 web visitors and tapped by none, so it became
@@ -572,11 +570,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           )}
           {(rival || canChallenge) && (
             <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : rival ? "dd.shareResult" : "dd.shareOnly")}</button>
-          )}
-          {/* The k-factor lever lives under Share, where sharing is. It was a
-              third full-width button below the panel. */}
-          {stump && (
-            <button type="button" className="dd-share-alt" onClick={() => { track?.("dd-stump", { game }); stump(); }}>{t("dd.stump")}</button>
           )}
           {/* Stitch-up (web only; the host passes it on the Trail alone): build
               a Trail of your own for a mate. A link, like the others here. */}

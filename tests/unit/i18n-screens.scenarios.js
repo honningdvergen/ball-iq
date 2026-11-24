@@ -61,7 +61,7 @@ const DIST_TRAIL = { n: 52, won: 40, buckets: { 1: 6, 2: 14, 3: 12, 4: 5, 5: 3, 
 const loaded = (dist, prev = null) => ({ "DailyDone:1": dist, "DailyDone:2": prev, "DailyDone:3": true });
 const challenge = (rec) => ({ biq_game_challenge: JSON.stringify({ ...rec, at: 1 }) });
 const ddScenarios = () => [
-  ['dd: footle won in 3, everything on, loading', {}, dd({ streak: STREAK, remind: { state: 'off', onRemind: noop }, nextUp: NEXT, day: DAY, waText: 'x', stump: noop, stitch: noop, save: { onSave: noop, line: 'Non-League · 120 XP · 180 to Championship' }, promoted: { game: 'footle', name: 'Non-League' } })],
+  ['dd: footle won in 3, everything on, loading', {}, dd({ streak: STREAK, remind: { state: 'off', onRemind: noop }, nextUp: NEXT, day: DAY, waText: 'x', stitch: noop, save: { onSave: noop, line: 'Non-League · 120 XP · 180 to Championship' }, promoted: { game: 'footle', name: 'Non-League' } })],
   ['dd: footle lost, streak safe, reminder on, early numbers', { _state: loaded(DIST_SMALL) }, dd({ won: false, bucket: 0, streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, remind: { state: 'on', onRemind: noop }, nextUp: NEXT.slice(0, 1), day: DAY })],
   ['dd: footle won in 2, early numbers, one shield', { _state: loaded(DIST_SMALL) }, dd({ bucket: 2, streak: { count: 2, label: 'Footle streak', shields: 1 }, nextUp: [{ key: 'footle', name: "Continue today's Footle" }, ...NEXT], day: DAY })],
   ['dd: daily 7 on 5, headcounts', { _state: loaded(DIST_BIG) }, dd({ game: 'daily7', edition: 2300, bucket: 5, streak: { count: 1, label: 'daily streak' }, nextUp: [{ key: 'footle', name: "Today's Footle" }], day: DAY, save: { onSave: noop, line: 'Sunday League · 40 XP · 60 to Non-League' } })],

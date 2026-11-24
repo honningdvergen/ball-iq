@@ -20,6 +20,10 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 24 Nov 2026: Stump a mate is no longer offered on a finish screen (26 shares and
+// 2 answers since September; Alex: "let us maybe just scrap that idea"). Five entries lost exactly
+// that button and nothing else, proven by deleting the button from the old golden: the Footle panel
+// with everything on, the Daily 7 panel, and the classic 7/10, classic 3/10 and survival results.
 // INTENDED CHANGE, 23 Nov 2026: numbers are Inter with tabular figures, not the
 // mono face (its dotted zero read as an eight). Six History entries changed in
 // one inline font-family only, proven by replacing that string in the old golden.

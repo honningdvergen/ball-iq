@@ -8581,7 +8581,6 @@ function AppInner() {
             survivalBest={result?.prevBest ?? (stats.bestSurvival || 0)}
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}
-            askedQuestions={questions}
             dailyDone={dailyDoneServices}
             photoNudge={(user?.id && !isAnonUser && !authProfile?.avatar_url && !photoNudgeDismissed) ? (
               <div style={{marginTop:16,padding:"14px 14px 12px",borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>

@@ -138,7 +138,8 @@ describe('English share texts are byte-identical', () => {
   });
   it('the sites build them from these keys', () => {
     expect(read('src/components/DailyDone.jsx')).toContain('t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) })');
-    expect(read('src/screens/ResultsScreen.jsx')).toContain('t(stumpWrong.length ? "share.stumpMissed" : "share.stumpGot", { link: stumpLink(stumpQ) })');
+    // 24 Nov 2026: the results screens no longer offer Stump a mate (26 shares and 2 answers since
+    // September). The keys stay for links already sent; StumpScreen still passes them on.
     expect(read('src/screens/StumpScreen.jsx')).toContain('t(gotIt ? "share.stumpPassGot" : "share.stumpPassMissed", { link: stumpLink(row) })');
     expect(read('src/screens/SettingsScreen.jsx')).toContain('const text = t("share.app");');
   });

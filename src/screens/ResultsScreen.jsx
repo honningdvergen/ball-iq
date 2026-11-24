@@ -19,8 +19,6 @@ import { dailyTierBand, scoreTaglineBand } from "../lib/resultsCopy.js";
 import { useT, fmtLocale } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
-import { stumpLink, shareStumpText } from "../lib/stump.js";
-import { loopEvent } from "../lib/funnel.js";
 
 // TomorrowTeaser (the Daily-7-only return moment) retired 2026-09-06: the
 // return loop is one component for all four dailies — components/DailyDone.jsx.
@@ -95,7 +93,7 @@ function CardDeltaRow({ d }) {
   );
 }
 
-export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, askedQuestions, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta }) {
+export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta }) {
   const t = useT();
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
@@ -126,33 +124,6 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   const eligibleForPB = mode === "classic" && result.total === 10;
   const isNewBest = eligibleForPB && result.score > (classicBest || 0) && result.score > 0;
 
-  // Stump-a-mate ammo (contextual, per Alex's call): prefer the hardest
-  // question that got the player (self-deprecating share beats a brag for
-  // k-factor), else the hardest one they aced. Plain code, NOT hooks — this
-  // askedQuestions rows are the
-  // shuffled play copies, but stumpLink only reads id/q/cat, and the
-  // recipient re-resolves the original row from the bank by id.
-  const diffRank = { hard: 3, medium: 2, easy: 1 };
-  const stumpables = (askedQuestions || []).filter((x) => x && x.id && x.type === "mcq" && Array.isArray(x.o) && x.o.length >= 2);
-  const wrongTexts = new Set((wrongAnswers || []).map((w) => w.q));
-  const stumpWrong = stumpables.filter((x) => wrongTexts.has(x.q));
-  const stumpPool = stumpWrong.length ? stumpWrong : stumpables;
-  const stumpQ = stumpPool.length ? stumpPool.slice().sort((a, b) => (diffRank[b.diff] || 0) - (diffRank[a.diff] || 0))[0] : null;
-  const onStump = () => {
-    if (!stumpQ) return;
-    haptic("soft");
-    const text = t(stumpWrong.length ? "share.stumpMissed" : "share.stumpGot", { link: stumpLink(stumpQ) });
-    // ⚠️ THIS WAS THE ONLY UNMEASURED SHARE IN THE APP. Stump is the k-factor
-    // lever — sender link, no-login recipient screen, conversion path, all
-    // built — and it had NO instrumentation on this side and none on the
-    // landing side either, so "is it worth keeping?" was unanswerable. It has
-    // fired zero times in funnel_events across the app's whole life; the
-    // honest reading is nobody finds a plain underlined link sitting below two
-    // buttons and a green CTA, but until now we could not tell that from
-    // "nobody presses it".
-    loopEvent("stump-share", { mode, hard: stumpQ.diff === "hard", missed: stumpWrong.length > 0 });
-    shareStumpText(text);
-  };
   const survivalNewBest = isSurvival && result.score > (survivalBest || 0) && result.score >= 3;
   const isNewPersonalBest = isNewBest || survivalNewBest;
 
@@ -323,7 +294,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
         <div style={{marginTop: cardFinish ? 56 : 18}}>
           <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
             streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
-            save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} promoted={dailyDone.promoted} card={dailyCard} />
+            save={dailyDone.save} track={dailyDone.track} promoted={dailyDone.promoted} card={dailyCard} />
         </div>
       )}
 
@@ -348,9 +319,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             <div className="results-row">
               {retryDemoted && <button className="btn-3d ghost" onClick={onRetry}>{t("rs.playAgain")}</button>}
               <button className="btn-3d ghost" onClick={onShare}>{t("rs.shareScore")}</button>
-              {!retryDemoted && stumpQ && <button className="btn-3d ghost" onClick={onStump}>{t("dd.stump")}</button>}
             </div>
-            {retryDemoted && stumpQ && <button className="results-link" onClick={onStump}>{t("rs.stumpQ")}</button>}
             <button className="results-exit" onClick={onHome}>{t("quiz.backHome")}</button>
           </div>
           <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
@@ -434,7 +403,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             <div style={{margin:"18px 0"}}>
               <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
                 streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
-                save={dailyDone.save} stump={stumpQ ? onStump : null} track={dailyDone.track} promoted={dailyDone.promoted} />
+                save={dailyDone.save} track={dailyDone.track} promoted={dailyDone.promoted} />
             </div>
           )}
           <div className="rd-actions">
@@ -449,11 +418,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"></path><path d="M12 15V4M8 8l4-4 4 4"></path></svg>
               {t("rs.share")}
             </button>}
-            {/* Stump drops to a text link rather than a fourth equal button —
-                the same demotion mobile makes. Five equal-weight actions asked
-                the player to rank the app's wishes (review C9); this ranks them. */}
           </div>
-          {stumpQ && !isDaily && <button className="rd-link" onClick={onStump}>{t("rs.stumpQ")}</button>}
           <button className="rd-exit" onClick={onHome}>{t("quiz.backHome")}</button>
         </div>
         {/* Same review loop as mobile — constrained to the rd-card column. */}
