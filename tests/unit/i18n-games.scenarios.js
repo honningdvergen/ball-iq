@@ -53,7 +53,8 @@ function footleDay(date, rec) {
   return { [`biq_wordle_${getWordleDateKey(date)}`]: JSON.stringify(rec) };
 }
 const footle = (props = {}) => () => React.createElement(FootballWordle, {
-  onBack: noop, onHowToPlay: noop, onReport: noop, date: TODAY, ...props,
+  // As the app hosts it: the app pays XP for a finished Footle, the static page does not.
+  onBack: noop, onHowToPlay: noop, onReport: noop, date: TODAY, services: { paysXp: true }, ...props,
 });
 const footleScenarios = () => {
   const a = footleAnswerFor(TODAY);

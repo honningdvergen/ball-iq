@@ -303,7 +303,10 @@ describe('the finish panel in the "one" layout', () => {
   });
   it('an old puzzle from the archive: one tap shares, no list, no XP claimed, and it says so', async () => {
     // An old Footle pays nothing, so the screen hands the card no XP (the card says what it is given).
-    expect(read('src/games/FootballWordle.jsx')).toContain('xp: isArchive ? 0 : getFootleXP(won, state.guesses.length),');
+    expect(read('src/games/FootballWordle.jsx')).toContain('xp: isArchive || !paysXp ? 0 : getFootleXP(won, state.guesses.length),');
+    // The app says it pays; the static page passes no such thing, so its card claims no XP.
+    expect(read('src/App.jsx')).toMatch(/const FOOTLE_SERVICES = \{\n[^\n]*\n\s*paysXp: true,/);
+    expect(read('src/islands/footle.jsx')).not.toContain('paysXp');
     const html = render(await load(), { isArchive: true, card: { ...card, xp: 0 } });
     expect(html).toMatch(/<button type="button" class="rc-act"><svg/);       // no sheet: there is no link to send
     expect(html).not.toContain('dd-list');
@@ -380,19 +383,27 @@ describe('the streak chip (components/StreakChip.jsx)', () => {
   const chip = (p) => renderToStaticMarkup(el(StreakChip, p));
   it('a flame and "Day N streak", filled, with which streak it is as its title', () => {
     const html = chip({ streak: { count: 1, label: 'daily streak' } });
-    expect(html).toMatch(/^<span class="dd-stk" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 1 streak<\/span><span class="dd-stk-n" aria-hidden="true">1<\/span><\/span>$/);
+    expect(html).toMatch(/^<span class="dd-stk-slot"><span class="dd-stk" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 1 streak<\/span><span class="dd-stk-n" aria-hidden="true">1<\/span><\/span><\/span>$/);
     expect(chip({ streak: { count: 12, label: 'Footle streak' } })).toContain('title="12-day Footle streak"');
     const css = rule(dd, '.dd-stk');
-    for (const d of ['height:40px', 'padding:0 14px', 'margin-left:auto', 'border-radius:12px', 'background:var(--s1)', 'font-size:13.5px', 'font-weight:700', 'white-space:nowrap', 'font-variant-numeric:tabular-nums']) expect(css, d).toContain(d);
+    for (const d of ['height:40px', 'padding:0 12px', 'border-radius:12px', 'background:var(--s1)', 'font-size:13.5px', 'font-weight:700', 'white-space:nowrap', 'font-variant-numeric:tabular-nums']) expect(css, d).toContain(d);
     expect(css).not.toMatch(/border:|outline|box-shadow/);                   // filled, never outlined
     expect(rule(dd, '.dd-stk > svg')).toContain('color:var(--gold)');
   });
   it('no streak, no chip', () => {
     for (const s of [undefined, null, { count: 0, label: 'daily streak' }, {}]) expect(chip({ streak: s })).toBe('');
   });
-  it('under 360pt it is the flame and the number; the words stay for a screen reader', () => {
-    expect(dd).toContain('@media (max-width:359px){.dd-stk{padding:0 12px;}.dd-stk-w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}.dd-stk-n{display:inline;}}');
-    expect(rule(dd, '.dd-stk-n')).toContain('display:none');
+  it('the chip is the flame and the number unless its slot has room for the words; the words stay for a screen reader', () => {
+    // The card no longer names the game, so the header must never lose "No. 204": the chip sits in a slot that
+    // takes what the title leaves, is short by default, and shows its words only where the slot is wide enough.
+    expect(rule(dd, '.dd-stk-slot')).toContain('flex:1 1 0;min-width:0;display:flex;justify-content:flex-end;container:stk / inline-size');
+    expect(rule(dd, '.dd-stk-w')).toContain('position:absolute;width:1px;height:1px;overflow:hidden');
+    expect(dd).toContain('@container stk (min-width:150px){.dd-stk:not(.has-sh){padding:0 14px;}.dd-stk:not(.has-sh) .dd-stk-w{position:static;');
+    expect(dd).toContain('@container stk (min-width:186px){.dd-stk.has-sh{padding:0 14px;}.dd-stk.has-sh .dd-stk-w{position:static;');
+    expect(dd).not.toContain('@media (max-width:359px){.dd-stk');
+    expect(rule(dd, '.dd-hd-t')).toContain('flex:0 1 auto');
+    expect(read('src/games/footle.css')).toContain('.wd-header.is-over .wd-header-text{flex:0 1 auto;}');
+    expect(rule(dd, '.dd-stk-n')).toContain('display:inline');
     expect(rule(dd, '.dd-stk')).toContain('position:relative');
   });
   it('a lost puzzle that kept the streak wears the shield, from day 2, where the host says a loss keeps it', () => {
@@ -405,9 +416,10 @@ describe('the streak chip (components/StreakChip.jsx)', () => {
   });
   it('banked shields ride the chip, counted from two up, and never on an old puzzle', () => {
     const one = chip({ streak: { count: 5, label: 'daily streak', shields: 1 } });
-    expect(one).toMatch(/<span class="dd-shields" role="img" aria-label="1 streak shield banked: each covers one missed day" title="Each shield covers one missed day"><svg[^>]*lucide-shield-check[^>]*>.*?<\/svg><\/span><\/span>$/);
+    expect(one).toMatch(/<span class="dd-shields" role="img" aria-label="1 streak shield banked: each covers one missed day" title="Each shield covers one missed day"><svg[^>]*lucide-shield-check[^>]*>.*?<\/svg><\/span><\/span><\/span>$/);
+    expect(one).toContain('class="dd-stk has-sh"');
     const three = chip({ streak: { count: 5, label: 'daily streak', shields: 3 } });
-    expect(three).toMatch(/aria-label="3 streak shields banked: each covers one missed day"[^>]*><svg[^>]*>.*?<\/svg>3<\/span><\/span>$/);
+    expect(three).toMatch(/aria-label="3 streak shields banked: each covers one missed day"[^>]*><svg[^>]*>.*?<\/svg>3<\/span><\/span><\/span>$/);
     expect((three.match(/lucide-shield-check/g) || []).length).toBe(1);
     expect(chip({ streak: { count: 5, label: 'daily streak', shields: 3 }, isArchive: true })).not.toContain('dd-shields');
     expect(chip({ streak: { count: 5, label: 'daily streak', shields: 0 } })).not.toContain('dd-shields');

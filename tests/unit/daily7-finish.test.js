@@ -48,7 +48,7 @@ describe('the Daily 7 finish is the layout Footle has', () => {
   });
   it('the header: the back arrow, the game named ONCE with its day, "7 questions" under it, the streak chip on the right', async () => {
     const html = await render(5);
-    expect(html).toMatch(/<div class="dd-hd"><button type="button" class="back-btn" aria-label="Back to Home">←<\/button><div class="dd-hd-t"><div style="[^"]*"><span style="[^"]*">Daily 7<\/span><span style="[^"]*">(23 Nov|Nov 23)<\/span><\/div><div class="dd-hd-sub">7 questions<\/div><\/div><span class="dd-stk" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 1 streak<\/span><span class="dd-stk-n" aria-hidden="true">1<\/span><\/span><\/div>/);
+    expect(html).toMatch(/<div class="dd-hd"><button type="button" class="back-btn" aria-label="Back to Home">←<\/button><div class="dd-hd-t"><div style="[^"]*"><span style="[^"]*">Daily 7<\/span><span style="[^"]*">(23 Nov|Nov 23)<\/span><\/div><div class="dd-hd-sub">7 questions<\/div><\/div><span class="dd-stk-slot"><span class="dd-stk" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 1 streak<\/span><span class="dd-stk-n" aria-hidden="true">1<\/span><\/span><\/span><\/div>/);
     // named once: the card under it has no top line
     expect(html).toContain('<section class="rc is-bare" aria-label="Daily 7: 5 out of 7">');
     expect(html).not.toContain('rc-eye');
@@ -144,7 +144,7 @@ describe('what the drawing does not show, and still has a place', () => {
   });
   it('banked shields ride the chip', async () => {
     const html = await render(5, { dailyDone: { ...SERVICES, streak: { count: 12, label: 'daily streak', keepsOnLoss: true, shields: 2 } } });
-    expect(html).toMatch(/<span class="dd-stk" title="12-day daily streak">.*?Day 12 streak<\/span><span class="dd-stk-n" aria-hidden="true">12<\/span><span class="dd-shields" role="img" aria-label="2 streak shields banked: each covers one missed day"[^>]*><svg[^>]*>.*?<\/svg>2<\/span><\/span>/);
+    expect(html).toMatch(/<span class="dd-stk has-sh" title="12-day daily streak">.*?Day 12 streak<\/span><span class="dd-stk-n" aria-hidden="true">12<\/span><span class="dd-shields" role="img" aria-label="2 streak shields banked: each covers one missed day"[^>]*><svg[^>]*>.*?<\/svg>2<\/span><\/span>/);
   });
   it('all four done: the sweep row in the same filled block, with nothing to tap', async () => {
     const html = await render(5, { dailyDone: { ...SERVICES, nextUp: [] } });
@@ -163,7 +163,7 @@ describe('what the drawing does not show, and still has a place', () => {
     expect(html).toContain('<div class="dd-cap"><span class="dd-cap-r">An old puzzle — it doesn’t count toward tomorrow.</span></div>');
     expect(text(html)).toContain('Share my 5/7');
     // the streak chip is the player's streak as it stands; shields are not shown on an old day
-    expect(html).toContain('class="dd-stk"');
+    expect(html).toContain('class="dd-stk');
   });
   it('the crowd comparison is still the card\'s headline when the day has numbers (the panel holds them)', () => {
     const dd = read('src/components/DailyDone.jsx');

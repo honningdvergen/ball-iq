@@ -133,7 +133,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   const date = dateProp || openedAt;
   // Everything the screen needs from the app shell arrives here; the island
   // passes its own (src/islands/footle.jsx). Missing keys fall back to inert.
-  const { haptic, playSound, markBadReviewMoment, onSync, shareCard, Confetti, InstallBanner, GetAppCTA, isNative, dailyDone } = { ...DEFAULT_SERVICES, ...(services || {}) };
+  const { haptic, playSound, markBadReviewMoment, onSync, shareCard, Confetti, InstallBanner, GetAppCTA, isNative, dailyDone, paysXp } = { ...DEFAULT_SERVICES, ...(services || {}) };
   // The in-app-browser app strip (components/InAppStrip.jsx). The shell's own
   // isNative is checked on top of the strip's three native signals.
   const inAppStrip = useInAppStrip();
@@ -297,8 +297,10 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       note: won ? t("footle.answerWas", { name: full }) : null,
       pinSub: true,
       // An old puzzle from the archive pays no XP (nothing is announced for
-      // it, see the finish effect), so its card claims none.
-      xp: isArchive ? 0 : getFootleXP(won, state.guesses.length),
+      // it, see the finish effect), so its card claims none. Nor does the
+      // static /football-wordle/ page, which has no XP at all: only a host
+      // that really pays says so (`paysXp`, the app's FOOTLE_SERVICES).
+      xp: isArchive || !paysXp ? 0 : getFootleXP(won, state.guesses.length),
     };
   })();
   // The result is up: the last row has turned and the card is drawn.

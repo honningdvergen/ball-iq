@@ -8,6 +8,10 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     (24 Nov 2026, after the independent review of the finishes: in "footle: won in 1", "footle: won in 3", "footle: won in 6, hard, clued", "footle: archive, won"
+//     the streak chip gained a wrapper, <span class="dd-stk-slot">, and the class has-sh when
+//     shields are banked, so the chip can give way to the puzzle number in a tight header.
+//     Proven by script to be the only difference in those entries; the rest are byte-identical.)
 //     INTENDED CHANGE, 22 Nov 2026: Footle's colour key is a button that opens
 //     the rules sheet wherever there is one ("?" in the header). Three entries
 //     (fresh board, fresh board hard mode, archive fresh) had exactly the key's

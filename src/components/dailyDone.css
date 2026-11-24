@@ -254,14 +254,18 @@
    40 tall, radius 12, the card surface, no outline. Under 360pt it is the
    flame and the number; the words stay for a screen reader (clipped, not
    removed). */
-.dd-stk{position:relative;flex:none;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;margin-left:auto;border-radius:12px;background:var(--s1);color:var(--t1);-webkit-text-fill-color:var(--t1);font-size:13.5px;line-height:1;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.dd-stk-slot{flex:1 1 0;min-width:0;display:flex;justify-content:flex-end;container:stk / inline-size;}
+.dd-stk{position:relative;flex:none;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 12px;border-radius:12px;background:var(--s1);color:var(--t1);-webkit-text-fill-color:var(--t1);font-size:13.5px;line-height:1;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
 .dd-stk > svg{flex:none;color:var(--gold);}
-.dd-stk-n{display:none;}
+.dd-stk-w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.dd-stk-n{display:inline;}
+/* The words, where the slot has room for them: 150px without banked shields, 186 with. */
+@container stk (min-width:150px){.dd-stk:not(.has-sh){padding:0 14px;}.dd-stk:not(.has-sh) .dd-stk-w{position:static;width:auto;height:auto;overflow:visible;clip:auto;}.dd-stk:not(.has-sh) .dd-stk-n{display:none;}}
+@container stk (min-width:186px){.dd-stk.has-sh{padding:0 14px;}.dd-stk.has-sh .dd-stk-w{position:static;width:auto;height:auto;overflow:visible;clip:auto;}.dd-stk.has-sh .dd-stk-n{display:none;}}
 .dd-stk .dd-shields{align-items:center;gap:2px;margin-left:0;font-weight:700;-webkit-text-fill-color:var(--gold);}
-@media (max-width:359px){.dd-stk{padding:0 12px;}.dd-stk-w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}.dd-stk-n{display:inline;}}
 /* The Daily 7's finish has no header of its own to borrow, so this is Footle's
    (footle.css .wd-header): the back button, the game named once with its day,
    one line under it, the chip. */
 .dd-hd{display:flex;align-items:center;gap:12px;margin:0 0 8px;}
-.dd-hd-t{flex:1;min-width:0;}
+.dd-hd-t{flex:0 1 auto;min-width:0;}
 .dd-hd-sub{margin-top:2px;font-size:12.5px;line-height:1.2;font-weight:400;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}

@@ -2760,6 +2760,8 @@ function computePast7DaysActivity() {
 // island. Everything it needs from this file's scope rides in through
 // `services`; the island (src/islands/footle.jsx) passes light equivalents.
 const FOOTLE_SERVICES = {
+  // The app pays XP for a finished Footle; the static page does not (FootballWordle.jsx).
+  paysXp: true,
   haptic, playSound, markBadReviewMoment, shareCard, Confetti, InstallBanner,
   GetAppCTA: FootleGetAppCTA, isNative: IS_NATIVE,
   // Cross-device sync — push to profiles.wordle_state via atomic JSON merge.

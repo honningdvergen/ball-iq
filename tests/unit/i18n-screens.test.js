@@ -20,6 +20,9 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// (24 Nov 2026, after the independent review of the finishes: in the three "results: daily 7" entries the
+// streak chip gained a wrapper, <span class="dd-stk-slot">, so the chip can give way to the day in a tight
+// header. Proven by script to be the only difference; the other 95 entries are byte-identical.)
 // INTENDED CHANGE, 24 Nov 2026 (round two of the finishes): the Daily 7 ends on the layout Footle
 // has (Alex chose one drawing for both). The three "results: daily 7 ..." entries were replaced,
 // and only those: the new render was dumped with a temporary copy of this test and 95 of 98
