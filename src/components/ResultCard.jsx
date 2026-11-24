@@ -10,20 +10,24 @@
 //   top row    the game and its day on the left, balliq.app on the right
 //   the score  about 72px, with the verdict BESIDE it, not under it
 //   the strip  the game's own picture. Daily 7: its seven questions as a
-//              shoot-out row, a filled disc for right and an empty ring for
-//              wrong. No ticks or crosses: six crosses on a bad day is noise.
+//              row of filled dots, green for right and red for wrong (the
+//              marks Alex agreed on 24 Nov 2026; until then a white disc and
+//              an empty ring). No ticks or crosses: six crosses on a bad day
+//              is noise.
 //   one line   the best true thing to say, also on a bad day
 //
 // WHAT THE STRIP SAYS ABOUT EACH QUESTION, in order of preference:
 //   `shares`  how many players got each one (0 to 100). No server sends it
 //             yet (supabase/migrations/v3_7_daily_result_marks.sql, waiting on
 //             Alex's yes, and then on phones running a build that reports it).
-//             Each disc gets its number; the hardest one the player got turns
-//             gold and is named in the line.
+//             Each disc gets its number; the hardest one the player got wears
+//             the gold ring and is named in the line.
 //   `levels`  the bank's own difficulty for each question (easy, medium,
 //             hard), which every answer already carries. Only the HARD ones
 //             are marked: a label under seven discs was noise, a label under
-//             two is information. A hard one the player got is gold.
+//             two is information. A hard one the player got is the same
+//             green dot with a gold ring round it; a hard one missed is red
+//             like any miss, with the quiet label under it.
 // Alex on the first built card, which had neither: "no percentages on this
 // one, looks a bit more dull". With nothing to go on the strip is the player's
 // own seven and the line is not drawn.
@@ -39,6 +43,14 @@
 //   `action`   one control at the foot of the card (the finish panel puts its
 //              quiet Share button there).
 // A host that passes neither gets exactly the card it had.
+//
+// THE XP ON THE CARD (24 Nov 2026, the Daily 7 only). `xp` is what this finish
+// earned. It is drawn in yellow under the verdict, where the host's sentence
+// was, and the verdict and the XP then stand against the foot of the big
+// number instead of being centred on it (.rc-hero.is-foot). The sentence it
+// displaced is not thrown away: on a day with no line under the marks it IS
+// that line. A host that passes no `xp` gets exactly the card it had, which is
+// what keeps Footle, Transfer Trail and Top 10 where they were.
 import React from "react";
 import { useT } from "../i18n/index.js";
 import { rich } from "../i18n/rich.jsx";
@@ -81,36 +93,46 @@ export function hardStory(t, marks, levels) {
   return { hard, got, note };
 }
 
-export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null }) {
+export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, xp = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null }) {
   const t = useT();
   const withShares = Array.isArray(shares) && Array.isArray(marks) && shares.length === marks.length && shares.every((p) => Number.isFinite(p));
   const star = withShares ? starIndex(marks, shares) : -1;
   const story = withShares ? null : hardStory(t, marks, levels);
   const anyHard = !!story && story.hard.some(Boolean);
+  // Nothing earned is not announced: there is no "+0 XP".
+  const xpOn = Number.isFinite(xp) && xp > 0;
   // A game with no strip (its board is the picture) may hand over its own line.
-  const note = hostNote ?? (withShares ? noteFor(t, marks, shares) : story ? story.note : null);
+  // With the XP under the verdict, the sentence it displaced is the line on a
+  // day that has no other.
+  const note = hostNote ?? (withShares ? noteFor(t, marks, shares) : story ? story.note : null) ?? (xpOn ? sub : null);
   const right = Array.isArray(marks) ? marks.filter(Boolean).length : 0;
+  const ringed = (i) => i === star || !!(story && story.got[i]);
+  // Two ringed marks side by side (a day with several hard questions, both
+  // got): on a narrow phone their rings would touch, so the row steps its dots
+  // down a size there (.is-close in the stylesheet). Every other row is as drawn.
+  const close = Array.isArray(marks) && marks.some((_, i) => ringed(i) && ringed(i + 1));
   return (
     <section className="rc" aria-label={score != null ? t("rc.aria", { title, score, total: outOf }) : title}>
       <div className="rc-eye">
         <span>{tag ? `${title} · ${tag}` : title}</span>
         <span className="rc-site">balliq.app</span>
       </div>
-      <div className={`rc-hero${score == null ? " is-name" : ""}`}>
+      <div className={`rc-hero${score == null ? " is-name" : ""}${xpOn ? " is-foot" : ""}`}>
         {/* No score on a lost guess game: the answer is the headline then. */}
         {score != null && <div className="rc-num"><b>{scoreNode ?? score}</b><span>/{outOf}</span></div>}
         {/* Keyed by its words: when the day's numbers land about a second
             after the card, the new sentence fades in rather than snapping, and
             the hero keeps its height (min-height in the stylesheet). */}
-        <div className="rc-say" key={`${verdict}|${sub ?? ""}`}>
+        <div className="rc-say" key={xpOn ? `${verdict}|xp` : `${verdict}|${sub ?? ""}`}>
           <div className="rc-v">{verdict}</div>
-          {sub && <div className="rc-sub">{sub}</div>}
+          {xpOn ? <div className="rc-xp">{rich(t("rs.xp"), { n: xp })}</div>
+            : sub && <div className="rc-sub">{sub}</div>}
         </div>
       </div>
       {Array.isArray(marks) && marks.length > 0 && (
-        <div className={`rc-kicks${withShares ? " has-shares" : ""}`} role="img" aria-label={t("rc.kicksAria", { n: right, total: marks.length })}>
+        <div className={`rc-kicks${withShares ? " has-shares" : ""}${close ? " is-close" : ""}`} role="img" aria-label={t("rc.kicksAria", { n: right, total: marks.length })}>
           {marks.map((ok, i) => (
-            <span key={i} className={`rc-k${ok ? " is-in" : ""}${i === star || (story && story.got[i]) ? " is-star" : ""}`}>
+            <span key={i} className={`rc-k${ok ? " is-in" : ""}${ringed(i) ? " is-star" : ""}`}>
               <i />
               {withShares ? <em>{Math.round(shares[i])}%</em>
                 // Every column keeps the label's line once one has it, so the discs stay level.

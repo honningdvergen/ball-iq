@@ -20,6 +20,15 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 24 Nov 2026 (later): the Daily 7's XP is on its result card, in yellow under
+// the verdict. The three "results: daily 7 ..." entries were replaced, and only those: the new
+// render was dumped with a temporary copy of this test and 95 of 98 entries were byte-identical.
+// In each of the three, exactly four things differ, proven by making those four edits to the old
+// entry by hand and comparing: the card's hero carries "is-foot"; the sentence under the verdict
+// (.rc-sub) is the XP (.rc-xp); that sentence is the line under the marks (.rc-note; none of the
+// three had a line of its own); and the streak row under the card no longer repeats the XP
+// (.dd-trow and .dd-xp are gone, the title stands alone). The marks' new colours are stylesheet
+// only and change no markup.
 // INTENDED CHANGE, 24 Nov 2026: Stump a mate is no longer offered on a finish screen (26 shares and
 // 2 answers since September; Alex: "let us maybe just scrap that idea"). Five entries lost exactly
 // that button and nothing else, proven by deleting the button from the old golden: the Footle panel

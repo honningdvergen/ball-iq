@@ -649,9 +649,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     );
   }
 
+  // THE DAILY 7'S XP IS ON ITS CARD (24 Nov 2026), in yellow under the verdict,
+  // so the streak row under the card does not say the same number a second
+  // time. Transfer Trail and Top 10 keep theirs on the streak row.
+  const xpOnCard = game === "daily7" && card?.xp > 0;
   const cardEl = card ? (
     <ResultCard title={card.title} tag={card.tag} score={card.score} scoreNode={card.scoreNode} outOf={card.outOf} marks={card.marks} shares={card.shares} levels={card.levels}
-      verdict={words.verdict} sub={words.sub} note={card.note} />
+      verdict={words.verdict} sub={words.sub} xp={xpOnCard ? card.xp : null} note={card.note} />
   ) : null;
   return (
     <>
@@ -663,7 +667,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       <div className="dd-row" style={{ "--dd-rgb": "255,170,0", "--dd-c": "var(--gold)" }}>
         <span className="dd-well" aria-hidden="true">{streakSafe ? <ShieldCheck size={20} strokeWidth={2.2} /> : <Flame size={20} strokeWidth={2.2} />}</span>
         <div className="dd-body">
-          {/* With the card above, the XP has no score to sit under: it rides the streak's title line. */}
+          {/* With the card above, the XP has no score to sit under: it rides the streak's title line
+              (unless the card itself carries it: xpOnCard, above). */}
           {(() => {
             const titleEl = (
               <div className="dd-title">
@@ -676,7 +681,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
                 )}
               </div>
             );
-            return card?.xp > 0
+            return card?.xp > 0 && !xpOnCard
               ? <div className="dd-trow">{titleEl}<span className="dd-xp dd-num">{rich(t("rs.xp"), { n: card.xp })}</span></div>
               : titleEl;
           })()}

@@ -112,10 +112,112 @@ describe('the look that was agreed', () => {
     expect(rule('.rc')).toContain('repeating-linear-gradient(90deg,#0E4429 0 46px,#114E2F 46px 92px)');
     expect(css).not.toMatch(/radial-gradient|::before|::after/);
   });
-  it('a wrong answer is an empty ring, not a cross', () => {
-    expect(rule('.rc-k i')).toContain('border:2px solid rgba(255,255,255,0.24)');
+  it('a wrong answer is a filled red dot, not a cross', () => {
+    expect(rule('.rc-k i')).toContain('background:#C23B33');
+    expect(rule('.rc-k i')).not.toContain('border:');
     const src = readFileSync(new URL('../../src/components/ResultCard.jsx', import.meta.url), 'utf8');
     expect(src.slice(src.indexOf('export function ResultCard'))).not.toMatch(/✓|✗|✕|<svg|lucide/);
+  });
+});
+
+// 24 Nov 2026, agreed with Alex on the drawn rounds 18 to 20: green for right,
+// red for wrong, a gold ring (not a gold dot) round a hard one got, and the XP
+// in yellow under the verdict.
+describe('the marks and the XP (24 Nov 2026)', () => {
+  const css = readFileSync(new URL('../../src/components/resultCard.css', import.meta.url), 'utf8');
+  const rule = (sel) => css.slice(css.indexOf(sel + '{'), css.indexOf('}', css.indexOf(sel + '{')));
+  const levels = ['easy', 'medium', 'hard', 'medium', 'easy', 'hard', 'medium'];
+  // Number 3 is hard and missed, number 6 is hard and got.
+  const mixed = { score: 5, marks: marks5, levels, sub: 'Some tough ones in there today.', xp: 50 };
+  it('right is a filled green dot, wrong a filled red one', () => {
+    expect(rule('.rc-k.is-in i')).toContain('background:#58CC02');
+    expect(rule('.rc-k i')).toContain('background:#C23B33');
+    // filled, never outlined: neither has a border of its own
+    expect(rule('.rc-k i')).not.toContain('border:');
+    expect(rule('.rc-k.is-in i')).not.toContain('border');
+    expect(css).not.toMatch(/\.rc-k[^{]*i\{[^}]*background:#fff/);
+  });
+  it('a hard one got is the same green dot with a gold ring 2.5px wide, 2.5px clear of it', () => {
+    const html = h(mixed);
+    expect(html).toContain('<span class="rc-k is-in is-star"><i></i><em>Hard</em></span>');
+    const star = rule('.rc-k.is-star i');
+    expect(star).toContain('border:2.5px solid #FFD34D');
+    expect(star).toContain('padding:2.5px');
+    expect(star).toContain('background-clip:content-box');
+    // the ring takes no room: the dot stays where its neighbours are
+    expect(star).toContain('margin:-5px');
+    // and the dot under it is still green, not gold
+    expect(star).not.toMatch(/background(-color)?:#/);
+    // An outline is square in Safari before 16.4 whatever the radius.
+    expect(star).not.toContain('outline');
+  });
+  it('a hard one missed is red like any miss, with the quiet label under it', () => {
+    const html = h(mixed);
+    expect(html).toContain('<span class="rc-k"><i></i><em>Hard</em></span>');
+    expect(rule('.rc-k em')).toContain('color:rgba(255,255,255,0.5)');
+    // the gold label and the gold words in the line are as they were
+    expect(rule('.rc-k.is-star em')).toContain('color:#FFD34D');
+    expect(rule('.rc-note strong')).toContain('color:#FFD34D');
+    expect(text(html)).toContain("You got number 6. One of today's hard ones.");
+  });
+  it('the XP is under the verdict in yellow, where the sentence was', () => {
+    const html = h(mixed);
+    expect(html).toContain('<div class="rc-hero is-foot"><div class="rc-num"><b>5</b><span>/7</span></div><div class="rc-say"><div class="rc-v">Keep going.</div><div class="rc-xp">+50 XP</div></div></div>');
+    expect(html).not.toContain('rc-sub');
+    const xp = rule('.rc-xp');
+    for (const d of ['font-size:13.5px', 'font-weight:700', 'color:#FFD34D', '-webkit-text-fill-color:#FFD34D', 'font-variant-numeric:tabular-nums']) expect(xp).toContain(d);
+    // no second face: the card's own Inter
+    expect(xp).not.toContain('font-family');
+  });
+  it('with the XP, the verdict stands against the foot of the number; without it the hero is as it was', () => {
+    expect(rule('.rc-hero.is-foot')).toBe('.rc-hero.is-foot{align-items:flex-end;gap:18px;');
+    expect(rule('.rc-hero.is-foot .rc-say')).toContain('padding-bottom:5px');
+    expect(rule('.rc-hero')).toContain('align-items:center;gap:16px');
+    expect(rule('.rc-say')).not.toContain('padding');
+    // Footle, Transfer Trail and Top 10 pass no XP to the card
+    const other = renderToStaticMarkup(React.createElement(ResultCard, { title: 'Transfer Trail', tag: 'No. 113', score: 3, outOf: 4, verdict: 'Brilliant', sub: 'It was Zinedine Zidane' }));
+    expect(other).toContain('<div class="rc-hero"><div class="rc-num">');
+    expect(other).toContain('<div class="rc-sub">It was Zinedine Zidane</div>');
+    expect(other).not.toContain('is-foot');
+    expect(other).not.toContain('rc-xp');
+  });
+  it('on a day with no line under the marks, the displaced sentence is that line', () => {
+    const html = h({ score: 5, marks: marks5, levels: Array(7).fill('medium'), sub: 'Some tough ones in there today.', xp: 50 });
+    expect(html).toContain('<p class="rc-note">Some tough ones in there today.</p>');
+    expect(html.match(/Some tough ones in there today\./g).length).toBe(1);
+    // with a line of its own (a hard one got), that line stays and the sentence is not drawn
+    expect(h(mixed)).not.toContain('Some tough ones');
+    // a hard one missed and none got: no hard line, so the sentence again
+    const missed = h({ score: 1, marks: [true, false, false, false, false, false, false], levels, sub: "Tomorrow's seven are brand new.", xp: 10 });
+    expect(text(missed)).toContain("+10 XP Hard Hard Tomorrow's seven are brand new.");
+    // and a card with no XP never moves its sentence
+    const plain = h({ score: 5, marks: marks5, levels: Array(7).fill('medium'), sub: 'Some tough ones in there today.' });
+    expect(plain).toContain('<div class="rc-sub">Some tough ones in there today.</div>');
+    expect(plain).not.toContain('rc-note');
+  });
+  it('nothing earned is not announced: no "+0 XP", and the card is the one it was', () => {
+    for (const xp of [0, null, undefined, NaN]) {
+      const html = h({ score: 0, marks: Array(7).fill(false), sub: "Tomorrow's seven are brand new.", xp });
+      expect(html).not.toContain('XP');
+      expect(html).not.toContain('is-foot');
+      expect(html).toContain('<div class="rc-sub">Tomorrow&#x27;s seven are brand new.</div>');
+    }
+  });
+  it('two ringed marks side by side: the row says so, and steps down a size on a narrow phone so the rings do not touch', () => {
+    const side = h({ score: 7, marks: Array(7).fill(true), levels: ['medium', 'hard', 'medium', 'hard', 'hard', 'hard', 'medium'], xp: 120 });
+    expect(side).toContain('<div class="rc-kicks is-close" role="img"');
+    // apart, or one of the pair missed: the row is as drawn
+    expect(h(mixed)).toContain('<div class="rc-kicks" role="img"');
+    expect(h({ score: 6, marks: [true, true, true, true, false, true, true], levels: ['easy', 'easy', 'easy', 'hard', 'hard', 'easy', 'easy'], xp: 60 })).toContain('<div class="rc-kicks" role="img"');
+    // 390px and wider have the room (the rings are 2px apart at 390): nothing changes there
+    expect(css).toContain('@media (max-width: 389px){.rc-kicks.is-close .rc-k{width:34px;}.rc-kicks.is-close .rc-k i{width:30px;height:30px;}}');
+    expect(css).toContain('.rc-kicks.is-close .rc-k{width:28px;}.rc-kicks.is-close .rc-k i{width:24px;height:24px;}}');
+  });
+  it('with the crowd\'s numbers the colours and the ring are the same', () => {
+    const html = h({ score: 5, marks: marks5, shares: [88, 71, 34, 63, 52, 12, 41], xp: 50 });
+    expect(html).toContain('<span class="rc-k is-in is-star"><i></i><em>12%</em></span>');
+    expect(html).toContain('<span class="rc-k"><i></i><em>34%</em></span>');
+    expect(html).toContain('<div class="rc-xp">+50 XP</div>');
   });
 });
 
@@ -158,12 +260,16 @@ describe('the finish panel with the card', () => {
   const mem = () => { const m = new Map(); return { getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => { m.set(k, String(v)); }, removeItem: (k) => { m.delete(k); } }; };
   const load = async () => { vi.resetModules(); vi.stubGlobal('localStorage', mem()); return (await import('../../src/components/DailyDone.jsx')).default; };
   const card = { title: 'Daily 7', tag: '22 Nov', score: 5, outOf: 7, marks: marks5, verdict: 'Solid challenge.', sub: 'Some tough ones in there today.', xp: 50 };
-  it('puts the card above the panel, the XP on the streak line, and drops the crowd row and an empty footer', async () => {
+  it('puts the card above the panel, the XP on the card and not a second time under it, and drops the crowd row and an empty footer', async () => {
     const DailyDone = await load();
     const html = renderToStaticMarkup(React.createElement(DailyDone, { game: 'daily7', edition: 20779, won: true, bucket: 5, streak: { count: 4, label: 'daily streak' }, card }));
     expect(html.indexOf('<section class="rc"')).toBeGreaterThanOrEqual(0);
     expect(html.indexOf('<section class="rc"')).toBeLessThan(html.indexOf('<section class="dd"'));
-    expect(html).toMatch(/<div class="dd-trow"><div class="dd-title">.*?<\/div><span class="dd-xp dd-num">\+50 XP<\/span><\/div>/);
+    // The Daily 7's XP is on the card (24 Nov 2026); the streak row does not repeat it.
+    expect(html).toContain('<div class="rc-xp">+50 XP</div>');
+    expect(html.match(/\+50 XP/g).length).toBe(1);
+    expect(html).not.toContain('dd-xp');
+    expect(html).not.toContain('dd-trow');
     expect(html).not.toContain('dd-dist');
     // The footer (a hairline and its group) is not drawn when it would be empty.
     const plain = renderToStaticMarkup(React.createElement(DailyDone, { game: 'daily7', edition: 20779, won: true, bucket: 5, streak: { count: 4, label: 'daily streak' } }));
@@ -174,8 +280,20 @@ describe('the finish panel with the card', () => {
     const withSave = renderToStaticMarkup(React.createElement(DailyDone, { game: 'daily7', edition: 20779, won: true, bucket: 5, streak: { count: 4, label: 'daily streak' }, card, save: { onSave: () => {}, line: '50 XP' } }));
     expect(hairlines(withSave)).toBe(hairlines(plain));
     expect(withSave).not.toContain('dd-dist');
-    // Before any crowd is known the card says what the host gave it.
-    expect(html).toContain('<div class="rc-v">Solid challenge.</div><div class="rc-sub">Some tough ones in there today.</div>');
+    // Before any crowd is known the card says what the host gave it: the verdict
+    // beside the score, and its sentence as the line under the marks.
+    expect(html).toContain('<div class="rc-v">Solid challenge.</div><div class="rc-xp">+50 XP</div>');
+    expect(html).toContain('<p class="rc-note">Some tough ones in there today.</p>');
+  });
+  it('another game\'s card keeps its XP on the streak line and its sentence under the verdict', async () => {
+    const DailyDone = await load();
+    const trail = { title: 'Transfer Trail', tag: 'No. 113', score: 3, outOf: 4, verdict: 'Brilliant', sub: 'It was Zinedine Zidane', pinSub: true, xp: 40 };
+    const html = renderToStaticMarkup(React.createElement(DailyDone, { game: 'trail', edition: 113, won: true, bucket: 3, streak: { count: 4, label: 'daily streak' }, card: trail }));
+    expect(html).toMatch(/<div class="dd-trow"><div class="dd-title">.*?<\/div><span class="dd-xp dd-num">\+40 XP<\/span><\/div>/);
+    expect(html).toContain('<div class="rc-hero"><div class="rc-num">');
+    expect(html).toContain('<div class="rc-sub">It was Zinedine Zidane</div>');
+    expect(html).not.toContain('rc-xp');
+    expect(html).not.toContain('is-foot');
   });
   it('without a card the panel is exactly what it was', async () => {
     const DailyDone = await load();
