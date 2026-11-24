@@ -16,6 +16,7 @@ import ChallengeBanner from "../components/ChallengeBanner.jsx";
 import { dateToYMD } from "../lib/date.js";
 import {
   TRAIL_MAX_ATTEMPTS,
+  getTrailAnswer,
   getTrailNumber,
   guessMatchesPlayer,
   cluesShown,
@@ -636,4 +637,29 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
       )}
     </div>
   );
+}
+
+/**
+ * The app's daily route (App.jsx, `screen === "trail"`): the screen above with
+ * the day's career resolved HERE, inside the lazy chunk. App.jsx used to call
+ * getTrailAnswer(day) itself and pass the player in, which put every career in
+ * lib/trail.js on Home's eager JavaScript (24 Nov 2026).
+ *
+ * ⚠️ The career is resolved for the SAME `date` the screen is told it is
+ * showing. An archive date with today's player would store today's answer
+ * under yesterday's key: the board would look right and the saved result
+ * would be a lie.
+ *
+ * No career for that day: nothing is drawn and the player is sent back, as the
+ * route did. App.jsx asks hasTrailOn(day) first, so this is the second lock.
+ */
+export function DailyTransferTrail({ date, onBack, ...rest }) {
+  const player = getTrailAnswer(date);
+  useEffect(() => {
+    if (player || !onBack) return undefined;
+    const id = setTimeout(onBack, 0);
+    return () => clearTimeout(id);
+  }, [player, onBack]);
+  if (!player) return null;
+  return <TransferTrail player={player} date={date} onBack={onBack} {...rest} />;
 }

@@ -34,7 +34,7 @@ import { DISCOVER, MORE } from './siteNav.js';
 import { CLUB_INDEX } from './clubIndex.js';
 import { LISTS_INDEX } from './listsIndex.js';
 import { getFootleNumber } from '../lib/footleNumber.js';
-import { getTrailNumber, loadTrailDay } from '../lib/trail.js';
+import { getTrailNumber, loadTrailDay } from '../lib/trailDay.js';
 import { mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from '../lib/mysteryPlayer.js';
 import { isTop10Live, getTop10Number, loadTop10Day } from '../lib/top10.js';
 import { readWordleTodayStatus, getWordleDateKey } from '../lib/wordleStatus.js';

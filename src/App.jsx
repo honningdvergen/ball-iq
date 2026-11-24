@@ -48,7 +48,9 @@ import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drai
 import { loadClubData, useClubData } from './lib/clubData.js';
 import { CLUB_INDEX } from './marketing/clubIndex.js';
 import { liveStreak, localDayNow, needsTodayCredit, owedStreakDays, shieldsAvailable, tickOwedStreak } from './lib/streak.js';
-import { getTrailAnswer, loadTrailDay } from './lib/trail.js';
+// lib/trailDay.js, never lib/trail.js: that one is every Trail career, and
+// this file is Home's eager path. The lazy Trail screen resolves the player.
+import { hasTrailOn, loadTrailDay } from './lib/trailDay.js';
 import { isTop10Live, loadTop10Day } from './lib/top10.js';
 import { dailyRunAnswered } from './lib/dailyRun.js';
 import { OnboardingScreen } from './screens/OnboardingScreen.jsx';
@@ -158,10 +160,11 @@ const LocalResults = withSuspense(lazyNamed(() => import('./screens/LocalPlay.js
 // Online multiplayer (~1700 lines) — only loads when a user goes online, never
 // on the cold/first paint. Both entry points share the one chunk.
 // Transfer Trail — lazy like the other full screens. Self-gating: the entry
-// card and the route both resolve through getTrailAnswer(), which returns
-// null while TRAIL_ANSWER_LOG is empty, so this renders NOTHING until the
-// spot-checked dataset lands. Wiring inert beats wiring half-done.
-const TransferTrail = React.lazy(() => import('./screens/TransferTrail.jsx'));
+// card and the route both ask hasTrailOn() (lib/trailDay.js), which is false
+// before the Trail's first day, so this renders NOTHING until then.
+// DailyTransferTrail is the screen plus the day's career, resolved inside the
+// lazy chunk: the careers (lib/trail.js) stay off Home's eager JavaScript.
+const TransferTrail = lazyNamed(() => import('./screens/TransferTrail.jsx'), 'DailyTransferTrail');
 const Top10 = React.lazy(() => import('./screens/Top10.jsx'));
 const Top10Library = React.lazy(() => import('./screens/Top10Library.jsx'));
 // Numbered (Draft No. N) but not one of the four dailies: see the note in the screen.
@@ -5582,7 +5585,7 @@ function AppInner() {
     let d7Open = false; try { d7Open = dailyRunAnswered(dateToYMD(new Date())) > 0; } catch {}
     if (!dailyDone) nextUp.push({ ...today("daily7", "Daily 7"), open: d7Open, icon: <ClipboardList size={18} strokeWidth={2.2} />, onTap: () => startMode("daily") });
     try {
-      if (getTrailAnswer() && !["won", "lost"].includes(loadTrailDay()?.status)) {
+      if (hasTrailOn() && !["won", "lost"].includes(loadTrailDay()?.status)) {
         nextUp.push({ ...today("trail", "Transfer Trail"), icon: <Route size={18} strokeWidth={2.2} />, onTap: () => setScreen("trail") });
       }
     } catch {}
@@ -8364,18 +8367,19 @@ function AppInner() {
           // it is showing. Passing an archive date alongside today's player
           // would store today's answer under yesterday's key — the board would
           // look right and the saved result would be a lie.
+          // The lazy screen resolves it from `date` (DailyTransferTrail): the
+          // careers are not on Home's eager path, so nothing here can.
           const day = archiveDate || new Date();
-          const p = getTrailAnswer(day);
-          // No dataset yet -> no puzzle. Send them home rather than render an
+          // No Trail that day -> no puzzle. Send them home rather than render an
           // empty board; a deep link that lands on a blank screen is worse
           // than one that lands somewhere real.
-          if (!p) { setTimeout(goHome, 0); return null; }
+          if (!hasTrailOn(day)) { setTimeout(goHome, 0); return null; }
           // The Mystery chain a Trail loss used to offer is now a "still open today"
           // row in the shared results panel (dailyDoneServices.nextUp).
           // Keyed by the day: the screen holds its attempts in state, so an app
           // left open past midnight showed the new day's clubs with yesterday's
           // guesses and guard (review, 12 Oct 2026). A new day is a new screen.
-          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail key={`${dateToYMD(day)}:${challengeSeen}`} player={p} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
+          return <TabErrorBoundary name="trail" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Transfer Trail" />}><TransferTrail key={`${dateToYMD(day)}:${challengeSeen}`} date={day} onBack={goHome} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>;
         })()}
         {screen === "top10" && (
           <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={`${top10ListId || "day"}:${challengeSeen}`} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>

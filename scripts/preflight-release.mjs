@@ -77,7 +77,7 @@ for (const [label, dir, syncArg] of [['iOS', IOS, 'ios'], ['Android', AND, 'andr
 // ── 3. the Trail anchor actually shipped ─────────────────────────────────────
 // The specific thing that nearly went out. Generalises to any constant a local
 // preview might move: assert the SHIPPED bytes carry the SOURCE value.
-const anchor = (readFileSync(resolve(ROOT, 'src/lib/trail.js'), 'utf8')
+const anchor = (readFileSync(resolve(ROOT, 'src/lib/trailDay.js'), 'utf8')
   .match(/TRAIL_ANCHOR_DAY\s*=\s*(\d+)/) || [])[1];
 if (!anchor) bad('could not read TRAIL_ANCHOR_DAY from source');
 else {

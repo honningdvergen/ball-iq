@@ -6,7 +6,8 @@ import { haptic } from "../lib/feedback.js";
 import { dateToYMD, msToNextLocalMidnight } from '../lib/date.js';
 import { countdownText } from '../i18n/names.js';
 import { footleAnswerFor } from "../lib/wordle.js";
-import { getTrailAnswer } from "../lib/trail.js";
+// lib/trailDay.js, never lib/trail.js: that one is every Trail career (Home's eager budget).
+import { hasTrailOn } from "../lib/trailDay.js";
 import { answerIdForDay, mysteryDayIndex, MYSTERY_ENABLED } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
 import { isTop10Live } from "../lib/top10.js";
@@ -63,7 +64,7 @@ function tacticsPbDistance(unbeaten, bestUnbeaten) {
 // than unpicked from the call sites: it is a no-op for Mystery and still the
 // safe input for anything date-shaped.
 function trailLiveOn(d) {
-  try { return !!getTrailAnswer(d); } catch { return false; }
+  try { return hasTrailOn(d); } catch { return false; }
 }
 function mysteryLiveOn(d) {
   if (!MYSTERY_ENABLED) return false;

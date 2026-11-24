@@ -143,7 +143,7 @@ describe('Home and the navigation, before en.js arrives', () => {
     vi.resetModules();
     vi.doMock('../../src/useAuth.jsx', () => ({ useAuth: () => S.auth }));
     vi.doMock('../../src/lib/wordleStatus.js', async (orig) => ({ ...(await orig()), readWordleTodayStatus: () => S.ws }));
-    vi.doMock('../../src/lib/trail.js', async (orig) => ({ ...(await orig()), getTrailAnswer: () => (S.trailLive ? { name: 'x' } : null), loadTrailDay: () => S.trailDay, getTrailNumber: () => 61 }));
+    vi.doMock('../../src/lib/trailDay.js', async (orig) => ({ ...(await orig()), hasTrailOn: () => !!S.trailLive, loadTrailDay: () => S.trailDay, getTrailNumber: () => 61 }));
     vi.doMock('../../src/lib/top10.js', async (orig) => ({ ...(await orig()), isTop10Live: () => S.top10Live, getTop10Number: () => 12, loadTop10Day: () => S.top10Day }));
     vi.doMock('../../src/lib/mysteryPlayer.js', async (orig) => ({ ...(await orig()), MYSTERY_ENABLED: true, answerIdForDay: () => 'p1', mysteryNumber: () => 88, loadMysteryResult: () => S.mysteryRes }));
     vi.doMock('../../src/lib/footleNumber.js', async (orig) => ({ ...(await orig()), getFootleNumber: () => 150 }));

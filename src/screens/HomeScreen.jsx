@@ -6,7 +6,8 @@ import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
 import { readWordleTodayStatus, getWordleDateKey } from "../lib/wordleStatus.js";
-import { getTrailAnswer, loadTrailDay, getTrailNumber } from "../lib/trail.js";
+// lib/trailDay.js, never lib/trail.js: that one is every Trail career (Home's eager budget).
+import { hasTrailOn, loadTrailDay, getTrailNumber } from "../lib/trailDay.js";
 import { isTop10Live, getTop10Number, loadTop10Day } from "../lib/top10.js";
 import { answerIdForDay, mysteryDayIndex, mysteryNumber, MYSTERY_ENABLED, loadMysteryResult } from "../lib/mysteryPlayer.js";
 import MYSTERY_SCHEDULE from "../data/mysterySchedule.json";
@@ -279,7 +280,7 @@ function HomeScreenImpl({
   // (Player / player_xxxxx) fall back to a neutral label rather than being shown.
   // Whether Trail has a puzzle today. Read once here rather than inside the
   // daily-zone IIFE, because the entry point now lives in the More-modes grid.
-  const trailLive = (() => { try { return !!getTrailAnswer(); } catch { return false; } })();
+  const trailLive = (() => { try { return hasTrailOn(); } catch { return false; } })();
   // Top 10 has a list today when the day falls inside its schedule. The lists
   // themselves stay in the lazy screen chunk; this reads one number.
   const top10Live = (() => { try { return isTop10Live(); } catch { return false; } })();

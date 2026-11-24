@@ -67,7 +67,13 @@ const BUDGET_KB = 909; // Target is still 600; the gap is Supabase (211 KB stati
 // src/data/clubPacks.js, reached only by import() through lib/clubData.js, and
 // the club alias/colour tables stayed in lib/clubColour.js while the colour
 // maths Home needs moved to lib/colourMath.js. Both grow with every club wave.
-const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists|draftSquads|clubPacks|clubColour)-[A-Za-z0-9_-]+\.js$/;
+// scheduleRemote joined 2026-11-24, the day the Trail's careers came off: every
+// career, the answer log and the alias tables (lib/trail.js, ~43 KB built) rode
+// on Home through three small helpers. Those live in lib/trailDay.js now, and
+// lib/trail.js builds into the scheduleRemote chunk, which App.jsx import()s
+// and only the Trail, Mystery and Stitch-up screens load. The source side of
+// this is tests/unit/trail-off-home.test.js. Grows with every Trail wave.
+const HEAVY = /^(questions|questions-index|questionConflicts|mysteryPool|mysteryCareers|clubPackColours|top10Lists|draftSquads|clubPacks|clubColour|scheduleRemote)-[A-Za-z0-9_-]+\.js$/;
 const HOME_CHUNKS = /^(main|GameRoot|HomeScreen)-[A-Za-z0-9_-]+\.js$/;
 
 const html = readFileSync(resolve(DIST, 'index.html'), 'utf8');

@@ -27,9 +27,12 @@ import { STEP7_EN } from './i18n-step7.keys.js';
 const S = vi.hoisted(() => ({}));
 vi.mock('../../src/useAuth.jsx', () => ({ useAuth: () => S.auth }));
 vi.mock('../../src/lib/wordleStatus.js', async (orig) => ({ ...(await orig()), readWordleTodayStatus: () => S.ws }));
-vi.mock('../../src/lib/trail.js', async (orig) => ({
+// lib/trailDay.js since 24 Nov 2026: Home reads the Trail's day from there, not
+// from lib/trail.js (the careers), and asks hasTrailOn() where it asked
+// !!getTrailAnswer().
+vi.mock('../../src/lib/trailDay.js', async (orig) => ({
   ...(await orig()),
-  getTrailAnswer: () => (S.trailLive ? { name: 'x' } : null),
+  hasTrailOn: () => !!S.trailLive,
   loadTrailDay: () => S.trailDay,
   getTrailNumber: () => 61,
 }));
