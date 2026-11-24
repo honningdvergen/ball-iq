@@ -2375,7 +2375,16 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
    Scoped to .is-mode so nothing else moves: Play with Friends, Review pills
    and every future list row keep the shared anatomy. */
 .todays-seven-secondary.is-mode{background:linear-gradient(90deg, rgba(var(--mode-rgb),0.10), rgba(var(--mode-rgb),0.03) 62%, transparent);border:1px solid rgba(var(--mode-rgb),0.28);}
-.todays-seven-secondary.is-mode .t7s-cta{background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);border:1px solid rgba(var(--mode-rgb),0.45);}
+/* A LITTLE BIGGER (24 Nov 2026, Alex on the Home studies: "the slightly bigger play buttons … probably
+   something we can incorporate"; no other Home change). 54 by 31 became 63 by 36: 9/16 and 13.5px.
+   40 high was tried in the study and made "Transfer Trail No. 113" wrap beside "Review". */
+.todays-seven-secondary.is-mode .t7s-cta{padding:9px 16px;font-size:13.5px;background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);border:1px solid rgba(var(--mode-rgb),0.45);}
+/* The smallest phones keep the old size: at 320 wide the bigger pill pushed a finished row
+   ("Transfer Trail No. 114 … Review") from two lines to three (measured 94 to 126 high, 24 Nov 2026). */
+/* 360 to 389 wide (iPhone SE, mini): the taller pill with tighter sides, so it is no wider than
+   before and a Spanish line ("Empieza aquí · 6 intentos") keeps to one line as it did. */
+@media (max-width: 389px){.todays-seven-secondary.is-mode .t7s-cta{padding:9px 11px;}}
+@media (max-width: 359px){.todays-seven-secondary.is-mode .t7s-cta{padding:7px 13px;font-size:12px;}}
 /* Done stays quiet even on a coloured tile — a finished daily must not shout
    as loudly as one still waiting to be played. */
 .todays-seven-secondary.is-mode.is-done{background:var(--s1);border:1px solid var(--border);}
