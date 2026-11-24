@@ -3849,6 +3849,32 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
 @media (max-width: 1023px) and (hover: hover){
   .daily-well .todays-seven-secondary.is-mode:hover{transform:none;box-shadow:none;}
 }
+/* THE REST OF HOME'S FIRST SCREEN BY THE SAME RULE (24 Nov 2026; Alex on home-tidy.png: "Mates
+   and headings tidied probably"). He had asked why "With your mates" seemed "to just be kind of
+   floating there", and counted "6 play buttons under each other".
+   - A section title is the small grey spaced label the date line above the dailies already is,
+     10px above the block it names and 26px under the block before it. Home only: the same class
+     heads a list on the Multiplayer tab.
+   - The two mates rows share one plain card with a hairline between them, the dailies' card. A
+     member's league card (.lg-home, in the lazy league.css) keeps its own box, and Multiplayer
+     under it is then a card of its own.
+   - A pill means "play this now"; a row that takes you somewhere ends in an arrow (.mp-row-chev,
+     in MultiplayerCard.jsx and LeagueStartRow.jsx). The arrow is drawn at every width.
+   - The Quiz row under the finder is a plain card too.
+   Phones only, as above. */
+.mp-row-chev{display:grid;place-items:center;width:34px;flex:none;color:#5E6270;}
+@media (max-width: 1023px){
+  .home-mates .home-section-title,.home-col-below .home-section-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;line-height:1;color:var(--t3);margin:26px 4px 10px;padding:0;}
+  .home-mates > .mp-row,.home-mates > .mp-row:last-child{background:var(--s1);border:0;box-shadow:none;border-radius:20px;margin:0;padding:11px 14px;min-height:68px;}
+  .home-mates > .mp-row:not(:last-child){border-radius:20px 20px 0 0;}
+  .home-mates > .mp-row + .mp-row{border-radius:0 0 20px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
+  .home-col-below .todays-seven-secondary.mp-row.quiz-entry{border:0;box-shadow:none;}
+}
+@media (max-width: 1023px) and (hover: hover){
+  .home-mates > .mp-row:hover{transform:none;box-shadow:none;}
+  .home-mates > .mp-row + .mp-row:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
+  .home-col-below .todays-seven-secondary.mp-row.quiz-entry:hover{box-shadow:none;}
+}
 
 /* ── THE WEB SHELL (2026-09-03) ────────────────────────────────────────────────
    body.biq-web = a browser tab (main.jsx; never native, never an installed

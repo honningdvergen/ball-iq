@@ -212,7 +212,7 @@ function HomeScreenImpl({
   onOpenLeague,
   onStartLeague,
 }) {
-  const { user, profile: authProfile, isGuest, openAuthPrompt } = useAuth();
+  const { user, profile: authProfile } = useAuth();
   const t = useT();
   useLang(); // the dateline and the XP follow the language (fmtLocale)
   // The card fetches for a member on this browser, or once a session for a
@@ -637,23 +637,12 @@ function HomeScreenImpl({
 
       {/* ── PLAY WITH FRIENDS — one row, same anatomy as the Today rows
           (2026-09-06 critique: it had the loudest button on the screen and the
-          seventh position, 11 plays in 30 days). The body opens the Online tab;
-          the quiet Invite pill creates a room. "Same phone" lives on the Online
-          tab ("Local pass & play"), where couch play already was. */}
+          seventh position, 11 plays in 30 days). The whole row opens the Online
+          tab; the quiet Invite pill that created a room from here left on 24
+          Nov 2026 (MultiplayerCard.jsx says why), and creating a room is the
+          first button on that tab. "Same phone" lives there too ("Local pass &
+          play"), where couch play already was. */}
       <MultiplayerCard
-        onInvite={() => {
-          // 1.1: "Invite" now creates a room and drops you in the lobby (where
-          // the real /join/CODE link lives) instead of sharing a dead link.
-          if (!user || isGuest) {
-            // "invite", not "online" — the prompt this opens is the only thing
-            // the player sees next, so it has to name what they just asked for.
-            openAuthPrompt("invite");
-            return;
-          }
-          setOnlineAutoCreate?.(true);
-          setScreen("online-stage1");
-        }}
-        // Tapping the card anywhere outside the two buttons was a dead click.
         // Guests are deliberately NOT gated here — the Online tab is viewable
         // signed-out and gates on create/join, so sending them to an auth prompt
         // for a browse would be a harsher funnel than the buttons have.

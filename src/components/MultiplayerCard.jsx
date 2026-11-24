@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Users } from "lucide-react";
+import { Users, ChevronRight } from "lucide-react";
 import { useT } from "../i18n/index.js";
 
 // MultiplayerCard — Home tab. One row in the Today-row anatomy (2026-09-06).
@@ -11,17 +11,18 @@ import { useT } from "../i18n/index.js";
 // shape as Footle / Daily 7 / Trail / Mystery, with green in the icon well and
 // ONE quiet pill.
 //
-// Two targets, not nested (a <button> inside a <button> is invalid): the body
-// opens the Online tab (where joining with a code and "Local pass & play" both
-// live), the pill runs the invite flow — create a room, land in the lobby with
-// the shareable /join/CODE link. "Same phone" left this card; the Online tab
-// carries it.
-export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvite, onOpen }) {
+// It had two targets: the body opened the Online tab and a quiet "Invite" pill
+// created a room at once. "Same phone" left this card; the Online tab carries it.
+//
+// ONE TARGET, AND AN ARROW (24 Nov 2026, Alex on home-tidy.png: "Mates and
+// headings tidied probably"). He counted "6 play buttons under each other" on
+// Home. A pill now means "play this now" and belongs to the four dailies; a row
+// that takes you somewhere ends in an arrow. So the Invite pill is gone from
+// this row and the whole row opens the Multiplayer tab, where creating a room
+// is the first button. The cost, known when it was drawn: inviting from Home is
+// one tap deeper.
+export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOpen }) {
   const t = useT();
-  const handleInvite = useCallback((e) => {
-    e?.stopPropagation();
-    onInvite?.();
-  }, [onInvite]);
   const handleOpen = useCallback((e) => {
     e?.stopPropagation();
     onOpen?.();
@@ -46,8 +47,8 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onInvit
               reads dead, which is worse than quiet. */}
           <span className="t7s-sub">{t("home.mp.sub")}</span>
         </span>
+        <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>
       </button>
-      <button type="button" className="t7s-cta mp-row-invite" onClick={handleInvite} aria-label={t("home.mp.inviteAria")}>{t("home.mp.invite")}</button>
     </div>
   );
 });

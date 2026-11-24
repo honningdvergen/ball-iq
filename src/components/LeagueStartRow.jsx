@@ -1,12 +1,14 @@
 import React from "react";
-import { Trophy } from "lucide-react";
+import { Trophy, ChevronRight } from "lucide-react";
 import { useT } from "../i18n/index.js";
 
 // A way INTO leagues from Home, for a player who is in none (11 Nov 2026).
 // Until now the only door was a button on a finish panel, so a player who had
 // left a league, or never finished a daily, could not start one at all (found
 // on the simulator walk; leagues are the app's growth lever). Same row anatomy
-// as Multiplayer beside it: an icon well, a name, one line, one quiet pill.
+// as Multiplayer beside it: an icon well, a name, one line, and since 24 Nov
+// 2026 an arrow where the quiet "Start" pill was (the pill did what a tap on
+// the row did; MultiplayerCard.jsx says why the pills left these two rows).
 // Eager and tiny, so Home does not jump when it appears; a member sees the
 // league card here instead (LeagueHomeCard).
 export function LeagueStartRow({ onStart }) {
@@ -20,8 +22,8 @@ export function LeagueStartRow({ onStart }) {
           <span className="t7s-title">{t("home.league.title")}</span>
           <span className="t7s-sub">{t("home.league.sub")}</span>
         </span>
+        <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>
       </button>
-      <button type="button" className="t7s-cta mp-row-invite" onClick={start} aria-label={t("home.league.startAria")}>{t("home.league.start")}</button>
     </div>
   );
 }

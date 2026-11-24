@@ -10,6 +10,13 @@
 //     the ones no static render reaches (the finder's dropdown, the open menu).
 //   • Spanish renders with biq_lang=es, with no English left in those surfaces
 //     beyond product names, club names and numbers.
+// INTENDED CHANGE, 24 Nov 2026 (Home, mates rows): the Multiplayer row's quiet "Invite" pill became
+// an arrow inside the row's one button (MultiplayerCard.jsx says why). Thirteen entries were
+// replaced, and only those (the twelve Home states and "multiplayer card"): the new render was
+// dumped with a temporary copy of this test, 8 of 21 entries were byte-identical, and in each of
+// the thirteen the only difference is that one pill, proven by making the edit to the old entry by
+// hand (the <button class="t7s-cta mp-row-invite"> after the row's button is gone, and a
+// <span class="mp-row-chev"> with the chevron is the last thing inside that button).
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { readFileSync } from 'node:fs';

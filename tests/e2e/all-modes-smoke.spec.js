@@ -112,16 +112,16 @@ test('Ball IQ Test stays dead — no home entry to the killed mode', async ({ pa
 });
 
 test('Multiplayer Online entry (guest → auth prompt, no crash)', async ({ page, context }) => {
-  // MultiplayerCard (Sprint #12, reworked 1.1): the primary CTA is now
-  // "Invite friends" (aria: Create a room and invite friends). Guests get
-  // the auth prompt instead of a room — the smoke intent is unchanged:
-  // a guest tapping the online CTA must not crash the app.
+  // MultiplayerCard: since 24 Nov 2026 the Home row has one target, which
+  // opens the Multiplayer tab (the "Invite" pill that created a room from
+  // Home is gone). The smoke intent is unchanged: a guest tapping the online
+  // entry must not crash the app.
   await seedGuestMode(context);
   const errs = await captureErrors(page);
   await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  await page.getByRole('button', { name: 'Create a room and invite friends' }).first().click();
+  await page.getByRole('button', { name: 'Open the Multiplayer tab' }).first().click();
   await page.waitForTimeout(1500);
   await expectNoCrash(page, errs, 'Multiplayer Online');
 });

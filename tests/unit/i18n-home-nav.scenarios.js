@@ -100,7 +100,7 @@ export const SCENARIOS = [
     ws: { kind: 'won', used: 2 }, trailLive: false, top10Live: false,
   }, () => home({ dailyDone: true, dailyScore: 3 })],
   ['home: no club packs (finder hidden)', {}, () => home({ clubPacks: null })],
-  ['multiplayer card', {}, () => React.createElement(MultiplayerCard, { onInvite: noop, onOpen: noop })],
+  ['multiplayer card', {}, () => React.createElement(MultiplayerCard, { onOpen: noop })],
   ['BiqNav: home tab, daily not done, signed out', {}, () => React.createElement(BiqNav, { tab: 'home', setTab: noop, setScreen: noop, dailyDone: false, onHomeClick: noop })],
   ['BiqNav: settings active, 12 notifications', {}, () => React.createElement(BiqNav, { tab: 'profile', active: 'settings', setTab: noop, setScreen: noop, dailyDone: true, onHomeClick: noop, notifCount: 12, onOpenNotifs: noop })],
   ['BiqNav: 3 notifications', {}, () => React.createElement(BiqNav, { tab: 'online', setTab: noop, setScreen: noop, dailyDone: true, onHomeClick: noop, notifCount: 3, onOpenNotifs: noop })],
