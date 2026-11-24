@@ -22,6 +22,10 @@
 //     card (components/ResultCard.jsx) instead of its own result block; five
 //     entries (won in 1, 3, 6, lost, archive won) were replaced whole after a
 //     check that the card is the only change.
+//     (Same day, after the independent review: in those same five entries each row of card
+//     tiles became one role="img" with the letters and colours in its label, the tiles
+//     themselves aria-hidden, the Share button gained aria-expanded, and "Today" is followed
+//     by a real space. Proven to be the only differences before the golden was touched.)
 //     INTENDED CHANGE, 24 Nov 2026: the Footle finish is one object (Alex's
 //     "Yes, build Footle" on the agreed drawing). The same five finished-Footle
 //     entries (won in 1, won in 3, won in 6 hard clued, lost, archive won) were

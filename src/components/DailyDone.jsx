@@ -472,7 +472,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     // With no puzzle link to send (an old puzzle from the archive) there is
     // one thing to do, so the button does it: no sheet with a single row.
     const action = (
-      <button type="button" className="rc-act" onClick={canChallenge ? openSheet : doShare} disabled={!canChallenge && busy} aria-haspopup={canChallenge ? "dialog" : undefined}>
+      <button type="button" className="rc-act" onClick={canChallenge ? openSheet : doShare} disabled={!canChallenge && busy} aria-haspopup={canChallenge ? "dialog" : undefined} aria-expanded={canChallenge ? sheetOpen : undefined}>
         {!canChallenge && shared
           ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{t("dd.shared")}</>
           : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{scoreTxt ? t("dd.shareMy", { score: scoreTxt }) : t("dd.shareMine")}</>}
@@ -508,7 +508,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     // panel's own words.
     const streakFull = streakN >= 2 ? t("dd.streakN", { n: streakN, label }) : t("dd.streak1", { label });
     const dayEl = !isArchive && keys.length > 1
-      ? <span className="dd-cap-day"><b>{t("dd.capToday")}</b>{t("dd.nOf", { n: doneN, total: keys.length })}</span> : null;
+      ? <span className="dd-cap-day"><b>{t("dd.capToday")}</b>{" "}{t("dd.nOf", { n: doneN, total: keys.length })}</span> : null;
     const streakEl = streakN >= 1 ? (
       <span className="dd-cap-st" title={streakFull}>
         {streakSafe ? <ShieldCheck size={16} strokeWidth={2.2} aria-hidden="true" /> : <Flame size={16} strokeWidth={2.2} aria-hidden="true" />}

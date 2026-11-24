@@ -180,7 +180,7 @@
 .dd-one .dd-vs{gap:10px;margin-top:12px;}
 .dd-league.is-flat{align-self:flex-start;border:0;}
 .dd-cap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin:22px 6px 10px;font-size:13.5px;line-height:1.2;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);font-variant-numeric:tabular-nums;}
-.dd-cap-day b{margin-right:5px;font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.dd-cap-day b{margin-right:1px;font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .dd-cap-r{display:inline-flex;align-items:center;gap:10px;margin-left:auto;}
 .dd-cap-st{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .dd-cap-st > svg{flex:none;color:var(--gold);}

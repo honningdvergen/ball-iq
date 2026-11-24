@@ -153,7 +153,7 @@ describe('the finish panel in the "one" layout', () => {
 
   it('a win: the picture and "Share my 3/6" on the card; no panel, no crossed swords, no second button', async () => {
     const html = render(await load());
-    expect(html).toMatch(/<div class="rc-pic"><div class="wd-cg"><\/div><\/div><button type="button" class="rc-act" aria-haspopup="dialog"><svg[^>]*lucide-share[^>]*>.*?<\/svg>Share my 3\/6<\/button><\/section>/);
+    expect(html).toMatch(/<div class="rc-pic"><div class="wd-cg"><\/div><\/div><button type="button" class="rc-act" aria-haspopup="dialog" aria-expanded="false"><svg[^>]*lucide-share[^>]*>.*?<\/svg>Share my 3\/6<\/button><\/section>/);
     expect(html).not.toContain('<section class="dd"');
     expect(html).not.toMatch(/lucide-swords|class="dd-share"|dd-share-note|dd-share-alts|class="dd-up[ "]|dd-chip|dd-hr|dd-well/);
     expect(html).toContain('<section class="dd-one"');
@@ -167,7 +167,7 @@ describe('the finish panel in the "one" layout', () => {
   });
   it('the caption: "Today 1 of 4" on the left; the flame, the streak and the XP on the right', async () => {
     const html = render(await load());
-    expect(html).toMatch(/<div class="dd-cap"><span class="dd-cap-day"><b>Today<\/b>1 of 4<\/span><span class="dd-cap-r"><span class="dd-cap-st" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg>Day 1 streak<\/span><span class="dd-cap-xp">\+48 XP<\/span><\/span><\/div>/);
+    expect(html).toMatch(/<div class="dd-cap"><span class="dd-cap-day"><b>Today<\/b> 1 of 4<\/span><span class="dd-cap-r"><span class="dd-cap-st" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg>Day 1 streak<\/span><span class="dd-cap-xp">\+48 XP<\/span><\/span><\/div>/);
   });
   it('the list: the first row ends in Play, the rest in a chevron; a started one says Continue when it leads', async () => {
     const D = await load();
@@ -212,7 +212,7 @@ describe('the finish panel in the "one" layout', () => {
   });
   it('all four done: the sweep, in the same filled block, with no row to tap', async () => {
     const html = render(await load(), { nextUp: [], streak: { count: 12, label: 'daily streak' } });
-    expect(html).toContain('<b>Today</b>4 of 4');
+    expect(html).toContain('<b>Today</b> 4 of 4');
     expect(html).toMatch(/<div class="dd-list"><div class="dd-li is-sweep">/);
     expect(text(html)).toContain('All 4 done today Clean sweep');
     expect(html).not.toContain('dd-li-go');

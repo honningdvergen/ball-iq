@@ -272,9 +272,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
         {state.guesses.map((gs, r) => {
           const grades = gradeWordleGuess(gs, answer);
           return (
-            <div className="wd-cg-row" key={r}>
+            // One row is one picture to a screen reader: a label on a plain span is
+            // not reliably read, so the tiles are hidden and the row says them all.
+            <div className="wd-cg-row" key={r} role="img" aria-label={Array.from({ length: answer.length }, (_, i) => `${gs[i]}, ${t(grades[i] === "green" ? "footle.green" : grades[i] === "yellow" ? "footle.yellow" : "footle.grey")}`).join("; ")}>
               {Array.from({ length: answer.length }, (_, i) => (
-                <span key={i} className={`wd-ct is-${grades[i]}`} aria-label={`${gs[i]}, ${t(grades[i] === "green" ? "footle.green" : grades[i] === "yellow" ? "footle.yellow" : "footle.grey")}`}>{gs[i]}</span>
+                <span key={i} className={`wd-ct is-${grades[i]}`} aria-hidden="true">{gs[i]}</span>
               ))}
             </div>
           );
