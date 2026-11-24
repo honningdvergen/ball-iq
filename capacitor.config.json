@@ -3,7 +3,7 @@
   "appName": "Ball IQ",
   "webDir": "dist",
   "_developmentTeam": "A99W5L256P",
-  "_developmentTeamNote": "Apple Developer Team ID. Capacitor 6.x has no first-class teamId field; this entry is source-of-truth documentation. The actual value is applied to ios/App/App.xcodeproj/project.pbxproj (DEVELOPMENT_TEAM and CODE_SIGN_STYLE = Automatic) after `cap add ios`. If you regenerate the iOS project, re-apply.",
+  "_developmentTeamNote": "Apple Developer Team ID. Capacitor has no first-class teamId field (still true on 8.6); this entry is source-of-truth documentation. The actual value is applied to ios/App/App.xcodeproj/project.pbxproj (DEVELOPMENT_TEAM and CODE_SIGN_STYLE = Automatic) after `cap add ios`. If you regenerate the iOS project, re-apply.",
   "server": {
     "androidScheme": "https"
   },
@@ -32,9 +32,12 @@
       "backgroundColor": "#0B0C10",
       "overlaysWebView": true
     },
+    "SystemBars": {
+      "style": "DARK",
+      "initialViewportFitValueHint": "cover"
+    },
     "Keyboard": {
-      "resize": "none",
-      "resizeOnFullScreen": true
+      "resize": "none"
     }
   }
 }

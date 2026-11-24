@@ -161,10 +161,12 @@ function startedInsideInnerScroller(target) {
 //
 // ⚠️ ON NATIVE THE TWO PLATFORMS DISAGREE ABOUT window.innerHeight. iOS never
 // resizes the WebView (Keyboard.resize "none"), so the line is the full height
-// less the plugin's keyboard height. Android DOES resize it: capacitor.config
-// sets Keyboard.resizeOnFullScreen, and the plugin's Keyboard.java
-// (possiblyResizeChildOfContent) shrinks the WebView's parent to the usable
-// height before it reports the keyboard. There innerHeight has already lost
+// less the plugin's keyboard height. Android DOES resize it. Since Capacitor 8
+// the core SystemBars plugin does that: while the keyboard is up it pads the
+// window's bottom by the keyboard's height, so the WebView is that much
+// shorter. (Up to Capacitor 7 it was Keyboard.resizeOnFullScreen in the
+// keyboard plugin; that plugin now leaves the sizing to SystemBars and the
+// setting is gone from capacitor.config.) There innerHeight has already lost
 // the keyboard, and "innerHeight - kbInset" took it off twice: on a 412x915
 // phone the line came out near 255 when it is near 585 (review, 12 Oct 2026,
 // read from the plugin's source, not yet seen on a device). So the full height
