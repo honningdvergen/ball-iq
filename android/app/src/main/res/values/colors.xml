@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The page colour, the bg token in src/app.css. Used as the window background
+         so the system bar strips match the page; see styles.xml. -->
+    <color name="appBackground">#0B0C10</color>
+</resources>

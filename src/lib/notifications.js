@@ -106,6 +106,15 @@ export function resyncReminderHour() {
 
 // (Re)schedule the rolling window. skipToday omits offset 0 — pass true when
 // the user has already completed today's daily so we don't nag them tonight.
+// ⚠️ ANDROID, @capacitor/local-notifications 8.3+: a notification is "exact" by
+// default, and schedule() then opens the system "Alarms & reminders" settings
+// page whenever the app may not set exact alarms, which is every fresh install
+// on Android 14+. Turning the daily reminder on threw the player out of the app
+// (Android 16 emulator, 15 Nov 2026). A reminder that lands within a few minutes
+// of its hour is all we need, and it is what Android gave us before the
+// upgrade. iOS ignores the field.
+const INEXACT = { isExactNotification: false };
+
 export async function scheduleReminderWindow({ skipToday = false, streak = 0 } = {}) {
   if (!notificationsSupported()) return;
   let cancelled = false;
@@ -122,6 +131,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
         title: 'Ball IQ',
         body: t(DAILY_BODIES[at.getDay() % DAILY_BODIES.length]),
         schedule: { at, allowWhileIdle: true },
+        ...INEXACT,
       });
     }
     if (!skipToday && streak >= 2 && getReminderHour() < STREAK_RISK_HOUR) {
@@ -133,6 +143,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
           title: 'Ball IQ',
           body: t('rem.streak', { n: streak }),
           schedule: { at, allowWhileIdle: true },
+          ...INEXACT,
         });
       }
     }
@@ -144,6 +155,7 @@ export async function scheduleReminderWindow({ skipToday = false, streak = 0 } =
         title: 'Ball IQ',
         body: t(w.body),
         schedule: { at, allowWhileIdle: true },
+        ...INEXACT,
       });
     }
     if (notifications.length) await LocalNotifications.schedule({ notifications });
