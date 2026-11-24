@@ -3827,6 +3827,28 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
 /* .trail-row / .mystery-row / .footle-row need no rules of their own: the row
    reads --mode / --mode-rgb set inline from accents.js (2026-09-06). */
 .daily-zone .todays-seven-secondary + .todays-seven-secondary{margin-top:8px;}
+/* FEWER FRAMES (Alex, 24 Nov 2026: "i guess we have to go the way of fewer frames", after a mate
+   found Home had "slightly too much colors, the top 4 dailys in particular"). Three things left the
+   four daily rows and nothing else: each row's coloured outline, each row's coloured tint, and the
+   outer box round the four. One plain filled card holds them with a thin divider between rows.
+   The icon wells, each game's own colour of Play pill (and its sizes above), the text, the order
+   and what a tap does are untouched; a played row differs by its quiet pill and its result line.
+   Phones only: the 1024 reflow and the installed-desktop mirror keep their own framed rows.
+   Picture: ball-iq-audit/2026-11-24/finish/home-fewer-frames.png (right-hand phone). */
+@media (max-width: 1023px){
+  .daily-zone .daily-well{background:var(--s1);border:0;border-radius:20px;padding:2px 14px;}
+  .daily-well .todays-seven-secondary.is-mode,.daily-well .todays-seven-secondary.is-mode.is-done{background:none;border:0;border-radius:0;box-shadow:none;padding:11px 0;margin:0;min-height:68px;}
+  /* 11px above and below is the 46px icon in a 68px row, so a one-line row is 68 exactly; a row whose
+     text wraps (320 wide, Spanish) grows and keeps that air instead of touching the dividers. The
+     divider is inside the row's 68, so a row under one has 10 above its icon. */
+  .daily-well .todays-seven-secondary.is-mode + .todays-seven-secondary.is-mode{margin-top:0;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07);}
+  /* The done strip was drawn 17px inside the old box's edge (1 border, 10 box, 6 its own; 15 at the
+     foot): the same insets against the new padding, so "Today's four, done" has not moved. */
+  .daily-well .daily-done-strip{padding:15px 3px 13px;}
+}
+@media (max-width: 1023px) and (hover: hover){
+  .daily-well .todays-seven-secondary.is-mode:hover{transform:none;box-shadow:none;}
+}
 
 /* ── THE WEB SHELL (2026-09-03) ────────────────────────────────────────────────
    body.biq-web = a browser tab (main.jsx; never native, never an installed
