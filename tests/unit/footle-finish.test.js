@@ -174,13 +174,16 @@ describe('the finish panel in the "one" layout', () => {
     const html = render(D);
     const rows = html.match(/<button class="dd-li"[\s\S]*?<\/button>/g);
     expect(rows.length).toBe(3);
-    expect(text(rows[0])).toBe("Today's Daily 7 7 questions · 3 min Play");
+    // The dots between the pieces are drawn by the stylesheet (.dd-seg::before), in a
+    // gutter that is clipped at the start of a line, so no line can end on one.
+    expect(text(rows[0])).toBe("Today's Daily 7 7 questions 3 min Play");
+    expect(rows[0]).toContain('<span class="dd-li-h has-segs"><span class="dd-segs"><span class="dd-seg">7 questions</span><span class="dd-seg">3 min</span></span></span>');
     expect(rows[0]).toContain('class="dd-li-go"');
-    expect(text(rows[1])).toBe('Transfer Trail Whose career? · 2 min');
-    expect(text(rows[2])).toBe('Top 10 Name all ten · 4 min');
+    expect(text(rows[1])).toBe('Transfer Trail Whose career? 2 min');
+    expect(text(rows[2])).toBe('Top 10 Name all ten 4 min');
     for (const r of rows.slice(1)) { expect(r).toContain('lucide-chevron-right'); expect(r).not.toContain('dd-li-go'); }
     const cont = render(D, { nextUp: NEXT.slice(2) });
-    expect(text(cont.match(/<button class="dd-li"[\s\S]*?<\/button>/)[0])).toBe("Today's Top 10 Name all ten · 4 min Continue");
+    expect(text(cont.match(/<button class="dd-li"[\s\S]*?<\/button>/)[0])).toBe("Today's Top 10 Name all ten 4 min Continue");
     // a link on the static pages stays a link
     const web = render(D, { nextUp: [{ key: 'trail', name: 'Transfer Trail', href: '/transfer-trail/' }] });
     expect(web).toMatch(/<a class="dd-li"[^>]*href="\/transfer-trail\/"/);
@@ -257,7 +260,7 @@ describe('the finish panel in the "one" layout', () => {
 describe('the Footle screen', () => {
   const src = read('src/games/FootballWordle.jsx');
   it('hands the played rows to the card, graded by the one grader', () => {
-    expect(src).toMatch(/const picture = \(\s*<div className="wd-cg" style=\{\{ "--wd-cols": answer\.length \}\}>\s*\{state\.guesses\.map\(\(gs, r\) => \{\s*const grades = gradeWordleGuess\(gs, answer\);/);
+    expect(src).toMatch(/const picture = \(\s*<div className=\{`wd-cg\$\{state\.guesses\.length >= 5 \? " is-tall" : ""\}`\} style=\{\{ "--wd-cols": answer\.length \}\}>\s*\{state\.guesses\.map\(\(gs, r\) => \{\s*const grades = gradeWordleGuess\(gs, answer\);/);
     expect(src).toContain('layout="one"');
   });
   it('does not draw the board once the result is up, and keeps it while the last row turns', () => {
@@ -269,5 +272,25 @@ describe('the Footle screen', () => {
   });
   it("the header's countdown box and its one-second clock are gone", () => {
     expect(src).not.toMatch(/wd-countdown|setCountdown|setInterval\(tick, 1000\)/);
+  });
+});
+
+// 24 Nov 2026, after six real plays on production in English and four in Spanish.
+describe('the three faults the live plays found', () => {
+  const src = (p) => readFileSync(new URL(`../../src/${p}`, import.meta.url), 'utf8');
+  it('the card says the number in the player\'s language, as the header does', () => {
+    expect(src('games/FootballWordle.jsx')).toContain('title: "Footle", tag: t("game.no", { n: getFootleNumber(date) }),');
+    expect(src('games/FootballWordle.jsx')).not.toMatch(/tag: `No\. /);
+  });
+  it('five or six rows on a short phone: the tiles step down to 40px so the list stays on the first screen', () => {
+    const css = src('games/footle.css');
+    expect(css).toMatch(/@media \(max-height:700px\)\{\.wd-cg\.is-tall \.wd-cg-row\{grid-template-columns:repeat\(var\(--wd-cols\),minmax\(0,40px\)\);\}/);
+  });
+  it('a list line cannot end on a dot: the dot belongs to the piece after it and is clipped at a line start', () => {
+    const css = src('components/dailyDone.css');
+    expect(css).toContain('.dd-li-h.has-segs{overflow:hidden;');
+    expect(css).toContain('.dd-segs{display:flex;flex-wrap:wrap;row-gap:2px;margin-left:-13px;}');
+    expect(css).toContain('.dd-seg{position:relative;padding-left:13px;white-space:nowrap;}');
+    expect(css).toMatch(/\.dd-seg::before\{content:"\\00B7";position:absolute;left:0;width:13px;text-align:center;\}/);
   });
 });

@@ -196,6 +196,13 @@
 .dd-li-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
 .dd-li-n{font-size:16px;line-height:1.1;font-weight:700;letter-spacing:-0.01em;}
 .dd-li-h{font-size:13px;line-height:1.15;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* The row’s second line in pieces. The dot belongs to the piece AFTER it and sits
+   in that piece’s 13px gutter; the line is pulled 13px to the left and clipped, so
+   the first piece of every line loses its dot and no line can end on one. */
+.dd-li-h.has-segs{overflow:hidden;padding-bottom:1px;}
+.dd-segs{display:flex;flex-wrap:wrap;row-gap:2px;margin-left:-13px;}
+.dd-seg{position:relative;padding-left:13px;white-space:nowrap;}
+.dd-seg::before{content:"\00B7";position:absolute;left:0;width:13px;text-align:center;}
 /* The one green thing under the card, and it is small (Alex chose green over white). */
 .dd-li-go{flex:none;display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 18px;border-radius:999px;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-size:14.5px;line-height:1;font-weight:800;}
 .dd-li-chev{flex:none;display:inline-flex;align-items:center;justify-content:center;width:38px;color:#5E6270;}

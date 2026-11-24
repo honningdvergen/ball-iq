@@ -284,5 +284,9 @@ html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0
 .wd-ct.is-yellow{background:var(--gold);color:#3A2A00;-webkit-text-fill-color:#3A2A00;}
 html.biq-cb .wd-ct.is-green{background:#F5793A;color:#231000;-webkit-text-fill-color:#231000;}
 html.biq-cb .wd-ct.is-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-color:#04203A;}
+/* A short phone (an iPhone SE is 667 high) with five or six rows on the card:
+   six rows of 48px tiles made the card 531px tall and pushed the list and its
+   Play below the first screen (24 Nov 2026). The tiles step down to 40px there. */
+@media (max-height:700px){.wd-cg.is-tall .wd-cg-row{grid-template-columns:repeat(var(--wd-cols),minmax(0,40px));}.wd-cg.is-tall .wd-ct{font-size:16px;border-radius:8px;}}
 /* The smallest phones (320 wide): an eight-letter tile is about 27px. */
 @media (max-width:359px){.wd-ct{font-size:15px;border-radius:7px;}}

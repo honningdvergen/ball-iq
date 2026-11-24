@@ -26,6 +26,10 @@
 //     tiles became one role="img" with the letters and colours in its label, the tiles
 //     themselves aria-hidden, the Share button gained aria-expanded, and "Today" is followed
 //     by a real space. Proven to be the only differences before the golden was touched.)
+//     (Later the same day, after six real plays on production: in "footle: won in 6, hard,
+//     clued" and "footle: lost" the card grid gained the class is-tall, which caps the tiles
+//     at 40px on a short phone when five or six rows are played. Proven to be the only
+//     difference in those two entries; the other 65 are byte-identical.)
 //     INTENDED CHANGE, 24 Nov 2026: the Footle finish is one object (Alex's
 //     "Yes, build Footle" on the agreed drawing). The same five finished-Footle
 //     entries (won in 1, won in 3, won in 6 hard clued, lost, archive won) were

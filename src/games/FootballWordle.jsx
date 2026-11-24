@@ -268,7 +268,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     const full = `${prefix ? `${prefix} ` : ""}${surname}`;
     const won = state.status === "won";
     const picture = (
-      <div className="wd-cg" style={{ "--wd-cols": answer.length }}>
+      <div className={`wd-cg${state.guesses.length >= 5 ? " is-tall" : ""}`} style={{ "--wd-cols": answer.length }}>
         {state.guesses.map((gs, r) => {
           const grades = gradeWordleGuess(gs, answer);
           return (
@@ -285,7 +285,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     );
     return {
       picture,
-      title: "Footle", tag: `No. ${getFootleNumber(date)}`,
+      title: "Footle", tag: t("game.no", { n: getFootleNumber(date) }),
       score: won ? state.guesses.length : null, outOf: 6,
       verdict: won ? footleWinWord(state.guesses.length) : full,
       sub: won ? t("footle.answerWas", { name: full }) : t("rc.footleLost"),
