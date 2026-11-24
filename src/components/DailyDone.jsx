@@ -531,8 +531,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
           <span className="dd-li-ic" aria-hidden="true">{n.icon || DEFAULT_ICON[m] || null}</span>
           <span className="dd-li-t">
             <span className="dd-li-n">{i === 0 ? n.name : (n.short ?? n.name.replace(/^Today's /, ""))}</span>
-            {/* Each part between the dots is its own piece and the dot is drawn BEFORE a piece, in a gutter the row clips at the start of a line: wherever the line breaks, no dot is left hanging at its end (dailyDone.css, .dd-segs). */}
-            <span className="dd-li-h has-segs"><span className="dd-segs">{[i === 0 && lostHere ? t("dd.winBack") : "", HOOK[m] ? t(`dd.hook.${m}`) : ""].join(" · ").split("·").map((s) => s.trim()).filter(Boolean).map((s, k) => <span className="dd-seg" key={k}>{s}</span>)}</span></span>
+            {/* One short line a row (Alex, 24 Nov 2026: the minutes confused, "what do you mean 3 or 4 or 2 min?", and after a loss "just scrap win today back so it is one line"). The hook strings keep their minutes for the older panel; this list shows the part before the dot. */}
+            <span className="dd-li-h">{HOOK[m] ? t(`dd.hook.${m}`).split("·")[0].trim() : ""}</span>
           </span>
           {i === 0
             ? <span className="dd-li-go">{t(n.open ? "home.row.continue" : "common.play")}</span>

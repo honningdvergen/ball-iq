@@ -163,7 +163,7 @@ describe('the finish panel in the "one" layout', () => {
     const html = render(await load(), { won: false, bucket: 0, card: lost });
     expect(html).toContain('Share my result</button>');
     expect(html).toContain('<div class="rc-hero is-name">');
-    expect(text(html)).toContain('Win the day back');                        // the first row still says it
+    expect(text(html)).not.toContain('Win the day back');                    // Alex, 24 Nov: "just scrap win today back so it is one line"
   });
   it('the caption: "Today 1 of 4" on the left; the flame, the streak and the XP on the right', async () => {
     const html = render(await load());
@@ -174,16 +174,15 @@ describe('the finish panel in the "one" layout', () => {
     const html = render(D);
     const rows = html.match(/<button class="dd-li"[\s\S]*?<\/button>/g);
     expect(rows.length).toBe(3);
-    // The dots between the pieces are drawn by the stylesheet (.dd-seg::before), in a
-    // gutter that is clipped at the start of a line, so no line can end on one.
-    expect(text(rows[0])).toBe("Today's Daily 7 7 questions 3 min Play");
-    expect(rows[0]).toContain('<span class="dd-li-h has-segs"><span class="dd-segs"><span class="dd-seg">7 questions</span><span class="dd-seg">3 min</span></span></span>');
+    // One short line a row: no minutes, and nothing about winning the day back.
+    expect(text(rows[0])).toBe("Today's Daily 7 7 questions Play");
+    expect(rows[0]).toContain('<span class="dd-li-h">7 questions</span>');
     expect(rows[0]).toContain('class="dd-li-go"');
-    expect(text(rows[1])).toBe('Transfer Trail Whose career? 2 min');
-    expect(text(rows[2])).toBe('Top 10 Name all ten 4 min');
+    expect(text(rows[1])).toBe('Transfer Trail Whose career?');
+    expect(text(rows[2])).toBe('Top 10 Name all ten');
     for (const r of rows.slice(1)) { expect(r).toContain('lucide-chevron-right'); expect(r).not.toContain('dd-li-go'); }
     const cont = render(D, { nextUp: NEXT.slice(2) });
-    expect(text(cont.match(/<button class="dd-li"[\s\S]*?<\/button>/)[0])).toBe("Today's Top 10 Name all ten 4 min Continue");
+    expect(text(cont.match(/<button class="dd-li"[\s\S]*?<\/button>/)[0])).toBe("Today's Top 10 Name all ten Continue");
     // a link on the static pages stays a link
     const web = render(D, { nextUp: [{ key: 'trail', name: 'Transfer Trail', href: '/transfer-trail/' }] });
     expect(web).toMatch(/<a class="dd-li"[^>]*href="\/transfer-trail\/"/);
@@ -276,7 +275,7 @@ describe('the Footle screen', () => {
 });
 
 // 24 Nov 2026, after six real plays on production in English and four in Spanish.
-describe('the three faults the live plays found', () => {
+describe('what the live plays and Alex\'s first look changed', () => {
   const src = (p) => readFileSync(new URL(`../../src/${p}`, import.meta.url), 'utf8');
   it('the card says the number in the player\'s language, as the header does', () => {
     expect(src('games/FootballWordle.jsx')).toContain('title: "Footle", tag: t("game.no", { n: getFootleNumber(date) }),');
@@ -286,11 +285,16 @@ describe('the three faults the live plays found', () => {
     const css = src('games/footle.css');
     expect(css).toMatch(/@media \(max-height:700px\)\{\.wd-cg\.is-tall \.wd-cg-row\{grid-template-columns:repeat\(var\(--wd-cols\),minmax\(0,40px\)\);\}/);
   });
-  it('a list line cannot end on a dot: the dot belongs to the piece after it and is clipped at a line start', () => {
-    const css = src('components/dailyDone.css');
-    expect(css).toContain('.dd-li-h.has-segs{overflow:hidden;');
-    expect(css).toContain('.dd-segs{display:flex;flex-wrap:wrap;row-gap:2px;margin-left:-13px;}');
-    expect(css).toContain('.dd-seg{position:relative;padding-left:13px;white-space:nowrap;}');
-    expect(css).toMatch(/\.dd-seg::before\{content:"\\00B7";position:absolute;left:0;width:13px;text-align:center;\}/);
+  it('a list row is one short line: the hook without its minutes, and no "Win the day back" after a loss', () => {
+    const dd = src('components/DailyDone.jsx');
+    expect(dd).toContain('<span className="dd-li-h">{HOOK[m] ? t(`dd.hook.${m}`).split("·")[0].trim() : ""}</span>');
+    expect(src('components/dailyDone.css')).not.toContain('.dd-seg');
+    // Every hook is "what it is · how long", so the part before the dot stands alone.
+    const en = src('i18n/en.js'); const es = src('i18n/es.js');
+    for (const lang of [en, es]) for (const m of ['footle', 'daily7', 'trail', 'top10']) {
+      const line = lang.match(new RegExp(`'dd\\.hook\\.${m}': '([^']*)'`))[1];
+      expect(line.split('·').length, line).toBe(2);
+      expect(line.split('·')[0].trim().length, line).toBeGreaterThan(3);
+    }
   });
 });
