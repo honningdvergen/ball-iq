@@ -189,9 +189,11 @@ describe('the finish panel in the "one" layout', () => {
   });
   it('the countdown stays, as one quiet line, with the reminder beside it', async () => {
     const D = await load();
-    expect(render(D)).toMatch(/<div class="dd-line"><span>Tomorrow makes it <strong class="dd-num">2<\/strong> · new puzzles in <strong class="dd-num">\d+h \d+m<\/strong><\/span><\/div>/);
+    // The hours are optional: in the last hour of the day the countdown reads "42m". With them
+    // required, this test (and so every build) failed from 23:00 to midnight on the machine's clock.
+    expect(render(D)).toMatch(/<div class="dd-line"><span>Tomorrow makes it <strong class="dd-num">2<\/strong> · new puzzles in <strong class="dd-num">(?:\d+h )?\d+m<\/strong><\/span><\/div>/);
     // streak safe on a loss, where the host's streak counts any finish
-    expect(text(render(D, { won: false, bucket: 0, card: lost, streak: { count: 3, label: 'daily streak', keepsOnLoss: true } }))).toMatch(/Streak safe · new puzzles in \d+h \d+m/);
+    expect(text(render(D, { won: false, bucket: 0, card: lost, streak: { count: 3, label: 'daily streak', keepsOnLoss: true } }))).toMatch(/Streak safe · new puzzles in (?:\d+h )?\d+m/);
     // the hour pill once the reminder is set
     expect(render(D, { remind: { state: 'on', onRemind() {} } })).toMatch(/<span class="dd-pill is-set" aria-label="Reminder set for [^"]+">/);
   });
