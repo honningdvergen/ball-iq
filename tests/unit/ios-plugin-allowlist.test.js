@@ -20,11 +20,14 @@ const cap = JSON.parse(read('capacitor.config.json'));
 // What is left out on purpose, and why. Nothing else may be missing.
 const NOT_ON_IOS = ['@sentry/capacitor'];
 
-// A dependency is a Capacitor plugin when its own package.json says so.
-const plugins = Object.keys(pkg.dependencies).filter((name) => {
+// A dependency is a native plugin when its own package.json says so: a
+// "capacitor" key, or "cordova" for a Cordova plugin (the CLI installs both).
+// devDependencies count too, because the CLI reads them as well.
+const plugins = Object.keys({ ...pkg.dependencies, ...pkg.devDependencies }).filter((name) => {
   const p = join(ROOT, 'node_modules', name, 'package.json');
   if (!existsSync(p)) return false;
-  return !!JSON.parse(readFileSync(p, 'utf8')).capacitor;
+  const j = JSON.parse(readFileSync(p, 'utf8'));
+  return !!j.capacitor || !!(j.cordova && j.cordova.platforms);
 });
 
 describe('the iOS plugin allowlist names every plugin the app uses', () => {

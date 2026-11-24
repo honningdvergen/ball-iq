@@ -31,7 +31,12 @@ Done on the Capacitor 8 branch, read against Sentry's Capacitor guide and the
   with a podspec, which pins `@sentry/react` 10.69.0 and sentry-cocoa 9.16.1,
   is deprecated, and still has the bug 4.6.0 fixed (errors raised while the
   app boots are dropped, because the JavaScript client waits for native).
-- **The Home JS budget is exceeded and this is not merged.** SDK 10 is bigger
+- **The Home JS budget (settled the same day).** The table below is the
+  measurement that stopped the first attempt at 914 KB. The Transfer Trail’s
+  career data then came off Home’s eager path (256b29e4, 893 to 851 KB on SDK
+  8), and with SDK 10 and the wrapper behind `import()` the gate reads
+  **873 KB against 909**. What follows is kept as the record of why the
+  wrapper is imported lazily. SDK 10 is bigger
   than SDK 8. Measured with `vite build` and `scripts/audit-home-budget.mjs`,
   DSN in `.env.local`, budget 909 KB:
 
@@ -131,3 +136,33 @@ A real **VoiceOver / TalkBack pass** on a device. The accessibility work
 shipped this month (colour-blind Footle, the club-page glyph + live region,
 aria labels) is verified present but has never been driven by an actual
 screen-reader user. Present is not the same as usable.
+
+## Review, 24 Nov 2026 (independent, read against node_modules)
+
+What changed after it, and what is left as it is on purpose:
+
+- **Breadcrumbs are cleaned when they are stored** (`beforeBreadcrumb`,
+  `src/lib/sentryScrub.js`, on main since b116749f). The wrapper copies every
+  stored breadcrumb to the native SDK, and a native crash is sent without
+  passing `beforeSend`. Core runs `beforeBreadcrumb` before the scope stores
+  the breadcrumb, so the copy is the cleaned one.
+- **Android events carry an install ID as the Sentry user id**, on native
+  crashes (sentry-android’s DefaultAndroidEventProcessor) and on JS events
+  (the wrapper’s device context copies the native user). The web never sent a
+  user. Nothing in this plugin can switch it off for native crashes. It is
+  kept: it is what makes "users affected" mean something on Android. **Before
+  a store release** the Play Data safety form and the Sentry sentence on
+  public/privacy.html have to say so; both are Alex’s to change.
+- **The web sends no IP-derived user any more.** SDK 10 sets `infer_ip:
+  never` unless `sendDefaultPii` is on, so "users affected" goes blank on web
+  issues. More private, kept.
+- **No CultureContext on the web** (locale, time zone, calendar; new in SDK
+  10): filtered out of the web client’s default integrations.
+- **HttpContext is handed back on native**: the wrapper’s defaults drop it and
+  Android JS issues lost their WebView version.
+- **The earliest crashes are still invisible.** `io.sentry.auto-init` is
+  false, so the native SDK starts when the WebView has run main.jsx and
+  fetched the wrapper chunk. A crash before that is not reported, and a JS
+  error in the few milliseconds before the chunk lands is dropped. Starting
+  the native SDK from the manifest would close it; not done yet.
+- Android JS issues regroup once (rewritten frame paths, another SDK name).

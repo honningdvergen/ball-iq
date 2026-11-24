@@ -112,14 +112,21 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
   // that chunk has arrived, a few milliseconds after this line instead of on
   // it. If the chunk cannot be loaded the plain init runs, as on the web.
   //   A native crash never passes through beforeSend above: the native SDK
-  // sends it itself, with the device, the OS and the last breadcrumbs, no URL.
+  // sends it itself, with the device, the OS, an install ID and the last
+  // breadcrumbs. Those breadcrumbs are copies of the ones stored here, which
+  // is why they are cleaned in beforeBreadcrumb, when they are stored.
+  //   The wrapper drops the browser's HttpContext from its defaults on native,
+  // which cost every Android JS issue its WebView version; it is handed back.
+  //   SDK 10 also adds a CultureContext (locale, time zone, calendar) to every
+  // event. The website sent none before and the privacy page does not name it,
+  // so it is filtered out there. On native the device already reports both.
   const hasNativeSentry = isNative && Capacitor.isPluginAvailable('SentryCapacitor') === true
   if (hasNativeSentry) {
     import('@sentry/capacitor')
-      .then((m) => m.init(sentryOptions, Sentry.init))
+      .then((m) => m.init({ ...sentryOptions, integrations: [Sentry.httpContextIntegration()] }, Sentry.init))
       .catch(() => { try { Sentry.init(sentryOptions) } catch { /* reporting must not stop the boot */ } })
   } else {
-    Sentry.init(sentryOptions)
+    Sentry.init({ ...sentryOptions, integrations: (defaults) => defaults.filter((i) => i.name !== 'CultureContext') })
   }
   if (!isNative) {
     const loadTracing = () => {
