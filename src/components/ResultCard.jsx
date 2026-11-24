@@ -30,6 +30,15 @@
 //
 // Everything on the card means something. Do not add ornament to it (the
 // chalk half-circle in round three read as clutter and was cut).
+//
+// TWO SLOTS A HOST MAY ASK FOR (24 Nov 2026, Footle first). Alex on the Footle
+// finish, where the board sat above the card: "thrown together … a divorced
+// couple". The result was on screen twice.
+//   `picture`  the game's own picture, between the headline and the line:
+//              Footle hands over its played rows, so the board IS the card.
+//   `action`   one control at the foot of the card (the finish panel puts its
+//              quiet Share button there).
+// A host that passes neither gets exactly the card it had.
 import React from "react";
 import { useT } from "../i18n/index.js";
 import { rich } from "../i18n/rich.jsx";
@@ -72,7 +81,7 @@ export function hardStory(t, marks, levels) {
   return { hard, got, note };
 }
 
-export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, marks = null, shares = null, levels = null, note: hostNote = null }) {
+export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null }) {
   const t = useT();
   const withShares = Array.isArray(shares) && Array.isArray(marks) && shares.length === marks.length && shares.every((p) => Number.isFinite(p));
   const star = withShares ? starIndex(marks, shares) : -1;
@@ -110,7 +119,9 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
           ))}
         </div>
       )}
+      {picture && <div className="rc-pic">{picture}</div>}
       {note && <p className="rc-note">{note}</p>}
+      {action}
     </section>
   );
 }

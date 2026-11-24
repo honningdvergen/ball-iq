@@ -28,6 +28,15 @@
 .rc-k.is-star em{font-weight:800;color:#FFD34D;-webkit-text-fill-color:#FFD34D;}
 .rc-note{margin:16px 0 0;font-size:14px;line-height:1.35;font-weight:600;color:rgba(255,255,255,0.84);-webkit-text-fill-color:rgba(255,255,255,0.84);}
 .rc-note strong{font-weight:800;color:#FFD34D;-webkit-text-fill-color:#FFD34D;}
+/* A host's own picture and one action on the card (24 Nov 2026, Footle first).
+   The button is quiet on purpose: a white wash on the green, never a second
+   solid colour beside the score. 50px tall, the full width of the card. */
+.rc-pic{margin-top:18px;}
+.rc-act{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:50px;margin:20px 0 0;padding:0 16px;box-sizing:border-box;border:0;border-radius:999px;background:rgba(255,255,255,0.14);color:#fff;-webkit-text-fill-color:#fff;font-family:inherit;font-size:16px;line-height:1;font-weight:800;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.rc-act svg{flex:none;}
+.rc-act:active{background:rgba(255,255,255,0.22);}
+.rc-act:disabled{opacity:0.6;cursor:default;}
+.rc-act:focus-visible{outline:2px solid #fff;outline-offset:2px;}
 /* The smallest phones: the discs and the score step down so nothing wraps. */
 @media (max-width: 359px){.rc{padding:18px 16px 20px;}.rc-num b{font-size:60px;}.rc-num > span{font-size:23px;}.rc-v{font-size:18px;}.rc-hero{gap:12px;}.rc-k{width:32px;}.rc-k i{width:28px;height:28px;}.rc-k em{font-size:10.5px;}}
 @media (prefers-reduced-motion: reduce){.rc,.rc-say{animation:none;}}

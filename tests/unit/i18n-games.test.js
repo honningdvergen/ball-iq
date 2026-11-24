@@ -22,6 +22,17 @@
 //     card (components/ResultCard.jsx) instead of its own result block; five
 //     entries (won in 1, 3, 6, lost, archive won) were replaced whole after a
 //     check that the card is the only change.
+//     INTENDED CHANGE, 24 Nov 2026: the Footle finish is one object (Alex's
+//     "Yes, build Footle" on the agreed drawing). The same five finished-Footle
+//     entries (won in 1, won in 3, won in 6 hard clued, lost, archive won) were
+//     replaced, and only those: the new render was dumped with a temporary copy
+//     of this test and compared entry by entry, 62 of 67 byte-identical. In
+//     each of the five: the board above the card is gone and its played rows
+//     are inside the card (.rc-pic); the card ends in one Share button; the
+//     header's "Next" countdown box is gone; the framed panel under the card
+//     (.dd: streak row, solid button, note, link) is the caption line and the
+//     quiet lines of the "one" layout (.dd-one). The report link, Back to Home
+//     and the screen-reader line are unchanged.
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -246,7 +257,12 @@ describe('Spanish (biq_lang=es)', () => {
     expect(won).toContain('>La respuesta era Brad Friedel<');
     expect(won).toContain('<b>3</b><span>/6</span>');
     expect(won).toContain('>El reto de hoy<');
-    expect(won).toContain('>Próximo<');
+    // 24 Nov 2026: the header's "Next" box is gone; the finish says when the next
+    // puzzles come in one line, and Share is one button on the card.
+    expect(won).not.toContain('>Próximo<');
+    expect(won).toMatch(/[Nn]uevos retos en /);
+    expect(won).toContain('>Compartir mi 3/6<');
+    expect(unq(now['footle: lost'])).toContain('>Compartir mi resultado<');
     // Not "today": the same card shows an old day from the archive.
     expect(unq(now['footle: lost'])).toContain('>Sin intentos<');
     expect(unq(now['footle: archive, fresh'])).toContain('>Del archivo<');

@@ -267,4 +267,22 @@ html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0
    too (seen in Instagram's in-app browser, 2026-09-23). */
 @media (max-width: 720px) { body.biq-web .wd-grid { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); } body.biq-web .wd-keyboard { margin-inline: calc(6px - clamp(16px, 4vw, 44px)); } }
 /* Under the result card (22 Nov 2026): the report link alone, centred, with room above. */
-.wd-report-row{display:flex;justify-content:center;margin:2px 0 12px;}
+.wd-report-row{display:flex;justify-content:center;margin:16px 0 12px;}
+/* THE PLAYED ROWS, ON THE RESULT CARD (24 Nov 2026; FootballWordle.jsx,
+   footleCard.picture). The board is the card's picture now, so a finished
+   Footle is one object. A tile is at most 48px square and gives way evenly on
+   a long name (eight letters come to about 35px on a 393px phone, 33 on 375);
+   the row is ALWAYS centred in the card, a five-letter name included (Alex:
+   "always make sure the footle grid is centered in the green card").
+   The colours are the game's own, not the card's white and gold: he chose it
+   ("green on green works"). A miss is a dark wash of the pitch itself.
+   line-height:1 keeps a lettered tile square (see .wd-tile). */
+.wd-cg{display:grid;gap:5px;}
+.wd-cg-row{display:grid;grid-template-columns:repeat(var(--wd-cols),minmax(0,48px));gap:5px;justify-content:center;}
+.wd-ct{display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;min-width:0;border-radius:9px;background:rgba(0,0,0,0.26);color:rgba(255,255,255,0.78);-webkit-text-fill-color:rgba(255,255,255,0.78);font-size:18px;line-height:1;font-weight:800;text-transform:uppercase;user-select:none;-webkit-user-select:none;}
+.wd-ct.is-green{background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);}
+.wd-ct.is-yellow{background:var(--gold);color:#3A2A00;-webkit-text-fill-color:#3A2A00;}
+html.biq-cb .wd-ct.is-green{background:#F5793A;color:#231000;-webkit-text-fill-color:#231000;}
+html.biq-cb .wd-ct.is-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-color:#04203A;}
+/* The smallest phones (320 wide): an eight-letter tile is about 27px. */
+@media (max-width:359px){.wd-ct{font-size:15px;border-radius:7px;}}

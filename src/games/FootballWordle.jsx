@@ -193,7 +193,6 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // when hard mode is on.
   const [hardPref, setHardPref] = useState(() => { try { return localStorage.getItem("biq_footle_hard") === "1"; } catch { return false; } });
   const [hardNames, setHardNames] = useState(null);
-  const [countdown, setCountdown] = useState("");
   const [revealed, setRevealed] = useState(() => {
     // If the user already finished today's puzzle, reveal the result card on
     // mount instead of waiting for the flip-animation timer.
@@ -254,13 +253,36 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // The result card's words (components/ResultCard.jsx via DailyDone). A win
   // shows the guess count out of six with the verdict beside it and the
   // answer's name under it; a loss has no score, and the name is the
-  // headline. The board above is the picture, so the card draws no strip.
+  // headline.
+  //
+  // THE BOARD IS ON THE CARD (24 Nov 2026). Until now the finished board stayed
+  // above the card and the card drew no picture: the result was on screen
+  // twice, and Alex called it "thrown together … a divorced couple". The card
+  // now carries the rows that were played (one to six, never the empty ones),
+  // graded by the same gradeWordleGuess as the live board, and once the result
+  // is up the board itself is not drawn. Tiles are capped at 48px and the grid
+  // is centred whatever the name's length (footle.css, .wd-cg).
   const footleCard = (() => {
     if (state.status === "playing") return null;
     const [prefix, surname] = WORDLE_FULL_NAMES[answer] || ["", answer];
     const full = `${prefix ? `${prefix} ` : ""}${surname}`;
     const won = state.status === "won";
+    const picture = (
+      <div className="wd-cg" style={{ "--wd-cols": answer.length }}>
+        {state.guesses.map((gs, r) => {
+          const grades = gradeWordleGuess(gs, answer);
+          return (
+            <div className="wd-cg-row" key={r}>
+              {Array.from({ length: answer.length }, (_, i) => (
+                <span key={i} className={`wd-ct is-${grades[i]}`} aria-label={`${gs[i]}, ${t(grades[i] === "green" ? "footle.green" : grades[i] === "yellow" ? "footle.yellow" : "footle.grey")}`}>{gs[i]}</span>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    );
     return {
+      picture,
       title: "Footle", tag: `No. ${getFootleNumber(date)}`,
       score: won ? state.guesses.length : null, outOf: 6,
       verdict: won ? footleWinWord(state.guesses.length) : full,
@@ -305,31 +327,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     if (userId && state.guesses.length > 0 && onSync) onSync(dateKey, rec);
   }, [state, storageKey, userId, dateKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Live "new player tomorrow" countdown. Ticks once per second.
-  // ⚠️ ONLY ONCE THE PUZZLE IS DECIDED. The clock is rendered behind
-  // `state.status !== "playing"` (see .wd-countdown below), but the interval
-  // used to run from mount — so all the way through the part of the session
-  // that matters, every second, setCountdown re-rendered the board, all six
-  // rows of tiles and the 28-key keyboard to produce a string nothing showed.
-  // Reported on device 2026-09-09: "it is a bit laggy I can not lie."
-  const ticking = state.status !== "playing";
-  useEffect(() => {
-    if (!ticking) return undefined;
-    const tick = () => {
-      const now = new Date();
-      const tomorrow = new Date(now);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(0, 0, 0, 0);
-      const ms = tomorrow - now;
-      const h = Math.floor(ms / 3600000);
-      const m = Math.floor((ms % 3600000) / 60000);
-      const s = Math.floor((ms % 60000) / 1000);
-      setCountdown(`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`);
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [ticking]);
+  // The header's own "Next 05:23:11" box is gone (24 Nov 2026). The agreed
+  // finish has a plain header, and the time to the next puzzles is one quiet
+  // line of the finish panel (DailyDone, "new puzzles in 5h 23m"), which was
+  // already saying it a second time. With the box went its one-second clock,
+  // which re-rendered this whole screen sixty times a minute to print it.
 
   // Detect day rollover while the screen is open — full reload so the new
   // day's answer, storageKey and game state all resync together.
@@ -463,6 +465,13 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // the freshest callback at fire time.
   const handleKeyRef = useRef(handleKey);
   useEffect(() => { handleKeyRef.current = handleKey; });
+  // Once the puzzle is decided the keys belong to the page again (24 Nov 2026).
+  // The listener below called preventDefault on every Enter, so on a finished
+  // board Enter did nothing on a focused button: Share, a row of the list,
+  // Back to Home. Found with a real keyboard on the built app, where Enter on
+  // "Share my 3/6" never opened its sheet.
+  const playingRef = useRef(state.status === "playing");
+  playingRef.current = state.status === "playing";
 
   // ⚠️ THE KEYS TYPE ON CLICK, AS THEY ALWAYS DID. On 13 Oct they were moved
   // to pointerup to cure letters lost in a fast burst of taps. That loss was
@@ -478,6 +487,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
   // hijack browser shortcuts (cmd-R, etc.).
   useEffect(() => {
     const onKeyDown = (e) => {
+      if (!playingRef.current) return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       // ⚠️ Same guard ReviewScreen has and this listener never did: while a
       // sheet is open, or focus is in a field, keys belong to THAT. Without it,
@@ -531,12 +541,6 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
         </div>
       );
     } else {
-      // A finished board is a result, not an input: the rows never used are
-      // dropped when the result appears (`revealed`, about a tenth of a second
-      // before the last tile stops turning; the used rows do not move, the
-      // ended board is anchored at the top). A solve in one left five empty
-      // rows, a third of the screen, above "Brilliant!".
-      if (state.status !== "playing" && revealed) continue;
       rows.push(
         <div className="wd-row wd-row--future" key={r}>
           {Array.from({ length: answer.length }, (_, i) => (
@@ -637,16 +641,6 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
         {onHowToPlay && (
           <button className="icon-btn" onClick={onHowToPlay} aria-label={t("footle.howTo")} title={t("game.howTo")}>?</button>
         )}
-        {/* Only once today's puzzle is over. Before you've played, a countdown
-            to TOMORROW is the least useful thing on the screen, and it was
-            rendered in the accent colour competing with the board and ENTER.
-            Afterwards it's the one thing you want — when can I play again. */}
-        {state.status !== "playing" && (
-          <div className="wd-countdown" title={t("footle.nextTitle")}>
-            <div className="wd-countdown-label">{t("footle.next")}</div>
-            <div className="wd-countdown-time">{countdown}</div>
-          </div>
-        )}
       </div>
 
       {/* What the auto-opening rules sheet was actually for. Full page width, so
@@ -667,6 +661,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           between them. This KEEPS .wd-grid's justify-content:center, which the
           footle-keyboard-geometry gate requires — that centring is what stops
           slack pooling as a single hole (233px below ENTER, once). */}
+      {/* ONCE THE RESULT IS UP THE BOARD IS NOT DRAWN (24 Nov 2026): its played
+          rows are on the result card below (footleCard.picture), so the result
+          is on screen once. Between the last ENTER and `revealed` (the row is
+          still turning) the board stays exactly as it was. */}
+      {!(state.status !== "playing" && revealed) && (
       <div className={`wd-grid${state.status !== "playing" ? " wd-grid--ended" : ""}`} style={{ "--wd-cols": answer.length }}>
         {/* The key stays in the layout for the whole game and only goes
             invisible after the first guess (2026-10-08). It used to be removed,
@@ -724,6 +723,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
         )}
         {rows}
       </div>
+      )}
 
       {/* Screen-reader narration of the latest guess (scouting panel, a11y):
           the tile flips are pure colour, so a VoiceOver/TalkBack player got
@@ -754,7 +754,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           · save (guest) · get the app (web). Replaced this screen's own share
           button, WhatsApp link, countdown footer, Daily 7 cross-sell and store
           CTA (2026-09-06). A sibling of .wd-result, not a child — no card in a
-          card. */}
+          card.
+          Since 24 Nov 2026 Footle asks for the panel's "one" layout: the card
+          carries the board and one Share button, and under it sit a caption
+          line and the other dailies as one list (DailyDone.jsx says why). The
+          other dailies keep the classic panel until their turn. */}
       {/* No margin on the wrapper below. .wd-screen is a flex column with
           gap:14px, so a marginTop on a sibling is added TO that gap, not
           instead of it — 24pt of nothing between the result card and the
@@ -779,6 +783,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             GetAppCTA={GetAppCTA}
             track={dailyDone?.track}
             card={footleCard}
+            layout="one"
           />
           {footleCard && onReport && <div className="wd-report-row"><FootleReportButton answer={answer} status={state.status} onReport={onReport} /></div>}
           {/* Sprint #64 FF1: post-Footle install nudge (web only; the hook gates
