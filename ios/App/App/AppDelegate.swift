@@ -104,9 +104,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // iOS 27: "UIScene life cycle is required for apps built with this SDK". On
     // iOS 26 the same binary only logs a warning — which is how build 138 passed a
     // 26.5 simulator and Alex's phone, then crashed on a TestFlight tester's iOS 27
-    // device within hours. Capacitor ships this officially in 8.5 (SceneDelegateProxy);
-    // we are on 6.x, so the scene delegate below forwards to ApplicationDelegateProxy
-    // by hand. When Capacitor is upgraded past 8.5, replace it with theirs.
+    // device within hours. Capacitor ships this officially from 8.5 (SceneDelegateProxy).
+    // The scene delegate below was written on 6.x and forwards to
+    // ApplicationDelegateProxy by hand. We are on 8.6 now (24 Nov 2026) and it is
+    // KEPT ON PURPOSE for the moment: ApplicationDelegateProxy still posts the two
+    // notifications the App plugin listens for and still sets lastURL, and this path
+    // is the one that has run on real phones. Theirs holds a cold-launch link back
+    // until the first capacitorViewDidAppear; swapping to it is a small change, but
+    // one to make with a phone in hand (cold and warm, app.balliq:// and /join/, /c/, /l/).
     func application(_ application: UIApplication,
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {

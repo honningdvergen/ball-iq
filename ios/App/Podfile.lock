@@ -1,35 +1,35 @@
 PODS:
-  - Capacitor (7.6.10):
+  - Capacitor (8.6.2):
     - CapacitorCordova
-  - CapacitorApp (7.1.2):
+  - CapacitorApp (8.1.2):
     - Capacitor
-  - CapacitorBrowser (7.0.5):
+  - CapacitorBrowser (8.0.5):
     - Capacitor
   - CapacitorCommunityAppleSignIn (7.1.0):
     - Capacitor
-  - CapacitorCommunityInAppReview (7.1.0):
+  - CapacitorCommunityInAppReview (8.0.0):
     - Capacitor
-  - CapacitorCordova (7.6.10)
-  - CapacitorFilesystem (7.1.9):
+  - CapacitorCordova (8.6.2)
+  - CapacitorFilesystem (8.1.5):
     - Capacitor
-    - IONFilesystemLib (~> 1.1.4)
-  - CapacitorHaptics (7.0.5):
+    - IONFilesystemLib (= 2.0.1)
+  - CapacitorHaptics (8.0.2):
     - Capacitor
-  - CapacitorKeyboard (7.0.6):
+  - CapacitorKeyboard (8.0.6):
     - Capacitor
-  - CapacitorLocalNotifications (7.0.7):
+  - CapacitorLocalNotifications (8.3.1):
     - Capacitor
-  - CapacitorPreferences (7.0.4):
+  - CapacitorPreferences (8.0.1):
     - Capacitor
-  - CapacitorPushNotifications (7.0.7):
+  - CapacitorPushNotifications (8.1.3):
     - Capacitor
-  - CapacitorShare (7.0.4):
+  - CapacitorShare (8.0.3):
     - Capacitor
-  - CapacitorSplashScreen (7.0.5):
+  - CapacitorSplashScreen (8.0.2):
     - Capacitor
-  - CapacitorStatusBar (7.0.6):
+  - CapacitorStatusBar (8.0.4):
     - Capacitor
-  - IONFilesystemLib (1.1.4)
+  - IONFilesystemLib (2.0.1)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -85,23 +85,23 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: f50a57c9ce466bce30d574e1348ab25b1f572536
-  CapacitorApp: f01a913211780e0718dae9750442c3e23f96e106
-  CapacitorBrowser: 6d09f59655e89aede71654ef08b98de55cf032b6
+  Capacitor: 0a406b8a50b1ddcfe49fbc5795515918d5294708
+  CapacitorApp: 7b7e43debe505bc61beedb83796aa1368c86078b
+  CapacitorBrowser: f94f92654e92a97981bf346b3681af76527dace0
   CapacitorCommunityAppleSignIn: 271cb2860576fd2961508bbfa7a82117d93eadca
-  CapacitorCommunityInAppReview: 3756d05524c5cf2eccbc8ed460f77f8f8db6c141
-  CapacitorCordova: 33313bf8891d44741970e16534be781ff3caa00a
-  CapacitorFilesystem: 35da521d3fc5159ecaf4ae0b877ec3db7f4adb0d
-  CapacitorHaptics: 1b145fa83c622e5383a3bac04ea81e2514f0b0f5
-  CapacitorKeyboard: a2e0869edd229490ce36aed2549c0d6b95e27ee8
-  CapacitorLocalNotifications: 71124afe526ac00585314bff34651bd023f86e37
-  CapacitorPreferences: 69d9991307507aeab8ef8019c10b9babfda0e9ca
-  CapacitorPushNotifications: 0527809a9619ed775439d5ab2c2d996122b48319
-  CapacitorShare: 25f7fc5dd0e4edbde5d6801c6de5d14a8b450a41
-  CapacitorSplashScreen: 409eeaaeac603d264f209c0fcb718aa22fe1f7bb
-  CapacitorStatusBar: 416e9e53fd6397e668d4a181cd2131617d949bd6
-  IONFilesystemLib: e6610c2b260d15e4b9cb9d5e37a87095479b669e
+  CapacitorCommunityInAppReview: 4492bdd34aad4d27ed87949376022cc93b294ea1
+  CapacitorCordova: 8e68a712e47128cf5b97e88b9c2b406b9b956b22
+  CapacitorFilesystem: e3bc7123acb1554df1b7b099fa5847064b9e1bd4
+  CapacitorHaptics: 296f771ecd89c7a1bd92a7b6826a7d268e2e70f5
+  CapacitorKeyboard: f9e85e685082e9f63404de15db4a4291448b0912
+  CapacitorLocalNotifications: e0747a329ddde3074d52dc74a003688af90e42be
+  CapacitorPreferences: cca2021f386efb75947c850334447d9ff22b14f1
+  CapacitorPushNotifications: a31b62e18764ab855537dfcdade1e6ecf5aba29f
+  CapacitorShare: 5b5e53347556bee89ae6163ed20b5b3c25fe75f1
+  CapacitorSplashScreen: 7bf61c2001557ff9e195e601c6b87344480d3c65
+  CapacitorStatusBar: ff844df1f126da6c4fbc4028272425fa3a91e7e3
+  IONFilesystemLib: 306469e4c563f61de82d7bca2bbfed9e64d1b2d2
 
-PODFILE CHECKSUM: 2d231a1d402758b4d8527d47a87efc6df2ef8bc7
+PODFILE CHECKSUM: 5b3036ea87e816d0b4402245fdf8c006b6e9a7f1
 
 COCOAPODS: 1.16.2

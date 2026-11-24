@@ -3,7 +3,7 @@ import Capacitor
 
 // Registers the app's own native plugins with the bridge.
 //
-// ⚠️ Capacitor 6 only loads the plugins listed in capacitor.config.json's
+// ⚠️ Capacitor (6 and later, 8 included) only loads the plugins listed in capacitor.config.json's
 // packageClassList, which `cap sync` writes from the npm plugins. A plugin
 // that lives in this app target (ShareCardPlugin) is never in that list, so
 // its CAP_PLUGIN macro alone does nothing: NativeShareCard.share() rejected
