@@ -7,10 +7,26 @@
   "server": {
     "androidScheme": "https"
   },
+  "_iosIncludePluginsNote": "ios.includePlugins is an ALLOWLIST: `cap sync ios` installs only what is named there, so a new plugin must be added to it or iOS silently ships without it (tests/unit/ios-plugin-allowlist.test.js fails first). It exists for one reason: @sentry/capacitor dropped CocoaPods in 4.4.0 (Swift Package Manager only), and this iOS project is still on CocoaPods, where `pod install` stops at 'No podspec found for SentryCapacitor'. Android gets the plugin; iOS keeps the JavaScript-only Sentry it had. Delete the list, and this note, the day the iOS project moves to SPM.",
   "ios": {
     "contentInset": "never",
     "backgroundColor": "#0B0C10",
-    "limitsNavigationsToAppBoundDomains": false
+    "limitsNavigationsToAppBoundDomains": false,
+    "includePlugins": [
+      "@capacitor-community/apple-sign-in",
+      "@capacitor-community/in-app-review",
+      "@capacitor/app",
+      "@capacitor/browser",
+      "@capacitor/filesystem",
+      "@capacitor/haptics",
+      "@capacitor/keyboard",
+      "@capacitor/local-notifications",
+      "@capacitor/preferences",
+      "@capacitor/push-notifications",
+      "@capacitor/share",
+      "@capacitor/splash-screen",
+      "@capacitor/status-bar"
+    ]
   },
   "android": {
     "allowMixedContent": false,

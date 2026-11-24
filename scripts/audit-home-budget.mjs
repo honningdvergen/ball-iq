@@ -151,7 +151,16 @@ for (const [f, b] of rows) console.log(`  ${String(Math.round(b / 1024)).padStar
 // fails; this constant must be the measured difference, nothing else.
 // To re-measure: `VITE_SENTRY_DSN= npm run build` against a normal build, and
 // subtract the two totals printed here before any charge.
-const SENTRY_EAGER_KB = 54;
+// RE-MEASURED 24 Nov 2026, on the move from @sentry/react 8.55.2 to 10.76.2
+// (which @sentry/capacitor 4.6.0 pins). The SDK grew, and 54 would have let CI
+// pass a tree that production refuses, the 4 Oct failure again:
+//   no DSN (VITE_SENTRY_DSN= )          843 KB, main 51 KB
+//   DSN in .env.local (SDK bundled)     908 KB, main 115 KB
+// so the SDK is 65 KB of Home's eager path now (48 on SDK 8), and with the
+// same ~6 KB of debug IDs the charge is 71. That is with __SENTRY_DEBUG__
+// false (vite.config.js) and the Capacitor wrapper behind an import() in
+// main.jsx. A static import of the wrapper measured 20 KB more.
+const SENTRY_EAGER_KB = 71;
 const SENTRY_DEBUG_ID_KB = 6;
 const sdkInBuild = [...eager].some((f) => /ingest(\.[a-z]+)?\.sentry\.io/.test(readFileSync(resolve(ASSETS, f), 'utf8')));
 const charge = process.env.VITE_SENTRY_DSN ? 0 : sdkInBuild ? SENTRY_DEBUG_ID_KB : SENTRY_EAGER_KB;

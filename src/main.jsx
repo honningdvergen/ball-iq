@@ -12,6 +12,7 @@ import './design/tokens.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
+import { Capacitor } from '@capacitor/core'
 import { initAds } from './lib/ads.js'
 // Root render-crash net for BOTH trees. GameRoot carries its own boundary for
 // errors inside the game tree, but a rejected React.lazy(GameRoot) import
@@ -48,7 +49,7 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
   // sample transactions on web only, never inside the Capacitor app.
   // (2026-07-12 medical, error-observability, medium.)
   const isNative = typeof window !== 'undefined' && window.Capacitor?.isNativePlatform?.() === true
-  Sentry.init({
+  const sentryOptions = {
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: import.meta.env.MODE,
     release: import.meta.env.VITE_GIT_SHA,
@@ -56,6 +57,9 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
     // Home's eager JS. Crash reporting stays eager.
     integrations: [],
     tracesSampleRate: isNative ? 0 : 0.1,
+    // SDK 10 turns Sentry's log stream on by default (8 had none). Nothing here
+    // calls Sentry.logger, and nothing should start sending without a decision.
+    enableLogs: false,
     // A breadcrumb is cleaned of Supabase tokens BEFORE it is stored (see
     // lib/sentryScrub.js: the console breadcrumb keeps every console.log
     // argument, and the sign-in callback URL was one). If the scrub itself
@@ -83,7 +87,40 @@ if (import.meta.env.VITE_SENTRY_DSN && !_isLocalPreview) {
     beforeSendTransaction(event) {
       return scrubEvent(event)
     },
-  })
+  }
+  // ONE CLIENT, TWO WAYS TO START IT (24 Nov 2026). @sentry/react lives in the
+  // webview and cannot see a crash below it: a Java or Swift exception, a dead
+  // WebView process, an ANR. Where the @sentry/capacitor plugin is in the
+  // binary, its init starts Sentry's Android/iOS SDK and then calls the React
+  // init itself, with these same options plus a transport that hands every
+  // event to the native SDK (which keeps it on disk and sends it on the next
+  // launch if the process dies first). Everywhere else, the website above all,
+  // the React init runs directly, exactly as it did before this file knew
+  // about native: the wrapper would otherwise swap the browser's default
+  // integrations for its own (rewritten frame paths, another SDK name) and
+  // regroup every web issue.
+  //   isPluginAvailable is true only when the native side registered the
+  // plugin, so a shell built without it (iOS today: ios.includePlugins in
+  // capacitor.config.json) keeps the plain init instead of failing over to it.
+  // Asked of @capacitor/core rather than window.Capacitor: before core has
+  // loaded, the bridge's own isPluginAvailable answers a different question
+  // (has JavaScript registered it yet) and would say no. Core is already in
+  // this chunk through lib/review.js, so the import costs nothing.
+  //   The wrapper is import()ed, not imported: it is 20 KB that only a native
+  // shell can use, and a static import put it on the website's Home (measured:
+  // main 115 KB to 135 KB). The price is that on native the client starts when
+  // that chunk has arrived, a few milliseconds after this line instead of on
+  // it. If the chunk cannot be loaded the plain init runs, as on the web.
+  //   A native crash never passes through beforeSend above: the native SDK
+  // sends it itself, with the device, the OS and the last breadcrumbs, no URL.
+  const hasNativeSentry = isNative && Capacitor.isPluginAvailable('SentryCapacitor') === true
+  if (hasNativeSentry) {
+    import('@sentry/capacitor')
+      .then((m) => m.init(sentryOptions, Sentry.init))
+      .catch(() => { try { Sentry.init(sentryOptions) } catch { /* reporting must not stop the boot */ } })
+  } else {
+    Sentry.init(sentryOptions)
+  }
   if (!isNative) {
     const loadTracing = () => {
       import('./lib/sentryTracing.js').then((m) => m.enableTracing()).catch(() => {})

@@ -3,6 +3,57 @@
 **Status: JS-layer crashes are now reported. Native-layer crashes are not.**
 Written 2026-08-21 (scouting report #2, item 15).
 
+## Update, 24 Nov 2026: Android wired, iOS blocked, the build NOT green yet
+
+Done on the Capacitor 8 branch, read against Sentry's Capacitor guide and the
+8-to-9 and 9-to-10 JavaScript migration guides:
+
+- `@sentry/react` 8.55.2 to **10.76.2** and `@sentry/capacitor` **4.6.0**, both
+  exact (4.6.0 pins the sibling to the patch; a caret breaks its postinstall
+  check). `@sentry/vite-plugin` stays on 2.23.1: it is a build tool with no tie
+  to the SDK version, and its debug-ID bytes are what the Home budget's 6 KB
+  charge was measured on.
+- `src/main.jsx`: one options object, two ways to start it. Where the native
+  plugin is in the binary, `@sentry/capacitor`'s init wraps the React init;
+  everywhere else the React init runs directly, as before. The reasons are in
+  the comment there.
+- **Android** has the plugin (sentry-android 8.64.0). Debug and release (R8)
+  both build; the merged manifest gains three non-exported providers and one
+  meta-data entry, and no permission.
+- **iOS does not have it.** `@sentry/capacitor` removed its podspec in 4.4.0
+  (Swift Package Manager only, because sentry-cocoa stopped publishing to
+  CocoaPods after 9.19.1), and this iOS project is on CocoaPods:
+  `pod install` stops at "No podspec found for SentryCapacitor". So
+  `capacitor.config.json` carries `ios.includePlugins` to keep it out of the
+  iOS sync, and iOS keeps the JavaScript-only reporting it had. The ways on:
+  move the iOS project to SPM (every plugin in package.json already ships a
+  Package.swift) and delete that list; or step back to 4.3.0, the last release
+  with a podspec, which pins `@sentry/react` 10.69.0 and sentry-cocoa 9.16.1,
+  is deprecated, and still has the bug 4.6.0 fixed (errors raised while the
+  app boots are dropped, because the JavaScript client waits for native).
+- **The Home JS budget is exceeded and this is not merged.** SDK 10 is bigger
+  than SDK 8. Measured with `vite build` and `scripts/audit-home-budget.mjs`,
+  DSN in `.env.local`, budget 909 KB:
+
+  | tree | main chunk | Home eager JS |
+  |---|---|---|
+  | before (SDK 8.55.2) | 95 KB | 894 KB |
+  | SDK 10.76.2, wrapper imported statically (the guide as written) | 140 KB | 938 KB |
+  | the same with `__SENTRY_DEBUG__: false` | 135 KB | 933 KB |
+  | SDK 10.76.2 alone, no wrapper | 120 KB | 918 KB |
+  | wrapper behind `import()` on native, `__SENTRY_DEBUG__: false` (what is in the tree) | 115 KB | **914 KB** |
+
+  `__SENTRY_TRACING__: false` on top of the last row saves 1 KB and would end
+  web tracing. Five KB still have to come from somewhere: off Home's eager
+  path elsewhere, or from the budget, which is Alex's call and not a ratchet.
+- Not done, because each needs a Sentry auth token in a native build:
+  R8 mapping upload (the Sentry Android Gradle plugin) and, once iOS has the
+  SDK, dSYM upload. Without the mapping, frames in `app.balliq`, Capacitor and
+  the plugins read plainly (they are kept by proguard-rules.pro); frames
+  inside androidx, Firebase and other minified libraries do not.
+
+The sections below are the August note, kept for the reasoning.
+
 ## What got fixed today
 
 `.env.local` had no `VITE_SENTRY_DSN`, and `src/main.jsx` guards the whole

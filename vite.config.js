@@ -216,6 +216,11 @@ export default defineConfig(async () => {
     stripSourcemapsPlugin(),
   ],
   define: {
+    // Sentry's documented tree-shaking flag: drops the SDK's own debug logging
+    // (what `debug: true` would print, and nothing sets that). 5 KB of Home's
+    // eager JS, measured 24 Nov 2026 on SDK 10.76.2: main 120 KB to 115 KB.
+    // Set to true for one local build if the SDK ever has to explain itself.
+    __SENTRY_DEBUG__: false,
     'import.meta.env.VITE_GIT_SHA': JSON.stringify(gitSha),
     // One version, from package.json (kept equal to MARKETING_VERSION). About
     // showed a hardcoded "1.1.0" on the web for months (review 2026-09-06, B5).
