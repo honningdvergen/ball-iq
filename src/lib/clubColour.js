@@ -265,6 +265,57 @@ const ABBR_FIXED = {
   chemnitzerfc: "CHM",
   jongpsv: "JPS",
   jongajax: "JAJ",
+  // ── No club wears another club's letters (24 Nov 2026) ─────────────────────
+  // A grade of the live app found Real Betis on a Transfer Trail rung as
+  // "REA", which reads as Real Madrid. Printing the letters of every club in
+  // the Trail's careers found 26 sets shared by different clubs and a handful
+  // more that belong to a club everyone knows. One explicit line per club, the
+  // better-known club keeps its letters, and tests/unit/trail-crest-letters
+  // fails on the next duplicate.
+  // These three have a quiz pack under a shorter id, so its letters never
+  // reached the career's spelling: the same letters as their own club page.
+  realbetis: "BET",
+  celtavigo: "CLV",
+  eintrachtfrankfurt: "SGE",
+  // Shared with a different club in the careers (the other one keeps them).
+  reading: "RDG",              // REA is nobody's now
+  "1861nordlingen": "NDL",     // 186 = 1860 Munich
+  alain: "AIN",                // ALA = Al-Ahli
+  alarabi: "ARA",
+  basaksehir: "BSK",           // BAS = Basel
+  blacktowncity: "BKT",        // BLA = Blackburn
+  boulogne: "BLN",             // BOU = Bournemouth
+  chennaiyin: "CHN",           // CHE = Chelsea
+  chmelblsany: "BLS",          // CHM = Chemnitzer FC, above
+  genk: "GNK",                 // GEN = Genoa
+  hurstpierpoint: "HPP",       // HUR = Huracán
+  interzapresic: "ZAP",        // INT = Inter
+  kairat: "KRT",               // KAI = Kaiserslautern
+  kashiwareysol: "KSW",        // KAS = Kashima Antlers
+  lechpoznan: "LPO",           // LEC = Lecce
+  maidstoneunited: "MDS",      // MAI = Mainz 05
+  manisaspor: "MNS",           // MAN reads as Manchester: neither keeps it
+  mantova: "MNT",
+  millonarios: "MLN",          // MIL = Millwall
+  nancy: "NCY",                // NAN = Nantes
+  nankatsusc: "NKT",
+  palermo: "PMO",              // PAL = Palmeiras
+  partizan: "PTZ",             // PAR = Parma
+  perthglory: "PGL",           // PER = Perugia
+  perthazzurri: "PAZ",
+  shatin: "STN",               // SHA = Shakhtar Donetsk
+  shamrockrovers: "SHR",
+  shandongtaishan: "SHD",
+  spartakmoscow: "SPM",        // SPA = Sparta Prague
+  wolfsburg: "VFL",            // WOL = Wolves; the letters "VfL Wolfsburg" already had
+  // Letters that are another club's, here or to anyone who follows football.
+  waterford: "WFD",            // WAT = Watford
+  charleroi: "CRL",            // CHA = Charlton
+  americamineiro: "AMG",       // AME = Club América
+  barnsley: "BNS",             // BAR reads as Barcelona
+  benevento: "BNV",            // BEN reads as Benfica
+  montrealimpact: "MTL",       // MON reads as Monaco
+  newyorkcosmos: "COS",        // NYC is New York City
 };
 
 /**
