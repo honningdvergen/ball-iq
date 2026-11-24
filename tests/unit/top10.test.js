@@ -623,7 +623,8 @@ describe('One footer for a finished daily (13 Oct 2026)', () => {
     expect(read('screens/Top10.jsx')).toMatch(/<ResultFoot thing="List" onReport=\{onReport\} onHome=\{onBack\}/);
     const footle = read('games/FootballWordle.jsx');
     expect(footle).toMatch(/<ReportLink\s+thing="Answer"/);
-    expect(footle).toMatch(/<ResultFoot onHome=\{onBack\} \/>/);
+    // Since 24 Nov 2026 Footle asks for the way out as the quiet filled pill (round two of its finish).
+    expect(footle).toMatch(/<ResultFoot onHome=\{onBack\} pill \/>/);
     for (const f of ['screens/TransferTrail.jsx', 'screens/Top10.jsx', 'games/FootballWordle.jsx']) {
       const src = read(f);
       expect(src, f).not.toMatch(/⚑/);

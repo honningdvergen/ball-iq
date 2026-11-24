@@ -30,6 +30,13 @@ const HOME = {
   width: "100%", minHeight: 46, padding: "12px", borderRadius: 999, border: "1px solid var(--border)",
   background: "transparent", color: "var(--t2)", fontWeight: 700, fontSize: 14, fontFamily: "inherit", cursor: "pointer",
 };
+// The way out as a quiet FILLED pill, centred (round two of the Footle and
+// Daily 7 finishes, 24 Nov 2026; Alex chose it over the outlined bar and over a
+// bare link). 40 tall, the inset surface, no outline. A host asks with `pill`.
+const PILL = {
+  height: 40, padding: "0 22px", borderRadius: 999, border: 0, background: "var(--s2)",
+  color: "var(--t1)", WebkitTextFillColor: "var(--t1)", fontWeight: 700, fontSize: 14, lineHeight: 1, fontFamily: "inherit", cursor: "pointer",
+};
 
 export function ReportLink({ thing, info, onReport, style }) {
   useT();
@@ -49,8 +56,15 @@ export function ReportLink({ thing, info, onReport, style }) {
 // (Top 10's "More Top 10 lists", 15 Oct 2026). Side by side and the same weight
 // since the tidy pass of 16 Oct: stacked under the finish panel, a second
 // full-width outlined pill in the mode colour was one more thing shouting.
-export default function ResultFoot({ thing, info, onReport, onHome, more }) {
+export default function ResultFoot({ thing, info, onReport, onHome, more, pill = false }) {
   useT();
+  if (pill) {
+    return onHome ? (
+      <div style={{ marginTop: 18, display: "flex", justifyContent: "center" }}>
+        <button type="button" onClick={onHome} style={PILL}>{t("quiz.backHome")}</button>
+      </div>
+    ) : null;
+  }
   const link = <ReportLink thing={thing} info={info} onReport={onReport} />;
   if (!onHome && !more && (!onReport || !info)) return null;
   return (

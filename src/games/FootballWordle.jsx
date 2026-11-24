@@ -18,7 +18,7 @@ import {
   WORDLE_FULL_NAMES, footleAnswerFor, gradeWordleGuess, computeFootleStreak, getFootleNumber,
   footleClue, footleShareHead, FOOTLE_CLUE_AFTER,
 } from '../lib/wordle.js';
-import { Lightbulb } from 'lucide-react';
+import { Lightbulb, CircleHelp } from 'lucide-react';
 import { getWordleDateKey } from '../lib/wordleStatus.js';
 import { safeSetItem } from '../safeStorage.js';
 import { APP_NAME } from '../lib/scoring.js';
@@ -26,6 +26,7 @@ import GameTitle from "../components/GameTitle.jsx";
 import { getFootleXP } from '../lib/footleXp.js';
 import ResultFoot, { ReportLink } from '../components/ResultFoot.jsx';
 import { DailyDone } from '../components/DailyDone.jsx';
+import { StreakChip } from '../components/StreakChip.jsx';
 import { t, useT, fmtLocaleEnglish } from '../i18n/index.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
 import { rich } from '../i18n/rich.jsx';
@@ -108,7 +109,8 @@ function FootleReportButton({ answer, status, onReport }) {
         mode: status === "won" ? "footle" : "footle-lost",
       }}
       // Inside the result card it stays as small as it was: no 44pt box here.
-      style={{ padding: 0, minHeight: 0, fontSize: 12 }}
+      // No auto margin: it shares its row with "How to play" (.wd-report-row).
+      style={{ margin: 0, padding: 0, minHeight: 0, fontSize: 12 }}
     />
   );
 }
@@ -288,11 +290,21 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       title: "Footle", tag: t("game.no", { n: getFootleNumber(date) }),
       score: won ? state.guesses.length : null, outOf: 6,
       verdict: won ? footleWinWord(state.guesses.length) : full,
-      sub: won ? t("footle.answerWas", { name: full }) : t("rc.footleLost"),
+      // A win says who it was as one quiet line UNDER the played rows (round
+      // two, 24 Nov 2026): the XP has the place under the verdict. After a
+      // loss the name is the headline and "Out of guesses" stays under it.
+      sub: won ? null : t("rc.footleLost"),
+      note: won ? t("footle.answerWas", { name: full }) : null,
       pinSub: true,
-      xp: getFootleXP(won, state.guesses.length),
+      // An old puzzle from the archive pays no XP (nothing is announced for
+      // it, see the finish effect), so its card claims none.
+      xp: isArchive ? 0 : getFootleXP(won, state.guesses.length),
     };
   })();
+  // The result is up: the last row has turned and the card is drawn.
+  const over = state.status !== "playing" && revealed;
+  // The app's one streak; on the static page, where there is none, Footle's own.
+  const finishStreak = dailyDone?.streak || { count: state.status === "won" ? computeFootleStreak(date) : 0, label: t("dd.l.footle") };
 
   // The clue takes the legend's slot inside the board: the legend retires on
   // the first guess and the clue cannot appear before the third, so the two
@@ -611,7 +623,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
       {/* Social in-app browsers only (no Smart App Banner there). A row the
           height budget pays for: has-inapp -> --wd-inapp-h in footle.css. */}
       <InAppStrip src={inApp.src} onDismiss={inApp.dismiss} />
-      <div className="wd-header">
+      <div className={`wd-header${over ? " is-over" : ""}`}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         <div className="wd-header-text">
           {/* The shared title, with the number beside the name as Home writes
@@ -640,9 +652,15 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
               shares and compares, and it fits on one line at every width. */}
           <div className="wd-sub"><ChallengeBanner game="footle" edition={isArchive ? -1 : getFootleNumber(date)} finished={state.status !== "playing"}>{isArchive ? t("footle.archive") : state.status !== "playing" ? t(state.hard ? "footle.todayHard" : "footle.today") : hardNow && state.guesses.length > 0 ? t("footle.hardSub") : t("mode.footle.short")}</ChallengeBanner></div>
         </div>
-        {onHowToPlay && (
-          <button className="icon-btn" onClick={onHowToPlay} aria-label={t("footle.howTo")} title={t("game.howTo")}>?</button>
-        )}
+        {/* ONCE THE RESULT IS UP THE STREAK HAS THIS CORNER (round two of the
+            finish, 24 Nov 2026): a small filled chip, as on Home, where "?"
+            sits during play. The rules stay one tap away for a finished
+            player: "How to play" is a quiet link at the foot of the screen,
+            beside "Answer looks wrong? Tell us". */}
+        {over ? <StreakChip streak={finishStreak} won={state.status === "won"} isArchive={isArchive} />
+          : onHowToPlay && (
+            <button className="icon-btn" onClick={onHowToPlay} aria-label={t("footle.howTo")} title={t("game.howTo")}>?</button>
+          )}
       </div>
 
       {/* What the auto-opening rules sheet was actually for. Full page width, so
@@ -766,7 +784,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
           instead of it — 24pt of nothing between the result card and the
           return panel. Alex 2026-09-09: "if we removed some vertical deadspace
           the next suggested daily modes would be a bit further up." */}
-      {state.status !== "playing" && revealed && (
+      {over && (
         <div>
           <DailyDone
             game="footle"
@@ -774,7 +792,7 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             won={state.status === "won"}
             bucket={state.status === "won" ? state.guesses.length : 0}
             isArchive={isArchive}
-            streak={dailyDone?.streak || { count: state.status === "won" ? computeFootleStreak(date) : 0, label: t("dd.l.footle") }}
+            streak={finishStreak}
             promoted={dailyDone?.promoted}
             onShare={onShare}
             challengeGrid={shareGrid}
@@ -787,13 +805,24 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
             card={footleCard}
             layout="one"
           />
-          {footleCard && onReport && <div className="wd-report-row"><FootleReportButton answer={answer} status={state.status} onReport={onReport} /></div>}
           {/* Sprint #64 FF1: post-Footle install nudge (web only; the hook gates
               on installed / standalone / affordance / 30-day cooldown). */}
           {InstallBanner && <InstallBanner />}
-          {/* The same way out every finished daily has. Footle's only exit was
-              the arrow at the top of the screen. */}
-          <ResultFoot onHome={onBack} />
+          {/* The way out, as a quiet filled pill (round two): it was a
+              full-width outlined button under the report link. */}
+          <ResultFoot onHome={onBack} pill />
+          {/* Last, two quiet links: the answer is wrong, and the rules (the
+              header's "?" gave its corner to the streak). */}
+          {footleCard && (onReport || onHowToPlay) && (
+            <div className="wd-report-row">
+              {onReport && <FootleReportButton answer={answer} status={state.status} onReport={onReport} />}
+              {onHowToPlay && (
+                <button type="button" className="wd-howto" onClick={onHowToPlay} aria-label={t("footle.howTo")}>
+                  <CircleHelp size={13} strokeWidth={2.4} aria-hidden="true" /> {t("game.howTo")}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
 

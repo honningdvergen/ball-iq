@@ -50,7 +50,20 @@
 // number instead of being centred on it (.rc-hero.is-foot). The sentence it
 // displaced is not thrown away: on a day with no line under the marks it IS
 // that line. A host that passes no `xp` gets exactly the card it had, which is
-// what keeps Footle, Transfer Trail and Top 10 where they were.
+// what keeps Transfer Trail and Top 10 where they were.
+//
+// ROUND TWO OF THE FINISH (24 Nov 2026, Footle and the Daily 7). Alex scored
+// the Footle finish 4 to 5 and chose a layout where the screen's own header
+// names the game once ("Footle No. 204") and the card starts at the score.
+//   `head`     false leaves the card's top line (the game, its day and
+//              balliq.app) undrawn. Only a host whose screen already names the
+//              game asks for that; every other card keeps the line. The card is
+//              still named to a screen reader (its aria-label).
+//   `xp`       Footle hands it over too. A lost guess game has no score, so its
+//              headline is the answer's name: there the host's sentence ("Out
+//              of guesses") stays under the name and the XP follows it.
+// The pitch itself is darker on every game's card (resultCard.css), by Alex's
+// choice on the same drawing.
 import React from "react";
 import { useT } from "../i18n/index.js";
 import { rich } from "../i18n/rich.jsx";
@@ -93,7 +106,7 @@ export function hardStory(t, marks, levels) {
   return { hard, got, note };
 }
 
-export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, xp = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null }) {
+export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, xp = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null, head = true }) {
   const t = useT();
   const withShares = Array.isArray(shares) && Array.isArray(marks) && shares.length === marks.length && shares.every((p) => Number.isFinite(p));
   const star = withShares ? starIndex(marks, shares) : -1;
@@ -104,7 +117,10 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
   // A game with no strip (its board is the picture) may hand over its own line.
   // With the XP under the verdict, the sentence it displaced is the line on a
   // day that has no other.
-  const note = hostNote ?? (withShares ? noteFor(t, marks, shares) : story ? story.note : null) ?? (xpOn ? sub : null);
+  // Under a name (a lost guess game) the sentence keeps its place, so it is not
+  // also the line.
+  const subStays = score == null;
+  const note = hostNote ?? (withShares ? noteFor(t, marks, shares) : story ? story.note : null) ?? (xpOn && !subStays ? sub : null);
   const right = Array.isArray(marks) ? marks.filter(Boolean).length : 0;
   const ringed = (i) => i === star || !!(story && story.got[i]);
   // Two ringed marks side by side (a day with several hard questions, both
@@ -112,12 +128,14 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
   // down a size there (.is-close in the stylesheet). Every other row is as drawn.
   const close = Array.isArray(marks) && marks.some((_, i) => ringed(i) && ringed(i + 1));
   return (
-    <section className="rc" aria-label={score != null ? t("rc.aria", { title, score, total: outOf }) : title}>
-      <div className="rc-eye">
-        <span>{tag ? `${title} · ${tag}` : title}</span>
-        <span className="rc-site">balliq.app</span>
-      </div>
-      <div className={`rc-hero${score == null ? " is-name" : ""}${xpOn ? " is-foot" : ""}`}>
+    <section className={head ? "rc" : "rc is-bare"} aria-label={score != null ? t("rc.aria", { title, score, total: outOf }) : title}>
+      {head && (
+        <div className="rc-eye">
+          <span>{tag ? `${title} · ${tag}` : title}</span>
+          <span className="rc-site">balliq.app</span>
+        </div>
+      )}
+      <div className={`rc-hero${score == null ? " is-name" : ""}${xpOn && !subStays ? " is-foot" : ""}`}>
         {/* No score on a lost guess game: the answer is the headline then. */}
         {score != null && <div className="rc-num"><b>{scoreNode ?? score}</b><span>/{outOf}</span></div>}
         {/* Keyed by its words: when the day's numbers land about a second
@@ -125,8 +143,8 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
             the hero keeps its height (min-height in the stylesheet). */}
         <div className="rc-say" key={xpOn ? `${verdict}|xp` : `${verdict}|${sub ?? ""}`}>
           <div className="rc-v">{verdict}</div>
-          {xpOn ? <div className="rc-xp">{rich(t("rs.xp"), { n: xp })}</div>
-            : sub && <div className="rc-sub">{sub}</div>}
+          {(!xpOn || subStays) && sub && <div className="rc-sub">{sub}</div>}
+          {xpOn && <div className="rc-xp">{rich(t("rs.xp"), { n: xp })}</div>}
         </div>
       </div>
       {Array.isArray(marks) && marks.length > 0 && (

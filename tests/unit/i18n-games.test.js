@@ -41,6 +41,22 @@
 //     (.dd: streak row, solid button, note, link) is the caption line and the
 //     quiet lines of the "one" layout (.dd-one). The report link, Back to Home
 //     and the screen-reader line are unchanged.
+//     INTENDED CHANGE, 24 Nov 2026 (round two of that finish: Alex scored the
+//     first build 4 to 5 and chose a second drawing). The same five
+//     finished-Footle entries were replaced, and only those: the new render was
+//     dumped with a temporary copy of this test, 62 of 67 byte-identical. In
+//     each of the five, exactly seven things differ, proven by making those
+//     seven edits to the OLD entry by script (each asserted to apply exactly
+//     once) and comparing the result with the new render byte for byte:
+//     (1) the finished header is marked "is-over"; (2) its "?" is the streak
+//     chip (.dd-stk; in "lost", with no streak, nothing is there); (3) the card
+//     has no top line (.rc-eye gone, "rc is-bare"); (4) the XP is on the card
+//     (under the verdict on a win, whose "The answer was …" is the line under
+//     the played rows; under "Out of guesses" on a loss; none on the archive
+//     day); (5) the caption's right half is the countdown (the streak and the
+//     XP have left it); (6) the countdown's own line under the card is gone;
+//     (7) the foot is Back to Home as a filled pill, then the report link
+//     (without its auto margin) with "How to play" beside it.
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';

@@ -172,34 +172,41 @@
 /* ── THE FINISH AS ONE OBJECT (24 Nov 2026, Footle first; DailyDone.jsx, layout "one") ──
    No panel: the card above is the one object, and what follows it sits on the
    page. One caption line, one filled list, quiet lines. Nothing here has an
-   outline (Alex: filled, not outlined; no frames inside frames), and the only
-   green is the small Play at the end of the list's first row. Measurements are
-   the agreed drawing's (ball-iq-audit 2026-11-24, one.css). */
+   outline (Alex: filled, not outlined; no frames inside frames).
+   ROUND TWO, the same day (the Daily 7 joined; Alex chose the drawing "best so
+   far"): the streak is a chip in the screen's header, the caption's right half
+   says when the next puzzles come, and every row of the list ends in the soft
+   Play pill of Home's daily rows, in the row's own colour, so nothing under
+   the card is solid green. Measurements are the agreed drawings' (ball-iq-audit
+   2026-11-24: one.css, then fr-2.css and d2.css). */
 .dd-one{display:flex;flex-direction:column;text-align:left;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .dd-one .dd-g{gap:0;}
 /* A mate's result against yours, right under the card it is about. */
 .dd-one .dd-vs{gap:10px;margin-top:12px;}
 .dd-league.is-flat{align-self:flex-start;border:0;}
-.dd-cap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin:22px 6px 10px;font-size:13.5px;line-height:1.2;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);font-variant-numeric:tabular-nums;}
+.dd-cap{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;margin:22px 6px 10px;font-size:13.5px;line-height:1.2;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);font-variant-numeric:tabular-nums;}
 .dd-cap-day b{margin-right:1px;font-size:15px;font-weight:800;color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.dd-cap-r{display:inline-flex;align-items:center;gap:10px;margin-left:auto;}
-.dd-cap-st{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.dd-cap-st > svg{flex:none;color:var(--gold);}
-.dd-cap-st .dd-shields{margin-left:0;}
-.dd-cap-xp{font-weight:700;color:var(--gold);-webkit-text-fill-color:var(--gold);}
+/* When the next puzzles come: 13px, the time in the page's own white, a little
+   apart from its words. Alone on the line (an old puzzle, a page that has no
+   "Today" count) it starts at the left. */
+.dd-cap-r{min-width:0;margin-left:auto;font-size:13px;}
+.dd-cap-r:only-child{margin-left:0;}
+.dd-cap-r b{font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.dd-cap-r b.dd-num{margin-left:6px;}
 .dd-one .dd-promo{margin:0 6px 10px;border:0;}
-/* The other dailies: one filled block, rows 66 tall, hairlines between. */
+/* The other dailies: one filled block, rows 60 tall, hairlines between. */
 .dd-list{display:flex;flex-direction:column;padding:4px 14px;border-radius:20px;background:var(--s1);}
-.dd-li{display:flex;align-items:center;gap:12px;width:100%;min-height:66px;box-sizing:border-box;padding:8px 0;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;text-align:left;text-decoration:none;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.dd-li{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;box-sizing:border-box;padding:8px 0;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;text-align:left;text-decoration:none;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-li + .dd-li{border-top:1px solid rgba(255,255,255,0.07);}
 .dd-li.is-sweep{cursor:default;}
 .dd-li-ic{flex:none;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:rgba(var(--dd-rgb,88,204,2),0.14);color:var(--dd-c,var(--accent));-webkit-text-fill-color:var(--dd-c,var(--accent));}
 .dd-li-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
 .dd-li-n{font-size:16px;line-height:1.1;font-weight:700;letter-spacing:-0.01em;}
 .dd-li-h{font-size:13px;line-height:1.15;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
-/* The one green thing under the card, and it is small (Alex chose green over white). */
-.dd-li-go{flex:none;display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 18px;border-radius:999px;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-size:14.5px;line-height:1;font-weight:800;}
-.dd-li-chev{flex:none;display:inline-flex;align-items:center;justify-content:center;width:38px;color:#5E6270;}
+/* Play, on every row: the soft pill of Home's daily rows (app.css, .is-mode
+   .t7s-cta), a 16% tint of the game's colour with its ring and its text in
+   that colour. The ring is an inset shadow, so the pill is 34 tall with it. */
+.dd-li-go{flex:none;display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:999px;background:rgba(var(--dd-rgb,88,204,2),0.16);box-shadow:inset 0 0 0 1px rgba(var(--dd-rgb,88,204,2),0.45);color:var(--dd-c,var(--accent));-webkit-text-fill-color:var(--dd-c,var(--accent));font-size:13.5px;line-height:1;font-weight:800;}
 .dd-li:active .dd-li-go{opacity:0.85;}
 .dd-li:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:12px;}
 .dd-li.is-sweep .dd-day-bar{flex:0 0 84px;}
@@ -209,6 +216,8 @@
 .dd-line strong{font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
 .dd-one .dd-pill{min-height:34px;padding:0 15px;border:0;font-size:13.5px;font-weight:700;letter-spacing:0;}
 .dd-one .dd-bell{width:38px;height:38px;border:0;}
+.dd-line.is-set > span{display:inline-flex;align-items:center;gap:7px;}
+.dd-line.is-set svg{flex:none;}
 .dd-one .dd-remind{margin-top:12px;border:0;background:rgba(255,170,0,0.12);}
 .dd-one .dd-share-alt{align-self:center;margin-top:14px;}
 .dd-one .dd-getapp{margin-top:16px;}
@@ -239,3 +248,14 @@
 @media (prefers-reduced-motion: reduce){.dd-scrim,.dd-sheet{animation:none;}}
 
 .dd-one .dd-getapp:empty{display:none;}
+
+/* ── THE HEADER OF A FINISHED DAILY (24 Nov 2026, round two) ── the streak as a
+   small filled chip at the right of the header (components/StreakChip.jsx):
+   40 tall, radius 12, the card surface, no outline. Under 360pt it is the
+   flame and the number; the words stay for a screen reader (clipped, not
+   removed). */
+.dd-stk{position:relative;flex:none;display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;margin-left:auto;border-radius:12px;background:var(--s1);color:var(--t1);-webkit-text-fill-color:var(--t1);font-size:13.5px;line-height:1;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.dd-stk > svg{flex:none;color:var(--gold);}
+.dd-stk-n{display:none;}
+.dd-stk .dd-shields{align-items:center;gap:2px;margin-left:0;font-weight:700;-webkit-text-fill-color:var(--gold);}
+@media (max-width:359px){.dd-stk{padding:0 12px;}.dd-stk-w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}.dd-stk-n{display:inline;}}

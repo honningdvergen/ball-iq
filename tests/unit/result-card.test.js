@@ -109,7 +109,11 @@ describe('the look that was agreed', () => {
     expect(rule('.rc-num b')).toContain('font-size:72px');
   });
   it('nothing decorative: stripes only, no extra shapes or glows on the card', () => {
-    expect(rule('.rc')).toContain('repeating-linear-gradient(90deg,#0E4429 0 46px,#114E2F 46px 92px)');
+    // The darker pitch (24 Nov 2026, Alex's choice on the drawn finish), on every game's card:
+    // it is the card's own background, so no host can ask for the old one.
+    expect(rule('.rc')).toContain('repeating-linear-gradient(90deg,#092B1B 0 46px,#0B3421 46px 92px)');
+    expect(css).not.toMatch(/#0E4429|#114E2F/i);
+    expect((css.match(/repeating-linear-gradient/g) || []).length).toBe(1);
     expect(css).not.toMatch(/radial-gradient|::before|::after/);
   });
   it('a wrong answer is a filled red dot, not a cross', () => {
@@ -307,9 +311,12 @@ describe('the finish panel with the card', () => {
 
 describe('Footle ends on the card too', () => {
   const src = readFileSync(new URL('../../src/games/FootballWordle.jsx', import.meta.url), 'utf8');
-  it('a win: the guess count out of six, the verdict, the answer pinned under it', () => {
+  it('a win: the guess count out of six, the verdict, the answer as the line under the played rows', () => {
     expect(src).toContain('score: won ? state.guesses.length : null, outOf: 6,');
-    expect(src).toContain('sub: won ? t("footle.answerWas", { name: full }) : t("rc.footleLost"),');
+    // Round two (24 Nov 2026): the XP has the place under the verdict, so a win says who it
+    // was under the grid; after a loss "Out of guesses" stays under the name.
+    expect(src).toContain('sub: won ? null : t("rc.footleLost"),');
+    expect(src).toContain('note: won ? t("footle.answerWas", { name: full }) : null,');
     expect(src).toContain('pinSub: true,');
     expect(src).toContain('card={footleCard}');
   });
@@ -322,7 +329,73 @@ describe('Footle ends on the card too', () => {
     expect(css).toMatch(/\.rc-hero\.is-name \.rc-v\{font-size:30px;/);
   });
   it('the report link stays, under the panel', () => {
-    expect(src).toMatch(/\{footleCard && onReport && <div className="wd-report-row"><FootleReportButton/);
+    expect(src).toMatch(/<div className="wd-report-row">\s*\{onReport && <FootleReportButton answer=\{answer\} status=\{state\.status\} onReport=\{onReport\} \/>\}/);
+  });
+});
+
+// ROUND TWO OF THE FINISH (24 Nov 2026). Alex scored the Footle finish 4 to 5 and chose a
+// drawing where the screen's header names the game once and the card starts at the score.
+describe('a host may leave the card\'s top line out (24 Nov 2026, round two)', () => {
+  const css = readFileSync(new URL('../../src/components/resultCard.css', import.meta.url), 'utf8');
+  const rule = (sel) => css.slice(css.indexOf(sel + '{'), css.indexOf('}', css.indexOf(sel + '{')));
+  const footle = { title: 'Footle', tag: 'No. 204', score: 3, outOf: 6, verdict: 'Brilliant' };
+  const el = React.createElement;
+  it('head={false}: no game, no day, no balliq.app; the card starts at the score and is still named to a screen reader', () => {
+    const html = renderToStaticMarkup(el(ResultCard, { ...footle, head: false }));
+    expect(html).not.toContain('rc-eye');
+    expect(html).not.toContain('balliq.app');
+    expect(html).not.toContain('No. 204');
+    expect(html.startsWith('<section class="rc is-bare" aria-label="Footle: 3 out of 6"><div class="rc-hero">')).toBe(true);
+    expect(rule('.rc.is-bare .rc-hero')).toContain('margin-top:4px');
+  });
+  it('every other host keeps the line: it is on unless a host turns it off', () => {
+    for (const p of [{}, { head: true }, { head: undefined }]) {
+      const html = renderToStaticMarkup(el(ResultCard, { ...footle, ...p }));
+      expect(html.startsWith('<section class="rc" aria-label="Footle: 3 out of 6"><div class="rc-eye"><span>Footle · No. 204</span><span class="rc-site">balliq.app</span></div>')).toBe(true);
+      expect(html).not.toContain('is-bare');
+    }
+    // and only the finish panel's "one" layout asks: no screen passes it itself
+    for (const f of ['src/games/FootballWordle.jsx', 'src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx', 'src/screens/ResultsScreen.jsx', 'src/screens/MysteryPlayer.jsx']) {
+      expect(readFileSync(new URL(`../../${f}`, import.meta.url), 'utf8'), f).not.toMatch(/\bhead=\{false\}/);
+    }
+    const dd = readFileSync(new URL('../../src/components/DailyDone.jsx', import.meta.url), 'utf8');
+    expect((dd.match(/head=\{false\}/g) || []).length).toBe(1);
+    expect(dd.slice(dd.indexOf('const cardEl = card ? ('))).not.toContain('head=');
+  });
+});
+
+describe('the XP on a Footle card (24 Nov 2026, round two)', () => {
+  const css = readFileSync(new URL('../../src/components/resultCard.css', import.meta.url), 'utf8');
+  const rule = (sel) => css.slice(css.indexOf(sel + '{'), css.indexOf('}', css.indexOf(sel + '{')));
+  const el = React.createElement;
+  const pic = el('div', { className: 'wd-cg' });
+  it('a win: the XP in yellow under the verdict, the answer as one quiet centred line under the grid', () => {
+    const html = renderToStaticMarkup(el(ResultCard, { title: 'Footle', tag: 'No. 204', score: 3, outOf: 6, verdict: 'Brilliant', xp: 48, note: 'The answer was Joe Bennett', picture: pic, head: false }));
+    expect(html).toContain('<div class="rc-hero is-foot"><div class="rc-num"><b>3</b><span>/6</span></div><div class="rc-say"><div class="rc-v">Brilliant</div><div class="rc-xp">+48 XP</div></div></div>');
+    expect(html).toContain('<div class="rc-pic"><div class="wd-cg"></div></div><p class="rc-note">The answer was Joe Bennett</p>');
+    expect(html.match(/The answer was Joe Bennett/g).length).toBe(1);
+    expect(html).not.toContain('rc-sub');
+    const line = rule('.rc-pic + .rc-note');
+    for (const d of ['margin-top:14px', 'text-align:center', 'font-size:13px', 'color:rgba(255,255,255,0.72)']) expect(line, d).toContain(d);
+  });
+  it('a loss: the full name is still the headline, "Out of guesses" stays under it, then the XP', () => {
+    const html = renderToStaticMarkup(el(ResultCard, { title: 'Footle', tag: 'No. 202', score: null, outOf: 6, verdict: 'Aleksandar Mitrović', sub: 'Out of guesses', xp: 10, picture: pic, head: false }));
+    expect(html).toContain('<div class="rc-hero is-name"><div class="rc-say"><div class="rc-v">Aleksandar Mitrović</div><div class="rc-sub">Out of guesses</div><div class="rc-xp">+10 XP</div></div></div>');
+    // the sentence is said once: it does not also become the line under the grid
+    expect(html.match(/Out of guesses/g).length).toBe(1);
+    expect(html).not.toContain('rc-note');
+    expect(html).not.toContain('is-foot');
+    expect(css).toMatch(/\.rc-hero\.is-name \.rc-v\{font-size:30px;/);
+  });
+  it('an old puzzle pays nothing, so its card says no XP and keeps the answer under the grid', () => {
+    const html = renderToStaticMarkup(el(ResultCard, { title: 'Footle', tag: 'No. 204', score: 3, outOf: 6, verdict: 'Brilliant', xp: null, note: 'The answer was Joe Bennett', picture: pic, head: false }));
+    expect(html).not.toContain('XP');
+    expect(html).toContain('<div class="rc-hero"><div class="rc-num">');
+    expect(html).toContain('</div><p class="rc-note">The answer was Joe Bennett</p>');
+  });
+  it('Share sits 16px under whatever is above it on a card with no top line', () => {
+    expect(rule('.rc.is-bare .rc-act')).toContain('margin-top:16px');
+    expect(rule('.rc-act')).toContain('margin:20px 0 0');
   });
 });
 

@@ -7,12 +7,20 @@
 // pin what was agreed, and that only Footle changed: the picture and action
 // slots on ResultCard and the "one" layout on DailyDone are things a host asks
 // for, and no other host does.
+//
+// ROUND TWO, THE SAME DAY. Alex scored that build 4 to 5 and chose a second
+// drawing ("best so far"): the header names the game once and carries the
+// streak, the card starts at the score and carries the XP, the caption says
+// when the next puzzles come, every row ends in the same soft Play, and Back to
+// Home is a quiet filled pill. The tests below say which rule each one pins.
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import { ResultCard } from '../../src/components/ResultCard.jsx';
 import { ShareSheet } from '../../src/components/ShareSheet.jsx';
+import { StreakChip } from '../../src/components/StreakChip.jsx';
+import ResultFoot from '../../src/components/ResultFoot.jsx';
 import en from '../../src/i18n/en.js';
 import es from '../../src/i18n/es.js';
 
@@ -74,15 +82,25 @@ describe('the look that was agreed', () => {
     const act = rule(rc, '.rc-act');
     for (const s of ['width:100%', 'height:50px', 'border:0', 'border-radius:999px', 'background:rgba(255,255,255,0.14)', 'font-size:16px', 'font-weight:800']) expect(act, s).toContain(s);
   });
-  it('the list is one filled block with no outline; the only green is a small Play', () => {
+  it('the list is one filled block with no outline; Play is the soft pill of Home\'s daily rows, never solid green', () => {
     const list = rule(dd, '.dd-list');
     expect(list).toContain('background:var(--s1)');
     expect(list).toContain('border-radius:20px');
     expect(list).not.toMatch(/border:|box-shadow|outline/);
-    expect(rule(dd, '.dd-li')).toContain('min-height:66px');
+    expect(rule(dd, '.dd-li')).toContain('min-height:60px');
     expect(rule(dd, '.dd-li')).toContain('border:0');
+    // Round two: a 16% tint of the row's own colour, its ring at 45%, its text in the colour.
+    // The same values as Home's pill (app.css, .todays-seven-secondary.is-mode .t7s-cta).
     const go = rule(dd, '.dd-li-go');
-    for (const s of ['height:38px', 'border-radius:999px', 'background:var(--accent)', 'color:var(--grn-ink)']) expect(go, s).toContain(s);
+    for (const s of ['height:34px', 'padding:0 16px', 'border-radius:999px', 'background:rgba(var(--dd-rgb,88,204,2),0.16)', 'box-shadow:inset 0 0 0 1px rgba(var(--dd-rgb,88,204,2),0.45)', 'color:var(--dd-c,var(--accent))', 'font-size:13.5px', 'font-weight:800']) expect(go, s).toContain(s);
+    expect(go).not.toMatch(/background:var\(--accent\)|--grn-ink/);
+    const home = read('src/app.css');
+    expect(home).toContain('.todays-seven-secondary.is-mode .t7s-cta{padding:9px 16px;font-size:13.5px;background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);border:1px solid rgba(var(--mode-rgb),0.45);}');
+    // no chevron rows any more: no row is bigger than another
+    expect(dd).not.toContain('.dd-li-chev');
+    // and nothing in the layout's own rules is solid green
+    const mine = dd.slice(dd.indexOf('THE FINISH AS ONE OBJECT'), dd.indexOf('THE SHARE SHEET'));
+    expect(mine).not.toMatch(/background:var\(--accent\)/);
     // nothing under the card is drawn with an outline in this layout
     const one = dd.slice(dd.indexOf('THE FINISH AS ONE OBJECT'), dd.indexOf('THE SHARE SHEET'));
     expect(one.replace(/border(-top)?:(0|1px solid rgba\(255,255,255,0\.07\))/g, '')).not.toMatch(/border(-top|-bottom)?:/);
@@ -146,30 +164,51 @@ describe('the finish panel in the "one" layout', () => {
   const load = async (store) => { vi.resetModules(); vi.stubGlobal('localStorage', mem(store)); return (await import('../../src/components/DailyDone.jsx')).default; };
   const NEXT = [{ key: 'daily7', name: "Today's Daily 7", short: 'Daily 7' }, { key: 'trail', name: "Today's Transfer Trail", short: 'Transfer Trail' }, { key: 'top10', name: "Today's Top 10", short: 'Top 10', open: true }];
   const DAY = { keys: ['footle', 'daily7', 'trail', 'top10'] };
-  const card = { title: 'Footle', tag: 'No. 204', score: 3, outOf: 6, verdict: 'Brilliant', sub: 'The answer was Joe Bennett', pinSub: true, xp: 48, picture: el('div', { className: 'wd-cg' }) };
-  const lost = { ...card, score: null, verdict: 'Wesley Sneijder', sub: 'Out of guesses', xp: 10 };
+  // What the Footle screen hands over (FootballWordle.jsx, footleCard): a win says who it was
+  // as the card's line, a loss says "Out of guesses" under the name.
+  const card = { title: 'Footle', tag: 'No. 204', score: 3, outOf: 6, verdict: 'Brilliant', sub: null, note: 'The answer was Joe Bennett', pinSub: true, xp: 48, picture: el('div', { className: 'wd-cg' }) };
+  const lost = { ...card, score: null, verdict: 'Wesley Sneijder', sub: 'Out of guesses', note: null, xp: 10 };
   const props = { game: 'footle', edition: 204, won: true, bucket: 3, streak: { count: 1, label: 'daily streak', keepsOnLoss: true }, nextUp: NEXT, day: DAY, card, layout: 'one', onShare: async () => {} };
   const render = (D, p) => renderToStaticMarkup(el(D, { ...props, ...p }));
 
   it('a win: the picture and "Share my 3/6" on the card; no panel, no crossed swords, no second button', async () => {
     const html = render(await load());
-    expect(html).toMatch(/<div class="rc-pic"><div class="wd-cg"><\/div><\/div><button type="button" class="rc-act" aria-haspopup="dialog" aria-expanded="false"><svg[^>]*lucide-share[^>]*>.*?<\/svg>Share my 3\/6<\/button><\/section>/);
+    expect(html).toMatch(/<div class="rc-pic"><div class="wd-cg"><\/div><\/div><p class="rc-note">The answer was Joe Bennett<\/p><button type="button" class="rc-act" aria-haspopup="dialog" aria-expanded="false"><svg[^>]*lucide-share[^>]*>.*?<\/svg>Share my 3\/6<\/button><\/section>/);
     expect(html).not.toContain('<section class="dd"');
     expect(html).not.toMatch(/lucide-swords|class="dd-share"|dd-share-note|dd-share-alts|class="dd-up[ "]|dd-chip|dd-hr|dd-well/);
     expect(html).toContain('<section class="dd-one"');
     expect((html.match(/<button/g) || []).length).toBe(1 + NEXT.length);     // Share, and the list's rows
   });
-  it('a loss: "Share my result", the name as the headline', async () => {
+  it('a loss: "Share my result", the name as the headline, "Out of guesses" and then the XP under it', async () => {
     const html = render(await load(), { won: false, bucket: 0, card: lost });
     expect(html).toContain('Share my result</button>');
-    expect(html).toContain('<div class="rc-hero is-name">');
+    expect(html).toContain('<div class="rc-hero is-name"><div class="rc-say"><div class="rc-v">Wesley Sneijder</div><div class="rc-sub">Out of guesses</div><div class="rc-xp">+10 XP</div></div></div>');
+    expect(html).not.toContain('rc-note');
     expect(text(html)).not.toContain('Win the day back');                    // Alex, 24 Nov: "just scrap win today back so it is one line"
   });
-  it('the caption: "Today 1 of 4" on the left; the flame, the streak and the XP on the right', async () => {
+  it('round two: the card has no top line here (the header names the game), and carries the XP', async () => {
     const html = render(await load());
-    expect(html).toMatch(/<div class="dd-cap"><span class="dd-cap-day"><b>Today<\/b> 1 of 4<\/span><span class="dd-cap-r"><span class="dd-cap-st" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg>Day 1 streak<\/span><span class="dd-cap-xp">\+48 XP<\/span><\/span><\/div>/);
+    expect(html.startsWith('<section class="rc is-bare" aria-label="Footle: 3 out of 6"><div class="rc-hero is-foot"><div class="rc-num"><b>3</b><span>/6</span></div><div class="rc-say"><div class="rc-v">Brilliant</div><div class="rc-xp">+48 XP</div></div></div>')).toBe(true);
+    expect(html).not.toContain('rc-eye');
+    expect(html).not.toContain('balliq.app');
+    // the XP is said once on the screen: on the card, and not in the caption
+    expect(html.match(/\+48 XP/g).length).toBe(1);
+    expect(html).not.toMatch(/dd-cap-xp|dd-xp/);
+    // a card with nothing earned says nothing
+    expect(render(await load(), { card: { ...card, xp: 0 } })).not.toContain('XP');
   });
-  it('the list: the first row ends in Play, the rest in a chevron; a started one says Continue when it leads', async () => {
+  it('the caption: "Today 1 of 4" on the left, when the next puzzles come on the right; no streak, no XP', async () => {
+    const html = render(await load());
+    expect(html).toMatch(/<div class="dd-cap"><span class="dd-cap-day"><b>Today<\/b> 1 of 4<\/span><span class="dd-cap-r">New puzzles in <b class="dd-num">(?:\d+h )?\d+m<\/b><\/span><\/div>/);
+    expect(html).not.toMatch(/dd-cap-st|lucide-flame|Day 1 streak|Tomorrow makes it/);
+    // a lost puzzle that kept the streak still says so, in the same place
+    const safe = render(await load(), { won: false, bucket: 0, card: lost, streak: { count: 3, label: 'daily streak', keepsOnLoss: true } });
+    expect(safe).toMatch(/<span class="dd-cap-r"><b>Streak safe<\/b> · new puzzles in <b class="dd-num">(?:\d+h )?\d+m<\/b><\/span>/);
+    // a page with no day to count (the static Footle page) has the countdown alone
+    expect(render(await load(), { day: undefined, nextUp: [] })).toMatch(/<div class="dd-cap"><span class="dd-cap-r">New puzzles in /);
+    expect(rule(read('src/components/dailyDone.css'), '.dd-cap-r:only-child')).toContain('margin-left:0');
+  });
+  it('the list: Play on EVERY row, the same pill; a started game says Continue; no chevrons', async () => {
     const D = await load();
     const html = render(D);
     const rows = html.match(/<button class="dd-li"[\s\S]*?<\/button>/g);
@@ -177,38 +216,55 @@ describe('the finish panel in the "one" layout', () => {
     // One short line a row: no minutes, and nothing about winning the day back.
     expect(text(rows[0])).toBe("Today's Daily 7 7 questions Play");
     expect(rows[0]).toContain('<span class="dd-li-h">7 questions</span>');
-    expect(rows[0]).toContain('class="dd-li-go"');
-    expect(text(rows[1])).toBe('Transfer Trail Whose career?');
-    expect(text(rows[2])).toBe('Top 10 Name all ten');
-    for (const r of rows.slice(1)) { expect(r).toContain('lucide-chevron-right'); expect(r).not.toContain('dd-li-go'); }
+    expect(text(rows[1])).toBe('Transfer Trail Whose career? Play');
+    expect(text(rows[2])).toBe('Top 10 Name all ten Continue');              // NEXT's Top 10 is started
+    for (const r of rows) {
+      expect((r.match(/<span class="dd-li-go">/g) || []).length).toBe(1);
+      expect(r.endsWith('</span></button>')).toBe(true);
+      expect(r).not.toMatch(/chevron/);
+    }
+    // each in its own game's colour, from the row
+    expect(rows[0]).toContain('--dd-rgb:255,170,0;--dd-c:#FFC107');
+    expect(rows[1]).toContain('--dd-rgb:78,168,222;--dd-c:#7CC3F0');
+    expect(rows[2]).toContain('--dd-rgb:255,138,101;--dd-c:#FF9B7A');
     const cont = render(D, { nextUp: NEXT.slice(2) });
     expect(text(cont.match(/<button class="dd-li"[\s\S]*?<\/button>/)[0])).toBe("Today's Top 10 Name all ten Continue");
     // a link on the static pages stays a link
     const web = render(D, { nextUp: [{ key: 'trail', name: 'Transfer Trail', href: '/transfer-trail/' }] });
     expect(web).toMatch(/<a class="dd-li"[^>]*href="\/transfer-trail\/"/);
+    expect(read('src/components/DailyDone.jsx')).not.toMatch(/ChevronRight|dd-li-chev/);
   });
-  it('the countdown stays, as one quiet line, with the reminder beside it', async () => {
-    const D = await load();
-    // The hours are optional: in the last hour of the day the countdown reads "42m". With them
-    // required, this test (and so every build) failed from 23:00 to midnight on the machine's clock.
-    expect(render(D)).toMatch(/<div class="dd-line"><span>Tomorrow makes it <strong class="dd-num">2<\/strong> · new puzzles in <strong class="dd-num">(?:\d+h )?\d+m<\/strong><\/span><\/div>/);
-    // streak safe on a loss, where the host's streak counts any finish
-    expect(text(render(D, { won: false, bucket: 0, card: lost, streak: { count: 3, label: 'daily streak', keepsOnLoss: true } }))).toMatch(/Streak safe · new puzzles in (?:\d+h )?\d+m/);
-    // the hour pill once the reminder is set
-    expect(render(D, { remind: { state: 'on', onRemind() {} } })).toMatch(/<span class="dd-pill is-set" aria-label="Reminder set for [^"]+">/);
-  });
-  it("a player's first days get the reminder in words; after five days of offers, the bell", async () => {
+  it('the reminder has one place, under the list: in words at first, then words with the bell, then the hour it is set for', async () => {
     const first = render(await load(), { remind: { state: 'off', onRemind() {} } });
-    expect(first).toContain('class="dd-remind"');
-    expect(first).toContain('Remind me each day at ');
+    expect(first).toMatch(/<\/div><\/div><div class="dd-g"[^>]*><button type="button" class="dd-remind"[^>]*><svg[^>]*lucide-bell[^>]*>.*?<\/svg>Remind me each day at [^<]+<\/button>/);
     expect(first).not.toContain('class="dd-bell"');
+    // after five days of offers: the same words, quiet, with the bell beside them
     const later = render(await load({ biq_remind_offer: '9:1' }), { remind: { state: 'off', onRemind() {} } });
-    expect(later).toMatch(/<div class="dd-line"><span>.*?<\/span><button type="button" class="dd-bell"/);
+    expect(later).toMatch(/<div class="dd-line"><span>Remind me each day at [^<]+<\/span><button type="button" class="dd-bell" aria-label="Turn on a daily reminder at [^"]+" title="[^"]+"><svg[^>]*lucide-bell/);
     expect(later).not.toContain('class="dd-remind"');
+    // once set: the hour, said
+    const on = render(await load(), { remind: { state: 'on', onRemind() {} } });
+    expect(on).toMatch(/<div class="dd-line is-set"><span><svg[^>]*lucide-bell[^>]*>.*?<\/svg>Reminder set for [^<]+<\/span><\/div>/);
+    expect(on).not.toMatch(/dd-bell|dd-remind/);
+    // an old puzzle, or a host with no reminder at all, has no reminder line
+    expect(render(await load(), { isArchive: true, remind: { state: 'off', onRemind() {} } })).not.toMatch(/dd-bell|dd-remind/);
+    expect(render(await load())).not.toMatch(/lucide-bell/);
+    // none of it is in the caption
+    for (const h of [first, later, on]) expect(h.match(/<div class="dd-cap">[\s\S]*?<\/div>/)[0]).not.toMatch(/bell|Remind/);
+  });
+  it('nothing under the card is a solid green button', async () => {
+    const D = await load();
+    for (const p of [{}, { won: false, bucket: 0, card: lost }, { remind: { state: 'off', onRemind() {} }, save: { onSave() {}, line: '48 XP' }, promoted: { game: 'footle', name: 'Non-League' } }, { nextUp: [] }]) {
+      const html = render(D, p);
+      const under = html.slice(html.indexOf('<section class="dd-one"'));
+      expect(under).not.toMatch(/class="dd-share"|btn-3d|dd-up-go|dd-next-go|t7s-cta/);
+      // every button under the card is a list row, the reminder, or the small Save
+      for (const b of under.match(/<button[^>]*class="([^"]+)"/g) || []) expect(b).toMatch(/class="(dd-li|dd-remind|dd-bell|dd-pill|dd-league is-flat|dd-share-alt)"/);
+    }
   });
   it('a promotion, a guest, the app badge: each keeps its line', async () => {
     const html = render(await load(), { promoted: { game: 'footle', name: 'Non-League' }, save: { onSave() {}, line: '48 XP' }, GetAppCTA: () => el('b', null, 'badge') });
-    expect(html).toMatch(/<div class="dd-promo" role="status"><span>Promoted to <strong>Non-League<\/strong><\/span><\/div><div class="dd-list">/);
+    expect(html).toMatch(/<div class="dd-cap">.*?<\/div><div class="dd-promo" role="status"><span>Promoted to <strong>Non-League<\/strong><\/span><\/div><div class="dd-list">/);
     expect(html).toContain('<div class="dd-getapp"><b>badge</b></div>');
     expect(html).toMatch(/<div class="dd-line"><span>Your <strong class="dd-num">48 XP<\/strong> live on this phone only\.<\/span><button type="button" class="dd-pill">Save<\/button><\/div><\/div><\/section>$/);
     // a signed-in player has no save line
@@ -241,12 +297,17 @@ describe('the finish panel in the "one" layout', () => {
     expect(src).toContain('try { const ok = await onShare?.(); if (ok !== false) { setShared(true); setTimeout(() => setShared(false), 2200); } }');
   });
   it('an old puzzle from the archive: one tap shares, no list, no XP claimed, and it says so', async () => {
-    const html = render(await load(), { isArchive: true });
+    // An old Footle pays nothing, so the screen hands the card no XP (the card says what it is given).
+    expect(read('src/games/FootballWordle.jsx')).toContain('xp: isArchive ? 0 : getFootleXP(won, state.guesses.length),');
+    const html = render(await load(), { isArchive: true, card: { ...card, xp: 0 } });
     expect(html).toMatch(/<button type="button" class="rc-act"><svg/);       // no sheet: there is no link to send
     expect(html).not.toContain('dd-list');
     expect(html).not.toContain('XP');
     expect(html).not.toContain('<b>Today</b>');
-    expect(text(html)).toContain('An old puzzle — it doesn’t count toward tomorrow.');
+    expect(html).toContain('<div class="dd-cap"><span class="dd-cap-r">An old puzzle — it doesn’t count toward tomorrow.</span></div>');
+    // the card of an old puzzle: no XP, the verdict beside the score as it was, the answer under the rows
+    expect(html).toContain('<div class="rc-hero"><div class="rc-num"><b>3</b><span>/6</span></div><div class="rc-say"><div class="rc-v">Brilliant</div></div></div>');
+    expect(html).toContain('<p class="rc-note">The answer was Joe Bennett</p>');
   });
   it('without the switch the panel is exactly the classic one, with or without a picture on the card', async () => {
     const D = await load();
@@ -273,6 +334,103 @@ describe('the Footle screen', () => {
   });
   it("the header's countdown box and its one-second clock are gone", () => {
     expect(src).not.toMatch(/wd-countdown|setCountdown|setInterval\(tick, 1000\)/);
+  });
+  // ── round two ──
+  it('once the result is up the header carries the streak chip where "?" sits during play', () => {
+    expect(src).toContain('const over = state.status !== "playing" && revealed;');
+    expect(src).toMatch(/\{over \? <StreakChip streak=\{finishStreak\} won=\{state\.status === "won"\} isArchive=\{isArchive\} \/>\s*: onHowToPlay && \(\s*<button className="icon-btn" onClick=\{onHowToPlay\}/);
+    // the chip and the panel are handed the one streak
+    expect(src).toContain('streak={finishStreak}');
+    expect((src.match(/computeFootleStreak\(date\)/g) || []).length).toBe(2);   // the chip's fallback, and the share card's
+    // the game is still named once, by the header that was always there
+    expect(src).toContain('<GameTitle no={getFootleNumber(date)}>Footle</GameTitle>');
+  });
+  it('the rules stay one tap away for a finished player: a quiet link at the foot, beside the report link', () => {
+    expect(src).toMatch(/\{footleCard && \(onReport \|\| onHowToPlay\) && \(\s*<div className="wd-report-row">\s*\{onReport && <FootleReportButton[^>]*\/>\}\s*\{onHowToPlay && \(\s*<button type="button" className="wd-howto" onClick=\{onHowToPlay\} aria-label=\{t\("footle\.howTo"\)\}>\s*<CircleHelp[^>]*\/> \{t\("game\.howTo"\)\}/);
+    const css = read('src/games/footle.css');
+    const how = rule(css, '.wd-howto');
+    for (const d of ['border:0', 'background:none', 'font-size:12px', 'color:var(--t3)', 'text-decoration:underline']) expect(how, d).toContain(d);
+    expect(en['game.howTo']).toBe('How to play');
+    expect(typeof es['game.howTo']).toBe('string');
+  });
+  it('the foot, in order: the install nudge, Back to Home as the pill, then the two quiet links', () => {
+    const foot = src.slice(src.indexOf('layout="one"'), src.indexOf('{state.status === "playing" && (\n        <div className="wd-keyboard">'));
+    const at = (x) => foot.indexOf(x);
+    expect(at('{InstallBanner && <InstallBanner />}')).toBeGreaterThan(-1);
+    expect(at('{InstallBanner && <InstallBanner />}')).toBeLessThan(at('<ResultFoot onHome={onBack} pill />'));
+    expect(at('<ResultFoot onHome={onBack} pill />')).toBeLessThan(at('<div className="wd-report-row">'));
+  });
+  it('the finished header sits 6px closer to the card, and never during play or on a short phone', () => {
+    const css = read('src/games/footle.css');
+    expect(src).toContain('<div className={`wd-header${over ? " is-over" : ""}`}>');
+    expect(rule(css, '.wd-header.is-over')).toContain('margin-bottom:-6px');
+    expect(css).toContain('@media (max-height:700px){.wd-header.is-over{margin-bottom:0;}}');
+    expect(rule(css, '.wd-header')).toBe('.wd-header{display:flex;align-items:center;gap:12px;');
+  });
+});
+
+// ROUND TWO: the streak in the header.
+describe('the streak chip (components/StreakChip.jsx)', () => {
+  const dd = read('src/components/dailyDone.css');
+  const chip = (p) => renderToStaticMarkup(el(StreakChip, p));
+  it('a flame and "Day N streak", filled, with which streak it is as its title', () => {
+    const html = chip({ streak: { count: 1, label: 'daily streak' } });
+    expect(html).toMatch(/^<span class="dd-stk" title="Day 1 of a daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 1 streak<\/span><span class="dd-stk-n" aria-hidden="true">1<\/span><\/span>$/);
+    expect(chip({ streak: { count: 12, label: 'Footle streak' } })).toContain('title="12-day Footle streak"');
+    const css = rule(dd, '.dd-stk');
+    for (const d of ['height:40px', 'padding:0 14px', 'margin-left:auto', 'border-radius:12px', 'background:var(--s1)', 'font-size:13.5px', 'font-weight:700', 'white-space:nowrap', 'font-variant-numeric:tabular-nums']) expect(css, d).toContain(d);
+    expect(css).not.toMatch(/border:|outline|box-shadow/);                   // filled, never outlined
+    expect(rule(dd, '.dd-stk > svg')).toContain('color:var(--gold)');
+  });
+  it('no streak, no chip', () => {
+    for (const s of [undefined, null, { count: 0, label: 'daily streak' }, {}]) expect(chip({ streak: s })).toBe('');
+  });
+  it('under 360pt it is the flame and the number; the words stay for a screen reader', () => {
+    expect(dd).toContain('@media (max-width:359px){.dd-stk{padding:0 12px;}.dd-stk-w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}.dd-stk-n{display:inline;}}');
+    expect(rule(dd, '.dd-stk-n')).toContain('display:none');
+    expect(rule(dd, '.dd-stk')).toContain('position:relative');
+  });
+  it('a lost puzzle that kept the streak wears the shield, from day 2, where the host says a loss keeps it', () => {
+    const safe = chip({ streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: false });
+    expect(safe).toContain('lucide-shield-check');
+    expect(safe).not.toContain('lucide-flame');
+    for (const p of [{ streak: { count: 1, label: 'daily streak', keepsOnLoss: true }, won: false }, { streak: { count: 3, label: 'Footle streak' }, won: false }, { streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: true }, { streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: false, isArchive: true }]) {
+      expect(chip(p)).toContain('lucide-flame');
+    }
+  });
+  it('banked shields ride the chip, counted from two up, and never on an old puzzle', () => {
+    const one = chip({ streak: { count: 5, label: 'daily streak', shields: 1 } });
+    expect(one).toMatch(/<span class="dd-shields" role="img" aria-label="1 streak shield banked: each covers one missed day" title="Each shield covers one missed day"><svg[^>]*lucide-shield-check[^>]*>.*?<\/svg><\/span><\/span>$/);
+    const three = chip({ streak: { count: 5, label: 'daily streak', shields: 3 } });
+    expect(three).toMatch(/aria-label="3 streak shields banked: each covers one missed day"[^>]*><svg[^>]*>.*?<\/svg>3<\/span><\/span>$/);
+    expect((three.match(/lucide-shield-check/g) || []).length).toBe(1);
+    expect(chip({ streak: { count: 5, label: 'daily streak', shields: 3 }, isArchive: true })).not.toContain('dd-shields');
+    expect(chip({ streak: { count: 5, label: 'daily streak', shields: 0 } })).not.toContain('dd-shields');
+  });
+  it('speaks Spanish through the same keys, and adds no string of its own', () => {
+    const src = read('src/components/StreakChip.jsx').replace(/^\s*\/\/.*$/gm, '');
+    expect(src.match(/t\("([^"]+)"/g).map((x) => x.slice(3, -1)).sort()).toEqual(['dd.capStreak', 'dd.l.none', 'dd.shieldTitle', 'dd.shieldsAria', 'dd.streak1', 'dd.streakN']);
+    for (const k of ['dd.capStreak', 'dd.streak1', 'dd.streakN', 'dd.shieldTitle']) { expect(typeof en[k], k).toBe('string'); expect(typeof es[k], k).toBe('string'); }
+    expect(src).not.toMatch(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u);          // lucide only
+  });
+});
+
+// ROUND TWO: the way out.
+describe('Back to Home as a quiet filled pill (components/ResultFoot.jsx, `pill`)', () => {
+  it('centred, filled, 40 tall, no outline; not the full-width outlined bar and not a bare link', () => {
+    const html = renderToStaticMarkup(el(ResultFoot, { onHome() {}, pill: true }));
+    expect(html).toBe('<div style="margin-top:18px;display:flex;justify-content:center"><button type="button" style="height:40px;padding:0 22px;border-radius:999px;border:0;background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-weight:700;font-size:14px;line-height:1;font-family:inherit;cursor:pointer">Back to Home</button></div>');
+    expect(html).not.toMatch(/width:100%|1px solid|underline|background:(none|transparent)/);
+  });
+  it('with no way out there is no pill, and it never draws the report link itself', () => {
+    expect(renderToStaticMarkup(el(ResultFoot, { pill: true }))).toBe('');
+    expect(renderToStaticMarkup(el(ResultFoot, { pill: true, onHome() {}, thing: 'Answer', info: { id: 1 }, onReport() {} }))).not.toContain('Tell us');
+  });
+  it('every other host keeps the bar it had', () => {
+    const html = renderToStaticMarkup(el(ResultFoot, { onHome() {} }));
+    expect(html).toContain('width:100%;min-height:46px');
+    expect(html).toContain('border:1px solid var(--border)');
+    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) expect(read(f), f).not.toMatch(/<ResultFoot[^>]*\bpill\b/);
   });
 });
 

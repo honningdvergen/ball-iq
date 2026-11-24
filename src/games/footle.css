@@ -267,7 +267,15 @@ html.biq-cb .wd-tile--next{border-color:rgba(245,121,58,0.55);box-shadow:inset 0
    too (seen in Instagram's in-app browser, 2026-09-23). */
 @media (max-width: 720px) { body.biq-web .wd-grid { margin-inline: calc(-1 * clamp(16px, 4vw, 44px)); } body.biq-web .wd-keyboard { margin-inline: calc(6px - clamp(16px, 4vw, 44px)); } }
 /* Under the result card (22 Nov 2026): the report link alone, centred, with room above. */
-.wd-report-row{display:flex;justify-content:center;margin:16px 0 12px;}
+.wd-report-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 20px;margin:12px 0;}
+/* Round two of the finish (24 Nov 2026). The rules, as a quiet link beside the
+   report link and in its style: the header's "?" gave its corner to the streak
+   chip once the result is up. And the finished header sits 6px closer to the
+   card (the agreed drawing, fr-2.css); during play nothing moves. */
+.wd-howto{display:inline-flex;align-items:center;gap:6px;padding:0;border:0;background:none;font-family:inherit;font-size:12px;line-height:1.3;font-weight:700;color:var(--t3);-webkit-text-fill-color:var(--t3);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.wd-header.is-over{margin-bottom:-6px;}
+/* A short phone already has the screen's gap at 6px: nothing more to take. */
+@media (max-height:700px){.wd-header.is-over{margin-bottom:0;}}
 /* THE PLAYED ROWS, ON THE RESULT CARD (24 Nov 2026; FootballWordle.jsx,
    footleCard.picture). The board is the card's picture now, so a finished
    Footle is one object. A tile is at most 48px square and gives way evenly on

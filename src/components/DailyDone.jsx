@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ChevronRight, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users, Send } from "lucide-react";
+import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users, Send } from "lucide-react";
 import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
@@ -463,12 +463,29 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   //   the card      carries the game's own picture and ONE quiet Share button.
   //                 The button opens a sheet with today's two actions, unchanged
   //                 (doChallenge, doShare), each named and explained.
-  //   one caption   "Today 1 of 4" on the left; the flame, the streak and the
-  //                 XP this finish earned on the right.
-  //   one list      the other dailies as one filled block with no outline: the
-  //                 first ends in a small green Play, the rest in a chevron.
-  //   quiet lines   when the next puzzles come (with the reminder), the app
-  //                 badge on the web, and the save line for a guest.
+  //   one caption   "Today 1 of 4" on the left, when the next puzzles come on
+  //                 the right.
+  //   one list      the other dailies as one filled block with no outline.
+  //   quiet lines   the reminder, the app badge on the web, and the save line
+  //                 for a guest.
+  //
+  // ROUND TWO, THE SAME DAY (Alex scored the first build 4 to 5, then chose the
+  // drawing this is: "best so far"). The Daily 7 joined the layout, and:
+  //   · the screen's header names the game once and carries the streak as a
+  //     chip (components/StreakChip.jsx; the host draws it, because the header
+  //     is the host's). So the card has no top line, and the caption no streak.
+  //   · the XP this finish earned is on the card, in yellow under the verdict,
+  //     and no longer in the caption. The host says what was earned: an old
+  //     Footle from the archive pays nothing, so its screen hands over none.
+  //   · the countdown, which was a line of its own under the list, is the
+  //     caption's right half. "Tomorrow makes it 2" is gone with it; "Streak
+  //     safe" after a lost puzzle and the archive's "it doesn't count" keep
+  //     their words there.
+  //   · EVERY row of the list ends in a soft Play pill in its game's colour
+  //     (Home's daily rows have the same pill). No row leads, and nothing
+  //     under the card is solid green.
+  //   · the reminder, which rode the countdown line, has a line of its own
+  //     under the list in all three of its states.
   //
   // His rules that bind here: one loud thing a screen, and it is the card
   // (nothing lime and large under it); filled, never outlined; no frame inside
@@ -512,25 +529,18 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     const doneN = keys.filter(isDone).length;
     const sweep = !isArchive && !others.length && keys.length > 0 && doneN >= keys.length;
 
-    // The caption. The streak is said short here ("Day 5 streak"); which streak
-    // it is (the daily one, or a game's own) is its title, in the classic
-    // panel's own words.
-    const streakFull = streakN >= 2 ? t("dd.streakN", { n: streakN, label }) : t("dd.streak1", { label });
+    // The caption: the day's count on the left, when the next puzzles come on
+    // the right. The streak is the header's (StreakChip) and the XP the card's.
     const dayEl = !isArchive && keys.length > 1
       ? <span className="dd-cap-day"><b>{t("dd.capToday")}</b>{" "}{t("dd.nOf", { n: doneN, total: keys.length })}</span> : null;
-    const streakEl = streakN >= 1 ? (
-      <span className="dd-cap-st" title={streakFull}>
-        {streakSafe ? <ShieldCheck size={16} strokeWidth={2.2} aria-hidden="true" /> : <Flame size={16} strokeWidth={2.2} aria-hidden="true" />}
-        {t("dd.capStreak", { n: streakN })}
-        {!isArchive && streak?.shields > 0 && (
-          <span className="dd-shields" role="img" aria-label={t("dd.shieldsAria", { count: streak.shields })} title={t("dd.shieldTitle")}>
-            {Array.from({ length: streak.shields }, (_, i) => <ShieldCheck key={i} size={13} strokeWidth={2.4} aria-hidden="true" />)}
-          </span>
-        )}
+    const koEl = <b className="dd-num">{ko}</b>;
+    const nextEl = (
+      <span className="dd-cap-r">
+        {isArchive ? t("dd.archive")
+          : streakSafe ? rich(t("dd.safe"), { safe: <b>{t("dd.safeWord")}</b>, ko: koEl })
+          : rich(t("dd.newIn"), { ko: koEl })}
       </span>
-    ) : null;
-    // An old puzzle pays no XP (the host only announces a live finish), so the caption claims none.
-    const xpEl = !isArchive && card.xp > 0 ? <span className="dd-cap-xp">{rich(t("rs.xp"), { n: card.xp })}</span> : null;
+    );
 
     const row = (n, i) => {
       const T = n.href ? "a" : "button";
@@ -543,9 +553,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             {/* One short line a row (Alex, 24 Nov 2026: the minutes confused, "what do you mean 3 or 4 or 2 min?", and after a loss "just scrap win today back so it is one line"). The hook strings keep their minutes for the older panel; this list shows the part before the dot. */}
             <span className="dd-li-h">{HOOK[m] ? t(`dd.hook.${m}`).split("·")[0].trim() : ""}</span>
           </span>
-          {i === 0
-            ? <span className="dd-li-go">{t(n.open ? "home.row.continue" : "common.play")}</span>
-            : <span className="dd-li-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>}
+          {/* The same soft pill on every row, in the row's own colour: no row is bigger than another. */}
+          <span className="dd-li-go">{t(n.open ? "home.row.continue" : "common.play")}</span>
         </T>
       );
     };
@@ -553,7 +562,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     return (
       <>
       <ResultCard title={card.title} tag={card.tag} score={card.score} scoreNode={card.scoreNode} outOf={card.outOf} marks={card.marks} shares={card.shares} levels={card.levels}
-        verdict={words.verdict} sub={words.sub} note={card.note} picture={card.picture} action={action} />
+        verdict={words.verdict} sub={words.sub} xp={card.xp} note={card.note} picture={card.picture} action={action} head={false} />
       {sheetEl}
       <section className="dd-one" aria-label={t("dd.aria")}>
         {/* A mate sent this puzzle: who won, the name ask, and the league offer that only a rival earns. */}
@@ -579,12 +588,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         })()}
 
         <div {...g()}>
-          {(dayEl || streakEl || xpEl) && (
-            <div className="dd-cap">
-              {dayEl}
-              {(streakEl || xpEl) && <span className="dd-cap-r">{streakEl}{xpEl}</span>}
-            </div>
-          )}
+          <div className="dd-cap">{dayEl}{nextEl}</div>
           {promoted && promoted.game === game && !isArchive && (
             <div className="dd-promo" role="status">
               {promoted.Icon && <promoted.Icon size={14} strokeWidth={2.4} aria-hidden="true" />}
@@ -609,32 +613,27 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         </div>
 
         <div {...g()}>
-          {/* WHEN THE NEXT ONES COME, as one quiet line: every daily game shows
-              it, and it is what tonight's streak hangs on. The reminder rides
-              it, as it rode the streak row: a bell, or the hour once set. */}
-          <div className="dd-line">
-            <span>
-              {isArchive ? t("dd.archive")
-                : streakSafe ? rich(t("dd.safe"), { safe: <strong>{t("dd.safeWord")}</strong>, ko: <strong className="dd-num">{ko}</strong> })
-                : streakN >= 1 ? rich(t("dd.tomorrow"), { n: <strong className="dd-num">{streakN + 1}</strong>, ko: <strong className="dd-num">{ko}</strong> })
-                : rich(t("dd.newIn"), { ko: <strong className="dd-num">{ko}</strong> })}
-            </span>
-            {canRemind && !askInWords && (
-              <button type="button" className="dd-bell" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
-                <Bell size={17} strokeWidth={2.2} aria-hidden="true" />
-              </button>
-            )}
-            {remind && remind.state === "on" && (
-              <span className="dd-pill is-set" aria-label={t("dd.remindSet", { h: reminderHourLabel() })}>
-                <Bell size={13} strokeWidth={2.4} aria-hidden="true" /> {reminderHourLabel()}
-              </span>
-            )}
-          </div>
-          {/* A player's first days: the reminder asked for in words (askInWords, above). */}
+          {/* THE REMINDER HAS ONE PLACE, under the list (it rode the countdown
+              line until that became the caption). A player's first days: asked
+              for in words (askInWords, above). After that: the same words as a
+              quiet line with the bell beside them. Once set: the hour, said. */}
           {askInWords && (
             <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} title={t("dd.remindTitle")}>
               <Bell size={16} strokeWidth={2.3} aria-hidden="true" />{t("dd.remindBtn", { h: reminderHourLabel() })}
             </button>
+          )}
+          {canRemind && !askInWords && (
+            <div className="dd-line">
+              <span>{t("dd.remindBtn", { h: reminderHourLabel() })}</span>
+              <button type="button" className="dd-bell" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>
+                <Bell size={17} strokeWidth={2.2} aria-hidden="true" />
+              </button>
+            </div>
+          )}
+          {remind && remind.state === "on" && (
+            <div className="dd-line is-set">
+              <span><Bell size={14} strokeWidth={2.3} aria-hidden="true" />{t("dd.remindSet", { h: reminderHourLabel() })}</span>
+            </div>
           )}
           {/* Stitch-up (the Trail, web only): a link, as it was. */}
           {stitch && (
