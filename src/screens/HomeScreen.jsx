@@ -1,7 +1,7 @@
 import React from "react";
 import { swatchEdge } from '../lib/colourMath.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
-import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search } from "lucide-react";
+import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search, Target } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -22,6 +22,7 @@ import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
 import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+import { BALLPARK_PREVIEW } from "../lib/ballparkPreview.js";
 import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
 import { useT, useLang, fmtLocale } from "../i18n/index.js";
@@ -908,6 +909,29 @@ function HomeScreenImpl({
           </button>
         );
       })()}
+      {/* Ballpark, in a TEST build only (lib/ballparkPreview.js). The flag is the
+          literal false in every normal build, so this row, its strings and the
+          marker are not in the bundle. Same row as the others in this group, the
+          NEW label's own look reading PREVIEW, in Ballpark's own colour
+          (ballpark.css --bp). The data attribute is what the build's gate
+          (scripts/audit-preview-build.mjs) and a release script look for. */}
+      {BALLPARK_PREVIEW && (
+        <button
+          type="button"
+          className="todays-seven-secondary mp-row"
+          data-preview="BALLPARK_PREVIEW_BUILD"
+          style={{ "--mode": "#56DCC8", "--mode-rgb": "86,220,200", marginBottom: 10 }}
+          onClick={() => setScreen("ballpark")}
+          aria-label={t("home.row.ariaPlay", { mode: "Ballpark" })}
+        >
+          <span className="t7s-icon" aria-hidden="true"><Target size={22} strokeWidth={2} /></span>
+          <span className="t7s-body">
+            <span className="t7s-title">Ballpark<span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: "rgba(86,220,200,0.18)", color: "#56DCC8", fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("home.ballpark.tag")}</span></span>
+            <span className="t7s-sub">{t("home.ballpark.sub")}</span>
+          </span>
+          <span className="t7s-cta">{t("common.play")}</span>
+        </button>
+      )}
       <div className="play-grid">
         {[
           // No Club Quiz tile: the finder above this grid is the club entry

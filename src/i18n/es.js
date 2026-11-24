@@ -143,6 +143,8 @@ export default {
   'home.top10lists.title': 'Listas',
   'home.top10lists.sub': 'Tu club y todos los Top 10 pasados',
   'home.top10lists.aria': 'Los Top 10: los de tu club y todos los pasados',
+  'home.ballpark.sub': 'Tres números de fútbol. ¿Cuánto te acercas?',
+  'home.ballpark.tag': 'VISTA PREVIA',
   // Tile names are one ellipsised line: "Supervivencia" clipped at 320 px.
   'home.mode.survival': 'A muerte',
   'home.mode.survivalDesc': 'Un fallo y fuera',

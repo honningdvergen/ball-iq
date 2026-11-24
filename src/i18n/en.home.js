@@ -136,6 +136,8 @@ export default {
   'home.top10lists.title': 'Top 10 lists',
   'home.top10lists.sub': 'Club lists and every past daily',
   'home.top10lists.aria': 'Top 10 lists: your club\'s lists and every past daily',
+  'home.ballpark.sub': 'Three football numbers. How close can you get?',
+  'home.ballpark.tag': 'PREVIEW',
   'home.mode.survival': 'Survival',
   'home.mode.survivalDesc': 'One miss, out',
   'home.mode.hotstreak': 'Hot Streak',

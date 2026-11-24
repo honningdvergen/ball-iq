@@ -14,5 +14,10 @@ export default defineConfig({
     // test that hangs still fails; one that is merely slow under load no longer
     // blocks the deploy gate.
     testTimeout: 20_000,
+    // The unit tests always describe a NORMAL build. `VITE_BALLPARK_PREVIEW=1 npm run
+    // build` (a TestFlight build with the Ballpark row, src/lib/ballparkPreview.js)
+    // runs these same tests on its way, and the Home goldens must not see the row.
+    // tests/unit/ballpark-preview.test.js turns the flag on itself to test that state.
+    env: { VITE_BALLPARK_PREVIEW: '' },
   },
 })

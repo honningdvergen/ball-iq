@@ -181,10 +181,13 @@ const LeagueScreen = React.lazy(() => import('./screens/LeagueScreen.jsx'));
 const StitchUp = React.lazy(() => import('./screens/StitchUp.jsx'));
 // Ballpark (prototype, web only, 20 Nov 2026): three football numbers a day.
 // Nothing links to it; /play?ballpark=1 opens it. Lazy, so Home pays nothing.
+// A test build made with VITE_BALLPARK_PREVIEW=1 also opens it in the app, from
+// one row on Home (lib/ballparkPreview.js).
 const Ballpark = React.lazy(() => import('./screens/Ballpark.jsx'));
 const LeagueCreateSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueCreateSheet');
 const LeagueJoinSheet = lazyNamed(() => import('./screens/LeagueScreen.jsx'), 'LeagueJoinSheet');
 import { HomeScreen } from './screens/HomeScreen.jsx';
+import { BALLPARK_PREVIEW } from './lib/ballparkPreview.js';
 import { currentAvatarId } from './lib/currentAvatar.js';
 import { isIOSUA, isAndroidUA } from './components/StoreBadge.jsx';
 import { Capacitor, registerPlugin } from '@capacitor/core';
@@ -8384,7 +8387,9 @@ function AppInner() {
         {screen === "top10" && (
           <TabErrorBoundary name="top10" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Top 10" />}><Top10 key={`${top10ListId || "day"}:${challengeSeen}`} date={archiveDate || undefined} listId={top10ListId || undefined} onBack={top10From === "lib" ? () => { setTop10From(null); setTop10ListId(null); setScreen("top10lib"); } : goHome} onMoreLists={top10From === "lib" ? undefined : () => setScreen("top10lib")} onReport={reportQuestion} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
         )}
-        {screen === "ballpark" && LEAGUES_WEB && (
+        {/* Web only, plus a TEST build of the app made with the preview flag
+            (lib/ballparkPreview.js): false in every normal build. */}
+        {screen === "ballpark" && (LEAGUES_WEB || BALLPARK_PREVIEW) && (
           <TabErrorBoundary name="ballpark" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Ballpark" />}><Ballpark
             forceDay={ballparkDay}
             onBack={goHome}
