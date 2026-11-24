@@ -47,12 +47,17 @@ describe('the card takes a picture and one action, when a host asks', () => {
     expect(html.endsWith('</div></div></section>')).toBe(true);
   });
   it('the other dailies pass nothing new', () => {
-    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx', 'src/screens/ResultsScreen.jsx', 'src/screens/MysteryPlayer.jsx']) {
+    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx', 'src/screens/MysteryPlayer.jsx']) {
       const src = read(f);
       expect(src, f).not.toMatch(/layout="one"/);
       expect(src, f).not.toMatch(/\bpicture[:=]/);
     }
     expect(read('src/games/FootballWordle.jsx')).toContain('layout="one"');
+    // The Daily 7 joined the layout in round two (tests/unit/daily7-finish.test.js); its card has the
+    // seven marks, not a picture of its own.
+    const d7 = read('src/screens/ResultsScreen.jsx');
+    expect(d7).toContain('layout="one"');
+    expect(d7).not.toMatch(/\bpicture[:=]/);
   });
 });
 

@@ -8,6 +8,8 @@ import { Star, Trophy } from "lucide-react";
 import { haptic } from "../lib/feedback.js";
 import { Confetti } from "../components/Confetti.jsx";
 import { DailyDone } from "../components/DailyDone.jsx";
+import { StreakChip } from "../components/StreakChip.jsx";
+import GameTitle from "../components/GameTitle.jsx";
 import { CountUp } from "../components/CountUp.jsx";
 import ResultFoot from "../components/ResultFoot.jsx";
 import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
@@ -176,6 +178,9 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
       title: "Daily 7", tag, score: result.score, outOf: result.total, marks: rdDots.filter(Boolean).length === result.score ? rdDots : null,
       scoreNode: <CountUp value={result.score} duration={900} delay={200} triggerHaptic />,
       verdict: t(`d7.h${band}`), sub: t(`d7.s${band}`), xp: xpEarned,
+      // The Share button says the score ("Share my 5/7"), except in the lowest
+      // band (0 or 1 of 7, "A tough set today."): there it is "Share my result".
+      plainShare: band === 4,
       // The bank's difficulty for each of the seven, in order (every answer carries it).
       levels: Array.isArray(result.allAnswers) && result.allAnswers.length === result.total ? result.allAnswers.map((a) => a.diff || "medium") : null,
     };
@@ -187,7 +192,21 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
     <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
       {(isPerfect || showConfetti) && <Confetti />}
       <div className="rd-mobile">
-      <ResultsCloseBtn onClose={onHome} />
+      {/* THE DAILY 7'S FINISH HAS FOOTLE'S HEADER (round two, 24 Nov 2026): the
+          back arrow, the game named once with its day, one line under it, and
+          the streak as a chip on the right. So the card below starts at the
+          score. Every other mode keeps the lone arrow in the corner. */}
+      {cardFinish ? (
+        <div className="dd-hd">
+          <button type="button" className="back-btn" onClick={onHome} aria-label={t("quiz.backHome")}>←</button>
+          <div className="dd-hd-t">
+            <GameTitle tag={dailyCard.tag}>Daily 7</GameTitle>
+            {/* "7 questions": the list row's line for this game, without its minutes. */}
+            <div className="dd-hd-sub">{t("dd.hook.daily7").split("·")[0].trim()}</div>
+          </div>
+          <StreakChip streak={dailyDone.streak} isArchive={!!result.dailyArchive} />
+        </div>
+      ) : <ResultsCloseBtn onClose={onHome} />}
 
       {/* THE DAILY 7 ENDS ON A CARD (22 Nov 2026, components/ResultCard.jsx):
           the score, the standing and the seven questions as one object, drawn
@@ -285,27 +304,35 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           is the same bet, placed again. Here they have just finished
           something, there is a score to attach a face to, and it costs zero
           activation. */}
-      {photoNudge}
+      {!cardFinish && photoNudge}
 
-      {/* Daily 7: the return loop — streak, countdown + remind, share, how
-          everyone did, the other open dailies. One component for all four
-          dailies (components/DailyDone.jsx); the edition is the day index. */}
-      {isDaily && dailyDone && (
-        <div style={{marginTop: cardFinish ? 56 : 18}}>
-          <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
-            streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
-            save={dailyDone.save} track={dailyDone.track} promoted={dailyDone.promoted} card={dailyCard} />
-        </div>
+      {/* Daily 7: the return loop, one component for all the dailies
+          (components/DailyDone.jsx); the edition is the day index. Since 24 Nov
+          2026 it asks for the panel's "one" layout, as Footle does: the card
+          carries Share (it was a solid green button under the card), and under
+          it sit one caption line and the other dailies as one list. */}
+      {cardFinish && (
+        <DailyDone game="daily7" edition={result.dailyEdition ?? dayIndexForDate(new Date())} isArchive={!!result.dailyArchive} won bucket={result.score}
+          streak={dailyDone.streak} onShare={onShare} remind={dailyDone.remind} nextUp={dailyDone.nextUp} day={dailyDone.day}
+          save={dailyDone.save} track={dailyDone.track} promoted={dailyDone.promoted} card={dailyCard} layout="one" />
       )}
+      {/* The profile-picture nudge sat between the back arrow and the card.
+          It is after the finish now, with the other quiet asks. */}
+      {cardFinish && photoNudge}
 
       {isDaily ? (
-        <>
-          {/* Daily 7: the panel IS the action set — share, remind, stump a mate,
-              save. What is left is the review of what got you, then the way out. */}
-          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
-          {/* The same way out as Footle, Transfer Trail and Top 10. */}
-          <ResultFoot onHome={onHome} />
-        </>
+        cardFinish ? (
+          <>
+            {/* The way out, as Footle's quiet filled pill; then the review of what got you. */}
+            <ResultFoot onHome={onHome} pill />
+            <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+          </>
+        ) : (
+          <>
+            <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+            <ResultFoot onHome={onHome} />
+          </>
+        )
       ) : (
         <>
           <CardDeltaRow d={cardDelta} />

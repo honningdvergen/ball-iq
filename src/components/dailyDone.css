@@ -259,3 +259,9 @@
 .dd-stk-n{display:none;}
 .dd-stk .dd-shields{align-items:center;gap:2px;margin-left:0;font-weight:700;-webkit-text-fill-color:var(--gold);}
 @media (max-width:359px){.dd-stk{padding:0 12px;}.dd-stk-w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}.dd-stk-n{display:inline;}}
+/* The Daily 7's finish has no header of its own to borrow, so this is Footle's
+   (footle.css .wd-header): the back button, the game named once with its day,
+   one line under it, the chip. */
+.dd-hd{display:flex;align-items:center;gap:12px;margin:0 0 8px;}
+.dd-hd-t{flex:1;min-width:0;}
+.dd-hd-sub{margin-top:2px;font-size:12.5px;line-height:1.2;font-weight:400;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}

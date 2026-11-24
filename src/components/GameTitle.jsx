@@ -24,11 +24,13 @@ const TITLE = { display: "flex", flexWrap: "wrap", alignItems: "baseline", colum
 const NAME = { maxWidth: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
 const NO = { fontSize: 13, fontWeight: 700, color: "var(--t3)", WebkitTextFillColor: "var(--t3)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" };
 
-export default function GameTitle({ children, no, className, style }) {
+// `tag`: a game with no public number says its day in the number's place and
+// style ("Daily 7 23 Nov", the header of its finish since 24 Nov 2026).
+export default function GameTitle({ children, no, tag, className, style }) {
   const t = useT();
   return (
     <div className={className} style={{ ...TITLE, ...style }}>
-      <span style={NAME}>{children}</span>{no > 0 ? <span style={NO}>{t('game.no', { n: no })}</span> : null}
+      <span style={NAME}>{children}</span>{tag ? <span style={NO}>{tag}</span> : no > 0 ? <span style={NO}>{t('game.no', { n: no })}</span> : null}
     </div>
   );
 }

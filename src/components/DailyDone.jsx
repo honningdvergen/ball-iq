@@ -62,10 +62,12 @@ import "./dailyDone.css";
 //               the full-screen level-up overlay (return research, 16 Oct 2026).
 //   card        what the result card says (components/ResultCard.jsx); with `picture`, the
 //               game's own picture for the card
-//   layout      "one": the finish as ONE object (24 Nov 2026, Footle first). The card carries
-//               the picture and the Share button; under it sit one caption line and the other
-//               dailies as one filled list. Needs `card`. Every other host leaves it out and
-//               keeps the panel it has. The branch is just above the classic return.
+//   layout      "one": the finish as ONE object (24 Nov 2026, Footle first, the Daily 7 the same
+//               day). The card carries the picture and the Share button; under it sit one caption
+//               line and the other dailies as one filled list. Needs `card`. Every other host
+//               leaves it out and keeps the panel it has. The branch is just above the classic
+//               return. In this layout `card.plainShare` makes the button say "Share my result"
+//               where it would print the score (the Daily 7 asks for it on a 0 or a 1).
 // Default glyph per daily for the "still open today" rows, so a host that passes
 // only names + links (the static islands) still draws a well with something in
 // it — an empty tinted square read as a bug on the first web play-through.
@@ -493,7 +495,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   // the drawing did not cover was given the quietest place that keeps it
   // working. A host that does not ask for this layout never reaches it.
   if (layout === "one" && card) {
-    const scoreTxt = card.score != null ? `${card.score}/${card.outOf}` : null;
+    // "Share my 5/7". With no score to say (a lost Footle), or one the host
+    // would rather not print on a button (`plainShare`: a Daily 7 of 0 or 1),
+    // it is "Share my result".
+    const scoreTxt = card.score != null && !card.plainShare ? `${card.score}/${card.outOf}` : null;
     const openSheet = () => { setChallengeState(""); setSheetOpen(true); };
     // With no puzzle link to send (an old puzzle from the archive) there is
     // one thing to do, so the button does it: no sheet with a single row.

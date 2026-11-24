@@ -20,6 +20,19 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 24 Nov 2026 (round two of the finishes): the Daily 7 ends on the layout Footle
+// has (Alex chose one drawing for both). The three "results: daily 7 ..." entries were replaced,
+// and only those: the new render was dumped with a temporary copy of this test and 95 of 98
+// entries were byte-identical. For each of the three, the phone layout of the OLD entry was taken
+// apart by script into its pieces (the date, the streak and its shields, the card, the countdown,
+// the next game, the reminder, the missed list) and the new phone layout was built from those
+// pieces by the rules of the change; the result equals the new render byte for byte. The rules:
+// the lone back arrow is a header (back, "Daily 7" with its day, "7 questions", the streak chip);
+// the card loses its top line and gains the Share button ("Share my 5/7"; "Share my result" on a
+// 1) and is otherwise unchanged, its XP included; the framed panel with its solid "Share result"
+// is one caption ("Today 3 of 4", the countdown) and one list row ending in Play, with the
+// reminder button under the list; Back to Home is the filled pill and comes before the missed
+// list. The wide-screen card after the phone layout is byte-identical in all three.
 // INTENDED CHANGE, 24 Nov 2026 (the grade fixes): the day's dashes on a finish panel fill from
 // the left in one colour (one finished Daily 7 lit the SECOND dash and read "step 2 of 4"). Nine
 // entries were replaced, and only those (every panel that draws the bar: the seven "dd: ..." game
