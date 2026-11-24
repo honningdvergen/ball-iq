@@ -192,6 +192,15 @@ export function cardWords(today, card, t, isArchive = false) {
   return { verdict: line || card.verdict, sub };
 }
 
+// THE DAY'S DASHES FILL FROM THE LEFT (24 Nov 2026). They were one dash per
+// game in a fixed order, each in its game's colour, so finishing only the Daily
+// 7 lit the SECOND dash and "1 of 4 done" read as "step 2 of 4". Now N done
+// lights the first N, all in one colour: the order means nothing but the count.
+// A puzzle just lost is the newest dash, so it is the last lit one, in grey.
+const dayDashes = (total, doneN, lostHere) => Array.from({ length: total }, (_, i) => (
+  <i key={i} className={i < doneN ? (lostHere && i === doneN - 1 ? "is-lost" : "is-done") : ""} />
+));
+
 export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null, card = null, layout = null }) {
   const t = useT();
   const [now, setNow] = useState(() => new Date());
@@ -592,9 +601,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
                   <span className="dd-li-h">{t("dd.sweep")}</span>
                 </span>
                 <span className="dd-day-bar" role="img" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
-                  {keys.map((k) => (
-                    <i key={k} className={modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done"} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
-                  ))}
+                  {dayDashes(keys.length, doneN, lostHere)}
                 </span>
               </div>
             </div>
@@ -836,9 +843,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         // and, right under it, "4 of 4 done today".
         const dayBar = keys.length > 1 ? (
           <span className="dd-day-bar" role="img" aria-label={t("dd.dayAria", { n: doneN, total: keys.length })}>
-            {keys.map((k) => (
-              <i key={k} className={isDone(k) ? (modeOf(k) === modeOf(game) && lostHere ? "is-lost" : "is-done") : ""} style={{ "--dd-c": MODE_ACCENT[modeOf(k)] || "var(--accent)" }} />
-            ))}
+            {dayDashes(keys.length, doneN, lostHere)}
           </span>
         ) : null;
         return (

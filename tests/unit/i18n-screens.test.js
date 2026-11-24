@@ -20,6 +20,13 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 24 Nov 2026 (the grade fixes): the day's dashes on a finish panel fill from
+// the left in one colour (one finished Daily 7 lit the SECOND dash and read "step 2 of 4"). Nine
+// entries were replaced, and only those (every panel that draws the bar: the seven "dd: ..." game
+// panels with a day and the two "results: daily 7 ..."): the new render was dumped with a
+// temporary copy of this test, 89 of 98 entries were byte-identical, and in each of the nine the
+// only difference is inside .dd-day-bar, proven by making the edit to the old entry by hand (each
+// dash loses its inline --dd-c, and the lit dashes come first, a lost one last of the lit).
 // INTENDED CHANGE, 24 Nov 2026 (later): the Daily 7's XP is on its result card, in yellow under
 // the verdict. The three "results: daily 7 ..." entries were replaced, and only those: the new
 // render was dumped with a temporary copy of this test and 95 of 98 entries were byte-identical.

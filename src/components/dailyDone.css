@@ -86,7 +86,8 @@
 .dd-day{display:flex;align-items:center;gap:10px;}
 .dd-day-bar{display:flex;gap:4px;flex:0 0 112px;}
 .dd-day-bar i{flex:1;height:6px;border-radius:3px;background:var(--s2);}
-.dd-day-bar i.is-done{background:var(--dd-c);}
+/* One colour for every lit dash: they count games, they do not name them. */
+.dd-day-bar i.is-done{background:var(--accent);}
 .dd-day-bar i.is-lost{background:var(--t3);}
 .dd-day-tx{font-size:12.5px;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;}
 .dd-up-more{display:flex;flex-wrap:wrap;gap:8px;}
