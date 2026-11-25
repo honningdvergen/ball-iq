@@ -218,7 +218,6 @@
 .dd-one .dd-bell{width:38px;height:38px;border:0;}
 .dd-line.is-set > span{display:inline-flex;align-items:center;gap:7px;}
 .dd-line.is-set svg{flex:none;}
-.dd-one .dd-remind{margin-top:12px;border:0;background:rgba(255,170,0,0.12);}
 .dd-one .dd-share-alt{align-self:center;margin-top:14px;}
 .dd-one .dd-getapp{margin-top:16px;}
 

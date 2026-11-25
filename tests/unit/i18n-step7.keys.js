@@ -859,6 +859,7 @@ export const STEP7_EN = {
   // not replacements: pinned so an edit to en.js is made here too, on purpose.
   'footle.short': 'Today\'s name has {n} letters',
   'dd.remindBtn': 'Remind me each day at {h}',
+  'dd.remindOn': 'Turn on',
   'rc.aria': '{title}: {score} out of {total}',
   'rc.kicksAria': '{n} of {total} right',
   'rc.note': 'You got number {q}. {hard}',

@@ -1822,6 +1822,7 @@ export default {
   // Ballpark (prototipo, solo web, 20 nov 2026): screens/Ballpark.jsx.
   'footle.short': 'El nombre de hoy tiene {n} letras',
   'dd.remindBtn': 'Recuérdamelo cada día a las {h}',
+  'dd.remindOn': 'Activar',
   // La tarjeta del resultado (22 nov 2026).
   'rc.aria': '{title}: {score} de {total}',
   'rc.kicksAria': '{n} de {total} acertadas',

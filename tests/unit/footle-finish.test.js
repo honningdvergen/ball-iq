@@ -240,19 +240,37 @@ describe('the finish panel in the "one" layout', () => {
     expect(read('src/components/DailyDone.jsx')).not.toMatch(/ChevronRight|dd-li-chev/);
   });
   it('the reminder has one place, under the list: in words at first, then words with the bell, then the hour it is set for', async () => {
+    // 25 Nov 2026: the ask in words is a quiet line, the save line's twin (the words at the left, a
+    // small filled pill at the right), not the wide yellow bar it was for four days. It is still a
+    // labelled control with the same handler: the pill says what the tap does.
     const first = render(await load(), { remind: { state: 'off', onRemind() {} } });
-    expect(first).toMatch(/<\/div><\/div><div class="dd-g"[^>]*><button type="button" class="dd-remind"[^>]*><svg[^>]*lucide-bell[^>]*>.*?<\/svg>Remind me each day at [^<]+<\/button>/);
+    expect(first).toMatch(/<\/div><\/div><div class="dd-g"[^>]*><div class="dd-line is-ask"><span>Remind me each day at [^<]+<\/span><button type="button" class="dd-pill" aria-label="Turn on a daily reminder at [^"]+" title="One nudge a day, only if you haven&#x27;t played\. Off any time\.">Turn on<\/button><\/div>/);
     expect(first).not.toContain('class="dd-bell"');
+    expect(first).not.toContain('class="dd-remind"');
+    {
+      const dd = read('src/components/dailyDone.css');
+      // no yellow under the card: the bar's rule for this layout is gone, and the pill is the Save pill
+      expect(dd).not.toContain('.dd-one .dd-remind');
+      expect(rule(dd, '.dd-one .dd-pill')).toBe('.dd-one .dd-pill{min-height:34px;padding:0 15px;border:0;font-size:13.5px;font-weight:700;letter-spacing:0;');
+      expect(rule(dd, '.dd-pill')).toContain('background:var(--s2);color:var(--t1)');
+      // the same tap as before: the handler that sends dd-remind, and the effect that sends dd-remind-offer
+      const src = read('src/components/DailyDone.jsx');
+      expect(src).toContain('<button type="button" className="dd-pill" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>{t("dd.remindOn")}</button>');
+      expect(src).toContain('setBusy(true); track?.("dd-remind", { game });');
+      expect(src).toContain('if (askInWords) noteOfferShown({ seen: offerDays, game, edition, track });');
+      expect(en['dd.remindOn']).toBe('Turn on');
+      expect(es['dd.remindOn']).toBe('Activar');
+    }
     // after five days of offers: the same words, quiet, with the bell beside them
     const later = render(await load({ biq_remind_offer: '9:1' }), { remind: { state: 'off', onRemind() {} } });
     expect(later).toMatch(/<div class="dd-line"><span>Remind me each day at [^<]+<\/span><button type="button" class="dd-bell" aria-label="Turn on a daily reminder at [^"]+" title="[^"]+"><svg[^>]*lucide-bell/);
-    expect(later).not.toContain('class="dd-remind"');
+    expect(later).not.toMatch(/dd-remind|is-ask/);
     // once set: the hour, said
     const on = render(await load(), { remind: { state: 'on', onRemind() {} } });
     expect(on).toMatch(/<div class="dd-line is-set"><span><svg[^>]*lucide-bell[^>]*>.*?<\/svg>Reminder set for [^<]+<\/span><\/div>/);
-    expect(on).not.toMatch(/dd-bell|dd-remind/);
+    expect(on).not.toMatch(/dd-bell|dd-remind|is-ask/);
     // an old puzzle, or a host with no reminder at all, has no reminder line
-    expect(render(await load(), { isArchive: true, remind: { state: 'off', onRemind() {} } })).not.toMatch(/dd-bell|dd-remind/);
+    expect(render(await load(), { isArchive: true, remind: { state: 'off', onRemind() {} } })).not.toMatch(/dd-bell|dd-remind|is-ask/);
     expect(render(await load())).not.toMatch(/lucide-bell/);
     // none of it is in the caption
     for (const h of [first, later, on]) expect(h.match(/<div class="dd-cap">[\s\S]*?<\/div>/)[0]).not.toMatch(/bell|Remind/);
@@ -263,8 +281,8 @@ describe('the finish panel in the "one" layout', () => {
       const html = render(D, p);
       const under = html.slice(html.indexOf('<section class="dd-one"'));
       expect(under).not.toMatch(/class="dd-share"|btn-3d|dd-up-go|dd-next-go|t7s-cta/);
-      // every button under the card is a list row, the reminder, or the small Save
-      for (const b of under.match(/<button[^>]*class="([^"]+)"/g) || []) expect(b).toMatch(/class="(dd-li|dd-remind|dd-bell|dd-pill|dd-league is-flat|dd-share-alt)"/);
+      // every button under the card is a list row, the reminder (a small pill, or the bell), or the small Save
+      for (const b of under.match(/<button[^>]*class="([^"]+)"/g) || []) expect(b).toMatch(/class="(dd-li|dd-bell|dd-pill|dd-league is-flat|dd-share-alt)"/);
     }
   });
   it('a promotion, a guest, the app badge: each keeps its line', async () => {

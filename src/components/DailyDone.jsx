@@ -622,10 +622,18 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
               line until that became the caption). A player's first days: asked
               for in words (askInWords, above). After that: the same words as a
               quiet line with the bell beside them. Once set: the hour, said. */}
+          {/* THE ASK IN WORDS IS A QUIET LINE TOO (25 Nov 2026). It was a wide
+              yellow bar, the loudest thing under the card, on a screen whose
+              one loud thing is the card. Now it is the save line's twin: the
+              same words at the left, a small filled pill at the right that
+              says what the tap does. Still a labelled control, which is what
+              the words were brought back for (the unlabelled bell was tapped
+              once in 1,263 finishes); the same handler, the same two events. */}
           {askInWords && (
-            <button type="button" className="dd-remind" disabled={busy} onClick={doRemind} title={t("dd.remindTitle")}>
-              <Bell size={16} strokeWidth={2.3} aria-hidden="true" />{t("dd.remindBtn", { h: reminderHourLabel() })}
-            </button>
+            <div className="dd-line is-ask">
+              <span>{t("dd.remindBtn", { h: reminderHourLabel() })}</span>
+              <button type="button" className="dd-pill" disabled={busy} onClick={doRemind} aria-label={t("dd.remindAria", { h: reminderHourLabel() })} title={t("dd.remindTitle")}>{t("dd.remindOn")}</button>
+            </div>
           )}
           {canRemind && !askInWords && (
             <div className="dd-line">

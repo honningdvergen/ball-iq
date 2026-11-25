@@ -20,6 +20,16 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (the reminder goes quiet): on the two card finishes the reminder asked
+// for in words is a quiet line with a small "Turn on" pill, not a wide yellow button. Two entries
+// were replaced, and only those ("results: daily 7 on 5, the panel" and "results: daily 7 on 7", the
+// two that show the ask): the new render was dumped with a temporary copy of this test, 96 of 98
+// entries were byte-identical, and in each of the two the only difference is that one element, proven
+// by making the edit to the old entry by script (<button class="dd-remind" title=T>bell, WORDS</button>
+// becomes <div class="dd-line is-ask"><span>WORDS</span><button class="dd-pill" aria-label="Turn on a
+// daily reminder at 19:00" title=T>Turn on</button></div>) and comparing byte for byte. The classic
+// panel's yellow button (Transfer Trail, Top 10: "dd: footle won in 3, everything on, loading") is
+// untouched. The same day's flame-first streak chip changed no entry.
 // (24 Nov 2026, after the independent review of the finishes: in the three "results: daily 7" entries the
 // streak chip gained a wrapper, <span class="dd-stk-slot">, so the chip can give way to the day in a tight
 // header. Proven by script to be the only difference; the other 95 entries are byte-identical.)

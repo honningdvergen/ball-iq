@@ -128,13 +128,15 @@ describe('what the drawing does not show, and still has a place', () => {
   });
   it('the reminder: in words under the list on a player\'s first days, then words with the bell, then the hour it is set for', async () => {
     const first = await render(5, { dailyDone: { ...SERVICES, remind: { state: 'off', onRemind() {} } } });
-    expect(first).toMatch(/<button type="button" class="dd-remind"[^>]*><svg[^>]*lucide-bell[^>]*>.*?<\/svg>Remind me each day at [^<]+<\/button>/);
+    // 25 Nov 2026: a quiet line with a small filled pill, not a wide yellow bar (footle-finish.test.js pins the style).
+    expect(first).toMatch(/<div class="dd-line is-ask"><span>Remind me each day at [^<]+<\/span><button type="button" class="dd-pill" aria-label="Turn on a daily reminder at [^"]+" title="[^"]+">Turn on<\/button><\/div>/);
+    expect(first).not.toContain('class="dd-remind"');
     const later = await render(5, { dailyDone: { ...SERVICES, remind: { state: 'off', onRemind() {} } } }, { biq_remind_offer: '9:1' });
     expect(later).toMatch(/<div class="dd-line"><span>Remind me each day at [^<]+<\/span><button type="button" class="dd-bell"/);
     const on = await render(5, { dailyDone: { ...SERVICES, remind: { state: 'on', onRemind() {} } } });
     expect(on).toMatch(/<div class="dd-line is-set"><span><svg[^>]*lucide-bell[^>]*>.*?<\/svg>Reminder set for [^<]+<\/span><\/div>/);
     // all three sit between the list and the save line
-    for (const h of [first, later, on]) { expect(h.indexOf('class="dd-list"')).toBeLessThan(h.search(/dd-remind|dd-bell|is-set/)); expect(h.search(/dd-remind|dd-bell|is-set/)).toBeLessThan(h.indexOf('live on this phone only.')); }
+    for (const h of [first, later, on]) { expect(h.search(/is-ask|dd-bell|is-set/)).toBeGreaterThan(-1); expect(h.indexOf('class="dd-list"')).toBeLessThan(h.search(/is-ask|dd-bell|is-set/)); expect(h.search(/is-ask|dd-bell|is-set/)).toBeLessThan(h.indexOf('live on this phone only.')); }
   });
   it('"Promoted to …" keeps its line, between the caption and the list', async () => {
     const html = await render(5, { dailyDone: { ...SERVICES, promoted: { game: 'daily7', name: 'Non-League' } } });
@@ -200,7 +202,7 @@ describe('everything else keeps what it had', () => {
     }
   });
   it('Spanish has every line this screen shows, and the header\'s line is the list row\'s without its minutes', () => {
-    for (const k of ['dd.hook.daily7', 'dd.capStreak', 'dd.capToday', 'dd.nOf', 'dd.newIn', 'dd.shareMy', 'dd.shareMine', 'quiz.backHome', 'dd.remindBtn', 'dd.remindSet', 'dd.archive', 'dd.safe', 'dd.safeWord']) {
+    for (const k of ['dd.hook.daily7', 'dd.capStreak', 'dd.capToday', 'dd.nOf', 'dd.newIn', 'dd.shareMy', 'dd.shareMine', 'quiz.backHome', 'dd.remindBtn', 'dd.remindOn', 'dd.remindAria', 'dd.remindSet', 'dd.archive', 'dd.safe', 'dd.safeWord']) {
       expect(typeof en[k], k).toBe('string'); expect(typeof es[k], k).toBe('string');
       for (const ph of en[k].match(/\{\w+\}/g) || []) expect(es[k], `${k} keeps ${ph}`).toContain(ph);
     }

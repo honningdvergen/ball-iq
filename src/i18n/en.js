@@ -1884,6 +1884,8 @@ export default registerEnglish({
   'footle.short': 'Today\'s name has {n} letters',
   // The finish panel asks for the reminder in words again (21 Nov 2026).
   'dd.remindBtn': 'Remind me each day at {h}',
+  // On the two card finishes the ask is a quiet line: those words, then this on a small pill (25 Nov 2026).
+  'dd.remindOn': 'Turn on',
   // The result card (components/ResultCard.jsx, 22 Nov 2026).
   'rc.aria': '{title}: {score} out of {total}',
   'rc.kicksAria': '{n} of {total} right',
