@@ -90,7 +90,7 @@ describe('what the flag opens', () => {
     expect(row).toContain('className="todays-seven-secondary mp-row"');
     expect(row).toContain('onClick={() => setScreen("ballpark")}');
     expect(row).toContain('{t("home.ballpark.tag")}');
-    expect(row).toContain('{t("home.ballpark.sub")}');
+    expect(row).toContain('{rowLine(t("home.ballpark.sub"))}');
     // The only way from Home to the screen is that row: with the flag off there is none.
     expect(home.match(/setScreen\("ballpark"\)/g)).toHaveLength(1);
     expect(home.match(/\bBALLPARK_PREVIEW\b/g)).toHaveLength(2); // the import and the row's condition

@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { Users, ChevronRight } from "lucide-react";
 import { useT } from "../i18n/index.js";
+import { rowLine } from "../lib/rowLine.jsx";
 
 // MultiplayerCard — Home tab. One row in the Today-row anatomy (2026-09-06).
 //
@@ -39,13 +40,13 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOpen 
               the word people search for and it names the thing, not the
               transport; the tab, this row, the hub heading and the FAQ now
               agree. The tab's id stays `online` — it is in every door URL. */}
-          <span className="t7s-title">{t("tab.online")}</span>
+          <span className="t7s-title"><span className="t7s-name">{t("tab.online")}</span></span>
           {/* Capacity, not a question count: Hot Streak and Survival Duel are
               not 10 questions, and "up to 8" is already our claim on the site
               and the store listing. NOT a live count: 4 rooms in the last
               7 days and 0 open at the time of writing — "0 rooms open now"
               reads dead, which is worse than quiet. */}
-          <span className="t7s-sub">{t("home.mp.sub")}</span>
+          <span className="t7s-sub">{rowLine(t("home.mp.sub"))}</span>
         </span>
         <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>
       </button>

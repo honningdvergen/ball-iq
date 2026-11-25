@@ -26,6 +26,7 @@ import { BALLPARK_PREVIEW } from "../lib/ballparkPreview.js";
 import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
 import { useT, useLang, fmtLocale } from "../i18n/index.js";
+import { rowLine } from "../lib/rowLine.jsx";
 // Mates' leagues (phase 1, web): loaded only for a player who might be in one.
 const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
 // "Jonas played your Footle": loaded only for a device that has sent a
@@ -58,12 +59,8 @@ const abbrInk = (hex) => {
   const n = parseInt(m[1], 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.62 ? "#14171A" : "#fff";
 };
-// A t() template with its {placeholders} in <strong>: "Solved in {n}" →
-// Solved in <strong>4</strong>. Takes the raw template (t(key) with no vars),
-// so the bold lands on the value wherever the language puts it.
-function withStrong(template, vars) {
-  return template.split(/\{(\w+)\}/).map((part, i) => (i % 2 ? <strong key={i}>{vars[part]}</strong> : part)).filter((p) => p !== "");
-}
+// withStrong (a value in <strong>) and rowLine (a row's grey line as pieces that
+// keep to one line) live in lib/rowLine.jsx: the two mates rows use them too.
 
 function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
   const t = useT();
@@ -505,17 +502,17 @@ function HomeScreenImpl({
                   key: "footle", name: "Footle", no: getFootleNumber(), accent: MODE_ACCENT.footle, rgb: MODE_RGB.footle,
                   icon: <span className="fh-tile fh-tile-green t7s-f" aria-hidden="true">F</span>,
                   done: footleDone, open: ws.kind === "in-progress",
-                  sub: ws.kind === "won" ? withStrong(t("home.footle.solved"), { n: ws.used })
-                    : ws.kind === "lost" ? t("home.footle.lost")
-                    : ws.kind === "in-progress" ? withStrong(t("home.footle.inProgress"), { n: ws.used })
+                  sub: ws.kind === "won" ? rowLine(t("home.footle.solved"), { n: ws.used })
+                    : ws.kind === "lost" ? rowLine(t("home.footle.lost"))
+                    : ws.kind === "in-progress" ? rowLine(t("home.footle.inProgress"), { n: ws.used })
                     // ⚠️ ONE LINE EACH, ON EVERY PHONE. These four sub-lines must stay
                     // short enough not to wrap at 360pt: a row whose line wraps is
                     // taller than its neighbours, and the stack reads as uneven
                     // (seen in the simulator at 402pt, 13 Oct 2026: Footle and
                     // Transfer Trail wrapped, Daily 7 and Top 10 did not; Alex
                     // had flagged the same thing on the website the day before).
-                    : firstSession ? t("home.footle.start")
-                    : t("mode.footle.short"),
+                    : firstSession ? rowLine(t("home.footle.start"))
+                    : rowLine(t("mode.footle.short")),
                   // Done or not, the row opens the Footle screen: a finished board
                   // shows the result panel (DailyDone) — share, streak, the other
                   // open dailies. The separate status screen stays for the Daily
@@ -526,9 +523,9 @@ function HomeScreenImpl({
                 {
                   key: "daily", name: "Daily 7", Icon: ClipboardList, accent: MODE_ACCENT.daily7, rgb: MODE_RGB.daily7,
                   done: dailyDone, open: dailyAnswered > 0,
-                  sub: dailyDone ? withStrong(t("home.row.doneScore"), { score: `${dailyScore}/7` })
-                    : dailyAnswered > 0 ? withStrong(t("home.daily7.inProgress"), { n: dailyAnswered })
-                    : t("home.daily7.sub"),
+                  sub: dailyDone ? rowLine(t("home.row.doneScore"), { score: `${dailyScore}/7` })
+                    : dailyAnswered > 0 ? rowLine(t("home.daily7.inProgress"), { n: dailyAnswered })
+                    : rowLine(t("home.daily7.sub")),
                   onTap: () => (dailyDone ? viewDailyScore(new Date(), dailyScore) : startMode("daily")),
                   aria: dailyDone ? t("home.daily7.ariaDone", { score: dailyScore })
                     : dailyAnswered > 0 ? t("home.daily7.ariaOpen", { n: dailyAnswered })
@@ -537,16 +534,16 @@ function HomeScreenImpl({
                 ...(trailLive ? [{
                   key: "trail", name: "Transfer Trail", no: getTrailNumber(), Icon: Route, accent: MODE_ACCENT.trail, rgb: MODE_RGB.trail,
                   done: trailDone,
-                  sub: trailDone ? t("home.trail.doneSub") : t("home.trail.sub"),
+                  sub: rowLine(trailDone ? t("home.trail.doneSub") : t("home.trail.sub")),
                   onTap: () => setScreen("trail"),
                   aria: t(trailDone ? "home.row.ariaReview" : "home.row.ariaPlay", { mode: "Transfer Trail" }),
                 }] : []),
                 ...(top10Live ? [{
                   key: "top10", name: "Top 10", no: getTop10Number(), Icon: ListOrdered, accent: MODE_ACCENT.top10, rgb: MODE_RGB.top10,
                   done: top10Done, open: top10Open,
-                  sub: top10Done ? withStrong(t("home.row.doneScore"), { score: `${top10Found}/10` })
-                    : top10Open ? withStrong(t("home.top10.found"), { n: top10Found })
-                    : t("home.top10.sub"),
+                  sub: top10Done ? rowLine(t("home.row.doneScore"), { score: `${top10Found}/10` })
+                    : top10Open ? rowLine(t("home.top10.found"), { n: top10Found })
+                    : rowLine(t("home.top10.sub")),
                   onTap: () => setScreen("top10"),
                   aria: top10Done ? t("home.top10.ariaDone", { n: top10Found })
                     : top10Open ? t("home.top10.ariaOpen", { n: top10Found })
@@ -562,9 +559,9 @@ function HomeScreenImpl({
                   // the `open`/"Continue" state since launch; Mystery just
                   // never set it. Same anatomy, same word.
                   done: mysteryDone, open: mysteryGuesses > 0,
-                  sub: mysteryDone ? t("home.mystery.doneSub")
+                  sub: rowLine(mysteryDone ? t("home.mystery.doneSub")
                     : mysteryGuesses > 0 ? t("home.mystery.guessesIn", { count: mysteryGuesses })
-                    : t("home.mystery.sub"),
+                    : t("home.mystery.sub")),
                   onTap: () => setScreen("mystery"),
                   aria: mysteryDone ? t("home.row.ariaReview", { mode: "Mystery Player" })
                     : mysteryGuesses > 0 ? t("home.mystery.ariaOpen", { count: mysteryGuesses })
@@ -608,7 +605,7 @@ function HomeScreenImpl({
                 >
                   <span className="t7s-icon" aria-hidden="true">{r.icon || <r.Icon size={22} strokeWidth={2} />}</span>
                   <span className="t7s-body">
-                    <span className="t7s-title">{r.name}{r.no ? <span className="t7s-no">{t("home.row.no", { n: r.no })}</span> : null}</span>
+                    <span className="t7s-title"><span className="t7s-name">{r.name}</span>{r.no ? <span className="t7s-no">{t("home.row.no", { n: r.no })}</span> : null}</span>
                     <span className="t7s-sub">{r.sub}</span>
                   </span>
                   <span className="t7s-cta">{t(r.done ? "home.row.review" : r.open ? "home.row.continue" : "common.play")}</span>
@@ -813,8 +810,8 @@ function HomeScreenImpl({
       >
         <span className="t7s-icon" aria-hidden="true"><CircleHelp size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">{t("home.quiz.title")}</span>
-          <span className="t7s-sub">{t("home.quiz.sub")}</span>
+          <span className="t7s-title"><span className="t7s-name">{t("home.quiz.title")}</span></span>
+          <span className="t7s-sub">{rowLine(t("home.quiz.sub"))}</span>
         </span>
         <span className="t7s-cta">{t("common.play")}</span>
       </button>
@@ -841,14 +838,16 @@ function HomeScreenImpl({
       <button
         type="button"
         className="todays-seven-secondary mp-row"
-        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10, border: `1.5px solid rgba(${MODE_RGB.draft},0.6)`, background: `linear-gradient(135deg, rgba(${MODE_RGB.draft},0.16), rgba(${MODE_RGB.draft},0.04) 60%)` }}
+        // 13 above and below, and never under 76: the 1.5px outline made this row a pixel taller than
+        // the rows under it in WebKit (Blink draws that outline thinner, so the floor is what holds it).
+        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10, paddingTop: 13, paddingBottom: 13, minHeight: 76, border: `1.5px solid rgba(${MODE_RGB.draft},0.6)`, background: `linear-gradient(135deg, rgba(${MODE_RGB.draft},0.16), rgba(${MODE_RGB.draft},0.04) 60%)` }}
         onClick={() => { markModeSeen("draft"); setScreen("draft"); }}
         aria-label={t("home.draft.aria")}
       >
         <span className="t7s-icon" aria-hidden="true"><Dices size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">Draft{(Date.now() < DRAFT_NEW_UNTIL || !seenModes.draft) && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
-          <span className="t7s-sub">{t("home.draft.sub")}</span>
+          <span className="t7s-title"><span className="t7s-name">Draft</span>{(Date.now() < DRAFT_NEW_UNTIL || !seenModes.draft) && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
+          <span className="t7s-sub">{rowLine(t("home.draft.sub"))}</span>
         </span>
         <span className="t7s-cta">{t("common.play")}</span>
       </button>
@@ -864,8 +863,8 @@ function HomeScreenImpl({
       >
         <span className="t7s-icon" aria-hidden="true"><ListOrdered size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title">{t("home.top10lists.title")}{!seenModes.top10lists && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.top10},0.18)`, color: MODE_ACCENT.top10, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
-          <span className="t7s-sub">{t("home.top10lists.sub")}</span>
+          <span className="t7s-title"><span className="t7s-name">{t("home.top10lists.title")}</span>{!seenModes.top10lists && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.top10},0.18)`, color: MODE_ACCENT.top10, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
+          <span className="t7s-sub">{rowLine(t("home.top10lists.sub"))}</span>
         </span>
         <span className="t7s-cta">{t("home.row.open")}</span>
       </button>
@@ -889,10 +888,10 @@ function HomeScreenImpl({
           >
             <span className="t7s-icon" aria-hidden="true"><UserRoundSearch size={22} strokeWidth={2} /></span>
             <span className="t7s-body">
-              <span className="t7s-title">Mystery Player<span className="t7s-no">{t("home.row.no", { n: mysteryNumber() })}</span></span>
-              <span className="t7s-sub">{done ? t("home.mystery.doneSub")
+              <span className="t7s-title"><span className="t7s-name">Mystery Player</span><span className="t7s-no">{t("home.row.no", { n: mysteryNumber() })}</span></span>
+              <span className="t7s-sub">{rowLine(done ? t("home.mystery.doneSub")
                 : guesses > 0 ? t("home.mystery.guessesIn", { count: guesses })
-                : t("home.mystery.sub")}</span>
+                : t("home.mystery.sub"))}</span>
             </span>
             <span className="t7s-cta">{t(done ? "home.row.review" : guesses > 0 ? "home.row.continue" : "common.play")}</span>
           </button>
@@ -915,8 +914,8 @@ function HomeScreenImpl({
         >
           <span className="t7s-icon" aria-hidden="true"><Target size={22} strokeWidth={2} /></span>
           <span className="t7s-body">
-            <span className="t7s-title">Ballpark<span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: "rgba(86,220,200,0.18)", color: "#56DCC8", fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("home.ballpark.tag")}</span></span>
-            <span className="t7s-sub">{t("home.ballpark.sub")}</span>
+            <span className="t7s-title"><span className="t7s-name">Ballpark</span><span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: "rgba(86,220,200,0.18)", color: "#56DCC8", fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("home.ballpark.tag")}</span></span>
+            <span className="t7s-sub">{rowLine(t("home.ballpark.sub"))}</span>
           </span>
           <span className="t7s-cta">{t("common.play")}</span>
         </button>

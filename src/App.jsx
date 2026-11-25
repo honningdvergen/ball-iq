@@ -7964,7 +7964,7 @@ function AppInner() {
             state (calendar viewDate, profile emoji picker etc.) is preserved.
             Sprint #17 Stage 3 extracted Home into ./screens/HomeScreen.jsx. */}
         {!inGame && screen === "home" && (
-          <div className="tab-pane" style={tab === "home" ? undefined : HIDDEN_STYLE}>
+          <div className="tab-pane tab-pane-home" style={tab === "home" ? undefined : HIDDEN_STYLE}>
             <TabErrorBoundary name="home">
             <HomeScreen
               top10Tick={top10Tick}

@@ -14,7 +14,7 @@ describe('the Home card for a league of one', () => {
     expect(CARD).toMatch(/const solo = \(x\) => x\.members === 1 && !x\.is_final;/);
     expect(CARD).toMatch(/if \(solo\(l\)\) \{/);
     expect(CARD).toMatch(/className="lg-solo" role="group"/);
-    expect(CARD).toMatch(/\{t\("lg\.soloLine"\)\}/);
+    expect(CARD).toMatch(/\{rowLine\(t\("lg\.soloLine"\)\)\}/); // one grey line, as pieces (lib/rowLine.jsx)
     expect(CARD).toMatch(/className="lg-solo-invite" onClick=\{invite\}>\{t\(copied \? "lg\.linkCopied" : "lg\.soloInvite"\)\}/);
   });
   it('the name still opens the table, as the whole card does for a real league', () => {

@@ -6,6 +6,7 @@ import { loopEvent } from "../lib/funnel.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { t, useT } from "../i18n/index.js";
 import { LeagueStartRow } from "./LeagueStartRow.jsx";
+import { rowLine } from "../lib/rowLine.jsx";
 
 // The league on Home (mates' leagues, phase 1, web only). One hairline card,
 // the whole card is the tap; no solid button, Home's stays the daily. Lazy, so
@@ -87,8 +88,8 @@ export default function LeagueHomeCard({ onOpen, onStart, wait = null }) {
         <button type="button" className="lg-solo-open" onClick={() => onOpen?.(l.id)} aria-label={t("lg.cardAria", { name: l.name, line: t("lg.soloLine") })}>
           <span className="lg-home-ic" aria-hidden="true"><Trophy size={20} strokeWidth={2.2} /></span>
           <span className="lg-home-body">
-            <span className="lg-home-name">{l.name}</span>
-            <span className="lg-home-line">{t("lg.soloLine")}</span>
+            <span className="lg-home-name"><span className="t7s-name">{l.name}</span></span>
+            <span className="lg-home-line">{rowLine(t("lg.soloLine"))}</span>
           </span>
         </button>
         <button type="button" className="lg-solo-invite" onClick={invite}>{t(copied ? "lg.linkCopied" : "lg.soloInvite")}</button>
@@ -99,9 +100,13 @@ export default function LeagueHomeCard({ onOpen, onStart, wait = null }) {
     <button type="button" className="lg-home" onClick={() => onOpen?.(l.id)} aria-label={t("lg.cardAria", { name: l.name, line })}>
       <span className="lg-home-ic" aria-hidden="true"><Trophy size={20} strokeWidth={2.2} /></span>
       <span className="lg-home-body">
-        <span className="lg-home-name">{l.name}</span>
-        <span className="lg-home-line">{line}</span>
-        {list.length > 1 && <span className="lg-home-more">{t("lg.more", { count: list.length - 1, n: list.length - 1 })}</span>}
+        {/* One line of name and one grey line, like every row on Home (25 Nov
+            2026; lib/rowLine.jsx and app.css say how). "+1 more league" was a
+            third line that made this card taller than the row under it: it
+            sits beside the name now and gives way to it, as a game's number
+            does; "2nd · 13 behind Jo" drops to "2nd" where both do not fit. */}
+        <span className="lg-home-name"><span className="t7s-name">{l.name}</span>{list.length > 1 && <span className="lg-home-more">{t("lg.more", { count: list.length - 1, n: list.length - 1 })}</span>}</span>
+        <span className="lg-home-line">{rowLine(line)}</span>
       </span>
       <span className="lg-dots" aria-hidden="true">
         {days.map((on, i) => <i key={i} className={`${on ? "is-on" : ""}${i === todayAt && !l.is_final ? " is-today" : ""}`} />)}

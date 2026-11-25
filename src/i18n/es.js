@@ -21,7 +21,7 @@ export default {
 
   'common.play': 'Jugar',
   'common.new': 'NUEVO',
-  'mode.footle.short': 'Apellido de un futbolista',
+  'mode.footle.short': 'Apellido de futbolista',
 
   'nav.primary': 'Principal',
   'nav.play': 'Jugar',
@@ -82,7 +82,7 @@ export default {
   'home.daily7.inProgress': 'En juego · {n} de 7',
   'home.daily7.ariaOpen': 'Daily 7 de hoy: {n} de 7 respondidas. Seguir',
   'home.daily7.ariaDone': 'Daily 7 completado: {score} de 7',
-  'home.trail.sub': '¿De quién es esta carrera?',
+  'home.trail.sub': '¿Qué jugador es?',
   'home.trail.doneSub': 'Hecho · el jugador de hoy',
   'home.top10.sub': 'Nombra los diez · 3 vidas',
   'home.top10.found': '{n} de 10 encontrados',
@@ -103,7 +103,7 @@ export default {
   'home.mp.invite': 'Invitar',
   'home.mp.inviteAria': 'Crear una sala e invitar a amigos',
   'home.league.title': 'Liga de amigos',
-  'home.league.sub': 'Los cuatro retos diarios, puntuados toda la semana',
+  'home.league.sub': 'Los 4 retos diarios · toda la semana',
   'home.league.start': 'Crear',
   'home.league.startAria': 'Crear una liga con tus amigos',
   'home.rail.label': 'Tus estadísticas',
@@ -133,17 +133,17 @@ export default {
   'home.finder.all_one': 'El {count} club →',
   'home.finder.all_other': 'Los {count} clubes →',
   'home.quiz.title': 'Quiz',
-  'home.quiz.sub': 'Diez preguntas · liga, época o tema',
+  'home.quiz.sub': 'Diez preguntas · liga o época',
   'home.quiz.aria': 'Quiz: diez preguntas de cualquier liga, época o tema',
   'home.moreModes': 'Más modos',
-  'home.draft.sub': 'Temporadas reales, tu once, a por la liga',
+  'home.draft.sub': 'Arma tu once · temporadas reales',
   'home.draft.aria': 'Jugar al Draft: arma un once con temporadas reales',
   // Just "Listas": beside the NUEVO label anything longer (even "Los Top 10")
   // wraps at 320 px. The sub-line and the aria name the Top 10.
   'home.top10lists.title': 'Listas',
-  'home.top10lists.sub': 'Tu club y todos los Top 10 pasados',
+  'home.top10lists.sub': 'Tu club · los Top 10 pasados',
   'home.top10lists.aria': 'Los Top 10: los de tu club y todos los pasados',
-  'home.ballpark.sub': 'Tres números de fútbol. ¿Cuánto te acercas?',
+  'home.ballpark.sub': 'Tres números de fútbol · ¿cuánto te acercas?',
   'home.ballpark.tag': 'VISTA PREVIA',
   // Tile names are one ellipsised line: "Supervivencia" clipped at 320 px.
   'home.mode.survival': 'A muerte',

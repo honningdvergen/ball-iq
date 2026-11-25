@@ -17,6 +17,16 @@
 // the thirteen the only difference is that one pill, proven by making the edit to the old entry by
 // hand (the <button class="t7s-cta mp-row-invite"> after the row's button is gone, and a
 // <span class="mp-row-chev"> with the chevron is the last thing inside that button).
+// INTENDED CHANGE, 25 Nov 2026 (Home, one line per row): a row's name is in a box of its own
+// (<span class="t7s-name">) and its grey line is cut at " · " into pieces (<span class="t7s-p">, the
+// separator riding with the piece after it; lib/rowLine.jsx and app.css say why), so a line that
+// does not fit loses its second piece instead of wrapping. Three English lines changed with it
+// ("{n} of 10 found", "Build an XI · real seasons", "Club lists · every past daily"), and the
+// Draft row has 13px above and below and a floor of 76. The same thirteen entries were replaced, and only those:
+// the new render was dumped with a temporary copy of this test, 8 of 21 entries were byte-identical,
+// and each of the thirteen equals its old entry with exactly those edits made to it by rule (a
+// script wrapped every title's name, cut every grey line, swapped the three strings and added the
+// padding, then compared byte for byte; run on the eight others it changes nothing).
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -148,7 +158,7 @@ const STEP2_EN = {
   'home.trail.sub': "Whose career is this?",
   'home.trail.doneSub': "Done · today's player",
   'home.top10.sub': "Name all ten · 3 lives",
-  'home.top10.found': "{n} of 10 found so far",
+  'home.top10.found': "{n} of 10 found",
   'home.top10.ariaDone': "Today's Top 10: done, {n} out of 10 — review",
   'home.top10.ariaOpen': "Today's Top 10: {n} of 10 found — continue",
   'home.mystery.sub': "Guess who from clues",
@@ -165,7 +175,7 @@ const STEP2_EN = {
   'home.mp.invite': "Invite",
   'home.mp.inviteAria': "Create a room and invite friends",
   'home.league.title': "Mates’ league",
-  'home.league.sub': "The four dailies, scored all week",
+  'home.league.sub': "The four dailies · scored all week",
   'home.league.start': "Start",
   'home.league.startAria': "Start a league with your mates",
   'home.rail.label': "Your stats",
@@ -197,13 +207,13 @@ const STEP2_EN = {
   'home.quiz.sub': "Ten questions · any league or era",
   'home.quiz.aria': "Quiz: ten questions on any league, era or theme",
   'home.moreModes': "More modes",
-  'home.draft.sub': "Build an XI from real seasons",
+  'home.draft.sub': "Build an XI · real seasons",
   'home.draft.aria': "Play the Draft: build an eleven out of real seasons",
   'home.top10lists.title': "Top 10 lists",
-  'home.top10lists.sub': "Club lists and every past daily",
+  'home.top10lists.sub': "Club lists · every past daily",
   'home.top10lists.aria': "Top 10 lists: your club's lists and every past daily",
   // Ballpark's row on Home, drawn in a test build only (lib/ballparkPreview.js, 24 Nov 2026).
-  'home.ballpark.sub': "Three football numbers. How close can you get?",
+  'home.ballpark.sub': "Three football numbers · how close can you get?",
   'home.ballpark.tag': "PREVIEW",
   'home.mode.survival': "Survival",
   'home.mode.survivalDesc': "One miss, out",
@@ -301,17 +311,20 @@ describe('Spanish (biq_lang=es)', () => {
     expect(guest).toContain('aria-label="Retos de hoy"');
     expect(guest).toContain('>0/4 hoy<');
     expect(guest).toContain('aria-label="0 de 4 retos jugados hoy. Abrir Historial"');
-    expect(guest).toContain('<span class="t7s-sub">Apellido de un futbolista</span>');
+    expect(guest).toContain('<span class="t7s-sub"><span class="t7s-p">Apellido de futbolista</span></span>');
+    expect(guest).toContain('<span class="t7s-title"><span class="t7s-name">Footle</span><span class="t7s-no">N.º 150</span></span>');
+    // A line of two pieces: the separator rides with the second, which is the one that gives way.
+    expect(guest).toContain('<span class="t7s-sub"><span class="t7s-p">Siete preguntas</span><span class="t7s-p"> · ~3 min</span></span>');
     expect(guest).toContain('<span class="t7s-no">N.º 150</span>');
     expect(guest).toContain('<span class="t7s-cta">Jugar</span>');
     expect(guest).toContain('aria-label="Jugar al Footle de hoy"');
     expect(guest).toContain('<div class="home-section-title">Busca un quiz</div>');
     expect(guest).toContain('placeholder="Busca tu club…"');
     const busy = html(now['home: everything in progress (Footle 3 of 6, Top 10 open, Mystery side row 1 guess)']);
-    expect(busy).toContain('<span class="t7s-sub">En juego · <strong>3</strong> de 6</span>');
-    expect(busy).toContain('<span class="t7s-sub">Hecho · <strong>5/7</strong></span>');
-    expect(busy).toContain('<span class="t7s-sub"><strong>2</strong> de 10 encontrados</span>');
-    expect(busy).toContain('<span class="t7s-sub">1 intento · sigue buscando</span>');
+    expect(busy).toContain('<span class="t7s-sub"><span class="t7s-p">En juego</span><span class="t7s-p"> · <strong>3</strong> de 6</span></span>');
+    expect(busy).toContain('<span class="t7s-sub"><span class="t7s-p">Hecho</span><span class="t7s-p"> · <strong>5/7</strong></span></span>');
+    expect(busy).toContain('<span class="t7s-sub"><span class="t7s-p"><strong>2</strong> de 10 encontrados</span></span>');
+    expect(busy).toContain('<span class="t7s-sub"><span class="t7s-p">1 intento</span><span class="t7s-p"> · sigue buscando</span></span>');
     expect(busy).toContain('aria-label="Racha de 12 días"');
     const done = html(now['home: all four done (the done strip)']);
     expect(done).toContain('<span class="dds-title">Los cuatro, listos</span>');

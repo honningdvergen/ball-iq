@@ -275,7 +275,7 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('Footle', () => {
     const fresh = unq(now['footle: fresh board (legend, hard-mode switch)']);
-    for (const s of ['>Apellido de un futbolista<', '>en su sitio<', '>en otro sitio<', '>Modo difícil<', '>ENVIAR<', 'aria-label="Borrar la última letra"', 'aria-label="Cómo se juega a Footle"', '>N.º ']) expect(fresh).toContain(s);
+    for (const s of ['>Apellido de futbolista<', '>en su sitio<', '>en otro sitio<', '>Modo difícil<', '>ENVIAR<', 'aria-label="Borrar la última letra"', 'aria-label="Cómo se juega a Footle"', '>N.º ']) expect(fresh).toContain(s);
     expect(unq(now['footle: three guesses (the clue offer)'])).toContain('¿Te atascas? Pide una pista');
     expect(unq(now['footle: clue taken'])).toMatch(/Su nombre empieza por [A-Z]</);
     expect(unq(now['footle: three guesses (the clue offer)'])).toMatch(/Intento 3 de 6: [A-Z] no está/);

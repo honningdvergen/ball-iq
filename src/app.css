@@ -3896,6 +3896,55 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
   .home-col-below .todays-seven-secondary.mp-row.quiz-entry:hover{box-shadow:none;}
 }
 
+/* ONE LINE OF TITLE, ONE GREY LINE, SO EVERY ROW IS THE SAME HEIGHT (25 Nov 2026). Alex, on the
+   Spanish and small-phone pictures of Home: "let us try to keep the lines under the game titles
+   just one line too, the grey lines explaining the modes etc, looks bad when some pills are longer
+   vertically than others". In one list rows stood 68, 86 and 94 high (320 wide, Spanish).
+   No script measures anything; both lines are a row of boxes that is ONE LINE HIGH and wraps, so
+   what does not fit falls to a second line that is never drawn (components/GameTitle.jsx does the
+   same for a game's number in its header):
+   - the title: the name (.t7s-name) then its number or its NEW tag. The number gives way, the name
+     stays whole; a name too long even alone ends in an ellipsis.
+   - the grey line: lib/rowLine.jsx cuts it at " · " into pieces (.t7s-p), the separator riding
+     with the piece after it. Both fit: nothing has changed. They do not: the second piece is gone
+     and the first stands alone. A piece too long even alone ends in an ellipsis, the last resort.
+   The title's line-height is 1.1, tighter than a "y" or a "g" hangs: 3px of padding under the
+   title and under the name (taken back as margin, so nothing moves) keeps the descenders inside
+   what is drawn. The 12px between lines is what keeps the hidden line out of that padding.
+   Home only (.home-screen): the same classes head rows on the Multiplayer tab. */
+.home-screen .t7s-title,.home-screen .lg-home-name{display:flex;flex-wrap:wrap;align-items:baseline;align-content:flex-start;row-gap:12px;box-sizing:content-box;height:1.1em;padding-bottom:3px;margin-bottom:-3px;overflow:hidden;white-space:nowrap;text-overflow:clip;}
+.home-screen .lg-home-name{line-height:1.2;height:1.2em;column-gap:8px;}
+.home-screen .t7s-name{flex:none;box-sizing:content-box;max-width:100%;padding-bottom:3px;margin-bottom:-3px;overflow:hidden;text-overflow:ellipsis;}
+.home-screen .t7s-no,.home-screen .lg-home-more{flex:none;}
+.home-screen .t7s-sub,.home-screen .lg-home-line{display:flex;flex-wrap:wrap;align-content:flex-start;row-gap:12px;height:1.3em;line-height:1.3;overflow:hidden;white-space:nowrap;text-overflow:clip;}
+.home-screen .t7s-p{flex:none;max-width:100%;white-space:pre;overflow:hidden;text-overflow:ellipsis;}
+/* The pill never gives: it keeps its width and its one line, and the text beside it adapts. */
+.home-screen .t7s-cta{white-space:nowrap;}
+/* The count beside the date is one line as well: "0/4 hoy" stood on two at 320 wide, beside a date
+   that already ends in an ellipsis when it must. */
+.home-screen .daily-zone-status{flex:none;white-space:nowrap;}
+@media (max-width: 1023px){
+  /* A member's league card and the row under it are one height (it stood 76 over Multiplayer's
+     68): every form of the league row is again as tall as the "Start" row it can replace, which
+     the phones' plain card made 68. The league of one holds a 44px Invite, so 11px above and below. */
+  .home-mates > .lg-home,.home-mates > .lg-solo,.home-mates > .lg-home-wait{min-height:68px;}
+  .home-mates > .lg-solo{padding-top:11px;padding-bottom:11px;}
+}
+/* THE SMALLEST PHONES GIVE THE WORDS THEIR MARGINS (under 360 wide: a 320pt phone, or a larger one
+   set to Display Zoom). Home's gutter is 16 where it was 20, a card's side padding 12 where it was
+   14, and the gap either side of the text 10 where it was 12: 16px more for the two lines of every
+   row, which is what lets "Surname of a footballer", "Whose career is this?" and "Mystery Player"
+   beside "Continue" stand whole there. Fonts, icon wells and pills are the sizes they were. */
+@media (max-width: 359px){
+  /* On the pane, not on .home-screen: the pane is contain:content, and what a child hangs outside
+     it is not painted (the first try cut the left of the greeting and the cards' right corners). */
+  .tab-pane-home{margin-left:-4px;margin-right:-4px;}
+  .home-screen .todays-seven-secondary,.home-screen .mp-row-open,.home-mates > .lg-home,.home-mates > .lg-solo,.home-mates > .lg-solo .lg-solo-open{gap:10px;}
+  .daily-zone .daily-well{padding-left:12px;padding-right:12px;}
+  .daily-well .daily-done-strip{padding-left:5px;padding-right:5px;}
+  .home-mates > .mp-row,.home-mates > .mp-row:last-child,.home-mates > .lg-home,.home-mates > .lg-solo,.home-col-below .todays-seven-secondary{padding-left:12px;padding-right:12px;}
+}
+
 /* ── THE WEB SHELL (2026-09-03) ────────────────────────────────────────────────
    body.biq-web = a browser tab (main.jsx; never native, never an installed
    PWA). The app sits under the site header (SiteHeader.jsx, front.css) with

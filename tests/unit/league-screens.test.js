@@ -196,6 +196,9 @@ describe('the league row and its sheet sit still', () => {
     expect(APP_CSS).toMatch(/\.home-mates > \.lg-home,\.home-mates > \.lg-solo,\.home-mates > \.lg-home-wait\{min-height:76px;\}/);
     expect(CSS).toMatch(/\.lg-home\{[^}]*min-height:72px/);
     expect(CSS).toMatch(/\.lg-solo\{[^}]*min-height:72px/);
+    // On a phone the Start row is 68 (the plain card, 24 Nov 2026), so the league rows are 68 there too.
+    expect(APP_CSS).toMatch(/\.home-mates > \.mp-row,\.home-mates > \.mp-row:last-child\{[^}]*min-height:68px;\}/);
+    expect(APP_CSS).toMatch(/@media \(max-width: 1023px\)\{[^@]*\.home-mates > \.lg-home,\.home-mates > \.lg-solo,\.home-mates > \.lg-home-wait\{min-height:68px;\}/);
   });
   it('the create sheet opens at rest: no field takes the focus', () => {
     expect(SHEET).toMatch(/onClose=\{close\} calm=\{!made\}>/);
