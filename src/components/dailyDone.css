@@ -216,7 +216,10 @@
 /* The list with no caption over it keeps the caption's distance from the card. */
 .dd-one > .dd-list:first-child{margin-top:22px;}
 /* The quiz finish's list on the smallest phones (320 wide): the wells and the
-   pills step down, so a row's words have the room. */
+   pills step down, so a row's words have the room. A name that still takes two
+   lines there ("Today's Transfer Trail") breaks evenly, not with one word left
+   over (seen in WebKit at 320: "Transfer Trail de / hoy"). */
+.rs-list .dd-li-n{text-wrap:balance;}
 @media (max-width: 359px){.rs-list{padding:4px 12px;}.rs-list .dd-li{gap:10px;}.rs-list .dd-li-ic{width:38px;height:38px;border-radius:11px;}.rs-list .dd-li-go{padding:0 14px;}}
 /* Quiet lines: words on the left, at most one small filled control on the right. */
 .dd-line{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:34px;margin:14px 6px 0;font-size:13.5px;line-height:1.3;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
@@ -245,6 +248,13 @@
 @container stk (min-width:150px){.dd-stk:not(.has-sh){padding:0 14px;}.dd-stk:not(.has-sh) .dd-stk-w{position:static;width:auto;height:auto;overflow:visible;clip:auto;}.dd-stk:not(.has-sh) .dd-stk-n{display:none;}}
 @container stk (min-width:186px){.dd-stk.has-sh{padding:0 14px;}.dd-stk.has-sh .dd-stk-w{position:static;width:auto;height:auto;overflow:visible;clip:auto;}.dd-stk.has-sh .dd-stk-n{display:none;}}
 .dd-stk .dd-shields{align-items:center;gap:2px;margin-left:0;font-weight:700;-webkit-text-fill-color:var(--gold);}
+/* A chip beside a long title (Transfer Trail, 25 Nov 2026; StreakChip.jsx, `floor`):
+   its slot is never narrower than the short chip, so the title gives way and
+   the chip never lies over it. Under 360pt the name needs the room more than
+   the shields do: the chip is tighter and its shields are for a screen reader
+   only (clipped, not removed). */
+.dd-stk-slot.has-floor{min-width:var(--stk-min-sh);}
+@media (max-width: 359px){.dd-stk-slot.has-floor{min-width:var(--stk-min);}.dd-stk-slot.has-floor .dd-stk{gap:5px;padding:0 9px;}.dd-stk-slot.has-floor .dd-shields{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}}
 /* The Daily 7's finish has no header of its own to borrow, so this is Footle's
    (footle.css .wd-header): the back button, the game named once with its day,
    one line under it, the chip. The card sits 14px under it, as Footle's does

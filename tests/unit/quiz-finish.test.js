@@ -193,6 +193,7 @@ describe('then one filled list: the most played daily not played today, then Pla
     expect(rows(footleDone)[0]).toBe("Today's Daily 7 7 questions Play");
   });
   it('the smallest phones: the wells and the pills step down in this list only', () => {
+    expect(read('src/components/dailyDone.css')).toContain('.rs-list .dd-li-n{text-wrap:balance;}');   // a two-line name breaks evenly
     expect(read('src/components/dailyDone.css')).toContain('@media (max-width: 359px){.rs-list{padding:4px 12px;}.rs-list .dd-li{gap:10px;}.rs-list .dd-li-ic{width:38px;height:38px;border-radius:11px;}.rs-list .dd-li-go{padding:0 14px;}}');
   });
 });

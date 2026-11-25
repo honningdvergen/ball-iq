@@ -35,21 +35,29 @@ import "./dailyDone.css";
 // container, so by itself it is as narrow as the title lets it be, and the
 // chip, which never shrinks, then stands out of it to the left. Beside a short
 // title (Footle No. 204) there is always room. Beside "Transfer Trail No. 113"
-// on a 320pt phone there is not, and the chip would lie over the puzzle number.
-// With `floor` the slot is never narrower than the short chip (the flame, the
-// number, the shield), so the title gives way instead: its number drops to the
-// hidden second line, as GameTitle already does when a name needs the room.
+// there is not, and the chip would lie over the puzzle number. With `floor` the
+// slot is never narrower than the short chip (the flame, the number, the
+// shield), so the title gives way instead: its number drops to the hidden
+// second line, as GameTitle already does when a name needs the room.
+// THE NAME COMES BEFORE THE SHIELDS. On a 320pt phone "Transfer Trail" and a
+// chip that reads "12" and three shields do not fit side by side (measured in
+// WebKit: the title read "Transfer …"). Under 360pt a chip with a floor is the
+// flame and the number, a little tighter, and its shields are kept for a screen
+// reader only (dailyDone.css, .has-floor). The two widths ride on the slot as
+// --stk-min (narrow phones) and --stk-min-sh (with the shields).
 export function StreakChip({ streak, isArchive = false, floor = false }) {
   const t = useT();
   const n = streak?.count || 0;
   if (n < 1) return null;
   const label = streak?.label || t("dd.l.none");
   const shields = isArchive ? 0 : Math.max(0, streak?.shields || 0);
-  // The short chip: 12 + flame 16 + 7 + the digits (about 8.5 each) + 12, and
-  // with shields 7 + 13 more, and 10 for their count from two up.
-  const min = floor ? 48 + 9 * String(n).length + (shields > 0 ? 20 + (shields > 1 ? 10 : 0) : 0) : null;
+  // The short chip, measured: 12 + flame 16 + 7 + the digits (8.6 each) + 12;
+  // with shields 7 + 13 more, and 10 for their count from two up. Under 360pt
+  // it is 8 narrower (padding 9, gap 5) and has no shields.
+  const base = Math.ceil(47.2 + 8.6 * String(n).length);
+  const mins = floor ? { "--stk-min": `${base - 8}px`, "--stk-min-sh": `${base + (shields > 1 ? 30 : shields === 1 ? 20 : 0)}px` } : null;
   return (
-    <span className="dd-stk-slot" style={min ? { minWidth: min } : undefined}><span className={`dd-stk${shields > 0 ? " has-sh" : ""}`} title={n >= 2 ? t("dd.streakN", { n, label }) : t("dd.streak1", { label })}>
+    <span className={mins ? "dd-stk-slot has-floor" : "dd-stk-slot"} style={mins || undefined}><span className={`dd-stk${shields > 0 ? " has-sh" : ""}`} title={n >= 2 ? t("dd.streakN", { n, label }) : t("dd.streak1", { label })}>
       <Flame size={16} strokeWidth={2.2} aria-hidden="true" />
       <span className="dd-stk-w">{t("dd.capStreak", { n })}</span>
       <span className="dd-stk-n" aria-hidden="true">{n}</span>
