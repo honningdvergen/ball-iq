@@ -2200,6 +2200,869 @@ export const TOP10_SPECS = [
     near: [
       { name: 'Belgium', note: '57 matches, 2 short' },
     ] },
+
+  // ── January 2027 batch, added 25 Nov 2026 ──────────────────────────────────
+  // Thirty-one lists for 1 to 31 January. Each was researched from two or more
+  // sources on 25 Nov 2026 and then re-derived by a second, independent checker
+  // told to break it; where the two differ, the checker's version is the one
+  // written here. Reports and every URL read:
+  // ~/ball-iq-audit/2026-11-25/top10-january/ (research-A.md, verify-A.md,
+  // research-B.md, verify-B.md). Left out: AC Milan appearances, Premier
+  // League headed goals, PSG appearances, Portugal caps and the Scottish
+  // scorers (failed the check); the overseas and Norwegian scorers, Villa's
+  // Premier League games and La Liga appearances (true as worded, but a place
+  // is already out of date on the day they would be played: for the summer,
+  // re-cut); the Welsh scorers (an order that depends on whose count is used,
+  // and two live players at the cut).
+
+  // The league's own final table. Nothing can change it.
+  { id: 'bundesliga-2025-26-table', checked: '2026-11-25', until: '2027-12-31', kind: 'club',
+    title: 'Bundesliga 2025-26: the top ten',
+    note: 'Points in the 2025-26 Bundesliga, final table.',
+    asOf: '2026-11-25',
+    source: 'bundesliga.com final table 2025-26 (all 18 rows); ESPN standings; Transfermarkt table; Wikipedia table template (complete): every row agrees',
+    slots: [
+      { name: 'Bayern Munich', clue: '89 points' },
+      { name: 'Borussia Dortmund', clue: '73 points' },
+      { name: 'RB Leipzig', clue: '65 points' },
+      { name: 'VfB Stuttgart', clue: '62 points' },
+      { name: 'Hoffenheim', clue: '61 points' },
+      { name: 'Bayer Leverkusen', clue: '59 points' },
+      { name: 'SC Freiburg', clue: '47 points' },
+      { name: 'Eintracht Frankfurt', clue: '44 points' },
+      { name: 'Augsburg', clue: '43 points' },
+      { name: 'Mainz 05', clue: '40 points' },
+    ],
+    near: [
+      { name: 'Union Berlin', note: '39 points, 1 short' },
+      { name: 'Borussia Mönchengladbach', note: '38 points, 2 short' },
+      { name: 'Hamburger SV', note: '38 points, 2 short' },
+    ] },
+  // ⚠️ ESPN's table is stale (Toulouse 44 from 33 games). Nantes v Toulouse on
+  // the last day was abandoned at 0-0 and the LFP ratified that score on
+  // 27 May 2026; the league's own feed has Toulouse on 45 from 34, ninth, and
+  // Lorient tenth. Toulouse reserved an appeal: a win awarded would make it 47
+  // and move no place. Level pairs follow the league's own order.
+  { id: 'ligue-1-2025-26-table', checked: '2026-11-25', until: '2027-12-31', kind: 'club',
+    title: 'Ligue 1 2025-26: the top ten',
+    note: 'Points in the 2025-26 Ligue 1, final table. Level clubs by goal difference.',
+    asOf: '2026-11-25',
+    source: 'Ligue 1’s own standings feed (ma-api.ligue1.fr, season 2025: Toulouse 34 played, 45 points); Transfermarkt final table; Wikipedia table template (rev 29 May 2026)',
+    slots: [
+      { name: 'Paris Saint-Germain', clue: '76 points' },
+      { name: 'Lens', clue: '70 points' },
+      { name: 'Lille', clue: '61 points' },
+      { name: 'Lyon', clue: '60 points' },
+      { name: 'Marseille', clue: '59 points' },
+      { name: 'Rennes', clue: '59 points' },
+      { name: 'Monaco', clue: '54 points' },
+      { name: 'Strasbourg', clue: '53 points' },
+      { name: 'Toulouse', clue: '45 points' },
+      { name: 'Lorient', clue: '45 points' },
+    ],
+    near: [
+      { name: 'Paris FC', note: '44 points, 1 short' },
+      { name: 'Brest', note: '39 points, 6 short' },
+      { name: 'Angers', note: '36 points, 9 short' },
+    ] },
+  // Final tournaments only: UEFA's "rankings" pages add qualifiers (Spain 422)
+  // and are NOT the source. Russia's 40 is 22 of its own, the USSR's 17 and
+  // the CIS's 1; the Czech Republic's 51 includes Czechoslovakia's 12;
+  // Germany's 89 includes West Germany's 25. Nine of the ten are also in
+  // euro-matches-won (4 Dec): a different number and a different order.
+  { id: 'euro-goals-scored', checked: '2026-11-25', until: '2028-06-01', kind: 'nation',
+    title: 'Most goals scored at the Euros',
+    note: 'Euro finals 1960 to 2024, UEFA’s count: Russia includes the USSR, Czech Republic Czechoslovakia.',
+    asOf: '2026-11-25',
+    source: 'UEFA all-time EURO rankings (14 Jul 2024, final tournaments only); Wikipedia EURO records, overall team records (rev 20 Nov 2026): the top thirteen agree',
+    also: { 'Russia': ['Soviet Union'], 'Czech Republic': ['Czechoslovakia'] },
+    slots: [
+      { name: 'Germany', clue: '89 goals' },
+      { name: 'Spain', clue: '83 goals' },
+      { name: 'Netherlands', clue: '75 goals' },
+      { name: 'France', clue: '73 goals' },
+      { name: 'Portugal', clue: '61 goals' },
+      { name: 'England', clue: '59 goals' },
+      { name: 'Italy', clue: '55 goals' },
+      { name: 'Czech Republic', clue: '51 goals' },
+      { name: 'Denmark', clue: '44 goals' },
+      { name: 'Russia', clue: '40 goals' },
+    ],
+    near: [
+      { name: 'Belgium', note: '33 goals, 7 short' },
+      { name: 'Croatia', note: '33 goals, 7 short' },
+      { name: 'Sweden', note: '30 goals, 10 short' },
+    ] },
+  // The closed 2026 ranking (seasons 2021-22 to 2025-26), the one that fixed
+  // the 2027-28 access list. ⚠️ The cut is 0.113 of a point: the three
+  // decimals must be shown. Wikipedia's "current ranking" is the live 2027
+  // table, a different list. UEFA writes Türkiye and Czechia.
+  { id: 'uefa-country-ranking-2026', checked: '2026-11-25', until: '2027-12-31', kind: 'nation',
+    title: 'UEFA country ranking, 2026',
+    note: 'UEFA’s five-year ranking of leagues by their clubs’ results in Europe, 2021-22 to 2025-26.',
+    asOf: '2026-11-25',
+    source: 'UEFA coefficients feed, men’s associations, season 2026 (comp.uefa.com, final 3 Jul 2026); Bert Kassies, UEFA country ranking 2026 (kassiesa.net): identical to three decimals',
+    slots: [
+      { name: 'England', clue: '119.519 points' },
+      { name: 'Italy', clue: '99.946 points' },
+      { name: 'Spain', clue: '97.046 points' },
+      { name: 'Germany', clue: '92.902 points' },
+      { name: 'France', clue: '83.498 points' },
+      { name: 'Portugal', clue: '73.166 points' },
+      { name: 'Netherlands', clue: '67.929 points' },
+      { name: 'Belgium', clue: '62.250 points' },
+      { name: 'Türkiye', clue: '51.875 points' },
+      { name: 'Czech Republic', clue: '48.525 points' },
+    ],
+    near: [
+      { name: 'Greece', note: '48.412 points, 0.113 short' },
+      { name: 'Poland', note: '46.750 points, 1.775 short' },
+      { name: 'Denmark', note: '42.106 points, 6.419 short' },
+    ] },
+  // Only ten countries have a champion club, so the cut is 1 against 0. The
+  // three on one title are in the order they won it: Celtic 1967, Steaua 1986,
+  // Red Star Belgrade 1991 (UEFA and RSSSF print them alphabetically, hence
+  // the note). UEFA writes "Yugoslavia/Serbia": Serbia is accepted here. The
+  // ten add up to 71 titles from 71 finals. The near names each lost one final
+  // (Club Brugge 1978, Panathinaikos 1971, Malmö 1979).
+  { id: 'european-cup-wins-by-country', checked: '2026-11-25', until: '2027-06-05', kind: 'nation',
+    title: 'European Cup wins by country',
+    note: 'European Cup and Champions League, 1956-2026, by the winner’s country. Level: first to win.',
+    asOf: '2026-11-25',
+    source: 'UEFA, which teams have won the European Cup (30 May 2026), titles by nation; RSSSF European Cup finals and countrywise table (18 Jun 2026); Wikipedia list of finals, by nation (rev 9 Oct 2026)',
+    also: { 'Yugoslavia': ['Serbia'] },
+    slots: [
+      { name: 'Spain', clue: '20 titles' },
+      { name: 'England', clue: '15 titles' },
+      { name: 'Italy', clue: '12 titles' },
+      { name: 'Germany', clue: '8 titles' },
+      { name: 'Netherlands', clue: '6 titles' },
+      { name: 'Portugal', clue: '4 titles' },
+      { name: 'France', clue: '3 titles' },
+      { name: 'Scotland', clue: '1 title' },
+      { name: 'Romania', clue: '1 title' },
+      { name: 'Yugoslavia', clue: '1 title' },
+    ],
+    near: [
+      { name: 'Belgium', note: '0 titles, lost the 1978 final' },
+      { name: 'Greece', note: '0 titles, lost the 1971 final' },
+      { name: 'Sweden', note: '0 titles, lost the 1979 final' },
+    ] },
+  // Exactly ten nations have played two or more finals, so the cut is 2
+  // against 1. Six places are set by "first to get there": Brazil's seventh
+  // was 2002, Argentina's 2026; second finals came in 1950 (Uruguay), 1954
+  // (Hungary), 1962 (Czechoslovakia) and 2026 (Spain). RSSSF and FIFA count
+  // 1950's deciding match; without it Uruguay has one and the list breaks, so
+  // the note says it counts.
+  { id: 'world-cup-finals-played', checked: '2026-11-25', until: '2030-06-08', kind: 'nation',
+    title: 'Most World Cup finals played',
+    note: '1950’s decider counts as a final. Germany includes West Germany. Level: first to get there.',
+    asOf: '2026-11-25',
+    source: 'RSSSF World Cup finals 1930-2026 (updated 21 Sep 2026); Wikipedia list of World Cup finals, results by nation, and the top-four table (rev 16 Nov 2026)',
+    also: { 'Czechoslovakia': ['Czech Republic', 'Slovakia'] },
+    slots: [
+      { name: 'Germany', clue: '8 finals' },
+      { name: 'Brazil', clue: '7 finals' },
+      { name: 'Argentina', clue: '7 finals' },
+      { name: 'Italy', clue: '6 finals' },
+      { name: 'France', clue: '4 finals' },
+      { name: 'Netherlands', clue: '3 finals' },
+      { name: 'Uruguay', clue: '2 finals' },
+      { name: 'Hungary', clue: '2 finals' },
+      { name: 'Czechoslovakia', clue: '2 finals' },
+      { name: 'Spain', clue: '2 finals' },
+    ],
+    near: [
+      { name: 'England', note: '1 final, in 1966' },
+      { name: 'Sweden', note: '1 final, in 1958' },
+      { name: 'Croatia', note: '1 final, in 2018' },
+    ] },
+  // The Swedish FA's own list agrees with RSSSF on all ten (Wikipedia's table
+  // cites RSSSF, so it is not a second source). Isaksson got to 133 before
+  // Sebastian Larsson. Nobody in the ten still plays; Lindelöf, on 80, needs
+  // 29 more. A second Anders Svensson (born 1939) won one cap in 1964. Two
+  // near names only: thirteenth is Bergmark and Lustig level on 94.
+  { id: 'sweden-caps', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Most Sweden caps (men)',
+    note: 'Caps for Sweden’s men’s team. Ties go to whoever got there first.',
+    asOf: '2026-11-25',
+    source: 'Swedish FA record list (svenskfotboll.se, Stora spelare, through 2025) and its list of every international; RSSSF Sweden record internationals (to 30 Jun 2026)',
+    slots: [
+      { name: 'Anders Svensson', born: 1976, clue: '148 caps' },
+      { name: 'Thomas Ravelli', clue: '143 caps' },
+      { name: 'Andreas Isaksson', clue: '133 caps' },
+      { name: 'Sebastian Larsson', born: 1985, clue: '133 caps' },
+      { name: 'Kim Källström', clue: '131 caps' },
+      { name: 'Zlatan Ibrahimović', clue: '122 caps' },
+      { name: 'Olof Mellberg', clue: '117 caps' },
+      { name: 'Roland Nilsson', born: 1963, clue: '116 caps' },
+      { name: 'Björn Nordqvist', clue: '115 caps' },
+      { name: 'Niclas Alexandersson', clue: '109 caps' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Henrik Larsson', note: '106 caps, 3 short' },
+      { name: 'Patrik Andersson', born: 1971, note: '96 caps, 13 short' },
+    ] },
+  // NBC Sports' records page and U.S. Soccer's own pages agree with RSSSF.
+  // Nobody in the ten still plays; Pulisic is on 91 or 92 and needs about
+  // twenty more to draw level with Reyna, more than a year of fixtures.
+  { id: 'usa-caps', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Most USA caps (men)',
+    note: 'Caps for the United States men’s team.',
+    asOf: '2026-11-25',
+    source: 'RSSSF USA record internationals (to 6 Jul 2026); NBC Sports USMNT records (18 Nov 2026); U.S. Soccer pages for Jones, Donovan and Bradley',
+    slots: [
+      { name: 'Cobi Jones', clue: '164 caps' },
+      { name: 'Landon Donovan', clue: '157 caps' },
+      { name: 'Michael Bradley', born: 1987, clue: '151 caps' },
+      { name: 'Clint Dempsey', clue: '141 caps' },
+      { name: 'Jeff Agoos', clue: '134 caps' },
+      { name: 'Marcelo Balboa', clue: '127 caps' },
+      { name: 'DaMarcus Beasley', clue: '126 caps' },
+      { name: 'Tim Howard', born: 1979, clue: '121 caps' },
+      { name: 'Jozy Altidore', clue: '115 caps' },
+      { name: 'Claudio Reyna', clue: '112 caps' },
+    ],
+    near: [
+      { name: 'Carlos Bocanegra', note: '110 caps, 2 short' },
+      { name: 'Paul Caligiuri', note: '110 caps, 2 short' },
+      { name: 'Eric Wynalda', note: '106 caps, 6 short' },
+    ] },
+  // Three routes to the same thirteen numbers: Wikipedia's all-time table,
+  // Transfermarkt's live table less this season, and all 34 final tables
+  // added up by the checker. Live, Everton (3 defeats this season) pass West
+  // Ham, who are not in the league, with their next defeat: the note's "to
+  // 2025-26" is what keeps the list right.
+  { id: 'premier-league-club-defeats', checked: '2026-11-25', until: '2027-06-01', kind: 'club',
+    title: 'Most Premier League defeats',
+    note: 'League games lost in every Premier League season from 1992-93 to 2025-26, added up.',
+    asOf: '2026-11-25',
+    source: 'All 34 final tables summed (RSSSF 1992-93 to 2007-08, Premier League standings feed 2008-09 to 2025-26); Wikipedia all-time Premier League table (rev 14 Nov 2026); Transfermarkt all-time table less 2026-27',
+    slots: [
+      { name: 'West Ham United', clue: '478 defeats' },
+      { name: 'Everton', clue: '475 defeats' },
+      { name: 'Newcastle United', clue: '436 defeats' },
+      { name: 'Tottenham Hotspur', clue: '434 defeats' },
+      { name: 'Aston Villa', clue: '432 defeats' },
+      { name: 'Southampton', clue: '426 defeats' },
+      { name: 'Fulham', clue: '317 defeats' },
+      { name: 'Sunderland', clue: '308 defeats' },
+      { name: 'Manchester City', clue: '302 defeats' },
+      { name: 'Chelsea', clue: '300 defeats' },
+    ],
+    near: [
+      { name: 'Liverpool', note: '290 defeats, 10 short' },
+      { name: 'Leicester City', note: '290 defeats, 10 short' },
+      { name: 'Crystal Palace', note: '284 defeats, 16 short' },
+    ] },
+  // A published ranking, like the Money League: the sources are printings of
+  // Forbes's one valuation (forbes.com itself refuses reads). Forbes ranks
+  // Tottenham tenth and Atlético eleventh itself, $50 million apart, so "3.0"
+  // and "2.95" are shown as printed. ⚠️ Not Sportico's list (Real Madrid
+  // $7.7bn there). The next Forbes list is due in late May 2027.
+  { id: 'forbes-club-values-2026', checked: '2026-11-25', until: '2027-05-15', kind: 'club',
+    title: 'Forbes most valuable clubs 2026',
+    note: 'Forbes’ valuation of football clubs, published May 2026, in billions of US dollars.',
+    asOf: '2026-11-25',
+    source: 'Forbes, The World’s Most Valuable Soccer Teams 2026, as printed by Forbes Australia (2 Jun 2026) and Forbes Colombia; Sports Illustrated, the full thirty (29 May 2026)',
+    slots: [
+      { name: 'Real Madrid', clue: '9.5bn dollars' },
+      { name: 'Barcelona', clue: '7.5bn dollars' },
+      { name: 'Manchester United', clue: '7.2bn dollars' },
+      { name: 'Liverpool', clue: '6.2bn dollars' },
+      { name: 'Paris Saint-Germain', clue: '5.8bn dollars' },
+      { name: 'Bayern Munich', clue: '5.7bn dollars' },
+      { name: 'Manchester City', clue: '5.5bn dollars' },
+      { name: 'Arsenal', clue: '5.4bn dollars' },
+      { name: 'Chelsea', clue: '4.2bn dollars' },
+      { name: 'Tottenham Hotspur', clue: '3.0bn dollars' },
+    ],
+    near: [
+      { name: 'Atlético Madrid', note: '2.95bn dollars, 0.05bn short' },
+      { name: 'Juventus', note: '2.4bn dollars, 0.6bn short' },
+      { name: 'Borussia Dortmund', note: '2.2bn dollars, 0.8bn short' },
+    ] },
+  // RSSSF's finalists summary and Wikipedia's results-by-team table agree on
+  // all fourteen clubs. Level pairs by most recent final: City 2026 over
+  // Liverpool 2022, Everton 2009 over Newcastle 1999. Finals PLAYED, not won:
+  // the wins list ties at the cut (Everton, West Brom, Wanderers on 5). Two
+  // near names only: thirteenth is Bolton and Preston level on 7.
+  { id: 'fa-cup-finals-played', checked: '2026-11-25', until: '2027-05-22', kind: 'club',
+    title: 'Most FA Cup finals played',
+    note: 'Finals played, won or lost, 1872-2026; a replay is not a second final. Level: latest final.',
+    asOf: '2026-11-25',
+    source: 'RSSSF FA Cup finals 1872-2026 and its finalists summary (updated 14 Jun 2026); Wikipedia list of FA Cup finals, results by team (rev 28 Aug 2026)',
+    slots: [
+      { name: 'Manchester United', clue: '22 finals' },
+      { name: 'Arsenal', clue: '21 finals' },
+      { name: 'Chelsea', clue: '17 finals' },
+      { name: 'Manchester City', clue: '15 finals' },
+      { name: 'Liverpool', clue: '15 finals' },
+      { name: 'Everton', clue: '13 finals' },
+      { name: 'Newcastle United', clue: '13 finals' },
+      { name: 'Aston Villa', clue: '11 finals' },
+      { name: 'West Bromwich Albion', clue: '10 finals' },
+      { name: 'Tottenham Hotspur', clue: '9 finals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Wolverhampton Wanderers', note: '8 finals, 1 short' },
+      { name: 'Blackburn Rovers', note: '8 finals, 1 short' },
+    ] },
+  // ⚠️ A "CURRENT" LIST: true for the whole of 2026-27 (all ten are in this
+  // season's league whatever happens), and not to be re-used in 2027-28
+  // without adding one to every number and re-checking who went down. West
+  // Ham's relegation in May 2026 is what lets Crystal Palace into eighth and
+  // makes the cut clean. Arsenal: 101 seasons played on the club's and Opta's
+  // count; Wikipedia's 107 counts the war years, hence the note. Two near
+  // names only: thirteenth is three clubs level on 5.
+  { id: 'england-current-top-flight-runs', checked: '2026-11-25', until: '2027-04-01', kind: 'club',
+    title: 'Longest current top-flight runs',
+    note: 'Seasons in a row in England’s top flight, 2026-27 included. War years not counted. Level: A-Z.',
+    asOf: '2026-11-25',
+    source: 'Premier League standings feed 2008-09 to 2026-27 and RSSSF season tables before it; arsenal.com (13 Aug 2025) for the five longest runs; Wikipedia ongoing top-flight runs, 2026-27',
+    slots: [
+      { name: 'Arsenal', clue: '101 seasons' },
+      { name: 'Everton', clue: '73 seasons' },
+      { name: 'Liverpool', clue: '65 seasons' },
+      { name: 'Manchester United', clue: '52 seasons' },
+      { name: 'Tottenham Hotspur', clue: '49 seasons' },
+      { name: 'Chelsea', clue: '38 seasons' },
+      { name: 'Manchester City', clue: '25 seasons' },
+      { name: 'Crystal Palace', clue: '14 seasons' },
+      { name: 'Brighton & Hove Albion', clue: '10 seasons' },
+      { name: 'Newcastle United', clue: '10 seasons' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Aston Villa', note: '8 seasons, 2 short' },
+      { name: 'Brentford', note: '6 seasons, 4 short' },
+    ] },
+  // The same sum as the defeats list, and its sister (six shared clubs): the
+  // two are scheduled eighteen days apart. Manchester United are above West
+  // Ham, level on 289, on all-time points (2,614 against 1,432).
+  { id: 'premier-league-club-draws', checked: '2026-11-25', until: '2027-06-01', kind: 'club',
+    title: 'Most Premier League draws',
+    note: 'Premier League games drawn, 1992-93 to 2025-26. Level clubs by all-time points.',
+    asOf: '2026-11-25',
+    source: 'All 34 final tables summed (RSSSF 1992-93 to 2007-08, Premier League standings feed 2008-09 to 2025-26); Wikipedia all-time Premier League table (rev 14 Nov 2026); Transfermarkt all-time table less 2026-27',
+    slots: [
+      { name: 'Everton', clue: '366 draws' },
+      { name: 'Aston Villa', clue: '328 draws' },
+      { name: 'Chelsea', clue: '323 draws' },
+      { name: 'Liverpool', clue: '320 draws' },
+      { name: 'Arsenal', clue: '316 draws' },
+      { name: 'Tottenham Hotspur', clue: '309 draws' },
+      { name: 'Newcastle United', clue: '297 draws' },
+      { name: 'Manchester United', clue: '289 draws' },
+      { name: 'West Ham United', clue: '289 draws' },
+      { name: 'Southampton', clue: '254 draws' },
+    ],
+    near: [
+      { name: 'Manchester City', note: '239 draws, 15 short' },
+      { name: 'Fulham', note: '185 draws, 69 short' },
+      { name: 'Blackburn Rovers', note: '184 draws, 70 short' },
+    ] },
+  // ⚠️ THE 2027 FINAL IS ON 21 MARCH: play this before then or re-check it.
+  // Six places are set by "most recent final": City 2026, Chelsea 2024, United
+  // 2023; Arsenal 2026, Tottenham 2021, Villa 2020. RSSSF's printed summary
+  // is wrong for Manchester City (9; its own rows and Wikipedia give 9 won
+  // plus 1 lost): the rows are the source. Four clubs are level on 3 just
+  // outside, so all four are recorded.
+  { id: 'league-cup-finals-played', checked: '2026-11-25', until: '2027-03-21', kind: 'club',
+    title: 'Most League Cup finals played',
+    note: 'English League Cup finals played, won or lost, 1961 to 2026. Level clubs by most recent final.',
+    asOf: '2026-11-25',
+    source: 'RSSSF League Cup finals 1961-2026, counted row by row (updated 14 Jun 2026); Wikipedia list of EFL Cup finals, winners by club (rev 27 Oct 2026)',
+    slots: [
+      { name: 'Liverpool', clue: '15 finals' },
+      { name: 'Manchester City', clue: '10 finals' },
+      { name: 'Chelsea', clue: '10 finals' },
+      { name: 'Manchester United', clue: '10 finals' },
+      { name: 'Arsenal', clue: '9 finals' },
+      { name: 'Tottenham Hotspur', clue: '9 finals' },
+      { name: 'Aston Villa', clue: '9 finals' },
+      { name: 'Nottingham Forest', clue: '6 finals' },
+      { name: 'Leicester City', clue: '5 finals' },
+      { name: 'Norwich City', clue: '4 finals' },
+    ],
+    nearMax: 4,
+    near: [
+      { name: 'Birmingham City', note: '3 finals, 1 short' },
+      { name: 'Middlesbrough', note: '3 finals, 1 short' },
+      { name: 'Newcastle United', note: '3 finals, 1 short' },
+      { name: 'West Bromwich Albion', note: '3 finals, 1 short' },
+    ] },
+  // The CLUB's count. Ricken is 407 on bvb.de's own record list (406 on
+  // Transfermarkt, a database count). "First team" matters: another bvb.de
+  // page gives Schmelzer 405 with the reserves in. Hummels's 508 leaves out
+  // the 2008 Supercup on purpose. Schmelzer is the only near name: Kehl (362
+  // or 356) and Kutowski (345 or 346) differ between sources.
+  { id: 'borussia-dortmund-appearances', club: 'borussia-dortmund', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Most Dortmund appearances',
+    note: 'First team, all competitions, on the club’s count. Level players alphabetically.',
+    asOf: '2026-11-25',
+    source: 'bvb.de record list (Die Top 09, April 2024) and its Hummels and Schmelzer pages; DFB data centre (Reus, Huber); Transfermarkt record players; Wikipedia Dortmund records (rev 23 Nov 2026)',
+    slots: [
+      { name: 'Michael Zorc', clue: '572 games' },
+      { name: 'Mats Hummels', clue: '508 games' },
+      { name: 'Roman Weidenfeller', clue: '453 games' },
+      { name: 'Marco Reus', clue: '429 games' },
+      { name: 'Stefan Reuter', clue: '421 games' },
+      { name: 'Lars Ricken', clue: '407 games' },
+      { name: 'Dedê', clue: '398 games' },
+      { name: 'Dieter Kurrat', clue: '382 games' },
+      { name: 'Łukasz Piszczek', clue: '382 games' },
+      { name: 'Lothar Huber', clue: '372 games' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Marcel Schmelzer', note: '367 games, 5 short' },
+    ] },
+
+  // The six Premier League club lists below rest on three counts: the league's
+  // own feed season by season, Soccerbase's squad pages (which split a
+  // mid-season mover at source) and Wikipedia's career tables. ⚠️ The feed's
+  // club filter over-counts anyone who changed clubs in mid-season, and all of
+  // 2010-11: every such figure here is the per-club total.
+
+  // West Ham went down in May 2026: closed until August 2027 at the earliest.
+  // Carlton Cole is 41 on the league and Soccerbase (Transfermarkt's 40 is the
+  // outlier). Di Canio is 47 on the league and Wikipedia, 48 on Soccerbase:
+  // third either way.
+  { id: 'west-ham-premier-league-goals', club: 'west-ham', checked: '2026-11-25', until: '2027-08-01', kind: 'player',
+    title: 'West Ham’s Premier League goals',
+    note: 'Premier League only, 1993 to 2026. Ties are listed alphabetically.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed by club and season (read 25 Nov 2026); Soccerbase West Ham squad pages season by season; Transfermarkt club record table; Wikipedia career tables',
+    slots: [
+      { name: 'Michail Antonio', clue: '68 goals' },
+      { name: 'Jarrod Bowen', clue: '65 goals' },
+      { name: 'Paolo Di Canio', clue: '47 goals' },
+      { name: 'Mark Noble', clue: '47 goals' },
+      { name: 'Carlton Cole', clue: '41 goals' },
+      { name: 'Tomáš Souček', clue: '41 goals' },
+      { name: 'Trevor Sinclair', clue: '37 goals' },
+      { name: 'Andy Carroll', clue: '33 goals' },
+      { name: 'Frédéric Kanouté', clue: '29 goals' },
+      { name: 'Manuel Lanzini', clue: '27 goals' },
+    ],
+    near: [
+      { name: 'John Hartson', note: '24 goals, 3 short' },
+      { name: 'Frank Lampard', note: '24 goals, 3 short' },
+      { name: 'Tony Cottee', note: '23 goals, 4 short' },
+    ] },
+  // Potts is 204 on the league, StatMuse, 11v11 and Wikipedia; Transfermarkt's
+  // 202 is the outlier. Two near names only: thirteenth is not settled (Moncur
+  // 175 or 178, either side of Sinclair and Green on 177).
+  { id: 'west-ham-premier-league-appearances', club: 'west-ham', checked: '2026-11-25', until: '2027-08-01', kind: 'player',
+    title: 'West Ham’s Premier League games',
+    note: 'Premier League only, 1993 to 2026. Ties are listed alphabetically.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed by club and season (read 25 Nov 2026); Soccerbase West Ham squad pages season by season; Transfermarkt club record table; Wikipedia career tables',
+    slots: [
+      { name: 'Mark Noble', clue: '414 games' },
+      { name: 'Aaron Cresswell', clue: '312 games' },
+      { name: 'Michail Antonio', clue: '268 games' },
+      { name: 'Jarrod Bowen', clue: '231 games' },
+      { name: 'Tomáš Souček', clue: '229 games' },
+      { name: 'Carlton Cole', clue: '216 games' },
+      { name: 'Steve Potts', clue: '204 games' },
+      { name: 'Declan Rice', clue: '204 games' },
+      { name: 'Angelo Ogbonna', clue: '201 games' },
+      { name: 'Łukasz Fabiański', clue: '195 games' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'James Collins', born: 1983, note: '188 games, 7 short' },
+      { name: 'Manuel Lanzini', note: '179 games, 16 short' },
+    ] },
+  // A closed list: Watkins left for Al-Hilal in 2026 and the top scorer now at
+  // Villa is McGinn on 24. ⚠️ Ninth and tenth are in this order on the LEAGUE's
+  // count only: Saunders is 38 on the league and on Soccerbase's career page,
+  // 37 in Wikipedia's infobox, where he would be level with Carew. Agbonlahor
+  // is 74 on the league, 73 on Soccerbase and Transfermarkt: second either way.
+  { id: 'aston-villa-premier-league-goals', club: 'aston-villa', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Villa’s Premier League goals',
+    note: 'Premier League only, 1992 to 2026, on the league’s count.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed by club and season (read 25 Nov 2026); Soccerbase Villa squad pages season by season; Transfermarkt club record table; Wikipedia career tables',
+    slots: [
+      { name: 'Ollie Watkins', clue: '91 goals' },
+      { name: 'Gabriel Agbonlahor', clue: '74 goals' },
+      { name: 'Dwight Yorke', clue: '60 goals' },
+      { name: 'Dion Dublin', clue: '48 goals' },
+      { name: 'Juan Pablo Ángel', clue: '44 goals' },
+      { name: 'Christian Benteke', clue: '42 goals' },
+      { name: 'Gareth Barry', clue: '41 goals' },
+      { name: 'Julian Joachim', clue: '39 goals' },
+      { name: 'Dean Saunders', clue: '38 goals' },
+      { name: 'John Carew', clue: '37 goals' },
+    ],
+    near: [
+      { name: 'Darius Vassell', note: '35 goals, 2 short' },
+      { name: 'Ashley Young', note: '31 goals, 6 short' },
+      { name: 'Savo Milošević', note: '29 goals, 8 short' },
+    ] },
+  // Leicester are in League One in 2026-27: closed until August 2028. All
+  // thirteen figures are the same on the league and Soccerbase, season by
+  // season. The research wrote the club as "leicester"; the app's slug is
+  // leicester-city.
+  { id: 'leicester-premier-league-goals', club: 'leicester-city', checked: '2026-11-25', until: '2028-08-01', kind: 'player',
+    title: 'Leicester’s Premier League goals',
+    note: 'Premier League only, 1994 to 2025. Ties are listed alphabetically.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed by club and season (read 25 Nov 2026); Soccerbase Leicester squad pages season by season; Transfermarkt club record table; Wikipedia career tables',
+    slots: [
+      { name: 'Jamie Vardy', clue: '145 goals' },
+      { name: 'James Maddison', clue: '43 goals' },
+      { name: 'Riyad Mahrez', clue: '39 goals' },
+      { name: 'Harvey Barnes', clue: '35 goals' },
+      { name: 'Emile Heskey', clue: '33 goals' },
+      { name: 'Muzzy Izzet', clue: '33 goals' },
+      { name: 'Kelechi Iheanacho', clue: '30 goals' },
+      { name: 'Tony Cottee', clue: '27 goals' },
+      { name: 'Matt Elliott', clue: '22 goals' },
+      { name: 'Youri Tielemans', clue: '21 goals' },
+    ],
+    near: [
+      { name: 'Ian Marshall', note: '18 goals, 3 short' },
+      { name: 'Leonardo Ulloa', note: '18 goals, 3 short' },
+      { name: 'Paul Dickov', note: '15 goals, 6 short' },
+    ] },
+  { id: 'leicester-premier-league-appearances', club: 'leicester-city', checked: '2026-11-25', until: '2028-08-01', kind: 'player',
+    title: 'Leicester’s Premier League games',
+    note: 'Premier League only, 1994 to 2025.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed by club and season (read 25 Nov 2026); Soccerbase Leicester squad pages season by season; Transfermarkt club record table; Wikipedia career tables',
+    slots: [
+      { name: 'Jamie Vardy', clue: '342 games' },
+      { name: 'Kasper Schmeichel', clue: '276 games' },
+      { name: 'Marc Albrighton', clue: '224 games' },
+      { name: 'Muzzy Izzet', clue: '222 games' },
+      { name: 'Wilfred Ndidi', clue: '220 games' },
+      { name: 'Matt Elliott', clue: '199 games' },
+      { name: 'Robbie Savage', clue: '172 games' },
+      { name: 'Wes Morgan', clue: '170 games' },
+      { name: 'James Maddison', clue: '163 games' },
+      { name: 'Steve Guppy', clue: '161 games' },
+    ],
+    near: [
+      { name: 'Neil Lennon', note: '155 games, 6 short' },
+      { name: 'Youri Tielemans', note: '151 games, 10 short' },
+      { name: 'Kelechi Iheanacho', note: '150 games, 11 short' },
+    ] },
+  // The LEAGUE's figures, each with a second source: Kelly is 325 (324 on
+  // Soccerbase, 326 on Wikipedia), Harte 213 or 214, Radebe 197 or 198. No
+  // place depends on any of them. The most-used current player, Aaronson, is
+  // on 82. The slug is leeds-united (the research wrote "leeds").
+  { id: 'leeds-premier-league-appearances', club: 'leeds-united', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Leeds’ Premier League games',
+    note: 'Premier League only, to the end of 2025-26, on the league’s count.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed by club and season (read 25 Nov 2026); Soccerbase Leeds squad pages from 1995-96; Transfermarkt club record table; Wikipedia career and season tables',
+    slots: [
+      { name: 'Gary Kelly', born: 1974, clue: '325 games' },
+      { name: 'Ian Harte', clue: '213 games' },
+      { name: 'Nigel Martyn', clue: '207 games' },
+      { name: 'Lee Bowyer', clue: '203 games' },
+      { name: 'David Wetherall', clue: '201 games' },
+      { name: 'Lucas Radebe', clue: '197 games' },
+      { name: 'Harry Kewell', clue: '181 games' },
+      { name: 'Rod Wallace', clue: '178 games' },
+      { name: 'Alan Smith', born: 1980, clue: '172 games' },
+      { name: 'Gary McAllister', clue: '151 games' },
+    ],
+    near: [
+      { name: 'Gary Speed', note: '143 games, 8 short' },
+      { name: 'Brian Deane', note: '138 games, 13 short' },
+      { name: 'Tony Dorigo', note: '133 games, 18 short' },
+    ] },
+
+  // FOUR nationality lists (the checker's best four of seven). Nationality is
+  // the country a player represents, as the league's feed files it; goals are
+  // the league's, confirmed season by season on Soccerbase from 1995-96.
+
+  // Mahrez (Algeria, 82), Aubameyang (Gabon, 69), Mbeumo (Cameroon, 57), Ba
+  // (Senegal, 50), Wissa (DR Congo, 47) and Kanouté (Mali, 43) are not counted;
+  // any of them would make this ten, hence the note. Anelka is 125 on the
+  // league, 126 on Soccerbase: second either way. Mateta is the only one still
+  // in the league; 50 is also his live figure on 25 Nov.
+  { id: 'premier-league-french-scorers', checked: '2026-11-25', until: '2027-06-01', kind: 'player',
+    title: 'Premier League goals by Frenchmen',
+    note: 'To the end of 2025-26. Nationality as the league lists it: Kanouté counts as Mali.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed, all-time scorers with each player’s country (read 25 Nov 2026); Soccerbase season pages summed per player; Wikipedia career tables',
+    slots: [
+      { name: 'Thierry Henry', clue: '175 goals' },
+      { name: 'Nicolas Anelka', clue: '125 goals' },
+      { name: 'Olivier Giroud', clue: '90 goals' },
+      { name: 'Louis Saha', clue: '85 goals' },
+      { name: 'Eric Cantona', clue: '70 goals' },
+      { name: 'Anthony Martial', clue: '63 goals' },
+      { name: 'Robert Pires', clue: '62 goals' },
+      { name: 'Alexandre Lacazette', clue: '54 goals' },
+      { name: 'Jean-Philippe Mateta', clue: '50 goals' },
+      { name: 'Steed Malbranque', clue: '39 goals' },
+    ],
+    near: [
+      { name: 'Samir Nasri', note: '36 goals, 3 short' },
+      { name: 'Florent Malouda', note: '35 goals, 4 short' },
+      { name: 'Neal Maupay', note: '33 goals, 6 short' },
+    ] },
+  // Tielemans, now at Manchester United, is the only one still in the league:
+  // 26 at the end of 2025-26, 27 on 25 Nov, eighth either way. One near name:
+  // twelfth is Batshuayi and Strupar level on 15.
+  { id: 'premier-league-belgian-scorers', checked: '2026-11-25', until: '2027-06-01', kind: 'player',
+    title: 'Premier League goals by Belgians',
+    note: 'Belgium players, to the end of 2025-26, on the league’s count.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed, all-time scorers with each player’s country (read 25 Nov 2026); Soccerbase season pages summed per player; Wikipedia career tables',
+    slots: [
+      { name: 'Romelu Lukaku', clue: '121 goals' },
+      { name: 'Christian Benteke', clue: '86 goals' },
+      { name: 'Eden Hazard', clue: '85 goals' },
+      { name: 'Kevin De Bruyne', clue: '72 goals' },
+      { name: 'Leandro Trossard', clue: '52 goals' },
+      { name: 'Marouane Fellaini', clue: '37 goals' },
+      { name: 'Kevin Mirallas', clue: '29 goals' },
+      { name: 'Youri Tielemans', clue: '26 goals' },
+      { name: 'Divock Origi', clue: '22 goals' },
+      { name: 'Nacer Chadli', clue: '21 goals' },
+    ],
+    nearMax: 1,
+    near: [
+      { name: 'Vincent Kompany', note: '18 goals, 3 short' },
+    ] },
+  // A closed list: no Republic of Ireland player in this season's league has
+  // more than 6 goals. The one-goal cut (Coleman 22, Hunt 21) is the same on
+  // the league and on Soccerbase season by season. Rice won three senior caps
+  // for the Republic in 2018 before switching; the league has him as English
+  // on 25, so the note names him. Grealish (under-21s only) is not in question.
+  { id: 'premier-league-irish-scorers', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Premier League goals by Irishmen',
+    note: 'Republic of Ireland internationals, 1992 to 2026. Declan Rice counts as English.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed, all-time scorers with each player’s country (read 25 Nov 2026); Soccerbase season pages summed per player; Wikipedia career tables',
+    slots: [
+      { name: 'Robbie Keane', born: 1980, clue: '126 goals' },
+      { name: 'Niall Quinn', clue: '59 goals' },
+      { name: 'Shane Long', clue: '56 goals' },
+      { name: 'Damien Duff', clue: '54 goals' },
+      { name: 'Jonathan Walters', clue: '43 goals' },
+      { name: 'Roy Keane', born: 1971, clue: '39 goals' },
+      { name: 'Kevin Doyle', born: 1983, clue: '37 goals' },
+      { name: 'Ian Harte', clue: '28 goals' },
+      { name: 'Rory Delap', clue: '23 goals' },
+      { name: 'Séamus Coleman', clue: '22 goals' },
+    ],
+    near: [
+      { name: 'Stephen Hunt', born: 1981, note: '21 goals, 1 short' },
+      { name: 'Stephen Ireland', note: '19 goals, 3 short' },
+      { name: 'Denis Irwin', note: '18 goals, 4 short' },
+    ] },
+  // The one-goal cut (Alonso 26, Cazorla 25) is the same on the league and on
+  // Soccerbase season by season. Arteta is 41 on the league, 42 on Soccerbase
+  // and Wikipedia: seventh either way. Mikel Merino is the top-scoring Spaniard
+  // now in the league, on 12, fourteen short of tenth; Rodri is at Barcelona.
+  // Two near names only: thirteenth is Deulofeu and Michu level on 20.
+  // Marcos Alonso (born 1990) is in the pool as "Marcos Alonso Mendoza", hence
+  // the pin: with a birth year alone he became a second entry in the guess box.
+  { id: 'premier-league-spanish-scorers', checked: '2026-11-25', until: '2027-08-01', kind: 'player',
+    title: 'Premier League goals by Spaniards',
+    note: 'Nationality as the league lists it, 1992 to 2026, on the league’s count.',
+    asOf: '2026-11-25',
+    source: 'Premier League stats feed, all-time scorers with each player’s country (read 25 Nov 2026); Soccerbase season pages summed per player; Wikipedia career tables',
+    slots: [
+      { name: 'Fernando Torres', clue: '85 goals' },
+      { name: 'David Silva', clue: '60 goals' },
+      { name: 'Diego Costa', clue: '53 goals' },
+      { name: 'Juan Mata', clue: '52 goals' },
+      { name: 'Cesc Fàbregas', clue: '50 goals' },
+      { name: 'Ayoze Pérez', clue: '45 goals' },
+      { name: 'Mikel Arteta', clue: '41 goals' },
+      { name: 'Pedro', born: 1987, clue: '29 goals' },
+      { name: 'Rodrigo', born: 1991, clue: '27 goals' },
+      { name: 'Marcos Alonso', pin: 'Q442838', clue: '26 goals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Santi Cazorla', note: '25 goals, 1 short' },
+      { name: 'Rodri', born: 1996, note: '23 goals, 3 short' },
+    ] },
+
+  // ⚠️ MUST RUN BEFORE 7 JANUARY 2027: the Asian Cup starts that day, Japan are
+  // in it, and Nagatomo (146, in the 2026 World Cup squad) may play. The ten
+  // and the order cannot change (he is 19 clear of third). The cut is one cap
+  // between men who finished in 2010, 2018 and 2019; Nakamura got to 98 first.
+  // Kawaguchi is 116 on RSSSF, Wikipedia and the Japanese press; Transfermarkt's
+  // 118 is the outlier.
+  { id: 'japan-caps', checked: '2026-11-25', until: '2027-01-07', kind: 'player',
+    title: 'Most Japan caps (men)',
+    note: 'Japan men’s caps to 25 November 2026. Ties go to whoever got there first.',
+    asOf: '2026-11-25',
+    source: 'RSSSF Japan record internationals (to 30 Jun 2026); Wikipedia Japan most appearances (rev 22 Nov 2026, citing the JFA); Transfermarkt (live, 25 Nov 2026); Japanese press for Kawaguchi 116',
+    slots: [
+      { name: 'Yasuhito Endo', clue: '152 caps' },
+      { name: 'Yuto Nagatomo', clue: '146 caps' },
+      { name: 'Maya Yoshida', clue: '127 caps' },
+      { name: 'Masami Ihara', clue: '122 caps' },
+      { name: 'Shinji Okazaki', clue: '119 caps' },
+      { name: 'Yoshikatsu Kawaguchi', clue: '116 caps' },
+      { name: 'Makoto Hasebe', clue: '114 caps' },
+      { name: 'Yuji Nakazawa', clue: '110 caps' },
+      { name: 'Shunsuke Nakamura', clue: '98 caps' },
+      { name: 'Keisuke Honda', clue: '98 caps' },
+    ],
+    near: [
+      { name: 'Shinji Kagawa', note: '97 caps, 1 short' },
+      { name: 'Eiji Kawashima', note: '95 caps, 3 short' },
+      { name: 'Yasuyuki Konno', note: '93 caps, 5 short' },
+    ] },
+  // Çalhanoğlu is the only man in the ten still playing: 109 at the end of the
+  // World Cup, one cap in the autumn, 110 on Wikipedia's squad table of 19 Nov.
+  // He is two behind Hakan Şükür and the next matches are in the March window,
+  // hence the `until`. The cut is one cap between two men long retired. The
+  // federation's own list (tff.org) refuses reads.
+  { id: 'turkey-caps', checked: '2026-11-25', until: '2027-03-22', kind: 'player',
+    title: 'Most Turkey caps (men)',
+    note: 'Turkey men’s caps to 25 November 2026.',
+    asOf: '2026-11-25',
+    source: 'RSSSF Turkey record internationals (to 25 Jun 2026); Transfermarkt record internationals (live, 25 Nov 2026); Wikipedia Turkey squad table (19 Nov 2026) for Çalhanoğlu 110',
+    slots: [
+      { name: 'Rüştü Reçber', clue: '120 caps' },
+      { name: 'Hakan Şükür', clue: '112 caps' },
+      { name: 'Hakan Çalhanoğlu', clue: '110 caps' },
+      { name: 'Bülent Korkmaz', clue: '102 caps' },
+      { name: 'Emre Belözoğlu', clue: '101 caps' },
+      { name: 'Arda Turan', clue: '100 caps' },
+      { name: 'Tugay Kerimoğlu', clue: '94 caps' },
+      { name: 'Alpay Özalan', clue: '90 caps' },
+      { name: 'Hamit Altıntop', clue: '82 caps' },
+      { name: 'Mehmet Topal', clue: '81 caps' },
+    ],
+    near: [
+      { name: 'Tuncay Şanlı', note: '80 caps, 1 short' },
+      { name: 'Burak Yılmaz', note: '77 caps, 4 short' },
+      { name: 'Ogün Temizkanoğlu', note: '76 caps, 5 short' },
+    ] },
+  // RSSSF and Transfermarkt agree on all fourteen men. Isla is 144 (RSSSF's
+  // match list, Spanish Wikipedia cap by cap, the Chilean press); English
+  // Wikipedia's 145 stands alone. ⚠️ Leonel Sánchez is 84 on FIFA, RSSSF and
+  // Transfermarkt, 85 in the Chilean press and on English Wikipedia: tenth on
+  // either, and the note names the count. Alexis, Vidal, Vargas and Aránguiz
+  // were not capped in autumn 2026; a recall in March would move a number.
+  // Two near names only: thirteenth is Mena and Tapia level on 73.
+  { id: 'chile-caps', checked: '2026-11-25', until: '2027-03-22', kind: 'player',
+    title: 'Most Chile caps (men)',
+    note: 'Chile men’s caps to 25 November 2026. Leonel Sánchez on FIFA’s count.',
+    asOf: '2026-11-25',
+    source: 'RSSSF Chile record internationals (to 9 Jun 2026); Transfermarkt record internationals (live, 25 Nov 2026); FIFA’s feature on Leonel Sánchez (84); Spanish Wikipedia, Isla cap by cap (144)',
+    slots: [
+      { name: 'Alexis Sánchez', clue: '168 caps' },
+      { name: 'Gary Medel', clue: '161 caps' },
+      { name: 'Claudio Bravo', clue: '150 caps' },
+      { name: 'Arturo Vidal', clue: '147 caps' },
+      { name: 'Mauricio Isla', clue: '144 caps' },
+      { name: 'Eduardo Vargas', clue: '120 caps' },
+      { name: 'Gonzalo Jara', clue: '115 caps' },
+      { name: 'Jean Beausejour', clue: '109 caps' },
+      { name: 'Charles Aránguiz', clue: '103 caps' },
+      { name: 'Leonel Sánchez', clue: '84 caps' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Jorge Valdivia', note: '79 caps, 5 short' },
+      { name: 'Matías Fernández', note: '74 caps, 10 short' },
+    ] },
+  // The DFB's own data centre, player by player: Zorc 131 (Transfermarkt's 130
+  // is the outlier), and the one-goal cut, Wosab 60 against Koller 59, for
+  // both men. Wosab's 60 are all Bundesliga (his line starts 24 Aug 1963).
+  // Nobody in the ten is at the club; Guirassy was on 38 at the end of
+  // 2025-26. Two near names only: thirteenth is Mill and Ewerthon level on 47.
+  // Shares only Zorc and Reus with borussia-dortmund-appearances.
+  { id: 'dortmund-bundesliga-goals', club: 'borussia-dortmund', checked: '2026-11-25', until: '2027-06-01', kind: 'player',
+    title: 'Dortmund’s Bundesliga goals',
+    note: 'Bundesliga only, 1963 to the end of 2025-26.',
+    asOf: '2026-11-25',
+    source: 'DFB data centre, each player’s Bundesliga games and goals by club (read 25 Nov 2026); Transfermarkt Dortmund record scorers, Bundesliga only; German Wikipedia',
+    slots: [
+      { name: 'Manfred Burgsmüller', clue: '135 goals' },
+      { name: 'Michael Zorc', clue: '131 goals' },
+      { name: 'Marco Reus', clue: '120 goals' },
+      { name: 'Lothar Emmerich', clue: '115 goals' },
+      { name: 'Stéphane Chapuisat', clue: '102 goals' },
+      { name: 'Pierre-Emerick Aubameyang', clue: '98 goals' },
+      { name: 'Robert Lewandowski', clue: '74 goals' },
+      { name: 'Andreas Möller', clue: '71 goals' },
+      { name: 'Erling Haaland', clue: '62 goals' },
+      { name: 'Reinhold Wosab', clue: '60 goals' },
+    ],
+    nearMax: 2,
+    near: [
+      { name: 'Jan Koller', note: '59 goals, 1 short' },
+      { name: 'Lars Ricken', note: '49 goals, 11 short' },
+    ] },
+  // The Italian count. Altafini is 97 on four Italian sources (Italian
+  // Wikipedia splits it 71 league, 11 cups, 15 Europe); Transfermarkt's 89 is
+  // short on his Fairs Cup goals. Careca is 96 on Wikipedia, UEFA.com and Sky,
+  // 95 on 10maggio87: ninth either way. Sallustro is 107 on some counts; every
+  // source read prints 108. Top scorer now at the club: Politano on 38.
+  { id: 'napoli-top-scorers', club: 'napoli', checked: '2026-11-25', until: '2027-12-31', kind: 'player',
+    title: 'Napoli’s all-time top scorers',
+    note: 'All official matches, 1926 to 2026.',
+    asOf: '2026-11-25',
+    source: 'Wikipedia SSC Napoli records (rev 16 Sep 2026); 10maggio87.it all-time scorers; Italian Wikipedia (8 Nov 2026); UEFA.com (23 Oct 2019) and Sky Sport Italia (June 2020) for the older eight',
+    slots: [
+      { name: 'Dries Mertens', clue: '148 goals' },
+      { name: 'Lorenzo Insigne', clue: '122 goals' },
+      { name: 'Marek Hamšík', clue: '121 goals' },
+      { name: 'Diego Maradona', clue: '115 goals' },
+      { name: 'Attila Sallustro', clue: '108 goals' },
+      { name: 'Edinson Cavani', clue: '104 goals' },
+      { name: 'Antonio Vojak', clue: '103 goals' },
+      { name: 'José Altafini', clue: '97 goals' },
+      { name: 'Careca', clue: '96 goals' },
+      { name: 'Gonzalo Higuaín', clue: '91 goals' },
+    ],
+    near: [
+      { name: 'José Callejón', note: '82 goals, 9 short' },
+      { name: 'Giuseppe Savoldi', note: '77 goals, 14 short' },
+      { name: 'Victor Osimhen', note: '76 goals, 15 short' },
+    ] },
+  // The list for 1 January. Exactly ten men have won it twice or more, so the
+  // cut is 2 against 1; Kane's win on 26 Oct 2026 was his first. The FIFA
+  // Ballon d'Or years (2010 to 2015) count, as France Football counts them:
+  // that is how Messi has 8 and Cristiano Ronaldo 5. Eight places are set by
+  // "first to get there": Cruyff 1974, Platini 1985, Van Basten 1992; Di
+  // Stéfano 1959, Beckenbauer 1976, Keegan 1979, Rummenigge 1981, Ronaldo 2002.
+  // ⚠️ TWO RONALDOS, hence the birth years, and the near name Luis Suárez is
+  // the Spaniard born 1935 (winner in 1960): he needs his own pin, because
+  // PLAYER_PINS sends the name to the Uruguayan. Thirty-eight men have won it
+  // once; the three near names are the one-time winners with most second places.
+  { id: 'ballon-dor-wins', checked: '2026-11-25', until: '2027-09-01', kind: 'player',
+    title: 'Most Ballon d’Or wins',
+    note: 'Men’s award, 1956 to 2026; the FIFA Ballon d’Or years count. Level players: first to get there.',
+    asOf: '2026-11-25',
+    source: 'France Football roll of honour (francefootball.fr, read 25 Nov 2026); ballondor.com winners 1956-2026; RSSSF European Footballer of the Year (to 2024); Wikipedia wins by player (rev 17 Nov 2026)',
+    slots: [
+      { name: 'Lionel Messi', clue: '8 wins' },
+      { name: 'Cristiano Ronaldo', born: 1985, clue: '5 wins' },
+      { name: 'Johan Cruyff', clue: '3 wins' },
+      { name: 'Michel Platini', clue: '3 wins' },
+      { name: 'Marco van Basten', clue: '3 wins' },
+      { name: 'Alfredo Di Stéfano', clue: '2 wins' },
+      { name: 'Franz Beckenbauer', clue: '2 wins' },
+      { name: 'Kevin Keegan', clue: '2 wins' },
+      { name: 'Karl-Heinz Rummenigge', clue: '2 wins' },
+      { name: 'Ronaldo', born: 1976, clue: '2 wins' },
+    ],
+    near: [
+      { name: 'Luis Suárez', pin: 'Q270367', note: '1 win, 1 short' },
+      { name: 'Eusébio', note: '1 win, 1 short' },
+      { name: 'Bobby Charlton', note: '1 win, 1 short' },
+    ] },
 ];
 
 // Days since epoch of Top 10 #1 (the shared day index: local calendar date as a
@@ -2316,6 +3179,47 @@ export const TOP10_LOG = [
   'newcastle-premier-league-goals',  // Tue 29
   'serie-a-2025-26-table',           // Wed 30
   'world-cup-2026-top-scorers',      // Thu 31  (the year's list)
+  // January 2027, added 25 Nov 2026: thirty-one new lists, #82 to #112. The
+  // month opens on ten famous names. Players, clubs and nations in turn, never
+  // more than two player lists running; every weekend day is a list most fans
+  // can get deep into. The harder lists (the five caps lists and Napoli) each
+  // sit between easier ones. Kept apart: the four nationality lists (8 to 10
+  // days), a club's goals and its games (West Ham 12 days, Leicester 17), the
+  // two league tables (15), the two domestic cup-final lists (20), the two
+  // Dortmund lists (19), Premier League defeats and draws (18), and lists that
+  // share a name (Harte: Irish scorers and Leeds, 7 days; Tielemans and
+  // Benteke: the Belgians come last).
+  'ballon-dor-wins',                 // Fri 1 Jan 2027  #82
+  'fa-cup-finals-played',            // Sat 2  #83
+  'premier-league-french-scorers',   // Sun 3  #84
+  'bundesliga-2025-26-table',        // Mon 4  #85
+  'japan-caps',                      // Tue 5  #86  (must run before 7 Jan: the Asian Cup)
+  'west-ham-premier-league-appearances', // Wed 6  #87
+  'uefa-country-ranking-2026',       // Thu 7  #88
+  'leicester-premier-league-goals',  // Fri 8  #89
+  'premier-league-club-defeats',     // Sat 9  #90
+  'dortmund-bundesliga-goals',       // Sun 10  #91
+  'sweden-caps',                     // Mon 11  #92
+  'world-cup-finals-played',         // Tue 12  #93
+  'premier-league-irish-scorers',    // Wed 13  #94
+  'forbes-club-values-2026',         // Thu 14  #95
+  'usa-caps',                        // Fri 15  #96
+  'aston-villa-premier-league-goals', // Sat 16  #97
+  'european-cup-wins-by-country',    // Sun 17  #98
+  'west-ham-premier-league-goals',   // Mon 18  #99
+  'ligue-1-2025-26-table',           // Tue 19  #100
+  'leeds-premier-league-appearances', // Wed 20  #101
+  'turkey-caps',                     // Thu 21  #102
+  'league-cup-finals-played',        // Fri 22  #103  (must run before 21 Mar: the final)
+  'premier-league-spanish-scorers',  // Sat 23  #104
+  'england-current-top-flight-runs', // Sun 24  #105
+  'leicester-premier-league-appearances', // Mon 25  #106
+  'napoli-top-scorers',              // Tue 26  #107
+  'premier-league-club-draws',       // Wed 27  #108
+  'chile-caps',                      // Thu 28  #109
+  'borussia-dortmund-appearances',   // Fri 29  #110
+  'euro-goals-scored',               // Sat 30  #111
+  'premier-league-belgian-scorers',  // Sun 31  #112
 ];
 
 // One name per club. Keys are folded spellings found in the tables and in

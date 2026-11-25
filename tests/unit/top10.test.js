@@ -12,6 +12,8 @@ import {
   gradeTop10, outcomeOf, rankListSuggestions, buildTop10ShareText, formatAsOf, fitTop10Board, hasLongWord,
 } from '../../src/lib/top10.js';
 import { normaliseName } from '../../src/lib/mysteryPlayer.js';
+import { logHash } from '../../src/lib/top10Hash.js';
+import { TOP10_SPECS, TOP10_LOG } from '../../scripts/top10/specs.mjs';
 import { keyboardLine } from '../../src/lib/useKeyboardAwareInput.js';
 import { startsAnnounced, owesCredit, enterGuess } from '../../src/lib/trail.js';
 import { DAILY_GAMES, SCORE_GAMES, summariseDistribution } from '../../src/lib/dailyResults.js';
@@ -170,6 +172,77 @@ describe('the schedule', () => {
     ]);
     expect(getTop10Id(new Date(2026, 9, 31), ON_DISK.log)).toBe('manchester-united-appearances');
     expect(getTop10Id(new Date(2026, 10, 7), ON_DISK.log)).toBe('france-caps');
+  });
+
+  // 25 Nov 2026: January 2027 appended (31 lists, #82 to #112). Before this the
+  // schedule ended on 31 December 2026, day 81, and nothing pinned its length;
+  // from here the end of the log, the frozen 81 days before it, and the rule
+  // that no list is played on or after the day it can change are all pinned.
+  // When February is appended, move the last-day lines and keep the rest.
+  describe('January 2027 (appended 25 Nov 2026)', () => {
+    const ymd = (i) => new Date((TOP10_ANCHOR_DAY + i) * 86400000).toISOString().slice(0, 10);
+
+    it('the log runs to 31 January 2027, and stops there', () => {
+      expect(TOP10_LOG).toHaveLength(112);
+      expect(ON_DISK.log).toEqual(TOP10_LOG);
+      expect(ymd(TOP10_LOG.length - 1)).toBe('2027-01-31');
+      expect(getTop10Number(new Date(2027, 0, 31))).toBe(112);
+      expect(getTop10Id(new Date(2027, 0, 31), ON_DISK.log)).toBe('premier-league-belgian-scorers');
+      expect(getTop10Id(new Date(2027, 1, 1), ON_DISK.log)).toBe(null);
+      expect(isTop10Live(new Date(2027, 0, 31), ON_DISK.log.length)).toBe(true);
+      expect(isTop10Live(new Date(2027, 1, 1), ON_DISK.log.length)).toBe(false);
+    });
+
+    it('the month opens on ten famous names, a day after the year’s list', () => {
+      expect(getTop10Id(new Date(2026, 11, 31), ON_DISK.log)).toBe('world-cup-2026-top-scorers');
+      expect(getTop10Number(new Date(2027, 0, 1))).toBe(82);
+      expect(getTop10Id(new Date(2027, 0, 1), ON_DISK.log)).toBe('ballon-dor-wins');
+    });
+
+    // The hash a build made on the 81-day schedule carries (top10Meta.js at
+    // 121c0f38). An installed app accepts the longer file only if its first 81
+    // days still hash to this, so it must never change.
+    it('the 81 days to 31 December 2026 are exactly the days already served', () => {
+      expect(logHash(TOP10_LOG.slice(0, 81))).toBe('28efadb9');
+      expect(TOP10_LOG[80]).toBe('world-cup-2026-top-scorers');
+      expect(ymd(80)).toBe('2026-12-31');
+    });
+
+    it('no list is scheduled twice', () => {
+      expect(new Set(TOP10_LOG).size).toBe(TOP10_LOG.length);
+    });
+
+    it('no list is scheduled on or after the day it can change (its `until`)', () => {
+      const until = new Map(TOP10_SPECS.map((s) => [s.id, s.until]));
+      TOP10_LOG.forEach((id, i) => {
+        expect(until.get(id), `${id} has an until date`).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(ymd(i) < until.get(id), `#${i + 1} ${id} plays ${ymd(i)}, can change ${until.get(id)}`).toBe(true);
+      });
+      // Japan are at the Asian Cup from 7 January 2027 and Nagatomo may play.
+      expect(until.get('japan-caps')).toBe('2027-01-07');
+      expect(ymd(TOP10_LOG.indexOf('japan-caps')) <= '2027-01-06').toBe(true);
+      // The League Cup final is on 21 March 2027.
+      expect(until.get('league-cup-finals-played')).toBe('2027-03-21');
+    });
+
+    it('every January list was checked on the day it was added, and none is one of the old 81', () => {
+      const jan = TOP10_LOG.slice(81);
+      expect(jan).toHaveLength(31);
+      for (const id of jan) {
+        expect(ON_DISK.lists[id].checked, id).toBe('2026-11-25');
+        expect(TOP10_LOG.slice(0, 81)).not.toContain(id);
+      }
+    });
+
+    // The guess box cannot tell two men of one name apart, so the slot says
+    // which. Read from the birth years the builder prints (--print).
+    it('the two Ronaldos, and the Luis Suárez who won it in 1960', () => {
+      const born = new Map(JSON.parse(readFileSync(new URL('../../src/data/mysteryPool.json', import.meta.url), 'utf8')).map((p) => [p.id, p.born]));
+      const l = ON_DISK.lists['ballon-dor-wins'];
+      expect(l.slots.map((s) => [s.name, born.get(s.key)]).filter(([n]) => /Ronaldo/.test(n))).toEqual([['Cristiano Ronaldo', 1985], ['Ronaldo', 1976]]);
+      const suarez = l.near.find((n) => n.name === 'Luis Suárez');
+      expect(born.get(suarez.key)).toBe(1935);
+    });
   });
 
   // ⚠️ A NAME THAT IS IN THE POOL ONCE IS NOT THEREBY THE RIGHT MAN. Liverpool's
