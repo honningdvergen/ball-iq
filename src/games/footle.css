@@ -303,3 +303,22 @@ html.biq-cb .wd-ct.is-yellow{background:#85C0F9;color:#04203A;-webkit-text-fill-
 @media (max-height:700px){.wd-cg.is-tall .wd-cg-row{grid-template-columns:repeat(var(--wd-cols),minmax(0,40px));}.wd-cg.is-tall .wd-ct{font-size:16px;border-radius:8px;}}
 /* The smallest phones (320 wide): an eight-letter tile is about 27px. */
 @media (max-width:359px){.wd-ct{font-size:15px;border-radius:7px;}}
+/* EVERY MEASURE FROM THE TILE (25 Nov 2026). Alex on the grid above: the letters stood large
+   on small tiles with wide gaps on a long name, and the missed tiles were so faint that the green
+   and yellow ones floated among loose letters. He chose the medium, centred grid ("yes, build
+   A"; "grid centered by the way, not to the left"; the full-width one was "Too big").
+   One rule for every name length and phone width: the tile (--t) is the row shared by the
+   letters, at most 48px; the letter is 44% of the tile, the gap 11%, the corner 20%. A missed
+   tile is a darker wash with a brighter letter, so the grid reads as one even block.
+   The grid is the container, so the rows measure against it, and the space between rows is
+   the rows own margin (a gap on the grid itself would measure against the page).
+   Where container units are missing (iOS 15) the fixed rules above stand as they were.
+   The short phone keeps its 40px cap on a tall grid: six rows must still fit over the list. */
+@supports (width:1cqw){
+  .rc-pic .wd-cg{container-type:inline-size;--cap:48px;gap:0;}
+  .rc-pic .wd-cg .wd-cg-row{--t:min(var(--cap),calc((100cqw - 0.5px) / (var(--wd-cols) * 1.11 - 0.11)));grid-template-columns:repeat(var(--wd-cols),var(--t));gap:calc(var(--t) * 0.11);}
+  .rc-pic .wd-cg .wd-cg-row + .wd-cg-row{margin-top:calc(var(--t) * 0.11);}
+  .rc-pic .wd-cg .wd-ct{font-size:calc(var(--t) * 0.44);border-radius:calc(var(--t) * 0.2);}
+  @media (max-height:700px){.rc-pic .wd-cg.is-tall{--cap:40px;}}
+}
+.rc-pic .wd-cg .wd-ct:not(.is-green):not(.is-yellow){background:rgba(0,0,0,0.42);color:rgba(255,255,255,0.9);-webkit-text-fill-color:rgba(255,255,255,0.9);}

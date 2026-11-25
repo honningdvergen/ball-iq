@@ -75,6 +75,22 @@ describe('the look that was agreed', () => {
     for (const s of ['aspect-ratio:1/1', 'border-radius:9px', 'font-size:18px', 'line-height:1', 'font-weight:800']) expect(tile, s).toContain(s);
     expect(tile).not.toMatch(/font-family/);            // the app font, never the mono face
   });
+  // 25 Nov 2026: Alex chose the medium, centred grid ("yes, build A"). Where container units exist,
+  // every measure comes from the tile; the fixed rules above are the fallback (iOS 15).
+  it("on the result card every measure comes from the tile: letter 44%, gap 11%, corner 20%, cap 48", () => {
+    const at = footle.indexOf("@supports (width:1cqw){");
+    expect(at).toBeGreaterThan(footle.indexOf(".wd-ct{font-size:15px;border-radius:7px;}"));   // after the fixed rules it overrides
+    const block = footle.slice(at, footle.indexOf("\n}\n", at));
+    expect(block).toContain(".rc-pic .wd-cg{container-type:inline-size;--cap:48px;gap:0;}");
+    expect(block).toContain("--t:min(var(--cap),calc((100cqw - 0.5px) / (var(--wd-cols) * 1.11 - 0.11)))");
+    expect(block).toContain("grid-template-columns:repeat(var(--wd-cols),var(--t));gap:calc(var(--t) * 0.11);");
+    expect(block).toContain(".rc-pic .wd-cg .wd-cg-row + .wd-cg-row{margin-top:calc(var(--t) * 0.11);}");
+    expect(block).toContain(".rc-pic .wd-cg .wd-ct{font-size:calc(var(--t) * 0.44);border-radius:calc(var(--t) * 0.2);}");
+    expect(block).toContain("@media (max-height:700px){.rc-pic .wd-cg.is-tall{--cap:40px;}}");   // the short phone keeps six rows over the list
+    expect(block).not.toMatch(/justify-content|text-align:left/);                              // still centred by the row rule above
+    // a missed tile is a darker wash with a brighter letter; green and yellow keep the game's own
+    expect(footle).toContain(".rc-pic .wd-cg .wd-ct:not(.is-green):not(.is-yellow){background:rgba(0,0,0,0.42);color:rgba(255,255,255,0.9);-webkit-text-fill-color:rgba(255,255,255,0.9);}");
+  });
   it("the game's own three colours, not the card's white and gold", () => {
     expect(rule(footle, '.wd-ct')).toContain('background:rgba(0,0,0,0.26);color:rgba(255,255,255,0.78)');
     expect(rule(footle, '.wd-ct.is-green')).toContain('background:var(--accent);color:var(--grn-ink)');
