@@ -103,13 +103,27 @@ describe('the Daily 7 finish is the layout Footle has', () => {
     expect(at('>Back to Home</button>')).toBeLessThan(at('class="wr-head"'));
     expect(html).toMatch(/<div class="dd-line"><span>Your <strong class="dd-num">50 XP<\/strong> live on this phone only\.<\/span><button type="button" class="dd-pill">Save<\/button><\/div><\/div><\/section><div style="margin-top:18px;display:flex;justify-content:center"><button type="button" style="height:40px;padding:0 22px;border-radius:999px;border:0;background:var\(--s2\);[^"]*">Back to Home<\/button><\/div>/);
     expect(text(html)).toContain('2 you missed');
-    expect((html.match(/>Back to Home<\/button>/g) || []).length).toBe(1);
+    // 25 Nov 2026: with a missed list the page ends on the same pill again, so the bottom of a long
+    // list has a way out. Two pills, the same markup, the list between them, and nothing after the second.
+    const PILL = '<div style="margin-top:18px;display:flex;justify-content:center"><button type="button" style="height:40px;padding:0 22px;border-radius:999px;border:0;background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-weight:700;font-size:14px;line-height:1;font-family:inherit;cursor:pointer">Back to Home</button></div>';
+    expect(html.split(PILL).length).toBe(3);
+    expect((html.match(/>Back to Home<\/button>/g) || []).length).toBe(2);
+    expect(html.indexOf(PILL)).toBeLessThan(at('class="wr-head"'));
+    expect(html.lastIndexOf(PILL)).toBeGreaterThan(at('class="wr-head"'));
+    expect(html.endsWith(PILL + '</div>')).toBe(true);                       // then only the phone layout's own closing tag
+    // both are the same exit: one handler, the host's onHome
+    expect(read('src/screens/ResultsScreen.jsx')).toContain('{wrongAnswers?.length > 0 && <ResultFoot onHome={onHome} pill />}');
+    expect(read('src/screens/ResultsScreen.jsx').match(/<ResultFoot onHome=\{onHome\} pill \/>/g).length).toBe(2);
     // a signed-in player has no save line
     expect(await render(5, { dailyDone: { ...SERVICES, save: null } })).not.toContain('dd-pill');
-    // seven of seven: nothing missed, so the pill is the last thing
+    // seven of seven: nothing missed, so there is no list and the one pill is the last thing
     const all = await render(7);
     expect(all).not.toContain('wr-head');
     expect(text(all)).toContain('Share my 7/7');
+    expect((all.match(/>Back to Home<\/button>/g) || []).length).toBe(1);
+    expect(all.endsWith(PILL + '</div>')).toBe(true);
+    // Footle has no missed list: its screen still asks for the pill once
+    expect(read('src/games/FootballWordle.jsx').match(/<ResultFoot onHome=\{onBack\} pill \/>/g).length).toBe(1);
   });
 });
 

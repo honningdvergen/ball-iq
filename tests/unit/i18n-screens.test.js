@@ -20,6 +20,13 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (a way out at the bottom): a Daily 7 with questions missed ends on a
+// second "Back to Home" pill under the last missed question. One entry was replaced, and only that
+// one ("results: daily 7 on 5, the panel", the only Daily 7 result here whose phone layout has a
+// missed list): the new render was dumped with a temporary copy of this test, 97 of 98 entries were
+// byte-identical, and the one differs by exactly the first pill's own markup repeated at the end of
+// the phone layout, proven by inserting it into the old entry by script and comparing byte for byte.
+// The wide-screen card is untouched.
 // INTENDED CHANGE, 25 Nov 2026 (the reminder goes quiet): on the two card finishes the reminder asked
 // for in words is a quiet line with a small "Turn on" pill, not a wide yellow button. Two entries
 // were replaced, and only those ("results: daily 7 on 5, the panel" and "results: daily 7 on 7", the

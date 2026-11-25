@@ -326,6 +326,10 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             {/* The way out, as Footle's quiet filled pill; then the review of what got you. */}
             <ResultFoot onHome={onHome} pill />
             <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+            {/* The same way out again under the last missed question (25 Nov
+                2026): after a long list the first pill is screens above, and
+                the bottom of the page had no exit. Only with a list to scroll. */}
+            {wrongAnswers?.length > 0 && <ResultFoot onHome={onHome} pill />}
           </>
         ) : (
           <>
