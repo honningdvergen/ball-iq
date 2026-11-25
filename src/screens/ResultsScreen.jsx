@@ -15,6 +15,7 @@ import GameTitle from "../components/GameTitle.jsx";
 import { CountUp } from "../components/CountUp.jsx";
 import ResultFoot from "../components/ResultFoot.jsx";
 import { WrongAnswersReview } from "../components/WrongAnswersReview.jsx";
+import { setDailyMarks } from "../lib/shareDetail.js";
 import { dayIndexForDate } from "../lib/date.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
 import { getXPForResult } from "../lib/scoring.js";
@@ -152,6 +153,9 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
     while (arr.length < result.total) arr.push(false); // timed-out / unanswered → miss
     return arr.slice(0, result.total);
   })();
+  // The Daily 7's link is made in hooks/useShare.js, which knows the score only: today's seven
+  // marks are left for it here, so the picture a mate sees can show them in order (lib/shareDetail.js).
+  if (mode === "daily" && !result.dailyArchive) setDailyMarks(rdDots);
   // The Daily 7's result card (phone layout). The seven marks are the player's
   // own answers in order; the verdict and the line under it are what the card
   // says before there is a crowd to compare with (the tier copy the text

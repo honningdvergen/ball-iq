@@ -212,7 +212,9 @@ describe('who builds it', () => {
     expect(daily).not.toMatch(/files|shareCard|canShare/);
   });
   it('the codes on the link are kept: the reply id (?r=) and the Daily 7 challenger (?f=)', () => {
-    expect(DD).toContain('const url = `https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`;');
+    // 25 Nov 2026: the link is the same, with the picture's detail joined after it (lib/shareDetail.js,
+    // tests/unit/share-detail.test.js); the reply id still comes first.
+    expect(DD).toContain('withDetail(`https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`, ');
     expect(SHARE).toContain('${user?.id ? `?f=${user.id}` : ""}`;');
   });
   it('one button on every finish: no sheet, no second way, and the old events keep their names', () => {

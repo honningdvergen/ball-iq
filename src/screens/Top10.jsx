@@ -46,6 +46,7 @@ import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { t as tNow, useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import "./top10.css";
+import { top10Detail } from "../lib/shareDetail.js";
 
 const PLACEHOLDER = { player: "game.typePlayer", club: "top10.typeClub", nation: "top10.typeNation" };
 const SKIN = { "--t10": MODE_ACCENT.top10, "--t10-rgb": MODE_RGB.top10 };
@@ -595,6 +596,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
             game="top10"
             card={top10Card}
             layout="one"
+            shareDetail={top10Detail(g.found)}
             edition={number}
             won
             bucket={g.score}

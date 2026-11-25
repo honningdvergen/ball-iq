@@ -65,6 +65,7 @@ import ResultFoot, { ReportLink } from "../components/ResultFoot.jsx";
 import { trailPlayerForDate } from "../lib/scheduleRemote.js";
 import { t as tNow, useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
+import { trailDetail } from "../lib/shareDetail.js";
 
 function loadDay(ymd) {
   try {
@@ -636,6 +637,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
             game="trail"
             card={trailCard}
             layout="one"
+            shareDetail={trailDetail(career.length)}
             edition={number}
             won={won}
             bucket={won ? clubsUsed : 0}

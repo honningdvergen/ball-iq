@@ -4,6 +4,7 @@ import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
 import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel, replyName } from "../lib/gameChallenge.js";
+import { footleDetail, withDetail } from "../lib/shareDetail.js";
 import { shareMessage } from "../lib/shareMessage.js";
 import { MateNameAsk } from "./MateNameAsk.jsx";
 // Mates' leagues (phase 2: web and the app). The results lib is loaded on
@@ -204,7 +205,7 @@ const dayDashes = (total, doneN, lostHere) => Array.from({ length: total }, (_, 
   <i key={i} className={i < doneN ? (lostHere && i === doneN - 1 ? "is-lost" : "is-done") : ""} />
 ));
 
-export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", remind, nextUp = [], day = null, save, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null, card = null, layout = null }) {
+export function DailyDone({ game, edition, won, bucket, isArchive = false, streak, onShare, challengeGrid = "", shareDetail = "", remind, nextUp = [], day = null, save, stitch = null, GetAppCTA = null, track, bucketMax = null, promoted = null, card = null, layout = null }) {
   const t = useT();
   const [now, setNow] = useState(() => new Date());
   const [dist, setDist] = useState(null);
@@ -358,7 +359,10 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     // The way back (lib/challengeReplies.js): an id on the link, so this
     // device can be told when the mate has played. One id per puzzle.
     const rid = repliesLib ? repliesLib.replyIdFor(game, edition, myScore) : null;
-    const url = `https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`;
+    // What the picture may show beyond the score (lib/shareDetail.js): Footle's
+    // grid is read from the squares it already shares; Top 10 and the Trail
+    // hand theirs in as `shareDetail`.
+    const url = withDetail(`https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`, game === "footle" ? footleDetail(challengeGrid) : shareDetail);
     // ONE MESSAGE (25 Nov 2026, lib/shareMessage.js): one line with one figure
     // in it, in the sharer's language; Footle's coloured rows (a host that has
     // a grid passes it: colours only, never letters); and this link. Until now

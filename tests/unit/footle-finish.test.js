@@ -329,7 +329,8 @@ describe('the finish panel in the "one" layout', () => {
     // with a puzzle link to send the tap sends it; with none (the Daily 7, an old puzzle) it is the host's share
     expect(src).toContain('const shareTap = canChallenge ? doChallenge : doShare;');
     // the link, with the sender's reply id on it, is the code it always was
-    expect(src).toContain('const url = `https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`;');
+    // 25 Nov 2026: the same link, with the picture's detail joined after it (tests/unit/share-detail.test.js)
+    expect(src).toContain('withDetail(`https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`, ');
     expect(src).toContain('try { const ok = await onShare?.(); if (ok !== false) { setShared(true); setTimeout(() => setShared(false), 2200); } }');
   });
   it('an old puzzle from the archive: one tap shares, no list, no XP claimed, and it says so', async () => {

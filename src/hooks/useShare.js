@@ -10,6 +10,7 @@ import { shareMessage } from "../lib/shareMessage.js";
 import { shareCard, INVITE_BASE_URL, LEAGUE_QUIZ_BY_CAT, CAT_TO_QUIZ_SLUG } from "../App.jsx";
 import { loopEvent } from "../lib/funnel.js";
 import { IS_NATIVE } from "../lib/platform.js";
+import { dailyDetail, withDetail } from "../lib/shareDetail.js";
 // A club result only exists after launchClubQuiz has awaited the lazy club
 // tables, so a share reads them synchronously (an await could spend the tap).
 import { clubData } from "../lib/clubData.js";
@@ -75,7 +76,10 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     // Daily 7 and gets a head-to-head compare after they finish. Format:
     // balliq.app/?c=SCORE.YYYYMMDD[.Name]
     const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
-    const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}${user?.id ? `?f=${user.id}` : ""}`;
+    const plainUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}${user?.id ? `?f=${user.id}` : ""}`;
+    // Which of the seven were right, if the finish left them (lib/shareDetail.js):
+    // the picture then shows the seven in order.
+    const challengeUrl = withDetail(plainUrl, dailyDetail(score));
     // ONE MESSAGE (25 Nov 2026): "Got 5 right on Daily 7. Can you beat it?" and
     // the link, as the other three dailies send it.
     // The share sheet gets the link as a first-class `url`, not buried at the
