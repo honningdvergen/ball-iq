@@ -52,6 +52,16 @@
 // ("4 of 11" where it read "4 of 12": Globetrotter has no rule in computeBadges); (3) the badge wall
 // has eleven tiles and its heading says "4 of 11"; (4) the mates screen's field and heading say
 // "Find a mate by username…" and "Your mates" where they said friend and friends.
+// INTENDED CHANGE, 25 Nov 2026, later still (the card's ground on that screen is the drawing's).
+// Eleven entries were replaced, and only those: the signed-in Profile entries that show the card
+// (not the ladder, the badge wall or the mates screen). The new render was dumped with a temporary
+// copy of this test; 90 of 101 entries were byte-identical, every friend entry and the invite-link
+// player's card among them; in each of the eleven everything outside the phone column is
+// byte-identical, proven by script. Inside it exactly this moved, on the card's own box: its
+// background is one radial light in the tier's colour over #08080E where it was the tier's old
+// gradient, its 1.5px border is a 1.5px line inside the edge (border:0 and an inset box-shadow where
+// there was a border and a shadow under the card), and the two layers that drew the corner glow and
+// the corner-to-corner sweep are not rendered.
 // INTENDED CHANGE, 25 Nov 2026 (the Profile of a player who is NOT signed in; Alex: "good, build when
 // ready please"). Three entries were replaced, and only those: "profile: guest, first visit (the
 // example card)", "profile: guest, 4 answered, example dismissed" and "profile: anonymous invite

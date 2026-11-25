@@ -60,6 +60,11 @@ import { tierName, compName } from "../i18n/names.js";
  *   ball-iq-audit/2026-11-24/finish/profile-signed-in-8.png). A friend's card
  *   and a not-signed-in player's keep the sizes below, and the saved picture
  *   (lib/shareCardRender.js) mirrors THOSE, not these.
+ *   Its GROUND is the drawing's too, not the card's old one: dark, with one
+ *   soft light from the top left in the tier's colour and a fine line of that
+ *   colour inside the edge. No bright band from corner to corner, no corner
+ *   glow, no shadow under the card (kitGround below has the values and where
+ *   they come from).
  * @param {ReactNode} [footer] under the six ratings, inside the card: that
  *   screen's quiet "Share my card".
  */
@@ -68,6 +73,16 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
   const pal = tierPalette(card.tier);
   // A measure that differs on the kit card: k(as it was, on the kit card).
   const k = (was, now) => (kit ? now : was);
+  // The kit card's ground (25 Nov 2026). The approved drawing's gold card is
+  // radial-gradient(120% 80% at 28% 12%, #4E3D10 0%, #2C2209 42%, #15120B 100%)
+  // with an inside line of rgba(255,193,7,.38): dark gold, lit softly from the
+  // top left. The built card had kept the old ground, whose bright sweep ran
+  // from the top right to the bottom left behind the rating and the six rows.
+  // Here the same three stops are the TIER'S colour at 28.4%, 14.4% and 5.3%
+  // over #08080E, so silver and bronze get the same light in their own colour.
+  // For gold that gives #4E3D0C, #2C230D and #15120E: within four steps of the
+  // drawing's blue channel and exact on the other two.
+  const kitGround = `radial-gradient(120% 80% at 28% 12%, ${tint(pal.accent, 0.284)} 0%, ${tint(pal.accent, 0.144)} 42%, ${tint(pal.accent, 0.053)} 100%), #08080E`;
 
   // The best of the six PLAYED competitions takes the tier accent, so the eye
   // lands on the player's strongest suit without needing a legend. null when
@@ -79,16 +94,16 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
   return (
     <div style={{
       position: "relative", overflow: "hidden",
-      background: pal.bg, border: `1.5px solid ${tint(pal.accent, 0.33)}`,
+      background: k(pal.bg, kitGround), border: k(`1.5px solid ${tint(pal.accent, 0.33)}`, 0),
       borderRadius: k(22, 24), padding: k("22px 20px 18px", "var(--bq-pad, 20px)"),
-      boxShadow: "0 10px 30px rgba(0,0,0,0.42)",
+      boxShadow: k("0 10px 30px rgba(0,0,0,0.42)", `inset 0 0 0 1.5px ${tint(pal.accent, 0.38)}`),
       ...style,
     }}>
-      <div style={{ position: "absolute", top: -50, left: -50, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${tint(pal.accent, 0.15)} 0%, transparent 70%)`, pointerEvents: "none" }} />
+      {kit ? null : <div style={{ position: "absolute", top: -50, left: -50, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${tint(pal.accent, 0.15)} 0%, transparent 70%)`, pointerEvents: "none" }} />}
       {/* One diagonal foil sweep across the whole face. A single pass of light
           is what makes the card read as one material rather than parts arranged
           on a ground — the same sweep the canvas render draws. */}
-      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(118deg, ${tint(pal.accent, 0)} 30%, ${tint(pal.accent, 0.12)} 47%, ${tint(pal.accent, 0)} 62%)`, pointerEvents: "none" }} />
+      {kit ? null : <div style={{ position: "absolute", inset: 0, background: `linear-gradient(118deg, ${tint(pal.accent, 0)} 30%, ${tint(pal.accent, 0.12)} 47%, ${tint(pal.accent, 0)} 62%)`, pointerEvents: "none" }} />}
 
       {/* Numeral left, face right, both anchored to the TOP edge so they read
           as one composition rather than two separately-centred blocks. */}

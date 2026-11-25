@@ -39,6 +39,29 @@ describe('what a signed-in player sees on a phone', () => {
     expect(text(card)).toContain('|Share my card|');
     expect(rated, 'the solid green Share bar under the card').not.toContain('card-action-primary');
   });
+  // 25 Nov 2026, later. The built card had kept the old ground, with its bright sweep from the top
+  // right to the bottom left behind the rating and the rows; the approved drawing has none: dark,
+  // one soft light from the top left, a fine line inside the edge.
+  it('the card\'s ground is the drawing\'s, in the tier\'s own colour: no sweep, no corner glow, no shadow under it', () => {
+    const cardOf = (p) => p.slice(p.indexOf('<div class="sp">'), p.indexOf('home-section-title'));
+    // Gold (the rated scenario): the drawing's three stops as the tier's colour over #08080E.
+    expect(cardOf(rated)).toContain('background:radial-gradient(120% 80% at 28% 12%, rgba(255,193,7,0.284) 0%, rgba(255,193,7,0.144) 42%, rgba(255,193,7,0.053) 100%), #08080E;border:0;');
+    expect(cardOf(rated)).toContain('box-shadow:inset 0 0 0 1.5px rgba(255,193,7,0.38)');
+    // Not rated yet is the silver palette: the same light in its colour, nothing written as gold.
+    expect(cardOf(alone)).toContain('background:radial-gradient(120% 80% at 28% 12%, rgba(214,228,245,0.284) 0%, rgba(214,228,245,0.144) 42%, rgba(214,228,245,0.053) 100%), #08080E;border:0;');
+    expect(cardOf(alone)).toContain('box-shadow:inset 0 0 0 1.5px rgba(214,228,245,0.38)');
+    for (const p of [rated, alone]) expect(cardOf(p)).not.toMatch(/linear-gradient\(118deg|radial-gradient\(circle, |0 10px 30px|linear-gradient\(160deg/); // (the letter face has a light of its own: "circle at")
+    expect(FACE).toContain('const kitGround = `radial-gradient(120% 80% at 28% 12%, ${tint(pal.accent, 0.284)} 0%, ${tint(pal.accent, 0.144)} 42%, ${tint(pal.accent, 0.053)} 100%), #08080E`;');
+    // For gold those are the drawing's own #4E3D10, #2C2209 and #15120B to within four steps of blue.
+    const over = (a) => [255, 193, 7].map((c, i) => Math.round([8, 8, 14][i] + (c - [8, 8, 14][i]) * a));
+    expect([over(0.284), over(0.144), over(0.053)]).toEqual([[78, 61, 12], [44, 35, 13], [21, 18, 14]]);
+    // A friend's card and a not-signed-in player's keep the old ground, sweep and all.
+    for (const k of ['friend: loaded', 'profile: anonymous invite player, rated']) {
+      expect(GOLDEN[k], k).toContain('linear-gradient(118deg');
+      expect(GOLDEN[k], k).toContain('box-shadow:0 10px 30px rgba(0,0,0,0.42)');
+      expect(GOLDEN[k], k).not.toContain('120% 80% at 28% 12%');
+    }
+  });
   it('mates on rating, the player among them in their place, then the empty seat', () => {
     const mates = rated.slice(rated.indexOf('sp-mates'), rated.indexOf('>Next up<'));
     // Jo and Sam Lee carry no record in the scenario, so neither has a rating: a dash, after the
