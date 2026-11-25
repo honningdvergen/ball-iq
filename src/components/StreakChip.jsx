@@ -6,8 +6,10 @@
 // screen's header, where Home has its own, and the caption under the card says
 // when the next puzzles come instead. Everything the caption's streak carried
 // came along:
-//   · the flame is a shield on a lost puzzle that kept the streak (a host whose
-//     streak counts any finish, `keepsOnLoss`, from day 2);
+//   · the chip's first icon is ALWAYS the flame (25 Nov 2026). For a day it
+//     turned into a shield on a lost puzzle that kept the streak, so with a
+//     shield banked the chip read shield, number, shield. "Streak safe" is
+//     said in the caption under the card (DailyDone.jsx), in words;
 //   · banked shields ride the chip: one gold shield, with their number beside
 //     it from two up. Three drawn side by side pushed the puzzle number out of
 //     the header on a 393pt phone, so they are counted, not repeated;
@@ -26,17 +28,17 @@ import { useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import "./dailyDone.css";
 
-export function StreakChip({ streak, won = true, isArchive = false }) {
+// A host may still say whether the puzzle was won (Footle does): the chip no
+// longer reads it.
+export function StreakChip({ streak, isArchive = false }) {
   const t = useT();
   const n = streak?.count || 0;
   if (n < 1) return null;
   const label = streak?.label || t("dd.l.none");
-  const safe = !isArchive && won === false && !!streak?.keepsOnLoss && n >= 2;
   const shields = isArchive ? 0 : Math.max(0, streak?.shields || 0);
-  const Icon = safe ? ShieldCheck : Flame;
   return (
     <span className="dd-stk-slot"><span className={`dd-stk${shields > 0 ? " has-sh" : ""}`} title={n >= 2 ? t("dd.streakN", { n, label }) : t("dd.streak1", { label })}>
-      <Icon size={16} strokeWidth={2.2} aria-hidden="true" />
+      <Flame size={16} strokeWidth={2.2} aria-hidden="true" />
       <span className="dd-stk-w">{t("dd.capStreak", { n })}</span>
       <span className="dd-stk-n" aria-hidden="true">{n}</span>
       {shields > 0 && (

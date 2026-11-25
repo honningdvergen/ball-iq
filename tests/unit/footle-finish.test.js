@@ -406,13 +406,26 @@ describe('the streak chip (components/StreakChip.jsx)', () => {
     expect(rule(dd, '.dd-stk-n')).toContain('display:inline');
     expect(rule(dd, '.dd-stk')).toContain('position:relative');
   });
-  it('a lost puzzle that kept the streak wears the shield, from day 2, where the host says a loss keeps it', () => {
-    const safe = chip({ streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: false });
-    expect(safe).toContain('lucide-shield-check');
-    expect(safe).not.toContain('lucide-flame');
+  // 25 Nov 2026. For a day the flame became a shield on a lost puzzle that kept the streak, so with a
+  // shield banked the chip read: shield, number, shield. The chip's first icon is the flame, always;
+  // "Streak safe" is said in the caption under the card, and the banked shields keep their own place.
+  it('the first icon is always the flame: a lost puzzle that kept the streak does not turn it into a shield', () => {
+    const lostKept = chip({ streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: false });
+    expect(lostKept).toMatch(/^<span class="dd-stk-slot"><span class="dd-stk" title="3-day daily streak"><svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 3 streak<\/span><span class="dd-stk-n" aria-hidden="true">3<\/span><\/span><\/span>$/);
+    expect(lostKept).not.toContain('lucide-shield-check');
+    // the state Alex saw: lost, streak kept, a shield banked. Flame, number, then the one banked shield.
+    const withShield = chip({ streak: { count: 5, label: 'daily streak', keepsOnLoss: true, shields: 1 }, won: false });
+    const icons = (withShield.match(/lucide-(flame|shield-check)/g) || []);
+    expect(icons).toEqual(['lucide-flame', 'lucide-shield-check']);
+    expect(withShield).toMatch(/<svg[^>]*lucide-flame[^>]*>.*?<\/svg><span class="dd-stk-w">Day 5 streak<\/span><span class="dd-stk-n" aria-hidden="true">5<\/span><span class="dd-shields"/);
     for (const p of [{ streak: { count: 1, label: 'daily streak', keepsOnLoss: true }, won: false }, { streak: { count: 3, label: 'Footle streak' }, won: false }, { streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: true }, { streak: { count: 3, label: 'daily streak', keepsOnLoss: true }, won: false, isArchive: true }]) {
-      expect(chip(p)).toContain('lucide-flame');
+      const h = chip(p);
+      expect(h).toContain('lucide-flame');
+      expect(h).not.toContain('lucide-shield-check');
     }
+    // the words that say the streak survived a loss are the caption's (DailyDone.jsx), not an icon here
+    expect(read('src/components/StreakChip.jsx').replace(/^\s*\/\/.*$/gm, '')).not.toMatch(/keepsOnLoss|\bwon\b/);
+    expect(read('src/components/DailyDone.jsx')).toContain('streakSafe ? rich(t("dd.safe"), { safe: <b>{t("dd.safeWord")}</b>, ko: koEl })');
   });
   it('banked shields ride the chip, counted from two up, and never on an old puzzle', () => {
     const one = chip({ streak: { count: 5, label: 'daily streak', shields: 1 } });
