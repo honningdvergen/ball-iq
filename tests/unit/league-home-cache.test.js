@@ -5,7 +5,13 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 let answer;
-vi.mock('../../src/supabase.js', () => ({ supabase: { rpc: async () => answer } }));
+// `session`: what this phone has stored. `asked`: calls that reached the server.
+let session = { user: { id: 'u1' } };
+let asked = 0;
+vi.mock('../../src/supabase.js', () => ({
+  supabase: { rpc: async () => { asked += 1; return answer; } },
+  readStoredSession: async () => session,
+}));
 
 const mem = () => { const m = new Map(); return { getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => { m.set(k, String(v)); }, removeItem: (k) => { m.delete(k); } }; };
 const league = [{ id: 'l1', code: 'K7QM2XPA', name: 'The Lads', members: 3 }];
@@ -27,6 +33,18 @@ describe('the Home league card remembers its last answer', () => {
     expect(await lib.getMyLeagues()).toEqual(league);
     expect(lib.cachedLeagues()).toEqual(league);
     expect(lib.isLeagueMember()).toBe(true);
+  });
+  // 25 Nov 2026 (BALL-IQ-3Y): the member flag outlives a sign-out, and Home
+  // asked get_my_leagues as nobody on every visit ("permission denied").
+  it('a phone with no session does not ask the server, and forgets nothing', async () => {
+    answer = { data: league, error: null }; await lib.getMyLeagues();
+    session = null; asked = 0;
+    try {
+      expect(await lib.getMyLeagues()).toBeNull();
+      expect(asked).toBe(0);
+      expect(lib.cachedLeagues()).toEqual(league);
+      expect(lib.isLeagueMember()).toBe(true);
+    } finally { session = { user: { id: 'u1' } }; }
   });
   it('a failed fetch forgets nothing: an offline member keeps the card', async () => {
     answer = { data: league, error: null }; await lib.getMyLeagues();

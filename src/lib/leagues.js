@@ -255,7 +255,15 @@ const report = (error, area) => {
 async function call(name, args) {
   if (missing.has(name)) return { error: { code: 'unavailable' } };
   try {
-    const { supabase } = await import('../supabase.js');
+    const { supabase, readStoredSession } = await import('../supabase.js');
+    // NO SESSION ON THIS PHONE, NO CALL (25 Nov 2026). Every league function
+    // is for a signed-in player (a guest in a league has an anonymous
+    // session). The "in a league" flag outlives a sign-out, so Home's league
+    // row kept asking get_my_leagues as nobody on every visit, and the server
+    // answered "permission denied" each time (BALL-IQ-3Y). Nothing is cleared
+    // here on purpose: a storage read that fails once must never read as
+    // "left the league" (the false-logout rule in supabase.js).
+    if (!(await readStoredSession())) return { error: { code: 'signed-out' } };
     const { data, error } = await supabase.rpc(name, args || {});
     if (error) {
       if (error.code === 'PGRST202' || error.code === '42883' || /could not find the function/i.test(error.message || '')) {
