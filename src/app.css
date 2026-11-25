@@ -3928,6 +3928,38 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
   .home-mates > .lg-home,.home-mates > .lg-solo,.home-mates > .lg-home-wait{min-height:68px;}
   .home-mates > .lg-solo{padding-top:11px;padding-bottom:11px;}
 }
+/* A MEMBER'S LEAGUE ROW IS A ROW OF THE MATES CARD (25 Nov 2026). Alex, on Home in build 188
+   as a league member: "And what happened to the space between mates league and multiplayer there?
+   Looks a bit off no?". The league was its own outlined card (a round well, a bigger title, a large
+   outlined "Invite a mate") with a gap over Multiplayer, which was then a card of its own. He said
+   "Yes, like this" to the drawing where it is the first row of the same plain card: no box of its
+   own, the hairline to Multiplayer, the square well and the title of every other row, and the
+   invite as a soft pill the size of a Play (36 high to the eye, 44 to the thumb).
+   All three forms of the row (a table, a league of one, the empty box while it loads) take the
+   top of the card; the row under them takes the bottom. Phones only: league.css keeps the card
+   it draws on a wide screen. */
+@media (max-width: 1023px){
+  .home-mates > .lg-home,.home-mates > .lg-solo,.home-mates > .lg-home-wait{background:var(--s1);border:0;box-shadow:none;border-radius:20px 20px 0 0;margin:0;padding:11px 14px;min-height:68px;}
+  .home-mates > .lg-home + .mp-row,.home-mates > .lg-solo + .mp-row,.home-mates > .lg-home-wait + .mp-row{border-radius:0 0 20px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
+  .home-mates .lg-home-ic{width:46px;height:46px;border-radius:13px;box-sizing:border-box;background:rgba(255,170,0,0.10);border:1px solid rgba(255,170,0,0.32);}
+  .home-mates .lg-home-ic svg{width:21px;height:21px;}
+  .home-mates .lg-home-body{gap:1px;}
+  .home-mates .lg-home-name{font-size:14px;font-weight:900;letter-spacing:-0.2px;line-height:1.1;height:1.1em;}
+  .home-mates .lg-home-line{font-weight:500;}
+  .home-mates .lg-solo-invite{position:relative;min-height:0;height:36px;padding:0 14px;border:1px solid rgba(88,204,2,0.45);background:rgba(88,204,2,0.16);font-size:13.5px;}
+  .home-mates .lg-solo-invite::after{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;}
+  /* The arrow is the mates rows' own (.mp-row-chev: that grey, 8px in from the edge), so the two
+     arrows of the card stand in one column; the week's seven dots draw in a little so "2nd" keeps
+     "13 behind Jo" beside it where there is room. */
+  .home-mates .lg-home-chev{color:#5E6270;-webkit-text-fill-color:#5E6270;margin:0 8px 0 -4px;}
+  .home-mates .lg-dots{gap:3px;}
+  .home-mates .lg-dots i{width:6px;height:6px;}
+}
+/* Under 360 wide the invite is the size the other pills are there, so "Only you so far" stands whole beside it. */
+@media (max-width: 359px){.home-mates .lg-solo-invite{padding:0 11px;font-size:12px;}}
+@media (max-width: 1023px) and (hover: hover){
+  .home-mates > .lg-home + .mp-row:hover,.home-mates > .lg-solo + .mp-row:hover,.home-mates > .lg-home-wait + .mp-row:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
+}
 /* THE SMALLEST PHONES GIVE THE WORDS THEIR MARGINS (under 360 wide: a 320pt phone, or a larger one
    set to Display Zoom). Home's gutter is 16 where it was 20, a card's side padding 12 where it was
    14, and the gap either side of the text 10 where it was 12: 16px more for the two lines of every
