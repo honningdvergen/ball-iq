@@ -1040,6 +1040,7 @@ export default {
   // Los clubes del Transfer Trail en su tarjeta de resultado (25 nov 2026).
   'trail.gotHere': 'Acertado aquí',
   'trail.notNeeded': 'No hizo falta',
+  'rs.againSub': 'Otras {n} preguntas',
   'share.stumpMissed': 'Esta me pilló 🙈 A que tú tampoco la aciertas ⚽ {link}',
   'share.stumpGot': 'Esta la acerté. A que tú no 😏 ⚽ {link}',
   'share.stumpPassGot': '¡Acertada ✅! Te toca 😏 ⚽ {link}',
@@ -2040,8 +2041,8 @@ export default {
   'ts.games100': '🏆 100 partidas: eres una leyenda de {app}',
   'ts.gamesN': '⚡ {n} partidas jugadas, sigue así',
   'ts.perfect': '🎉 Perfecto: todas bien',
-  'ts.firstScore': '🎯 Primera puntuación: ¡{n}/10!',
-  'ts.pb': '🎯 Nuevo récord personal: ¡{n}/10!',
+  'ts.firstScore': 'Primera puntuación: ¡{n}/10!',
+  'ts.pb': 'Nuevo récord personal: ¡{n}/10!',
   'ts.hotFirst': '⚡ Récord de Crono: ¡{n}!',
   'ts.hotBest': '⚡ Nuevo récord de Crono: ¡{n}!',
   'ts.comeback': '🔄 Gran remontada: solo un fallo tras un mal comienzo',

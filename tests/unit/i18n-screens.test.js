@@ -20,6 +20,30 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (the ordinary quiz ends on the result card; Alex chose variant B of
+// the drawn rounds and said "Yeah go ahead"). Eight entries were replaced, and only those: the eight
+// results that are not a Daily 7 ("results: classic 7/10, new best over 5, footle open", "results:
+// classic 3/10, daily open (the daily is the primary), one more to rate", "results: legends 10/10,
+// footle done, just rated", "results: chaos 5/10, rated and moved", "results: chaos 2/10, rating
+// held", "results: survival 0 (first-question death)", "results: survival 12, new best over 8",
+// "results: speed 4/10 with a winner"). The new render was dumped with a temporary copy of this
+// test; 90 of 98 entries were byte-identical. For each of the eight a script took the OLD entry's
+// phone layout apart (each part asserted to be there exactly once) and rebuilt the new one from the
+// old entry's own content, byte for byte equal to the new render, with the wide-screen card after
+// it untouched: (1) the arrow in the corner is the arrow alone in the finish header's row; (2) the
+// text header ("Final score" or the quiz's name, the 88px number, the tagline, the best run, the
+// personal best, the XP) is the result card: the game named on its top line (with a club's name
+// after it), the number (no "/N" on a Survival run), the old tagline as the verdict ("in a row" /
+// "Run over" on Survival), the XP under it, the ten marks where the answers on hand add up to the
+// score (read off the wide-screen card's own dots), the personal best and best run as the line
+// under them, and one Share button ("Share my N/10"; "Share my result" at 30 percent or under and
+// on Survival); (3) a winner's line is carried over whole; (4) the outlined rating box is one
+// caption line with the old box's own words and numbers, without the spaced "Ball IQ" label (a
+// rating that moved keeps "Ball IQ" as plain words); (5) the buttons are one list: a daily not yet
+// played with Play, then "Play again" / "Go again". Two differ from the old primary on purpose:
+// with the Daily 7 and a started Footle both open, Footle leads (it is played more), and a Survival
+// death on the first question, which offered no daily, offers one second; (6) "Back to Home" is the
+// filled pill, the missed list is carried over whole, and the pill follows it again.
 // INTENDED CHANGE, 25 Nov 2026 (Share is one button that sends one message; Alex: "Yes, build it"): on
 // the classic finish panel of a game with a puzzle link (Footle, Transfer Trail, Top 10) the solid
 // "Send it to a mate", the line under it and the quiet "Just share my result" are ONE solid Share.
@@ -337,9 +361,13 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the results', () => {
     const c = unq(now['results: classic 7/10, new best over 5, footle open']);
-    for (const s of ['>Resultado final<', '>Buena actuación.<', '>Récord personal (antes 5)<', 'Te faltan 3 respuestas para tener media', '>Juega al Footle de hoy<', '>Repasa tus fallos (2)<', '>Ronda completada<', '>Clásico<', '>XP ganados<']) expect(c, s).toContain(s);
+    // 25 Nov 2026: the quiz ends on the result card. "Resultado final" over the number is gone (the
+    // card's top line names the game); the other dailies are a list row ("Footle de hoy") with "Jugar".
+    for (const s of ['>Quiz<', '>Buena actuación.<', '>Récord personal (antes 5)<', 'Te faltan 3 respuestas para tener media', '>Footle de hoy<', '>Juega al Footle de hoy<', '>Jugar otra vez<', '>Otras 10 preguntas<', '>Compartir mi 7/10<', '>Repasa tus fallos (2)<', '>Ronda completada<', '>Clásico<', '>XP ganados<']) expect(c, s).toContain(s);
+    expect(c).not.toContain('>Resultado final<');
     expect(unq(now['results: classic 3/10, daily open (the daily is the primary), one more to rate'])).toContain('Te falta 1 respuesta para tener media');
-    expect(unq(now['results: survival 12, new best over 8'])).toContain('>12 seguidas antes del primer fallo<');
+    // A Survival run on the card: the number, "seguidas" beside it, the best as the gold line.
+    for (const s of ['>A muerte<', '>seguidas<', '>Récord personal (antes 8)<', '>Un fallo y se acaba<', '>Compartir mi resultado<']) expect(unq(now['results: survival 12, new best over 8']), s).toContain(s);
     expect(unq(now['results: daily 7 on 5, the panel'])).toContain('>Hoy había alguna difícil.<');
     expect(unq(now['hot streak: first run, 3'])).toContain('>Crono<');
     expect(unq(now['true or false: perfect 10'])).toContain('>Nivel Balón de Oro<');

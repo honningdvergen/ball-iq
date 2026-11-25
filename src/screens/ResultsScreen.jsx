@@ -4,15 +4,16 @@
 // collaborator arrives as a prop, and `haptic` / `Confetti` come from App the
 // way the lazy screens already import them.
 import { useEffect } from "react";
-import { Star, Trophy } from "lucide-react";
+import { RotateCcw, Share, Star, Trophy } from "lucide-react";
 import { haptic } from "../lib/feedback.js";
 import { Confetti } from "../components/Confetti.jsx";
-import { DailyDone } from "../components/DailyDone.jsx";
+import { DailyDone, DEFAULT_ICON } from "../components/DailyDone.jsx";
+import { ResultCard } from "../components/ResultCard.jsx";
+import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { StreakChip } from "../components/StreakChip.jsx";
 import GameTitle from "../components/GameTitle.jsx";
 import { CountUp } from "../components/CountUp.jsx";
 import ResultFoot from "../components/ResultFoot.jsx";
-import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
 import { WrongAnswersReview } from "../components/WrongAnswersReview.jsx";
 import { dayIndexForDate } from "../lib/date.js";
 import { readWordleTodayStatus } from "../lib/wordleStatus.js";
@@ -38,62 +39,63 @@ function CardDeltaRow({ d }) {
       {a} <span aria-hidden="true">→</span> {b}
     </span>
   );
-  // ⚠️ EYEBROW ABOVE, NOT A LABEL BESIDE. This was a flex ROW — "BALL IQ" as a
-  // fixed left column, with the numbers in a wrapping body beside it — so as
-  // soon as the overall and two faces were present the body wrapped to two
-  // lines and ragged around a vertically-centred label. Alex, on the screen:
-  // "the grey bar above play todays daily 7 looks really untidy... i like how
-  // we see world going up from 58 to 62 though." The information was right and
-  // the container was fighting it. Stacking removes the wrap entirely.
+  // ONE CAPTION LINE UNDER THE CARD (25 Nov 2026). It was an outlined box with a
+  // spaced "BALL IQ" eyebrow on its own line and the moved faces in a grid under
+  // a hairline: a second framed object under the result. Alex chose the quiz
+  // finish where the result card is the one object and this is a quiet line of
+  // words under it. The two sentences ("3 more answers to get rated", "Rated 65
+  // — your card is live") say what they are about; a rating that moved keeps
+  // "Ball IQ" as plain words before its numbers, and the faces follow on the
+  // same line. Every state and every number is as it was. (His note of 9 Sept
+  // on this strip, "i like how we see world going up from 58 to 62", is why the
+  // faces stay.)
   const Shell = ({ children, label }) => (
     <div className="results-card-delta" role="status" aria-label={label}>{children}</div>
   );
   if (!d.ratedAfter) {
     return (
       <Shell>
-        <div className="rd-head">
-          <span className="rd-label">Ball IQ</span>
-          <span className="rd-body">{rich(t("rs.toRated", { count: d.toRated }), { n: d.toRated, w: t("rs.answers", { count: d.toRated }) })}</span>
-        </div>
+        <span className="rd-body">{rich(t("rs.toRated", { count: d.toRated }), { n: d.toRated, w: t("rs.answers", { count: d.toRated }) })}</span>
       </Shell>
     );
   }
   if (!d.ratedBefore) {
     return (
       <Shell>
-        <div className="rd-head">
-          <span className="rd-label">Ball IQ</span>
-          <span className="rd-body">{rich(t("rs.ratedLive"), { n: <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> })}</span>
-        </div>
+        <span className="rd-body">{rich(t("rs.ratedLive"), { n: <span className="rd-num" style={{ color: "var(--grn-soft)" }}>{d.after}</span> })}</span>
       </Shell>
     );
   }
   const moved = d.faces.slice(0, 2);
   return (
     <Shell label={t("rs.deltaAria", { a: d.before, b: d.after })}>
-      <div className="rd-head">
-        <span className="rd-label">Ball IQ</span>
+      <span className="rd-head">
+        <span className="rd-name">Ball IQ</span>
         {/* ⚠️ NO "69 → 69". An arrow between two identical numbers is the panel
             telling you something happened when nothing did, and it was the
             loudest thing in the row. When the overall held, print it once. */}
         {d.after === d.before
           ? <span className="rd-num rd-flat">{d.after}</span>
           : <Arrow a={d.before} b={d.after} />}
-      </div>
-      {moved.length > 0 && (
-        <div className="rd-faces">
-          {moved.map(f => (
-            <span key={f.abbr} className="rd-face">
-              <span className="rd-dot" style={{ background: f.color }} aria-hidden="true" />
-              <span className="rd-abbr">{f.abbr}</span>
-              <Arrow a={f.before} b={f.after} />
-            </span>
-          ))}
-        </div>
-      )}
+      </span>
+      {moved.map(f => (
+        <span key={f.abbr} className="rd-face">
+          <span className="rd-dot" style={{ background: f.color }} aria-hidden="true" />
+          <span className="rd-abbr">{f.abbr}</span>
+          <Arrow a={f.before} b={f.after} />
+        </span>
+      ))}
     </Shell>
   );
 }
+
+// The dailies by how much they are played, most first: real play counts read on
+// 25 Nov 2026 (Transfer Trail, Top 10, Footle, the Daily 7). The quiz finish
+// offers the first of these the player has not played today. Mystery Player is
+// a daily only on a day Top 10 has no list; Ballpark, a test-build prototype,
+// would come last.
+const DAILY_ORDER = ["trail", "top10", "footle", "daily7", "mystery", "ballpark"];
+const modeOf = (k) => (k === "daily" ? "daily7" : k);
 
 export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta }) {
   const t = useT();
@@ -129,25 +131,13 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
   const survivalNewBest = isSurvival && result.score > (survivalBest || 0) && result.score >= 3;
   const isNewPersonalBest = isNewBest || survivalNewBest;
 
-  // Huge-score display + caption per mode
-  const hugeScore = result.score;
-  // Green and the glow are for a score that went well: half or more right, or
-  // a Survival run of three. Before 2026-10-07 any score above zero got them,
-  // so 1 of 7 arrived glowing green over the line "Everyone starts somewhere".
-  const scoreEarned = isSurvival ? result.score >= 3 : (result.total > 0 && result.score / result.total >= 0.5);
+  // The caption the wide-screen card prints under a zero.
   const scoreCaption = isSurvival
     ? (result.score === 0 ? t("rs.out1") : t("rs.runMiss", { count: result.score, n: result.score }))
     : t("rs.correctOf", { count: result.score, n: result.score, total: result.total });
-  // Best run rides the caption (review C: the amber pill was a third accent on
-  // a screen that already has green and gold). Hidden below 3 — noise.
+  // Best run rides the card's line (review C: the amber pill was a third accent
+  // on a screen that already has green and gold). Hidden below 3: noise.
   const bestRun = !isSurvival && result.bestStreak != null && result.bestStreak >= 3 && result.bestStreak < result.total ? result.bestStreak : 0;
-
-  // One primary. Whichever daily is still open wins it, "Play again" demotes to
-  // the quiet row — except a Survival death on the first question, where the
-  // only honest next step is the same run again.
-  const dailyCta = dailyOpen && onPlayDaily ? { label: t("rs.playDaily"), onClick: onPlayDaily }
-    : footleOpen ? { label: footleCta, onClick: onPlayFootle } : null;
-  const retryDemoted = !!dailyCta && !(isSurvival && result.score === 0);
   // Green is the app's "this went well" signal — earned, not automatic.
   const rdZero = result.score === 0;
 
@@ -186,6 +176,94 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
     };
   })() : null;
   const rdTier = isDaily ? t(`d7.h${dailyTierBand(result.score, result.total)}`) : t(`tag.${scoreTaglineBand(pct)}`);
+
+  // ── THE ORDINARY QUIZ ENDS ON THE CARD TOO (25 Nov 2026) ─────────────────────
+  // Classic, Speed, Legends, Chaos, a club or league quiz and Survival ended on
+  // the old layout: "Final score" over an 88px number, an outlined rating box,
+  // a solid green button, two outlined ghosts and an underlined exit. Alex
+  // wants the whole app on one kit; of the drawn rounds he chose variant B ("B
+  // but even better i think") and then: "Yeah go ahead".
+  //
+  //   the card      the game named once on its top line (the back arrow above
+  //                 it stands alone: "the quiz ten questions is redundant next
+  //                 to the back"), the score, the verdict, the XP in yellow,
+  //                 the ten answers in order as green and red marks, and ONE
+  //                 quiet Share button that shares exactly what Share shared.
+  //   one caption   the rating strip, as a line of words (CardDeltaRow above).
+  //   one list      the most played daily the player has not played today,
+  //                 with a soft Play in that game's colour ("always mention our
+  //                 most popular unplayed mode"), then "Play again".
+  //   the way out   the small filled pill of the other finishes.
+  //
+  // What the drawing does not show and still has a place: a club's name and
+  // badge ride the card's top line; a personal best and the best run are the
+  // line under the marks; a winner (pass-and-play) keeps its line under the
+  // card; a Survival run has no denominator and no marks ("12", "in a row").
+  const quizCard = cardFinish ? null : (() => {
+    const pb = isNewPersonalBest
+      ? <strong>{t("rs.pb")}{isNewBest && classicBest ? t("rs.was", { n: classicBest }) : survivalNewBest && survivalBest ? t("rs.was", { n: survivalBest }) : ""}</strong>
+      : null;
+    const run = bestRun > 0 ? rich(t("rs.bestRun"), { n: bestRun }) : null;
+    return {
+      title: isDaily ? "Daily 7" : isSurvival ? t("home.mode.survival") : mode === "legends" || mode === "chaos" ? t(RD_MODE_LABEL[mode]) : t("home.quiz.title"),
+      tag: label || null,
+      badge: label && badge ? <span className="rc-badge" aria-hidden="true" style={{ background: badge.color, color: badge.fg, WebkitTextFillColor: badge.fg }}>{badge.abbr}</span> : null,
+      // A Survival run has no denominator: the number, then what it counts.
+      outOf: isSurvival ? null : result.total,
+      verdict: isDaily ? rdTier : isSurvival ? t(rdZero ? "rs.runOver" : "rs.inARow") : rdTier,
+      // The marks are drawn only for a round of fixed length whose answers on
+      // hand add up to the score (a run could spray dozens across the card).
+      marks: !isSurvival && result.total <= 12 && rdDots.filter(Boolean).length === result.score ? rdDots : null,
+      note: isSurvival && rdZero ? t("rs.survZero") : pb || run ? <>{pb}{pb && run ? " · " : null}{run}</> : null,
+    };
+  })();
+  // "Share my 7/10". At 30 percent or under, and for a Survival run, it is
+  // "Share my result": the rule the Daily 7's button has for its lowest band.
+  const quizShare = quizCard && !isDaily && onShare ? (
+    <button type="button" className="rc-act" onClick={onShare}>
+      <Share size={18} strokeWidth={2.4} aria-hidden="true" />
+      {isSurvival || !(result.total > 0) || result.score / result.total <= 0.3 ? t("dd.shareMine") : t("dd.shareMy", { score: `${result.score}/${result.total}` })}
+    </button>
+  ) : null;
+  // The dailies still open today: the app's own list (the one the dailies'
+  // finishes draw); a host that hands over none gets the two this screen can
+  // see for itself, as before.
+  const stillOpen = dailyDone ? (dailyDone.nextUp || []) : [
+    ...(footleOpen ? [{ key: "footle", name: t(footleToday.kind === "in-progress" ? "dd.contToday" : "dd.today", { g: "Footle" }), open: footleToday.kind === "in-progress" }] : []),
+    ...(dailyOpen && onPlayDaily ? [{ key: "daily7", name: t("dd.today", { g: "Daily 7" }) }] : []),
+  ];
+  const nextDaily = DAILY_ORDER.map((k) => stillOpen.find((n) => modeOf(n.key) === k)).find(Boolean) || null;
+  // The two this screen has always opened keep the handlers they had.
+  const playNext = !nextDaily ? null
+    : modeOf(nextDaily.key) === "daily7" && onPlayDaily ? onPlayDaily
+      : modeOf(nextDaily.key) === "footle" && onPlayFootle ? onPlayFootle
+        : nextDaily.onTap;
+  const dailyRow = nextDaily && playNext ? (() => {
+    const m = modeOf(nextDaily.key);
+    return (
+      <button key="daily" type="button" className="dd-li" style={{ "--dd-rgb": MODE_RGB[m] || "88,204,2", "--dd-c": MODE_ACCENT[m] || "var(--accent)" }} onClick={playNext}>
+        <span className="dd-li-ic" aria-hidden="true">{nextDaily.icon || DEFAULT_ICON[m] || null}</span>
+        <span className="dd-li-t">
+          <span className="dd-li-n">{nextDaily.name}</span>
+          <span className="dd-li-h">{t(`dd.hook.${m}`).split("·")[0].trim()}</span>
+        </span>
+        <span className="dd-li-go">{t(nextDaily.open ? "home.row.continue" : "common.play")}</span>
+      </button>
+    );
+  })() : null;
+  const againRow = onRetry ? (
+    <button key="again" type="button" className="dd-li is-quiet" onClick={onRetry}>
+      <span className="dd-li-ic" aria-hidden="true"><RotateCcw size={18} strokeWidth={2.2} /></span>
+      <span className="dd-li-t">
+        <span className="dd-li-n">{t(isSurvival ? "rs.goAgain" : "rs.playAgain")}</span>
+        <span className="dd-li-h">{isSurvival ? t("quiz.survRule") : t("rs.againSub", { n: result.total })}</span>
+      </span>
+      <span className="dd-li-go">{t("common.play")}</span>
+    </button>
+  ) : null;
+  // The other daily leads, except after a Survival death on the first question,
+  // where the only honest next step is the same run again.
+  const nextRows = (isSurvival && rdZero ? [againRow, dailyRow] : [dailyRow, againRow]).filter(Boolean);
   const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
 
   return (
@@ -195,7 +273,8 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
       {/* THE DAILY 7'S FINISH HAS FOOTLE'S HEADER (round two, 24 Nov 2026): the
           back arrow, the game named once with its day, one line under it, and
           the streak as a chip on the right. So the card below starts at the
-          score. Every other mode keeps the lone arrow in the corner. */}
+          score. Every other mode has the arrow alone (25 Nov 2026: its card
+          names the game on its own top line). */}
       {cardFinish ? (
         <div className="dd-hd">
           <button type="button" className="back-btn" onClick={onHome} aria-label={t("quiz.backHome")}>←</button>
@@ -206,105 +285,27 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           </div>
           <StreakChip streak={dailyDone.streak} isArchive={!!result.dailyArchive} />
         </div>
-      ) : <ResultsCloseBtn onClose={onHome} />}
+      ) : (
+        /* Every other mode: the back arrow alone, in the same row and at the
+           same size, so the card starts where the Daily 7's does. */
+        <div className="dd-hd">
+          <button type="button" className="back-btn" onClick={onHome} aria-label={t("quiz.backHome")}>←</button>
+        </div>
+      )}
 
       {/* THE DAILY 7 ENDS ON A CARD (22 Nov 2026, components/ResultCard.jsx):
           the score, the standing and the seven questions as one object, drawn
-          by the finish panel below because it holds the day's numbers. The
-          text header is for every other mode. */}
-      {/* Final score eyebrow + huge green number + caption */}
-      {!cardFinish && <div style={{textAlign:"center", padding:"20px 0 8px"}}>
-        {/* A CLUB OR LEAGUE QUIZ SAYS WHOSE IT WAS (11 Nov 2026). The result read
-            "Final score" for every quiz, so a Liverpool fan finishing the
-            Liverpool quiz saw nothing of Liverpool: found on the simulator
-            walk. The badge and name from the quiz screen's banner lead here. */}
-        {label ? (
-          <div style={{display:"inline-flex", alignItems:"center", gap:8, maxWidth:"100%"}}>
-            {badge && <span aria-hidden="true" style={{flex:"none", width:26, height:26, borderRadius:8, background:badge.color, color:badge.fg, display:"inline-flex", alignItems:"center", justifyContent:"center", fontSize:9.5, fontWeight:900, letterSpacing:0.2}}>{badge.abbr}</span>}
-            <span className="ds-eyebrow" style={{overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap"}}>{label}</span>
-          </div>
-        ) : <div className="ds-eyebrow">{t("rs.final")}</div>}
-        <div
-          className="numeric"
-          style={{
-            marginTop:8,
-            fontSize:88,
-            fontWeight:900,
-            // Green is the app's "this went well" signal — earned, not automatic.
-            // A zero (Survival's first-question death, a blank round) reads in
-            // the quiet text colour with no glow (review C10).
-            color: scoreEarned ? "var(--accent)" : hugeScore > 0 ? "var(--text)" : "var(--t2)",
-            letterSpacing:"-0.03em",
-            lineHeight:1,
-            textShadow: scoreEarned ? "0 8px 32px rgba(88,204,2,0.18)" : "none",
-          }}
-        >
-          <CountUp value={hugeScore} duration={900} delay={200} triggerHaptic />
-          {/* The total rides the number ("3/7"). It used to be said a second
-              time in a line underneath: "3 correct out of 7". */}
-          {!isSurvival && <span style={{ fontSize: 34, fontWeight: 800, color: "var(--t3)", textShadow: "none", letterSpacing: 0 }}>/{result.total}</span>}
-        </div>
-        {(isSurvival || bestRun > 0) && (
-          <div style={{marginTop:8, fontSize:15, color:"var(--t2)"}}>
-            {isSurvival ? scoreCaption : rich(t("rs.bestRun"), { n: <span className="numeric">{bestRun}</span> })}
-          </div>
-        )}
-        {/* Score-tier tagline. Daily uses the daily-specific tier copy so
-            the personality from the old DailySocialProof callout is kept
-            ("Tomorrow's another chance to climb" etc.) without the
-            duplicate card. Survival skips — its caption + PB callout
-            already carry the moment. */}
-        {isDaily ? (() => {
-          const band = dailyTierBand(result.score, result.total);
-          return (
-            <>
-              <div style={{marginTop:6, fontSize:15, color:"var(--t1)", fontWeight:700}}>{t(`d7.h${band}`)}</div>
-              <div style={{marginTop:2, fontSize:13, color:"var(--t3)", fontWeight:500}}>{t(`d7.s${band}`)}</div>
-            </>
-          );
-        })() : isSurvival ? (result.score === 0 && (
-          <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
-            {t("rs.survZero")}
-          </div>
-        )) : (
-          <div style={{marginTop:6, fontSize:14, color:"var(--t3)", fontWeight:500}}>
-            {t(`tag.${scoreTaglineBand(pct)}`)}
-          </div>
-        )}
-        {isNewPersonalBest && (
-          <div style={{marginTop:10, display:"inline-flex", alignItems:"center", gap:6, fontSize:13, fontWeight:700, color:"var(--gold)"}}>
-            <Star size={14} strokeWidth={2.4} aria-hidden="true" />
-            <span>{t("rs.pb")}{isNewBest && classicBest ? t("rs.was", { n: classicBest }) : survivalNewBest && survivalBest ? t("rs.was", { n: survivalBest }) : ""}</span>
-          </div>
-        )}
-        {/* XP indicator promoted into the celebration moment — was a muted
-            footer below the buttons; now sits with the score in gold so it
-            reads as a reward rather than a footnote. Gold matches XP
-            theming elsewhere in the app (toasts, level-up overlay). */}
-        {xpEarned > 0 && (
-          <div style={{marginTop:14, fontSize:14, color:"var(--gold)", fontWeight:700}}>
-            {rich(t("rs.xp"), { n: xpEarned })}
-          </div>
-        )}
-      </div>}
+          by the finish panel below because it holds the day's numbers. Every
+          other mode's card is drawn here (25 Nov 2026; quizCard above). */}
+      {quizCard && (
+        <ResultCard title={quizCard.title} tag={quizCard.tag} badge={quizCard.badge} score={result.score} outOf={quizCard.outOf}
+          scoreNode={<CountUp value={result.score} duration={900} delay={200} triggerHaptic />}
+          verdict={quizCard.verdict} xp={xpEarned} marks={quizCard.marks} note={quizCard.note} action={quizShare} />
+      )}
 
       {result.winner && (
         <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:6, margin:"14px 0", fontSize:15, fontWeight:700, color:"var(--gold)"}}><Trophy size={16} strokeWidth={2.4} aria-hidden="true" />{rich(t("rs.wins"), { name: result.winner })}</div>
       )}
-
-      {/* Two-tier action stack: filled green primary, ghost secondaries.
-          Amber Share was dropped for cross-screen consistency — Share is a
-          secondary action everywhere now. */}
-      {/* ⚠️ AFTER the game, never before it. Alex asked for a nudge to set a
-          profile picture "the first time they open the app"; the measurement
-          argued it down to here and he agreed. 36.2% of accounts never play a
-          single game, and the five-star sign-up blocker was LITERALLY a
-          mandatory step in that same gap — the username wall rejecting Apple
-          and Google's own pre-filled names. Another step before the first game
-          is the same bet, placed again. Here they have just finished
-          something, there is a score to attach a face to, and it costs zero
-          activation. */}
-      {!cardFinish && photoNudge}
 
       {/* Daily 7: the return loop, one component for all the dailies
           (components/DailyDone.jsx); the edition is the day index. Since 24 Nov
@@ -339,21 +340,29 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
         )
       ) : (
         <>
-          <CardDeltaRow d={cardDelta} />
-          {/* One primary, a row of two quiet buttons, a text link, the way out.
-              Five stacked buttons in three weights (review C9) asked the player
-              to rank the app's wishes; this ranks them for them. */}
-          <div className="results-actions" style={{marginTop:18}}>
-            {retryDemoted
-              ? <button className="btn-3d" onClick={dailyCta.onClick}>{dailyCta.label}</button>
-              : <button className="btn-3d" onClick={onRetry}>{t(isSurvival ? "rs.goAgain" : "rs.playAgain")}</button>}
-            <div className="results-row">
-              {retryDemoted && <button className="btn-3d ghost" onClick={onRetry}>{t("rs.playAgain")}</button>}
-              <button className="btn-3d ghost" onClick={onShare}>{t("rs.shareScore")}</button>
-            </div>
-            <button className="results-exit" onClick={onHome}>{t("quiz.backHome")}</button>
-          </div>
+          {/* One caption line, then one filled list: what to play next. Nothing
+              here is outlined and nothing is solid green: the card is the one
+              loud thing. */}
+          <section className="dd-one">
+            <CardDeltaRow d={cardDelta} />
+            {nextRows.length > 0 && <div className="dd-list rs-list">{nextRows}</div>}
+          </section>
+          {/* The profile-picture nudge, with the other quiet asks after the result.
+              ⚠️ AFTER the game, never before it. Alex asked for a nudge to set a
+              profile picture "the first time they open the app"; the measurement
+              argued it down to here and he agreed. 36.2% of accounts never play
+              a single game, and the five-star sign-up blocker was LITERALLY a
+              mandatory step in that same gap — the username wall rejecting Apple
+              and Google's own pre-filled names. Another step before the first
+              game is the same bet, placed again. Here they have just finished
+              something, there is a score to attach a face to, and it costs zero
+              activation. */}
+          {photoNudge}
+          {/* The way out, as the other finishes' quiet filled pill; then the
+              review of what got you, and the same way out again under a list. */}
+          <ResultFoot onHome={onHome} pill />
           <WrongAnswersReview wrongAnswers={wrongAnswers} allAnswers={result.allAnswers} onReport={onReport} mode={mode} />
+          {wrongAnswers?.length > 0 && <ResultFoot onHome={onHome} pill />}
         </>
       )}
       </div>{/* /.rd-mobile */}

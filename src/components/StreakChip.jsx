@@ -30,14 +30,26 @@ import "./dailyDone.css";
 
 // A host may still say whether the puzzle was won (Footle does): the chip no
 // longer reads it.
-export function StreakChip({ streak, isArchive = false }) {
+//
+// `floor` (25 Nov 2026, Transfer Trail and Top 10): the slot is a size
+// container, so by itself it is as narrow as the title lets it be, and the
+// chip, which never shrinks, then stands out of it to the left. Beside a short
+// title (Footle No. 204) there is always room. Beside "Transfer Trail No. 113"
+// on a 320pt phone there is not, and the chip would lie over the puzzle number.
+// With `floor` the slot is never narrower than the short chip (the flame, the
+// number, the shield), so the title gives way instead: its number drops to the
+// hidden second line, as GameTitle already does when a name needs the room.
+export function StreakChip({ streak, isArchive = false, floor = false }) {
   const t = useT();
   const n = streak?.count || 0;
   if (n < 1) return null;
   const label = streak?.label || t("dd.l.none");
   const shields = isArchive ? 0 : Math.max(0, streak?.shields || 0);
+  // The short chip: 12 + flame 16 + 7 + the digits (about 8.5 each) + 12, and
+  // with shields 7 + 13 more, and 10 for their count from two up.
+  const min = floor ? 48 + 9 * String(n).length + (shields > 0 ? 20 + (shields > 1 ? 10 : 0) : 0) : null;
   return (
-    <span className="dd-stk-slot"><span className={`dd-stk${shields > 0 ? " has-sh" : ""}`} title={n >= 2 ? t("dd.streakN", { n, label }) : t("dd.streak1", { label })}>
+    <span className="dd-stk-slot" style={min ? { minWidth: min } : undefined}><span className={`dd-stk${shields > 0 ? " has-sh" : ""}`} title={n >= 2 ? t("dd.streakN", { n, label }) : t("dd.streak1", { label })}>
       <Flame size={16} strokeWidth={2.2} aria-hidden="true" />
       <span className="dd-stk-w">{t("dd.capStreak", { n })}</span>
       <span className="dd-stk-n" aria-hidden="true">{n}</span>

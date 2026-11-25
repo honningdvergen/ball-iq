@@ -115,7 +115,8 @@ describe('the Daily 7 finish is the layout Footle has', () => {
     expect(html.endsWith(PILL + '</div>')).toBe(true);                       // then only the phone layout's own closing tag
     // both are the same exit: one handler, the host's onHome
     expect(read('src/screens/ResultsScreen.jsx')).toContain('{wrongAnswers?.length > 0 && <ResultFoot onHome={onHome} pill />}');
-    expect(read('src/screens/ResultsScreen.jsx').match(/<ResultFoot onHome=\{onHome\} pill \/>/g).length).toBe(2);
+    // (four in the file since 25 Nov 2026: the ordinary quiz's finish asks for the same two)
+    expect(read('src/screens/ResultsScreen.jsx').match(/<ResultFoot onHome=\{onHome\} pill \/>/g).length).toBe(4);
     // a signed-in player has no save line
     expect(await render(5, { dailyDone: { ...SERVICES, save: null } })).not.toContain('dd-pill');
     // seven of seven: nothing missed, so there is no list and the one pill is the last thing
@@ -198,11 +199,15 @@ describe('what the drawing does not show, and still has a place', () => {
 });
 
 describe('everything else keeps what it had', () => {
-  it('another mode\'s results: the lone arrow, its own header, no finish header', async () => {
+  // 25 Nov 2026: the ordinary quiz ends on the result card too (tests/unit/quiz-finish.test.js). Its
+  // back arrow stands alone in the same header row: no title beside it, no streak chip, and its card
+  // keeps the top line that names the game.
+  it('another mode\'s results: the back arrow alone, no title or chip beside it, its own card with its top line', async () => {
     const R = await load();
     const html = phone(renderToStaticMarkup(el(R, { mode: 'classic', onHome() {}, onRetry() {}, onShare() {}, onPlayFootle() {}, onPlayDaily() {}, onReport() {}, result: { score: 7, total: 10, allAnswers: [] } })));
-    expect(html).toMatch(/position:absolute;top:8px;left:0/);
-    expect(html).not.toMatch(/dd-hd|dd-stk|class="rc/);
+    expect(html).toContain('<div class="dd-hd"><button type="button" class="back-btn" aria-label="Back to Home">←</button></div><section class="rc" ');
+    expect(html).not.toMatch(/dd-hd-t|dd-stk|is-bare|position:absolute;top:8px/);
+    expect(html).toContain('<div class="rc-eye"><span>Quiz</span>');
   });
   it('the wide-screen card keeps the classic panel', async () => {
     const R = await load();
@@ -218,7 +223,7 @@ describe('everything else keeps what it had', () => {
     for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) {
       const src = read(f);
       expect(src, f).toContain('layout="one"');
-      expect(src, f).toContain('<StreakChip streak={finishStreak} isArchive={isArchive} />');
+      expect(src, f).toContain('<StreakChip streak={finishStreak} isArchive={isArchive} floor />');
     }
   });
   it('Spanish has every line this screen shows, and the header\'s line is the list row\'s without its minutes', () => {

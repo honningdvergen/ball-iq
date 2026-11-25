@@ -711,8 +711,8 @@ export const STEP7_EN = {
   'ts.games100': '🏆 100 games — you\'re a {app} legend',
   'ts.gamesN': '⚡ {n} games played, keep going',
   'ts.perfect': '🎉 Perfect — every question right',
-  'ts.firstScore': '🎯 First score: {n}/10!',
-  'ts.pb': '🎯 New personal best: {n}/10!',
+  'ts.firstScore': 'First score: {n}/10!',
+  'ts.pb': 'New personal best: {n}/10!',
   'ts.hotFirst': '⚡ Hot Streak record: {n}!',
   'ts.hotBest': '⚡ New Hot Streak best: {n}!',
   'ts.comeback': '🔄 Great comeback — only missed one after a slow start',
@@ -909,6 +909,8 @@ export const STEP7_EN = {
   // Transfer Trail's clubs on its result card (25 Nov 2026).
   'trail.gotHere': 'Got him here',
   'trail.notNeeded': 'Not needed',
+  // The quiz finish's "Play again" row (25 Nov 2026).
+  'rs.againSub': '{n} more questions',
   'ts.repairFailed': 'Couldn\'t reach the server to repair your streak. Check your connection and finish yesterday\'s puzzle again today.',
   'ld.ballpark': 'Loading Ballpark',
   'bp.title': 'Ballpark',

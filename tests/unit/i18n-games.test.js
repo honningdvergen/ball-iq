@@ -18,7 +18,8 @@
 //     board, card, panel, foot; each part asserted to be there exactly once) and rebuilt the new
 //     entry from the old one's own content, byte for byte equal to the new render: (1) the
 //     finished header has 12px between its parts, its title keeps its own width, and the streak
-//     the old panel named is the chip (.dd-stk; none where there was no streak); (2) the ladder
+//     the old panel named is the chip (.dd-stk, in a slot that keeps the short chip's width so the
+//     title gives way to it; none where there was no streak); (2) the ladder
 //     / the heading, board and tried-name chips above the card are gone, and the clubs / the
 //     title, the ten and the chips read off them are the card's picture (.rc-pic: .rc-clubs with
 //     the green "Got him here" row and the dimmed "Not needed" rows on a win; .rc-q, .rc-ten,

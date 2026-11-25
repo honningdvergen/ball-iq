@@ -430,7 +430,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
             on Footle and the Daily 7): a small filled chip where the guesses
             left sat during play. The title keeps its own width and the chip
             takes what is left (components/StreakChip.jsx). */}
-        {trailCard && <StreakChip streak={finishStreak} isArchive={isArchive} />}
+        {trailCard && <StreakChip streak={finishStreak} isArchive={isArchive} floor />}
         {!done && (
           /* Guesses left, drawn: one pip a guess, spent ones dimmed, the last
              one red. It was a bare number over a 9px "LEFT" (Alex's recording,

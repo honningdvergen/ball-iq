@@ -114,7 +114,7 @@ describe('Transfer Trail: the career is on the card', () => {
     expect(head).toContain('>Transfer Trail</span>');
     expect(head).toContain(`>No. ${getTrailNumber(NOW)}</span>`);
     expect(head).toContain('>Solved<');
-    expect(head).toMatch(/<span class="dd-stk-slot"><span class="dd-stk" title="4-day daily streak">/);
+    expect(head).toMatch(/<span class="dd-stk-slot" style="min-width:57px"><span class="dd-stk" title="4-day daily streak">/);
     expect(head).not.toContain('guesses left');
     // while playing the corner is the guesses left, and there is no chip
     store.clear();
@@ -179,7 +179,7 @@ describe('Transfer Trail: the career is on the card', () => {
     trailDay(NOW, WON_ON_3);
     const html = trail({ embedded: true, onBack: undefined, services: { dailyDone: { nextUp: [{ key: 'footle', name: "Today's Footle", href: '/football-wordle/' }], stitch: noop } } });
     expect(html).not.toContain('rc-xp');
-    expect(html).toMatch(/<b style="color:var\(--t1\);font-weight:800">Trail #\d+<\/b> · Solved<\/div><span class="dd-stk-slot"><span class="dd-stk" title="Day 1 of a Trail streak">/);
+    expect(html).toMatch(/<b style="color:var\(--t1\);font-weight:800">Trail #\d+<\/b> · Solved<\/div><span class="dd-stk-slot" style="min-width:57px"><span class="dd-stk" title="Day 1 of a Trail streak">/);
     expect(html).toContain('<ol class="rc-clubs">');
     expect(html).toContain('<a class="dd-li"');
     expect(html).not.toContain('Back to Home');
@@ -290,7 +290,7 @@ describe('Top 10: the ten are on the card, in one column', () => {
     expect(head).toContain('<div class="t10-head is-over">');
     expect(head).toContain('>Top 10</span>');
     expect(head).toContain('<div class="t10-head-sub">The list, in full</div>');
-    expect(head).toMatch(/<span class="dd-stk-slot"><span class="dd-stk" title="4-day daily streak">/);
+    expect(head).toMatch(/<span class="dd-stk-slot" style="min-width:57px"><span class="dd-stk" title="4-day daily streak">/);
     expect(head).not.toContain('t10-lives');
     expect(head.endsWith('</span></span></div>')).toBe(true);              // and nothing between the header and the card
   });
@@ -326,6 +326,23 @@ describe('Top 10: the ten are on the card, in one column', () => {
     const html = top10({ services: { dailyDone: APP().dailyDone } });
     expect(html).not.toContain('rc-xp');
     expect(html).toContain('<div class="rc-hero"><div class="rc-num"><b>7</b>');
+  });
+});
+
+describe('the chip never lies over a long title', () => {
+  it('with `floor` the slot is at least as wide as the short chip, so the title gives way; without it the slot is as it was', async () => {
+    const { StreakChip } = await import('../../src/components/StreakChip.jsx');
+    const chip = (props) => renderToStaticMarkup(el(StreakChip, props));
+    expect(chip({ streak: { count: 4, label: 'daily streak' } })).toMatch(/^<span class="dd-stk-slot"><span class="dd-stk"/);
+    expect(chip({ streak: { count: 4, label: 'daily streak' }, floor: true })).toMatch(/^<span class="dd-stk-slot" style="min-width:57px"><span class="dd-stk"/);
+    expect(chip({ streak: { count: 12, label: 'daily streak' }, floor: true })).toMatch(/^<span class="dd-stk-slot" style="min-width:66px">/);
+    expect(chip({ streak: { count: 12, label: 'daily streak', shields: 1 }, floor: true })).toMatch(/^<span class="dd-stk-slot" style="min-width:86px">/);
+    expect(chip({ streak: { count: 12, label: 'daily streak', shields: 3 }, floor: true })).toMatch(/^<span class="dd-stk-slot" style="min-width:96px">/);
+    // an old puzzle shows no shields, so it reserves no room for them
+    expect(chip({ streak: { count: 12, label: 'daily streak', shields: 3 }, floor: true, isArchive: true })).toMatch(/^<span class="dd-stk-slot" style="min-width:66px">/);
+    // Footle and the Daily 7 have short titles and do not ask
+    expect(read('src/games/FootballWordle.jsx')).not.toMatch(/<StreakChip[^>]*\bfloor\b/);
+    expect(read('src/screens/ResultsScreen.jsx')).not.toMatch(/<StreakChip[^>]*\bfloor\b/);
   });
 });
 

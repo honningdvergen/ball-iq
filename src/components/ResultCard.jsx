@@ -64,6 +64,16 @@
 //              of guesses") stays under the name and the XP follows it.
 // The pitch itself is darker on every game's card (resultCard.css), by Alex's
 // choice on the same drawing.
+//
+// THE ORDINARY QUIZ ENDS ON THE CARD TOO (25 Nov 2026, screens/ResultsScreen.jsx).
+// Three small things it needed, each off unless a host asks:
+//   `outOf` null   a Survival run has no denominator ("12", then "in a row"):
+//                  the score is drawn without its "/N".
+//   ten marks      more than seven marks share the row instead of holding a
+//                  fixed size (.is-many): 26px at 393 wide, about 21 at 320,
+//                  never touching.
+//   `badge`        a small mark before the game's name on the top line: a club
+//                  or league quiz says whose it was with the club's own badge.
 import React from "react";
 import { useT } from "../i18n/index.js";
 import { rich } from "../i18n/rich.jsx";
@@ -106,7 +116,7 @@ export function hardStory(t, marks, levels) {
   return { hard, got, note };
 }
 
-export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, xp = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null, head = true }) {
+export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, verdict, sub = null, xp = null, marks = null, shares = null, levels = null, note: hostNote = null, picture = null, action = null, head = true, badge = null }) {
   const t = useT();
   const withShares = Array.isArray(shares) && Array.isArray(marks) && shares.length === marks.length && shares.every((p) => Number.isFinite(p));
   const star = withShares ? starIndex(marks, shares) : -1;
@@ -128,16 +138,16 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
   // down a size there (.is-close in the stylesheet). Every other row is as drawn.
   const close = Array.isArray(marks) && marks.some((_, i) => ringed(i) && ringed(i + 1));
   return (
-    <section className={head ? "rc" : "rc is-bare"} aria-label={score != null ? t("rc.aria", { title, score, total: outOf }) : title}>
+    <section className={head ? "rc" : "rc is-bare"} aria-label={score != null ? (outOf != null ? t("rc.aria", { title, score, total: outOf }) : `${title}: ${score}`) : title}>
       {head && (
         <div className="rc-eye">
-          <span>{tag ? `${title} · ${tag}` : title}</span>
+          <span>{badge}{tag ? `${title} · ${tag}` : title}</span>
           <span className="rc-site">balliq.app</span>
         </div>
       )}
       <div className={`rc-hero${score == null ? " is-name" : ""}${xpOn && !subStays ? " is-foot" : ""}`}>
         {/* No score on a lost guess game: the answer is the headline then. */}
-        {score != null && <div className="rc-num"><b>{scoreNode ?? score}</b><span>/{outOf}</span></div>}
+        {score != null && <div className="rc-num"><b>{scoreNode ?? score}</b>{outOf != null && <span>/{outOf}</span>}</div>}
         {/* Keyed by its words: when the day's numbers land about a second
             after the card, the new sentence fades in rather than snapping, and
             the hero keeps its height (min-height in the stylesheet). */}
@@ -148,7 +158,7 @@ export function ResultCard({ title, tag = null, score, scoreNode = null, outOf, 
         </div>
       </div>
       {Array.isArray(marks) && marks.length > 0 && (
-        <div className={`rc-kicks${withShares ? " has-shares" : ""}${close ? " is-close" : ""}`} role="img" aria-label={t("rc.kicksAria", { n: right, total: marks.length })}>
+        <div className={`rc-kicks${withShares ? " has-shares" : ""}${close ? " is-close" : ""}${marks.length > 7 ? " is-many" : ""}`} role="img" aria-label={t("rc.kicksAria", { n: right, total: marks.length })}>
           {marks.map((ok, i) => (
             <span key={i} className={`rc-k${ok ? " is-in" : ""}${ringed(i) ? " is-star" : ""}`}>
               <i />

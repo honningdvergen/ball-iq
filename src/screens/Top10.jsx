@@ -474,7 +474,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     <div className={`screen t10${fit.tight ? " is-tight" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
       {g.perfect && Confetti ? <Confetti /> : null}
       <Head number={number} sub={isArchive || embedded ? sub : <ChallengeBanner game="top10" edition={number} finished={g.done}>{sub}</ChallengeBanner>} lives={g.done ? null : g.lives} onBack={onBack} embedded={embedded}
-        chip={g.done ? <StreakChip streak={finishStreak} isArchive={isArchive} /> : null} />
+        chip={g.done ? <StreakChip streak={finishStreak} isArchive={isArchive} floor /> : null} />
 
       {/* ONCE THE RESULT IS UP THE BOARD IS NOT DRAWN (25 Nov 2026): the title
           and all ten are on the result card below (top10Card.picture), so the

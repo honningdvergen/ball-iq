@@ -72,7 +72,7 @@ import "./dailyDone.css";
 // Default glyph per daily for the "still open today" rows, so a host that passes
 // only names + links (the static islands) still draws a well with something in
 // it — an empty tinted square read as a bug on the first web play-through.
-const DEFAULT_ICON = {
+export const DEFAULT_ICON = {
   footle: <span className="fh-tile fh-tile-green" style={{ "--fh-tile": "22px", borderRadius: 6 }} aria-hidden="true">F</span>,
   daily7: <ClipboardList size={18} strokeWidth={2.2} />,
   trail: <Route size={18} strokeWidth={2.2} />,

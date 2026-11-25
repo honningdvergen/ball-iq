@@ -225,22 +225,21 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    findable without giving it the same weight as sharing. */
 /* The card delta row on results (2026-09-09): one quiet row in the results
    anatomy — label, then numbers with arrows, faces in their own colour. */
-/* ⚠️ STACKED, NOT A ROW WITH A SIDE LABEL. As a row the numbers wrapped to a
-   second line and ragged around a vertically-centred "BALL IQ", which is what
-   made this read as untidy on device. The eyebrow now sits on its own baseline
-   with the overall opposite it, and moved faces get an even grid below. */
-.results-card-delta{display:flex;flex-direction:column;gap:9px;margin:14px auto 0;padding:12px 14px;border-radius:14px;background:var(--s1);border:1px solid var(--border);max-width:420px;text-align:left;}
-.results-card-delta .rd-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;min-width:0;}
-.results-card-delta .rd-label{font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);flex-shrink:0;}
-.results-card-delta .rd-body{font-size:13.5px;font-weight:700;color:var(--t2);min-width:0;text-align:right;}
-/* auto-fit so ONE moved face fills the width instead of leaving a hole */
-.results-card-delta .rd-faces{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px 14px;padding-top:8px;border-top:1px solid var(--border);}
-.results-card-delta .rd-flat{color:var(--t2);opacity:0.85;}
-.results-card-delta .rd-num{font-variant-numeric:tabular-nums;font-weight:900;font-size:15px;}
-.results-card-delta .rd-face{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--t2);min-width:0;}
-.results-card-delta .rd-face .rd-num{margin-left:auto;font-size:13.5px;}
-.results-card-delta .rd-abbr{font-weight:800;letter-spacing:0.06em;}
-.results-card-delta .rd-dot{width:7px;height:7px;border-radius:50%;display:inline-block;}
+/* ONE CAPTION LINE UNDER THE RESULT CARD (25 Nov 2026, the quiz finish). It was
+   an outlined box with a spaced "BALL IQ" eyebrow and the moved faces in a grid
+   under a hairline. Now it is a line of words on the page, the size and colour
+   of the dailies' caption (dailyDone.css, .dd-cap): no outline, no label. A
+   rating that moved says "Ball IQ" in plain words, then its numbers, and the
+   faces follow on the same line (they wrap as a whole on a narrow phone). */
+.results-card-delta{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:22px 6px 10px;font-size:13.5px;line-height:1.3;font-weight:600;color:var(--t2);-webkit-text-fill-color:var(--t2);text-align:left;font-variant-numeric:tabular-nums;}
+.results-card-delta .rd-body{min-width:0;}
+.results-card-delta .rd-head{display:inline-flex;align-items:baseline;gap:7px;white-space:nowrap;}
+.results-card-delta .rd-name{font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.results-card-delta .rd-flat{color:var(--t2);-webkit-text-fill-color:var(--t2);opacity:0.85;}
+.results-card-delta .rd-num{font-weight:800;-webkit-text-fill-color:currentColor;}
+.results-card-delta .rd-face{display:inline-flex;align-items:baseline;gap:6px;white-space:nowrap;}
+.results-card-delta .rd-abbr{font-weight:700;letter-spacing:0.04em;}
+.results-card-delta .rd-dot{align-self:center;width:7px;height:7px;border-radius:50%;display:inline-block;}
 .results-exit{display:block;margin:4px auto 0;padding:10px 16px;background:none;border:none;
   color:var(--t3);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
   text-decoration:underline;text-underline-offset:3px;}
