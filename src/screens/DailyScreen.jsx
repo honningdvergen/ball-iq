@@ -1028,7 +1028,10 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           {form14.map((d) => {
             const played = d.cls === "W" || d.cls === "D";
             const cls = played ? (d.arcOnly ? "is-on is-late" : "is-on") : d.isToday ? "is-due" : undefined;
-            return <span key={d.ymd} className={cls} aria-label={d.aria} title={d.aria} />;
+            // role="img": a bare span may not carry a label (axe, aria-prohibited-attr,
+            // CI 25 Nov 2026). The strip used to be hidden from a new player, so the
+            // check never met these fourteen; it is always shown now.
+            return <span key={d.ymd} className={cls} role="img" aria-label={d.aria} title={d.aria} />;
           })}
         </div>
         <div className="hs-ends"><span>{t("hi.2wk")}</span><span>{t("site.today")}</span></div>

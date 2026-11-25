@@ -181,6 +181,8 @@ describe('what a phone shows', () => {
       expect((p.match(/class="gp-list hs-streak" role="status"/g) || []).length, k).toBe(1);
       const sq = p.slice(p.indexOf('<div class="hs-sq" role="group" aria-label="Form — last 14 days">'), p.indexOf('<div class="hs-ends">'));
       expect((sq.match(/<span /g) || []).length, k).toBe(14);
+      // Each square is an image with its sentence: a bare span may not carry a label (axe, 25 Nov 2026).
+      expect((sq.match(/<span (class="[a-z -]+" )?role="img" aria-label="/g) || []).length, k).toBe(14);
       expect(text(p), k).toContain('|2 weeks ago|Today|');
     }
     expect(PHONE_SRC).not.toMatch(/hasFormHistory &&/);
