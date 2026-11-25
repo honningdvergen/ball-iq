@@ -13,6 +13,27 @@ export const config = { runtime: 'edge' };
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+// THE CARD'S TITLE (25 Nov 2026): one figure, and no question. The message the
+// link arrives in already asks it ("Solved Footle in 3. Can you beat it?",
+// src/lib/shareMessage.js), and the title sat right under that line repeating
+// the dare, the puzzle's number and the score: "A mate solved Footle No. 204
+// in 3. Can you beat it?". Alex on the drawings: "too many numbers".
+//   `score`  guesses (Footle) or clubs (Transfer Trail) used, 0 = not solved;
+//            the number right for Top 10 and the Daily 7.
+//   `name`   the sender's, when the link carries one; else "A mate".
+// English only: a crawler reads this page, and the link does not say which
+// language the sender plays in.
+const GAME_NAME = { footle: 'Footle', trail: 'Transfer Trail', top10: 'Top 10', daily7: 'Daily 7' };
+function cardTitle(game, score, name) {
+  const s = Math.max(0, score || 0);
+  if (s === 0) return `${GAME_NAME[game]} beat ${name || 'a mate'}`;
+  const who = name || 'A mate';
+  if (game === 'footle') return `${who} solved Footle in ${s}`;
+  if (game === 'trail') return `${who} got Transfer Trail in ${s} ${s === 1 ? 'club' : 'clubs'}`;
+  if (game === 'top10') return `${who} named ${s >= 10 ? 'all 10' : s} on Top 10`;
+  return `${who} got ${s >= 7 ? 'all 7' : s} right on Daily 7`;
+}
+
 export default async function handler(req) {
   const url = new URL(req.url);
   // Loop instrumentation (opportunity scan 2026-08-10 P0): one line per hit.
@@ -83,13 +104,7 @@ export default async function handler(req) {
     const no = parseInt(g[2], 10), s = parseInt(g[3], 10);
     let gName = '';
     try { gName = decodeURIComponent(g[4] || '').replace(/[^\p{L}\p{N} '._-]/gu, '').slice(0, 22); } catch { gName = ''; }
-    const who = gName || 'A mate';
-    const label = { footle: 'Footle', trail: 'Transfer Trail', top10: 'Top 10' }[game];
-    const did = game === 'top10' ? `got ${s}/10 on Top 10 No. ${no}`
-      : s <= 0 ? `missed ${label} No. ${no}`
-      : game === 'footle' ? `solved Footle No. ${no} in ${s}`
-      : `got Transfer Trail No. ${no} with ${s} ${s === 1 ? 'club' : 'clubs'}`;
-    const gTitle = `${who} ${did}. Can you beat it?`;
+    const gTitle = cardTitle(game, s, gName);
     const gDesc = 'Same puzzle, one go. Free, no sign-up.';
     const ogQ = new URLSearchParams({ t: 'gch', g: g[1], s: String(s), no: String(no) });
     if (gName) ogQ.set('n', gName);
@@ -144,13 +159,12 @@ export default async function handler(req) {
     }
   }
 
-  const who = name || 'A mate';
   const ogParams = new URLSearchParams({ t: 'challenge', s: String(score) });
   if (name) ogParams.set('n', name);
   if (dateLabel) ogParams.set('d', dateLabel);
   const ogImage = `${origin}/api/og?${ogParams.toString()}`;
 
-  const title = valid ? `${who} scored ${score}/7 on the Daily 7 ⚽` : 'Daily 7 challenge ⚽';
+  const title = valid ? cardTitle('daily7', score, name) : 'Daily 7 challenge ⚽';
   const description = valid
     ? `Same 7 questions, one try — beat ${name ? 'them' : 'it'} before midnight. Free, no sign-up.`
     : "Today's 7 football questions are waiting. Free, no sign-up.";
