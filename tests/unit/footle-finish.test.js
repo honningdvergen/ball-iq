@@ -386,12 +386,22 @@ describe('the Footle screen', () => {
     expect(at('{InstallBanner && <InstallBanner />}')).toBeLessThan(at('<ResultFoot onHome={onBack} pill />'));
     expect(at('<ResultFoot onHome={onBack} pill />')).toBeLessThan(at('<div className="wd-report-row">'));
   });
-  it('the finished header sits 6px closer to the card, and never during play or on a short phone', () => {
+  // 25 Nov 2026. For a day the finished header was pulled 6px closer to the card (a negative margin),
+  // which left 8px and the card nearly touching it. The card sits a full 14px under the header now,
+  // the same as on the Daily 7 (.dd-hd): the screen's own gap with nothing taken off. A short phone
+  // (700 high or less) keeps the screen's 6px: after a six-row Footle on a 375x667 phone the first
+  // Play in the list ends 0.1px above the fold, so there is nothing to give there.
+  it('the card sits 14px under the finished header, the same as the Daily 7; a short phone keeps its 6px', () => {
     const css = read('src/games/footle.css');
     expect(src).toContain('<div className={`wd-header${over ? " is-over" : ""}`}>');
-    expect(rule(css, '.wd-header.is-over')).toContain('margin-bottom:-6px');
-    expect(css).toContain('@media (max-height:700px){.wd-header.is-over{margin-bottom:0;}}');
+    expect(css).not.toMatch(/\.wd-header\.is-over\{[^}]*margin/);
+    expect(css).not.toContain('margin-bottom:-6px');
     expect(rule(css, '.wd-header')).toBe('.wd-header{display:flex;align-items:center;gap:12px;');
+    expect(rule(css, '.wd-screen')).toContain('.wd-screen{display:flex;flex-direction:column;gap:14px;');
+    expect(css).toMatch(/@media \(max-height: 700px\) \{\s*\.wd-screen\{gap:6px;/);
+    expect(rule(read('src/components/dailyDone.css'), '.dd-hd')).toContain('margin:0 0 14px');
+    // the tiles' step down on a short phone is what keeps that first Play on the first screen: still there
+    expect(css).toContain('@media (max-height:700px){.wd-cg.is-tall .wd-cg-row{grid-template-columns:repeat(var(--wd-cols),minmax(0,40px));}');
   });
 });
 

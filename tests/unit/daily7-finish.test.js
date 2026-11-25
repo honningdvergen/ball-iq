@@ -57,7 +57,9 @@ describe('the Daily 7 finish is the layout Footle has', () => {
     // the lone arrow in the corner is for the other modes
     expect(html).not.toMatch(/position:absolute;top:8px;left:0/);
     const css = read('src/components/dailyDone.css');
-    expect(rule(css, '.dd-hd')).toBe('.dd-hd{display:flex;align-items:center;gap:12px;margin:0 0 8px;');
+    // 25 Nov 2026: the card sits 14px under the header (it was 8 and nearly touched), the same as Footle's.
+    expect(rule(css, '.dd-hd')).toBe('.dd-hd{display:flex;align-items:center;gap:12px;margin:0 0 14px;');
+    expect(css).not.toMatch(/@media[^{]*\{[^}]*\.dd-hd\{/);                  // at every height: nothing needs the room back here
     expect(rule(css, '.dd-hd-sub')).toContain('font-size:12.5px');
   });
   it('with no streak there is no chip, and the header still names the game', async () => {

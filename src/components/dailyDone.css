@@ -264,7 +264,8 @@
 .dd-stk .dd-shields{align-items:center;gap:2px;margin-left:0;font-weight:700;-webkit-text-fill-color:var(--gold);}
 /* The Daily 7's finish has no header of its own to borrow, so this is Footle's
    (footle.css .wd-header): the back button, the game named once with its day,
-   one line under it, the chip. */
-.dd-hd{display:flex;align-items:center;gap:12px;margin:0 0 8px;}
+   one line under it, the chip. The card sits 14px under it, as Footle's does
+   under its header (25 Nov 2026; it was 8, and the card nearly touched). */
+.dd-hd{display:flex;align-items:center;gap:12px;margin:0 0 14px;}
 .dd-hd-t{flex:0 1 auto;min-width:0;}
 .dd-hd-sub{margin-top:2px;font-size:12.5px;line-height:1.2;font-weight:400;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
