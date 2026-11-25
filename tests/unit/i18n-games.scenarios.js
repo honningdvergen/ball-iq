@@ -155,6 +155,10 @@ const mystery = (props = {}) => () => React.createElement(MysteryPlayer, { onExi
 const mysteryScenarios = (S) => [
   ['mystery: fresh, the pool not loaded yet', { _pool: false }, mystery()],
   ['mystery: fresh, the pool in (free clues, the key to the colours)', {}, mystery()],
+  // Yesterday's answer is named only to someone who closed yesterday's board:
+  // it is still playable from History, so to anyone else the name is the answer.
+  ['mystery: fresh, yesterday closed (he is named)', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, gaveUp: true, guesses: mysteryGuesses(S, YESTERDAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
+  ['mystery: fresh, yesterday still open (he is not named)', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, guesses: mysteryGuesses(S, YESTERDAY, 2), hintsUsed: 0, clues: 3 }) }, mystery()],
   ['mystery: three guesses', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 3), hintsUsed: 0, clues: 3 }) }, mystery()],
   ['mystery: five guesses (club clue ready, give up offered)', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
   ['mystery: seven guesses, club clue taken', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 7), hintsUsed: 1, clues: 3 }) }, mystery()],

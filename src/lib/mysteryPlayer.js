@@ -568,6 +568,17 @@ export function loadMysteryResult(date) {
 }
 
 /**
+ * Has this device closed the board of the day `daysBack` days before `date`
+ * (solved it or given up)? The screen names yesterday's player only then:
+ * yesterday stays playable from History, so to anyone else the name is the
+ * answer to a game one tap away.
+ */
+export function mysteryDayClosed(date, daysBack = 0) {
+  const s = loadMysteryResult(new Date(date.getFullYear(), date.getMonth(), date.getDate() - daysBack));
+  return !!(s?.won || s?.gaveUp);
+}
+
+/**
  * Consecutive solved days ending today. Walks BACKWARDS from today and stops
  * at the first gap, which is what makes it a streak rather than a total.
  *

@@ -12,7 +12,7 @@ import { DailyDone } from '../components/DailyDone.jsx';
 import {
   rankPool, bandFor, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
-  saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition,
+  saveMysteryResult, loadMysteryResult, mysteryDayClosed, computeMysteryStreak, hintPosition,
   explainGuess, reasonMarks, clueLadder, CLUE_AFTER, paidCluesFromSave, puzzleYear,
 } from '../lib/mysteryPlayer.js';
 import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
@@ -133,11 +133,18 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   const byId = useMemo(() => new Map(POOL.map((p) => [p.id, p])), [POOL]);
   // Yesterday's player, named at the foot of the empty start: closure for
   // anyone who gave up on him, and a floor for the screen (11 Nov 2026).
+  //
+  // ⚠️ ONLY FOR SOMEONE WHO HAS CLOSED YESTERDAY'S BOARD (25 Nov 2026). It was
+  // shown to everyone, and yesterday's puzzle is still playable from History:
+  // the name was the answer to a game one tap away (Alex: "people will get
+  // that on one try if they just play yesterdays ones"). Solved or given up,
+  // on this device, is the only state in which the name gives nothing away.
+  const yesterdayClosed = useMemo(() => mysteryDayClosed(date, 1), [date]);
   const yesterdayName = useMemo(() => {
-    if (!POOL.length || !(dayIndex > 0)) return '';
+    if (!yesterdayClosed || !POOL.length || !(dayIndex > 0)) return '';
     for (const id of mysteryAnswerIds(dayIndex - 1)) { const p = POOL.find((x) => x.id === id); if (p) return p.name; }
     return '';
-  }, [POOL, dayIndex]);
+  }, [POOL, dayIndex, yesterdayClosed]);
   // THREE FIRST MOVES (11 Nov 2026). Before the first guess the screen was a
   // search box over nine thousand names and two thirds of empty black (Alex's
   // "empty lower half", worst on a tall phone). These are the three most
