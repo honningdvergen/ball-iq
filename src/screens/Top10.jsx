@@ -30,16 +30,18 @@ import {
   computeTop10Streak,
   buildTop10ShareText,
   formatAsOf,
-  fitTop10Board, hasLongWord, doneRowFor, T10_SHORT_UNDER,
+  fitTop10Board, hasLongWord,
   T10_ROW_MAX,
   top10GuessPool,
 } from "../lib/top10.js";
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { DailyDone } from "../components/DailyDone.jsx";
+import { StreakChip } from "../components/StreakChip.jsx";
+import { getTop10XP } from "../lib/dailyXp.js";
 import { usePlayerPool } from "../lib/usePlayerPool.js";
 import { rankPlayerSuggestions, suggestionSubtitle, SUGGEST_MAX } from "../lib/playerSearch.js";
 import { useKeyboardAwareInput, useDropdownMaxHeight, visibleBottom } from "../lib/useKeyboardAwareInput.js";
-import ResultFoot from "../components/ResultFoot.jsx";
+import ResultFoot, { ReportLink } from "../components/ResultFoot.jsx";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { t as tNow, useT } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
@@ -97,21 +99,25 @@ export function useTop10Data(date, listId, { library = false } = {}) {
   return state;
 }
 
-function Head({ number, sub, lives, onBack, embedded }) {
+// `chip`: once the result is up the streak has the corner the lives held
+// during play (25 Nov 2026, as on Footle and the Daily 7); the title then keeps
+// its own width and the chip takes what is left.
+function Head({ number, sub, lives, onBack, embedded, chip = null }) {
   const t = useT();
   return (
-    <div className={`t10-head${embedded ? " is-embedded" : ""}`}>
+    <div className={`t10-head${embedded ? " is-embedded" : ""}${chip ? " is-over" : ""}`}>
       {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
       {embedded ? (
         <div className="t10-mast">
           {number > 0 && <><b>Top 10 #{number}</b>{" · "}</>}{sub}
         </div>
       ) : (
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ flex: chip ? "0 1 auto" : 1, minWidth: 0 }}>
           <GameTitle no={number} className="t10-head-title">Top 10</GameTitle>
           <div className="t10-head-sub">{sub}</div>
         </div>
       )}
+      {chip}
       {lives != null && (
         <div className="t10-lives" role="img" aria-label={t("top10.lives", { n: lives, max: TOP10_LIVES })}>
           {Array.from({ length: TOP10_LIVES }, (_, i) => (
@@ -170,7 +176,7 @@ export default function Top10({ date = new Date(), listId, onBack, onReport, onM
 
 function Top10Board({ list, data, date, number, byName, onBack, onReport, onMoreLists, services, embedded }) {
   const t = useT();
-  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard, paysXp } = resolveDailyServices(services);
   // A list opened by name is saved under its own id, so it can never be read
   // back as a day's result (and so never feeds the streak).
   const ymd = byName ? `list_${list.id}` : dateToYMD(date);
@@ -269,7 +275,6 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
     const el = boardRef.current;
     const next = fitting && el
       ? fitTop10Board(visibleBottom(kbInset) - el.getBoundingClientRect().top - 6, fit.tight)
-      : g.done ? (() => { const r = doneRowFor(window.innerHeight); return { row: r, tight: false, size: r >= 52 ? "l" : "m" }; })()
       : { row: T10_ROW_MAX, tight: false, size: "l" };
     if (next.row !== fit.row || next.tight !== fit.tight || next.size !== fit.size) setFit({ row: next.row, tight: next.tight, size: next.size });
   };
@@ -402,37 +407,86 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
   // The result card's words. Short, because the number sits beside them: the
   // sentences this replaced said the score again ("You found 7. The rest are
   // filled in above."). "You called it there" read oddly over a 0/10 (design
-  // pass, 16 Oct 2026), so a zero says something true instead. The line under the
-  // verdict is the list's title, so the card means something on its own; a
-  // perfect game says how clean it was there instead.
+  // pass, 16 Oct 2026), so a zero says something true instead.
+  //
+  // THE LIST IS ON THE CARD (25 Nov 2026, the layout Footle and the Daily 7
+  // ended on). Until now the board stayed above and a second green card under
+  // it said the score again; Alex, shown this finish and Transfer Trail's in
+  // the new layout: "Yes, both". The card carries the list's title and all
+  // ten in ONE column: the rank in green if it was named and dim if it was
+  // missed, the name in full, the list's own number at the right. One column
+  // on purpose: in two, names were cut off ("Giovanni van Bronckh…"). The
+  // names that were tried and are not in the ten keep their struck-through
+  // chips, under the ten. Once the result is up the board, the heading over it
+  // and its chips are not drawn (see below).
   const top10Card = !g.done ? null : {
-    title: "Top 10", tag: number > 0 ? `No. ${number}` : null,
+    picture: (
+      <>
+        <p className="rc-q">{list.title}</p>
+        <ol className="rc-ten" aria-label={t("top10.theTen")}>
+          {list.slots.map((s, i) => (
+            <li key={s.key} className={g.found[i] ? undefined : "is-miss"}>
+              <i>{i + 1}</i>
+              <b>{s.name}</b>
+              {s.clue ? <em>{s.clue}</em> : null}
+            </li>
+          ))}
+        </ol>
+        {(g.wrong.length > 0 || g.close.length > 0) && (
+          <div className="rc-tried" aria-label={t("top10.notIn")}>
+            {g.wrong.map((w) => <span key={w.key}><s>{w.name}</s></span>)}
+            {g.close.map((w) => <span key={w.key} className="is-close">{w.name}<em>{` ${w.near.note.split(",")[0]}`}</em></span>)}
+          </div>
+        )}
+      </>
+    ),
+    title: "Top 10", tag: number > 0 ? t("game.no", { n: number }) : null,
     score: g.score, outOf: total,
     verdict: g.perfect ? t("rc.t10All")
       : g.score === 0 ? t("rc.t10Hard")
         : g.out && g.score < 5 ? t("rc.t10Out")
           : g.score >= 8 ? t("rc.t10Near") : g.score >= 6 ? t("rc.t10Past") : g.score === 5 ? t("rc.t10Half") : t("rc.t10Tough"),
-    sub: g.perfect ? (g.lives === TOP10_LIVES ? t("rc.t10Clean") : t("rc.t10Spare", { count: g.lives })) : list.title,
+    // The list's title was the line under the verdict; it heads the ten on the
+    // card now, and the XP has that place. What a perfect game adds (how clean
+    // it was) and any hints used are one quiet line under the ten.
+    sub: null,
     pinSub: true,
-    note: hints.length > 0 ? t(hints.length === 1 ? "top10.hintsOne" : "top10.hintsN", { n: hints.length }) : null,
+    note: [
+      g.perfect ? (g.lives === TOP10_LIVES ? t("rc.t10Clean") : t("rc.t10Spare", { count: g.lives })) : null,
+      hints.length > 0 ? t(hints.length === 1 ? "top10.hintsOne" : "top10.hintsN", { n: hints.length }) : null,
+    ].filter(Boolean).join(" · ") || null,
+    // The button says the score ("Share my 7/10") except on a 0 or a 1, where
+    // it is "Share my result": the Daily 7's rule for its lowest band.
+    plainShare: g.score <= 1,
+    // A list from the archive or the library pays nothing: only a host that
+    // really pays says so (`paysXp`, the app's DAILY_SERVICES).
+    xp: isArchive || !paysXp ? 0 : getTop10XP(g.score, g.perfect),
   };
+  // The app's one streak; where there is none, Top 10's own.
+  const finishStreak = dailyDone?.streak || { count: streak, label: t("dd.l.top10") };
   // ⚠️ THE FINISH SAID THE SCORE THREE TIMES: here ("1 of 10"), on the count
   // beside the date ("1/10") and in the large figure under the board (13 Oct
   // 2026). The large figure is the one; the header names the state and the
   // count is for a game still being played.
   const sub = t(g.done ? (g.perfect ? "top10.perfect" : "top10.full") : "top10.sub");
-  let missedSeen = 0;
 
   return (
-    <div className={`screen t10${fit.tight ? " is-tight" : ""}${g.done && typeof window !== "undefined" && window.innerHeight < T10_SHORT_UNDER ? " is-short" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
+    <div className={`screen t10${fit.tight ? " is-tight" : ""}`} style={{ ...SKIN, paddingBottom: kbInset ? 20 + kbInset : "var(--foot-clear, 20px)" }}>
       {g.perfect && Confetti ? <Confetti /> : null}
-      <Head number={number} sub={isArchive || embedded ? sub : <ChallengeBanner game="top10" edition={number} finished={g.done}>{sub}</ChallengeBanner>} lives={g.done ? null : g.lives} onBack={onBack} embedded={embedded} />
+      <Head number={number} sub={isArchive || embedded ? sub : <ChallengeBanner game="top10" edition={number} finished={g.done}>{sub}</ChallengeBanner>} lives={g.done ? null : g.lives} onBack={onBack} embedded={embedded}
+        chip={g.done ? <StreakChip streak={finishStreak} isArchive={isArchive} /> : null} />
 
+      {/* ONCE THE RESULT IS UP THE BOARD IS NOT DRAWN (25 Nov 2026): the title
+          and all ten are on the result card below (top10Card.picture), so the
+          result is on screen once. What the heading said about the list (its
+          date, what counts, how ties are ordered) is the quiet line at the foot
+          of the screen, beside the way to tell us the list is wrong. */}
+      {!g.done && (
       <div className="t10-q">
         <h2 className="t10-q-title">{list.title}</h2>
         <div className="t10-q-meta">
           <span>{t("top10.asOf", { d: formatAsOf(list.asOf) })}{list.clueLabel ? ` · ${t("top10.clue", { c: list.clueLabel.toLowerCase() })}` : ""}</span>
-          {!g.done && <span className="t10-q-count">{g.score}/{total}</span>}
+          <span className="t10-q-count">{g.score}/{total}</span>
         </div>
         {/* What counts, and how level entries are ordered. A ranked list is
             unfair without it: "since when?" and "why is he above him?" are
@@ -442,6 +496,7 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
             progress, rank by rank, and the count sits beside the date. A strip
             of ten dashes said the same thing a third time. */}
       </div>
+      )}
 
       {!g.done && (
         <>
@@ -486,27 +541,27 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
         </>
       )}
 
+      {!g.done && (
       <div ref={boardRef} className={`t10-board is-${fit.size}${fitting && kbInset > 0 ? " is-fit" : ""}${judging ? " is-wait" : ""}`} style={{ "--t10-row": `${fit.row}px` }} role="list" aria-label={t("top10.theTen")}>
         {list.slots.map((s, i) => {
           const found = g.found[i];
-          const missed = g.done && !found;
-          const delay = missed ? missedSeen++ * 70 : 0;
           return (
             <div key={s.key} role="listitem"
-              className={`t10-cell ${found ? "is-found" : missed ? "is-missed" : "is-open"}${i === fresh && found ? " is-new" : ""}`}
-              style={missed ? { "--t10-d": `${delay}ms` } : { "--t10-i": i }}>
+              className={`t10-cell ${found ? "is-found" : "is-open"}${i === fresh && found ? " is-new" : ""}`}
+              style={{ "--t10-i": i }}>
               <span className={`t10-rank${i < 3 ? ` is-p${i + 1}` : ""}`}>{i + 1}</span>
               <span className="t10-body">
-                {(found || missed) && <span className={`t10-name${hasLongWord(s.name) ? " is-long" : ""}${s.name.length >= 15 ? " is-wide" : ""}`}>{s.name}</span>}
-                {!found && !missed && hints.includes(i) && <span className="t10-name is-hint">{`${s.name.charAt(0)}…`}</span>}
+                {found && <span className={`t10-name${hasLongWord(s.name) ? " is-long" : ""}${s.name.length >= 15 ? " is-wide" : ""}`}>{s.name}</span>}
+                {!found && hints.includes(i) && <span className="t10-name is-hint">{`${s.name.charAt(0)}…`}</span>}
                 {s.clue ? <span className="t10-clue">{s.clue}</span> : null}
               </span>
             </div>
           );
         })}
       </div>
+      )}
 
-      {(g.wrong.length > 0 || g.close.length > 0) && (
+      {!g.done && (g.wrong.length > 0 || g.close.length > 0) && (
         <div className="t10-wrong" aria-label={t("top10.notIn")}>
           {g.wrong.map((w) => (
             <span key={w.key} className="t10-chip"><s>{w.name}</s></span>
@@ -531,33 +586,41 @@ function Top10Board({ list, data, date, number, byName, onBack, onReport, onMore
       )}
 
       {g.done && (
+        /* THE FINISH AS ONE OBJECT (25 Nov 2026): the card with the ten and one
+           quiet Share button, then the caption, the other dailies as one list
+           and the quiet lines (components/DailyDone.jsx, layout "one", which
+           has the why). */
         <div className="t10-result">
-          {/* THE RESULT CARD (23 Nov 2026), same family as the other dailies:
-              drawn by DailyDone. It replaced the large figure and the sentence
-              under it; the board above is the picture, so it draws no strip. */}
-          <div style={{ textAlign: "left" }}>
-            <DailyDone
-              game="top10"
-              card={top10Card}
-              edition={number}
-              won
-              bucket={g.score}
-              isArchive={isArchive}
-              streak={dailyDone?.streak || { count: streak, label: t("dd.l.top10") }}
-              promoted={dailyDone?.promoted}
-              onShare={onShare}
-              remind={dailyDone?.remind}
-              nextUp={dailyDone?.nextUp || []}
-              day={dailyDone?.day}
-              save={dailyDone?.save}
-              GetAppCTA={GetAppCTA}
-              track={dailyDone?.track}
-            />
-          </div>
+          <DailyDone
+            game="top10"
+            card={top10Card}
+            layout="one"
+            edition={number}
+            won
+            bucket={g.score}
+            isArchive={isArchive}
+            streak={finishStreak}
+            promoted={dailyDone?.promoted}
+            onShare={onShare}
+            remind={dailyDone?.remind}
+            nextUp={dailyDone?.nextUp || []}
+            day={dailyDone?.day}
+            save={dailyDone?.save}
+            GetAppCTA={GetAppCTA}
+            track={dailyDone?.track}
+          />
+          {/* The way out, as the quiet filled pill, with more lists beside it. */}
+          <ResultFoot onHome={onBack} pill
+            more={onMoreLists ? { label: t("top10.more"), onClick: onMoreLists } : null} />
+          {/* What counts, and how level entries are ordered. A ranked list is
+              unfair without it: "since when?" and "why is he above him?" are
+              the two things a fan will ask of the answer. */}
+          <p className="t10-about">
+            {t("top10.asOf", { d: formatAsOf(list.asOf) })}{list.note ? `. ${list.note}` : ""}
+          </p>
           {/* A wrong list is unfalsifiable from inside the game: the player
               cannot tell a name they forgot from a name we got wrong. */}
-          <ResultFoot thing="List" onReport={onReport} onHome={onBack}
-            more={onMoreLists ? { label: t("top10.more"), onClick: onMoreLists, accent: "var(--t10)" } : null}
+          <ReportLink thing="List" onReport={onReport}
             info={{
               id: `top10:${list.id}`,
               q: `Top 10 ${number ? `#${number}` : `list ${list.id}`} — ${list.title} (as of ${list.asOf}): ${list.slots.map((s, i) => `${i + 1}. ${s.name}`).join(", ")}`,

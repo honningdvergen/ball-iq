@@ -70,3 +70,49 @@
 .rc.is-bare .rc-hero{margin-top:4px;}
 .rc-pic + .rc-note{margin-top:14px;text-align:center;font-size:13px;line-height:1.3;color:rgba(255,255,255,0.72);-webkit-text-fill-color:rgba(255,255,255,0.72);}
 .rc.is-bare .rc-act{margin-top:16px;}
+/* TWO MORE PICTURES FOR THE CARD (25 Nov 2026): Transfer Trail's clubs and Top
+   10's ten. Alex, shown both finishes in the layout Footle has: "Yes, both".
+   They live here and not in a game's own stylesheet because Transfer Trail has
+   none (it also mounts on a static page that loads no app.css). Measures are
+   the agreed drawings' (ball-iq-audit 2026-11-24, tr.css and tx.css).
+
+   TRANSFER TRAIL (.rc-clubs): one row a club, 44 tall, a dark wash of the
+   pitch; the app's own badge, the name at 16/700. The club the player was
+   named on is the game's green with dark ink; the clubs never needed are a
+   lighter wash with the name dimmed. A long name takes a second line; it is
+   never cut off. */
+.rc-clubs{list-style:none;margin:0;padding:0;display:grid;gap:8px;}
+.rc-clubs li{display:flex;align-items:center;gap:12px;min-height:44px;box-sizing:border-box;padding:6px 12px 6px 8px;border-radius:12px;background:rgba(0,0,0,0.42);}
+.rc-clubs li i{flex:none;display:flex;align-items:center;justify-content:center;width:32px;height:28px;border-radius:8px;background:var(--s3,#232633);color:var(--t3,#9BA0B8);-webkit-text-fill-color:var(--t3,#9BA0B8);font-size:11px;line-height:1;font-weight:800;font-style:normal;letter-spacing:0.02em;}
+.rc-clubs li b{flex:1;min-width:0;font-size:16px;line-height:1.15;font-weight:700;overflow-wrap:anywhere;}
+.rc-clubs li small{flex:none;font-size:11px;line-height:1;font-weight:700;white-space:nowrap;color:rgba(255,255,255,0.6);-webkit-text-fill-color:rgba(255,255,255,0.6);}
+.rc-clubs li small.is-loan{color:#FFD34D;-webkit-text-fill-color:#FFD34D;}
+.rc-clubs li em{flex:none;font-size:12.5px;line-height:1;font-weight:700;font-style:normal;white-space:nowrap;color:rgba(255,255,255,0.6);-webkit-text-fill-color:rgba(255,255,255,0.6);}
+.rc-clubs li.is-got{background:#58CC02;}
+.rc-clubs li.is-got b{color:#06230C;-webkit-text-fill-color:#06230C;}
+.rc-clubs li.is-got em,.rc-clubs li.is-got small,.rc-clubs li.is-got small.is-loan{color:rgba(6,35,12,0.72);-webkit-text-fill-color:rgba(6,35,12,0.72);}
+.rc-clubs li.is-off{background:rgba(0,0,0,0.26);}
+.rc-clubs li.is-off b{color:rgba(255,255,255,0.6);-webkit-text-fill-color:rgba(255,255,255,0.6);}
+/* TOP 10 (.rc-q, .rc-ten, .rc-tried): the list's title, then all ten in ONE
+   column (in two, names were cut off): rows 34 tall, 4 apart; the rank on a
+   24px chip, green if it was named and dim if it was missed; the name at
+   14.5/700; the list's own number at the right in tabular figures. A long
+   name beside a long number takes a second line. Under the ten, the names
+   that were tried and are not on the list, struck through. */
+.rc-q{margin:0 0 12px;font-size:15px;line-height:1.25;font-weight:700;color:rgba(255,255,255,0.86);-webkit-text-fill-color:rgba(255,255,255,0.86);text-wrap:balance;}
+.rc-ten{list-style:none;margin:0;padding:0;display:grid;gap:4px;}
+.rc-ten li{display:flex;align-items:center;gap:7px;min-height:34px;box-sizing:border-box;padding:5px 9px 5px 6px;border-radius:10px;background:rgba(0,0,0,0.42);min-width:0;}
+.rc-ten li i{flex:none;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:#58CC02;color:#06230C;-webkit-text-fill-color:#06230C;font-size:12px;line-height:1;font-weight:800;font-style:normal;font-variant-numeric:tabular-nums;}
+.rc-ten li b{flex:1;min-width:0;font-size:14.5px;line-height:1.15;font-weight:700;overflow-wrap:anywhere;}
+.rc-ten li em{flex:none;font-size:12.5px;line-height:1;font-weight:700;font-style:normal;white-space:nowrap;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.62);-webkit-text-fill-color:rgba(255,255,255,0.62);}
+.rc-ten li.is-miss{background:rgba(0,0,0,0.26);}
+.rc-ten li.is-miss i{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);-webkit-text-fill-color:rgba(255,255,255,0.6);}
+.rc-ten li.is-miss b{color:rgba(255,255,255,0.55);-webkit-text-fill-color:rgba(255,255,255,0.55);}
+.rc-ten li.is-miss em{color:rgba(255,255,255,0.4);-webkit-text-fill-color:rgba(255,255,255,0.4);}
+.rc-tried{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.rc-tried span{padding:4px 9px;border-radius:8px;background:rgba(0,0,0,0.26);font-size:12.5px;line-height:1.2;font-weight:600;color:rgba(255,255,255,0.6);-webkit-text-fill-color:rgba(255,255,255,0.6);}
+.rc-tried s{text-decoration-thickness:1px;}
+.rc-tried em{font-style:normal;font-weight:700;color:#FFD34D;-webkit-text-fill-color:#FFD34D;}
+/* The smallest phones (320 wide): a step down, so "Got him here" and a
+   three-figure number still sit beside most names on one line. */
+@media (max-width: 359px){.rc-clubs li{gap:9px;padding-right:10px;}.rc-clubs li b{font-size:15px;}.rc-clubs li em{font-size:11.5px;}.rc-ten li b{font-size:13.5px;}.rc-ten li em{font-size:11.5px;}.rc-q{font-size:14px;}}

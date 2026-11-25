@@ -45,11 +45,16 @@ describe('the card takes a picture and one action, when a host asks', () => {
     expect(html).not.toContain('rc-act');
     expect(html.endsWith('</div></div></section>')).toBe(true);
   });
-  it('the other dailies pass nothing new', () => {
-    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx', 'src/screens/MysteryPlayer.jsx']) {
+  // 25 Nov 2026: Transfer Trail and Top 10 hand over a picture of their own and ask for the layout
+  // (tests/unit/trail-top10-finish.test.js). Mystery Player's finish is as it was.
+  it('Mystery Player passes nothing new; Transfer Trail and Top 10 hand over their own pictures', () => {
+    const mp = read('src/screens/MysteryPlayer.jsx');
+    expect(mp).not.toMatch(/layout="one"/);
+    expect(mp).not.toMatch(/\bpicture[:=]/);
+    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) {
       const src = read(f);
-      expect(src, f).not.toMatch(/layout="one"/);
-      expect(src, f).not.toMatch(/\bpicture[:=]/);
+      expect(src, f).toMatch(/layout="one"/);
+      expect(src, f).toMatch(/\bpicture[:,]/);
     }
     expect(read('src/games/FootballWordle.jsx')).toContain('layout="one"');
     // The Daily 7 joined the layout in round two (tests/unit/daily7-finish.test.js); its card has the
@@ -498,7 +503,13 @@ describe('Back to Home as a quiet filled pill (components/ResultFoot.jsx, `pill`
     const html = renderToStaticMarkup(el(ResultFoot, { onHome() {} }));
     expect(html).toContain('width:100%;min-height:46px');
     expect(html).toContain('border:1px solid var(--border)');
-    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) expect(read(f), f).not.toMatch(/<ResultFoot[^>]*\bpill\b/);
+    // 25 Nov 2026: Transfer Trail and Top 10 ask for the pill too, with the layout.
+    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) expect(read(f), f).toMatch(/<ResultFoot onHome=\{onBack\} pill/);
+  });
+  it('a second pill beside the way out (Top 10\'s "More Top 10 lists"): the same quiet fill, no colour of its own', () => {
+    const html = renderToStaticMarkup(el(ResultFoot, { onHome() {}, pill: true, more: { label: 'More Top 10 lists', onClick() {}, accent: 'var(--t10)' } }));
+    expect(html).toMatch(/^<div style="margin-top:18px;display:flex;justify-content:center;flex-wrap:wrap;gap:8px"><button type="button" style="([^"]*)">More Top 10 lists<\/button><button type="button" style="\1">Back to Home<\/button><\/div>$/);
+    expect(html).not.toMatch(/--t10|width:100%|1px solid/);
   });
 });
 

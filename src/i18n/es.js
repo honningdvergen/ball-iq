@@ -1037,6 +1037,9 @@ export default {
   'share.one.daily7': 'Acerté {n} en el Daily 7. ¿Me superas?',
   'share.one.daily7.all': 'Acerté las 7 del Daily 7. ¿Lo igualas?',
   'share.one.daily7.lost': 'El Daily 7 pudo conmigo. ¿Aciertas alguna?',
+  // Los clubes del Transfer Trail en su tarjeta de resultado (25 nov 2026).
+  'trail.gotHere': 'Acertado aquí',
+  'trail.notNeeded': 'No hizo falta',
   'share.stumpMissed': 'Esta me pilló 🙈 A que tú tampoco la aciertas ⚽ {link}',
   'share.stumpGot': 'Esta la acerté. A que tú no 😏 ⚽ {link}',
   'share.stumpPassGot': '¡Acertada ✅! Te toca 😏 ⚽ {link}',

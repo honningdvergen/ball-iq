@@ -6,8 +6,11 @@
 // The unit suite has no DOM, so nothing there can see a name wrap. This lays the
 // board out in WebKit (Safari's engine) with the REAL stylesheet and measures:
 //
-//   finished board   the large size, cards free to grow          (no keyboard)
+//   roomy board      the large size, cards free to grow          (no keyboard)
 //   fitted board     .is-fit at each size, every rank found       (keyboard up)
+//
+// (Until 25 Nov 2026 the first state was the FINISHED board. A finished Top 10
+// draws no board now: the ten are rows on the result card, resultCard.css.)
 //
 // and fails if any text stands outside its card, or if a name is broken inside
 // a word at 360pt or wider. Why it exists: on 12 Oct 2026 the finished board
@@ -28,7 +31,7 @@ const css = readFileSync(join(ROOT, 'src/screens/top10.css'), 'utf8');
 const { lists } = JSON.parse(readFileSync(join(ROOT, 'src/data/top10Lists.json'), 'utf8'));
 const WIDTHS = [320, 360, 375, 390, 393, 402, 412, 430];
 const STATES = [
-  { tag: 'finished', size: 'l', row: 60, fit: false, cls: 'is-missed' },
+  { tag: 'roomy', size: 'l', row: 60, fit: false, cls: 'is-found' },
   { tag: 'typing l52', size: 'l', row: 52, fit: true, cls: 'is-found' },
   { tag: 'typing m44', size: 'm', row: 44, fit: true, cls: 'is-found' },
   { tag: 'typing m38', size: 'm', row: 38, fit: true, cls: 'is-found' },

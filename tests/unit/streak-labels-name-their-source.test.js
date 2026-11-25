@@ -53,7 +53,9 @@ const MODE_SURFACES = [
   // Mystery and the Trail print theirs through i18n since step 3: the source
   // holds the key, en.js the label (`en`, checked below).
   { name: 'Mystery', src: MYSTERY, compute: 'computeMysteryStreak', label: "t('mp.streak', { n: streak })", en: ['mp.streak', '{n}-day Mystery streak'] },
-  { name: 'Trail', src: TRAIL, compute: 'computeTrailStreak', label: 't("trail.streak", { n: streak })', en: ['trail.streak', '🔥 {n}-day Trail streak'] },
+  // 25 Nov 2026: the Trail's finish carries its streak as the header's chip (StreakChip), whose
+  // title is "N-day Trail streak" from the label handed over here.
+  { name: 'Trail', src: TRAIL, compute: 'computeTrailStreak', label: '{ count: streak, label: t("dd.l.trail") }', en: ['dd.l.trail', 'Trail streak'] },
 ];
 
 describe('a streak label names which streak it is', () => {

@@ -74,6 +74,7 @@ import {
 import { PlatformStoreBadge } from './components/StoreBadge.jsx';
 import { parseChallengeToken, storeChallenge, challengeFromUrl } from './lib/gameChallenge.js';
 import { getFootleXP } from './lib/footleXp.js';
+import { getTrailXP, getTop10XP } from './lib/dailyXp.js';
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 import { APP_STORE_ID, APP_STORE_URL, PLAY_STORE_URL, appStoreUrl } from './lib/links.js';
 import { captureFirstTouch } from './lib/firstTouch.js';
@@ -2788,7 +2789,9 @@ const FOOTLE_SERVICES = {
 // its own install banner", which is true inside the app, where the component
 // draws nothing, and wrong on the website's /play, where a phone visitor who
 // finished Transfer Trail, Top 10 or Mystery Player saw no way to the app.
-const DAILY_SERVICES = { haptic, playSound, Confetti, GetAppCTA: FootleGetAppCTA, shareCard };
+// paysXp: the app pays XP for a finished Transfer Trail and Top 10, so their
+// result cards say it; the static /transfer-trail/ page pays none and says none.
+const DAILY_SERVICES = { paysXp: true, haptic, playSound, Confetti, GetAppCTA: FootleGetAppCTA, shareCard };
 
 // ⚠️ THE REPORT CHANNEL WAS BLIND: 55 reports, 0 reasons, 25 in the last week
 // alone — p_reason was hardcoded null while the column and the RPC parameter
@@ -5989,7 +5992,7 @@ function AppInner() {
       // A Trail day is one puzzle in <=5 attempts, so score/total mirror
       // Footle's shape: attempts used out of the max, 1 "question" attempted.
       if (e?.detail?.game === 'trail') {
-        awardXp(e.detail.won === true ? 40 : 10, { daily: 'trail' });
+        awardXp(getTrailXP(e.detail.won === true), { daily: 'trail' });
         recordPlay(e.detail.won === true);
         if (user?.id) {
           const used = Math.min(e.detail.attempts || 5, 5);
@@ -6034,7 +6037,7 @@ function AppInner() {
       // case. Wired on the day the mode was built, per the Trail's lesson.
       if (e?.detail?.game === 'top10') {
         const found = Math.max(0, Math.min(10, e.detail.score || 0));
-        awardXp(found * 4 + (e.detail.won === true ? 15 : 0), { daily: 'top10' });
+        awardXp(getTop10XP(found, e.detail.won === true), { daily: 'top10' });
         recordPlay(e.detail.positive === true);
         if (user?.id) {
           saveScore(user?.id, {

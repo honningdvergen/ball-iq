@@ -18,6 +18,11 @@
 
 .t10-head { display: flex; align-items: center; gap: 10px; padding: 8px 4px; }
 .t10-head.is-embedded { padding: 2px 4px 8px; }
+/* Once the result is up (25 Nov 2026): the title keeps its own width and the
+   streak chip takes what is left (components/StreakChip.jsx), 12px apart as in
+   Footle's finished header. */
+.t10-head.is-over { gap: 12px; }
+.t10-head.is-over .t10-mast { flex: 0 1 auto; }
 .t10-head-title { font-size: 20px; font-weight: 800; color: var(--t1); }
 .t10-head-sub { font-size: 12.5px; color: var(--t2); }
 .t10-mast { flex: 1; min-width: 0; font-size: 13.5px; color: var(--t2); font-variant-numeric: tabular-nums; }
@@ -34,9 +39,9 @@
 /* 6px over the title, as Transfer Trail has over its first club: the title
    began 10px under the back button (Trail's ladder begins 14 under it) and
    read as touching the header (24 Nov 2026). Where every point is counted
-   (keyboard up on a short phone, a finished board on one) it stays at 2. */
+   (keyboard up on a short phone) it stays at 2. */
 .t10-q { padding: 6px 4px 0; }
-.t10.is-tight .t10-q, .t10.is-short .t10-q { padding-top: 2px; }
+.t10.is-tight .t10-q { padding-top: 2px; }
 .t10-q-title {
   margin: 0; font-size: 21px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em;
   color: var(--t1); text-wrap: balance;
@@ -50,9 +55,6 @@
   color: var(--t10); font-variant-numeric: tabular-nums;
 }
 .t10-q-note { margin: 4px 0 0; font-size: 12px; line-height: 1.35; color: var(--t3); text-wrap: pretty; }
-
-/* A finished board follows the heading directly (the guess box is gone). */
-.t10-q + .t10-board { margin-top: 12px; }
 
 /* The guess box. */
 .t10-entry { position: relative; margin-top: 10px; }
@@ -243,18 +245,6 @@
   opacity: 0; animation: t10Glow 520ms ease-out both;
 }
 
-/* The ones that got away, shown once the game is over. They arrive one after
-   another down the list rather than as a block. A REVEAL, NOT A GREY GRID
-   (Alex, 15 Oct 2026, of a lost board: "does this not look a bit dull?"):
-   they were dashed, see-through and grey, so a loss ended on ten ghost boxes.
-   Now each lands as a solid, warm-tinted tile with the name in full white,
-   still plainly apart from the ones you found (the Top 10 accent). */
-.t10-cell.is-missed { background: rgba(255, 107, 107, 0.07); border: 1px solid rgba(255, 107, 107, 0.32); }
-.t10-cell.is-missed .t10-name { color: var(--t1); font-weight: 800; }
-.t10-cell.is-missed .t10-rank { background: rgba(255, 107, 107, 0.16); color: #FF8A8A; }
-.t10-cell.is-missed .t10-clue { color: var(--t2); }
-.t10-cell.is-missed .t10-body { animation: t10Rise 260ms ease-out both; animation-delay: var(--t10-d, 0ms); }
-
 /* Wrong picks so far. */
 .t10-wrong { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .t10-chip {
@@ -278,10 +268,14 @@
 .t10-ghost.is-armed { color: var(--red); text-decoration-color: currentColor; }
 
 /* The result. */
-.t10-result { margin-top: 16px; text-align: center; animation: t10Rise 260ms ease-out both; }
-/* A short phone, game over: the note gives its room to the board and the
-   score sits tighter, so Share is on screen (lib/top10.js, doneRowFor). */
-.t10.is-short .t10-q-note { display: none; }
+/* 25 Nov 2026: the finish is the result card with the ten on it and the "one"
+   layout under it (components/DailyDone.jsx). 6px here and the header's own 8
+   put the card 14 under the header, as on Footle and the Daily 7. The ones
+   that got away are dimmed rows on the card now (resultCard.css, .rc-ten). */
+.t10-result { margin-top: 6px; text-align: left; }
+/* What the list counts and how ties are ordered: one quiet line at the foot,
+   over the way to say the list is wrong. */
+.t10-about { margin: 16px 6px 0; font-size: 12px; line-height: 1.4; color: var(--t3); -webkit-text-fill-color: var(--t3); text-align: center; text-wrap: pretty; }
 .t10-foot { margin-top: 10px; font-size: 11.5px; color: var(--t3); text-align: center; }
 
 /* Loading: ten quiet cells, the same size as the real ones. */

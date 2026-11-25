@@ -21,6 +21,9 @@ export const DEFAULT_DAILY_SERVICES = {
   // The picture share (App.jsx shareCard). The app passes it; without it a
   // screen shares its text, as the islands do.
   shareCard: null,
+  // Whether this host pays XP for a finish (the app does; a static page does
+  // not). A result card only prints "+40 XP" where it is really earned.
+  paysXp: false,
 };
 
 export function resolveDailyServices(services) {

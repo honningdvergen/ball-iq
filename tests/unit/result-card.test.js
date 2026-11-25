@@ -399,30 +399,35 @@ describe('the XP on a Footle card (24 Nov 2026, round two)', () => {
   });
 });
 
+// 25 Nov 2026: both finishes took the layout Footle has (Alex: "Yes, both"), so what the card says
+// moved: the career and the ten are the card's picture, and the line that sat under the verdict is
+// under the picture. The whole of it is pinned in tests/unit/trail-top10-finish.test.js.
 describe('Transfer Trail and Top 10 end on the card (23 Nov 2026)', () => {
   const trail = readFileSync(new URL('../../src/screens/TransferTrail.jsx', import.meta.url), 'utf8');
   const top10 = readFileSync(new URL('../../src/screens/Top10.jsx', import.meta.url), 'utf8');
-  it('Trail: the club it took out of the career, a win word, the name pinned under it; a loss has no score', () => {
+  it('Trail: the club it took out of the career, a win word, the name as the line under the clubs; a loss has no score', () => {
     expect(trail).toContain('score: won ? clubsUsed : null, outOf: career.length,');
     expect(trail).toContain('verdict: won ? t(`footle.win${misses >= TRAIL_MAX_ATTEMPTS - 1 ? 6 : Math.min(misses + 1, 4)}`) : name,');
-    expect(trail).toContain('sub: won ? `${t("trail.itWas")} ${name}` : t("rc.footleLost"),');
+    expect(trail).toContain('sub: won ? null : t("rc.footleLost"),');
+    expect(trail).toContain('note: won ? `${t("trail.itWas")} ${name}` : null,');
     expect(trail).toContain('card={trailCard}');
     // not on the stitch variant, which has its own finish
     expect(trail).toContain('const trailCard = (!done || stitch) ? null : (() => {');
-    // and the old three lines are only drawn where there is no card
-    expect(trail).toMatch(/\{!trailCard && <>\s*<div style=\{\{ fontSize: 13, color: "var\(--t2\)" \}\}>\{t\("trail\.itWas"\)\}<\/div>/);
+    // and the old lines are only drawn there
+    expect(trail).toMatch(/\{done && stitch && \(\s*<div style=\{\{ marginTop: 18, textAlign: "center" \}\}>\s*<div style=\{\{ fontSize: 13, color: "var\(--t2\)" \}\}>\{t\("trail\.itWas"\)\}<\/div>/);
   });
-  it("Trail's own streak is the card's line, in words, with no emoji", () => {
-    // the number says what it counts, in words, because lower is better here
-    expect(trail).toContain('note: won ? [t("trail.gotIt", { count: clubsUsed }), !isArchive && !embedded && streak > 1 ? t("rc.trailStreak", { n: streak }) : null].filter(Boolean).join(" · ") : null,');
-    const html = renderToStaticMarkup(React.createElement(ResultCard, { title: 'Transfer Trail', tag: 'No. 113', score: 3, outOf: 4, verdict: 'Brilliant', sub: 'It was Zinedine Zidane', note: '4-day Trail streak' }));
-    expect(html).toContain('<p class="rc-note">4-day Trail streak</p>');
+  it("Trail's own streak is the header's chip now, and the card still draws no strip", () => {
+    expect(trail).not.toContain('rc.trailStreak');
+    expect(trail).toContain('const finishStreak = dailyDone?.streak || { count: streak, label: t("dd.l.trail") };');
+    const html = renderToStaticMarkup(React.createElement(ResultCard, { title: 'Transfer Trail', tag: 'No. 113', score: 3, outOf: 4, verdict: 'Brilliant', note: 'It was Zinedine Zidane' }));
+    expect(html).toContain('<p class="rc-note">It was Zinedine Zidane</p>');
     expect(html).toContain('<b>3</b><span>/4</span>');
-    expect(html).not.toContain('rc-kicks');   // no strip: the career above is the picture
+    expect(html).not.toContain('rc-kicks');   // no strip: the career is the picture
   });
-  it('Top 10: the score out of the list, short words beside it, the list title under it', () => {
+  it('Top 10: the score out of the list, short words beside it, the list title over the ten on the card', () => {
     expect(top10).toContain('score: g.score, outOf: total,');
-    expect(top10).toContain('sub: g.perfect ? (g.lives === TOP10_LIVES ? t("rc.t10Clean") : t("rc.t10Spare", { count: g.lives })) : list.title,');
+    expect(top10).toContain('<p className="rc-q">{list.title}</p>');
+    expect(top10).toContain('g.perfect ? (g.lives === TOP10_LIVES ? t("rc.t10Clean") : t("rc.t10Spare", { count: g.lives })) : null,');
     expect(top10).toContain('card={top10Card}');
     // the large figure and the sentence that said the score a second time are gone
     expect(top10).not.toContain('className={`t10-score');

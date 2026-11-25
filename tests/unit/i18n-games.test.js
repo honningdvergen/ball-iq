@@ -8,6 +8,28 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     INTENDED CHANGE, 25 Nov 2026 (later: Transfer Trail and Top 10 finish on the layout Footle
+//     has; Alex, shown both drawn: "Yes, both"). Ten entries were replaced, and only those: the
+//     five finished Trails ("won on the first two clubs", "won after two misses", "lost",
+//     "archive, lost", "embedded, won") and the five finished Top 10s ("out of lives", "gave up
+//     on nought", "perfect, no miss", "perfect, one life spare", "perfect, two lives spare"). The
+//     new render was dumped with a temporary copy of this test; 57 of 67 entries were
+//     byte-identical. For each of the ten a script took the OLD entry apart (header, ladder or
+//     board, card, panel, foot; each part asserted to be there exactly once) and rebuilt the new
+//     entry from the old one's own content, byte for byte equal to the new render: (1) the
+//     finished header has 12px between its parts, its title keeps its own width, and the streak
+//     the old panel named is the chip (.dd-stk; none where there was no streak); (2) the ladder
+//     / the heading, board and tried-name chips above the card are gone, and the clubs / the
+//     title, the ten and the chips read off them are the card's picture (.rc-pic: .rc-clubs with
+//     the green "Got him here" row and the dimmed "Not needed" rows on a win; .rc-q, .rc-ten,
+//     .rc-tried); (3) the card has no top line ("rc is-bare"), the line that sat under its
+//     verdict ("It was …", how clean a perfect ten was) is the line under the picture, the Trail's
+//     "Got it on N clubs" is said by the green row, and the card ends in one Share button
+//     ("Share my result" on the Trail and on a Top 10 of 0 or 1, else "Share my N/10"); (4) the
+//     framed panel (.dd: streak row, solid "Share result") is the caption of the "one" layout
+//     (.dd-one) with the old panel's own countdown or archive sentence; (5) the foot is Back to
+//     Home as the filled pill ("More Top 10 lists" a second pill beside it; no pill on the static
+//     page), Top 10's date and rule as one quiet line, then the same report link.
 //     INTENDED CHANGE, 25 Nov 2026 (Share is one button that sends one message; Alex:
 //     "Yes, build it"). Thirteen entries were replaced, and only those: the new render was
 //     dumped with a temporary copy of this test, 54 of 67 entries were byte-identical, and

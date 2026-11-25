@@ -211,10 +211,14 @@ describe('everything else keeps what it had', () => {
     expect(wide).toContain('<section class="dd"');
     expect(wide).not.toMatch(/dd-one|dd-hd|rc-act/);
   });
-  it('Transfer Trail, Top 10 and Mystery Player still ask for nothing new', () => {
-    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx', 'src/screens/MysteryPlayer.jsx']) {
+  // 25 Nov 2026: Transfer Trail and Top 10 took the layout too (Alex: "Yes, both";
+  // tests/unit/trail-top10-finish.test.js). Mystery Player's drawing is not approved, so it has not.
+  it('Mystery Player still asks for nothing new; Transfer Trail and Top 10 joined on 25 Nov', () => {
+    expect(read('src/screens/MysteryPlayer.jsx')).not.toMatch(/layout="one"|StreakChip|\bpill\b \/>|head=\{false\}/);
+    for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) {
       const src = read(f);
-      expect(src, f).not.toMatch(/layout="one"|StreakChip|\bpill\b \/>|head=\{false\}/);
+      expect(src, f).toContain('layout="one"');
+      expect(src, f).toContain('<StreakChip streak={finishStreak} isArchive={isArchive} />');
     }
   });
   it('Spanish has every line this screen shows, and the header\'s line is the list row\'s without its minutes', () => {

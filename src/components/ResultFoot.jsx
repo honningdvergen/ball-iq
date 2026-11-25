@@ -59,11 +59,16 @@ export function ReportLink({ thing, info, onReport, style }) {
 export default function ResultFoot({ thing, info, onReport, onHome, more, pill = false }) {
   useT();
   if (pill) {
-    return onHome ? (
-      <div style={{ marginTop: 18, display: "flex", justifyContent: "center" }}>
-        <button type="button" onClick={onHome} style={PILL}>{t("quiz.backHome")}</button>
+    // `more` rides beside the way out as a second pill of the same weight
+    // (Top 10's "More Top 10 lists", 25 Nov 2026, when its finish took this
+    // foot): no colour of its own, so nothing under the card competes with it.
+    if (!onHome && !more) return null;
+    return (
+      <div style={{ marginTop: 18, display: "flex", justifyContent: "center", ...(more ? { flexWrap: "wrap", gap: 8 } : null) }}>
+        {more && <button type="button" onClick={more.onClick} style={PILL}>{more.label}</button>}
+        {onHome && <button type="button" onClick={onHome} style={PILL}>{t("quiz.backHome")}</button>}
       </div>
-    ) : null;
+    );
   }
   const link = <ReportLink thing={thing} info={info} onReport={onReport} />;
   if (!onHome && !more && (!onReport || !info)) return null;

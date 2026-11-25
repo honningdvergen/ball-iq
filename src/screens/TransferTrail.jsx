@@ -38,6 +38,8 @@ import {
 // come from a module gen-club-index.mjs writes out of App.jsx on every build.
 import { resolveDailyServices } from "../games/dailyServices.js";
 import { DailyDone } from "../components/DailyDone.jsx";
+import { StreakChip } from "../components/StreakChip.jsx";
+import { getTrailXP } from "../lib/dailyXp.js";
 import { clubColour, clubAbbr, tint, lift, crestPaint } from "../lib/clubColour.js";
 import { CLUB_PACK_COLOURS, CLUB_PACK_ABBR } from "../data/clubPackColours.js";
 /* Shares mysteryPool.json with Mystery Player ON PURPOSE — both screens
@@ -84,7 +86,7 @@ function saveDay(ymd, state) {
 // return-loop panel. Its own attempts go through stitch.load/save only.
 export default function TransferTrail({ player: bundledPlayer, date = new Date(), onBack, onReport, services, embedded = false, stitch = null }) {
   const t = useT();
-  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard, paysXp } = resolveDailyServices(services);
   const daily = !stitch;
   const ymd = dateToYMD(date);
   // Keyed by the day, not the Date object: the island passes none, and the
@@ -292,23 +294,63 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
   // The result card's words (components/ResultCard.jsx via DailyDone). A win:
   // the club it took out of the career's clubs, a word for how early (the
   // five win words Footle uses for its first five guesses: one voice for the
-  // dailies), and the name under it. A loss has no score and the name is the
-  // headline. The career above is the picture, so the card draws no strip.
+  // dailies), and the name. A loss has no score and the name is the headline.
+  //
+  // THE CAREER IS ON THE CARD (25 Nov 2026, the layout Footle and the Daily 7
+  // ended on). Until now the ladder stayed above and a second green card under
+  // it said the result again; Alex, shown this finish and Top 10's in the new
+  // layout: "Yes, both". The card carries every club as a row with the app's
+  // own badge: the one the player was named on is green ("Got him here"), the
+  // ones never needed are dimmed ("Not needed"), and a lost Trail shows them
+  // all plain, because all of them were shown. The name is one quiet line
+  // under the clubs on a win, the headline on a loss. Once the result is up
+  // the ladder itself is not drawn (see below).
   const trailCard = (!done || stitch) ? null : (() => {
     const name = (player.display || []).join(" ");
+    const picture = (
+      <ol className="rc-clubs">
+        {career.map((club, i) => {
+          const col = clubColour(club, CLUB_PACK_COLOURS);
+          const paint = col ? crestPaint(col) : null;
+          const got = won && i === clubsUsed - 1;
+          const off = won && i >= clubsUsed;
+          return (
+            <li key={i} className={got ? "is-got" : off ? "is-off" : undefined}>
+              <i aria-hidden="true" style={paint ? { background: paint.bg, color: paint.ink, WebkitTextFillColor: paint.ink } : undefined}>{clubAbbr(club, CLUB_PACK_ABBR)}</i>
+              <b>{club}</b>
+              {/* A second spell and a loan are said on the card as on the ladder
+                  (the ladder's note on return spells says why they must be). */}
+              {career.slice(0, i).includes(club) && <small>{t("trail.return")}</small>}
+              {player.loans?.[i] && <small className="is-loan">{t("trail.loan")}</small>}
+              {(got || off) && <em>{t(got ? "trail.gotHere" : "trail.notNeeded")}</em>}
+            </li>
+          );
+        })}
+      </ol>
+    );
     return {
-      title: "Transfer Trail", tag: number > 0 ? `No. ${number}` : null,
+      picture,
+      title: "Transfer Trail", tag: number > 0 ? t("game.no", { n: number }) : null,
       score: won ? clubsUsed : null, outOf: career.length,
       // A win on the last attempt takes Footle's last-guess word, as there.
       verdict: won ? t(`footle.win${misses >= TRAIL_MAX_ATTEMPTS - 1 ? 6 : Math.min(misses + 1, 4)}`) : name,
-      sub: won ? `${t("trail.itWas")} ${name}` : t("rc.footleLost"),
+      // As on Footle's card: a win says who it was as one quiet line under the
+      // picture (the XP has the place under the verdict); after a loss the
+      // name is the headline and "Out of guesses" stays under it.
+      sub: won ? null : t("rc.footleLost"),
+      note: won ? `${t("trail.itWas")} ${name}` : null,
       pinSub: true,
-      // The number alone does not say what it counts, and here lower is better
-      // (review, 23 Nov): the line says it in words. Then the Trail's own
-      // streak; in the app the panel below carries the DAILY one.
-      note: won ? [t("trail.gotIt", { count: clubsUsed }), !isArchive && !embedded && streak > 1 ? t("rc.trailStreak", { n: streak }) : null].filter(Boolean).join(" · ") : null,
+      // "3/4" here counts clubs, and fewer is better: on a button it would
+      // read as three quarters of something. The button says "Share my
+      // result"; the message it sends says the clubs in words.
+      plainShare: true,
+      // An old Trail pays nothing and neither does the static page: only a
+      // host that really pays says so (`paysXp`, the app's DAILY_SERVICES).
+      xp: isArchive || !paysXp ? 0 : getTrailXP(won),
     };
   })();
+  // The app's one streak; on the static page, where there is none, the Trail's own.
+  const finishStreak = dailyDone?.streak || { count: streak, label: t("dd.l.trail") };
   const shareText = useMemo(
     () => (done ? buildTrailShareText({ number, won, clubsUsed, streak }) : ""),
     [done, number, won, clubsUsed, streak]
@@ -339,6 +381,15 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
     );
   }
 
+  // What a "Career looks wrong?" report carries: the full ladder.
+  const reportInfo = {
+    id: `trail:${player.key}`,
+    q: `${daily ? `Transfer Trail #${number}` : "Stitch-up"} — ${(player.display || []).join(" ")}: ${career.join(" → ")}`,
+    picked: null,
+    correct: (player.display || []).join(" "),
+    mode: "trail",
+  };
+
   // Club identity on the ladder, mirroring the Club Quiz rows. CLUB_PACKS
   // carries {name, color}; the resolver handles the fact that careers say
   // "Man Utd" where the packs say "Man United".
@@ -353,7 +404,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           solved Trail. */}
       {won && !finishedBefore(savedAtMount.current.status) && Confetti ? <Confetti /> : null}
 
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: trailCard ? 12 : 10, padding: embedded ? "2px 4px 8px" : "8px 4px" }}>
         {onBack && <button className="back-btn" onClick={onBack} aria-label={t("game.back")}>←</button>}
         {/* embedded: on the static page the H1 above already names the game,
             so the title row becomes one masthead line, like Footle's — the
@@ -361,12 +412,12 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
             is the number alone: "name the player from their career" was the
             H1 and the lead above, said a third time (declutter, 26 Oct 2026). */}
         {embedded ? (
-          <div style={{ flex: 1, minWidth: 0, fontSize: 13.5, color: "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
+          <div style={{ flex: trailCard ? "0 1 auto" : 1, minWidth: 0, fontSize: 13.5, color: "var(--t2)", fontVariantNumeric: "tabular-nums" }}>
             {number > 0 && <b style={{ color: "var(--t1)", fontWeight: 800 }}>Trail #{number}</b>}
             {done && <>{number > 0 ? " · " : ""}{t(won ? "trail.solved" : "trail.notThisTime")}</>}
           </div>
         ) : (
-          <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ flex: trailCard ? "0 1 auto" : 1, minWidth: 0 }}>
             <GameTitle no={number}>{daily ? "Transfer Trail" : t("su.title")}</GameTitle>
             <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
               <ChallengeBanner game="trail" edition={daily && !isArchive ? number : -1} finished={done}>
@@ -375,6 +426,11 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
             </div>
           </div>
         )}
+        {/* ONCE THE RESULT IS UP THE STREAK HAS THIS CORNER (25 Nov 2026, as
+            on Footle and the Daily 7): a small filled chip where the guesses
+            left sat during play. The title keeps its own width and the chip
+            takes what is left (components/StreakChip.jsx). */}
+        {trailCard && <StreakChip streak={finishStreak} isArchive={isArchive} />}
         {!done && (
           /* Guesses left, drawn: one pip a guess, spent ones dimmed, the last
              one red. It was a bare number over a 9px "LEFT" (Alex's recording,
@@ -395,6 +451,10 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
 
       {stitch?.Banner && !done && <stitch.Banner />}
 
+      {/* ONCE THE RESULT IS UP THE LADDER IS NOT DRAWN (25 Nov 2026): its clubs
+          are on the result card below (trailCard.picture), so the result is on
+          screen once. A Stitch-up has no card and keeps its ladder. */}
+      {!trailCard && (
       <div style={{ display: "flex", flexDirection: "column", gap: TRAIL_GAP, padding: "6px 2px" }}>
         {career.slice(0, shown).map((club, i) => {
           const col = clubColour(club, packColours);
@@ -447,6 +507,7 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
           );
         })}
       </div>
+      )}
 
       {hint && (
         <div style={{ marginTop: 10, padding: "10px 14px", borderRadius: 11,
@@ -564,75 +625,52 @@ export default function TransferTrail({ player: bundledPlayer, date = new Date()
         </>
       )}
 
-      {done && (
+      {done && trailCard && (
+        /* THE FINISH AS ONE OBJECT (25 Nov 2026): the card with the career and
+           one quiet Share button, then the caption, the other dailies as one
+           list and the quiet lines (components/DailyDone.jsx, layout "one",
+           which has the why). 6px here and the header's own 8 put the card 14
+           under the header, as on Footle and the Daily 7. */
+        <div style={{ marginTop: 6 }}>
+          <DailyDone
+            game="trail"
+            card={trailCard}
+            layout="one"
+            edition={number}
+            won={won}
+            bucket={won ? clubsUsed : 0}
+            isArchive={isArchive}
+            streak={finishStreak}
+            promoted={dailyDone?.promoted}
+            onShare={onShare}
+            remind={dailyDone?.remind}
+            nextUp={dailyDone?.nextUp || []}
+            day={dailyDone?.day}
+            save={dailyDone?.save}
+            GetAppCTA={GetAppCTA}
+            track={dailyDone?.track}
+            bucketMax={career.length}
+            stitch={dailyDone?.stitch}
+          />
+          {/* The way out, as the quiet filled pill; then the report link. */}
+          <ResultFoot onHome={onBack} pill />
+          {/* A wrong career order is UNFALSIFIABLE to the player: they cannot
+              tell a puzzle they misread from data we got wrong, so without this
+              they simply lose trust and say nothing. Same trust class as a wrong
+              answer key. Sends the full ladder so the row is actionable. */}
+          <ReportLink thing="Career" onReport={onReport} info={reportInfo} style={{ marginTop: 12 }} />
+        </div>
+      )}
+      {done && stitch && (
         <div style={{ marginTop: 18, textAlign: "center" }}>
-          {/* THE RESULT CARD (23 Nov 2026), the family the Daily 7 and Footle
-              ended on: drawn by DailyDone below. It carries what these three
-              lines said (the name, "Got it on N clubs", the Trail streak), so
-              they are only drawn where there is no card: the stitch variant. */}
-          {!trailCard && <>
           <div style={{ fontSize: 13, color: "var(--t2)" }}>{t("trail.itWas")}</div>
           <div style={{ fontSize: 26, fontWeight: 900, color: "var(--t1)", marginTop: 2 }}>
             {(player.display || []).join(" ")}
           </div>
-          </>}
-          {stitch ? <stitch.Done won={won} clubsUsed={clubsUsed} /> : <>
-          {!trailCard && <div style={{ fontSize: 13, color: "var(--t2)", marginTop: 6 }}>
-            {won
-              // ⚠️ Archive plays deliberately do NOT tick the streak (see the
-              // effect above, which returns early when isArchive), so claiming
-              // one here would credit the player for something that did not
-              // happen. Same class as "back tomorrow" on a puzzle from the past.
-              // Not on the static page (`embedded`, declutter 26 Oct 2026):
-              // there the panel below opens with this same Trail streak; in the
-              // app the panel carries the daily streak, so this one stays.
-              ? `${t("trail.gotIt", { count: clubsUsed })}${!isArchive && !embedded && streak > 1 ? ` · ${t("trail.streak", { n: streak })}` : ""}`
-              : t(isArchive ? "trail.outPast" : "trail.out")}
-          </div>}
-          {/* The return loop, built once for all four dailies — see
-              components/DailyDone.jsx. Carries share, streak, countdown, remind,
-              how everyone did and the other open dailies (the Mystery chain a
-              loss used to offer is now one of those rows). */}
-          <div style={{ marginTop: trailCard ? 0 : 14, textAlign: "left" }}>
-            <DailyDone
-              game="trail"
-              card={trailCard}
-              edition={number}
-              won={won}
-              bucket={won ? clubsUsed : 0}
-              isArchive={isArchive}
-              streak={dailyDone?.streak || { count: streak, label: t("dd.l.trail") }}
-              promoted={dailyDone?.promoted}
-              onShare={onShare}
-              remind={dailyDone?.remind}
-              nextUp={dailyDone?.nextUp || []}
-              day={dailyDone?.day}
-              save={dailyDone?.save}
-              GetAppCTA={GetAppCTA}
-              track={dailyDone?.track}
-              bucketMax={career.length}
-              stitch={dailyDone?.stitch}
-            />
-          </div>
-          </>}
-          {/* A wrong career order is UNFALSIFIABLE to the player — they cannot
-              tell a puzzle they misread from data we got wrong, so without this
-              they simply lose trust and say nothing. Same trust class as a wrong
-              answer key. Sends the full ladder so the row is actionable. */}
+          <stitch.Done won={won} clubsUsed={clubsUsed} />
           {/* A stitch-up's own panel above carries the way out, so it takes
               the report link alone. */}
-          {(() => {
-            const info = {
-              id: `trail:${player.key}`,
-              q: `${daily ? `Transfer Trail #${number}` : "Stitch-up"} — ${(player.display || []).join(" ")}: ${career.join(" → ")}`,
-              picked: null,
-              correct: (player.display || []).join(" "),
-              mode: "trail",
-            };
-            return daily
-              ? <ResultFoot thing="Career" onReport={onReport} onHome={onBack} info={info} />
-              : <ReportLink thing="Career" onReport={onReport} info={info} style={{ marginTop: 10 }} />;
-          })()}
+          <ReportLink thing="Career" onReport={onReport} info={reportInfo} style={{ marginTop: 10 }} />
         </div>
       )}
     </div>

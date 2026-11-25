@@ -906,6 +906,9 @@ export const STEP7_EN = {
   'share.one.daily7': 'Got {n} right on Daily 7. Can you beat it?',
   'share.one.daily7.all': 'Got all 7 right on Daily 7. Can you match it?',
   'share.one.daily7.lost': 'Daily 7 beat me. Can you get one?',
+  // Transfer Trail's clubs on its result card (25 Nov 2026).
+  'trail.gotHere': 'Got him here',
+  'trail.notNeeded': 'Not needed',
   'ts.repairFailed': 'Couldn\'t reach the server to repair your streak. Check your connection and finish yesterday\'s puzzle again today.',
   'ld.ballpark': 'Loading Ballpark',
   'bp.title': 'Ballpark',

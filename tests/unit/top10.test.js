@@ -619,8 +619,10 @@ describe('One footer for a finished daily (13 Oct 2026)', () => {
     expect(reportLabel('Answer')).toBe('Answer looks wrong? Tell us');
   });
   it('Footle, Transfer Trail and Top 10 all use it, and none keeps a footer of its own', () => {
-    expect(read('screens/TransferTrail.jsx')).toMatch(/<ResultFoot thing="Career" onReport=\{onReport\} onHome=\{onBack\}/);
-    expect(read('screens/Top10.jsx')).toMatch(/<ResultFoot thing="List" onReport=\{onReport\} onHome=\{onBack\}/);
+    // Since 25 Nov 2026 Transfer Trail and Top 10 end as Footle does: the way out as the quiet filled
+    // pill, then the same report link under it.
+    expect(read('screens/TransferTrail.jsx')).toMatch(/<ResultFoot onHome=\{onBack\} pill \/>[\s\S]{0,700}<ReportLink thing="Career" onReport=\{onReport\} info=\{reportInfo\}/);
+    expect(read('screens/Top10.jsx')).toMatch(/<ResultFoot onHome=\{onBack\} pill\s+more=\{onMoreLists \? \{ label: t\("top10\.more"\), onClick: onMoreLists \} : null\} \/>[\s\S]{0,900}<ReportLink thing="List" onReport=\{onReport\}/);
     const footle = read('games/FootballWordle.jsx');
     expect(footle).toMatch(/<ReportLink\s+thing="Answer"/);
     // Since 24 Nov 2026 Footle asks for the way out as the quiet filled pill (round two of its finish).
@@ -635,13 +637,17 @@ describe('One footer for a finished daily (13 Oct 2026)', () => {
 
 describe('The player-facing faults of 13 Oct', () => {
   const read = (rel) => readFileSync(new URL(`../../src/${rel}`, import.meta.url), 'utf8');
-  it('a finished Top 10 board is shorter on a short phone, so Share is on screen', async () => {
-    const { doneRowFor, T10_SHORT_UNDER } = await import('../../src/lib/top10.js');
-    expect(doneRowFor(956)).toBe(60); expect(doneRowFor(874)).toBe(60); expect(doneRowFor(800)).toBe(60);
-    expect(doneRowFor(799)).toBe(52); expect(doneRowFor(762)).toBe(52); expect(doneRowFor(720)).toBe(52);
-    expect(doneRowFor(719)).toBe(46); expect(doneRowFor(647)).toBe(46);
-    expect(T10_SHORT_UNDER).toBe(720);
-    for (let h = 500; h < 1000; h += 7) expect(doneRowFor(h + 7)).toBeGreaterThanOrEqual(doneRowFor(h)); // never taller on a shorter screen
+  // 13 Oct 2026: the finished board's row was 60, 52 or 46pt by the height of the screen, so Share
+  // under it was on screen on a short phone. 25 Nov 2026: a finished Top 10 has no board (the ten are
+  // on the result card, with Share on the card), so the row rule went with it.
+  it('a finished Top 10 draws no board: the ten are on the result card, and the short-phone row rule is gone', async () => {
+    const lib = await import('../../src/lib/top10.js');
+    expect(lib.doneRowFor).toBeUndefined();
+    expect(lib.T10_SHORT_UNDER).toBeUndefined();
+    const screen = read('screens/Top10.jsx');
+    expect(screen).toMatch(/\{!g\.done && \(\s*<div ref=\{boardRef\} className=\{`t10-board/);
+    expect(screen).not.toMatch(/is-missed|is-short|doneRowFor/);
+    expect(read('screens/top10.css')).not.toMatch(/is-missed|is-short/);
   });
   it('a timed question holds a full clock for a moment before it drains, on one deadline', () => {
     const quiz = read('screens/QuizEngine.jsx');
