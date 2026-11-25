@@ -325,7 +325,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           <>
             {/* The way out, as Footle's quiet filled pill; then the review of what got you. */}
             <ResultFoot onHome={onHome} pill />
-            <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+            <WrongAnswersReview wrongAnswers={wrongAnswers} allAnswers={result.allAnswers} onReport={onReport} mode={mode} />
             {/* The same way out again under the last missed question (25 Nov
                 2026): after a long list the first pill is screens above, and
                 the bottom of the page had no exit. Only with a list to scroll. */}
@@ -333,7 +333,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
           </>
         ) : (
           <>
-            <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+            <WrongAnswersReview wrongAnswers={wrongAnswers} allAnswers={result.allAnswers} onReport={onReport} mode={mode} />
             <ResultFoot onHome={onHome} />
           </>
         )
@@ -353,7 +353,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
             </div>
             <button className="results-exit" onClick={onHome}>{t("quiz.backHome")}</button>
           </div>
-          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+          <WrongAnswersReview wrongAnswers={wrongAnswers} allAnswers={result.allAnswers} onReport={onReport} mode={mode} />
         </>
       )}
       </div>{/* /.rd-mobile */}
@@ -454,7 +454,7 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
         </div>
         {/* Same review loop as mobile — constrained to the rd-card column. */}
         <div style={{maxWidth:560, margin:"0 auto"}}>
-          <WrongAnswersReview wrongAnswers={wrongAnswers} onReport={onReport} mode={mode} />
+          <WrongAnswersReview wrongAnswers={wrongAnswers} allAnswers={result.allAnswers} onReport={onReport} mode={mode} />
         </div>
       </div>
     </div>

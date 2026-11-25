@@ -20,6 +20,23 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (the missed list is one card per question): on a finish, "N you missed"
+// was one outlined box of rows; each miss is now its own card (components/WrongAnswersReview.jsx says
+// why). Four entries were replaced, and only those (the four results with a missed list: "results:
+// classic 7/10, new best over 5, footle open", "results: classic 3/10, daily open (the daily is the
+// primary), one more to rate", "results: survival 12, new best over 8" and "results: daily 7 on 5,
+// the panel"): the new render was dumped with a temporary copy of this test, 94 of 98 entries were
+// byte-identical, and each of the four equals, byte for byte, its old entry with the two lists in it
+// (phone and wide screen) rebuilt by script from their own pieces. The rules: <div class="wrong-review">
+// becomes <div class="wm-list">; each row (number, question, right answer, "Your answer: …" when there
+// was one, explanation when there was one, flag) becomes a card of the same pieces in a new order
+// (<span class="wm-n">Question N</span> and the flag on one line, the question, the right answer after
+// lucide's tick, the player's answer after lucide's cross, the explanation); the flag's button is
+// unchanged but for its inline box (36 by 36 with margin -6px -8px 0 0 and a 10px corner becomes 44 by
+// 44 with margin -12px -12px -12px 0 and a 12px corner). N is the question's own number where the
+// scenario's answers add up with its list (the Daily 7: 6 and 7) and the list's own count where they
+// do not (the other three). The heading and everything outside the lists are untouched, and the three
+// "review: daily 7 ..." entries, whose rows share the old class names, are byte-identical.
 // INTENDED CHANGE, 25 Nov 2026 (a way out at the bottom): a Daily 7 with questions missed ends on a
 // second "Back to Home" pill under the last missed question. One entry was replaced, and only that
 // one ("results: daily 7 on 5, the panel", the only Daily 7 result here whose phone layout has a
