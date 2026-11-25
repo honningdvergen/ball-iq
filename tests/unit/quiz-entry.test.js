@@ -53,9 +53,9 @@ describe("Home: one Quiz row replaces five entries", () => {
     }
   });
 
-  it("the grid keeps Survival and Hot Streak, the modes with rules of their own", () => {
+  it("More modes keeps Survival, the mode with a rule of its own (Hot Streak's row left on 25 Nov 2026)", () => {
     expect(HOME_CODE).toMatch(/key:"survival",\s*Icon: Heart/);
-    expect(HOME_CODE).toMatch(/key:"hotstreak",\s*Icon: Flame/);
+    expect(HOME_CODE).not.toMatch(/key:"hotstreak"/);
   });
 });
 

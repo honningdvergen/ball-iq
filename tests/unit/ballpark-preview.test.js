@@ -84,8 +84,14 @@ describe('what the flag opens', () => {
     const home = code('src/screens/HomeScreen.jsx');
     const at = home.indexOf('{BALLPARK_PREVIEW && (');
     expect(at).toBeGreaterThan(home.indexOf('{t("home.moreModes")}</div>'));
-    expect(at).toBeLessThan(home.indexOf('<div className="play-grid">'));
-    const row = home.slice(at, home.indexOf('<div className="play-grid">'));
+    // In the one card of More modes (25 Nov 2026), above the two modes that close it.
+    const card = home.indexOf('<div className="home-list">', home.indexOf('{t("home.moreModes")}</div>'));
+    const end = home.indexOf('{ key:"survival"');
+    expect(card).toBeGreaterThan(-1);
+    expect(at).toBeGreaterThan(card);
+    expect(at).toBeLessThan(end);
+    expect(home.slice(card, at)).not.toContain('</div>');
+    const row = home.slice(at, end);
     expect(row).toContain(`data-preview="${PREVIEW_MARKER}"`);
     expect(row).toContain('className="todays-seven-secondary mp-row"');
     expect(row).toContain('onClick={() => setScreen("ballpark")}');

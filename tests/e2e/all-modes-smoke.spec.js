@@ -67,18 +67,29 @@ test("Today's 7 entry", async ({ page, context }) => {
   await expectNoCrash(page, errs, "Today's 7");
 });
 
-for (const mode of ['Survival', 'Hot Streak']) {
-  test(`More-modes — ${mode}`, async ({ page, context }) => {
-    await seedGuestMode(context);
-    const errs = await captureErrors(page);
-    await page.goto('/play?tab=home');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(500);
-    await page.locator('.play-card').filter({ hasText: mode }).first().click();
-    await page.waitForTimeout(1500);
-    await expectNoCrash(page, errs, `More-modes ${mode}`);
-  });
-}
+test('More-modes — Survival', async ({ page, context }) => {
+  await seedGuestMode(context);
+  const errs = await captureErrors(page);
+  await page.goto('/play?tab=home');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(500);
+  // A row of the More modes card since 25 Nov 2026 (it was a .play-card tile).
+  await page.locator('.home-list .todays-seven-secondary').filter({ hasText: 'Survival' }).first().click();
+  await page.waitForTimeout(1500);
+  await expectNoCrash(page, errs, 'More-modes Survival');
+});
+
+// Hot Streak has no row on Home since 25 Nov 2026. The mode is still there: this
+// starts it the way the website's own card does, by its link.
+test('Hot Streak — by its link', async ({ page, context }) => {
+  await seedGuestMode(context);
+  const errs = await captureErrors(page);
+  await page.goto('/play?game=hotstreak');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(2000);
+  await expect(page.locator('.home-list')).toHaveCount(0); // in the game, not on Home
+  await expectNoCrash(page, errs, 'Hot Streak by link');
+});
 
 // Classic, Legends and Chaos left the grid on 16 Oct 2026: one Quiz row opens
 // the Quiz screen, where each is a chip ("Everything" is the old Classic).
@@ -106,7 +117,7 @@ test('Ball IQ Test stays dead — no home entry to the killed mode', async ({ pa
   await page.goto('/play?tab=home');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  await expect(page.locator('.play-card').filter({ hasText: /Ball IQ Test|IQ Test/ })).toHaveCount(0);
+  await expect(page.locator('.home-list .todays-seven-secondary, .play-card').filter({ hasText: /Ball IQ Test|IQ Test/ })).toHaveCount(0);
   await expect(page.getByText("What's your IQ?")).toHaveCount(0);
   await expectNoCrash(page, errs, 'Ball IQ Test guard');
 });

@@ -26,19 +26,22 @@ test.beforeEach(async ({ page }) => {
   })
 })
 
-async function shotMode({ page, testInfo, modeName, openLocator, chip }) {
-  await page.goto('/play?tab=home')
+async function shotMode({ page, testInfo, modeName, openLocator, chip, url }) {
+  await page.goto(url || '/play?tab=home')
   await page.waitForLoadState('networkidle')
   await page.waitForTimeout(800)
-  const entry = openLocator(page)
-  if (!(await entry.count())) {
-    await page.screenshot({
-      path: `test-results/sprint63-ee4-${modeName}-${testInfo.project.name}-NOENTRY.png`,
-      fullPage: true,
-    })
-    return
+  // A mode with no row on Home is opened by its own link (`url`): nothing to tap.
+  if (!url) {
+    const entry = openLocator(page)
+    if (!(await entry.count())) {
+      await page.screenshot({
+        path: `test-results/sprint63-ee4-${modeName}-${testInfo.project.name}-NOENTRY.png`,
+        fullPage: true,
+      })
+      return
+    }
+    await entry.first().click()
   }
-  await entry.first().click()
   // Quiz-screen modes (16 Oct 2026): pick the chip, then the one Start button.
   if (chip) {
     await page.locator('.qz-chip').filter({ hasText: chip }).first().click()
@@ -70,11 +73,12 @@ test("Today's 7 mid-quiz", async ({ page }, testInfo) => {
   })
 })
 
-for (const [modeName, label, chip] of [
+for (const [modeName, label, chip, url] of [
   // Classic, Legends and Chaos are chips on the Quiz screen since 16 Oct 2026.
   ['classic', 'Quiz', 'Everything'],
   ['survival', 'Survival'],
-  ['hotstreak', 'Hot Streak'],
+  // Hot Streak's row left Home on 25 Nov 2026: opened by its link.
+  ['hotstreak', 'Hot Streak', undefined, '/play?game=hotstreak'],
   ['legends', 'Quiz', 'Legends'],
   // 'balliq' removed — the Ball IQ Test mode was killed 2026-08-10.
   ['chaos', 'Quiz', 'Chaos'],
@@ -85,8 +89,8 @@ for (const [modeName, label, chip] of [
   test(`${modeName} mid-quiz`, async ({ page }, testInfo) => {
     await shotMode({
       page, testInfo, modeName,
-      openLocator: (p) => chip ? p.locator('.quiz-entry') : p.locator('.play-card').filter({ hasText: label }),
-      chip,
+      openLocator: (p) => chip ? p.locator('.quiz-entry') : p.locator('.home-list .todays-seven-secondary').filter({ hasText: label }),
+      chip, url,
     })
     // Classic tap opens a difficulty picker rather than the quiz directly.
     if (modeName === 'classic') {

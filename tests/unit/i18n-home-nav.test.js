@@ -27,6 +27,19 @@
 // and each of the thirteen equals its old entry with exactly those edits made to it by rule (a
 // script wrapped every title's name, cut every grey line, swapped the three strings and added the
 // padding, then compared byte for byte; run on the eight others it changes nothing).
+// INTENDED CHANGE, 25 Nov 2026 (Home, the lower half by the top half's kit): the Quiz row sits in a
+// <div class="home-list">, and one more opens under "More modes" and holds every mode as a row.
+// Draft lost its outline, its glow and the padding that made up for them; the rows' inline bottom
+// margins went; the NEW tag's inline style became <span class="t7s-tag">; a finished Mystery
+// Player side row is "is-done"; the Survival play-card tile in its play-grid became a row of that
+// card (the rows' icon) and the Hot Streak tile is gone (its row left Home); the Top 10 lists row
+// stands before the Draft row; every row of that card ends in the mates rows' arrow
+// (<span class="mp-row-chev">) where its quiet pill was, the Quiz row keeping its pill; and the
+// Quiz line starts "10 questions". The twelve Home
+// entries were replaced, and only those: the new render was dumped with a temporary copy of this
+// test, 9 of 21 entries were byte-identical ("multiplayer card" among them this time), and each of
+// the twelve equals its old entry with exactly those edits made to it by rule, compared byte for
+// byte; run on the nine others the rules change nothing.
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -204,7 +217,7 @@ const STEP2_EN = {
   'home.finder.all_one': "All {count} clubs →",
   'home.finder.all_other': "All {count} clubs →",
   'home.quiz.title': "Quiz",
-  'home.quiz.sub': "Ten questions · any league or era",
+  'home.quiz.sub': "10 questions · any league or era",
   'home.quiz.aria': "Quiz: ten questions on any league, era or theme",
   'home.moreModes': "More modes",
   'home.draft.sub': "Build an XI · real seasons",

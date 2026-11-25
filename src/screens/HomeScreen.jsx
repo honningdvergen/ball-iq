@@ -1,7 +1,7 @@
 import React from "react";
 import { swatchEdge } from '../lib/colourMath.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
-import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search, Target } from "lucide-react";
+import { CircleCheck, CircleHelp, Flame, Zap, Trophy, Shield, ClipboardList, Route, ListOrdered, Heart, UserRoundSearch, Dices, Newspaper, Settings, Pencil, Search, Target, ChevronRight } from "lucide-react";
 import { useAuth } from "../useAuth.jsx";
 import { APP_NAME, MIN_RATED_ANSWERS } from "../lib/scoring.js";
 import { getLevelInfo } from "../lib/scoring.js";
@@ -149,6 +149,15 @@ function ClubFinder({ clubPacks, clubAbbr, onPickClub, onAllClubs }) {
 // Reads user/authProfile/isGuest via useAuth (same pattern as Profile
 // and Daily). All other state + handlers come in as props — HomeScreen
 // is a presentational orchestrator, not a state owner.
+// HOW A "MORE MODES" ROW ENDS (25 Nov 2026). true: the grey arrow the "With your mates" rows end
+// in. false: the soft pill in the row's own colour, the dailies' pill. Either way the whole row is
+// the tap (a 68px button) and the icon well keeps its colour. Both were built because Alex asked
+// of the pills, "does it not look messy with so many items in a list under each other like this?";
+// he saw the two side by side and chose the arrows ("these both look like good upgrades to me").
+// The pill is this one word away. A row with a state says it in its grey line, which is what is
+// left to say it ("2 guesses in · keep hunting", "Done · guess who"). The Quiz row keeps its pill.
+const MORE_MODES_ARROWS = true;
+
 // The Draft's NEW label shows to everyone until this date (1.8.1, 15 Oct 2026).
 const DRAFT_NEW_UNTIL = new Date('2026-11-15T00:00:00').getTime();
 
@@ -310,6 +319,11 @@ function HomeScreenImpl({
     if (!TOPICAL_PACK?.tag) return false;
     try { return (QB_TAG_COUNTS[TOPICAL_PACK.tag] || 0) >= 10; } catch { return false; }
   })();
+
+  // The end of a More modes row (MORE_MODES_ARROWS above): its pill, or the mates rows' arrow.
+  const modeEnd = (label) => (MORE_MODES_ARROWS
+    ? <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>
+    : <span className="t7s-cta">{label}</span>);
 
   const isPlaceholderName = (n) => !n || n === "Player" || /^player_/i.test(n);
   const railUsername = authProfile?.username && !isPlaceholderName(authProfile.username) ? authProfile.username : null;
@@ -801,7 +815,11 @@ function HomeScreenImpl({
           Stadiums tiles that used to sit in the grid below. All five are chips
           (or, for Stadiums, a row) on the lazy Quiz screen, each still started
           by its own launcher. Do not put the tiles back next to it: two doors
-          to one room read as a longer app, the rule the grid states itself. */}
+          to one room read as a longer app, the rule the grid states itself.
+          25 Nov 2026: the row sits in a plain card (.home-list, the dailies'
+          card) and ends in the soft Play pill, in its own green; it keeps the
+          pill while the More modes rows end in an arrow. */}
+      <div className="home-list">
       <button
         type="button"
         className="todays-seven-secondary mp-row quiz-entry"
@@ -815,6 +833,7 @@ function HomeScreenImpl({
         </span>
         <span className="t7s-cta">{t("common.play")}</span>
       </button>
+      </div>
       {/* ── MORE MODES ── */}
       {/* Lucide icons replace emoji glyphs (2026-05-03). Stroke 2.25
           for a slightly bolder line that holds at the 20px size in
@@ -828,45 +847,82 @@ function HomeScreenImpl({
           /quiz/world-cup/ pages, so old links keep working. Do not bring a
           tile back for a finished event. */}
       <div className="home-section-title">{t("home.moreModes")}</div>
-      {/* The Draft. A row and not a tile (a seventh tile sits alone on the last
-          line), and FIRST in More modes, above Mystery Player, highlighted, with
-          a NEW label that stays until DRAFT_NEW_UNTIL whether or not it has been
-          opened (Alex, 15 Oct 2026: "I see Draft as a way superior game mode to
-          Mystery Player ... a new banner so people are more likely to see it").
-          It is NOT in Today: it is not a daily, has no number and feeds no
-          streak (see the note at the top of screens/Draft.jsx). */}
-      <button
-        type="button"
-        className="todays-seven-secondary mp-row"
-        // 13 above and below, and never under 76: the 1.5px outline made this row a pixel taller than
-        // the rows under it in WebKit (Blink draws that outline thinner, so the floor is what holds it).
-        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft, marginBottom: 10, paddingTop: 13, paddingBottom: 13, minHeight: 76, border: `1.5px solid rgba(${MODE_RGB.draft},0.6)`, background: `linear-gradient(135deg, rgba(${MODE_RGB.draft},0.16), rgba(${MODE_RGB.draft},0.04) 60%)` }}
-        onClick={() => { markModeSeen("draft"); setScreen("draft"); }}
-        aria-label={t("home.draft.aria")}
-      >
-        <span className="t7s-icon" aria-hidden="true"><Dices size={22} strokeWidth={2} /></span>
-        <span className="t7s-body">
-          <span className="t7s-title"><span className="t7s-name">Draft</span>{(Date.now() < DRAFT_NEW_UNTIL || !seenModes.draft) && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.draft},0.18)`, color: MODE_ACCENT.draft, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
-          <span className="t7s-sub">{rowLine(t("home.draft.sub"))}</span>
-        </span>
-        <span className="t7s-cta">{t("common.play")}</span>
-      </button>
+      {/* ONE CARD, THE DAILIES' KIT (25 Nov 2026, a proposal: three reviewers
+          said Home changes style halfway down). Under this title sat a Draft
+          card with a pink outline and a glow, two or three outlined cards and
+          two outlined tiles. Now every mode is a row of one plain card with a
+          hairline between rows (.home-list in app.css; phones, as the dailies'
+          card is): the icon well in the row's own colour and, at its end, the
+          grey arrow of the mates rows (MORE_MODES_ARROWS at the top of this
+          file; the soft pill saying Play, Open, Continue or Review is the
+          other setting). A tap does what it did.
+          THE ORDER is Alex's, the same day, on the picture of this card: "let
+          us put the best modes to the top yeah? probably top 10, ballpark and
+          draft". So: Top 10 lists, Ballpark (preview builds only), Draft,
+          Mystery Player, Survival. */}
+      <div className="home-list">
       {/* Top 10 lists: the browser of club lists and past dailies (Alex, 15 Oct
-          2026: a fan must be able to find their own club's lists). A row, not a
-          seventh tile, for the reason given at the Draft above. */}
+          2026: a fan must be able to find their own club's lists). First in
+          More modes since 25 Nov 2026. */}
       <button
         type="button"
         className="todays-seven-secondary mp-row"
-        style={{ "--mode": MODE_ACCENT.top10, "--mode-rgb": MODE_RGB.top10, marginBottom: 10 }}
+        style={{ "--mode": MODE_ACCENT.top10, "--mode-rgb": MODE_RGB.top10 }}
         onClick={() => { markModeSeen("top10lists"); setScreen("top10lib"); }}
         aria-label={t("home.top10lists.aria")}
       >
         <span className="t7s-icon" aria-hidden="true"><ListOrdered size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
-          <span className="t7s-title"><span className="t7s-name">{t("home.top10lists.title")}</span>{!seenModes.top10lists && <span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: `rgba(${MODE_RGB.top10},0.18)`, color: MODE_ACCENT.top10, fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("common.new")}</span>}</span>
+          <span className="t7s-title"><span className="t7s-name">{t("home.top10lists.title")}</span>{!seenModes.top10lists && <span className="t7s-tag">{t("common.new")}</span>}</span>
           <span className="t7s-sub">{rowLine(t("home.top10lists.sub"))}</span>
         </span>
-        <span className="t7s-cta">{t("home.row.open")}</span>
+        {modeEnd(t("home.row.open"))}
+      </button>
+      {/* Ballpark, in a TEST build only (lib/ballparkPreview.js). The flag is the
+          literal false in every normal build, so this row, its strings and the
+          marker are not in the bundle. Same row as the others in this card, the
+          NEW label's own look reading PREVIEW, in Ballpark's own colour
+          (ballpark.css --bp). The data attribute is what the build's gate
+          (scripts/audit-preview-build.mjs) and a release script look for. */}
+      {BALLPARK_PREVIEW && (
+        <button
+          type="button"
+          className="todays-seven-secondary mp-row"
+          data-preview="BALLPARK_PREVIEW_BUILD"
+          style={{ "--mode": "#56DCC8", "--mode-rgb": "86,220,200" }}
+          onClick={() => setScreen("ballpark")}
+          aria-label={t("home.row.ariaPlay", { mode: "Ballpark" })}
+        >
+          <span className="t7s-icon" aria-hidden="true"><Target size={22} strokeWidth={2} /></span>
+          <span className="t7s-body">
+            <span className="t7s-title"><span className="t7s-name">Ballpark</span><span className="t7s-tag">{t("home.ballpark.tag")}</span></span>
+            <span className="t7s-sub">{rowLine(t("home.ballpark.sub"))}</span>
+          </span>
+          {modeEnd(t("common.play"))}
+        </button>
+      )}
+      {/* The Draft. Above Mystery Player, with a NEW label that stays until
+          DRAFT_NEW_UNTIL whether or not it has been opened (Alex, 15 Oct 2026:
+          "I see Draft as a way superior game mode to Mystery Player ... a new
+          banner so people are more likely to see it"). It was first; since 25
+          Nov 2026 Top 10 lists (and Ballpark, in a preview build) come before
+          it, by the order above. Its outline and glow left that day with every
+          other outline in this half; its pink and the label are what mark it.
+          It is NOT in Today: it is not a daily, has no number and feeds no
+          streak (see the note at the top of screens/Draft.jsx). */}
+      <button
+        type="button"
+        className="todays-seven-secondary mp-row"
+        style={{ "--mode": MODE_ACCENT.draft, "--mode-rgb": MODE_RGB.draft }}
+        onClick={() => { markModeSeen("draft"); setScreen("draft"); }}
+        aria-label={t("home.draft.aria")}
+      >
+        <span className="t7s-icon" aria-hidden="true"><Dices size={22} strokeWidth={2} /></span>
+        <span className="t7s-body">
+          <span className="t7s-title"><span className="t7s-name">Draft</span>{(Date.now() < DRAFT_NEW_UNTIL || !seenModes.draft) && <span className="t7s-tag">{t("common.new")}</span>}</span>
+          <span className="t7s-sub">{rowLine(t("home.draft.sub"))}</span>
+        </span>
+        {modeEnd(t("common.play"))}
       </button>
       {/* Mystery Player, once Top 10 has its place in Today. A row and not a
           seventh tile, for two reasons: it is still one puzzle a day with a
@@ -879,8 +935,8 @@ function HomeScreenImpl({
         return (
           <button
             type="button"
-            className="todays-seven-secondary mp-row"
-            style={{ "--mode": MODE_ACCENT.mystery, "--mode-rgb": MODE_RGB.mystery, marginBottom: 10 }}
+            className={`todays-seven-secondary mp-row${done ? " is-done" : ""}`}
+            style={{ "--mode": MODE_ACCENT.mystery, "--mode-rgb": MODE_RGB.mystery }}
             onClick={() => setScreen("mystery")}
             aria-label={done ? t("home.row.ariaReview", { mode: "Mystery Player" })
               : guesses > 0 ? t("home.mystery.ariaOpen", { count: guesses })
@@ -893,34 +949,22 @@ function HomeScreenImpl({
                 : guesses > 0 ? t("home.mystery.guessesIn", { count: guesses })
                 : t("home.mystery.sub"))}</span>
             </span>
-            <span className="t7s-cta">{t(done ? "home.row.review" : guesses > 0 ? "home.row.continue" : "common.play")}</span>
+            {modeEnd(t(done ? "home.row.review" : guesses > 0 ? "home.row.continue" : "common.play"))}
           </button>
         );
       })()}
-      {/* Ballpark, in a TEST build only (lib/ballparkPreview.js). The flag is the
-          literal false in every normal build, so this row, its strings and the
-          marker are not in the bundle. Same row as the others in this group, the
-          NEW label's own look reading PREVIEW, in Ballpark's own colour
-          (ballpark.css --bp). The data attribute is what the build's gate
-          (scripts/audit-preview-build.mjs) and a release script look for. */}
-      {BALLPARK_PREVIEW && (
-        <button
-          type="button"
-          className="todays-seven-secondary mp-row"
-          data-preview="BALLPARK_PREVIEW_BUILD"
-          style={{ "--mode": "#56DCC8", "--mode-rgb": "86,220,200", marginBottom: 10 }}
-          onClick={() => setScreen("ballpark")}
-          aria-label={t("home.row.ariaPlay", { mode: "Ballpark" })}
-        >
-          <span className="t7s-icon" aria-hidden="true"><Target size={22} strokeWidth={2} /></span>
-          <span className="t7s-body">
-            <span className="t7s-title"><span className="t7s-name">Ballpark</span><span style={{ marginLeft: 8, padding: "2px 7px", borderRadius: 6, background: "rgba(86,220,200,0.18)", color: "#56DCC8", fontSize: 10.5, fontWeight: 800, letterSpacing: "0.08em", verticalAlign: "middle" }}>{t("home.ballpark.tag")}</span></span>
-            <span className="t7s-sub">{rowLine(t("home.ballpark.sub"))}</span>
-          </span>
-          <span className="t7s-cta">{t("common.play")}</span>
-        </button>
-      )}
-      <div className="play-grid">
+      {/* Survival, the mode with a rule of its own (one miss and out). It was
+          an outlined half-width tile in a grid under the rows; since 25 Nov
+          2026 it is a row of this card like the ones above it. It has no
+          colour of its own, so it takes the row's default, the green of the
+          Quiz row it is a sibling of (a well with no colour reads as switched
+          off, which Multiplayer's taught on 9 Sep).
+          ⚠️ NO HOT STREAK ROW (25 Nov 2026). Alex, on the picture of this
+          card: "hot streak is a poor mode nobody plays i think"; the numbers
+          agree (16 plays by 11 players in 30 days; Survival 83, Mystery Player
+          419). ONLY the row left. The mode is whole: startMode("hotstreak"),
+          the ?game=hotstreak link (the website's own card opens it), its
+          how-to sheet, its results and the best score on a profile. */}
         {[
           // No Club Quiz tile: the finder above this grid is the club entry
           // (search, chips, "All clubs"). Two doors to one room read as a longer
@@ -943,43 +987,28 @@ function HomeScreenImpl({
           // Legends and Chaos sit beside it in Mix, Stadiums is the row under
           // "Not ten questions". What stays here are the two modes with rules
           // of their own (one miss and out, a 60-second clock), not topics.
-          // ⚠️ iconColor deliberately REMOVED. Survival was the only tile using the
-          // opt-out, so after the grid went neutral it was the single remaining
-          // green icon — which is worse than all-green was, because one odd tile
-          // reads as a mistake rather than a system. Spotted by Alex immediately.
-          // The prop still exists for a tile that genuinely earns its own colour;
-          // nothing does today.
+          // A mode that earns a colour of its own passes accent and rgb (as the
+          // rows above set --mode and --mode-rgb); nothing here does today.
           { key:"survival",  Icon: Heart,      name:t("home.mode.survival"),  desc:t("home.mode.survivalDesc") },
-          { key:"hotstreak", Icon: Flame,      name:t("home.mode.hotstreak"), desc:t("home.mode.hotstreakDesc") },
           // Ball IQ Test was killed 2026-08-10 (App.jsx side removed then).
           // This tile outlived the mode and silently started an unbranded
           // generic quiz — the grid entry goes too.
-        ].map(({ key, Icon, name, desc, onTap, iconColor, isNew }) => {
-          const showNew = isNew && !seenModes[key];
-          return (
-            <button
-              key={key}
-              className="play-card"
-              onClick={() => { markModeSeen(key); (onTap || (() => startMode(key)))(); }}
-            >
-              {/* ⚠️ NEUTRAL BY DEFAULT, NOT GREEN. Nine tiles each drew a green
-                  icon inside a green-bordered box, so the mode grid was nine
-                  competing accents and the eye had no way to rank them. Green in
-                  this app now means go and correct — spending it on every mode
-                  label made it mean "a mode", which is to say nothing.
-                  A tile can still opt in via iconColor when it has earned a
-                  colour of its own; the default is quiet. */}
-              <span className="play-card-icon">
-                <Icon size={20} strokeWidth={2.25} color={iconColor || "var(--t2)"} aria-hidden="true" />
-              </span>
-              <span className="play-card-body">
-                <span className="play-card-name">{name}</span>
-                <span className="play-card-desc">{desc}</span>
-              </span>
-              {showNew && <span className="play-card-badge">{t("common.new")}</span>}
-            </button>
-          );
-        })}
+        ].map(({ key, Icon, name, desc, onTap, accent, rgb, isNew }) => (
+          <button
+            key={key}
+            type="button"
+            className="todays-seven-secondary mp-row"
+            style={accent ? { "--mode": accent, "--mode-rgb": rgb } : undefined}
+            onClick={() => { markModeSeen(key); (onTap || (() => startMode(key)))(); }}
+          >
+            <span className="t7s-icon" aria-hidden="true"><Icon size={22} strokeWidth={2} /></span>
+            <span className="t7s-body">
+              <span className="t7s-title"><span className="t7s-name">{name}</span>{isNew && !seenModes[key] && <span className="t7s-tag">{t("common.new")}</span>}</span>
+              <span className="t7s-sub">{rowLine(desc)}</span>
+            </span>
+            {modeEnd(t("common.play"))}
+          </button>
+        ))}
       </div>
       {/* Coming-Soon shelf — teaser line for modes that aren't ready yet.
           Section auto-hides if the array is empty. Only list a mode here once

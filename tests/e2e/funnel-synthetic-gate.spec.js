@@ -48,7 +48,7 @@ test('automated traffic never reaches the funnel', async ({ page }) => {
 
   // Enter a game — this is what sets `playing` and fires first-game-started.
   // Survival starts directly (Classic opens a difficulty picker first).
-  await page.locator('.play-card').filter({ hasText: 'Survival' }).first().click();
+  await page.locator('.home-list .todays-seven-secondary').filter({ hasText: 'Survival' }).first().click();
 
   // Confirm we really are in a game, so a silent navigation failure cannot
   // masquerade as "the gate worked".

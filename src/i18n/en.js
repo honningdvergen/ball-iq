@@ -151,7 +151,7 @@ export default registerEnglish({
   'home.finder.all_one': 'All {count} clubs →',
   'home.finder.all_other': 'All {count} clubs →',
   'home.quiz.title': 'Quiz',
-  'home.quiz.sub': 'Ten questions · any league or era',
+  'home.quiz.sub': '10 questions · any league or era',
   'home.quiz.aria': 'Quiz: ten questions on any league, era or theme',
   // More modes.
   'home.moreModes': 'More modes',

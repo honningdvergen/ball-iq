@@ -98,7 +98,9 @@ describe('design review — tier 1', () => {
 
   it('mode icons carry the right metaphor', () => {
     expect(HOME).toMatch(/key:"survival",\s*Icon: Heart/);   // lives, not a bolt
-    expect(HOME).toMatch(/key:"hotstreak", Icon: Flame/);    // "hot" streak
+    // Hot Streak's row left Home on 25 Nov 2026 (16 plays in 30 days); the mode's own
+    // screens keep its flame, and the website's card draws one too.
+    expect(HOME).not.toMatch(/key:"hotstreak"/);
     // Stadiums left the Home grid for the Quiz screen's "Not ten questions"
     // row on 16 Oct 2026; the mark travelled with it.
     expect(QUIZ).toMatch(/<LandPlot size=\{20\}/);  // `landmark` read as a bank

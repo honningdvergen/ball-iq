@@ -3880,7 +3880,7 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
      under it is then a card of its own.
    - A pill means "play this now"; a row that takes you somewhere ends in an arrow (.mp-row-chev,
      in MultiplayerCard.jsx and LeagueStartRow.jsx). The arrow is drawn at every width.
-   - The Quiz row under the finder is a plain card too.
+   - The Quiz row under the finder is a plain card too (since 25 Nov 2026 by .home-list, below).
    Phones only, as above. */
 .mp-row-chev{display:grid;place-items:center;width:34px;flex:none;color:#5E6270;}
 @media (max-width: 1023px){
@@ -3888,12 +3888,10 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
   .home-mates > .mp-row,.home-mates > .mp-row:last-child{background:var(--s1);border:0;box-shadow:none;border-radius:20px;margin:0;padding:11px 14px;min-height:68px;}
   .home-mates > .mp-row:not(:last-child){border-radius:20px 20px 0 0;}
   .home-mates > .mp-row + .mp-row{border-radius:0 0 20px 20px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
-  .home-col-below .todays-seven-secondary.mp-row.quiz-entry{border:0;box-shadow:none;}
 }
 @media (max-width: 1023px) and (hover: hover){
   .home-mates > .mp-row:hover{transform:none;box-shadow:none;}
   .home-mates > .mp-row + .mp-row:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
-  .home-col-below .todays-seven-secondary.mp-row.quiz-entry:hover{box-shadow:none;}
 }
 
 /* ONE LINE OF TITLE, ONE GREY LINE, SO EVERY ROW IS THE SAME HEIGHT (25 Nov 2026). Alex, on the
@@ -3943,6 +3941,42 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
   .daily-zone .daily-well{padding-left:12px;padding-right:12px;}
   .daily-well .daily-done-strip{padding-left:5px;padding-right:5px;}
   .home-mates > .mp-row,.home-mates > .mp-row:last-child,.home-mates > .lg-home,.home-mates > .lg-solo,.home-col-below .todays-seven-secondary{padding-left:12px;padding-right:12px;}
+}
+
+/* THE LOWER HALF OF HOME BY THE SAME KIT AS THE TOP (25 Nov 2026, a proposal in a commit of its own).
+   The top was calm (the dailies in one plain card, the mates rows in another, small grey titles) and
+   under "More modes" the page was still the old one: Draft in a pink outline with a glow, Top 10
+   lists and Mystery Player each an outlined card, Survival and Hot Streak two outlined tiles, and
+   Quiz an outlined card of its own. Three reviewers said Home changes style halfway down.
+   .home-list is the dailies' card for those rows (HomeScreen.jsx): one filled card, a hairline
+   between rows, each row 68 high with the 46px well in the row's own colour (--mode / --mode-rgb,
+   set inline; a row with none is the Quiz green). The Quiz row ends in the dailies' soft pill; the
+   More modes rows end in the mates rows' grey arrow (.mp-row-chev), Alex's choice between the two
+   (HomeScreen.jsx, MORE_MODES_ARROWS). The pill rules below serve Quiz, and the modes if that
+   switch is turned back: then a finished Mystery Player wears the quiet pill. Nothing is outlined.
+   Phones only, like the two cards above it: at 1024 and wider the rows keep their own frames. */
+.t7s-tag{flex:none;margin-left:8px;padding:2px 7px;border-radius:6px;background:rgba(var(--mode-rgb),0.18);color:var(--mode);font-size:10.5px;font-weight:800;letter-spacing:0.08em;}
+.home-list{margin-bottom:12px;}
+.home-list > .todays-seven-secondary{margin-bottom:10px;cursor:pointer;}
+/* A row with no colour of its own (Quiz, Survival, Hot Streak) wears the soft green Footle's pill is
+   written in, so a green "Play" down here is the green "Play" at the top; a row that sets --mode
+   inline keeps its own. */
+.home-list > .mp-row{--mode:var(--grn-soft);}
+@media (max-width: 1023px){
+  .home-col-below .home-list{background:var(--s1);border-radius:20px;padding:2px 14px;margin:0;}
+  .home-col-below .home-list > .todays-seven-secondary{background:none;border:0;border-radius:0;box-shadow:none;padding:11px 0;margin:0;min-height:68px;}
+  .home-col-below .home-list > .todays-seven-secondary + .todays-seven-secondary{padding-top:10px;border-top:1px solid rgba(255,255,255,0.07);}
+  .home-col-below .home-list .t7s-cta{padding:9px 16px;font-size:13.5px;background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);border:1px solid rgba(var(--mode-rgb),0.45);}
+  .home-col-below .home-list .is-done .t7s-cta{background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);border:1px solid var(--border2);}
+}
+/* The pill's three sizes are the dailies' own (see .todays-seven-secondary.is-mode .t7s-cta). */
+@media (max-width: 389px){.home-col-below .home-list .t7s-cta{padding:9px 11px;}}
+@media (max-width: 359px){
+  .home-col-below .home-list .t7s-cta{padding:7px 13px;font-size:12px;}
+  .home-col-below .home-list{padding-left:12px;padding-right:12px;}
+}
+@media (max-width: 1023px) and (hover: hover){
+  .home-col-below .home-list > .todays-seven-secondary:hover{transform:none;box-shadow:none;}
 }
 
 /* ── THE WEB SHELL (2026-09-03) ────────────────────────────────────────────────
