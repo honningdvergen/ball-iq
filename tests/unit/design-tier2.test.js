@@ -150,9 +150,20 @@ describe('one primary button, everywhere', () => {
     expect(LOGIN).toMatch(/minHeight: 44, borderRadius: 999,/);
   });
 
-  it('the Online tab CTA uses the pill and the standard glow', () => {
-    // The ink is the token since 2026-09-05 (C3-B: inline styles read tokens).
-    expect(HUB).toMatch(/borderRadius:999,background:"var\(--accent\)",color:"var\(--grn-ink\)",boxShadow:"0 8px 22px -8px rgba\(88,204,2,0\.55\)"/);
+  // INTENDED CHANGE, 25 Nov 2026 (the Multiplayer tab rebuilt on Home's kit; Alex: "Yes, build it").
+  // This test held the tab's green button to "the pill and the standard glow", read from an inline
+  // style. The glow is one of the faults the rebuild removes ("the solid green with a glow"), and the
+  // button's look moved to the tab's own stylesheet. It is still the pill in the token's green and
+  // ink; it has no shadow, and nothing in the tab draws one.
+  it('the Multiplayer tab CTA is the pill in the token\'s green, with no glow', () => {
+    const HUB_CSS = readFileSync(fileURLToPath(new URL('../../src/screens/onlineHub.css', import.meta.url)), 'utf8');
+    const go = HUB_CSS.match(/\.online-hub \.oh-go\{[^}]*\}/)[0];
+    expect(go).toContain('border-radius:999px;background:var(--accent);color:var(--grn-ink);');
+    expect(go).toContain('height:50px;');
+    // (The one green shadow in the file is the field's focus line, drawn inside its fill.)
+    expect(HUB_CSS).not.toMatch(/box-shadow:(?!inset )[^;]*rgba\(88,204,2/);
+    expect(HUB).not.toContain('boxShadow');
+    expect((HUB.match(/className="oh-go"/g) || []).length, 'one for a guest, one for an account, never both').toBe(2);
   });
 
   it('the primary button look is one definition, not six', () => {

@@ -98,18 +98,25 @@ describe('DailyDone — one panel, four surfaces', () => {
 
   it('guest-first Online + Profile: what a guest can do comes first; the account ask is a quiet, named row', () => {
     // Online: no empty "You vs ?" scoreboard for a guest; Create Room only for
-    // accounts; the ask sits after join-by-code and local play, in the row
-    // anatomy, naming what it unlocks.
-    expect(HUB).toMatch(/\{!needsAccount && \(\n\s*<div style=\{\{borderRadius:22/);
+    // accounts.
+    // INTENDED CHANGE, 25 Nov 2026 (the Multiplayer tab rebuilt on Home's kit; Alex: "Yes, build
+    // it"). The guest's block and the account's are now the two arms of one pitch card, so the
+    // old shape (`{!needsAccount && (` over an inline-styled box) is gone; the pitch reads "Who
+    // knows more, you or your mates?" without the dash, and the code field's question is its
+    // heading ("Got a code?" over "Type it here"). What this test is for has not changed.
+    expect(HUB).toMatch(/\{needsAccount \? \(\n/);
+    expect(HUB.indexOf('t("oh.pitch")'), 'the guest arm holds the pitch, the account arm the record and Create room').toBeLessThan(HUB.indexOf('t("oh.noMatches")'));
+    expect(HUB.indexOf('t("oh.challenge")')).toBeLessThan(HUB.indexOf('t("oh.create")'));
     expect(HUB, 'the green slab no longer flips to a sign-up label').not.toMatch(/needsAccount \? "Sign up to play online"/);
     // The guest's first block is the PITCH (what a room is + the one green
-    // button = sign-up), above join-by-code and local play.
+    // button = sign-up), above local play and join-by-code.
     // The words are keys since i18n step 7 (oh.pitch, oh.codePh, oh.challenge).
-    expect(EN['oh.pitch']).toBe('Who knows more — you or your mates?');
-    expect(EN['oh.codePh']).toBe('Got a code? Type it here');
+    expect(EN['oh.pitch']).toBe('Who knows more, you or your mates?');
+    expect([EN['oh.codeHead'], EN['oh.codePh']]).toEqual(['Got a code?', 'Type it here']);
     expect(EN['oh.challenge']).toBe('Challenge your friends');
     expect(HUB).toContain('t("oh.pitch")');
-    expect(HUB.indexOf('t("oh.pitch")')).toBeLessThan(HUB.indexOf('t("oh.codePh")'));
+    expect(HUB.indexOf('t("oh.challenge")')).toBeLessThan(HUB.indexOf('{needsAccount && joinBlock}'));
+    expect(HUB.indexOf('t("oh.local")')).toBeLessThan(HUB.indexOf('{needsAccount && joinBlock}'));
     expect(HUB).toContain('t("oh.challenge")');
     // Profile: the ask comes AFTER the player's own card.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');

@@ -25,7 +25,10 @@ describe('the Home card for a league of one', () => {
     expect(CARD).toContain('if (!via) return;');
     // One sheet at a time.
     expect(CARD).toContain('if (!url || sharing.current) return;');
-    expect(CARD).toContain('loopEvent("league-invite-share", { via, from: "home" });');
+    // 25 Nov 2026: the Multiplayer tab carries the same row, so the count names where the card
+    // stands. Home passes nothing and still counts as "home".
+    expect(CARD).toContain('export default function LeagueHomeCard({ onOpen, onStart, wait = null, from = "home" }) {');
+    expect(CARD).toContain('loopEvent("league-invite-share", { via, from });');
   });
   it('a league with mates is never hidden behind a new league of one', () => {
     expect(CARD).toContain('const l = list.find((x) => !solo(x)) ?? list[0];');

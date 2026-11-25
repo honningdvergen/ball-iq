@@ -1,21 +1,56 @@
-// The Online tab — guest pitch, live rooms, join-by-code, local pass & play row.
+// The Multiplayer tab: the pitch card, join by code, your people, the other ways to play.
 // Extracted from App.jsx on 2026-09-06 (review E16, brick 3).
 import React, { useMemo } from "react";
-import { Gamepad2, KeyRound, Users, Zap } from "lucide-react";
+import { ChevronRight, Flame, Gamepad2, KeyRound, Settings } from "lucide-react";
 import { ProfilePic } from "../components/ProfilePic.jsx";
+import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { useProfilePhotos } from "../lib/profilePhotos.js";
 import { useAcceptedFriends } from "../lib/acceptedFriends.js";
+import { rowLine } from "../lib/rowLine.jsx";
 import { readMpHistory } from "../App.jsx";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { useT } from "../i18n/index.js";
+import "./onlineHub.css";
 
-// ─── ONLINE TAB (hub) ─────────────────────────────────────────────────────────
-// Head-to-head direction from the Claude Design handoff (Online Tab.dc.html):
-// VS hero (you vs latest rival), W/L/win-rate stat row, flat green Create
-// Room CTA (no 3D rim per spec), Join with Code, recent-opponents rail with
-// Rematch. All game entry goes through startMode so auth-gating stays in one
-// place; Create/Rematch use the one-tap auto-create path into a lobby.
-export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, onOpenFriend, needsAccount, userId }) {
+// The league row is Home's own (a table, a league of one, or the way in), so
+// the two tabs cannot drift. Lazy for the reason Home gives: it carries a fetch.
+const LeagueHomeCard = React.lazy(() => import("../components/LeagueHomeCard.jsx"));
+
+// ─── MULTIPLAYER TAB (hub) ────────────────────────────────────────────────────
+// REBUILT ON THE KIT, 25 Nov 2026. Alex, on the live tab: "and you can also tell
+// we can do better on the multiplayer tab here". A first redraw that only tidied
+// the same three boxes: "That is not better". The second, a pitch card as the
+// centre with the other ways to play as one list under it: "Yes, better", then
+// "Yes, build it"; of his own signed-in tab drawn the same way: "Online tab
+// upgrade looks good". Drawings: ball-iq-audit/2026-11-24/finish/
+// multiplayer-tab-4.png (a guest) and multiplayer-signed-in.png.
+//
+// What was wrong on his screen, and is gone: two heading styles (a white "Join a
+// room" over grey capitals), every friend an outlined card of its own, a round
+// face inside a square green well, an outline round everything, and the solid
+// green with a glow under it. What the tab DOES has not changed: every control
+// calls what it called. All game entry still goes through startMode so the
+// auth gate stays in one place; Create and Rematch use the one-tap auto-create
+// path into a lobby.
+//
+// Top to bottom:
+//   1. The title, with the bell and the gear as two tiles in its row (they sat
+//      in a strip of their own above it; App.jsx no longer draws that strip
+//      over this tab, as it never did over Home).
+//   2. The pitch card, the one loud thing: a guest gets the question, one line
+//      and a podium over "Challenge your friends"; an account gets itself
+//      against its latest rival, its record, and "Create room".
+//   3. "Got a code?": the field and Join straight on the page, one fill each
+//      (Alex, on a field inside a card: "probably do not need 2 different
+//      shadows in this field though"). Always on the screen, his choice
+//      ("On the screen"); for an account it comes before the lists, for a
+//      guest after them, as each was drawn.
+//   4. The people: recent opponents once there are any, else friends. One card
+//      of rows.
+//   5. "More ways to play": the mates' league (Home's row; new on this tab,
+//      in both drawings) and local pass and play, which ends in an arrow where
+//      it had a grey Play.
+export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displayName, avatarUrl, avatarId, onChallenge, onOpenFriend, needsAccount, userId, showSettings, onOpenSettings, onOpenNotifs, notifCount = 0, hasSession = false, onOpenLeague, onStartLeague }) {
   // The words are t() since i18n step 7 (the oh.* keys; the title is tab.online).
   const t = useT();
   // Inline join-with-code — the code row lives ON the tab (no intermediate
@@ -61,129 +96,47 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
   const { friends } = useAcceptedFriends(stats.recent.length === 0 ? userId : null);
   const friendPhotos = useProfilePhotos(useMemo(() => friends.map(f => f.id), [friends]));
   const createRoom = () => { setOnlineAutoCreate?.(true); startMode("online"); };
-  return (
-    <div className="screen tab-content online-hub">
-      {/* Title + win-streak pill (no local gear — the global header has one) */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 0 16px"}}>
-        <div style={{fontSize:28,fontWeight:800,letterSpacing:"-0.02em",color:"var(--t1)"}}>{t("tab.online")}</div>
-        {stats.streak >= 2 && (
-          <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 13px",borderRadius:999,background:"rgba(255,193,7,0.08)",border:"1px solid rgba(255,193,7,0.3)"}}>
-            <span style={{fontSize:12}}>🔥</span>
-            <span style={{fontSize:13,fontWeight:800,color:"var(--gold)",fontVariantNumeric:"tabular-nums"}}>{t("oh.streak", { n: stats.streak })}</span>
-          </div>
-        )}
-      </div>
 
-      {/* desktop-web-refresh (Friends #06 lean): two-column reflow at >=1024.
-          The wrappers are display:contents on mobile (no box → byte-identical
-          single-column flow) and a grid at desktop: your record (left) + the
-          private-match actions (right). Leaderboard deferred to a bigger user
-          base, so the left column holds the app's real head-to-head record. */}
-      <div className="online-cols">
-      <div className="online-col-a">
-      {/* VS hero card — signed-in only (2026-09-06 guest-first): for a guest it
-          was "You vs ? · No matches yet" as the first thing on the tab, an empty
-          scoreboard above a sign-up wall. Guests get what they CAN do first. */}
-      {!needsAccount && (
-      <div style={{borderRadius:22,background:"var(--s1)",border:"1px solid var(--border)",padding:"22px 18px",boxShadow:"0 4px 16px rgba(0,0,0,0.35)",marginBottom:16}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:22}}>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
-            {avatarUrl
-              ? <img src={avatarUrl} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:84,height:84,borderRadius:"50%",objectFit:"cover",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)"}} />
-              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px solid var(--accent)",boxShadow:"0 0 0 5px rgba(88,204,2,0.14)",display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden",background:"var(--s2)"}}><ProfilePic value={avatarId} name={displayName} /></span>}
-            <span style={{fontSize:14,fontWeight:800,color:"var(--t1)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{displayName}</span>
-          </div>
-          <span style={{fontFamily:"'JetBrains Mono',monospace",fontSize:19,fontWeight:800,color:"var(--t3)"}}>VS</span>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8,width:110}}>
-            {stats.rival
-              ? <span style={{width:84,height:84,borderRadius:"50%",border:`2.5px solid ${stats.rival.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",background:"var(--s2)",overflow:"hidden"}}><ProfilePic value={stats.rival.avatar} url={oppPhotos[stats.rival.id]} name={stats.rival.name} /></span>
-              : <span style={{width:84,height:84,borderRadius:"50%",border:"2.5px dashed #3E4150",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:30,color:"var(--t3)"}}>?</span>}
-            <span style={{fontSize:13,fontWeight:stats.rival ? 700 : 600,color:stats.rival ? "var(--t1)" : "var(--t3)",maxWidth:110,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.rival ? stats.rival.name : t("oh.rival")}</span>
-          </div>
-        </div>
-        {/* Before a first match this row read "0 · 0 · —" in 24px — an empty
-            scoreboard posing as a record, and the biggest thing on the card.
-            Say what to do instead; the scoreboard appears once there's one. */}
-        {(stats.wins + stats.losses) === 0 ? (
-          <div style={{marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14,textAlign:"center",fontSize:13,fontWeight:600,color:"var(--t2)",lineHeight:1.5}}>
-            {t("oh.noMatches")}
-          </div>
-        ) : (
-        <div style={{display:"flex",alignItems:"stretch",marginTop:20,borderTop:"1px solid var(--border)",paddingTop:14}}>
-          {[
-            { v: stats.wins, label: t("oh.wins"), color: "var(--grn-soft)" },
-            { v: stats.losses, label: t("oh.losses"), color: "var(--t1)" },
-            { v: stats.winRate == null ? "—" : t("oh.pct", { n: stats.winRate }), label: t("oh.winRate"), color: "var(--gold)" },
-          ].map((s, i) => (
-            <React.Fragment key={s.label}>
-              {i > 0 && <div style={{width:1,background:"var(--border)"}} />}
-              <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
-                {/* Inter for stat numbers (mono is codes-only — its dotted zero reads like an 8 in stats) */}
-                <span style={{fontSize:24,fontWeight:800,color:s.color,fontVariantNumeric:"tabular-nums"}}>{s.v}</span>
-                <span style={{fontSize:11,fontWeight:600,color:"var(--t2)"}}>{s.label}</span>
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
-        )}
-      </div>
-      )}
+  // The league row, decided as Home decides it (HomeScreen.jsx says why each
+  // flag is read): the card for a member or a signed-in player not yet
+  // checked, the way in for everyone else, and something of the same height
+  // in its place until the card has answered.
+  const [, leaguesChanged] = React.useReducer((n) => n + 1, 0);
+  React.useEffect(() => {
+    window.addEventListener("biq:leagues-changed", leaguesChanged);
+    return () => window.removeEventListener("biq:leagues-changed", leaguesChanged);
+  }, []);
+  const leagueMember = (() => { try { return localStorage.getItem("biq_league_member") === "1"; } catch { return false; } })();
+  const leagueCardOn = !!onOpenLeague && (leagueMember || (() => {
+    try { return hasSession && sessionStorage.getItem("biq_league_checked") !== "1"; } catch { return false; }
+  })());
+  const leagueSeen = leagueMember && (() => { try { return !!localStorage.getItem("biq_league_home"); } catch { return false; } })();
+  const leagueWait = leagueMember ? (leagueSeen ? <div className="lg-home-wait" aria-hidden="true" /> : null)
+    : onStartLeague ? <LeagueStartRow onStart={onStartLeague} /> : null;
 
-      </div>{/* /.online-col-a */}
-      <div className="online-col-b">
-      {/* Flat green CTA (no 3D rim per design spec) + secondary join.
-          Signed out, this button used to read "Create Room" and then hit a
-          sign-up wall AFTER the tap — the tab advertised a game it wouldn't
-          let you start. Say it before the tap instead: the label now matches
-          the wall's own heading, so the account step is expected rather than
-          a bait-and-switch. The gate itself is correct and stays — a room
-          needs a real user id to host or join. */}
-      {/* ⚠️ color HERE, not only on the label span. The button set no color at all,
-          so the two children resolved differently: the label overrode it inline,
-          while the lucide icon — which paints with currentColor — inherited iOS
-          WebKit's DEFAULT BUTTON COLOR and rendered blue. The app has no blue
-          anywhere, so the most important CTA on the Online tab carried the one
-          off-palette hue in the product, and only on iOS. Setting it on the button
-          makes both children inherit the same ink. */}
-      {/* GUEST PITCH (Alex, 2026-09-06: "the online tab should tempt players
-          more to sign up and test their football knowledge against their
-          friends"). A guest gets the picture first — what a room IS — then the
-          one green button, which is the sign-up. Nothing here is a number we
-          cannot back; the three steps are literally the flow. */}
-      {needsAccount && (
-        <div style={{borderRadius:14,background:"var(--s1)",border:"1px solid var(--border)",padding:"18px 16px 16px",marginBottom:14}}>
-          <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:12}}>
-            <span className="t7s-icon" style={{"--mode":"var(--accent)","--mode-rgb":"88,204,2",width:46,height:46,marginTop:2}} aria-hidden="true"><Users size={24} strokeWidth={2} /></span>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:19,fontWeight:800,letterSpacing:"-0.3px",color:"var(--t1)",lineHeight:1.15}}>{t("oh.pitch")}</div>
-              <div style={{fontSize:13.5,color:"var(--t2)",marginTop:5,lineHeight:1.45}}>{t("oh.pitchSub")}</div>
-            </div>
-          </div>
-          <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:15,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-            <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Zap size={17} strokeWidth={2.4} /></span><span style={{fontSize:16,fontWeight:800,color:"var(--grn-ink)"}}>{t("oh.challenge")}</span>
-          </button>
-          <div style={{marginTop:8,textAlign:"center",fontSize:12.5,color:"var(--t3)",lineHeight:1.45}}>{t("oh.free")}</div>
-        </div>
-      )}
-      {!needsAccount && (
-      <button onClick={createRoom} style={{width:"100%",border:"none",borderRadius:999,background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 22px -8px rgba(88,204,2,0.55)",padding:17,display:"flex",alignItems:"center",justifyContent:"center",gap:9,cursor:"pointer",fontFamily:"inherit"}}>
-        <span style={{display:"flex",alignItems:"center"}} aria-hidden="true"><Gamepad2 size={17} strokeWidth={2.2} /></span><span style={{fontSize:17,fontWeight:800,color:"var(--grn-ink)"}}>{t("oh.create")}</span>
-      </button>
-      )}
-      {/* The join field and the local row used to float loose under the pitch,
-          the only block in the app without a section head — Home has "Today",
-          "Find a quiz", "More modes". Naming them also tells a guest that the
-          two things they CAN do without an account are right here. */}
-      <div className="home-section-title" style={{marginTop:18, marginBottom:2}}>{t(needsAccount ? "oh.noAccount" : "oh.joinHead")}</div>
-      {/* Inline join row (design 7a/7b): code field + Join in ONE row. Join
-          sits dimmed until there's input, lights green once typing starts. */}
-      <div style={{display:"flex",gap:9,marginTop:10}}>
-        <div style={{flex:1,minWidth:0,borderRadius:999,background:"var(--s1)",padding:"0 15px",display:"flex",alignItems:"center",gap:10,
-          border:joinFocus ? "1.5px solid rgba(88,204,2,0.55)" : "1px solid var(--border)",
-          boxShadow:joinFocus ? "0 0 0 4px rgba(88,204,2,0.12)" : undefined}}>
-          <span style={{flexShrink:0,display:"flex",color:"var(--t3)"}} aria-hidden="true"><KeyRound size={15} strokeWidth={2} /></span>
+  // "Who knows more, / you or your mates?": the line breaks at its comma, in
+  // either language, so the question stands on two even lines.
+  const pitch = t("oh.pitch").split(", ");
+
+  // GOT A CODE? The field and Join, one row. Join is quiet until there is a
+  // code, then it is the green thing to press.
+  const joinBlock = (
+    <>
+      <div className="home-section-title">{t("oh.codeHead")}</div>
+      <div className="oh-join">
+        <div className={`oh-field${joinFocus ? " is-focus" : ""}`}>
+          <span className="oh-field-ic" aria-hidden="true"><KeyRound size={17} strokeWidth={2} /></span>
+          {/* ⚠️ 16px is a HARD FLOOR for this input (onlineHub.css) — see the
+              same note in Login.jsx. iOS auto-zooms the page on focusing any
+              input below it, and WKWebView never restores the scale on blur,
+              so ONE tap on this field left the whole app zoomed until relaunch
+              (reported on device 2026-07-30: the Lobby's room code and Leave
+              Room button were pushed off-screen afterwards). The empty state
+              was 14.5 and only grew to 17 once you typed — by which point the
+              zoom had already fired. Never drop a focusable field below 16. */}
           <input
             type="text"
+            className={joinCode ? "is-code" : undefined}
             value={joinCode}
             onChange={(e) => { setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6)); if (joinError) setJoinError(""); }}
             onKeyDown={(e) => { if (e.key === "Enter" && joinCode.length > 0) submitJoin(); }}
@@ -198,54 +151,127 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
             disabled={joining}
             enterKeyHint="go"
             aria-label={t("oh.codeAria")}
-            style={{flex:1,minWidth:0,border:"none",background:"transparent",outline:"none",padding:"15px 0",
-              // ⚠️ 16px is a HARD FLOOR — see the same note in Login.jsx. iOS
-              // auto-zooms the page on focusing any input below it, and
-              // WKWebView never restores the scale on blur, so ONE tap on this
-              // field left the whole app zoomed until relaunch (reported on
-              // device 2026-07-30: the Lobby's room code and Leave Room button
-              // were pushed off-screen afterwards). The empty state was 14.5
-              // and only grew to 17 once you typed — by which point the zoom
-              // had already fired. Never drop a focusable field below 16.
-              fontSize:joinCode ? 17 : 16,fontWeight:joinCode ? 800 : 500,
-              letterSpacing:joinCode ? "0.22em" : "normal",
-              color:"var(--text)",
-              fontFamily:joinCode ? "'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" : "inherit"}}
           />
         </div>
-        <button onClick={submitJoin} disabled={joining || joinCode.length === 0}
-          style={{borderRadius:999,padding:"15px 24px",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"inherit",flexShrink:0,
-            ...(joinCode.length > 0 && !joining
-              ? {border:"none",background:"var(--accent)",color:"var(--grn-ink)",boxShadow:"0 8px 24px rgba(88,204,2,0.25)"}
-              : {background:"var(--s1)",border:"1px solid var(--border)",color:"var(--t3)"})}}>
+        <button type="button" className={`oh-join-btn${joinCode.length > 0 && !joining ? " is-on" : ""}`} onClick={submitJoin} disabled={joining || joinCode.length === 0}>
           {joining ? "…" : t("oh.join")}
         </button>
       </div>
       {joinError
-        ? <div style={{color:"#FF6B6B",fontSize:12,marginTop:9,paddingLeft:4}}>{joinError}</div>
-        : (joinFocus || joinCode) ? <div style={{color:"var(--t3)",fontSize:11.5,marginTop:9,paddingLeft:4}}>{t("oh.codeHint")}</div> : null}
+        ? <div className="oh-join-note is-error">{joinError}</div>
+        : (joinFocus || joinCode) ? <div className="oh-join-note">{t("oh.codeHint")}</div> : null}
+    </>
+  );
 
-      {/* Recent opponents — appears once real games have been recorded */}
+  return (
+    <div className="screen tab-content online-hub">
+      {/* The title row. In a browser the app bar above carries notifications
+          and Settings, so neither tile is drawn there (showSettings is false);
+          the bell comes only with a session, as on Home. */}
+      <div className="oh-top">
+        <div className="oh-h1">{t("tab.online")}</div>
+        {showSettings && (
+          <div className="oh-tools">
+            {onOpenNotifs && (
+              <button type="button" onClick={onOpenNotifs} className="icon-btn hdr-ic oh-tile" aria-label={notifCount > 0 ? t("nav.notificationsNew", { count: notifCount }) : t("nav.notifications")}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                {notifCount > 0 && <span className="notif-dot" aria-hidden="true" />}
+              </button>
+            )}
+            <button type="button" onClick={onOpenSettings} className="icon-btn hdr-ic oh-tile" aria-label={t("nav.settings")}><Settings size={20} strokeWidth={2} aria-hidden="true" /></button>
+          </div>
+        )}
+      </div>
+
+      {/* desktop-web-refresh (Friends #06 lean): two-column reflow at >=1024.
+          The wrappers are display:contents on mobile (no box, one column) and a
+          grid at desktop: the pitch card (left) + everything else (right). */}
+      <div className="online-cols">
+      <div className="online-col-a">
+      {needsAccount ? (
+        // A GUEST (Alex, 2026-09-06: "the online tab should tempt players more
+        // to sign up and test their football knowledge against their
+        // friends"). The picture first, what a room IS, then the one green
+        // button, which is the sign-up: the account step comes after the tap,
+        // from the wall startMode puts up. Nothing here is a number we cannot
+        // back: ten questions, live, up to eight.
+        <section className="oh-pitch">
+          <h2 className="oh-q">{pitch.length === 2 ? <>{pitch[0]},<br />{pitch[1]}</> : t("oh.pitch")}</h2>
+          <p className="oh-line">{t("oh.pitchSub")}</p>
+          <div className="oh-pod" aria-hidden="true">
+            <div className="oh-pod-2"><u /><i>2</i></div>
+            <div className="oh-pod-1"><u /><i>1</i></div>
+            <div className="oh-pod-3"><u /><i>3</i></div>
+          </div>
+          <button type="button" className="oh-go" onClick={createRoom}>{t("oh.challenge")}</button>
+        </section>
+      ) : (
+        // AN ACCOUNT: you against your latest rival, your record, and the room.
+        <section className="oh-pitch">
+          <div className="oh-vs">
+            <div className="oh-vs-side">
+              {avatarUrl
+                ? <img className="oh-vs-face" src={avatarUrl} crossOrigin="anonymous" alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+                : <span className="oh-vs-face"><ProfilePic value={avatarId} name={displayName} /></span>}
+              <span className="oh-vs-name">{displayName}</span>
+            </div>
+            <span className="oh-vs-mark" aria-hidden="true">VS</span>
+            <div className="oh-vs-side">
+              {/* No rival yet is a plain dark disc: it was a dashed ring round a question mark. */}
+              {stats.rival
+                ? <span className="oh-vs-face"><ProfilePic value={stats.rival.avatar} url={oppPhotos[stats.rival.id]} name={stats.rival.name} /></span>
+                : <span className="oh-vs-face is-empty" />}
+              <span className={`oh-vs-name${stats.rival ? "" : " is-empty"}`}>{stats.rival ? stats.rival.name : t("oh.rival")}</span>
+            </div>
+          </div>
+          {/* Before a first match this row read "0 · 0 · —" in 24px — an empty
+              scoreboard posing as a record, and the biggest thing on the card.
+              Say what to do instead; the scoreboard appears once there's one. */}
+          {(stats.wins + stats.losses) === 0 ? (
+            <p className="oh-line oh-line-vs">{t("oh.noMatches")}</p>
+          ) : (
+            <>
+              {/* The win streak sat beside the title, where the bell and the gear are now. */}
+              {stats.streak >= 2 && (
+                <p className="oh-streak"><Flame size={15} strokeWidth={2.4} aria-hidden="true" />{t("oh.streak", { n: stats.streak })}</p>
+              )}
+              <div className="oh-rec">
+                {[
+                  { v: stats.wins, label: t("oh.wins") },
+                  { v: stats.losses, label: t("oh.losses") },
+                  { v: stats.winRate == null ? "—" : t("oh.pct", { n: stats.winRate }), label: t("oh.winRate") },
+                ].map((s) => (
+                  <div key={s.label} className="oh-rec-cell">
+                    {/* Inter for stat numbers (mono is codes-only — its dotted zero reads like an 8 in stats) */}
+                    <b>{s.v}</b>
+                    <span>{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          <button type="button" className="oh-go" onClick={createRoom}>{t("oh.create")}</button>
+        </section>
+      )}
+      </div>{/* /.online-col-a */}
+      <div className="online-col-b">
+      {!needsAccount && joinBlock}
+
+      {/* Recent opponents — appears once real games have been recorded. It was
+          a rail of three outlined cards; it is one card of rows, each with the
+          score on its grey line and a quiet Rematch. */}
       {stats.recent.length > 0 && (
         <>
-          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>{t("oh.recent")}</div>
-          <div style={{display:"flex",gap:9,marginTop:12}}>
+          <div className="home-section-title">{t("oh.recent")}</div>
+          <div className="oh-list">
             {stats.recent.map((o) => (
-              <div key={o.name} style={{flex:1,borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:7}}>
-                <span style={{width:46,height:46,borderRadius:"50%",background:"var(--s2)",border:`2px solid ${o.won ? "var(--accent)" : "#FF6B6B"}`,display:"inline-flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}><ProfilePic value={o.avatar} url={oppPhotos[o.id]} name={o.name} /></span>
-                <span style={{fontSize:13,fontWeight:700,color:"var(--t1)",maxWidth:"100%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{o.name}</span>
-                {/* Scores are variable-width — "Won 3241–2055" wraps to two lines
-                    in a third-of-screen card while "Lost 3329–5274" fits on one.
-                    Centred so a wrapped second line doesn't sit ragged-left. */}
-                <span style={{fontSize:11,fontWeight:800,textAlign:"center",color:o.won ? "var(--grn-soft)" : "#FF6B6B"}}>{t(o.won ? "oh.won" : "oh.lost", { line: o.line })}</span>
-                {/* marginTop:auto pins Rematch to the bottom of the card. The
-                    cards are flex siblings and already stretch to equal height,
-                    but the button used to flow straight after the score — so a
-                    card whose score wrapped pushed its button a line lower than
-                    its neighbours' (Alex, 2026-08-03: "the rematch buttons are
-                    not aligned"). Bottom-anchoring is wrap-count-independent,
-                    which a fixed height or a nowrap score would not be. */}
-                <button onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()} style={{marginTop:"auto",border:"1.5px solid rgba(88,204,2,0.5)",borderRadius:999,padding:"5px 14px",fontSize:12,fontWeight:800,color:"var(--accent)",background:"rgba(88,204,2,0.06)",cursor:"pointer",fontFamily:"inherit"}}>{t("oh.rematch")}</button>
+              <div key={o.name} className="todays-seven-secondary mp-row">
+                <span className="oh-face" aria-hidden="true"><ProfilePic value={o.avatar} url={oppPhotos[o.id]} name={o.name} /></span>
+                <span className="t7s-body">
+                  <span className="t7s-title"><span className="t7s-name">{o.name}</span></span>
+                  <span className="t7s-sub">{rowLine(t(o.won ? "oh.won" : "oh.lost", { line: o.line }))}</span>
+                </span>
+                <button type="button" className="t7s-cta oh-pill" onClick={() => (o.id && onChallenge) ? onChallenge({ id: o.id, username: o.name }) : createRoom()}>{t("oh.rematch")}</button>
               </div>
             ))}
           </div>
@@ -254,20 +280,19 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
 
       {/* ── CHALLENGE A FRIEND ──────────────────────────────────────────────
           ⚠️ THE ONE TAB ABOUT PLAYING PEOPLE SHOWED NONE OF YOUR PEOPLE. The
-          recent-opponents rail above only appears once you have finished a
+          recent-opponents list above only appears once you have finished a
           live game, so a player with friends and no match history saw a "?"
           rival card and ~400pt of empty space — while their friends sat behind
           two taps on Profile, under a 1,000pt XP ladder, each with a Challenge
           button. 24% of signups come from room invites, so this is the
           k-factor's own surface.
-          Shown only when the rail above is empty: once you have opponents,
+          Shown only when the list above is empty: once you have opponents,
           rematching them is the stronger offer and two lists of people would
-          be noise. Same row anatomy as everything else — mode colour on the
-          well, one green action. */}
+          be noise. Four at most; the whole list is on Profile. */}
       {stats.recent.length === 0 && friends.length > 0 && (
         <>
-          <div style={{fontSize:11.5,fontWeight:800,letterSpacing:"0.14em",textTransform:"uppercase",color:"var(--t2)",marginTop:24}}>{t("oh.challengeFriend")}</div>
-          <div className="mp-friend-list" style={{display:"flex",flexDirection:"column",gap:8,marginTop:12}}>
+          <div className="home-section-title">{t("oh.challengeFriend")}</div>
+          <div className="oh-list mp-friend-list">
             {friends.slice(0, 4).map((f) => (
               // ⚠️ THE NAME AND FACE MUST OPEN THE PROFILE, like every other
               // person-row in the app. This was a plain <div> whose only
@@ -275,9 +300,8 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
               // nothing — while the SAME friend in the Profile tab's list
               // opens their card. Alex: "i am unable to tap their profile from
               // the multiplayer tab, only from my profile tab where my friends
-              // list is." The row anatomy already has the answer one row below
-              // (Local pass & play): mp-row-open wraps the body, the CTA stays
-              // its own button.
+              // list is." mp-row-open wraps the body, the pill stays its own
+              // button.
               <div key={f.id} className="todays-seven-secondary mp-row">
                 <button type="button" className="mp-row-open"
                   // ⚠️ AN OBJECT, NOT AN ID. openFriendProfile does
@@ -285,35 +309,43 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
                   // SILENT no-op, which is the very bug this row is fixing.
                   onClick={() => onOpenFriend?.({ id: f.id, username: f.username, avatar: f.avatar })}
                   aria-label={t("oh.viewProfile", { name: f.username })}>
-                  <span className="t7s-icon" aria-hidden="true">
-                    <span style={{width:30,height:30,borderRadius:"50%",overflow:"hidden",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>
-                      <ProfilePic value={f.avatar} url={friendPhotos[f.id]} name={f.username} />
-                    </span>
-                  </span>
+                  {/* A round face on the row itself: it sat inside a square green well. */}
+                  <span className="oh-face" aria-hidden="true"><ProfilePic value={f.avatar} url={friendPhotos[f.id]} name={f.username} /></span>
                   <span className="t7s-body">
-                    <span className="t7s-title">{f.username}</span>
+                    <span className="t7s-title"><span className="t7s-name">{f.username}</span></span>
                   </span>
                 </button>
-                <button type="button" className="t7s-cta" onClick={() => onChallenge?.({ id: f.id, username: f.username })}>{t("oh.challengeBtn")}</button>
+                <button type="button" className="t7s-cta oh-pill" onClick={() => onChallenge?.({ id: f.id, username: f.username })}>{t("oh.challengeBtn")}</button>
               </div>
             ))}
           </div>
         </>
       )}
 
-      {/* Local pass & play — same row anatomy as the rest of the app (2026-09-06).
-          Filled Play for a guest (the one thing on the tab they can start
-          alone); quiet for an account, where online is the point. */}
-      <div className="todays-seven-secondary mp-row" role="group" aria-label={t("oh.localAria")} style={{marginTop:16, marginBottom:0}}>
-        <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label={t("oh.localOpen")}>
-          <span className="t7s-icon" aria-hidden="true"><Gamepad2 size={20} strokeWidth={2} /></span>
-          <span className="t7s-body">
-            <span className="t7s-title">{t("oh.local")}</span>
-            <span className="t7s-sub">{t("oh.localSub")}</span>
-          </span>
-        </button>
-        <button type="button" className="t7s-cta mp-row-invite" onClick={() => startMode("local")}>{t("common.play")}</button>
+      {/* ── MORE WAYS TO PLAY ── the league, then one phone passed round. */}
+      <div className="home-section-title">{t("oh.more")}</div>
+      <div className="oh-list">
+        {leagueCardOn ? (
+          <React.Suspense fallback={leagueWait}><LeagueHomeCard onOpen={onOpenLeague} onStart={onStartLeague} wait={leagueWait} from="multiplayer" /></React.Suspense>
+        ) : onStartLeague ? (
+          <LeagueStartRow onStart={onStartLeague} />
+        ) : null}
+        {/* Local pass & play: the whole row is the tap and it ends in an arrow,
+            as every row that takes you somewhere does (it had a grey Play
+            beside a row that did the same thing). */}
+        <div className="todays-seven-secondary mp-row" role="group" aria-label={t("oh.localAria")}>
+          <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label={t("oh.localOpen")}>
+            <span className="t7s-icon" aria-hidden="true"><Gamepad2 size={22} strokeWidth={2} /></span>
+            <span className="t7s-body">
+              <span className="t7s-title"><span className="t7s-name">{t("oh.local")}</span></span>
+              <span className="t7s-sub">{rowLine(t("oh.localSub"))}</span>
+            </span>
+            <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>
+          </button>
+        </div>
       </div>
+
+      {needsAccount && joinBlock}
       </div>{/* /.online-col-b */}
       </div>{/* /.online-cols */}
     </div>

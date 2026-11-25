@@ -29,7 +29,9 @@ async function shareInvite(text) {
   try { await navigator.clipboard.writeText(text); return "copy"; } catch { return null; }
 }
 
-export default function LeagueHomeCard({ onOpen, onStart, wait = null }) {
+// `from`: where the card stands, for the invite's count ("home"; "multiplayer"
+// since that tab carries the same row, 25 Nov 2026).
+export default function LeagueHomeCard({ onOpen, onStart, wait = null, from = "home" }) {
   useT();
   // undefined: not answered yet. null: the fetch failed. An array: the answer,
   // or, until it comes, the last answer this phone had (a member's card is
@@ -80,7 +82,7 @@ export default function LeagueHomeCard({ onOpen, onStart, wait = null }) {
       let via = null;
       try { via = await shareInvite(inviteShareText(l.name, url)); } finally { sharing.current = false; }
       if (!via) return;
-      loopEvent("league-invite-share", { via, from: "home" });
+      loopEvent("league-invite-share", { via, from });
       if (via === "copy") { setCopied(true); setTimeout(() => setCopied(false), 2200); }
     };
     return (

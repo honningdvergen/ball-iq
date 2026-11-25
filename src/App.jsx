@@ -3056,6 +3056,13 @@ function AppInner() {
     loopEvent("league-create-open", { from: "daily" });
     setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
   }, [setLeagueSheet]);
+  // The same sheet from the Multiplayer tab's league row (25 Nov 2026).
+  const openLeagueCreateFromOnline = useCallback(() => {
+    loopEvent("league-create-open", { from: "multiplayer" });
+    setLeagueSheet({ kind: "create", seed: "manual", vs: "", h2h: null });
+  }, [setLeagueSheet]);
+  // The gear on a tab that draws its own (the shared strip's does the same inline).
+  const openSettings = useCallback(() => setScreen("settings"), []);
   // Joining or creating needs a session: a guest gets an anonymous one (the
   // /join/CODE mechanism); if that is switched off, the sign-in sheet opens.
   const ensureLeagueSession = useCallback(async () => {
@@ -7588,7 +7595,10 @@ function AppInner() {
           notifCount={notifCount}
           onOpenNotifs={user ? openNotifs : undefined}
         />}
-        {!isWebBrowser && !inGame && !(screen === "home" && tab === "home") && (
+        {/* Not over the Multiplayer tab either (25 Nov 2026): its bell and gear
+            are two tiles in its own title row (screens/OnlineHubTab.jsx), as
+            Home's are in its greeting row. */}
+        {!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online")) && (
           <div className="hdr">
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and
@@ -8058,6 +8068,17 @@ function AppInner() {
               })()}
               avatarUrl={authProfile?.avatar_url}
               avatarId={currentAvatarId(authProfile, profile)}
+              // The bell and the gear the shared strip drew over this tab, with
+              // the handlers that strip gives them (the bell needs a session).
+              showSettings={!isWebBrowser}
+              onOpenSettings={openSettings}
+              onOpenNotifs={user ? openNotifs : undefined}
+              notifCount={notifCount}
+              // The mates' league row, as on Home (a session, not an account:
+              // an invite-link player can be in a league).
+              hasSession={!!user}
+              onOpenLeague={LEAGUES_ON ? openLeagueTable : undefined}
+              onStartLeague={LEAGUES_ON ? openLeagueCreateFromOnline : undefined}
             />
             </TabErrorBoundary>
           </div>
