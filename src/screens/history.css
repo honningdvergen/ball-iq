@@ -1,0 +1,121 @@
+/* THE HISTORY TAB ON A PHONE (screens/DailyScreen.jsx, 26 Nov 2026).
+   Alex, of the drawing this is built from (ball-iq-audit/2026-11-24/finish/history-2.png): "Yes,
+   build it". What it replaced, as he saw it on his phone: a card with an outline for every day, an
+   outlined streak card and an outlined yellow countdown pill, four outlined Play pills on
+   yesterday, scores in filled chips inside a card, and a different screen for a new player.
+   Top to bottom: the title with the countdown as plain text on its line, the streak card, the
+   small grey label with the four games' names as column heads, and ONE card for all days with a
+   hairline between rows. Today is always its first row, and the round play buttons on it are the
+   one loud thing on the screen.
+
+   The kit is the one Home, the Multiplayer tab and the Profile are built on, and its classes are
+   REUSED, not copied: a plain filled card is .gp-list, a row with a well is Home's
+   .todays-seven-secondary with its .t7s-* parts (a day's name over its date is the same
+   .t7s-title over .t7s-sub), a section's name is .home-section-title, a soft pill is .t7s-cta.
+   What is set here is this screen's own measures on them (type at 11 / 13.5 / 16 and nothing
+   between, filled and never outlined) and the few parts no other screen has: the fourteen squares,
+   a day's row of four cells, a run of days off.
+   Every rule starts at .hs, the phone column (.daily-col-mobile), so the wide window's History
+   (.daily-desktop) and every other screen stay as they are. The bell and the gear over this tab
+   are tiles by .hdr-guest (app.css). This file rides in the History tab's own chunk. */
+
+/* The four columns. As wide as the screen allows up to COL_W (DailyScreen.jsx hands it over as
+   --hs-colmax), and never under the 44 a thumb needs. What is taken off the screen's width: the
+   page's two 20px gutters, the card's two paddings and 84 for the day's name ("Yesterday" at 16). */
+.hs{--hs-colmax:54px;--hs-pad:16px;--hs-col:clamp(44px,calc((min(100vw,420px) - 156px) / 4),var(--hs-colmax));}
+
+/* ── The title's line: the tab's name at the left, the countdown as plain text at the right, on
+   one baseline. Grey words, the time lighter, in Inter with tabular figures. */
+.hs .hs-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 10px;margin:0 4px;}
+.hs .hs-title{min-width:0;font-size:32px;line-height:1;font-weight:800;letter-spacing:-0.02em;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+/* Where the two do not fit one line (a long title in another language on the smallest phone) the
+   countdown takes the next line, still at the right. */
+.hs .hs-count{flex:none;margin-left:auto;font-size:13.5px;line-height:1;font-weight:500;white-space:nowrap;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.hs .hs-count b{font-weight:600;font-variant-numeric:tabular-nums;color:#C9CCD6;-webkit-text-fill-color:#C9CCD6;}
+/* In a browser tab there is no strip of the app's over the tab (the website's bar stands there),
+   so the title keeps the 14 the strip's tiles leave under them. */
+body.biq-web .hs .hs-h{margin-top:14px;}
+
+/* ── A plain card and its rows. The fill is the card's, nothing round it; a row with a well is
+   68 high (11 above and below the 46px well), title 16, grey line 13.5. */
+.hs .gp-list{margin:10px 0 0;padding:2px var(--hs-pad);border-radius:20px;background:var(--s1);}
+.hs .hs-h + .gp-list{margin-top:20px;}
+.hs .gp-list > .todays-seven-secondary{min-height:68px;margin:0;padding:11px 0;border:0;border-radius:0;background:none;box-shadow:none;cursor:default;}
+.hs .gp-list > .todays-seven-secondary:active{transform:none;}
+@media (hover: hover){.hs .gp-list > .todays-seven-secondary:hover{transform:none;box-shadow:none;}}
+.hs .t7s-icon{border:0;}
+.hs .t7s-body{gap:5px;}
+.hs .t7s-title{font-size:16px;font-weight:700;letter-spacing:-0.01em;}
+/* A grey line too long for a small phone ("Play one puzzle today to keep it" at 320) breaks into
+   two lines of a like length, not one line and a word. */
+.hs .t7s-sub{font-size:13.5px;text-wrap:balance;}
+/* Tabular figures where a number stands on its own (a count, a date, a time). Not on a sentence:
+   Inter's tabular hyphen opens a gap in "6-day" and "Auto-protects". */
+.hs .hs-num,.hs .hs-row .t7s-sub{font-variant-numeric:tabular-nums;}
+/* A soft pill: a wash of the row's colour, no outline. 36 to the eye, 44 to the thumb. */
+.hs .hs-pills{display:flex;flex-wrap:wrap;gap:8px;padding:1px 0 14px;}
+.hs .gp-list .t7s-cta{position:relative;gap:6px;height:36px;padding:0 16px;border:0;border-radius:999px;background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);font-family:inherit;font-size:13.5px;line-height:1;font-weight:800;letter-spacing:0;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.hs .gp-list .t7s-cta::after{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;}
+.hs .gp-list .t7s-cta:active{background:rgba(var(--mode-rgb),0.24);}
+
+/* ── The streak card: the flame in its well, "N day streak" over one grey line, then the last
+   fourteen days as squares. A day played is green (dimmer when it was caught up a day late),
+   today not yet played is a fine yellow line with no fill. */
+.hs .gp-list.hs-streak{padding:4px var(--hs-pad) 16px;}
+.hs .hs-sq{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;}
+.hs .hs-sq span{height:18px;border-radius:5px;background:var(--s2);}
+.hs .hs-sq span.is-on{background:var(--accent);}
+.hs .hs-sq span.is-late{opacity:0.55;}
+.hs .hs-sq span.is-due{background:none;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.hs .hs-ends{display:flex;justify-content:space-between;margin-top:10px;font-size:11px;line-height:1;font-weight:500;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+
+/* ── "RECENT DAYS" and the four games' names, each over its column of the card under them. */
+.hs .hs-heads{display:grid;grid-template-columns:1fr repeat(4,var(--hs-col));align-items:end;margin:20px var(--hs-pad) 10px 4px;}
+.hs .home-section-title{display:block;margin:0;padding:0;font-size:11px;line-height:1;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.hs .hs-head{font-size:11px;line-height:1;font-weight:700;letter-spacing:0.02em;text-align:center;white-space:nowrap;}
+
+/* ── The days: ONE card, a hairline between rows (inside the row's own height). A day is 64 high:
+   its name over its date, then four cells. */
+.hs .gp-list.hs-list{margin-top:0;padding:0 var(--hs-pad);}
+.hs .hs-list > * + *{box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
+.hs .hs-row{display:grid;grid-template-columns:1fr repeat(4,var(--hs-col));align-items:center;height:64px;}
+.hs .hs-row .t7s-title,.hs .hs-row .t7s-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hs .hs-row .t7s-title{box-sizing:content-box;padding-bottom:3px;margin-bottom:-3px;}
+.hs .hs-row .t7s-sub{line-height:1.1;}
+.hs .hs-c{display:grid;place-items:center;min-width:0;}
+/* A score: a plain number in the game's colour, no chip under it. (A Mystery Player result in the
+   column Top 10 now heads carries that game's small mark before it.) */
+.hs .hs-c b{display:inline-flex;align-items:center;gap:3px;font-size:16px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;}
+/* Not solved: the red cross. Started and never finished: a small grey dot. Not played: a short grey dash. */
+.hs .hs-c .hs-x{color:#FF6B6B;}
+.hs .hs-c i{width:4px;height:4px;border-radius:50%;background:var(--t3);}
+.hs .hs-c s{width:12px;height:2px;border-radius:1px;background:#2E3340;text-decoration:none;}
+/* A game to play. The button is the whole column wide and 56 of the row's 64 high. On Today it
+   carries a round well, 36 across, in a wash of the game's colour: the one loud thing in the list.
+   On Yesterday it is the bare arrow, quieter. */
+.hs .hs-play{display:grid;place-items:center;width:100%;height:56px;margin:0;padding:0;border:0;border-radius:0;background:none;color:var(--mode);-webkit-text-fill-color:var(--mode);font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.hs .hs-play span{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:rgba(var(--mode-rgb),0.16);}
+.hs .hs-play svg{margin-left:2px;}
+.hs .hs-play:active span{background:rgba(var(--mode-rgb),0.26);}
+.hs .hs-play.is-bare span{background:none;opacity:0.7;}
+.hs .hs-play.is-bare:active span{background:none;opacity:1;}
+.hs .hs-play:focus-visible span{box-shadow:0 0 0 2px var(--mode);}
+/* A run of days with nothing played: one quiet line, 34 high. A new player's last line, under
+   Today: a little larger, 48 high. */
+.hs .hs-gap{display:grid;place-items:center;height:34px;font-size:11px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.hs .hs-gap.hs-first{height:48px;font-size:13.5px;text-align:center;}
+
+/* The smallest phones (under 360 wide): a card's side padding 12 where it was 16, as on Home, and
+   the gap beside a well 10 where it was 12. At 320 the four columns and "Yesterday" at 16 do not
+   fit side by side with air between the games' names (FOOTLE and DAILY 7 touched), so a day's
+   name is set at 13.5 there, the size of its date, and the columns get what that frees: 47 each
+   at 320, with 68 for the name. The title steps down as the Multiplayer tab's does, and "RECENT
+   DAYS" may take two lines. Still only 11, 13.5 and 16 under the title. */
+@media (max-width: 359px){
+  .hs{--hs-pad:12px;--hs-col:clamp(44px,calc((100vw - 132px) / 4),var(--hs-colmax));}
+  .hs .hs-title{font-size:28px;}
+  .hs .gp-list > .todays-seven-secondary{gap:10px;}
+  .hs .hs-row .t7s-title{font-size:13.5px;}
+  .hs .hs-head{letter-spacing:-0.01em;}
+  .hs .home-section-title{line-height:1.3;letter-spacing:0.1em;}
+}

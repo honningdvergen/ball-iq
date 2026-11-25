@@ -16,6 +16,23 @@
 //     row for a player's first days: "dd: footle won in 3, everything on,
 //     loading" and the two Daily 7 results. DailyDone.jsx says why. The only
 //     difference in each is that button.)
+// INTENDED CHANGE, 26 Nov 2026 (the History tab on a PHONE; Alex, on its drawing: "Yes, build it").
+// Six entries were replaced, and only those: the six "history: ..." entries. The new render was dumped
+// with a temporary copy of this test; 95 of 101 entries were byte-identical. For each of the six a
+// script (ball-iq-audit/2026-11-25/history/built/how/golden.py) cut the old and the new entry at the
+// same two landmarks, the phone column's opening tag and <div class="daily-desktop"> (each asserted to
+// be there exactly once), and proved: (1) everything before the phone column is byte-identical; (2)
+// everything from <div class="daily-desktop"> to the end, the wide window's whole layout with its own
+// streak card gate, its table and its "This week" card, is byte-identical; (3) so only the phone
+// column differs. There the outlined countdown pill is plain text on the title's line, the streak
+// card is always drawn (it was gated on a played day) with "2 weeks ago" and "Today" under its
+// squares and a grey line of its own, and the days are ONE card whose first row is Today: a play
+// button for each game not finished, the result for each that is. Scores are plain numbers (they
+// were chips), yesterday's open games are bare arrows (they were "Play" pills), a run of days off is
+// a line inside the card, a new player gets the Today row and "Each day you play gets a row here"
+// where the "No days yet" card stood, and the repair, day-complete and shields blocks are plain
+// cards with lucide icons where there were outlined boxes and three system glyphs.
+// tests/unit/history-tab.test.js holds what the new column shows.
 //   • Every key step 4 added is pinned to its exact English
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
@@ -439,9 +456,18 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('History', () => {
     const h = unq(now['history: two weeks with gaps, yesterday open']);
-    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>HACE 2 SEM<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '>2 días libres<', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
+    for (const s of ['>Historial<', '>Nuevos en<', '>1 día de racha<', '>Días<', '>Ayer<', '>dom<', '>18 oct<', '>2 días libres<', '>1 escudo de racha listo<', '>5,0 / 7<']) expect(h, s).toContain(s);
+    // 26 Nov 2026: the phone layout. The countdown is plain text beside the title, the ends of the
+    // fourteen squares are in sentence case, the streak's grey line has no leading mark, and Today
+    // is the list's first row (here a finished Footle and three games to play).
+    for (const s of ['>Nuevos en <b>12 h 0 min</b><', '>Hace 2 semanas<', '>Hoy<', '>Vuelve mañana para mantenerla<', 'aria-label="Juega al Daily 7 de hoy"', 'aria-label="Ponte al día: juega el Daily 7 de ayer"']) expect(h, s).toContain(s);
+    expect(h).not.toContain('HACE 2 SEM');
     expect(unq(now['history: all done today, yesterday open, streak broke'])).toContain('>Se rompió tu racha de 9 días<');
-    expect(unq(now['history: a new player, nothing played'])).toContain('Termina cualquiera de los cuatro retos de hoy');
+    // A new player: the same screen, with the streak card at zero, four games on the Today row
+    // and one line under it (it was the "Aún no hay días" card with a button).
+    const n = unq(now['history: a new player, nothing played']);
+    for (const s of ['>0 días de racha<', '>Juega un reto para encenderla<', 'aria-label="Juega al Footle de hoy"', '>Cada día que juegues tendrá su fila aquí<']) expect(n, s).toContain(s);
+    for (const s of ['Aún no hay días', 'Termina cualquiera de los']) expect(n, s).not.toContain(s);
   });
   it('Profile, a friend, blocked users', () => {
     const p = unq(now['profile: signed in, rated, friends and requests']);

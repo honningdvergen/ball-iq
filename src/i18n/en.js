@@ -709,16 +709,16 @@ export default registerEnglish({
   'hi.streakAria_other': '{n}-day daily streak, best {b}',
   'hi.dayStreak_one': '{n} day streak',
   'hi.dayStreak_other': '{n} day streak',
-  'hi.keep': '— come back tomorrow to keep it',
-  'hi.light': '— play one puzzle to light it',
+  // The grey line under "N day streak" (26 Nov 2026: a line of its own on a phone, so no
+  // leading dash; hi.keepToday, for a streak today has not counted yet, is with the phone
+  // layout's other new words further down).
+  'hi.keep': 'Come back tomorrow to keep it',
+  'hi.light': 'Play one puzzle to light it',
   'hi.formAria': 'Form — last 14 days',
-  'hi.2wk': '2 WK AGO',
-  'hi.TODAY': 'TODAY',
+  // Under the fourteen squares, at the left; at the right is site.today.
+  'hi.2wk': '2 weeks ago',
   'hi.recent': 'Recent days',
-  'hi.noDays': 'No days yet',
-  'hi.empty': 'Finish any of today’s {n} and it lands here. One row a day, so you can see your run build.',
-  'hi.four': 'four',
-  'hi.three': 'three',
+  // What a screen reader gets for a play button on the Today row (a started board: dd.contToday).
   'hi.playToday': 'Play today’s {g}',
   'hi.gap1': 'A day off',
   'hi.gapN': '{n} days off',
@@ -1562,6 +1562,12 @@ export default registerEnglish({
   'sp.ladder': 'The ladder',
   'sp.here': 'You are here',
   'sp.xpTo': '{n} XP to {name}',
+  // The History tab on a phone (screens/DailyScreen.jsx, 26 Nov 2026; Alex, on its drawing:
+  // "Yes, build it"). The streak card's grey line while today is not counted yet, and a new
+  // player's one line under the Today row. The "No days yet" card's words (hi.noDays,
+  // hi.empty, hi.four, hi.three) and hi.TODAY left with what they named.
+  'hi.keepToday': 'Play one puzzle today to keep it',
+  'hi.firstRow': 'Each day you play gets a row here',
   // Online multiplayer: entry, lobby, game and podium (screens/OnlineMultiplayer.jsx).
   'mp.createFail': 'Couldn\'t create the room — check your connection and try again.',
   'mp.enterCode': 'Enter the 6-character room code',

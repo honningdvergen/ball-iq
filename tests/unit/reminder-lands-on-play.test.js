@@ -31,8 +31,14 @@ describe("routes that promise today's puzzles land on today's puzzles", () => {
   it('Home is the screen that renders the daily rows, and History is not', () => {
     // If this ever inverts, the assertions below are pointing at the wrong tab
     // and must be re-derived rather than flipped.
-    expect(HOME, 'the four dailies are rows on Home').toMatch(/todays-seven-secondary/);
-    expect(DAILY, 'History lists no puzzle rows').not.toMatch(/todays-seven-secondary/);
+    // Re-derived on 26 Nov 2026, not flipped: a phone's History has a Today row since that day
+    // (four play buttons in its list of days), so a game can be started from it. It is still not
+    // the screen these routes promise: Home has the four ROWS (`is-mode`: the game's name, its
+    // line, its pill, the day's count, and a finished board to open again), and History never
+    // draws one. Its only use of the row class is the kit's still row, on its streak card.
+    expect(HOME, 'the four dailies are rows on Home').toMatch(/todays-seven-secondary is-mode/);
+    expect(DAILY, 'History lists no puzzle rows').not.toMatch(/is-mode/);
+    expect((DAILY.match(/todays-seven-secondary/g) || []).length).toBe((DAILY.match(/className="todays-seven-secondary is-still"/g) || []).length);
   });
 
   it('a reminder tap lands on Home', () => {

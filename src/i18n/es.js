@@ -642,7 +642,8 @@ export default {
   'rw.wa': 'Compartir por WhatsApp',
   'rw.nextPuzzle': 'Próximo reto en {c}',
   'rw.noPuzzle': 'Ese día no se guardó el reto.',
-  // The countdown pill beside the title: "Nuevos retos en" wrapped at 320 px.
+  // The countdown beside the title (plain text on a phone since 26 Nov 2026, a pill in a wide
+  // window): "Nuevos retos en" wrapped at 320 px, and beside "Historial" it still would.
   'hi.newIn': 'Nuevos en',
   'hi.solvedIn': '{g}: resuelto en {n}',
   'hi.notSolved': '{g}: sin resolver',
@@ -668,18 +669,16 @@ export default {
   'hi.streakAria_other': 'Racha diaria de {n} días, mejor {b}',
   'hi.dayStreak_one': '{n} día de racha',
   'hi.dayStreak_other': '{n} días de racha',
-  'hi.keep': '· vuelve mañana para mantenerla',
-  'hi.light': '· juega un reto para encenderla',
+  // La línea gris bajo "N días de racha" (26 Nov 2026): una línea propia, sin el punto inicial.
+  // Not yet read by a native reviewer.
+  'hi.keep': 'Vuelve mañana para mantenerla',
+  'hi.light': 'Juega un reto para encenderla',
   'hi.formAria': 'Forma: últimos 14 días',
-  'hi.2wk': 'HACE 2 SEM',
-  'hi.TODAY': 'HOY',
+  // Not yet read by a native reviewer.
+  'hi.2wk': 'Hace 2 semanas',
   // Short: the head shares its row with four column labels at 320 px
   // ("Últimos días" wrapped, "Recientes" pushed TOP 10 off the edge).
   'hi.recent': 'Días',
-  'hi.noDays': 'Aún no hay días',
-  'hi.empty': 'Termina cualquiera de los {n} retos de hoy y aparecerá aquí. Una fila por día, para que veas crecer tu racha.',
-  'hi.four': 'cuatro',
-  'hi.three': 'tres',
   'hi.playToday': 'Juega al {g} de hoy',
   'hi.gap1': 'Un día libre',
   'hi.gapN': '{n} días libres',
@@ -1517,6 +1516,11 @@ export default {
   'sp.ladder': 'La escalera',
   'sp.here': 'Estás aquí',
   'sp.xpTo': 'Faltan {n} XP para {name}',
+  // El Historial en el móvil (26 Nov 2026): la línea gris de la racha cuando hoy aún no cuenta,
+  // y la única línea de un jugador nuevo bajo la fila de hoy. "Reto" como en hi.light.
+  // Not yet read by a native reviewer.
+  'hi.keepToday': 'Juega un reto hoy para mantenerla',
+  'hi.firstRow': 'Cada día que juegues tendrá su fila aquí',
   // Multijugador online: entrada, sala, partida y podio
   'mp.createFail': 'No se ha podido crear la sala. Revisa tu conexión y vuelve a intentarlo.',
   'mp.enterCode': 'Escribe el código de sala de 6 caracteres',

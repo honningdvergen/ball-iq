@@ -40,7 +40,7 @@ const INTENTIONAL = {
   'src/screens/PrivacyScreen.jsx': 'the privacy policy is a legal text, kept English until a lawyer-checked Spanish version exists',
   'src/components/ErrorBoundary.jsx': 'crash screen: carries its own en/es copy (CRASH_COPY) so it needs no i18n runtime',
   'src/components/FootleHero.jsx': 'component is not mounted anywhere (only pickTeaserPair is imported, by a test)',
-  'src/screens/DailyScreen.jsx#field sub': 'todayModes sub/subLong are never rendered (only name, done and onTap are read)',
+  'src/screens/DailyScreen.jsx#field sub': 'todayModes sub/subLong are never rendered (only key, done, started and onTap are read)',
   'src/screens/DailyScreen.jsx#field cta': 'todayModes cta is never rendered (see above)',
   'src/screens/DailyScreen.jsx:=Start your streak today': 'tacticsSubtitle() is never called',
   'src/App.jsx:=Daily 7 Complete': 'DailySocialProof is never mounted',

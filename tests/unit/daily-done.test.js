@@ -210,8 +210,13 @@ describe('DailyDone — one panel, four surfaces', () => {
   it('the History tab (ex-Daily) lists NO puzzle rows — those live on Home only', () => {
     // Alex, 2026-09-06: Home and the Daily tab listed the same four puzzles.
     // The tab keeps the countdown, streak strip, recent days and archive.
+    // 26 Nov 2026: on a phone he approved a Today row in the list of days, four play buttons
+    // (tests/unit/history-tab.test.js). Home's ROWS, a title, a line and a pill for each game, are
+    // still Home's alone: the row class is on this screen only as the kit's still row (the streak
+    // card and the day-complete, repair and shields cards), never as a game's row.
     const DAILY = read('../../src/screens/DailyScreen.jsx');
-    expect(DAILY).not.toMatch(/todays-seven-secondary/);
+    expect((DAILY.match(/todays-seven-secondary/g) || []).length).toBe((DAILY.match(/className="todays-seven-secondary is-still"/g) || []).length);
+    expect(DAILY).not.toMatch(/is-mode|t7s-name|m\.sub\b|subLong\}/);
     expect(DAILY).not.toMatch(/background: m\.theme\.card|m\.theme\.btnBg/);
     // i18n step 4: the tab's own title is the same "tab.daily" key as the tab bar.
     expect(DAILY).toMatch(/>\{t\("tab\.daily"\)\}<\/div>/);

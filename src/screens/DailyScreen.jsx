@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X } from "lucide-react";
-import { useAuth } from "../useAuth.jsx";
+import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X, Play, Check, HeartCrack, Shield } from "lucide-react";
 import { Confetti } from "../components/Confetti.jsx";
 import { haptic } from "../lib/feedback.js";
 import { dateToYMD, msToNextLocalMidnight } from '../lib/date.js';
+import { localDayNow } from "../lib/streak.js";
 import { countdownText } from '../i18n/names.js';
 import { footleAnswerFor } from "../lib/wordle.js";
 // lib/trailDay.js, never lib/trail.js: that one is every Trail career (Home's eager budget).
@@ -16,6 +16,7 @@ import { MODE_ACCENT, MODE_RGB } from '../lib/accents.js';
 import { t, useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
+import "./history.css"; // the phone layout's measures on the kit; rides in this tab's chunk
 
 // Shared monospace stack for tabular numerals (countdown, scores). Mirrors the
 // inline font used by the mobile markup so the >=1024 desktop layout renders
@@ -103,7 +104,15 @@ function ModeGlyph({ mode, size = 22 }) {
 // one control (Alex, 2026-09-09: "the 4 play buttons sit a bit too close").
 // 54 gives each pill ~11pt of air and still leaves ~97pt of a 375pt phone for
 // the date column, where "Yesterday" needs ~70.
+// 26 Nov 2026: on a phone this is the column's WIDEST (history.css takes it as
+// --hs-colmax). Under about 370 wide the four columns give way, never under the
+// 44 a thumb needs (47 each at 320), so the day's name keeps its room: the old
+// fixed 54 left it 34 at 320, and "Yesterday" ran under the first score.
 const COL_W = 54;
+
+// A game's colour for the kit's wells, pills and play buttons (app.css reads
+// --mode and --mode-rgb on a row; history.css on a play button).
+const modeVars = (key) => ({ "--mode": MODE_ACCENT[key], "--mode-rgb": MODE_RGB[key] });
 
 const MODE_LABEL = { footle: "Footle", daily7: "Daily 7", trail: "Transfer Trail", mystery: "Mystery Player", top10: "Top 10" };
 
@@ -165,6 +174,37 @@ function ReplayCell({ w, theme, label, onTap }) {
           height: 26, padding: "0 8px", borderRadius: 999, background: theme.btnBg,
           border: theme.btnBd, fontSize: 11.5, fontWeight: 800, color: theme.fg,
           letterSpacing: 0.1, cursor: "pointer", fontFamily: "inherit", lineHeight: 1 }}>{t("common.play")}</button>
+    </span>
+  );
+}
+
+// ONE CELL OF THE PHONE'S LIST (26 Nov 2026; history.css). The wide window
+// keeps ScoreCell and ReplayCell above. The same five states, drawn in the kit:
+// a score is a plain number in the game's colour with no chip under it (a fill
+// inside the card's fill was one of the things Alex's drawing took out), not
+// solved is the red cross, started and never finished is a small grey dot, not
+// played is a short grey dash, and a game with no answer that day is empty.
+//
+// With `onTap` the cell is a button. On Today it carries a round tinted well:
+// the one loud thing in the list. On Yesterday (`bare`) it is the arrow alone,
+// so a player who skipped both days sees one row of buttons, not two. Either
+// way the button is the whole column wide and 56 high, more than the 44 a
+// thumb needs; the well is 36 to the eye.
+function DayCell({ c, glyph = null, onTap = null, bare = false, label = "" }) {
+  if (onTap) {
+    return (
+      <button type="button" className={bare ? "hs-play is-bare" : "hs-play"} style={modeVars(c.key)} onClick={onTap} aria-label={label} title={label}>
+        <span aria-hidden="true"><Play size={13} strokeWidth={1.5} fill="currentColor" /></span>
+      </button>
+    );
+  }
+  return (
+    <span className="hs-c" aria-hidden="true">
+      {c.state === "win" ? <b style={{ color: c.theme.fg, WebkitTextFillColor: c.theme.fg }}>{glyph ? <ModeGlyph mode={glyph} size={13} /> : null}{c.text}</b>
+        : c.state === "miss" ? <X className="hs-x" size={16} strokeWidth={2.6} />
+        : c.state === "open" ? <i />
+        : c.state === "none" ? <s />
+        : null}
     </span>
   );
 }
@@ -294,6 +334,54 @@ function rowAria(m) {
   return `${m.dateLabel} ${m.dateSub} — ${rowCells(m).map(c => c.aria).filter(Boolean).join(", ")}`;
 }
 
+// TODAY'S ROW, the first row of the phone's list (26 Nov 2026). Alex approved a
+// Today row on this tab ("Yes, build it"), which reverses "HISTORY, not a second
+// Today" of 6 Sept on purpose: that rule left a tab with nothing to play, and a
+// new player with a different screen.
+//
+// One cell per column, in the columns' order:
+//   - a game FINISHED today prints exactly what any past row prints for it
+//     (rowCells): the number of guesses or the miss mark, x/7, x/10. It is not a
+//     button; Home is where a finished board is opened again.
+//   - a game NOT finished, started or not, is its play button (`play`, with
+//     `started` for the words a screen reader gets).
+//   - a game with NO ANSWER today is empty ("off"), as in any other row.
+// `games` is todayModes: the list, the gates and the onTap Home's own rows are
+// built from, so this row cannot offer a game that is not live today. A game
+// finished with no result on this row (a Daily 7 saved without its score)
+// prints nothing: an empty cell is true, a made-up figure is not.
+export function todayCells(m, games) {
+  const live = new Map((games || []).map((g) => [g.key, g]));
+  return rowCells(m).map((c) => {
+    const g = live.get(c.key);
+    if (!g || c.state === "off") return { ...c, state: "off", aria: "", play: null };
+    const result = c.state === "win" || c.state === "miss";
+    if (result) return { ...c, play: null };
+    if (g.done) return { ...c, state: "off", aria: "", play: null };
+    return {
+      ...c, state: "play", started: !!g.started, play: g.onTap,
+      aria: t(g.started ? "dd.contToday" : "hi.playToday", { g: MODE_LABEL[c.key] }),
+    };
+  });
+}
+
+// THE GREY LINE UNDER "N day streak" (26 Nov 2026). Three cases, each true to
+// how the streak is counted (lib/streak.js, and the handler of
+// `biq:daily-completed` in App.jsx): it moves when a daily is FINISHED, once
+// per local day, win or lose, and a streak shown above zero is one that today
+// can still keep.
+//   - zero: one finished puzzle makes it 1.
+//   - above zero and today is counted: nothing more to do today.
+//   - above zero and today is not counted yet: one finished puzzle today keeps
+//     it. (With a shield banked a missed day would be forgiven; the line does
+//     not promise that.)
+// The old line said "come back tomorrow to keep it" to anyone with a streak,
+// also before they had played today, when tomorrow would have been too late.
+export function streakNoteKey(streak, countedToday) {
+  if (!(streak > 0)) return "hi.light";
+  return countedToday ? "hi.keep" : "hi.keepToday";
+}
+
 // What is still open from yesterday, derived from the SAME predicates the
 // Recent-days table uses to turn a cell into a replay control — including the
 // `playArchive`/`playDailyForDate` presence checks, so the panel cannot offer a
@@ -330,7 +418,12 @@ function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
 // countdown. This offers the one thing that is both playable right now and
 // already plumbed — yesterday's unplayed puzzles — and falls back to Survival,
 // which needs no difficulty picker, no account, and never runs out.
-function DayComplete({ open, onSurvival, wide, todayYMD }) {
+//
+// `kit` is the phone's drawing of the same block (26 Nov 2026): a plain card,
+// the tick in a green well, the same two lines, and under them soft pills,
+// yesterday's open games in their own colours or Survival. Nothing was taken
+// out. The wide window keeps the block below as it was.
+function DayComplete({ open, onSurvival, wide, todayYMD, kit = false }) {
   useT();
   const hasOpen = open.length > 0;
   // The clean sweep is the single most-earned moment in the product and this
@@ -349,6 +442,29 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
       return () => clearTimeout(id);
     } catch { /* storage unavailable: skip the celebration, keep the card */ }
   }, [todayYMD]);
+  if (kit) {
+    return (
+      <section className="gp-list">
+        {celebrate && Confetti ? <Confetti /> : null}
+        <div className="todays-seven-secondary is-still" style={modeVars("footle")}>
+          <span className="t7s-icon" aria-hidden="true"><Check size={22} strokeWidth={2.4} /></span>
+          <span className="t7s-body">
+            <span className="t7s-title">{t("hi.sweep")}</span>
+            <span className="t7s-sub">{t(hasOpen ? "hi.yOpen" : "hi.survNever")}</span>
+          </span>
+        </div>
+        <div className="hs-pills">
+          {hasOpen ? open.map(o => (
+            <button type="button" key={o.key} className="t7s-cta" style={modeVars(o.key)} onClick={o.onTap} aria-label={t("hi.playY", { g: o.label })}>
+              <Play size={11} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />{o.label}
+            </button>
+          )) : (
+            <button type="button" className="t7s-cta" style={modeVars("footle")} onClick={onSurvival}>{t("home.mode.survival")}</button>
+          )}
+        </div>
+      </section>
+    );
+  }
   return (
     <div style={{ borderRadius: 16, padding: wide ? "18px 20px" : "14px 16px", background: "rgba(88,204,2,0.06)", border: "1px solid rgba(88,204,2,0.28)", display: "flex", flexDirection: "column", gap: hasOpen ? 12 : 0 }}>
       {celebrate && Confetti ? <Confetti /> : null}
@@ -386,9 +502,36 @@ function DayComplete({ open, onSurvival, wide, todayYMD }) {
 // puzzles repairs it (the app shell listens for biq:archive-completed and
 // calls repair_login_streak). Same open-list derivation as DayComplete so
 // the buttons can never offer a puzzle the table would call unplayable.
-function StreakRepairBanner({ repair, open, wide }) {
+//
+// `kit` is the phone's drawing of it (26 Nov 2026): a plain card, a cracked
+// heart from lucide in a red well where the system's emoji stood, the same two
+// lines and the same buttons as soft pills. The wide window keeps the banner
+// below as it was.
+function StreakRepairBanner({ repair, open, wide, kit = false }) {
   useT();
   if (!repair) return null;
+  if (kit) {
+    return (
+      <section className="gp-list">
+        <div className="todays-seven-secondary is-still" style={{ "--mode": "#FF6B6B", "--mode-rgb": "255,107,107" }}>
+          <span className="t7s-icon" aria-hidden="true"><HeartCrack size={22} strokeWidth={2} /></span>
+          <span className="t7s-body">
+            <span className="t7s-title">{rich(t("hi.broke", { count: repair.fell }), { n: repair.fell })}</span>
+            <span className="t7s-sub">{t(open.length > 0 ? "hi.repairOpen" : "hi.repairDone")}</span>
+          </span>
+        </div>
+        {open.length > 0 && (
+          <div className="hs-pills">
+            {open.map(o => (
+              <button type="button" key={o.key} className="t7s-cta" style={modeVars(o.key)} onClick={o.onTap} aria-label={t("hi.repairAria", { g: o.label })}>
+                <Flame size={13} strokeWidth={2.4} aria-hidden="true" />{o.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  }
   return (
     <div style={{ borderRadius: 16, padding: wide ? "16px 20px" : "14px 16px", background: "rgba(255,107,107,0.07)", border: "1px solid rgba(255,107,107,0.30)", display: "flex", flexDirection: "column", gap: 10 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -415,7 +558,6 @@ function StreakRepairBanner({ repair, open, wide }) {
 }
 
 function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair, onStartLeague }) {
-  const { user, profile: authProfile } = useAuth();
   // The day rows' words and dates are memoised: they follow the language and its table's arrival.
   const uiLang = useLang();
   const uiReady = isLangLoaded(uiLang);
@@ -690,10 +832,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
     return out;
   }, [today, dailyHistory, footleHistory, trailHistory, mysteryHistory, top10History, uiLang, uiReady]);
 
-  // Has the player completed any of those 14 days? Both streak surfaces gate on
-  // this ONE value -- the mobile strip and the desktop rail card -- because the
-  // card's own comment promises "the mobile strip and this card never disagree",
-  // and gating each separately is exactly how they would come to.
+  // Has the player completed any of those 14 days? The wide window's streak
+  // card is shown only when they have. Until 26 Nov 2026 the phone's strip was
+  // gated on this same value, so the two could not disagree; the phone's card is
+  // now always shown (it has a Today row under it to play from), and both still
+  // light their squares from the one form14 above.
   const hasFormHistory = useMemo(() => form14.some(d => d.cls === "W" || d.cls === "D"), [form14]);
 
   // Today's playable set. Built once and rendered by BOTH breakpoints — the
@@ -704,6 +847,9 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   // Trail and Mystery are CONDITIONAL: neither has an answer for every date, so
   // a hard-coded card would offer a puzzle that cannot be played. Same gate
   // HomeScreen uses for its tiles.
+  //
+  // 26 Nov 2026: the phone's Today row (todayCells) reads key, done, started
+  // and onTap from this list. `started` is a board begun and not finished.
   const todayModes = useMemo(() => {
     const nowNoon = noon(today.getTime());
     const f = footleHistory.get(todayYMD);
@@ -720,6 +866,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         won: f?.status === "won",
         result: f?.status === "won" ? `Solved in ${f.used}` : "Not solved",
         cta: f?.status === "in-progress" ? "Continue" : "Play",
+        started: f?.status === "in-progress",
         // Result stays tappable — reopening a solved Footle shows the board
         // and the share button, which is the whole return loop.
         replay: true,
@@ -732,6 +879,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         done: !!dailyDone, won: true,
         result: `${dailyScore}/7`,
         cta: "Play",
+        started: false,
         replay: false,
         onTap: () => startMode?.("daily"),
       },
@@ -745,6 +893,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         won: tr?.status === "won",
         result: tr?.status === "won" ? `Solved in ${tr.used}` : "Not solved",
         cta: tr?.status === "in-progress" ? "Continue" : "Play",
+        started: tr?.status === "in-progress",
         replay: true,
         onTap: () => setScreen?.("trail"),
       });
@@ -761,6 +910,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         won: true,
         result: `${t10?.score || 0}/10`,
         cta: t10 ? "Continue" : "Play",
+        started: !!t10 && t10.status !== "done",
         replay: true,
         onTap: () => setScreen?.("top10"),
       });
@@ -778,6 +928,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         won: my?.status === "won",
         result: `Solved in ${my?.used || 0}`,
         cta: my ? "Continue" : "Play",
+        started: !!my && my.status !== "won",
         replay: true,
         onTap: () => setScreen?.("mystery"),
       });
@@ -790,16 +941,20 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   const headKeys = useMemo(() => new Set(cols.map(c => c.key)), [cols]);
 
   const playedCount = todayModes.filter(m => m.done).length;
-  // What the table lists. Past days, as ruled on 6 Sept ("HISTORY, not a second
-  // Today"). One exception, for the player with no past days yet: once they
-  // have played something today, today's row is shown. Four games in and the
-  // tab said "Today counts from tomorrow" over an empty box (simulator, 12 Oct
-  // 2026); with no history, today is all the history there is.
+  // What the list holds. The wide window lists past days only, as ruled on
+  // 6 Sept ("HISTORY, not a second Today"). On a phone that rule was reversed on
+  // purpose on 26 Nov 2026: Alex approved a drawing where Today is ALWAYS the
+  // first row, each game not yet finished a play button on it. So a new player
+  // gets the same screen as everyone else with one row in it, and the "No days
+  // yet" card (dashed chips, a glowing button) is gone, with its own screen.
   const pastDays = matchdays.filter(m => !m.isToday);
-  const historyRows = pastDays.length ? pastDays : (playedCount > 0 ? matchdays.filter(m => m.isToday) : []);
-  // Where the empty History sends a new player: the first of today's games
-  // they have not finished (Footle, on a first visit).
-  const nextUp = todayModes.find(m => !m.done) || null;
+  // Today's row. Its Daily 7 also follows the app's own flag and score: those
+  // are read before the first paint and the history map just after it, and a
+  // play button must never stand, even for a moment, over a game already played.
+  const todayRow = useMemo(() => {
+    const m = matchdays.find(x => x.isToday);
+    return m && dailyDone && !m.t7Done && Number.isFinite(dailyScore) ? { ...m, t7Done: true, t7Score: dailyScore } : m;
+  }, [matchdays, dailyDone, dailyScore]);
 
   // A3. `todayModes.length > 0` is not paranoia — Trail and Mystery are
   // conditional, so a day with neither live and both fixed modes played is the
@@ -811,133 +966,110 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   );
   const playSurvival = useCallback(() => startMode?.("survival"), [startMode]);
 
+  // Has today been counted towards the streak? A daily finished today on this
+  // screen's own list says yes. So does the streak's record (the one App.jsx
+  // keeps beside the number it hands down), which also knows a day counted by
+  // a game this list does not hold: Mystery Player finished as a side game on a
+  // day Top 10 is the fourth daily. Read again whenever the number changes.
+  const countedToday = useMemo(() => {
+    if (!(loginStreak > 0)) return false; // nothing to keep yet
+    if (playedCount > 0) return true;
+    try {
+      const last = Number(JSON.parse(localStorage.getItem("biq_login_streak") || "null")?.lastDay);
+      return Number.isFinite(last) && last >= localDayNow(today);
+    } catch { return false; }
+  }, [playedCount, loginStreak, today]);
+
   return (
     <div className="tab-content daily-screen">
-      {/* ═══ MOBILE (<1024) — byte-identical existing markup. Wrapped in a
-          display:contents box (generates no layout box, so mobile flow is
-          unchanged) that flips to display:none at >=1024. ═══ */}
-      <div className="daily-col-mobile">
-      {/* Daily redesign ("Today first" handoff): gear + greeting + title with
-          countdown pill, then the hero checklist card — today's two puzzles
-          with real CTAs that flip to result chips once played. */}
+      {/* ═══ PHONE (<1024). A display:contents box (it generates no box of its
+          own, so the page flows as before) that flips to display:none at
+          >=1024. Its class `hs` is where every rule of history.css starts.
+          Rebuilt on 26 Nov 2026 from the drawing Alex approved: the title with
+          the countdown as plain text, the streak card, and one card for all
+          days with Today as its first row. ═══ */}
+      <div className="daily-col-mobile hs" style={{ "--hs-colmax": `${COL_W}px` }}>
       {(() => {
-        const authLoading = !!user && !authProfile;
-        const name = authProfile?.username || profile?.name || null;
         const ko = countdownText(msToNextLocalMidnight(now));
         return (
           <>
-            {/* No local gear — AppInner's global header already renders one. */}
+            {/* No local gear — AppInner's global header already renders one (as a tile over this tab). */}
             {/* No greeting here (2026-09-06): the tab is History; the header anchor lives on Home. */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
-              <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.02em", color: "var(--t1)" }}>{t("tab.daily")}</div>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999, background: "rgba(255,193,7,0.07)", border: "1px solid rgba(255,193,7,0.25)" }} aria-label={t("dd.newIn", { ko })}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "var(--t2)" }}>{t("hi.newIn")}</span>
-                <span style={{ fontFamily: "var(--font)", fontSize: 13, fontWeight: 800, color: "var(--gold)", fontVariantNumeric: "tabular-nums" }}>{ko}</span>
-              </span>
+            <div className="hs-h">
+              <div className="hs-title">{t("tab.daily")}</div>
+              <span className="hs-count" aria-label={t("dd.newIn", { ko })}>{t("hi.newIn")} <b>{ko}</b></span>
             </div>
-
-            {/* Today's puzzles — one tinted row-card per live mode. Trail and
-                Mystery only appear on days they actually have an answer, so the
-                count is derived, never "of 2". */}
-            <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 10 }}>
-              {/* HISTORY, not a second Today (Alex, 2026-09-06). The four rows live
-                  on Home only; this tab keeps what Home does not have — the
-                  countdown, the streak strip, the recent-days table and the
-                  archive. Day-complete and streak-repair still belong here. */}
-              <StreakRepairBanner repair={streakRepair} open={dayOpen} />
-              {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} />}
-            </div>
+            {/* Streak-repair and day-complete stay first: each is about today and
+                each has something to tap. */}
+            <StreakRepairBanner repair={streakRepair} open={dayOpen} kit />
+            {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} kit />}
           </>
         );
       })()}
 
-      {/* Streak strip (redesign): last-14 form squares. Played days #2E7D1F,
-          today-played bright green with glow, missed raised bg, today-pending =
-          amber outline until a puzzle is completed.
+      {/* The streak card: the flame, "N day streak" over one grey line, and the
+          last 14 days as squares.
 
-          Hidden until the player has completed at least one of those 14 days.
-          Before that it read "0 day streak - play one puzzle to light it" over
-          14 dim squares: a scoreboard of a record nobody has, and an invitation
-          to play on the one tab that offers nothing to play. 44-49% of accounts
-          never play a game, so this was the common case, not the edge. */}
-      {hasFormHistory && (
-      <div role="status" aria-label={t("hi.streakAria", { count: streak.unbeaten, n: streak.unbeaten, b: streak.bestUnbeaten })}
-        style={{ marginTop: 12, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "14px 16px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
-          <span style={{ display: "inline-flex", color: "var(--gold)" }} aria-hidden="true"><Flame size={18} strokeWidth={2.3} /></span>
-          <span style={{ fontSize: 14, fontWeight: 800, color: "var(--t1)" }}>{rich(t("hi.dayStreak", { count: streak.unbeaten }), { n: streak.unbeaten })}</span>
-          <span style={{ fontSize: 12, color: "var(--t2)" }}>{t(streak.unbeaten > 0 ? "hi.keep" : "hi.light")}</span>
+          ALWAYS shown on a phone (26 Nov 2026), also at zero. From 6 Sept it was
+          hidden until one of the 14 days was played, because "0 day streak, play
+          one puzzle to light it" stood over 14 dim squares on a tab that offered
+          nothing to play. The Today row under it now offers the four games, so
+          the line has somewhere to send its reader. The wide window keeps its
+          own gate (hasFormHistory, below). */}
+      <section className="gp-list hs-streak" role="status" aria-label={t("hi.streakAria", { count: streak.unbeaten, n: streak.unbeaten, b: streak.bestUnbeaten })}>
+        <div className="todays-seven-secondary is-still" style={{ "--mode": "#FF9B5A", "--mode-rgb": "255,138,60" }}>
+          <span className="t7s-icon" aria-hidden="true"><Flame size={22} strokeWidth={2} /></span>
+          <span className="t7s-body">
+            <span className="t7s-title hs-num">{rich(t("hi.dayStreak", { count: streak.unbeaten }), { n: streak.unbeaten })}</span>
+            <span className="t7s-sub">{t(streakNoteKey(streak.unbeaten, countedToday))}</span>
+          </span>
         </div>
-        <div style={{ display: "flex", gap: 4, marginTop: 12 }} role="group" aria-label={t("hi.formAria")}>
+        <div className="hs-sq" role="group" aria-label={t("hi.formAria")}>
           {form14.map((d) => {
             const played = d.cls === "W" || d.cls === "D";
-            const s = { flex: 1, height: 18, borderRadius: 4 };
-            if (d.isToday && played) Object.assign(s, { background: "var(--accent)", boxShadow: "0 0 8px rgba(88,204,2,0.5)" });
-            else if (d.isToday) Object.assign(s, { background: "transparent", border: "1.5px solid var(--gold)" });
-            else if (played) Object.assign(s, { background: "#2E7D1F", opacity: d.arcOnly ? 0.55 : 1 });
-            else Object.assign(s, { background: "var(--s2)", opacity: d.cls === "pre" ? 0.45 : 1 });
-            return <span key={d.ymd} style={s} aria-label={d.aria} title={d.aria} />;
+            const cls = played ? (d.arcOnly ? "is-on is-late" : "is-on") : d.isToday ? "is-due" : undefined;
+            return <span key={d.ymd} className={cls} aria-label={d.aria} title={d.aria} />;
           })}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 7 }}>
-          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--t3)" }}>{t("hi.2wk")}</span>
-          <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", color: "var(--gold)" }}>{t("hi.TODAY")}</span>
-        </div>
-      </div>
-      )}
+        <div className="hs-ends"><span>{t("hi.2wk")}</span><span>{t("site.today")}</span></div>
+      </section>
 
-      {/* Recent days table — one column per mode. The header carries 14px of
-          side padding so its labels sit over the cells inside the row cards,
-          which have the same padding (the two-column version was 14px out). */}
-      {historyRows.length > 0 && (
-      <div style={{ display: "flex", alignItems: "baseline", marginTop: 18, padding: "0 14px" }}>
-        <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--t2)", flex: 1 }}>{t("hi.recent")}</span>
+      {/* The label and the four games' names, each over its column of the card
+          under them. */}
+      <div className="hs-heads">
+        <span className="home-section-title">{t("hi.recent")}</span>
         {cols.map(c => (
-          <span key={c.key} style={{ width: COL_W, flexShrink: 0, textAlign: "center", fontSize: 8.5, fontWeight: 800, letterSpacing: "0.02em", color: c.theme.head }}>{c.label}</span>
+          <span key={c.key} className="hs-head" style={{ color: c.theme.head, WebkitTextFillColor: c.theme.head }}>{c.label}</span>
         ))}
       </div>
-      )}
-      {historyRows.length === 0 ? (
-        // ⚠️ THE NEW PLAYER'S HISTORY WAS ONE GREY SENTENCE under a "RECENT
-        // DAYS" heading and four column labels, on an otherwise empty screen
-        // (13 Oct 2026). A table's header over no table. Now the tab says what
-        // it will hold, shows the four games a row is made of, and has the one
-        // thing an empty screen owes its reader: somewhere to go.
-        <div style={{ marginTop: 18, marginBottom: 14, borderRadius: 18, background: "var(--s1)", border: "1px solid var(--border)", padding: "24px 20px 20px", textAlign: "center" }}>
-          <div aria-hidden="true" style={{ display: "flex", justifyContent: "center", gap: 8 }}>
-            {cols.map(c => (
-              <span key={c.key} style={{ minWidth: 62, padding: "7px 8px", borderRadius: 10, border: `1px dashed ${c.theme.head}`, opacity: 0.75, fontSize: 9.5, fontWeight: 800, letterSpacing: "0.04em", color: c.theme.head }}>{c.label}</span>
+
+      {/* ONE card for all days, a hairline between rows. It was a card with an
+          outline per day. */}
+      <section className="gp-list hs-list">
+        {todayRow && (
+          <div className="hs-row" role="group" aria-label={rowAria(todayRow)}>
+            <span className="t7s-body"><span className="t7s-title">{todayRow.dateLabel}</span><span className="t7s-sub">{todayRow.dateSub}</span></span>
+            {todayCells(todayRow, todayModes).map(c => (
+              <DayCell key={c.key} c={c} glyph={headKeys.has(c.key) ? null : c.key} onTap={c.play} label={c.play ? c.aria : ""} />
             ))}
           </div>
-          <div style={{ marginTop: 16, fontSize: 17, fontWeight: 800, color: "var(--t1)" }}>{t("hi.noDays")}</div>
-          <div style={{ marginTop: 5, fontSize: 13.5, lineHeight: 1.45, color: "var(--t2)" }}>
-            {rich(t("hi.empty"), { n: cols.length === 4 ? t("hi.four") : cols.length === 3 ? t("hi.three") : cols.length })}
-          </div>
-          {nextUp && (
-            <button type="button" className="btn btn-p" onClick={nextUp.onTap} style={{ marginTop: 16, minHeight: 48 }}>
-              {rich(t("hi.playToday"), { g: nextUp.name })}
-            </button>
-          )}
-        </div>
-      ) : (
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 9, marginBottom: 14 }}>
-        {/* Today is excluded, as it already is on desktop. It is not a recent
-            day, the header does not claim it, and its state is on the streak
-            strip above and on Home's Today block. Alex, 2026-09-06: this tab is
-            "HISTORY, not a second Today". */}
-        {foldUnplayed(historyRows).map(m => {
+        )}
+        {pastDays.length === 0 ? (
+          // A new player's list: Today, and one quiet line that says what the
+          // card will hold. Nothing else, and nothing to tap but today's games.
+          <div className="hs-gap hs-first">{t("hi.firstRow")}</div>
+        ) : foldUnplayed(pastDays).map(m => {
           if (m.gap) {
             const newest = m.days[0], oldest = m.days[m.days.length - 1];
             const text = m.days.length === 1
               ? t("hi.gap1", { d: `${newest.dateLabel} ${newest.dateSub}` })
               : t("hi.gapN", { a: oldest.dateSub, b: newest.dateSub, n: m.days.length });
             return (
-              // A quiet caption between two days (11 Nov 2026). It was a dashed
-              // box reading "Nov 8 to Nov 9 · 2 days not played", four of them
-              // on one screen: a list of the player's absences, boxed. The
-              // dates stay for a screen reader.
-              <div key={`gap-${newest.ymd}`} aria-label={m.days.length === 1 ? `${newest.dateLabel} ${newest.dateSub}: ${text}` : `${oldest.dateSub} – ${newest.dateSub}: ${text}`}
-                style={{ padding: "0 14px", textAlign: "center", fontSize: 11, fontWeight: 600, letterSpacing: 0.3, color: "var(--t3)", opacity: 0.8 }}>
+              // A quiet line between two days, inside the card (26 Nov 2026).
+              // On 11 Nov it had already stopped being a dashed box reading
+              // "Nov 8 to Nov 9 · 2 days not played": a list of the player's
+              // absences, boxed. The dates stay for a screen reader.
+              <div key={`gap-${newest.ymd}`} className="hs-gap" aria-label={m.days.length === 1 ? `${newest.dateLabel} ${newest.dateSub}: ${text}` : `${oldest.dateSub} – ${newest.dateSub}: ${text}`}>
                 {text}
               </div>
             );
@@ -945,43 +1077,38 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           const cells = rowCells(m);
           const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
           return (
-            <div key={m.ymd} aria-label={rowAria(m)}
-              style={{ borderRadius: 13, padding: "12px 14px", display: "flex", alignItems: "center",
-                background: m.isToday ? "rgba(88,204,2,0.05)" : "var(--s1)",
-                border: m.isToday ? "1px solid rgba(88,204,2,0.4)" : "1px solid var(--border)" }}>
-              <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 1 }}>
-                <span style={{ fontSize: 13.5, fontWeight: 700, color: "var(--t1)" }}>{m.dateLabel}</span>
-                <span style={{ fontSize: 10.5, color: "var(--t3)" }}>{m.dateSub}</span>
-              </div>
+            <div key={m.ymd} className="hs-row" role="group" aria-label={rowAria(m)}>
+              <span className="t7s-body"><span className="t7s-title">{m.dateLabel}</span><span className="t7s-sub">{m.dateSub}</span></span>
               {cells.map(c => (
                 c.key === "daily7" && catchUp ? (
                   // Comeback hook (opportunity-scan #8): yesterday's missed
-                  // Daily 7 stays playable for one day — the same "Play" pill as
+                  // Daily 7 stays playable for one day, the same bare arrow as
                   // the other three, with its own label for screen readers.
-                  <ReplayCell key={c.key} w={COL_W} theme={c.theme} label={t("hi.catchUp")}
+                  <DayCell key={c.key} c={c} bare label={t("hi.catchUp")}
                     onTap={() => playDailyForDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1))} />
                 ) : (m.isYesterday && c.state === "none" && REPLAY_SCREEN[c.key] && playArchive) ? (
-                  <ReplayCell key={c.key} w={COL_W} theme={c.theme}
+                  <DayCell key={c.key} c={c} bare
                     label={t("hi.playDay", { d: m.dateLabel, g: MODE_LABEL[c.key] })}
                     onTap={() => { const [ry, rm, rd] = m.ymd.split("-").map(Number); playArchive(REPLAY_SCREEN[c.key], new Date(ry, rm - 1, rd)); }} />
-                ) : <ScoreCell key={c.key} state={c.state} text={c.text} theme={c.theme} glyph={headKeys.has(c.key) ? null : c.key} />
+                ) : <DayCell key={c.key} c={c} glyph={headKeys.has(c.key) ? null : c.key} />
               ))}
             </div>
           );
         })}
-      </div>
-      )}
+      </section>
 
       {shieldCount > 0 && (
-        <div style={{background:"rgba(88,204,2,0.04)",border:"1px solid rgba(88,204,2,0.10)",borderRadius:12,padding:"12px 14px",marginBottom:12,display:"flex",alignItems:"center",gap:10}}>
-          <span style={{fontSize:20}}>🛡️</span>
-          <div>
-            <div style={{fontSize:13,fontWeight:700,color:"var(--t1)"}}>{rich(t("hi.shields", { count: shieldCount }), { n: shieldCount, s: shieldCount === 1 ? "" : "s" })}</div>
-            <div style={{fontSize:11,color:"var(--t2)"}}>{t("hi.shieldSub")}</div>
+        <section className="gp-list">
+          <div className="todays-seven-secondary is-still" style={modeVars("footle")}>
+            <span className="t7s-icon" aria-hidden="true"><Shield size={22} strokeWidth={2} /></span>
+            <span className="t7s-body">
+              <span className="t7s-title hs-num">{rich(t("hi.shields", { count: shieldCount }), { n: shieldCount, s: shieldCount === 1 ? "" : "s" })}</span>
+              <span className="t7s-sub">{t("hi.shieldSub")}</span>
+            </span>
           </div>
-        </div>
+        </section>
       )}
-      </div>{/* /.daily-col-mobile — end of byte-identical mobile markup */}
+      </div>{/* /.daily-col-mobile — end of the phone layout */}
 
       {/* ═══ DESKTOP (>=1024) — two-column layout copied from the design handoff
           (screen 05 · Daily). Rendered always but display:none <1024, so mobile

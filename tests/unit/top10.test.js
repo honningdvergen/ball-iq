@@ -732,7 +732,13 @@ describe('The player-facing faults of 13 Oct', () => {
   it('Transfer Trail is a new screen on a new day, and History shows today to a player with no past days', () => {
     // (16 Nov 2026: the key also counts game challenge links opened in a native shell.)
     expect(read('App.jsx')).toContain('<TransferTrail key={`${dateToYMD(day)}:${challengeSeen}`}');
-    expect(read('screens/DailyScreen.jsx')).toMatch(/const historyRows = pastDays\.length \? pastDays : \(playedCount > 0 \? matchdays\.filter\(m => m\.isToday\) : \[\]\);/);
+    // 26 Nov 2026: on a phone Today is the first row of the list for EVERY player (Alex approved the
+    // drawing), so there is no rule left for when to show it; a player with no past days gets the
+    // row and one line under it. (It was: past days, or today alone once something was played.)
+    const history = read('screens/DailyScreen.jsx');
+    expect(history).not.toMatch(/const historyRows\b/);
+    expect(history).toMatch(/\{todayRow && \(\s*<div className="hs-row" role="group" aria-label=\{rowAria\(todayRow\)\}>/);
+    expect(history).toMatch(/\{pastDays\.length === 0 \? \(\s*(?:\/\/[^\n]*\n\s*)*<div className="hs-gap hs-first">\{t\("hi\.firstRow"\)\}<\/div>/);
   });
 });
 
