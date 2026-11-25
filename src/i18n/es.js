@@ -807,14 +807,8 @@ export default {
   'pf.avatarOf': 'Foto de {name}',
   'pf.avatar': 'Foto de perfil',
   'pf.iqLine': '{app}: {iq} · Top {p}%',
-  'pf.saveAria': 'Guarda tu progreso',
   'pf.saveAcct': 'Guardar mi cuenta',
-  'pf.signInFree': 'Inicia sesión o crea una cuenta gratis',
-  'pf.saveThis': 'Guarda esta cuenta',
-  'pf.phoneOnly': 'Solo en este móvil',
   'pf.anonSub': 'Añade un correo y una contraseña para no perder tus estadísticas, partidas y XP.',
-  'pf.guestSub1': 'Con una cuenta gratis guardas estadísticas, racha y media, y desbloqueas el 1 contra 1 online.',
-  'pf.guestSub0': 'Con una cuenta gratis lo guardas todo en tus dispositivos y desbloqueas el 1 contra 1 online.',
   // One word each: two-word labels wrapped the side-by-side buttons at 320 px.
   'pf.shareCard': 'Compartir',
   'pf.saveImage': 'Guardar',
@@ -1495,6 +1489,12 @@ export default {
   'oh.local': 'Multijugador local',
   'oh.localSub': 'Mismo sofá · hasta 6 jugadores',
   'oh.more': 'Más formas de jugar',
+  // Perfil sin sesión iniciada: la carta aún sin desbloquear y la cuenta
+  'gp.yourCard': 'TU CARTA',
+  'gp.unlock_one': '{n} respuesta para desbloquear tu carta',
+  'gp.unlock_other': '{n} respuestas para desbloquear tu carta',
+  'gp.create': 'Crea tu cuenta gratis',
+  'gp.keeps': 'Tu carta, en cualquier móvil',
   // Multijugador online: entrada, sala, partida y podio
   'mp.createFail': 'No se ha podido crear la sala. Revisa tu conexión y vuelve a intentarlo.',
   'mp.enterCode': 'Escribe el código de sala de 6 caracteres',

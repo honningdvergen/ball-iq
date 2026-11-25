@@ -20,6 +20,23 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (the Profile of a player who is NOT signed in; Alex: "good, build when
+// ready please"). Three entries were replaced, and only those: "profile: guest, first visit (the
+// example card)", "profile: guest, 4 answered, example dismissed" and "profile: anonymous invite
+// player, rated". The new render was dumped with a temporary copy of this test; 95 of 98 entries were
+// byte-identical, every signed-in Profile entry among them (that screen is not approved and must not
+// move). For each of the three a script cut the OLD entry at its own landmarks (each asserted to be
+// there exactly once) and rebuilt the new one from the old entry's own bytes with only these regions
+// swapped for the new render's, byte for byte equal to the new render: (1) first visit: the EXAMPLE
+// pop-up, the "No stats yet" box, the journey ladder and the empty badge grid are gone, the "?" card
+// is the card in gold and not yet unlocked ("10 answers to unlock your card", ten empty segments), and
+// the framed "Saved on this phone only" row is a row for today's Daily 7, the solid "Create free
+// account" and its line; (2) four answers: the same card with four segments lit and "6 answers", the
+// row is the started Footle ("Continue"), and the Share row carries the class gp-quiet, with the
+// scouting report, journey and badges untouched; (3) the invite-link player, rated: on the real card
+// the green default face with its pencil is a shirt in a ring, the "Save this account" row is the
+// button ("Save my account") and its line, and the Share row carries gp-quiet; nothing else. The two
+// guest scenarios gained an `openDailies` prop (i18n-screens.scenarios.js), which only this state reads.
 // INTENDED CHANGE, 25 Nov 2026 (the ordinary quiz ends on the result card; Alex chose variant B of
 // the drawn rounds and said "Yeah go ahead"). Eight entries were replaced, and only those: the eight
 // results that are not a Daily 7 ("results: classic 7/10, new best over 5, footle open", "results:
@@ -387,9 +404,14 @@ describe('Spanish (biq_lang=es)', () => {
   it('Profile, a friend, blocked users', () => {
     const p = unq(now['profile: signed in, rated, friends and requests']);
     for (const s of ['>Perfil<', '>Tu Ball IQ<', ' Nivel europeo · 1640 XP<', '>MEDIA<', '>ORO<', '>Medias por liga<', '>Selecciones<', ' Informe del ojeador<', '>A mejorar<', '"Especialista en Premier League"', ' Tu camino<', '>AQUÍ<', '>Faltan 1360 XP<', '>20.000 XP<', '>Solicitudes recibidas<', '>Puntos 900<', '>Clasificación de amigos<', '>TÚ<', '>Insignias: 4/12 conseguidas<', '>Velocista<', '>12 en Crono<', '>✓ Conseguida<']) expect(p, s).toContain(s);
-    expect(unq(now['profile: guest, first visit (the example card)'])).toContain('>EJEMPLO<');
-    expect(unq(now['profile: guest, first visit (the example card)'])).toContain('RESPONDE 10 PARA MEDIA');
-    expect(unq(now['profile: guest, 4 answered, example dismissed'])).toContain('>TE FALTAN 6<');
+    // 25 Nov 2026: a player who is not signed in no longer gets the EXAMPLE pop-up or the "?" card;
+    // their card is the one not yet unlocked, with the account under it.
+    const g0 = unq(now['profile: guest, first visit (the example card)']);
+    for (const s of ['TU CARTA<', '>Pon tu nombre<', '>10 respuestas para desbloquear tu carta<', '>Daily 7 de hoy<', '>Jugar<', '>Crea tu cuenta gratis<', '>Tu carta, en cualquier móvil<', '>Entrar<']) expect(g0, s).toContain(s);
+    expect(g0).not.toContain('>EJEMPLO<');
+    const g4 = unq(now['profile: guest, 4 answered, example dismissed']);
+    for (const s of ['>6 respuestas para desbloquear tu carta<', '>Footle de hoy<', '>Seguir<']) expect(g4, s).toContain(s);
+    expect(unq(now['profile: anonymous invite player, rated'])).toContain('>Guardar mi cuenta<');
     expect(unq(now['profile: league picker open'])).toContain('>40 respondidas<');
     expect(unq(now['friend: loaded'])).toContain('>Retar a Jo<');
     expect(unq(now['friend: loaded'])).toContain(' El camino de Jo<');

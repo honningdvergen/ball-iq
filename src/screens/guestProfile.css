@@ -1,0 +1,93 @@
+/* THE PROFILE TAB FOR A PLAYER WHO IS NOT SIGNED IN (screens/ProfileScreen.jsx, 25 Nov 2026).
+   Alex, as a guest in the simulator: "the sign in or profile tab has to make a btter impression for
+   first timers", "a better more organized and orderly, minimalist but intriguing tab", "i want them
+   to know they will get that fifa card style thing that we have"; on the last drawing: "good, build
+   when ready please" (ball-iq-audit/2026-11-24/finish/guest-profile-6.png).
+   Four things, top to bottom: the gear in a tile, the card in the gold card's style and not yet
+   unlocked, one row for today's next open daily, and the account (one solid green button, the one
+   loud thing, and one line).
+   Every rule here starts at a class only that state draws (.gp-*, or .hdr-guest on the strip over
+   it), so the signed-in Profile and every other screen stay as they are. This file rides in the
+   Profile's own chunk. */
+
+/* The gear (and an invite-link player's bell) as a filled tile, as on Home and the Multiplayer tab. */
+.hdr.hdr-guest{padding-bottom:14px;}
+.hdr.hdr-guest .icon-btn{border:0;border-radius:14px;background:var(--s1);color:var(--t2);}
+.hdr.hdr-guest .icon-btn .notif-dot{border-color:var(--s1);}
+@media (hover: hover){.hdr.hdr-guest .icon-btn:hover{background:var(--s2);color:var(--text);}}
+
+/* ── The card, not yet unlocked. The gold card's ground and its fine gold line; white and gold on
+   it in either theme. Nothing on it is a fill inside the fill. */
+.profile-screen .gp-card{margin:0 0 14px;padding:22px 22px 20px;border-radius:24px;background:linear-gradient(150deg,#3A2D0A 0%,#231C0A 46%,#14120C 100%);box-shadow:inset 0 0 0 1.5px rgba(255,193,7,0.38);color:#fff;-webkit-text-fill-color:#fff;}
+.profile-screen .gp-eye{font-size:11px;line-height:1;font-weight:800;letter-spacing:0.3em;color:rgba(255,211,77,0.8);-webkit-text-fill-color:rgba(255,211,77,0.8);}
+.profile-screen .gp-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;}
+.profile-screen .gp-id{flex:1;min-width:0;}
+/* The name, with its pencil. Two lines at most: "Hoofball Enjoyer" beside the face is wider than
+   a small phone, and a name cut short is worse than a name on two lines. */
+.profile-screen .gp-name{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin:0;padding:0;border:0;background:none;color:#fff;-webkit-text-fill-color:#fff;font-family:inherit;font-size:24px;line-height:1.1;font-weight:800;letter-spacing:-0.02em;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.profile-screen .gp-name span{min-width:0;padding-bottom:2px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;text-wrap:balance;}
+.profile-screen .gp-name svg{flex:none;color:rgba(255,255,255,0.45);}
+.profile-screen .gp-name-edit{display:flex;align-items:center;gap:8px;max-width:100%;}
+/* The gold line under the name is what says "typing here"; no box round it. */
+.profile-screen .gp-name-edit .profile-name-input{flex:1;min-width:0;max-width:none;outline:0;text-align:left;color:#fff;-webkit-text-fill-color:#fff;border-bottom-color:rgba(255,211,77,0.8);}
+.profile-screen .gp-name-ok,.profile-screen .gp-name-no{flex:none;display:grid;place-items:center;width:36px;height:36px;padding:0;border:0;border-radius:50%;cursor:pointer;-webkit-appearance:none;appearance:none;}
+.profile-screen .gp-name-ok{background:var(--accent);color:var(--grn-ink);}
+.profile-screen .gp-name-no{background:rgba(255,255,255,0.12);color:#fff;}
+.profile-screen .gp-sub{margin-top:7px;font-size:14px;line-height:1.2;font-weight:600;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.6);-webkit-text-fill-color:rgba(255,255,255,0.6);}
+/* The face: a ring and a shirt in outline, no fill. On the real card (once unlocked) the ring and
+   the shirt take the tier's colour through --gp-ring and --gp-ink. */
+.profile-screen .gp-face{flex:none;display:grid;place-items:center;margin:0;padding:0;border:0;border-radius:50%;overflow:hidden;background:none;box-shadow:inset 0 0 0 2px var(--gp-ring,rgba(255,193,7,0.5));color:var(--gp-ink,#FFC107);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.profile-screen .gp-face img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;}
+/* The six areas, two columns of rows 36 high on hairlines; where the number will be, two small dots. */
+.profile-screen .gp-areas{display:grid;grid-template-columns:1fr 1fr;column-gap:26px;margin-top:20px;}
+.profile-screen .gp-area{display:flex;align-items:center;gap:9px;height:36px;min-width:0;border-top:1px solid rgba(255,255,255,0.08);}
+.profile-screen .gp-area u{flex:none;width:8px;height:8px;border-radius:50%;text-decoration:none;}
+.profile-screen .gp-area b{flex:1;min-width:0;font-size:12px;line-height:1;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:rgba(255,255,255,0.62);-webkit-text-fill-color:rgba(255,255,255,0.62);}
+.profile-screen .gp-area i{flex:none;display:flex;gap:4px;}
+.profile-screen .gp-area i::before,.profile-screen .gp-area i::after{content:"";width:4px;height:4px;border-radius:50%;background:rgba(255,211,77,0.55);}
+/* One small padlock and one line. Alex, of a big gold "Locked": "locked is WAY too big here,
+   writing and lock". The number counts down; the ten segments fill in the card's gold. */
+.profile-screen .gp-unlock{display:flex;align-items:center;gap:9px;margin-top:16px;color:#FFD34D;}
+.profile-screen .gp-unlock svg{flex:none;}
+.profile-screen .gp-unlock b{font-size:15px;line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums;color:#fff;-webkit-text-fill-color:#fff;text-wrap:balance;}
+.profile-screen .gp-seg{display:grid;gap:4px;margin-top:12px;}
+.profile-screen .gp-seg i{height:6px;border-radius:3px;background:rgba(255,255,255,0.12);}
+.profile-screen .gp-seg i.is-on{background:#FFC107;}
+
+/* ── Today's next open daily: one row of Home's kit in a plain card. 68 high (11 above and below
+   the 46px well), one line of title and one grey line, and a soft Play in the game's own colour:
+   36 high, a wash of the colour, no outline. */
+.profile-screen .gp-list{margin:0 0 14px;padding:2px 14px;border-radius:20px;background:var(--s1);}
+.profile-screen .gp-list > .todays-seven-secondary{min-height:68px;margin:0;padding:11px 0;border:0;border-radius:0;background:none;box-shadow:none;}
+.profile-screen .gp-list > .todays-seven-secondary:active{transform:none;}
+@media (hover: hover){.profile-screen .gp-list > .todays-seven-secondary:hover{transform:none;box-shadow:none;}}
+.profile-screen .gp-list .t7s-title{display:flex;flex-wrap:wrap;align-items:baseline;align-content:flex-start;row-gap:12px;box-sizing:content-box;height:1.1em;padding-bottom:3px;margin-bottom:-3px;overflow:hidden;white-space:nowrap;text-overflow:clip;}
+.profile-screen .gp-list .t7s-name{flex:none;box-sizing:content-box;max-width:100%;padding-bottom:3px;margin-bottom:-3px;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .gp-list .t7s-sub{display:flex;flex-wrap:wrap;align-content:flex-start;row-gap:12px;height:1.3em;line-height:1.3;overflow:hidden;white-space:nowrap;text-overflow:clip;}
+.profile-screen .gp-list .t7s-p{flex:none;max-width:100%;white-space:pre;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .gp-list > .todays-seven-secondary .t7s-cta{height:36px;padding:0 16px;border:0;border-radius:999px;background:rgba(var(--mode-rgb),0.16);color:var(--mode);-webkit-text-fill-color:var(--mode);font-size:13.5px;line-height:1;font-weight:800;white-space:nowrap;}
+
+/* ── The account. One solid green button, 50 high, the full width; under it one grey line with
+   "Sign in" in white, underlined. */
+.profile-screen .gp-cta{display:block;width:100%;height:50px;margin:0;padding:0 16px;border:0;border-radius:999px;background:var(--accent);color:var(--grn-ink);-webkit-text-fill-color:var(--grn-ink);font-family:inherit;font-size:16px;line-height:1;font-weight:800;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.profile-screen .gp-cta:active{filter:brightness(0.94);}
+.profile-screen .gp-alt{margin:12px 0 22px;text-align:center;font-size:13px;line-height:1.3;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* The words are 13px; the thumb gets 44 (the padding is taken back as margin, so the line does not grow). */
+.profile-screen .gp-alt button{margin:-14px -6px;padding:14px 6px;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);font:inherit;font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+
+/* A not-signed-in player who has played keeps Share under the account. There it is the quiet
+   button: the account's green is the one loud thing, and two solid greens a thumb apart was the
+   "all screams at me" this kit exists to end. Same button, same handler. */
+.profile-screen .gp-quiet .card-action-primary{background:var(--s1);color:var(--t1);-webkit-text-fill-color:var(--t1);box-shadow:none;}
+
+/* The smallest phones (under 360 wide): the card's side padding 18 where it was 22, the two
+   columns 18 apart, the row's card as Home's is there. */
+@media (max-width: 359px){
+  .profile-screen .gp-card{padding-left:18px;padding-right:18px;}
+  .profile-screen .gp-areas{column-gap:18px;}
+  .profile-screen .gp-area b{font-size:11.5px;letter-spacing:0.08em;}
+  .profile-screen .gp-name{font-size:22px;}
+  .profile-screen .gp-list{padding-left:12px;padding-right:12px;}
+  .profile-screen .gp-list > .todays-seven-secondary{gap:10px;}
+  .profile-screen .gp-list > .todays-seven-secondary .t7s-cta{padding:0 13px;font-size:12.5px;}
+}

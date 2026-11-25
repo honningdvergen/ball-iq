@@ -264,6 +264,12 @@ export const STEP7_EN = {
   'oh.local': 'Local pass & play',
   'oh.localSub': 'Same couch · up to 6 players',
   'oh.more': 'More ways to play',
+  // The Profile tab for a player who is not signed in (25 Nov 2026; ProfileScreen.jsx).
+  'gp.yourCard': 'YOUR CARD',
+  'gp.unlock_one': '{n} answer to unlock your card',
+  'gp.unlock_other': '{n} answers to unlock your card',
+  'gp.create': 'Create free account',
+  'gp.keeps': 'Keeps your card on any phone',
   'mp.createFail': 'Couldn\'t create the room — check your connection and try again.',
   'mp.enterCode': 'Enter the 6-character room code',
   'mp.full': 'This room is full',

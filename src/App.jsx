@@ -58,6 +58,7 @@ import { privacyH2, privacyP } from './screens/privacyStyles.js';
 import { useNotificationCenter } from './hooks/useNotificationCenter.js';
 import { useScrollAwareTabBar } from './hooks/useScrollAwareTabBar.js';
 import { useT, useLang, isLangLoaded, hasEnglish, getLang, t as tl } from './i18n/index.js';
+import { pickGuestName } from './lib/guestNames.js';
 import { useQuestionText, useLiveQuestion, questionText } from './i18n/questionText.js';
 import { rich } from './i18n/rich.jsx';
 import { useShare } from './hooks/useShare.js';
@@ -1529,15 +1530,16 @@ export const buildInviteUrl = (code, name) => {
 // so the same guest keeps their name across rooms; the lobby's rename flow
 // (set_player_name) writes back here. Capped at 20 chars to match the RPC's
 // server-side limit.
+// The names are football's in-jokes since 25 Nov 2026 ("VAR Victim"), in the
+// player's language, with no number: lib/guestNames.js has the pool and why.
+// Made once and kept here, so a guest who was "Turbo Striker 42" still is.
 const GUEST_NAME_KEY = "biq_guest_name";
-const GUEST_ADJECTIVES = ["Turbo", "Golden", "Flying", "Iron", "Rapid", "Mega", "Prime", "Epic", "Wonder", "Rocket"];
-const GUEST_NOUNS = ["Striker", "Keeper", "Winger", "Maestro", "Poacher", "Baller", "Gaffer", "Dribbler", "Sweeper", "Target"];
 export function getGuestDisplayName() {
   try {
     const stored = localStorage.getItem(GUEST_NAME_KEY);
     if (stored) return stored;
   } catch {}
-  const name = `${GUEST_ADJECTIVES[Math.floor(Math.random() * GUEST_ADJECTIVES.length)]} ${GUEST_NOUNS[Math.floor(Math.random() * GUEST_NOUNS.length)]} ${Math.floor(Math.random() * 90) + 10}`;
+  const name = pickGuestName(getLang());
   try { localStorage.setItem(GUEST_NAME_KEY, name); } catch {}
   return name;
 }
@@ -7598,8 +7600,13 @@ function AppInner() {
         {/* Not over the Multiplayer tab either (25 Nov 2026): its bell and gear
             are two tiles in its own title row (screens/OnlineHubTab.jsx), as
             Home's are in its greeting row. */}
+        {/* Over the Profile of a player who is not signed in, the gear (and an
+            invite-link player's bell) is a filled tile, as on Home and the
+            Multiplayer tab: `hdr-guest`, styled in screens/guestProfile.css.
+            The same test ProfileScreen makes; a signed-in player's strip is
+            untouched. */}
         {!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online")) && (
-          <div className="hdr">
+          <div className={screen === "home" && tab === "profile" && (!user || isGuest || isAnonUser) ? "hdr hdr-guest" : "hdr"}>
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and
                 the personalised greeting now owns the top. Settings has its own
@@ -8090,7 +8097,10 @@ function AppInner() {
             <TabErrorBoundary name="profile">
             <React.Suspense fallback={<ScreenLoading label="Loading profile" />}>
               <ProfileScreen profile={profile} setProfile={setProfile} stats={stats} xp={xp} loginStreak={loginStreak} bestLoginStreak={bestLoginStreak} level={levelInfo.level} earnedBadges={earnedBadges} onShareProfile={shareProfile} onSaveCard={saveCardImage} onToast={showToast} onChallenge={challengeFriend} onOpenFriend={openFriendProfile} onPlayLeague={playCardFace}
-            onPlayDaily={playDaily} onSetCardLeague={setCardLeague} nameEditNonce={nameEditNonce} isActiveTab={tab === "profile"} />
+            onPlayDaily={playDaily} onSetCardLeague={setCardLeague} nameEditNonce={nameEditNonce} isActiveTab={tab === "profile"}
+            // Today's dailies still open, each with its own way in: the finish
+            // panels' list. Only the not-signed-in Profile reads it (one row).
+            openDailies={dailyDoneServices.nextUp} />
             </React.Suspense>
             </TabErrorBoundary>
           </div>

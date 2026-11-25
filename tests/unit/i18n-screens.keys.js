@@ -383,14 +383,12 @@ export const STEP4_EN = {
   'pf.avatarOf': "{name}'s avatar",
   'pf.avatar': "Profile avatar",
   'pf.iqLine': "{app}: {iq} — Top {p}%",
-  'pf.saveAria': "Save your progress",
+  // 25 Nov 2026: six keys left with the framed "Saved on this phone only" row they named, when the
+  // Profile of a player who is not signed in was rebuilt (ProfileScreen.jsx; the new words are the
+  // gp.* keys, pinned in i18n-step7.keys.js): pf.saveAria, pf.signInFree, pf.saveThis, pf.phoneOnly,
+  // pf.guestSub1 and pf.guestSub0. The two below stay: Settings prints them.
   'pf.saveAcct': "Save my account",
-  'pf.signInFree': "Sign in or create a free account",
-  'pf.saveThis': "Save this account",
-  'pf.phoneOnly': "Saved on this phone only",
   'pf.anonSub': "Add an email and password so your stats, games and XP can't be lost.",
-  'pf.guestSub1': "A free account keeps your stats, streak and rating — and unlocks online 1v1.",
-  'pf.guestSub0': "A free account saves everything across devices and unlocks online 1v1.",
   'pf.shareCard': "Share card",
   'pf.saveImage': "Save image",
   'pf.weekly': "Weekly Summary",

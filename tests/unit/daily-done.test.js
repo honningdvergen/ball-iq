@@ -119,12 +119,16 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(HUB.indexOf('t("oh.local")')).toBeLessThan(HUB.indexOf('{needsAccount && joinBlock}'));
     expect(HUB).toContain('t("oh.challenge")');
     // Profile: the ask comes AFTER the player's own card.
+    // INTENDED CHANGE, 25 Nov 2026 (the Profile of a player who is not signed in, rebuilt; Alex:
+    // "good, build when ready please"). The quiet named row ("Saved on this phone only" with a small
+    // grey "Sign in" pill, which he called hectic) is one solid "Create free account" with a line
+    // under it. It still comes after the card, and it still opens the sheet the row opened.
     const PROFILE = read('../../src/screens/ProfileScreen.jsx');
-    // The words live in i18n/en.js since step 4: pf.saveAria / pf.phoneOnly.
-    expect(PROFILE).not.toMatch(/>Save your progress<|>\{t\("pf\.saveAria"\)\}</);
-    expect(PROFILE.lastIndexOf('"pf.phoneOnly"')).toBeGreaterThan(PROFILE.lastIndexOf('<BallIqCardFace'));
-    expect(PROFILE).toMatch(/className="todays-seven-secondary mp-row" role="group" aria-label=\{t\("pf\.saveAria"\)\}/);
-    expect([EN['pf.saveAria'], EN['pf.phoneOnly']]).toEqual(['Save your progress', 'Saved on this phone only']);
+    expect(PROFILE).not.toMatch(/>Save your progress</);
+    expect(PROFILE.lastIndexOf('"gp.create"')).toBeGreaterThan(PROFILE.lastIndexOf('<BallIqCardFace'));
+    expect(PROFILE).toContain("const openAccount = () => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} };");
+    expect(PROFILE).toContain('<button type="button" className="gp-cta" onClick={openAccount}>{t(isAnonUser ? "pf.saveAcct" : "gp.create")}</button>');
+    expect([EN['gp.create'], EN['gp.keeps']]).toEqual(['Create free account', 'Keeps your card on any phone']);
   });
 
   it('a rating needs answered questions, not just a game (no 64 · Silver after one Footle)', () => {

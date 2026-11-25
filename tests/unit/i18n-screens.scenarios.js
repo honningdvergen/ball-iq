@@ -216,9 +216,12 @@ const FRIENDSHIPS = [
 // leaguePickerOpen 3, pendingCrop 4, sampleDismissed 5, editingName 6,
 // nameDraft 7, pendingName 8, selectedBadgeId 9. FriendsSection's: search 0,
 // results 1, searching 2, friendships 3, loading 4, loadError 5, blockMask 6.
+// 25 Nov 2026: the two guest scenarios carry `openDailies` (today's dailies still open, App.jsx's
+// list), which only the not-signed-in Profile reads: the Daily 7 leads while it is open; with it
+// done, a started Footle is the row and its pill says Continue. The invite-link player has none.
 const profileScenarios = () => [
-  ['profile: guest, first visit (the example card)', {}, prof({ stats: { gamesPlayed: 0, totalAnswered: 0 }, xp: 0, loginStreak: 0, bestLoginStreak: 0, earnedBadges: new Set(), profile: {} }), guest],
-  ['profile: guest, 4 answered, example dismissed', { biq_sample_card_dismissed: '1' }, prof({ stats: { gamesPlayed: 1, totalAnswered: 4, totalCorrect: 3 }, xp: 30, loginStreak: 1, earnedBadges: new Set(['first_blood']) }), guest],
+  ['profile: guest, first visit (the example card)', {}, prof({ stats: { gamesPlayed: 0, totalAnswered: 0 }, xp: 0, loginStreak: 0, bestLoginStreak: 0, earnedBadges: new Set(), profile: {}, openDailies: [{ key: 'footle', onTap: noop }, { key: 'daily7', onTap: noop }, { key: 'trail', onTap: noop }] }), guest],
+  ['profile: guest, 4 answered, example dismissed', { biq_sample_card_dismissed: '1' }, prof({ stats: { gamesPlayed: 1, totalAnswered: 4, totalCorrect: 3 }, xp: 30, loginStreak: 1, earnedBadges: new Set(['first_blood']), openDailies: [{ key: 'footle', open: true, onTap: noop }, { key: 'top10', onTap: noop }] }), guest],
   ['profile: anonymous invite player, rated', { biq_sample_card_dismissed: '1' }, prof({ profile: { name: 'Player' } }), { ...signedIn, profile: { username: 'player_9x2', total_score: 10 }, isAnonUser: true }],
   ['profile: signed in, rated, friends and requests', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:2": false, "ProfileScreenImpl:9": 'speed_demon', "FriendsSection:3": FRIENDSHIPS } }, prof(), signedIn],
   ['profile: signed in, no friends yet, badge locked open, no rating yet', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:9": 'goat' } }, prof({ stats: { gamesPlayed: 2, totalAnswered: 0, totalCorrect: 0 }, earnedBadges: new Set(), loginStreak: 0 }), signedIn],

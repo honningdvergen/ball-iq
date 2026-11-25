@@ -102,9 +102,23 @@ describe("card competition colours", () => {
     // layout — wide, horizontal, driven by .pd-* classes in app.css and
     // mirrored in the standalone block — not an approximation of this card.
     // A SECOND one appearing here means the phone card has forked again.
+    //
+    // 25 Nov 2026: one more list of the six is allowed, and it is not a card grid. A player who
+    // is NOT signed in and not yet rated sees their card not yet unlocked (Alex: "i want them
+    // to know they will get that fifa card style thing that we have"; ProfileScreen.jsx says
+    // why). It names the six areas and prints NO rating: two dots stand where each number will
+    // be. The moment the card unlocks it is BallIqCardFace again. So: the desktop pane first,
+    // then that list, inside its guest branch, with no number in it.
     const grids = [...PROFILE.matchAll(/ratings\.map/g)];
-    expect(grids.length, "a phone-side card grid has come back").toBe(1);
+    expect(grids.length, "a phone-side card grid has come back").toBe(2);
     expect(PROFILE.slice(Math.max(0, grids[0].index - 1200), grids[0].index),
       "the surviving grid is not the desktop pane").toMatch(/pd-/);
+    const lockedFrom = PROFILE.indexOf("if (guestView && !hasPlayed) {");
+    const lockedTo = PROFILE.indexOf("// ⚠️ ONE CARD, THREE SURFACES.");
+    expect(lockedFrom > 0 && grids[1].index > lockedFrom && grids[1].index < lockedTo,
+      "the second list is not the not-yet-unlocked card").toBe(true);
+    const lockedList = PROFILE.slice(grids[1].index, PROFILE.indexOf("))}", grids[1].index));
+    expect(lockedList, "the not-yet-unlocked card prints a rating").not.toMatch(/r\.rating|\.overall/);
+    expect(PROFILE.slice(lockedFrom, lockedTo), "the not-yet-unlocked card prints a rating").not.toMatch(/r\.rating|_card\.overall/);
   });
 });

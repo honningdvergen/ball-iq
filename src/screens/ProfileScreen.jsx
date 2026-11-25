@@ -8,7 +8,10 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
-import { lift } from "../lib/colourMath.js";
+import { lift, tint } from "../lib/colourMath.js";
+import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
+import { rowLine } from "../lib/rowLine.jsx";
+import "./guestProfile.css";
 import { CALIBRATION } from "../data/cardCalibration.js";
 import { t as tl, useT, fmtLocale } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
@@ -73,7 +76,7 @@ function accuracyLabel(card, stats) {
   const a = stats?.totalAnswered || 0, c = stats?.totalCorrect || 0;
   return (a > 0 && c <= a) ? `${Math.round(100 * c / a)}%` : "—";
 }
-import { Pencil, Share2, Sparkles, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy } from 'lucide-react';
+import { Pencil, Share2, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy, Shirt, Lock, Check, X, ClipboardList, Route, ListOrdered, UserRoundSearch } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
@@ -154,6 +157,17 @@ import { loopEvent } from '../lib/funnel.js';
 const avatarFrame = (accent) => ({ border: "3px solid rgba(6,8,14,0.78)", boxShadow: `0 0 0 1.5px ${accent}, 0 12px 26px -12px ${accent}` });
 import BallIqCardFace from '../components/BallIqCardFace.jsx';
 export { ProfilePic };
+
+// The one row a player who is not signed in gets under their card: today's
+// next open daily (guestProfile.css; the block in ProfileScreenImpl says why).
+// Each daily's own colour, icon and grey line, as on Home's rows.
+const GUEST_DAILY = {
+  daily7: { game: "Daily 7", sub: "home.daily7.sub", Icon: ClipboardList },
+  footle: { game: "Footle", sub: "mode.footle.short" },
+  trail: { game: "Transfer Trail", sub: "home.trail.sub", Icon: Route },
+  top10: { game: "Top 10", sub: "home.top10.sub", Icon: ListOrdered },
+  mystery: { game: "Mystery Player", sub: "home.mystery.sub", Icon: UserRoundSearch },
+};
 
 
 // ─── IMAGE CROPPER (cropperjs from CDN) ──────────────────────────────────────
@@ -1304,7 +1318,7 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
-function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, onPlayLeague, onSetCardLeague, nameEditNonce, isActiveTab = true }) {
+function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, onPlayLeague, onSetCardLeague, nameEditNonce, isActiveTab = true, openDailies }) {
   // Declared first: saveName (well above where this used to sit) calls it.
   // Sprint #71 MM1: fall back to the app-wide toast bus instead of the
   // native window.alert dialog if no onToast prop was provided. In
@@ -1312,6 +1326,37 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const toast = onToast || ((m) => { try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: String(m) })); } catch {} });
   const t = useT();
   const { user, profile: authProfile, isGuest, isAnonUser, uploadAvatar, exitGuestMode, openAuthPrompt } = useAuth();
+  // ── A PLAYER WHO IS NOT SIGNED IN (25 Nov 2026) ────────────────────────────
+  // Alex, in the simulator as a guest: "the sign in or profile tab has to make
+  // a btter impression for first timers by the way, the green profile default
+  // avatar in there too looks bad. the hectice sign in pill tab looks bad, we
+  // got to make some improvements here to get more signed in users"; "a better
+  // more organized and orderly, minimalist but intriguing tab"; "i want them
+  // to know they will get that fifa card style thing that we have"; of a
+  // version with a big gold "Locked": "locked is WAY too big here, writing and
+  // lock"; of the last drawing: "good, build when ready please"
+  // (ball-iq-audit/2026-11-24/finish/guest-profile-6.png).
+  //
+  // So this screen is four things for them, top to bottom: the gear; their
+  // card in the gold card's own style, not yet unlocked, counting down the ten
+  // answers that unlock it; one row for today's next open daily; and the
+  // account: one solid green button and one line with "Sign in" in it.
+  // Gone for them: the "?" over "ANSWER 10 TO GET RATED" and the dashes, the
+  // green default face in its white ring, the framed "Saved on this phone
+  // only" row with its small grey pill, the "No stats yet" box, the one-time
+  // EXAMPLE pop-up, and the journey ladder and badges until there is something
+  // in them. Once the ten answers are in, the card is the real one in its own
+  // tier's colours; what they have earned (the share button, the scouting
+  // report, the journey, badges) follows the account button as it did.
+  //
+  // ⚠️ ONLY THIS STATE. The signed-in Profile is not approved (Alex: "signed
+  // in profile I am not sure yet, needs more work I think") and renders byte
+  // for byte as it did: every change below is behind `guestView`, and the
+  // signed-in scenarios of tests/unit/i18n-screens.golden.json hold it there.
+  // A wide screen (the >=1024 layout) hides this column and keeps its own
+  // cards, as before. Sign-in is the same call the old row made.
+  const guestView = !user || isGuest || isAnonUser;
+  const openAccount = () => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} };
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const [uploading, setUploading] = useState(false);
   // Recalibration note — shown once per device after the 2026-09-09 scale change.
@@ -1579,6 +1624,23 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     setPendingCrop(null);
   };
 
+  // The face on a not-signed-in player's card: a ring in the card's own gold
+  // (or its tier's colour once unlocked) round a shirt in outline, no fill. It
+  // was the green default disc in a white ring (Alex: "the green profile
+  // default avatar in there too looks bad"). A tap does what a tap on the old
+  // face did; an invite-link player's uploaded photo still shows.
+  const guestFace = (size, accent) => (
+    <button type="button" className="gp-face" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={{ width: size, height: size, "--gp-ring": tint(accent, 0.5), "--gp-ink": accent, ...(authLoading ? { opacity: 0.4 } : null) }}>
+      {uploading ? (
+        <span className="avatar-spinner" aria-label={t("pf.uploading")} />
+      ) : showPhoto ? (
+        <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? t("pf.avatarOf", { name: currentName }) : t("pf.avatar")} onError={(e) => { e.currentTarget.style.display = "none"; }} />
+      ) : (
+        <Shirt size={Math.round(size * 0.47)} strokeWidth={1.9} aria-hidden="true" />
+      )}
+    </button>
+  );
+
   const handleCropConfirm = async (blob) => {
     setPendingCrop(null);
     if (!blob) return;
@@ -1738,7 +1800,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           first-session tip and the consent bar, three overlays at once (seen
           in the critique's play-through). It is the Profile tab's "here is
           what you are playing for"; it waits for the Profile tab. */}
-      {isActiveTab && (stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
+      {isActiveTab && !guestView && (stats?.gamesPlayed || 0) === 0 && !sampleDismissed && (() => {
         // tierPalette, not a raw key: the bronze/silver/gold rename left
         // CARD_TIERS.elite undefined, and pal.bg then crashed the WHOLE Profile
         // tab — but only for gamesPlayed === 0, i.e. precisely the guests and
@@ -1825,6 +1887,55 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
         // fixed on 2026-08-28, still live here until 2026-09-06.
         const hasPlayed = (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS;
         const pal = tierPalette(_card.tier);
+        // NOT SIGNED IN AND NOT YET RATED: the card in the gold card's style, not
+        // yet unlocked. Gold because it is the card they are promised (the tiers
+        // start lower; the real card under it takes its own tier's colours the
+        // moment it unlocks). The six areas end in two small dots where the
+        // numbers will be; ONE small padlock and one line count the answers
+        // down, with ten segments that fill as they come in. No "?", no
+        // "Locked" headline, no tinted block on the card.
+        if (guestView && !hasPlayed) {
+          const answered = Math.min(MIN_RATED_ANSWERS, Math.max(0, stats?.totalAnswered || 0));
+          const left = MIN_RATED_ANSWERS - answered;
+          return (
+            <section className="gp-card">
+              <div className="gp-eye"><span>BALL IQ</span><span aria-hidden="true"> · </span>{t("gp.yourCard")}</div>
+              <div className="gp-hero">
+                <div className="gp-id">
+                  {(authLoading && !currentName) ? (
+                    <span className="gp-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"}}>{t("pf.loading")}</span>
+                  ) : editingName ? (
+                    <span className="gp-name-edit">
+                      <input className="profile-name-input" value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder={t("pf.yourName")} autoFocus aria-label={t("pf.displayName")} />
+                      <button type="button" className="gp-name-ok" onMouseDown={e => e.preventDefault()} onClick={() => saveName()} aria-label={t("pf.saveName")}><Check size={18} strokeWidth={3} aria-hidden="true" /></button>
+                      <button type="button" className="gp-name-no" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label={t("pf.cancelName")}><X size={17} strokeWidth={2.6} aria-hidden="true" /></button>
+                    </span>
+                  ) : (
+                    <button type="button" className="gp-name" onClick={startNameEdit} aria-label={t(showNameCTA ? "pf.setName" : "pf.editName")}>
+                      <span>{showNameCTA ? t("pf.setName") : (currentName || t("pf.player"))}</span>
+                      <Pencil size={15} strokeWidth={2.2} aria-hidden="true" />
+                    </button>
+                  )}
+                  <div className="gp-sub">{levelName(level.name)} · {xp.toLocaleString(fmtLocale())} XP</div>
+                </div>
+                {guestFace(64, "#FFC107")}
+              </div>
+              <div className="gp-areas">
+                {_card.ratings.map((r) => (
+                  <div key={r.abbr} className="gp-area">
+                    <u aria-hidden="true" style={{ background: lift(r.color) }} />
+                    <b>{r.abbr}</b>
+                    <i aria-label={t("cf.unrated", { c: compName(r) })} />
+                  </div>
+                ))}
+              </div>
+              <div className="gp-unlock"><Lock size={18} strokeWidth={2.3} aria-hidden="true" /><b>{t("gp.unlock", { count: left, n: left })}</b></div>
+              <div className="gp-seg" aria-hidden="true" style={{ gridTemplateColumns: `repeat(${MIN_RATED_ANSWERS}, 1fr)` }}>
+                {Array.from({ length: MIN_RATED_ANSWERS }, (_, i) => <i key={i} className={i < answered ? "is-on" : undefined} />)}
+              </div>
+            </section>
+          );
+        }
         return (
           // ⚠️ ONE CARD, THREE SURFACES. The layout lives in
           // components/BallIqCardFace.jsx — read the header there before
@@ -1838,7 +1949,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             answered={stats?.totalAnswered || 0}
             onPickLeague={onSetCardLeague ? () => setLeaguePickerOpen(true) : undefined}
             style={{ marginBottom: 14 }}
-            avatar={
+            avatar={guestView ? guestFace(96, pal.accent) :
                 <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
                   <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={showPhoto
                     ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}
@@ -1907,20 +2018,37 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           row anatomy as the Today rows; a quiet pill. Anonymous (invite-link)
           players already HAVE a server account — for them it is "attach an
           email so it can't be lost". */}
-      {(isGuest || isAnonUser) && (
-        <div className="todays-seven-secondary mp-row" role="group" aria-label={t("pf.saveAria")} style={{marginBottom:14}}>
-          <button type="button" className="mp-row-open" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }} aria-label={t(isAnonUser ? "pf.saveAcct" : "pf.signInFree")}>
-            <span className="t7s-icon" aria-hidden="true"><Sparkles size={20} strokeWidth={2.1} /></span>
-            <span className="t7s-body">
-              <span className="t7s-title">{t(isAnonUser ? "pf.saveThis" : "pf.phoneOnly")}</span>
-              <span className="t7s-sub">
-                {t(isAnonUser ? "pf.anonSub" : (stats?.gamesPlayed || 0) > 0 ? "pf.guestSub1" : "pf.guestSub0")}
-              </span>
-            </span>
-          </button>
-          <button type="button" className="t7s-cta mp-row-invite" onClick={() => { try { openAuthPrompt?.(isAnonUser ? 'upgrade' : 'save'); } catch {} }}>{t(isAnonUser ? "dd.save" : "site.signIn")}</button>
-        </div>
-      )}
+      {/* 25 Nov 2026: that row is two things now, and only these two. One row
+          for today's next open daily, the kit's row (well, title, one grey
+          line, a soft Play in the game's own colour): the Daily 7 while it is
+          open, since its seven answers are what fill the card; then whichever
+          daily is next. And the account: ONE solid green button, the one loud
+          thing on the screen, with a line under it that holds "Sign in". Both
+          open the sheet the old row and its pill opened (openAccount). An
+          invite-link player already has an account on the server, so their
+          button says "Save my account". */}
+      {guestView && (() => {
+        const next = (openDailies || []).find((d) => d && d.key === "daily7") || (openDailies || []).find((d) => d && GUEST_DAILY[d.key]) || null;
+        const g = next ? GUEST_DAILY[next.key] : null;
+        return (
+          <>
+            {g && (
+              <div className="gp-list">
+                <button type="button" className={`todays-seven-secondary ${next.key}-row`} style={{ "--mode": MODE_ACCENT[next.key], "--mode-rgb": MODE_RGB[next.key] }} onClick={next.onTap} aria-label={t("home.row.ariaPlay", { mode: g.game })}>
+                  <span className="t7s-icon" aria-hidden="true">{g.Icon ? <g.Icon size={22} strokeWidth={2} /> : <span className="fh-tile fh-tile-green t7s-f">F</span>}</span>
+                  <span className="t7s-body">
+                    <span className="t7s-title"><span className="t7s-name">{t("dd.today", { g: g.game })}</span></span>
+                    <span className="t7s-sub">{rowLine(t(g.sub))}</span>
+                  </span>
+                  <span className="t7s-cta">{t(next.open ? "home.row.continue" : "common.play")}</span>
+                </button>
+              </div>
+            )}
+            <button type="button" className="gp-cta" onClick={openAccount}>{t(isAnonUser ? "pf.saveAcct" : "gp.create")}</button>
+            <div className="gp-alt">{t("gp.keeps")}<span aria-hidden="true"> · </span><button type="button" onClick={openAccount}>{t("site.signIn")}</button></div>
+          </>
+        );
+      })()}
       {/* Two peer secondary actions. Both are ghost buttons; the gap-based
           flex container replaces the previous marginTop:-4 hack that was
           overlapping the .share-profile-btn bottom margins. Sprint #34
@@ -1934,7 +2062,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           week with nothing in it. Gated on the SAME condition the empty state
           uses, so the two can never disagree. */}
       {(stats.gamesPlayed || 0) > 0 && (
-        <div className="profile-secondary-actions" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
+        <div className={guestView ? "profile-secondary-actions gp-quiet" : "profile-secondary-actions"} style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
           {/* The card goes as a PICTURE (onSaveCard: the 1080x1440 card, with
               the link as a separate text item the native sheet keeps away from
               Snapchat). The /p?... link it used to send showed as a thumbnail
@@ -1967,7 +2095,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           )}
         </div>
       )}
-      {(stats.gamesPlayed || 0) === 0 ? (
+      {(stats.gamesPlayed || 0) === 0 ? (guestView ? null :
         <div style={{
           background:"var(--s1)",
           border:"1px solid var(--border)",
@@ -2099,7 +2227,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       {/* BELOW column — Journey + Friends + Badges. display:contents on mobile,
           full-width grid-area "below" at desktop (kept reachable per handoff). */}
       <div className="profile-col-below">
-      {(() => {
+      {/* Not signed in: the ladder and the badges wait until there is something in them. */}
+      {(!guestView || xp > 0) && (() => {
         const currentIdx = LEVELS.indexOf(level);
         const topIdx = LEVELS.length - 1;
         // Ascending order: current level lands at the top so the user
@@ -2150,6 +2279,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           onShareProfile={onShareProfile}
         />
       )}
+      {(!guestView || earned.size > 0) && (
       <div className="badges-section">
         <div className="badges-title">{rich(t("pf.badges"), { n: earned.size, total: BADGE_DEFS.length })}</div>
         {earned.size === 0 && (
@@ -2216,6 +2346,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           );
         })()}
       </div>
+      )}
       </div>
       {/* BELOW column ends. */}
       {showAvatarMenu && (
