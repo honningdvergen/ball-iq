@@ -1,6 +1,7 @@
 // Ballpark (prototype, 20 Nov 2026): the scoring, the keypad's number and the
 // save. The view is thin; these pin what a player is told about their guess.
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
 import {
   ballparkFactor, ballparkPoints, ballparkTier, ballparkSide, ballparkOffset, ballparkVerdict, ballparkMiss,
   factorLabel, pressKey, keypadValue, keypadShown, fullNumber, roundedParts,
@@ -329,5 +330,26 @@ describe('the total and the share line', () => {
   });
   it('one square a question', () => {
     expect([...ballparkSquares([100, 2000, 50], qs)].length).toBe(3);
+  });
+});
+
+// 25 Nov 2026, Alex on the typing screen in the app: "perhaps the number here you write
+// should be centered?". The figure and its unit stood at the left edge, above a keypad that
+// spans the screen. They share the pad's centre now; the question above stays left, and the
+// reveal card's own number stays where the card has it.
+describe('the typing screen: the number sits in the middle, above the keys', () => {
+  const css = readFileSync(new URL('../../src/screens/ballpark.css', import.meta.url), 'utf8');
+  const rule = (sel) => { const i = css.indexOf(`${sel}{`); return i < 0 ? '' : css.slice(i, css.indexOf('}', i)); };
+  it('the figure and its unit are centred, as one column', () => {
+    expect(rule('.bp-fig')).toContain('display:flex;flex-direction:column;align-items:center;text-align:center');
+  });
+  it('the number is still one line, and steps down at twelve characters', () => {
+    expect(rule('.bp-fig-n')).toContain('white-space:nowrap');
+    expect(rule('.bp-fig-n.is-long')).toContain('font-size:clamp(25px,7.4vw,33px)');
+  });
+  it('nothing else on the screen was centred with it', () => {
+    expect(rule('.bp-q')).not.toMatch(/text-align:center/);
+    expect(rule('.bp-truth')).not.toMatch(/align-items:center|text-align:center/);
+    expect(rule('.bp-card')).not.toMatch(/text-align:center/);
   });
 });
