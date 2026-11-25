@@ -31,6 +31,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sentryCharge, hasDebugId, hasSentrySdk } from './lib/home-budget-sentry.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = resolve(ROOT, 'dist');
@@ -160,13 +161,21 @@ for (const [f, b] of rows) console.log(`  ${String(Math.round(b / 1024)).padStar
 // same ~6 KB of debug IDs the charge is 71. That is with __SENTRY_DEBUG__
 // false (vite.config.js) and the Capacitor wrapper behind an import() in
 // main.jsx. A static import of the wrapper measured 20 KB more.
-const SENTRY_EAGER_KB = 71;
-const SENTRY_DEBUG_ID_KB = 6;
-const sdkInBuild = [...eager].some((f) => /ingest(\.[a-z]+)?\.sentry\.io/.test(readFileSync(resolve(ASSETS, f), 'utf8')));
-const charge = process.env.VITE_SENTRY_DSN ? 0 : sdkInBuild ? SENTRY_DEBUG_ID_KB : SENTRY_EAGER_KB;
+// 25 Nov 2026: THE 71 IS NOW TWO NUMBERS, EACH READ FROM THE BUILD (65 for the
+// SDK, 6 for the debug IDs; scripts/lib/home-budget-sentry.mjs). The debug IDs
+// used to be "added by Vercel's build only" and were charged on trust; the
+// Sentry plugin now stamps them in every build (vite.config.js), so they are
+// in the bytes on a Mac and in CI too, and are charged only when a build
+// really lacks them. The sums are the same as before: no SDK and no IDs is
+// still 71, the SDK without IDs is still 6, Vercel is still 0.
+const eagerCode = [...eager].map((f) => readFileSync(resolve(ASSETS, f), 'utf8'));
+const { kb: charge, why } = sentryCharge({
+  dsnInEnv: !!process.env.VITE_SENTRY_DSN,
+  sdkInBuild: eagerCode.some(hasSentrySdk),
+  debugIdsInBuild: eagerCode.some(hasDebugId),
+});
 const kb = Math.round(total / 1024) + charge;
-if (charge === SENTRY_EAGER_KB) console.log(`  ${String(charge).padStart(5)} KB  Sentry SDK + debug IDs, absent from this build but shipped by production (no DSN in this build)`);
-else if (charge) console.log(`  ${String(charge).padStart(5)} KB  Sentry debug IDs, added by Vercel's build only (the SDK itself is in this build)`);
+if (charge) console.log(`  ${String(charge).padStart(5)} KB  ${why}: absent from this build but shipped by production`);
 if (kb > BUDGET_KB) { console.error(`✗ Home eager JS ${kb} KB > budget ${BUDGET_KB} KB`); bad++; }
 else console.log(`✓ Home eager JS ${kb} KB ≤ ${BUDGET_KB} KB budget; no static heavy imports in ${files.filter((f) => HOME_CHUNKS.test(f)).length} Home chunk(s)${bad ? '' : ''}`);
 process.exit(bad ? 1 : 0);
