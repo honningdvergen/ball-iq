@@ -41,6 +41,17 @@
 // ("useFriends:3" where "FriendsSection:3" was), with `loaded` added last (7), and ProfileScreenImpl has
 // one more, `sub` (10), after the ten that were there. tests/unit/profile-signed-in.test.js holds what
 // the new column shows.
+// INTENDED CHANGE, 25 Nov 2026, later (the follow-up to that screen). Thirteen entries were replaced,
+// and only those: every signed-in Profile entry but the ladder. The new render was dumped with a
+// temporary copy of this test; 88 of 101 entries were byte-identical, and in each of the thirteen
+// everything outside the phone column (cut at the same two landmarks as before) is byte-identical,
+// proven by script; the wide window's badge grid keeps its twelve tiles. Inside the phone column
+// exactly these moved: (1) in the eleven entries that show the card, one inline value on the league
+// row's arrow (margin-left:5px is margin-left:var(--bq-chev, 5px), the same 5px unless the stylesheet
+// brings it in at 320 wide for "BUNDESLIGA"); (2) the Badges row counts the badges that can be won
+// ("4 of 11" where it read "4 of 12": Globetrotter has no rule in computeBadges); (3) the badge wall
+// has eleven tiles and its heading says "4 of 11"; (4) the mates screen's field and heading say
+// "Find a mate by username…" and "Your mates" where they said friend and friends.
 // INTENDED CHANGE, 25 Nov 2026 (the Profile of a player who is NOT signed in; Alex: "good, build when
 // ready please"). Three entries were replaced, and only those: "profile: guest, first visit (the
 // example card)", "profile: guest, 4 answered, example dismissed" and "profile: anonymous invite
@@ -428,10 +439,10 @@ describe('Spanish (biq_lang=es)', () => {
     // 25 Nov 2026: the signed-in phone column. The scouting report's heading and its quoted verdict
     // left it (the wide window keeps its own "Informe del ojeador"); the verdict is the card's second
     // line, and the Mates card, Next up and the Badges row are under it.
-    for (const s of ['>Nivel europeo · Especialista en Premier League<', 'Compartir mi carta<', '>Colegas<', '>Añadir colega<', '>1 solicitud<', '>Invitar<', '>Ahora toca<', '>Faltan 1360 XP<', '>Veterano<', '>1640 de 3000 XP<', '>Jugar<', '>Insignias<', '>4 de 12<']) expect(p, s).toContain(s);
+    for (const s of ['>Nivel europeo · Especialista en Premier League<', 'Compartir mi carta<', '>Colegas<', '>Añadir colega<', '>1 solicitud<', '>Invitar<', '>Ahora toca<', '>Faltan 1360 XP<', '>Veterano<', '>1640 de 3000 XP<', '>Jugar<', '>Insignias<', '>4 de 11<']) expect(p, s).toContain(s);
     expect(p).not.toContain('"Especialista en Premier League"');
     const m = unq(now['profile: signed in, the mates screen with requests and a search']);
-    for (const s of ['placeholder="Busca a un amigo por su nombre…"', '>Solicitudes recibidas<', '>Aceptar<', 'aria-label="Rechazar"', '>Pendientes<', '>Tus amigos · 2<', '>Retar<']) expect(m, s).toContain(s);
+    for (const s of ['placeholder="Busca a un colega por su nombre…"', '>Solicitudes recibidas<', '>Aceptar<', 'aria-label="Rechazar"', '>Pendientes<', '>Tus colegas · 2<', '>Retar<']) expect(m, s).toContain(s);
     const l = unq(now['profile: signed in, the ladder at the top rank']);
     for (const s of ['>Tu camino<', '>Inmortal<', '>Nivel máximo alcanzado<', '>La escalera<', '>Estás aquí<']) expect(l, s).toContain(s);
     // 25 Nov 2026: a player who is not signed in no longer gets the EXAMPLE pop-up or the "?" card;

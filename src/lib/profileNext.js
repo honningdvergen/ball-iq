@@ -7,7 +7,7 @@
 //
 // Pure, so every rule here has a test (tests/unit/profile-next.test.js). Only
 // the Profile's own chunk imports this file: nothing here reaches Home.
-import { LEVELS, getLevelInfo, MIN_RATED_ANSWERS } from './scoring.js';
+import { LEVELS, getLevelInfo, computeBadges, MIN_RATED_ANSWERS } from './scoring.js';
 import { computeCard } from './ballIqCard.js';
 
 /**
@@ -50,6 +50,29 @@ export function rankMates(me, mates = []) {
   return rows.map((r, i) => ({ ...r, rating: rated(r) ? r.rating : null, place: i + 1 }));
 }
 
+// A record with every number at its largest, however deep it is asked: any
+// field reads as another one of these, and any comparison reads it as the
+// biggest whole number there is. computeBadges, handed this, awards every
+// badge it has a rule for.
+const everything = () => new Proxy(function max() {}, {
+  get: (_, key) => (key === Symbol.toPrimitive ? () => Number.MAX_SAFE_INTEGER : everything()),
+});
+
+/**
+ * The badges a player can really win, out of `ids`, in the same order.
+ *
+ * Asked of computeBadges itself, not kept as a list: a badge the wall draws
+ * but no rule awards (Globetrotter, "100 International Qs", on 25 Nov 2026)
+ * is left out, and comes back by itself the day it gets a rule. The phone
+ * counts, offers and draws only these: "7 of 12" promised a twelfth nobody
+ * could get, and a player holding the other eleven saw it as their nearest
+ * badge for ever.
+ */
+export function awardableBadges(ids) {
+  const can = computeBadges(everything(), Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+  return ids.filter((id) => can.has(id));
+}
+
 /** "N of M": the badges held out of the badges there are. An id the wall does not draw is not counted. */
 export function badgeCount(earned, ids) {
   const has = earned instanceof Set ? earned : new Set(earned || []);
@@ -63,7 +86,8 @@ export function badgeCount(earned, ids) {
 // Three badges are NOT here, on purpose, and so never show a figure:
 //   big_brain, goat: a best IQ is not a count from nought, so "118 of 120"
 //     would read as nearly there for a score most rounds land near anyway;
-//   world_class: computeBadges has no rule that awards it.
+//   world_class: computeBadges has no rule that awards it (and the phone
+//     does not show it at all: awardableBadges above).
 // `kind` picks the words of the grey line (ProfileScreen: sp.bd.<kind>).
 const BADGE_MEASURES = {
   first_blood: { need: 1,    kind: 'games',   of: (d) => d.stats.gamesPlayed },

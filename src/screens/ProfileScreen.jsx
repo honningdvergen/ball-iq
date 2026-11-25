@@ -13,7 +13,7 @@ import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { rowLine } from "../lib/rowLine.jsx";
 import "./guestProfile.css";
 import "./signedProfile.css";
-import { mateRating, rankMates, badgeCount, nearestBadge, nextRank, ladder, verdict, faceWord } from "../lib/profileNext.js";
+import { mateRating, rankMates, badgeCount, nearestBadge, awardableBadges, nextRank, ladder, verdict, faceWord } from "../lib/profileNext.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 import { t as tl, useT, fmtLocale } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
@@ -1348,8 +1348,16 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
 // ─── THE SIGNED-IN PROFILE ON A PHONE: ITS ROWS (25 Nov 2026) ────────────────
-// The badge ids in the wall's own order, and "r,g,b" of a hex for a wash.
-const BADGE_IDS = BADGE_DEFS.map((b) => b[0]);
+// The badges the phone counts, offers and draws: the ones a player can win,
+// in the wall's own order. Globetrotter is drawn on the wide window's grid but
+// computeBadges has no rule that awards it, so "7 of 12" promised a twelfth
+// nobody could get, and with the other eleven held it stood as the nearest
+// badge for ever. The set is asked of computeBadges (lib/profileNext.js,
+// awardableBadges), so a badge that gets a rule later appears here by itself.
+// The wide window's grid and a not-signed-in player's keep all of BADGE_DEFS.
+const PHONE_BADGES = (() => { const can = new Set(awardableBadges(BADGE_DEFS.map((b) => b[0]))); return BADGE_DEFS.filter((b) => can.has(b[0])); })();
+const PHONE_BADGE_IDS = PHONE_BADGES.map((b) => b[0]);
+// "r,g,b" of a hex, for a wash.
 const rgbOf = (hex) => { const n = parseInt(String(hex).slice(1), 16); return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`; };
 
 // One row of Home's kit, as the not-signed-in Profile already draws its one
@@ -1383,6 +1391,9 @@ function KitRow({ Icon, ink, rgb, title, sub, words, onTap, pill, ariaLabel }) {
 // (Cancel); and your mates, each opening their profile (where Report and
 // Block live, as before) with Challenge beside them. Nothing was dropped on
 // the way here; the table itself is the Mates card on the page before.
+// The row that leads here says "Add a mate" under MATES, so the field and the
+// list's heading say mates too (sp.findMate, sp.yourMates); the wide window's
+// block keeps its own words.
 // It draws what useFriends holds, so the wide window's block and this one
 // can never disagree.
 function MatesManage({ fr, userId, onChallenge, onOpenFriend, onShareProfile }) {
@@ -1404,7 +1415,7 @@ function MatesManage({ fr, userId, onChallenge, onOpenFriend, onShareProfile }) 
       {/* 16px in the field: iOS zooms the page under it. */}
       <label className="sp-field">
         <Search size={18} strokeWidth={2.2} aria-hidden="true" />
-        <input type="search" inputMode="search" autoCorrect="off" autoCapitalize="none" placeholder={t("pf.find")} aria-label={t("pf.find")} value={search} onChange={(e) => setSearch(e.target.value)} />
+        <input type="search" inputMode="search" autoCorrect="off" autoCapitalize="none" placeholder={t("sp.findMate")} aria-label={t("sp.findMate")} value={search} onChange={(e) => setSearch(e.target.value)} />
       </label>
       {search.trim().length >= 2 && (
         searching ? <p className="sp-note">{t("pf.searching")}</p>
@@ -1460,7 +1471,7 @@ function MatesManage({ fr, userId, onChallenge, onOpenFriend, onShareProfile }) 
         </>
       )}
 
-      <div className="home-section-title">{t("pf.friends")}{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
+      <div className="home-section-title">{t("sp.yourMates")}{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
       {loading && accepted.length === 0 ? (
         <section className="gp-list" aria-busy="true" aria-label={t("pf.loadingFriends")}>
           {[0, 1, 2].map((i) => (
@@ -1972,17 +1983,18 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   };
 
   // The badge wall: the grid the page carried in full, held first, a tap on
-  // one for what it takes. Three across, so a name is whole at 11.
+  // one for what it takes. Three across, so a name is whole at 11 (a long one
+  // takes a second line). Only the badges that can be won (PHONE_BADGES).
   const badgeScreen = () => {
-    const held = badgeCount(earned, BADGE_IDS);
-    const sel = selectedBadgeId ? BADGE_DEFS.find((b) => b[0] === selectedBadgeId) : null;
+    const held = badgeCount(earned, PHONE_BADGE_IDS);
+    const sel = selectedBadgeId ? PHONE_BADGES.find((b) => b[0] === selectedBadgeId) : null;
     const SelIcon = sel ? sel[1] : null;
     return (
       <div className="sp sp-sub" ref={subRef} tabIndex={-1} role="region" aria-label={t("sp.badges")}>
         {backRow}
         <div className="home-section-title">{t("sp.badges")}<span aria-hidden="true"> · </span>{t("sp.nOfM", { n: held.n, m: held.m })}</div>
         <div className="sp-wall">
-          {[...BADGE_DEFS].sort((a, b) => (earned.has(a[0]) === earned.has(b[0]) ? 0 : earned.has(a[0]) ? -1 : 1)).map(([id, Icon]) => {
+          {[...PHONE_BADGES].sort((a, b) => (earned.has(a[0]) === earned.has(b[0]) ? 0 : earned.has(a[0]) ? -1 : 1)).map(([id, Icon]) => {
             const name = t(`bd.${id}`);
             const on = earned.has(id);
             const open = selectedBadgeId === id;
@@ -2041,9 +2053,9 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
     // to say is left out (no weakest before two areas are rated; no badge row
     // once every badge is held).
     const nr = nextRank(xp);
-    const nb = nearestBadge({ ids: BADGE_IDS, earned, stats, xp, streak: loginStreak });
-    const NbIcon = nb ? BADGE_DEFS.find((b) => b[0] === nb.id)[1] : null;
-    const held = badgeCount(earned, BADGE_IDS);
+    const nb = nearestBadge({ ids: PHONE_BADGE_IDS, earned, stats, xp, streak: loginStreak });
+    const NbIcon = nb ? PHONE_BADGES.find((b) => b[0] === nb.id)[1] : null;
+    const held = badgeCount(earned, PHONE_BADGE_IDS);
     const weak = v.weakest;
     // The area's own colour, lifted until it reads on the card: the Premier
     // League's purple and the Champions League's blue are too dark as they are.

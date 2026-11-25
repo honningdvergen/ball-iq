@@ -1503,6 +1503,8 @@ export default {
   'sp.reqWaiting_one': '{n} solicitud',
   'sp.reqWaiting_other': '{n} solicitudes',
   'sp.matesFail': 'Sin cargar',
+  'sp.findMate': 'Busca a un colega por su nombre…',
+  'sp.yourMates': 'Tus colegas',
   'sp.topRank': 'Nivel máximo alcanzado',
   'sp.badges': 'Insignias',
   'sp.nOfM': '{n} de {m}',

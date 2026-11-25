@@ -50,10 +50,12 @@ import { tierName, compName } from "../i18n/names.js";
  *   The same card, the same parts in the same order, set in that screen's type
  *   sizes: 11 for the capitals, 16 for the six ratings, 24 for the name the
  *   caller passes, 92 for the rating; rows 40 high; padding 20 all round.
- *   Four of its measures are CSS variables with those values as their
+ *   Some of its measures are CSS variables with those values as their
  *   fallbacks (--bq-pad, --bq-gap, --bq-rg, --bq-ls), so that screen's
  *   stylesheet can bring them in on the smallest phones, where "LEGENDS" and
- *   its rating did not fit one column at 320 wide.
+ *   its rating did not fit one column at 320 wide. A row whose label is long
+ *   ("BUNDESLIGA", which also carries the league row's arrow) has three of
+ *   its own (--bq-ls-long, --bq-rg-long, --bq-chev): it was 2.4px short there.
  *   Alex approved that screen as a drawing ("Yes, build it":
  *   ball-iq-audit/2026-11-24/finish/profile-signed-in-8.png). A friend's card
  *   and a not-signed-in player's keep the sizes below, and the saved picture
@@ -205,7 +207,8 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           // On the kit card every label is 11, the size of that screen's other
           // capitals; a long one ("BUNDESLIGA") is set closer and ends in an
           // ellipsis before it would shrink under 11.
-          const lab = kit ? { size: 11, tracking: (r.abbr || "").length >= 8 ? "var(--bq-ls-long, 0.04em)" : "var(--bq-ls, 0.12em)" } : faceLabelType(r.abbr, 13);
+          const long = (r.abbr || "").length >= 8;
+          const lab = kit ? { size: 11, tracking: long ? "var(--bq-ls-long, 0.04em)" : "var(--bq-ls, 0.12em)" } : faceLabelType(r.abbr, 13);
           // ⚠️ THE AFFORDANCE LIVES INSIDE THE LABEL, NOT BESIDE THE NUMBER.
           // This card's geometry is mirrored pixel-for-pixel by the canvas
           // share render in App.jsx (generateShareCard, type "iq") — a saved
@@ -220,7 +223,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               onClick={pickable ? onPickLeague : undefined}
               aria-label={pickable ? t("cf.change", { c: compName(r) }) : undefined}
               style={{
-              display: "flex", alignItems: "center", gap: k(9, "var(--bq-rg, 9px)"),
+              display: "flex", alignItems: "center", gap: k(9, long ? "var(--bq-rg-long, var(--bq-rg, 9px))" : "var(--bq-rg, 9px)"),
               /* Fixed height for the reason the old chips had one: nothing in
                  the row may decide its own line box. iOS gives some emoji
                  different metrics from others, which made two of six rows
@@ -236,7 +239,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
             }}>
               <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: lift(r.color) }} />
               <span style={{ flex: 1, minWidth: 0, fontSize: lab.size, fontWeight: k(800, 700), letterSpacing: lab.tracking, color: pal.text, opacity: k(0.72, 0.62), overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {r.abbr}{pickable ? <span aria-hidden="true" style={{ opacity: 0.55, marginLeft: 5, fontWeight: 900 }}>›</span> : null}
+                {r.abbr}{pickable ? <span aria-hidden="true" style={{ opacity: 0.55, marginLeft: k(5, "var(--bq-chev, 5px)"), fontWeight: 900 }}>›</span> : null}
               </span>
               {has ? (
                 <span style={{ fontSize: k(21, 16), fontWeight: k(900, 800), color: r.rating === best ? pal.accent : pal.text, opacity: r.rating === best ? 1 : k(0.92, 1), fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>

@@ -1547,6 +1547,9 @@ export default registerEnglish({
   'sp.reqWaiting_one': '{n} request waiting',
   'sp.reqWaiting_other': '{n} requests waiting',
   'sp.matesFail': 'Could not load',
+  // The mates screen's field and heading: the row that leads there says "Add a mate".
+  'sp.findMate': 'Find a mate by username…',
+  'sp.yourMates': 'Your mates',
   'sp.topRank': 'Top rank reached',
   'sp.badges': 'Badges',
   'sp.nOfM': '{n} of {m}',

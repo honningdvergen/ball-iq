@@ -17,6 +17,7 @@ const FACE = read('src/components/BallIqCardFace.jsx');
 const CSS = read('src/screens/signedProfile.css');
 const APPCSS = read('src/app.css');
 const GOLDEN = JSON.parse(read('tests/unit/i18n-screens.golden.json'));
+const { awardableBadges } = await import('../../src/lib/profileNext.js');
 const EN = (await import('../../src/i18n/en.js')).default;
 const ES = (await import('../../src/i18n/es.js')).default;
 
@@ -57,11 +58,11 @@ describe('what a signed-in player sees on a phone', () => {
     expect(next).toMatch(/\|Cult Hero\|1,360 XP to go\|/);
     expect(next).toMatch(/\|Veteran\|1,640 of 3,000 XP\|/);
     expect(next).toMatch(/\|Needs work\|Legends · \d+\|Play\|/);
-    expect(next).toMatch(/\|Badges\|4 of 12\|/);
+    expect(next).toMatch(/\|Badges\|4 of 11\|/);
     // No rating yet: no weakest area is named, so Next up is two rows.
     const cold = text(alone.slice(alone.indexOf('>Next up<')));
     expect(cold).not.toContain('Needs work');
-    expect(cold).toMatch(/\|Cult Hero\|1,360 XP to go\|Veteran\|1,640 of 3,000 XP\|Badges\|0 of 12\|/);
+    expect(cold).toMatch(/\|Cult Hero\|1,360 XP to go\|Veteran\|1,640 of 3,000 XP\|Badges\|0 of 11\|/);
   });
   it('gone from that page: the scouting report, the ladder in full, the friends block, the badge grid', () => {
     for (const p of [rated, alone]) {
@@ -98,19 +99,51 @@ describe('the screens behind its rows', () => {
     expect(text(ladder)).toMatch(/\|Immortal\|20,000 XP\|You are here\|/);
     expect(ladder).not.toContain('XP to go');
   });
-  it('the badge wall: twelve tiles, held first, and the tapped one says what it takes', () => {
-    expect((wall.match(/class="sp-badge[ "]/g) || []).length).toBe(12);
-    expect(text(wall)).toMatch(/^[^|]*\|Badges\| · \|4 of 12\|First Whistle\|On a Roll\|Speed Demon\|Perfectionist\|Obsessed\|/);
+  it('the badge wall: the eleven badges that can be won, held first, and the tapped one says what it takes', () => {
+    expect((wall.match(/class="sp-badge[ "]/g) || []).length).toBe(11);
+    expect(text(wall)).toMatch(/^[^|]*\|Badges\| · \|4 of 11\|First Whistle\|On a Roll\|Speed Demon\|Perfectionist\|Obsessed\|/);
     expect(text(wall)).toMatch(/\|Obsessed\|30-day streak\|Locked\|$/);
+  });
+  // 25 Nov 2026, the follow-up. Globetrotter ("100 International Qs") is on the wide window's grid but
+  // computeBadges has no rule that awards it: on the phone "7 of 12" promised a twelfth nobody could
+  // get, and with the other eleven held it stood as the nearest badge for ever.
+  it('every badge the phone shows is one computeBadges can award', () => {
+    const ids = [...PROFILE.slice(PROFILE.indexOf('export const BADGE_DEFS = ['), PROFILE.indexOf('// ── Profile picture')).matchAll(/^\s*\["(\w+)",\s+\w+,/gm)].map((m) => m[1]);
+    expect(ids.length).toBe(12);
+    const can = new Set(awardableBadges(ids));
+    const idOf = Object.fromEntries(ids.map((id) => [EN[`bd.${id}`], id]));
+    // The wall: one tile for each badge that can be won, and no other.
+    const tiles = [...wall.matchAll(/class="sp-badge-name">([^<]+)</g)].map((m) => m[1]);
+    expect(tiles.map((n) => idOf[n]).sort()).toEqual([...can].sort());
+    for (const n of tiles) expect(can.has(idOf[n]), n).toBe(true);
+    // The row under Next up names one of them too, in every signed-in render of the page.
+    for (const k of Object.keys(GOLDEN).filter((n) => n.startsWith('profile: ') && !/^profile: (guest|anonymous)/.test(n))) {
+      const p = phoneOf(GOLDEN[k]);
+      expect(p, k).not.toContain('Globetrotter');
+      expect(p, k).not.toMatch(/of 12</);
+    }
+    // The set is asked of computeBadges, and the phone's blocks read nothing else.
+    expect(PROFILE).toContain('const PHONE_BADGES = (() => { const can = new Set(awardableBadges(BADGE_DEFS.map((b) => b[0]))); return BADGE_DEFS.filter((b) => can.has(b[0])); })();');
+    const phoneSrc = PROFILE.slice(PROFILE.indexOf('// ── THE SIGNED-IN PHONE COLUMN'), PROFILE.indexOf('  return (\n    <div className="tab-content profile-screen"'));
+    expect(phoneSrc).not.toContain('BADGE_DEFS');
+    expect((phoneSrc.match(/PHONE_BADGE(S|_IDS)\b/g) || []).length).toBeGreaterThanOrEqual(6);
+    // The wide window's grid is as it was: all twelve, Globetrotter among them.
+    const g = GOLDEN['profile: signed in, rated, friends and requests'];
+    const below = g.slice(g.indexOf('<div class="profile-col-below pd-wide-only">'));
+    expect((below.match(/class="badge-tile /g) || []).length).toBe(12);
+    expect(below).toContain('Globetrotter');
+    expect(below).toContain('Badges — 4/12 earned');
   });
   it('the mates screen does everything the friends block did', () => {
     const t = text(mates);
-    expect(mates).toContain('placeholder="Find a friend by username…"');
+    // One word for the same people: the row that leads here says "Add a mate".
+    expect(mates).toContain('placeholder="Find a mate by username…"');
+    expect(mates).not.toMatch(/Find a friend|Your friends/);
     expect(t).toMatch(/\|Joan\|Score 1,234\|Add\|/);                       // a found player, and the ask
     expect(t).toMatch(/\|Incoming requests\|Kim\|Score 900\|Accept\|Pending\|/);          // Decline is the round cross beside it
     expect(mates).toContain('<button type="button" class="t7s-cta sp-quiet sp-no" aria-label="Decline">');
     expect(t).toMatch(/\|Pending\|Rob\|Pending…\|Cancel\|/);
-    expect(t).toMatch(/\|Your friends · 2\|Jo\|Score 5,200\|Challenge\|Sam Lee\|Score 1,800\|Challenge\|/);
+    expect(t).toMatch(/\|Your mates · 2\|Jo\|Score 5,200\|Challenge\|Sam Lee\|Score 1,800\|Challenge\|/);
     expect(mates).toContain('<button type="button" class="mp-row-open" aria-label="View Jo&#x27;s profile">');
     // One source for both: the wide block and this screen draw what the same hook holds.
     expect(PROFILE).toContain('const fr = useFriends({ userId: (user && !isGuest) ? user.id : null, onToast });');
@@ -175,6 +208,9 @@ describe('the kit\'s rules on this screen', () => {
     const code = CSS.replace(/\/\*[\s\S]*?\*\//g, '');
     expect(code).not.toMatch(/border:1(\.5)?px solid var\(--border/);
     expect(code).toMatch(/\.profile-screen \.sp \.t7s-icon\{border:0;\}/);
+    // The tapped badge is a lighter fill, not a line round its tile.
+    expect(code).toContain('.profile-screen .sp-badge.is-open{background:var(--s3,#262A36);}');
+    expect(code).not.toMatch(/\.sp-badge[^{]*\{[^}]*box-shadow/);
     // The only shadows are lines inside a fill and the ring round the rung the player stands on.
     for (const m of code.matchAll(/box-shadow:([^;}]+)/g)) expect(/^(none|inset 0 0 0 [\d.]+px |0 0 0 5px rgba\(255,193,7,0\.18\)$)/.test(m[1]), m[1]).toBe(true);
   });
@@ -197,6 +233,8 @@ describe('the words', () => {
       'sp.reqWaiting_one': ['{n} request waiting', '{n} solicitud'],
       'sp.reqWaiting_other': ['{n} requests waiting', '{n} solicitudes'],
       'sp.matesFail': ['Could not load', 'Sin cargar'],
+      'sp.findMate': ['Find a mate by username…', 'Busca a un colega por su nombre…'],
+      'sp.yourMates': ['Your mates', 'Tus colegas'],
       'sp.topRank': ['Top rank reached', 'Nivel máximo alcanzado'],
       'sp.badges': ['Badges', 'Insignias'],
       'sp.nOfM': ['{n} of {m}', '{n} de {m}'],

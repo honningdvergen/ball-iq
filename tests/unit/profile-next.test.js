@@ -1,7 +1,7 @@
 // The sums behind the signed-in Profile on a phone (src/lib/profileNext.js, 25 Nov 2026):
 // the mates table, the nearest badge, "N of M" badges, the next rank, the weakest area.
 import { describe, it, expect } from 'vitest';
-import { mateRating, rankMates, badgeCount, nearestBadge, badgeNeed, nextRank, ladder, verdict, faceWord } from '../../src/lib/profileNext.js';
+import { mateRating, rankMates, badgeCount, nearestBadge, awardableBadges, badgeNeed, nextRank, ladder, verdict, faceWord } from '../../src/lib/profileNext.js';
 import { computeBadges, LEVELS, MIN_RATED_ANSWERS } from '../../src/lib/scoring.js';
 import { computeCard } from '../../src/lib/ballIqCard.js';
 import { readFileSync } from 'node:fs';
@@ -73,6 +73,33 @@ describe('badges: N of M', () => {
   });
   it('an id the wall does not draw is not counted', () => {
     expect(badgeCount(new Set(['first_blood', 'a_retired_badge']), IDS).n).toBe(1);
+  });
+});
+
+// 25 Nov 2026, the follow-up: the phone counts, offers and draws only the badges a player can win.
+// Globetrotter is on the wall's list but computeBadges has no rule for it, so "7 of 12" promised a
+// twelfth nobody could get.
+describe('the badges a player can win', () => {
+  it('asked of computeBadges itself: every badge it has a rule for, in the wall\'s order', () => {
+    expect(awardableBadges(IDS)).toEqual(IDS.filter((id) => id !== 'world_class'));
+    expect(awardableBadges(IDS).length).toBe(11);
+    expect(awardableBadges(['goat', 'a_retired_badge', 'first_blood'])).toEqual(['goat', 'first_blood']);
+    expect(awardableBadges([])).toEqual([]);
+  });
+  it('each of them is one computeBadges awards to a record with everything in it, and the one left out is not', () => {
+    const top = computeBadges({ gamesPlayed: 1e6, bestHotStreak: 1e6, bestIQ: 1e6, bestScore: 1e6, bestStreak: 1e6, totalCorrect: 1e6, totalAnswered: 1e6, catStats: { WorldCup: { a: 1e6, c: 1e6 } } }, 1e9, 1e6);
+    for (const id of awardableBadges(IDS)) expect(top.has(id), id).toBe(true);
+    expect([...top].sort()).toEqual(awardableBadges(IDS).sort());
+    expect(top.has('world_class')).toBe(false);
+  });
+  it('every one of them held: "11 of 11", and no nearest badge', () => {
+    const can = awardableBadges(IDS);
+    const earned = new Set(can);
+    expect(badgeCount(earned, can)).toEqual({ n: 11, m: 11 });
+    expect(nearestBadge({ ids: can, earned, stats: { gamesPlayed: 900, catStats: { WorldCup: { a: 99, c: 60 } } }, xp: 30000, streak: 50 })).toBe(null);
+    // One short of all: the one not held is offered, never the badge with no rule.
+    earned.delete('goat');
+    expect(nearestBadge({ ids: can, earned, stats: { bestIQ: 139 }, xp: 30000, streak: 50 })).toEqual({ id: 'goat', plain: true });
   });
 });
 

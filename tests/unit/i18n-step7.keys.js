@@ -277,6 +277,8 @@ export const STEP7_EN = {
   'sp.reqWaiting_one': '{n} request waiting',
   'sp.reqWaiting_other': '{n} requests waiting',
   'sp.matesFail': 'Could not load',
+  'sp.findMate': 'Find a mate by username…',
+  'sp.yourMates': 'Your mates',
   'sp.topRank': 'Top rank reached',
   'sp.badges': 'Badges',
   'sp.nOfM': '{n} of {m}',
