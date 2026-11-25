@@ -67,6 +67,19 @@ describe('what the flag opens', () => {
     // The hidden link is still the web's only: the flag does not widen it.
     expect(app).toMatch(/const bq = LEAGUES_WEB && new URLSearchParams\(window\.location\.search\);/);
   });
+  // 25 Nov 2026, from Alex's phone: "Ball IQ" stood above Ballpark's own back arrow and title in
+  // the test build. The app's header strip (.hdr) prints the wordmark on every screen that is not
+  // in its list of screens with a title of their own; Ballpark was web only until the flag, so it
+  // was never in it. The screen draws its own title, so it is in the list, like Footle and the rest.
+  it('inside the app the screen draws its own title, so the wordmark strip stays off it', () => {
+    const app = code('src/App.jsx');
+    const list = app.match(/\{!\[("[a-z0-9-]+"(?:, )?)+\]\.includes\(screen\) && \(\s*<button\s+className="logo"/);
+    expect(list, 'the list of screens that draw their own title').not.toBeNull();
+    const names = list[0].match(/"[a-z0-9-]+"/g).map((x) => x.slice(1, -1));
+    expect(names).toContain('ballpark');
+    for (const s of ['wordle', 'trail', 'top10', 'mystery', 'stadiums']) expect(names, s).toContain(s);
+    expect(code('src/screens/Ballpark.jsx')).toMatch(/className="bp-name">\{t\("bp\.title"\)\}/);
+  });
   it('the Home row is drawn only under the flag, in More modes, and carries the marker', () => {
     const home = code('src/screens/HomeScreen.jsx');
     const at = home.indexOf('{BALLPARK_PREVIEW && (');

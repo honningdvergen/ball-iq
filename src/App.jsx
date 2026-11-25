@@ -7603,7 +7603,12 @@ function AppInner() {
                 "Name the Stadium" header on every phone (player-reported
                 2026-08-21). The list is the contract: if your screen draws its
                 own title, it belongs in it. */}
-            {!["settings", "home", "league", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile"].includes(screen) && (
+            {/* `ballpark` joined on 25 Nov 2026, the same mistake again: the
+                prototype was web only (the website's header, never this strip)
+                until a test build opened it inside the app, where "Ball IQ"
+                stood above its own back arrow and "Ballpark #5" (Alex, on his
+                phone: "an old bug up top left"). */}
+            {!["settings", "home", "league", "online-stage1", "online-stage1-lobby", "club-quiz", "results", "local-setup", "local-results", "wordle", "trail", "top10", "top10lib", "draft", "mystery", "stadiums", "quiz-topics", "stump", "daily-review", "puzzle-review", "review", "blocked-users", "friend-profile", "ballpark"].includes(screen) && (
               <button
                 className="logo"
                 onClick={handleHomeClick}
