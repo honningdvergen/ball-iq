@@ -86,101 +86,185 @@ function stumpCard(sp) {
   return tree;
 }
 
-// Daily-7 challenge card (opportunity-scan #2): a /c/ link in a group chat
-// unfurls as a visible taunt — challenger name, score dots, "beat it today".
+// ── THE CHALLENGE PICTURES (25 Nov 2026) ────────────────────────────────────
+// What a mate sees when a /c/ link lands in a chat: Daily 7 (?t=challenge) and
+// Footle, Transfer Trail and Top 10 (?t=gch). Alex gave the earlier pictures
+// (a headline that bragged about the sender's score, on flat stripes) "max a 6
+// out of 10", and said "Yes, all four" to this one:
+//   - THE PICTURE IS THE PUZZLE, the sender's score is the dare. Top 10 shows
+//     the list's own question over ten slots; Footle the sender's grid with no
+//     letters; Trail the clubs it took; Daily 7 the seven answers.
+//   - ON A PITCH SEEN FROM ABOVE. Everything that matters sits inside the
+//     middle 630 by 630, over the centre circle, so an app that cuts the
+//     picture to a square loses only the two penalty areas. His rule: it has
+//     to look good "on snapchat, whatsapp, messages, messenger or WHEREVER".
+//   - ⚠️ NEVER THE ANSWER, and never a claim the link does not carry. Which
+//     places were named, which questions were right and the grid itself only
+//     light up when the link says so (m, p, k below, checked against the
+//     score); a link without them draws the honest plain form.
+// Optional detail on the link, all checked here and dropped if they disagree
+// with the score:
+//   m   Top 10 and Daily 7: base 36 of a bit mask, bit i = place or question
+//       i + 1 was got. Top 10 has ten bits, Daily 7 seven.
+//   p   Footle: "<letters>.<row>.<row>…", each row base 36 of its tiles read
+//       as a base 3 number (0 miss, 1 wrong spot, 2 right spot), first row
+//       first. A solved grid ends in a row of all 2.
+//   k   Trail: how many clubs the career has, so the ones not needed show dim.
+const PITCH_A = '#092B1B', PITCH_B = '#0B3421', LIT = '#58CC02', LIT_INK = '#0B2A05', MISS = '#C23B33', MISS_INK = '#2A0806', GOLD = '#FFD34D';
+const DARK = 'rgba(0,0,0,0.42)', DARK_INK = 'rgba(255,255,255,0.4)';
+
+function pitchCard({ eye, headline, body, dare }) {
+  const stripes = Array.from({ length: 12 }, (_, i) => h('div', { key: i, style: { position: 'absolute', top: 0, left: i * 100, width: 100, height: 630, background: i % 2 ? PITCH_B : PITCH_A } }));
+  const line = { fill: 'none', stroke: '#FFFFFF', strokeWidth: 3 };
+  const lines = h('svg', { width: 1200, height: 630, viewBox: '0 0 1200 630', style: { position: 'absolute', top: 0, left: 0, opacity: 0.11 } },
+    h('rect', { x: 30, y: 30, width: 1140, height: 570, ...line }),
+    h('line', { x1: 600, y1: 30, x2: 600, y2: 600, ...line }),
+    h('circle', { cx: 600, cy: 315, r: 118, ...line }),
+    h('rect', { x: 30, y: 135, width: 170, height: 360, ...line }),
+    h('rect', { x: 30, y: 230, width: 62, height: 170, ...line }),
+    h('path', { d: 'M200 255 A 76 76 0 0 1 200 375', ...line }),
+    h('rect', { x: 1000, y: 135, width: 170, height: 360, ...line }),
+    h('rect', { x: 1108, y: 230, width: 62, height: 170, ...line }),
+    h('path', { d: 'M1000 255 A 76 76 0 0 0 1000 375', ...line }),
+  );
+  const n = headline.length;
+  const size = n > 40 ? 44 : n > 30 ? 50 : n > 20 ? 56 : 60;
+  return h('div', { style: { width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', background: PITCH_A, fontFamily: 'Inter' } },
+    ...stripes, lines,
+    h('div', { style: { width: 590, display: 'flex', flexDirection: 'column', alignItems: 'center' } },
+      h('div', { style: { display: 'flex', fontSize: 23, fontWeight: 800, letterSpacing: 3.2, color: 'rgba(255,255,255,0.66)' } }, eye.toUpperCase()),
+      h('div', { style: { display: 'flex', justifyContent: 'center', textAlign: 'center', marginTop: 16, fontSize: size, fontWeight: 900, lineHeight: 1.04, letterSpacing: -size * 0.035, color: '#FFFFFF' } }, headline),
+      body,
+      h('div', { style: { display: 'flex', marginTop: 28, fontSize: 33, fontWeight: 700, lineHeight: 1.15, color: 'rgba(255,255,255,0.9)' } },
+        // Satori drops the space at the edge of a flex item, and sets the spaces inside a `pre` item unevenly:
+        // each part is trimmed and the space it began or ended with is given back as a margin.
+        ...dare.map((part, i) => h('div', { key: i, style: { display: 'flex', marginLeft: /^\s/.test(part) ? 9 : 0, marginRight: /\s$/.test(part) ? 9 : 0, ...(i % 2 ? { color: GOLD, fontWeight: 900 } : null) } }, part.trim()))),
+      h('div', { style: { display: 'flex', marginTop: 16, fontSize: 21, fontWeight: 700, color: 'rgba(255,255,255,0.5)' } }, 'balliq.app'),
+    ),
+  );
+}
+
+// A bit mask from the link, or null: only digits and letters, and exactly as
+// many places lit as the score says.
+function maskFor(raw, bits, score) {
+  if (!/^[0-9a-z]{1,3}$/.test(raw || '')) return null;
+  const v = parseInt(raw, 36);
+  if (!Number.isFinite(v) || v < 0 || v >= 2 ** bits) return null;
+  const got = Array.from({ length: bits }, (_, i) => Boolean(v & (1 << i)));
+  return got.filter(Boolean).length === score ? got : null;
+}
+
+// Numbered discs joined by a line: the first lit are green, the rest dim.
+function discRow(total, lit, caption) {
+  const size = Math.min(66, Math.floor((590 - (total - 1) * 20) / total));
+  const link = Math.min(34, Math.max(12, Math.floor((590 - total * size) / Math.max(1, total - 1))));
+  const row = [];
+  for (let i = 0; i < total; i++) {
+    if (i) row.push(h('div', { key: 'l' + i, style: { width: link, height: 5, background: 'rgba(255,255,255,0.22)' } }));
+    row.push(h('div', { key: 'd' + i, style: { width: size, height: size, borderRadius: size, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: Math.round(size * 0.42), fontWeight: 900, background: i < lit ? LIT : DARK, color: i < lit ? LIT_INK : DARK_INK } }, String(i + 1)));
+  }
+  return h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 34 } },
+    h('div', { style: { display: 'flex', alignItems: 'center' } }, ...row),
+    h('div', { style: { display: 'flex', marginTop: 12, fontSize: 20, fontWeight: 700, letterSpacing: 2.4, color: 'rgba(255,255,255,0.5)' } }, caption));
+}
+
 function challengeCard(sp) {
   const score = Math.min(7, Math.max(0, parseInt(sp.get('s') || '0', 10) || 0));
   const name = (sp.get('n') || '').slice(0, 22);
   const dateLabel = (sp.get('d') || '').slice(0, 12);
-  const who = name || 'A mate';
-
-  // ⚠️ The tick is DRAWN, not typed. This rendered the character '✓' (U+2713)
-  // for months and every single challenge link that ever unfurled in WhatsApp
-  // showed five tofu boxes on green — verified by fetching the live PNG and
-  // looking at it. @vercel/og ships a default font covering Latin (which is
-  // why the headline always looked fine) but nothing covering U+2713, and
-  // `emoji: 'twemoji'` does not claim it because it is a dingbat rather than
-  // an emoji-presentation codepoint. Registering a font would fix it and add
-  // a network fetch to every card render; two rotated rectangles cannot fail.
-  const tick = () => h('div', {
-    style: { position: 'relative', width: 40, height: 40, display: 'flex' },
-  },
-    h('div', { style: { position: 'absolute', left: 5, top: 20, width: 15, height: 6, borderRadius: 3, background: '#06230C', transform: 'rotate(45deg)' } }),
-    h('div', { style: { position: 'absolute', left: 12, top: 15, width: 26, height: 6, borderRadius: 3, background: '#06230C', transform: 'rotate(-45deg)' } }),
-  );
-
-  const dots = Array.from({ length: 7 }, (_, i) =>
-    h('div', {
-      key: i,
-      style: {
-        width: 74, height: 74, borderRadius: 20, display: 'flex',
-        alignItems: 'center', justifyContent: 'center', fontSize: 40,
-        background: i < score ? '#58CC02' : '#1A1D27',
-        border: i < score ? 'none' : '2px solid #2A2E3C',
-      },
-    }, i < score ? tick() : '')
-  );
-
-  const tree = h('div', {
-    style: {
-      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#101710 0%,#0B0C10 60%)',
-      fontFamily: 'Inter', position: 'relative',
-      padding: '0 72px',
-    },
-  },
-    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      brandMark('#F0F1F5'),
-      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, dateLabel ? `Daily 7 · ${dateLabel}` : 'balliq.app'),
-    ),
-    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 30 } },
-      h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 4, color: '#58CC02', display: 'flex' } }, 'DAILY 7 CHALLENGE'),
-      h('div', { style: { fontSize: 62, fontWeight: 900, lineHeight: 1.1, color: '#FFFFFF', display: 'flex' } }, `${who} scored ${score}/7`),
-      h('div', { style: { display: 'flex', gap: 14 } }, ...dots),
-      h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 6 } },
-        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: '#58CC02', padding: '12px 26px', borderRadius: 999 } }, 'Beat it today'),
-        h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Same 7 questions · free, no sign-up'),
-      ),
-    ),
-  );
-  return tree;
+  const who = name || 'Your mate';
+  const got = maskFor(sp.get('m'), 7, score);
+  // With the mask each dot is its question, in order. Without it the dots only
+  // count: greens first, no numbers, so nothing says WHICH ones were right.
+  const dots = Array.from({ length: 7 }, (_, i) => {
+    const ok = got ? got[i] : i < score;
+    return h('div', { key: i, style: { width: 62, height: 62, borderRadius: 62, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, fontWeight: 900, background: ok ? LIT : MISS, color: ok ? LIT_INK : MISS_INK } }, got ? String(i + 1) : '');
+  });
+  const dare = score === 7 ? [who + ' got ', 'all 7', '. Match that.'] : score === 0 ? [who + ' got ', 'none', '. Can you?'] : [who + ' got ', String(score), ' of 7. Beat that.'];
+  return pitchCard({
+    eye: dateLabel ? 'Daily 7 · ' + dateLabel : 'Daily 7',
+    headline: 'Seven football questions',
+    body: h('div', { style: { display: 'flex', gap: 14, marginTop: 34 } }, ...dots),
+    dare,
+  });
 }
 
-// Footle / Trail / Top 10 challenge card (?t=gch, 16 Oct 2026): the same
-// taunt as the Daily 7 card, in each game's own colour, with no spoiler (the
-// score only, never a letter or a name from the board).
-function gameChallengeCard(sp) {
+// The Top 10 list's own question, by its number. The website serves the same
+// schedule the app plays (/data/top10.json); read once per isolate, and a
+// failed read falls back to a plain headline rather than failing the card.
+let top10Promise = null;
+async function top10Title(no) {
+  if (!no) return '';
+  top10Promise ||= Promise.race([
+    fetch(ORIGIN + '/data/top10.json').then((r) => (r.ok ? r.json() : null)),
+    new Promise((resolve) => setTimeout(() => resolve(null), 2500)),
+  ]).catch(() => null).then((j) => { if (!j) top10Promise = null; return j; });
+  const j = await top10Promise;
+  const id = j && Array.isArray(j.log) ? j.log[no - 1] : null;
+  const title = id && j.lists && j.lists[id] ? j.lists[id].title : '';
+  return typeof title === 'string' ? title.slice(0, 60) : '';
+}
+
+// Footle's grid from the link: rows of 0 / 1 / 2, or null.
+function footleRows(raw, score) {
+  const parts = String(raw || '').split('.');
+  const cols = parseInt(parts[0], 10);
+  if (!(cols >= 3 && cols <= 12) || parts.length < 2 || parts.length > 7) return null;
+  const rows = [];
+  for (const p of parts.slice(1)) {
+    if (!/^[0-9a-z]{1,5}$/.test(p)) return null;
+    const v = parseInt(p, 36);
+    if (!Number.isFinite(v) || v < 0 || v >= 3 ** cols) return null;
+    rows.push(v.toString(3).padStart(cols, '0'));
+  }
+  const solved = /^2+$/.test(rows[rows.length - 1]);
+  if (score > 0 ? (rows.length !== score || !solved) : (rows.length !== 6 || solved)) return null;
+  return rows;
+}
+
+async function gameChallengeCard(sp) {
   const code = (sp.get('g') || 'f').slice(0, 1);
   const game = { f: 'Footle', t: 'Transfer Trail', x: 'Top 10' }[code] || 'Footle';
-  const colour = { f: '#8AE042', t: '#7CC3F0', x: '#FF9B7A' }[code] || '#8AE042'; // src/lib/accents.js MODE_ACCENT
   const s = Math.max(0, Math.min(12, parseInt(sp.get('s') || '0', 10) || 0));
   const no = (sp.get('no') || '').replace(/[^0-9]/g, '').slice(0, 5);
   const name = (sp.get('n') || '').slice(0, 22);
-  const who = name || 'A mate';
-  const big = code === 'x' ? `${s}/10` : code === 'f' ? (s > 0 ? `${s}/6` : 'X/6') : (s > 0 ? `${s} ${s === 1 ? 'club' : 'clubs'}` : 'missed');
-  const line = code === 'x' ? `${who} got ${s}/10` : s <= 0 ? `${who} missed this one` : code === 'f' ? `${who} solved it in ${s}` : `${who} got him with ${s} ${s === 1 ? 'club' : 'clubs'}`;
-  const tree = h('div', {
-    style: {
-      width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
-      background: 'linear-gradient(135deg,#12141b 0%,#0B0C10 60%)',
-      fontFamily: 'Inter', position: 'relative', padding: '0 72px',
-    },
-  },
-    h('div', { style: { position: 'absolute', top: 30, left: 44, right: 44, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-      brandMark('#F0F1F5'),
-      h('div', { style: { fontSize: 22, fontWeight: 500, color: '#F0F1F5', opacity: 0.6, display: 'flex' } }, no ? `${game} No. ${no}` : 'balliq.app'),
-    ),
-    h('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 26 } },
-      h('div', { style: { fontSize: 26, fontWeight: 800, letterSpacing: 4, color: colour, display: 'flex' } }, `${game.toUpperCase()} CHALLENGE`),
-      h('div', { style: { fontSize: 60, fontWeight: 900, lineHeight: 1.1, color: '#FFFFFF', display: 'flex' } }, line),
-      h('div', { style: { display: 'flex', fontSize: 120, fontWeight: 900, color: colour, lineHeight: 1 } }, big),
-      h('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginTop: 6 } },
-        h('div', { style: { display: 'flex', fontSize: 24, fontWeight: 800, color: '#0B0C10', background: colour, padding: '12px 26px', borderRadius: 999 } }, 'Beat it today'),
-        h('div', { style: { display: 'flex', fontSize: 22, fontWeight: 600, color: '#9BA0B8' } }, 'Same puzzle · free, no sign-up'),
-      ),
-    ),
-  );
-  return tree;
+  const who = name || 'Your mate';
+  const eye = no ? game + ' · No. ' + no : game;
+
+  if (code === 'x') {
+    const score = Math.min(10, s);
+    const got = maskFor(sp.get('m'), 10, score);
+    const slot = (i) => h('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: 12 } },
+      h('div', { style: { display: 'flex', justifyContent: 'flex-end', width: 30, fontSize: 22, fontWeight: 800, color: 'rgba(255,255,255,0.55)' } }, String(i + 1)),
+      h('div', { style: { width: 215, height: 36, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 800, background: got && got[i] ? LIT : DARK, color: DARK_INK } }, got && got[i] ? '' : '?'));
+    const col = (from) => h('div', { style: { display: 'flex', flexDirection: 'column', gap: 9 } }, ...[0, 1, 2, 3, 4].map((k) => slot(from + k)));
+    const dare = score === 10 ? [who + ' named ', 'all 10', '. Match that.'] : score === 0 ? [who + ' named ', 'none', '. Can you?'] : [who + ' named ', String(score), ' of 10. Beat that.'];
+    return pitchCard({ eye, headline: (await top10Title(parseInt(no, 10))) || 'Name the top ten', body: h('div', { style: { display: 'flex', gap: 26, marginTop: 26 } }, col(0), col(5)), dare });
+  }
+
+  if (code === 't') {
+    const total = Math.max(0, Math.min(12, parseInt(sp.get('k') || '0', 10) || 0));
+    const dare = s <= 0 ? [who + ' missed him. Can you get him?'] : s === 1 ? [who + ' got him in ', '1', '. Match that.'] : [who + ' got him in ', String(s), '. Beat that.'];
+    // Without k the dim discs are left out: how many clubs the career has is
+    // not ours to guess.
+    const n = total >= s && total > 0 ? total : s;
+    return pitchCard({ eye, headline: 'Whose career is this?', body: n > 0 ? discRow(n, s, 'CLUBS SHOWN') : h('div', { style: { display: 'flex', marginTop: 20 } }), dare });
+  }
+
+  const score = Math.min(6, s);
+  const rows = footleRows(sp.get('p'), score);
+  let body;
+  if (rows) {
+    const cols = rows[0].length;
+    const t = Math.min(58, Math.floor((300 - (rows.length - 1) * 8) / rows.length), Math.floor((590 - (cols - 1) * 8) / cols));
+    body = h('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginTop: 30 } },
+      ...rows.map((row, r) => h('div', { key: r, style: { display: 'flex', gap: 8 } },
+        ...[...row].map((c, i) => h('div', { key: i, style: { width: t, height: t, borderRadius: Math.round(t * 0.2), background: c === '2' ? LIT : c === '1' ? '#FFC107' : DARK } })))));
+  } else {
+    body = discRow(6, score, 'GUESSES');
+  }
+  const dare = score <= 0 ? ['Footle beat ' + (name || 'your mate') + '. Can you solve it?'] : score === 1 ? [who + ' solved it in ', '1', '. Match that.'] : [who + ' solved it in ', String(score), '. Beat that.'];
+  return pitchCard({ eye, headline: 'Guess the footballer', body, dare });
 }
 
 // Stitch-up card (?t=stitch, 16 Oct 2026), paired with api/s.js: who sent it,
@@ -425,7 +509,7 @@ export default async function handler(req) {
   const url = new URL(req.url);
   ORIGIN = url.origin;
   const fonts = await loadFonts(url.origin);
-  return new ImageResponse(cardTree(url.searchParams), {
+  return new ImageResponse(await cardTree(url.searchParams), {
     width: 1200, height: 630, emoji: 'twemoji', ...(fonts && { fonts }),
   });
 }

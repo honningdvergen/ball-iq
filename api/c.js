@@ -108,6 +108,15 @@ export default async function handler(req) {
     const gDesc = 'Same puzzle, one go. Free, no sign-up.';
     const ogQ = new URLSearchParams({ t: 'gch', g: g[1], s: String(s), no: String(no) });
     if (gName) ogQ.set('n', gName);
+    // What the picture may show beyond the score (25 Nov 2026; api/og.js says
+    // what each means and checks it against the score): which Top 10 places
+    // were named (m), the Footle grid with no letters (p), how many clubs the
+    // Trail career has (k). Shapes only are checked here; a link without them
+    // gets the plain picture.
+    const dm = (url.searchParams.get('m') || '').trim(), dp = (url.searchParams.get('p') || '').trim(), dk = (url.searchParams.get('k') || '').trim();
+    if (g[1] === 'x' && /^[0-9a-z]{1,3}$/.test(dm)) ogQ.set('m', dm);
+    if (g[1] === 'f' && /^\d{1,2}(\.[0-9a-z]{1,5}){1,6}$/.test(dp)) ogQ.set('p', dp);
+    if (g[1] === 't' && /^\d{1,2}$/.test(dk)) ogQ.set('k', dk);
     const gImage = `${origin}/api/og?${ogQ.toString()}`;
     // The sender's reply id (?r=…, src/lib/challengeReplies.js) rides through
     // to the app as gr, so the mate's device can report its result back.
@@ -162,6 +171,9 @@ export default async function handler(req) {
   const ogParams = new URLSearchParams({ t: 'challenge', s: String(score) });
   if (name) ogParams.set('n', name);
   if (dateLabel) ogParams.set('d', dateLabel);
+  // Which of the seven were right (m, a bit mask; api/og.js checks it against the score).
+  const d7m = (url.searchParams.get('m') || '').trim();
+  if (valid && /^[0-9a-z]{1,2}$/.test(d7m)) ogParams.set('m', d7m);
   const ogImage = `${origin}/api/og?${ogParams.toString()}`;
 
   const title = valid ? cardTitle('daily7', score, name) : 'Daily 7 challenge ⚽';
