@@ -1022,6 +1022,21 @@ export default {
   'share.mysteryStreak': '🔥 Racha de {n} días en Mystery',
   'share.top10Streak': '🔥 Racha de {n} días en Top 10',
   'share.challenge': '{what} n.º {edition}: {score}. ¿Me superas?',
+  // The one share message's first line (25 Nov 2026). "Pudo conmigo" for a
+  // puzzle that beat the player; "a la primera" for a first-guess solve.
+  // Not yet read by a native reviewer.
+  'share.one.footle': 'Resolví el Footle en {n}. ¿Me superas?',
+  'share.one.footle.first': 'Resolví el Footle a la primera. ¿Lo igualas?',
+  'share.one.footle.lost': 'El Footle pudo conmigo. ¿Lo resuelves tú?',
+  'share.one.trail': 'Saqué el Transfer Trail con {n} clubes. ¿Me superas?',
+  'share.one.trail.first': 'Saqué el Transfer Trail con 1 club. ¿Lo igualas?',
+  'share.one.trail.lost': 'El Transfer Trail pudo conmigo. ¿Lo sacas tú?',
+  'share.one.top10': 'Acerté {n} en el Top 10. ¿Me superas?',
+  'share.one.top10.all': 'Acerté los 10 del Top 10. ¿Lo igualas?',
+  'share.one.top10.lost': 'El Top 10 pudo conmigo. ¿Aciertas alguno?',
+  'share.one.daily7': 'Acerté {n} en el Daily 7. ¿Me superas?',
+  'share.one.daily7.all': 'Acerté las 7 del Daily 7. ¿Lo igualas?',
+  'share.one.daily7.lost': 'El Daily 7 pudo conmigo. ¿Aciertas alguna?',
   'share.stumpMissed': 'Esta me pilló 🙈 A que tú tampoco la aciertas ⚽ {link}',
   'share.stumpGot': 'Esta la acerté. A que tú no 😏 ⚽ {link}',
   'share.stumpPassGot': '¡Acertada ✅! Te toca 😏 ⚽ {link}',

@@ -1922,6 +1922,23 @@ export default registerEnglish({
   'dd.shareOnlyNote': 'Your result, with no answers on it.',
   'dd.capToday': 'Today',
   'dd.capStreak': 'Day {n} streak',
+  // The one share message's first line (lib/shareMessage.js, 25 Nov 2026).
+  // One figure a line; no date and no puzzle number (Alex: "too many numbers").
+  // `.first`: solved at the first go, so the dare is to match it. `.all`: a
+  // full score, the same. `.lost`: nothing solved or named. Built by a module
+  // on Home's eager path (hooks/useShare.js imports it), so also in en.home.js.
+  'share.one.footle': 'Solved Footle in {n}. Can you beat it?',
+  'share.one.footle.first': 'Solved Footle in 1. Can you match it?',
+  'share.one.footle.lost': 'Footle beat me. Can you solve it?',
+  'share.one.trail': 'Got Transfer Trail in {n} clubs. Can you beat it?',
+  'share.one.trail.first': 'Got Transfer Trail in 1 club. Can you match it?',
+  'share.one.trail.lost': 'Transfer Trail beat me. Can you get it?',
+  'share.one.top10': 'Named {n} on Top 10. Can you beat it?',
+  'share.one.top10.all': 'Named all 10 on Top 10. Can you match it?',
+  'share.one.top10.lost': 'Top 10 beat me. Can you name one?',
+  'share.one.daily7': 'Got {n} right on Daily 7. Can you beat it?',
+  'share.one.daily7.all': 'Got all 7 right on Daily 7. Can you match it?',
+  'share.one.daily7.lost': 'Daily 7 beat me. Can you get one?',
   'ts.repairFailed': 'Couldn\'t reach the server to repair your streak. Check your connection and finish yesterday\'s puzzle again today.',
   'ld.ballpark': 'Loading Ballpark',
   'bp.title': 'Ballpark',

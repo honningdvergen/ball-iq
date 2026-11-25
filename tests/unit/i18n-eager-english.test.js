@@ -71,6 +71,7 @@ const EAGER_FAMILIES = {
   'App.jsx': ['cat.', 'help.footle.', 'help.survival.'],
   'i18n/names.js': ['lvl.', 'tier.', 'cc.'],
   'lib/mysteryPlayer.js': ['mp.earlier', 'mp.later'], // t(`mp.${x.bornWhen}`): 'earlier' | 'later'
+  'lib/shareMessage.js': ['share.one.'], // the one share message's first line (25 Nov 2026); hooks/useShare.js imports it
 };
 
 describe('the eager English split', () => {

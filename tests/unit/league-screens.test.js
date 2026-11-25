@@ -277,9 +277,12 @@ describe('the results panel', () => {
     expect(DD).toMatch(/className="dd-league" onClick=\{makeLeague\}>\s*<Users[^>]*\/> \{t\(rival \? "dd\.league" : "dd\.leagueShort"\)\}/);
     expect(DD.indexOf('className="dd-share-alts"')).toBeLessThan(DD.indexOf('className="dd-league"'));
     expect(read('../../src/components/dailyDone.css')).toMatch(/\.dd-league\{[^}]*border:1px solid var\(--border2\);background:var\(--s2\)/);
-    expect((DD.match(/className="dd-share"/g) || []).length).toBe(3); // Send it back | Send it to a mate | Share result
+    // 25 Nov 2026: one Share button, one message. "Send it to a mate" and the quiet "Just share my
+    // result" under it are one solid Share; a waiting challenge keeps "Send it back".
+    expect((DD.match(/className="dd-share"/g) || []).length).toBe(2); // Send it back | Share result
     expect(DD).toMatch(/const leagueOffer = leagueGame && !!rival;/);
-    expect(DD).toMatch(/className="dd-share" onClick=\{doChallenge\}>\s*<Swords[^>]*\/> \{t\([^)]*"dd\.sendMate"\)\}/);
+    expect(DD).toMatch(/className="dd-share" onClick=\{shareTap\} disabled=\{!canChallenge && busy\} aria-label=\{t\("dd\.shareAria"\)\}>/);
+    expect(DD).not.toMatch(/"dd\.sendMate"|"dd\.shareOnly"|dd-share-note/);
     expect(DD).not.toMatch(/wa\.me/);
     expect(DD).not.toMatch(/isNativeShell/);
   });

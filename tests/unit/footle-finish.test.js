@@ -194,7 +194,9 @@ describe('the finish panel in the "one" layout', () => {
 
   it('a win: the picture and "Share my 3/6" on the card; no panel, no crossed swords, no second button', async () => {
     const html = render(await load());
-    expect(html).toMatch(/<div class="rc-pic"><div class="wd-cg"><\/div><\/div><p class="rc-note">The answer was Joe Bennett<\/p><button type="button" class="rc-act" aria-haspopup="dialog" aria-expanded="false"><svg[^>]*lucide-share[^>]*>.*?<\/svg>Share my 3\/6<\/button><\/section>/);
+    expect(html).toMatch(/<div class="rc-pic"><div class="wd-cg"><\/div><\/div><p class="rc-note">The answer was Joe Bennett<\/p><button type="button" class="rc-act"><svg[^>]*lucide-share[^>]*>.*?<\/svg>Share my 3\/6<\/button><\/section>/);
+    // 25 Nov 2026: the tap shares. It opens nothing, so it announces no dialog.
+    expect(html).not.toMatch(/aria-haspopup|aria-expanded|role="dialog"/);
     expect(html).not.toContain('<section class="dd"');
     expect(html).not.toMatch(/lucide-swords|class="dd-share"|dd-share-note|dd-share-alts|class="dd-up[ "]|dd-chip|dd-hr|dd-well/);
     expect(html).toContain('<section class="dd-one"');
@@ -324,14 +326,18 @@ describe('the finish panel in the "one" layout', () => {
     expect(html).toContain('Share my 3/6</button>');
     expect(html).not.toContain('Send it back');
   });
-  it('the sheet carries the two actions that existed, unchanged, and keeps "send it back" for a waiting challenge', () => {
+  // 25 Nov 2026: ONE button, ONE message. From 24 Nov the button opened a sheet with two rows
+  // ("Send it to a mate", "Just share my result"). Alex, to "one button that sends one message, or
+  // keep two?": "Yeah go with 1 if you think it's right".
+  it('the one button sends the one message: no sheet, no second action', () => {
     const src = read('src/components/DailyDone.jsx');
     const one = src.slice(src.indexOf('if (layout === "one" && card) {'), src.indexOf('const cardEl = card ? ('));
-    expect(one).toMatch(/key: "mate", Icon: challengeState \? Check : Send, onClick: doChallenge,/);
-    expect(one).toMatch(/rival \? "dd\.sendBack" : "dd\.sendMate"/);
-    expect(one).toMatch(/key: "mine", Icon: shared \? Check : Share, onClick: doShare, disabled: busy,/);
-    expect(one).not.toMatch(/Swords/);
-    // what they send is the classic panel's code, untouched by this layout
+    expect(one).toContain('<button type="button" className="rc-act" onClick={shareTap} disabled={!canChallenge && busy}>');
+    expect(one).not.toMatch(/ShareSheet|sheetOpen|dd\.sendMate|dd\.shareOnly|Swords/);
+    expect(src).not.toMatch(/ShareSheet|createPortal/);
+    // with a puzzle link to send the tap sends it; with none (the Daily 7, an old puzzle) it is the host's share
+    expect(src).toContain('const shareTap = canChallenge ? doChallenge : doShare;');
+    // the link, with the sender's reply id on it, is the code it always was
     expect(src).toContain('const url = `https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`;');
     expect(src).toContain('try { const ok = await onShare?.(); if (ok !== false) { setShared(true); setTimeout(() => setShared(false), 2200); } }');
   });
@@ -355,7 +361,9 @@ describe('the finish panel in the "one" layout', () => {
     const D = await load();
     const classic = renderToStaticMarkup(el(D, { ...props, layout: undefined }));
     expect(classic).toContain('<section class="dd"');
-    expect(classic).toContain('lucide-swords');
+    // its one solid button (25 Nov 2026: Share, where "Send it to a mate" and its crossed swords were)
+    expect(classic).toMatch(/<button type="button" class="dd-share" aria-label="Share your result"><svg[^>]*lucide-share[^>]*>.*?<\/svg> Share result<\/button>/);
+    expect(classic).not.toMatch(/lucide-swords|dd-share-note|dd-share-alt/);
     expect(classic).not.toMatch(/dd-one|rc-act|rc-pic|dd-list/);
     expect(renderToStaticMarkup(el(D, { ...props, layout: 'one', card: null }))).toMatch(/^<section class="dd"/);
   });

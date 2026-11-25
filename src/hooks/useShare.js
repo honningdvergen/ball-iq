@@ -5,7 +5,8 @@ import { APP_NAME, getLevelInfo } from "../lib/scoring.js";
 import { Share as CapShare } from "@capacitor/share";
 import { avatarColour } from "../lib/avatarColour.js";
 import { firstLetter as firstLetterOf } from "../components/ProfilePic.jsx";
-import { t, getLang } from "../i18n/index.js";
+import { t } from "../i18n/index.js";
+import { shareMessage } from "../lib/shareMessage.js";
 import { shareCard, INVITE_BASE_URL, LEAGUE_QUIZ_BY_CAT, CAT_TO_QUIZ_SLUG } from "../App.jsx";
 import { loopEvent } from "../lib/funnel.js";
 import { IS_NATIVE } from "../lib/platform.js";
@@ -17,24 +18,10 @@ import { clubData } from "../lib/clubData.js";
 // Pure, so tests/unit/i18n-last-english.test.js can hold the English to the
 // code main had before step 6, byte for byte, over a grid of inputs.
 
-/** The Daily 7 challenge share, line by line (the last line is the link). */
-export function dailyShareLines({ score, total = 7, streak = 0, url, date = new Date() }) {
-  const lang = getLang();
-  const dateStr = date.toLocaleDateString(lang === "en" ? "en-GB" : lang, { day: "numeric", month: "short" });
-  const grid = Array.from({ length: total }, (_, i) => i < score ? "✅" : "❌").join("");
-  const streakLine = streak > 0 ? t("share.d7Streak", { n: streak }) : "";
-  return [
-    `⚽ ${APP_NAME} Daily 7`,
-    `📅 ${dateStr}`,
-    `🎯 ${score}/${total}`,
-    streakLine,
-    "",
-    grid,
-    "",
-    t("share.d7Beat"),
-    url,
-  ].filter(Boolean);
-}
+// The Daily 7's share is the one message every daily sends (lib/shareMessage.js,
+// 25 Nov 2026): one line and the /c/ link. Until then it was built here, as
+// eight lines (the app's name, the date, the score, the streak, a row of ticks
+// and crosses, "Think you can beat me?", the link).
 
 // resultVerdict's bands (lib/resultVerdict.js) as the rv.* keys: the same English.
 const verdictKey = (pct) => (pct === 100 ? "rv.100" : pct >= 80 ? "rv.80" : pct >= 60 ? "rv.60" : pct >= 40 ? "rv.40" : "rv.0");
@@ -89,8 +76,8 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     // balliq.app/?c=SCORE.YYYYMMDD[.Name]
     const ymd = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`; })();
     const challengeUrl = `${INVITE_BASE_URL}/c/${score}.${ymd}${challengerName ? "." + encodeURIComponent(challengerName).replace(/\./g, "%2E") : ""}${user?.id ? `?f=${user.id}` : ""}`;
-    const lines = dailyShareLines({ score, streak: loginStreak, url: challengeUrl });
-    const text = lines.join("\n");
+    // ONE MESSAGE (25 Nov 2026): "Got 5 right on Daily 7. Can you beat it?" and
+    // the link, as the other three dailies send it.
     // The share sheet gets the link as a first-class `url`, not buried at the
     // end of `text`: targets that keep only one field (Instagram, some mail
     // apps) keep the URL, and chat apps unfurl it as the card /c/ renders.
@@ -98,7 +85,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     // else to put it. (Share audit 2026-09-04: 153 share taps in 30 days,
     // 4 challenge opens; this and the /c/ hit log are how we find out where
     // the other 149 went.)
-    const sheetText = lines.slice(0, -1).join("\n");
+    const { text: sheetText, full: text } = shareMessage({ game: "daily7", score, url: challengeUrl });
 
     try {
       if (navigator.share) {
@@ -118,7 +105,7 @@ export function useShare({ user, showToast, profile, setProfile, authProfile, st
     } catch {
       showToast(t("share.fail"));
     }
-  }, [dailyScore, loginStreak, showToast]);
+  }, [dailyScore, showToast]);
   const shareDaily = useCallback(() => {
     loopEvent("share-daily");
     const who = resolveChallengerName();

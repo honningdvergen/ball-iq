@@ -13,6 +13,14 @@
 //   • A Spanish player sees and shares Spanish, product names kept.
 //   • Still English on purpose: multiplayer questions (the server's), the
 //     hidden bank review tool, and the share card IMAGE (lib/shareCardRender.js).
+//
+// INTENDED CHANGE, 25 Nov 2026 (one share message): the Daily 7's share is no
+// longer the eight lines step 6 held byte for byte (the app's name, the date,
+// the score, the streak, ticks and crosses, "Think you can beat me?", the
+// link). It is one line and the link, built in lib/shareMessage.js, as the
+// other three dailies send it; Alex: "Yes, build it". useShare's
+// dailyShareLines is gone, and the three checks on it here are now checks on
+// the new message. tests/unit/share-one-message.test.js pins every line.
 import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -27,7 +35,8 @@ const enHome = (await import('../../src/i18n/en.home.js')).default;
 const { STEP6_EN } = await import('./i18n-last-english.keys.js');
 const { STEP5_EN } = await import('./i18n-leftovers.keys.js');
 const { STEP7_EN } = await import('./i18n-step7.keys.js');
-const { dailyShareLines, scoreShareText, scoreShareLabel } = await import('../../src/hooks/useShare.js');
+const { scoreShareText, scoreShareLabel } = await import('../../src/hooks/useShare.js');
+const { shareMessage } = await import('../../src/lib/shareMessage.js');
 const { shareLine, computeCard } = await import('../../src/lib/ballIqCard.js');
 const { buildDraftShareText } = await import('../../src/lib/draftModel.js');
 const { inviteShareText, h2hShareText } = await import('../../src/lib/leagues.js');
@@ -44,12 +53,6 @@ const noop = () => {};
 // ── The English as main built it before step 6 (18bc2ba5), verbatim ─────────
 const APP = 'Ball IQ';
 const OLD = {
-  daily: ({ score, total = 7, streak, url, date }) => {
-    const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-    const grid = Array.from({ length: total }, (_, i) => i < score ? '✅' : '❌').join('');
-    const streakLine = streak > 0 ? `🔥 ${streak}-day streak` : '';
-    return [`⚽ ${APP} Daily 7`, `📅 ${dateStr}`, `🎯 ${score}/${total}`, streakLine, '', grid, '', 'Think you can beat me?', url].filter(Boolean);
-  },
   verdict: (pct) => (pct === 100 ? "Ballon d'Or form" : pct >= 80 ? 'Top-corner finish' : pct >= 60 ? 'Solid at the back' : pct >= 40 ? 'Squad rotation material' : 'Sunday league, first half'),
   score: (mode, score, total, url) => {
     const pct = total ? Math.round(score / total * 100) : 0;
@@ -163,12 +166,9 @@ describe('the step 6 keys', () => {
 
 describe('English share texts are byte-identical', () => {
   beforeEach(() => bootLang(store, null));
-  it('the Daily 7 challenge (useShare)', () => {
-    const date = new Date(2026, 9, 21, 12);
-    for (const score of [0, 3, 7]) for (const streak of [0, 1, 12]) {
-      const o = { score, streak, url: 'https://balliq.app/c/3.20261021.Ana?f=u1', date };
-      expect(dailyShareLines(o)).toEqual(OLD.daily(o));
-    }
+  it('the Daily 7 challenge (useShare): since 25 Nov 2026 one line and the link', () => {
+    const url = 'https://balliq.app/c/3.20261021.Ana?f=u1';
+    expect(shareMessage({ game: 'daily7', score: 3, url })).toEqual({ line: 'Got 3 right on Daily 7. Can you beat it?', text: 'Got 3 right on Daily 7. Can you beat it?', url, full: `Got 3 right on Daily 7. Can you beat it?\n${url}` });
   });
   it('every mode\'s text (useShare.shareScore), and the label under the card', () => {
     for (const mode of MODES) for (const [score, total] of [[0, 10], [4, 10], [6, 10], [8, 10], [10, 10], [3, 7], [12, 15], [0, 0]]) {
@@ -214,7 +214,7 @@ describe('English share texts are byte-identical', () => {
     expect(app).toContain('return tl("share.lineScore", { score: data.score, total: data.total, label: data.shareLabel || data.modeLabel, link });');
     expect(app).toContain('showToast(tl(correct ? "toast.emailRight" : "toast.emailWrong", { a: answerText }), 4200);');
     const share = read('src/hooks/useShare.js');
-    expect(share).toContain('const lines = dailyShareLines({ score, streak: loginStreak, url: challengeUrl });');
+    expect(share).toContain('const { text: sheetText, full: text } = shareMessage({ game: "daily7", score, url: challengeUrl });');
     expect(share).toContain('const text = scoreShareText(mode, { score, total, url });');
     expect(share).toContain('shareLabel: scoreShareLabel(mode, packName),');
     expect(share).toContain('const text = shareLine(card, readCardDelta(), APP_NAME, t);');
@@ -229,8 +229,7 @@ describe('English share texts are byte-identical', () => {
 describe('a Spanish player shares in Spanish', () => {
   beforeEach(() => bootLang(store, 'es'));
   it('every builder, product names kept', () => {
-    const lines = dailyShareLines({ score: 5, streak: 3, url: 'U', date: new Date(2026, 9, 21, 12) });
-    expect(lines).toEqual(['⚽ Ball IQ Daily 7', '📅 21 oct', '🎯 5/7', '🔥 Racha de 3 días', '✅✅✅✅✅❌❌', '¿Te crees capaz de superarme?', 'U']);
+    expect(shareMessage({ game: 'daily7', score: 5, url: 'U' }).full).toBe('Acerté 5 en el Daily 7. ¿Me superas?\nU');
     expect(scoreShareText('classic', { score: 8, total: 10, url: 'U' })).toBe('🔥 Ball IQ — Clásico\nA la escuadra\n8/10 aciertos · 80 % de acierto\n¿Me superas? ⚽\nU');
     expect(scoreShareText('hotstreak', { score: 14, total: 20, url: 'U' })).toContain('Crono\n14 aciertos en 60 segundos (20 respondidas)');
     expect(scoreShareLabel('classic', 'Arsenal')).toBe('Quiz de Arsenal');

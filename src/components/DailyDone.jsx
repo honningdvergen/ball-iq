@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
-import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users, Send } from "lucide-react";
+import { Flame, ShieldCheck, Bell, Share, Check, ChevronDown, ClipboardList, Route, UserRoundSearch, ListOrdered, Swords, Users } from "lucide-react";
 import { msToNextLocalMidnight } from "../lib/date.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { recordDailyResult, fetchDistribution, summariseDistribution, MIN_N, SCORE_GAMES } from "../lib/dailyResults.js";
 import { GAME_CODES, challengeToken, readChallenge, compareScores, scoreLabel, replyName } from "../lib/gameChallenge.js";
+import { shareMessage } from "../lib/shareMessage.js";
 import { MateNameAsk } from "./MateNameAsk.jsx";
 // Mates' leagues (phase 2: web and the app). The results lib is loaded on
 // demand: a static import here put it in the chunk Home loads eagerly (+4 KB
@@ -21,7 +21,6 @@ import { useT, useLang, isLangLoaded, fmtLocale, fmtFixed } from "../i18n/index.
 import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { rich } from "../i18n/rich.jsx";
 import { ResultCard } from "./ResultCard.jsx";
-import { ShareSheet } from "./ShareSheet.jsx";
 import "./dailyDone.css";
 
 // DailyDone — ONE return-loop panel under every decided daily (Footle, Daily 7,
@@ -47,8 +46,10 @@ import "./dailyDone.css";
 //   isArchive   an old puzzle — never recorded, never counts toward tomorrow
 //   streak      { count, label, keepsOnLoss? } — the app passes its one streak; islands the game's.
 //               keepsOnLoss: the host's streak ticks on any finish, so a loss keeps it ("Streak safe")
-//   onShare     async () => void   (host builds the text / card)
-//   challengeGrid  the result as coloured squares, one row per line (Footle); goes in the "Send it to a mate" message
+//   onShare     async () => void   (host builds the text / card). Used only where this panel has no puzzle
+//               link of its own to send: the Daily 7 (its /c/ link is built in hooks/useShare.js), Mystery
+//               Player, and an old puzzle from the archive
+//   challengeGrid  the result as coloured squares, one row per line (Footle); goes in the one share message
 //   remind      { state: 'off'|'on'|'blocked'|'unsupported', onRemind } | undefined
 //   nextUp      [{ key, name, onTap? , href?, open? }] — today's other unplayed dailies (open: started, so the button says Continue)
 //   save        { onSave, line? } | null — guest; shows at a 2+ streak or when `line` names what is on this phone
@@ -325,8 +326,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   }, [canChallenge, rival, game, edition, myScore, day]);
   // LAST of the state hooks on purpose: the render tests address the others by their order.
   const [distOpen, setDistOpen] = useState(false);
-  // After it, for the same reason: the share sheet of the "one" layout.
-  const [sheetOpen, setSheetOpen] = useState(false);
   // The league offer. With a head-to-head on the panel it is "Make it a
   // league?"; otherwise, for a player who is not in one, "Start a league with
   // your mates" (29 Oct 2026: in 13 days on the web nobody made a league, and
@@ -336,7 +335,7 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   // 12 Nov 2026: with no head-to-head the offer is gone from this panel. Shown
   // 296 times to 80 people in two weeks, tapped by nobody outside our own
   // testing: a stranger does not name a league before they have a rival. The
-  // one button is "Send it to a mate" now; "Make it a league?" stays for the
+  // one button is Share now (it sends the puzzle); "Make it a league?" stays for the
   // moment a rival exists. Home keeps its Mates' league row.
   const leagueOffer = leagueGame && !!rival;
   useEffect(() => {
@@ -360,23 +359,26 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     // device can be told when the mate has played. One id per puzzle.
     const rid = repliesLib ? repliesLib.replyIdFor(game, edition, myScore) : null;
     const url = `https://balliq.app/c/${token}${rid ? `?r=${rid}` : ""}`;
-    const what = { footle: "Footle", trail: "Transfer Trail", top10: "Top 10" }[game];
-    // In the sharer's language (i18n step 5). English is the same line as before:
-    // scoreLabel's English words are the gc.* keys' English.
-    // THE GRID GOES WITH IT (15 Nov 2026). "Send it to a mate" became the one
-    // button, and what it put in the chat was a bare line of text: the coloured
-    // grid, the thing people actually recognise and tap, only went with the
-    // quiet "Just share my result". A host that has a grid (Footle) passes it,
-    // and it sits under the line. It shows colours only, never letters.
-    const line = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });
-    const text = challengeGrid ? `${line}\n\n${challengeGrid}\n` : line;
+    // ONE MESSAGE (25 Nov 2026, lib/shareMessage.js): one line with one figure
+    // in it, in the sharer's language; Footle's coloured rows (a host that has
+    // a grid passes it: colours only, never letters); and this link. Until now
+    // the line was "Footle No. 204: 3/6. Can you beat it?", and beside it sat a
+    // second way to share that sent a picture and no link at all. Alex, to "one
+    // button that sends one message, or keep two?": "Yeah go with 1 if you
+    // think it's right".
+    const { text, full } = shareMessage({ game, score: myScore, grid: challengeGrid, url });
+    // The event "Send it to a mate" fired, under its old name, so the count of
+    // puzzle links sent reads straight across this change. dd-share (doShare)
+    // now counts only the shares that carry no puzzle link from this panel.
     track?.("dd-challenge", { game, rival: !!rival });
+    // The button says what happened for a moment, then offers itself again.
+    const said = (how) => { setChallengeState(how); setTimeout(() => setChallengeState(""), 2200); };
     try {
-      if (navigator.share) { await navigator.share({ text, url }); setChallengeState("sent"); return; }
-      await navigator.clipboard.writeText(challengeGrid ? `${text}\n${url}` : `${text} ${url}`); setChallengeState("copied");
+      if (navigator.share) { await navigator.share({ text, url }); said("sent"); return; }
+      await navigator.clipboard.writeText(full); said("copied");
     } catch (e) {
       if (e && (e.name === "AbortError" || /cancel/i.test(e?.message || ""))) return;
-      try { await navigator.clipboard.writeText(challengeGrid ? `${text}\n${url}` : `${text} ${url}`); setChallengeState("copied"); } catch { /* nothing to do */ }
+      try { await navigator.clipboard.writeText(full); said("copied"); } catch { /* nothing to do */ }
     }
   };
   const doChallenge = async () => {
@@ -434,15 +436,14 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     setBusy(true); track?.("dd-remind", { game });
     try { await remind.onRemind(); } finally { setBusy(false); }
   };
-  // The share sheet ("one" layout) steps aside once one of its two rows has
-  // done its work: the row says so ("Challenge sent", "Link copied", "Shared")
-  // for a moment, then the result is back. A dismissed share sets nothing, so
-  // the sheet stays for the other row.
-  useEffect(() => {
-    if (!sheetOpen || !(shared || challengeState)) return undefined;
-    const id = setTimeout(() => setSheetOpen(false), 1200);
-    return () => clearTimeout(id);
-  }, [sheetOpen, shared, challengeState]);
+  // ONE SHARE BUTTON (25 Nov 2026). Where there is a puzzle link to send
+  // (Footle, Transfer Trail and Top 10 on the day's puzzle) the button sends
+  // the one message; everywhere else it does what it always did (the host's
+  // onShare). The words after a tap: "Shared", or "Link copied" on a browser
+  // with no share sheet.
+  const shareTap = canChallenge ? doChallenge : doShare;
+  const shareDone = canChallenge ? !!challengeState : shared;
+  const shareDoneKey = canChallenge && challengeState === "copied" ? "dd.linkCopied" : "dd.shared";
 
   // Four groups, top to bottom: your result, one share action, what to play
   // next, a quiet footer. They arrive one after another (--i staggers them).
@@ -463,8 +464,8 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
   // and two chips. He steered eight drawn rounds to this:
   //
   //   the card      carries the game's own picture and ONE quiet Share button.
-  //                 The button opens a sheet with today's two actions, unchanged
-  //                 (doChallenge, doShare), each named and explained.
+  //                 Until 25 Nov it opened a sheet with two named actions; now
+  //                 the tap itself sends the one message (shareTap).
   //   one caption   "Today 1 of 4" on the left, when the next puzzles come on
   //                 the right.
   //   one list      the other dailies as one filled block with no outline.
@@ -499,32 +500,16 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
     // would rather not print on a button (`plainShare`: a Daily 7 of 0 or 1),
     // it is "Share my result".
     const scoreTxt = card.score != null && !card.plainShare ? `${card.score}/${card.outOf}` : null;
-    const openSheet = () => { setChallengeState(""); setSheetOpen(true); };
-    // With no puzzle link to send (an old puzzle from the archive) there is
-    // one thing to do, so the button does it: no sheet with a single row.
+    // The one tap shares (25 Nov 2026). From 24 Nov it opened a sheet with two
+    // rows, "Send it to a mate" and "Just share my result"; the choice is gone
+    // and the button sends the one message (shareTap, above).
     const action = (
-      <button type="button" className="rc-act" onClick={canChallenge ? openSheet : doShare} disabled={!canChallenge && busy} aria-haspopup={canChallenge ? "dialog" : undefined} aria-expanded={canChallenge ? sheetOpen : undefined}>
-        {!canChallenge && shared
-          ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{t("dd.shared")}</>
+      <button type="button" className="rc-act" onClick={shareTap} disabled={!canChallenge && busy}>
+        {shareDone
+          ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{t(shareDoneKey)}</>
           : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{scoreTxt ? t("dd.shareMy", { score: scoreTxt }) : t("dd.shareMine")}</>}
       </button>
     );
-    const sheet = sheetOpen ? (
-      <ShareSheet
-        title={t("dd.sheetTitle")} closeLabel={t("dd.sheetClose")} onClose={() => setSheetOpen(false)}
-        rows={[
-          // With a mate's challenge waiting, sending the puzzle IS the answer to it: today's wording.
-          { key: "mate", Icon: challengeState ? Check : Send, onClick: doChallenge,
-            title: t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : rival ? "dd.sendBack" : "dd.sendMate"),
-            note: t(rival ? "dd.sendBackNote" : "dd.sendMateNote") },
-          { key: "mine", Icon: shared ? Check : Share, onClick: doShare, disabled: busy,
-            title: t(shared ? "dd.shared" : "dd.shareOnly"), note: t("dd.shareOnlyNote") },
-        ]}
-      />
-    ) : null;
-    // Outside the card and the groups: both are animated, and an animated
-    // ancestor would become the box a fixed sheet is laid out in.
-    const sheetEl = sheet && typeof document !== "undefined" && document.body ? createPortal(sheet, document.body) : sheet;
 
     const others = isArchive ? [] : nextUp.filter((n) => modeOf(n.key) !== modeOf(game));
     const go = (n) => { track?.("dd-next", { game, to: n.key }); n.onTap?.(); };
@@ -568,7 +553,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
       <>
       <ResultCard title={card.title} tag={card.tag} score={card.score} scoreNode={card.scoreNode} outOf={card.outOf} marks={card.marks} shares={card.shares} levels={card.levels}
         verdict={words.verdict} sub={words.sub} xp={card.xp} note={card.note} picture={card.picture} action={action} head={false} />
-      {sheetEl}
       <section className="dd-one" aria-label={t("dd.aria")}>
         {/* A mate sent this puzzle: who won, the name ask, and the league offer that only a rival earns. */}
         {rival && (() => {
@@ -785,26 +769,19 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
         <button type="button" className="dd-share" onClick={doChallenge} aria-label={t("dd.sendBackAria")}>
           <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : rival ? "dd.sendBack" : "dd.challenge")}
         </button>
-      ) : canChallenge ? (
-        /* ONE THING TO DO (12 Nov 2026, Alex's yes on the before and after).
-           Under Share sat a league pill, a WhatsApp link and "Challenge a
-           mate": four ways to share at once, and in 30 days 196 people saw the
-           panel, 8 shared and nobody outside our own testing tapped the other
-           three. The solid button now sends the puzzle itself to a mate (the
-           same /c/ link "Challenge a mate" made); the plain result is the one
-           quiet link under it. */
-        <>
-          <button type="button" className="dd-share" onClick={doChallenge}>
-            <Swords size={18} strokeWidth={2.4} aria-hidden="true" /> {t(challengeState === "copied" ? "dd.linkCopied" : challengeState === "sent" ? "dd.sent" : "dd.sendMate")}
-          </button>
-          <p className="dd-share-note">{t("dd.sendMateNote")}</p>
-        </>
       ) : (
-        <button type="button" className="dd-share" onClick={doShare} disabled={busy} aria-label={t("dd.shareAria")}>
-          {shared ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t("dd.shared")}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
+        /* ONE BUTTON, ONE MESSAGE (25 Nov 2026). On 12 Nov four ways to share
+           became two: a solid "Send it to a mate" with a line under it saying
+           what the mate gets, and a quiet "Just share my result". From 10 to
+           24 Nov the finish was shown 3,296 times, for 57 plain shares and 36
+           puzzle links. Now it is the one button every finish has: on the
+           day's Footle, Transfer Trail and Top 10 it sends the one message
+           with the puzzle's link (shareTap), elsewhere the host's share. */
+        <button type="button" className="dd-share" onClick={shareTap} disabled={!canChallenge && busy} aria-label={t("dd.shareAria")}>
+          {shareDone ? <><Check size={18} strokeWidth={2.6} aria-hidden="true" />{" " + t(shareDoneKey)}</> : <><Share size={18} strokeWidth={2.4} aria-hidden="true" />{" " + t("dd.shareResult")}</>}
         </button>
       )}
-      {(leagueOffer || stitch || canChallenge) && (
+      {(leagueOffer || stitch) && (
         <div className="dd-share-alts">
           {/* The league offer. 7 Nov 2026: as a 12.5px underlined line it was
               shown 178 times to 48 web visitors and tapped by none, so it became
@@ -816,9 +793,6 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
             <button type="button" className="dd-league" onClick={makeLeague}>
               <Users size={15} strokeWidth={2.4} aria-hidden="true" /> {t(rival ? "dd.league" : "dd.leagueShort")}
             </button>
-          )}
-          {(rival || canChallenge) && (
-            <button type="button" className="dd-share-alt" onClick={doShare} disabled={busy}>{t(shared ? "dd.shared" : rival ? "dd.shareResult" : "dd.shareOnly")}</button>
           )}
           {/* Stitch-up (web only; the host passes it on the Trail alone): build
               a Trail of your own for a mate. A link, like the others here. */}

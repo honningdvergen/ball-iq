@@ -20,6 +20,20 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (Share is one button that sends one message; Alex: "Yes, build it"): on
+// the classic finish panel of a game with a puzzle link (Footle, Transfer Trail, Top 10) the solid
+// "Send it to a mate", the line under it and the quiet "Just share my result" are ONE solid Share.
+// Eleven entries were replaced, and only those (every "dd: ..." panel of those three games): the new
+// render was dumped with a temporary copy of this test, 87 of 98 entries were byte-identical, and each
+// of the eleven equals, byte for byte, its old entry with these edits made by script: (1) in the seven
+// with no mate's challenge waiting, <button class="dd-share">lucide-swords, " Send it to a mate"
+// </button><p class="dd-share-note">They get the same puzzle and try to beat you.</p> becomes <button
+// class="dd-share" aria-label="Share your result">lucide-share, " Share result"</button>, the very
+// markup the Mystery panel's button has; (2) in all eleven the quiet button under it is gone
+// (<button class="dd-share-alt">: "Just share my result", "Shared" in "dd: shared, no label", and
+// "Share result" in the four where a mate's challenge waits, whose solid "Send it back" is untouched);
+// (3) in six of them the row that held it (<div class="dd-share-alts">) held nothing else and is gone
+// too. The Daily 7 and Mystery panels, which never had a second way, are byte-identical.
 // INTENDED CHANGE, 25 Nov 2026 (the missed list is one card per question): on a finish, "N you missed"
 // was one outlined box of rows; each miss is now its own card (components/WrongAnswersReview.jsx says
 // why). Four entries were replaced, and only those (the four results with a missed list: "results:
@@ -303,7 +317,9 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('the finish panel', () => {
     const won = unq(now['dd: footle won in 3, everything on, loading']);
-    for (const s of ['Mañana serán <', '> · nuevos retos en <', '>Recuérdamelo cada día a las 19:00<', 'Asciendes a <strong>Regional<', ' Envíaselo a un colega<', '>Recibe el mismo reto e intenta ganarte.<', '>Solo compartir mi resultado<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
+    for (const s of ['Mañana serán <', '> · nuevos retos en <', '>Recuérdamelo cada día a las 19:00<', 'Asciendes a <strong>Regional<', 'aria-label="Compartir tu resultado"', ' Compartir resultado<', '>Ahora toca', '>Siete preguntas · 3 min<', '>Jugar<', ' hechos<', 'aria-label="Tras el reto de hoy"']) expect(won, s).toContain(s);
+    // 25 Nov 2026: one Share button; the two old ways and the note under the first are not drawn.
+    for (const s of ['Envíaselo a un colega', 'Recibe el mismo reto e intenta ganarte.', 'Solo compartir mi resultado']) expect(won, s).not.toContain(s);
     expect(unq(now['dd: footle lost, streak safe, reminder on, early numbers'])).toContain('>Racha a salvo<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>Mejor que el 44%<');
     expect(unq(now['dd: daily 7 on 5, headcounts'])).toContain('>4,6/7<');
@@ -409,7 +425,10 @@ describe('no copy left behind in the source', () => {
     }
   });
   it('the share texts: step 5 put them in the sharer\'s language (i18n-leftovers.test.js pins their English); the card verdict stays English', () => {
-    expect(read('components/DailyDone.jsx')).toContain('const line = t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) });');
+    // 25 Nov 2026: the panel's message is the one share message, still in the sharer's language
+    // (share.one.*, tests/unit/share-one-message.test.js); share.challenge stays in the table, unused.
+    expect(read('components/DailyDone.jsx')).toContain('const { text, full } = shareMessage({ game, score: myScore, grid: challengeGrid, url });');
+    expect(read('lib/shareMessage.js')).toMatch(/import \{ t \} from '\.\.\/i18n\/index\.js';/);
     expect(en['share.challenge']).toBe('{what} No. {edition}: {score}. Can you beat it?');
     expect(read('screens/SettingsScreen.jsx')).toContain('const text = t("share.app");');
     expect(en['share.app']).toBe('⚽ Ball IQ — the football quiz for real fans. https://balliq.app/get');

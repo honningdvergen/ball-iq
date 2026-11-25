@@ -14,19 +14,25 @@ describe('Footle: the keyboard does not give the row away', () => {
   });
 });
 
-describe('"Send it to a mate" carries the coloured grid', () => {
+// 25 Nov 2026: "Send it to a mate" is the one Share button now, and the message is built in
+// lib/shareMessage.js (tests/unit/share-one-message.test.js pins every line of it).
+describe('the share message carries the coloured grid', () => {
+  const MSG = read('lib/shareMessage.js');
   it('Footle hands the finish panel its grid, the same one the share text uses', () => {
     expect(FOOTLE).toMatch(/const shareGrid = useMemo\(\(\) => \{/);
     expect(FOOTLE).toMatch(/const grid = shareGrid;/);
     expect(FOOTLE).toMatch(/challengeGrid=\{shareGrid\}/);
   });
   it('the message is the line, then the grid, then the link on its own line', () => {
-    expect(DD).toContain('const text = challengeGrid ? `${line}\\n\\n${challengeGrid}\\n` : line;');
+    expect(DD).toContain('const { text, full } = shareMessage({ game, score: myScore, grid: challengeGrid, url });');
+    expect(MSG).toContain('const text = grid ? `${line}\\n\\n${grid}\\n` : line;');
+    expect(MSG).toContain('full: `${text}\\n${url}`');
     expect(DD).toContain('navigator.share({ text, url })');
-    expect((DD.match(/writeText\(challengeGrid \? `\$\{text\}\\n\$\{url\}` : `\$\{text\} \$\{url\}`\)/g) || []).length).toBe(2);
+    expect((DD.match(/writeText\(full\)/g) || []).length).toBe(2);
   });
-  it('a game with no grid sends the line as before', () => {
+  it('a game with no grid sends the line and the link', () => {
     expect(DD).toMatch(/challengeGrid = ""/);
+    expect(MSG).toMatch(/grid = ''/);
   });
 });
 

@@ -8,6 +8,19 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     INTENDED CHANGE, 25 Nov 2026 (Share is one button that sends one message; Alex:
+//     "Yes, build it"). Thirteen entries were replaced, and only those: the new render was
+//     dumped with a temporary copy of this test, 54 of 67 entries were byte-identical, and
+//     each of the thirteen equals, byte for byte, its old entry with these edits made by
+//     script. In the four finished Footles of the day ("won in 1", "won in 3", "won in 6,
+//     hard, clued", "lost") the card's Share button lost aria-haspopup="dialog" and
+//     aria-expanded="false" and nothing else: the tap shares, it opens no sheet. In the
+//     nine finished Trails and Top 10s (four "trail: ...", five "top10: ...") the solid
+//     <button class="dd-share">lucide-swords, " Send it to a mate"</button> and the line
+//     under it (<p class="dd-share-note">) are <button class="dd-share" aria-label="Share
+//     your result">lucide-share, " Share result"</button>, and the row under it
+//     (<div class="dd-share-alts">) with its one quiet "Just share my result" is gone.
+//     "footle: archive, won" has no puzzle link to send and is byte-identical.
 //     (24 Nov 2026, after the independent review of the finishes: in "footle: won in 1", "footle: won in 3", "footle: won in 6, hard, clued", "footle: archive, won"
 //     the streak chip gained a wrapper, <span class="dd-stk-slot">, and the class has-sh when
 //     shields are banked, so the chip can give way to the puzzle number in a tight header.

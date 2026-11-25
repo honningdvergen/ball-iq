@@ -137,7 +137,10 @@ describe('English share texts are byte-identical', () => {
     expect(t('share.app')).toBe(OLD.app);
   });
   it('the sites build them from these keys', () => {
-    expect(read('src/components/DailyDone.jsx')).toContain('t("share.challenge", { what, edition, score: scoreLabel(game, myScore, t) })');
+    // 25 Nov 2026: the finish panel sends ONE message (lib/shareMessage.js, tests/unit/share-one-message.test.js).
+    // share.challenge is no longer built anywhere; the key and its English above stay in the table.
+    expect(read('src/components/DailyDone.jsx')).toContain('const { text, full } = shareMessage({ game, score: myScore, grid: challengeGrid, url });');
+    expect(read('src/components/DailyDone.jsx')).not.toContain('share.challenge');
     // 24 Nov 2026: the results screens no longer offer Stump a mate (26 shares and 2 answers since
     // September). The keys stay for links already sent; StumpScreen still passes them on.
     expect(read('src/screens/StumpScreen.jsx')).toContain('t(gotIt ? "share.stumpPassGot" : "share.stumpPassMissed", { link: stumpLink(row) })');
