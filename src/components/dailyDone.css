@@ -22,7 +22,6 @@
    and surface only; the share above it stays the single solid fill. */
 .dd-league{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:6px 13px;border-radius:999px;border:1px solid var(--border2);background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .dd-league:active{transform:scale(0.98);}
-.dd-share-note{margin:0;font-size:12.5px;line-height:1.4;text-align:center;color:var(--t2);-webkit-text-fill-color:var(--t2);}
 .dd-share-alts{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 18px;}
 .dd-share-alt{display:inline-block;padding:0;border:0;background:none;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--t2);-webkit-text-fill-color:var(--t2);text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
 /* How everyone did: one bar per bucket, yours in green. */
@@ -220,31 +219,6 @@
 .dd-line.is-set svg{flex:none;}
 .dd-one .dd-share-alt{align-self:center;margin-top:14px;}
 .dd-one .dd-getapp{margin-top:16px;}
-
-/* ── THE SHARE SHEET (components/ShareSheet.jsx) ── the one Share button on the
-   card opens it. It rises and dims the way the league sheet does (league.css),
-   and like it neither the scrim nor the sheet pans the page behind. */
-.dd-scrim{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);font-family:var(--font);animation:dd-dim .22s ease;touch-action:none;}
-.dd-sheet{width:100%;max-width:480px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box;padding:10px 16px calc(30px + env(safe-area-inset-bottom, 0px));border-radius:26px 26px 0 0;background:var(--s1);color:var(--t1);-webkit-text-fill-color:var(--t1);text-align:left;outline:none;animation:dd-rise .32s cubic-bezier(0.22,1,0.36,1);touch-action:none;overscroll-behavior:contain;}
-.dd-sheet.can-scroll{touch-action:pan-y;}
-.dd-sheet-grab{width:38px;height:5px;margin:0 auto 10px;border-radius:3px;background:#3A3E4C;}
-.dd-sheet-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 12px;}
-.dd-sheet-t{margin:0;font-size:18px;line-height:1.1;font-weight:800;letter-spacing:-0.01em;color:var(--t1);-webkit-text-fill-color:var(--t1);}
-.dd-sheet-x{flex:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:0;border-radius:50%;background:var(--s2);color:var(--t2);-webkit-text-fill-color:var(--t2);cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-.dd-acts{padding:2px 14px;border-radius:18px;background:var(--s2);}
-.dd-act{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;box-sizing:border-box;padding:10px 0;border:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
-.dd-act + .dd-act{border-top:1px solid rgba(255,255,255,0.07);}
-.dd-act:disabled{opacity:0.6;cursor:default;}
-.dd-act-ic{flex:none;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--s3);color:#fff;-webkit-text-fill-color:#fff;}
-.dd-act-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
-.dd-act-n{font-size:16px;line-height:1.15;font-weight:700;}
-.dd-act-h{font-size:13px;line-height:1.25;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
-.dd-act-chev{flex:none;display:inline-flex;color:#5E6270;}
-.dd-sheet-x:focus-visible,.dd-act:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-.dd-act:focus-visible{border-radius:10px;}
-@keyframes dd-dim{from{background-color:rgba(0,0,0,0);}}
-@keyframes dd-rise{from{transform:translateY(100%);}}
-@media (prefers-reduced-motion: reduce){.dd-scrim,.dd-sheet{animation:none;}}
 
 .dd-one .dd-getapp:empty{display:none;}
 

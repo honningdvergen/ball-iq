@@ -18,7 +18,6 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import { ResultCard } from '../../src/components/ResultCard.jsx';
-import { ShareSheet } from '../../src/components/ShareSheet.jsx';
 import { StreakChip } from '../../src/components/StreakChip.jsx';
 import ResultFoot from '../../src/components/ResultFoot.jsx';
 import en from '../../src/i18n/en.js';
@@ -120,10 +119,11 @@ describe('the look that was agreed', () => {
     // no chevron rows any more: no row is bigger than another
     expect(dd).not.toContain('.dd-li-chev');
     // and nothing in the layout's own rules is solid green
-    const mine = dd.slice(dd.indexOf('THE FINISH AS ONE OBJECT'), dd.indexOf('THE SHARE SHEET'));
+    const mine = dd.slice(dd.indexOf('THE FINISH AS ONE OBJECT'), dd.indexOf('THE HEADER OF A FINISHED DAILY'));
+    expect(mine.length).toBeGreaterThan(2000);
     expect(mine).not.toMatch(/background:var\(--accent\)/);
     // nothing under the card is drawn with an outline in this layout
-    const one = dd.slice(dd.indexOf('THE FINISH AS ONE OBJECT'), dd.indexOf('THE SHARE SHEET'));
+    const one = mine;
     expect(one.replace(/border(-top)?:(0|1px solid rgba\(255,255,255,0\.07\))/g, '')).not.toMatch(/border(-top|-bottom)?:/);
   });
   it('old phones: no colour-mix, no :has(), no inset shorthand, no dvh in the new rules', () => {
@@ -132,15 +132,18 @@ describe('the look that was agreed', () => {
     expect(fresh).not.toMatch(/color-mix|:has\(|[;{]inset:|dvh|backdrop-filter/);
     expect(fresh).not.toMatch(/font-family:\s*'?Inter|JetBrains Mono/);
   });
-  it('the sheet honours reduced motion and designs none of its own', () => {
-    expect(dd).toContain('@media (prefers-reduced-motion: reduce){.dd-scrim,.dd-sheet{animation:none;}}');
-    expect(rule(dd, '.dd-scrim')).toContain('touch-action:none');
-    expect(rule(dd, '.dd-sheet')).toContain('touch-action:none');
+  // 25 Nov 2026: Share is one button that sends one message, so the sheet it opened for a day
+  // (components/ShareSheet.jsx: "Send it to a mate" / "Just share my result") is gone, with its
+  // styles and the note that sat under the classic panel's button.
+  it('the share sheet is gone: no component, no styles left behind', () => {
+    expect(() => read('src/components/ShareSheet.jsx')).toThrow();
+    expect(dd).not.toMatch(/dd-scrim|dd-sheet|dd-act|dd-share-note|dd-dim|dd-rise|THE SHARE SHEET/);
+    expect(read('src/components/DailyDone.jsx')).not.toMatch(/ShareSheet|dd-share-note/);
   });
 });
 
 describe('the words', () => {
-  const NEW = ['dd.shareMy', 'dd.shareMine', 'dd.sheetTitle', 'dd.sheetClose', 'dd.sendBackNote', 'dd.shareOnlyNote', 'dd.capToday', 'dd.capStreak'];
+  const NEW = ['dd.shareMy', 'dd.shareMine', 'dd.capToday', 'dd.capStreak'];
   it('every new line is in both tables, with the same placeholders', () => {
     for (const k of NEW) {
       expect(typeof en[k], k).toBe('string');
@@ -150,32 +153,15 @@ describe('the words', () => {
     expect(en['dd.shareMy'].replace('{score}', '3/6')).toBe('Share my 3/6');
     expect(en['dd.shareMine']).toBe('Share my result');
   });
-  it('the two actions keep the names they had', () => {
-    expect([en['dd.sendMate'], en['dd.sendBack'], en['dd.shareOnly']]).toEqual(['Send it to a mate', 'Send it back', 'Just share my result']);
+  it('a waiting challenge keeps the name it had on the classic panel', () => {
+    expect(en['dd.sendBack']).toBe('Send it back');
   });
-});
-
-describe('the share sheet', () => {
-  const rows = [
-    { key: 'mate', Icon: (p) => el('svg', { 'data-i': 'send', ...p }), title: 'Send it to a mate', note: 'They get the same puzzle and try to beat you.', onClick() {} },
-    { key: 'mine', Icon: (p) => el('svg', { 'data-i': 'share', ...p }), title: 'Just share my result', note: 'Your result, with no answers on it.', onClick() {}, disabled: true },
-  ];
-  const html = renderToStaticMarkup(el(ShareSheet, { title: 'Share', closeLabel: 'Close', rows, onClose() {} }));
-  it('is a named dialog with a close button and two rows, each with its grey line', () => {
-    expect(html).toContain('role="dialog" aria-modal="true" aria-label="Share"');
-    expect(html).toContain('tabindex="-1"');
-    expect(html).toContain('aria-label="Close"');
-    expect((html.match(/class="dd-act"/g) || []).length).toBe(2);
-    expect(text(html)).toBe('Share Send it to a mate They get the same puzzle and try to beat you. Just share my result Your result, with no answers on it.');
-    expect(html).toMatch(/<button type="button" class="dd-act" disabled="">.*Just share my result/);
-  });
-  it('uses the hook every other sheet uses, and closes on a tap outside', () => {
-    const src = read('src/components/ShareSheet.jsx').replace(/^\s*\/\/.*$/gm, '');
-    expect(src).toMatch(/useModalA11y\(\{ isOpen: true, onClose, ref, focusContainer: true \}\)/);
-    expect(src).toMatch(/className="dd-scrim" onClick=\{onClose\}/);
-    expect(src).toMatch(/onClick=\{\(e\) => e\.stopPropagation\(\)\}/);
-    expect(src).toMatch(/touchstart[\s\S]*touchmove[\s\S]*touchend/);       // the drag down
-    expect(src).not.toMatch(/preventDefault/);                               // a tap is never swallowed
+  // The sheet's words (dd.sheetTitle, dd.sheetClose, dd.sendMate and its note, dd.sendBackNote,
+  // dd.shareOnly and its note) are still in both tables, printed by nothing: other tests pin every
+  // English key to the list it was added with, so they leave in a clean-up of their own.
+  it('nothing prints the sheet\'s words any more', () => {
+    const src = ['src/components/DailyDone.jsx', 'src/components/ResultCard.jsx', 'src/games/FootballWordle.jsx', 'src/screens/ResultsScreen.jsx', 'src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx'].map(read).join('\n');
+    expect(src).not.toMatch(/dd\.sheetTitle|dd\.sheetClose|dd\.sendMate|dd\.sendBackNote|dd\.shareOnly/);
   });
 });
 

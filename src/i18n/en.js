@@ -1913,7 +1913,9 @@ export default registerEnglish({
   'rc.hardMany': '{n} of today\'s {total} hard ones.',
   'rc.hardAll': 'every hard one today.',
   // The finish as one object (components/DailyDone.jsx, layout "one"; Footle first, 24 Nov 2026):
-  // the Share button on the card, its sheet, and the caption line under the card.
+  // the Share button on the card and the caption line under the card. The four sheet lines
+  // (sheetTitle, sheetClose, sendBackNote, shareOnlyNote) are printed by nothing since 25 Nov 2026,
+  // when the button's sheet went (Share is one button that sends one message).
   'dd.shareMy': 'Share my {score}',
   'dd.shareMine': 'Share my result',
   'dd.sheetTitle': 'Share',
