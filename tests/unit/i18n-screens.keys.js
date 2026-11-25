@@ -392,8 +392,6 @@ export const STEP4_EN = {
   'pf.shareCard': "Share card",
   'pf.saveImage': "Save image",
   'pf.weekly': "Weekly Summary",
-  'pf.noStats': "No stats yet",
-  'pf.noStatsSub': "Play your first game to see your stats here",
   'pf.specialist': "{c} Specialist",
   'pf.allRounder': "Versatile All-Rounder",
   'pf.rising': "Rising Talent",

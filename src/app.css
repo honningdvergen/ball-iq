@@ -312,6 +312,13 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
    so an installed desktop PWA stays byte-identical to mobile. */
 .profile-col-main,.profile-col-below,.profile-mobile-identity{display:contents;}
 .pd-hdr,.pd-left,.profile-col-right{display:none;}
+/* 25 Nov 2026: a SIGNED-IN player's column under the two (the ladder in full, the friends block,
+   the badge grid) is the wide window's alone now. On a phone they have the Mates card, Next up and
+   one Badges row in the phone column instead (screens/ProfileScreen.jsx, signedPhone), so the
+   column carries .pd-wide-only for them and shows exactly where .pd-left shows: the >=1024 block
+   brings it back, the standalone killswitch hides it again. A not-signed-in player's column does
+   not carry the class and is as it was. */
+.profile-col-below.pd-wide-only{display:none;}
 /* ── desktop-web-refresh: Daily two-column structure (base = mobile) ──
    Same pattern as Home/Profile. The existing mobile markup lives inside
    .daily-col-mobile (display:contents below 1024 → no box, mobile flow
@@ -3223,6 +3230,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
   .profile-col-main { display: flex; flex-direction: column; gap: 18px; grid-area: main; min-width: 0; }
   .profile-col-right { display: flex; flex-direction: column; gap: 16px; grid-area: right; min-width: 0; }
   .profile-col-below { display: block; grid-area: below; min-width: 0; }
+  .profile-col-below.pd-wide-only { display: block; }
   .profile-mobile-identity { display: none; }
   .pd-left { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 
@@ -3488,7 +3496,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
      right column). */
   .profile-screen { display: block !important; }
   .profile-col-main, .profile-col-below, .profile-mobile-identity { display: contents !important; }
-  .pd-hdr, .pd-left, .profile-col-right { display: none !important; }
+  .pd-hdr, .pd-left, .profile-col-right, .profile-col-below.pd-wide-only { display: none !important; }
   /* desktop-web-refresh: installed PWA on >=1024 desktop hardware matches the
      Daily reveal above. Reset both wrappers so the installed shell stays
      byte-identical to mobile (mobile single-column markup only, no desktop

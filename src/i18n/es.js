@@ -813,8 +813,6 @@ export default {
   'pf.shareCard': 'Compartir',
   'pf.saveImage': 'Guardar',
   'pf.weekly': 'Resumen semanal',
-  'pf.noStats': 'Aún no hay estadísticas',
-  'pf.noStatsSub': 'Juega tu primera partida para ver aquí tus estadísticas',
   'pf.specialist': 'Especialista en {c}',
   'pf.allRounder': 'Todoterreno',
   'pf.rising': 'Promesa',
@@ -1495,6 +1493,28 @@ export default {
   'gp.unlock_other': '{n} respuestas para desbloquear tu carta',
   'gp.create': 'Crea tu cuenta gratis',
   'gp.keeps': 'Tu carta, en cualquier móvil',
+  // El Perfil con la sesión iniciada, en el móvil (25 Nov 2026). "Colegas" como en la liga
+  // (lg.matesLeague); "nivel" para el rango, como pf.currentAria.
+  // Not yet read by a native reviewer.
+  'sp.share': 'Compartir mi carta',
+  'sp.mates': 'Colegas',
+  // Short on purpose: the row shares a 320px phone with a place, a face and "Invitar".
+  'sp.addMate': 'Añadir colega',
+  'sp.reqWaiting_one': '{n} solicitud',
+  'sp.reqWaiting_other': '{n} solicitudes',
+  'sp.matesFail': 'Sin cargar',
+  'sp.topRank': 'Nivel máximo alcanzado',
+  'sp.badges': 'Insignias',
+  'sp.nOfM': '{n} de {m}',
+  'sp.earned': 'Conseguida',
+  'sp.bd.day': 'Día {n} de {m}',
+  'sp.bd.best': 'Mejor marca: {n} de {m}',
+  'sp.bd.games': '{n} de {m} partidas',
+  'sp.bd.correct': '{n} de {m} aciertos',
+  'sp.bd.xp': '{n} de {m} XP',
+  'sp.ladder': 'La escalera',
+  'sp.here': 'Estás aquí',
+  'sp.xpTo': 'Faltan {n} XP para {name}',
   // Multijugador online: entrada, sala, partida y podio
   'mp.createFail': 'No se ha podido crear la sala. Revisa tu conexión y vuelve a intentarlo.',
   'mp.enterCode': 'Escribe el código de sala de 6 caracteres',

@@ -214,8 +214,11 @@ const FRIENDSHIPS = [
 ];
 // ProfileScreenImpl's useState calls: showAvatarMenu 0, uploading 1, recalSeen 2,
 // leaguePickerOpen 3, pendingCrop 4, sampleDismissed 5, editingName 6,
-// nameDraft 7, pendingName 8, selectedBadgeId 9. FriendsSection's: search 0,
-// results 1, searching 2, friendships 3, loading 4, loadError 5, blockMask 6.
+// nameDraft 7, pendingName 8, selectedBadgeId 9, sub 10 (the screen behind a
+// row of the signed-in phone column: 'ladder', 'badges' or 'mates'; 25 Nov 2026).
+// useFriends's (the friends data, FriendsSection's own state until that day, in
+// the same order): search 0, results 1, searching 2, friendships 3, loading 4,
+// loadError 5, blockMask 6, loaded 7 (the Mates card prints places once it is true).
 // 25 Nov 2026: the two guest scenarios carry `openDailies` (today's dailies still open, App.jsx's
 // list), which only the not-signed-in Profile reads: the Daily 7 leads while it is open; with it
 // done, a started Footle is the row and its pill says Continue. The invite-link player has none.
@@ -223,16 +226,22 @@ const profileScenarios = () => [
   ['profile: guest, first visit (the example card)', {}, prof({ stats: { gamesPlayed: 0, totalAnswered: 0 }, xp: 0, loginStreak: 0, bestLoginStreak: 0, earnedBadges: new Set(), profile: {}, openDailies: [{ key: 'footle', onTap: noop }, { key: 'daily7', onTap: noop }, { key: 'trail', onTap: noop }] }), guest],
   ['profile: guest, 4 answered, example dismissed', { biq_sample_card_dismissed: '1' }, prof({ stats: { gamesPlayed: 1, totalAnswered: 4, totalCorrect: 3 }, xp: 30, loginStreak: 1, earnedBadges: new Set(['first_blood']), openDailies: [{ key: 'footle', open: true, onTap: noop }, { key: 'top10', onTap: noop }] }), guest],
   ['profile: anonymous invite player, rated', { biq_sample_card_dismissed: '1' }, prof({ profile: { name: 'Player' } }), { ...signedIn, profile: { username: 'player_9x2', total_score: 10 }, isAnonUser: true }],
-  ['profile: signed in, rated, friends and requests', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:2": false, "ProfileScreenImpl:9": 'speed_demon', "FriendsSection:3": FRIENDSHIPS } }, prof(), signedIn],
+  ['profile: signed in, rated, friends and requests', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:2": false, "ProfileScreenImpl:9": 'speed_demon', "useFriends:3": FRIENDSHIPS, "useFriends:7": true } }, prof(), signedIn],
   ['profile: signed in, no friends yet, badge locked open, no rating yet', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:9": 'goat' } }, prof({ stats: { gamesPlayed: 2, totalAnswered: 0, totalCorrect: 0 }, earnedBadges: new Set(), loginStreak: 0 }), signedIn],
-  ['profile: friend search, nothing found', { biq_sample_card_dismissed: '1', _state: { "FriendsSection:0": 'zz' } }, prof(), signedIn],
-  ['profile: friend search, two found', { biq_sample_card_dismissed: '1', _state: { "FriendsSection:0": 'jo', "FriendsSection:1": [{ id: 'p8', username: 'Joan', total_score: 1234 }, { id: 'p9', username: 'Jorge', total_score: 0 }] } }, prof(), signedIn],
-  ['profile: friends failed to load', { biq_sample_card_dismissed: '1', _state: { "FriendsSection:5": true } }, prof(), signedIn],
+  ['profile: friend search, nothing found', { biq_sample_card_dismissed: '1', _state: { "useFriends:0": 'zz' } }, prof(), signedIn],
+  ['profile: friend search, two found', { biq_sample_card_dismissed: '1', _state: { "useFriends:0": 'jo', "useFriends:1": [{ id: 'p8', username: 'Joan', total_score: 1234 }, { id: 'p9', username: 'Jorge', total_score: 0 }] } }, prof(), signedIn],
+  ['profile: friends failed to load', { biq_sample_card_dismissed: '1', _state: { "useFriends:5": true } }, prof(), signedIn],
   ['profile: editing the name', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:6": true, "ProfileScreenImpl:7": 'Alex B' } }, prof(), signedIn],
   ['profile: set your name (default name)', { biq_sample_card_dismissed: '1' }, prof({ profile: {} }), { ...signedIn, profile: { username: 'Player' } }],
   ['profile: photo menu open', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:0": true } }, prof(), signedIn],
   ['profile: league picker open', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:3": true } }, prof({ stats: { ...STATS, cardLeague: 'LaLiga' } }), signedIn],
   ['profile: crop sheet open', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:4": { name: 'x.jpg' } } }, prof(), signedIn],
+  // 25 Nov 2026: the three screens behind the signed-in phone column's rows. The ladder at the top
+  // rank; the badge wall open on the nearest badge; the mates screen with a request each way, two
+  // mates and a search under way (the phone's own markup for what the friends block does).
+  ['profile: signed in, the ladder at the top rank', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:10": 'ladder' } }, prof({ xp: 21500 }), signedIn],
+  ['profile: signed in, the badge wall open on a badge', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:9": 'roll30', "ProfileScreenImpl:10": 'badges' } }, prof(), signedIn],
+  ['profile: signed in, the mates screen with requests and a search', { biq_sample_card_dismissed: '1', _state: { "ProfileScreenImpl:10": 'mates', "useFriends:0": 'jo', "useFriends:1": [{ id: 'p8', username: 'Joan', total_score: 1234 }], "useFriends:3": FRIENDSHIPS, "useFriends:7": true } }, prof(), signedIn],
   ['profile: a weak spread (all-rounder), no streak', { biq_sample_card_dismissed: '1' }, prof({ stats: { ...STATS, bestHotStreak: 0, bestTrueFalse: 0, catStats: { PL: { a: 20, c: 12 }, UCL: { a: 20, c: 12 }, WorldCup: { a: 20, c: 12 } } }, loginStreak: 0, onPlayLeague: undefined }), signedIn],
 ];
 

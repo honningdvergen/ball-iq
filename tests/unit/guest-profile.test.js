@@ -17,10 +17,17 @@ const GOLDEN = JSON.parse(read('tests/unit/i18n-screens.golden.json'));
 const EN = (await import('../../src/i18n/en.js')).default;
 const ES = (await import('../../src/i18n/es.js')).default;
 
+// LATER ON 25 Nov 2026 the signed-in Profile was built on the same kit (Alex, on its drawing: "Yes,
+// build it"; tests/unit/profile-signed-in.test.js). So "only the not-signed-in state changed" is no
+// longer true of the screen as a whole, and four checks below follow it: the strip's tiles are over
+// every Profile; the phone column's lower blocks (Share, the scouting report) are a not-signed-in
+// player's alone, each behind guestView; the kit's gp- classes are also drawn by the signed-in phone
+// column, in its own marked blocks; and the screen has one more useState, declared last. What a
+// not-signed-in player sees has not moved: their three golden entries are byte-identical.
 describe('only the not-signed-in state changed', () => {
-  it('one test decides it, the same one the strip above the tab makes', () => {
+  it('one test decides it; the strip above the tab is tiled over every Profile', () => {
     expect(PROFILE).toContain('const guestView = !user || isGuest || isAnonUser;');
-    expect(APP).toContain('<div className={screen === "home" && tab === "profile" && (!user || isGuest || isAnonUser) ? "hdr hdr-guest" : "hdr"}>');
+    expect(APP).toContain('<div className={screen === "home" && tab === "profile" ? "hdr hdr-guest" : "hdr"}>');
   });
 
   it('every new branch in the screen is behind guestView', () => {
@@ -30,27 +37,37 @@ describe('only the not-signed-in state changed', () => {
       'if (guestView && !hasPlayed) {',
       'avatar={guestView ? guestFace(96, pal.accent) :',
       '{guestView && (() => {',
-      '{(stats.gamesPlayed || 0) === 0 ? (guestView ? null :',
+      '{guestView && (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (',
+      '{guestView && (stats.gamesPlayed || 0) > 0 && (\n        <div className="profile-secondary-actions gp-quiet"',
+      '{guestView && (stats.gamesPlayed || 0) > 0 && (\n        (() => {',
       '{(!guestView || xp > 0) && (() => {',
       '{(!guestView || earned.size > 0) && (',
-      '<div className={guestView ? "profile-secondary-actions gp-quiet" : "profile-secondary-actions"}',
+      'if (guestView) return cardEl;',
     ]) expect(PROFILE, line).toContain(line);
-    // And nothing new is drawn outside those: each gp- class in the markup sits in a guest branch.
+    // And nothing new is drawn outside those: each gp- class in the markup sits in a guest branch,
+    // or in one of the signed-in phone column's own blocks (its rows, its card parts, its screens).
     const uses = [...PROFILE.matchAll(/className=(?:"|\{`|\{[^}]*")[^>]*\bgp-[a-z-]+/g)].map((m) => m.index);
     expect(uses.length).toBeGreaterThan(12);
     const zones = [
       [PROFILE.indexOf('const guestFace = (size, accent) => ('), PROFILE.indexOf('const handleCropConfirm = async (blob) => {')],
       [PROFILE.indexOf('if (guestView && !hasPlayed) {'), PROFILE.indexOf('// ⚠️ ONE CARD, THREE SURFACES.')],
       [PROFILE.indexOf('{guestView && (() => {'), PROFILE.indexOf('{/* Two peer secondary actions.')],
-      [PROFILE.indexOf('<div className={guestView ? "profile-secondary-actions gp-quiet"'), PROFILE.indexOf('<div className={guestView ? "profile-secondary-actions gp-quiet"') + 120],
+      [PROFILE.indexOf('<div className="profile-secondary-actions gp-quiet"'), PROFILE.indexOf('<div className="profile-secondary-actions gp-quiet"') + 120],
+      [PROFILE.indexOf('// ─── THE SIGNED-IN PROFILE ON A PHONE: ITS ROWS'), PROFILE.indexOf('// ─── PROFILE SCREEN ───')],
+      [PROFILE.indexOf('const kitFace = ('), PROFILE.indexOf('const cardEl = (')],
+      [PROFILE.indexOf('// ── THE SIGNED-IN PHONE COLUMN'), PROFILE.indexOf('  return (\n    <div className="tab-content profile-screen"')],
     ];
     for (const [a, b] of zones) expect(a > 0 && b > a).toBe(true);
     for (const i of uses) expect(zones.some(([a, b]) => i > a && i < b), PROFILE.slice(i, i + 60)).toBe(true);
   });
 
-  it('no hook was added: the golden harness reads state by its position', () => {
+  it('the golden harness reads state by its position: the one new useState is the last', () => {
     const impl = PROFILE.slice(PROFILE.indexOf('function ProfileScreenImpl('), PROFILE.indexOf('export const ProfileScreen = React.memo(ProfileScreenImpl);'));
-    expect((impl.match(/\buseState\(/g) || []).length).toBe(10);
+    const calls = [...impl.matchAll(/\buseState\(/g)].map((m) => m.index);
+    expect(calls.length).toBe(11);
+    // `sub` (the screen behind a row of the signed-in phone column) comes after the ten that were there.
+    expect(impl.indexOf('const [sub, setSub] = useState(null);')).toBe(calls[10] - 'const [sub, setSub] = '.length);
+    expect(impl.indexOf('const [selectedBadgeId, setSelectedBadgeId] = useState(null);')).toBe(calls[9] - 'const [selectedBadgeId, setSelectedBadgeId] = '.length);
   });
 
   it('the stylesheet touches nothing but that state', () => {
@@ -62,10 +79,16 @@ describe('only the not-signed-in state changed', () => {
     expect(CSS, 'no glow').not.toMatch(/box-shadow:(?!inset |none)/);
   });
 
-  it('a signed-in player\'s golden entries carry none of it', () => {
+  it('a signed-in player\'s golden entries carry none of it outside the phone column: the wide window is as it was', () => {
     const signedIn = Object.keys(GOLDEN).filter((k) => k.startsWith('profile: ') && !/^profile: (guest|anonymous)/.test(k));
-    expect(signedIn.length).toBe(11);
-    for (const k of signedIn) expect(/class="gp-|gp-quiet|hdr-guest/.test(GOLDEN[k]), k).toBe(false);
+    expect(signedIn.length).toBe(14);
+    for (const k of signedIn) {
+      const g = GOLDEN[k];
+      const a = g.indexOf('<div class="profile-mobile-identity">'), b = g.indexOf('<div class="profile-col-right">');
+      expect(a > 0 && b > a, k).toBe(true);
+      expect(/class="gp-|gp-quiet|hdr-guest|class="sp[ "-]/.test(g.slice(0, a) + g.slice(b)), k).toBe(false);
+      expect(g.slice(a, b), k).not.toContain('gp-quiet');
+    }
   });
 });
 

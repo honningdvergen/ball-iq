@@ -1,0 +1,169 @@
+/* THE SIGNED-IN PROFILE ON A PHONE (screens/ProfileScreen.jsx, 25 Nov 2026).
+   Alex, of the scouting report this replaced: "This has to have value for the players, do they care
+   about their accuracy, daystreak and longest run? I do not really think so?"; of a mates table that
+   has already started, his own row first: "this i really liked actually a lot"; of the eighth
+   drawing: "Yes, build it" (ball-iq-audit/2026-11-24/finish/profile-signed-in-8.png; the ladder is
+   the right phone of profile-signed-in-4.png).
+   Top to bottom: the card with Share inside it, MATES, NEXT UP, one Badges row, the store link as a
+   line of text. One loud thing: the card. Behind three of the rows is a screen of its own with a
+   back arrow (the ladder, the badge wall, the mates screen).
+
+   The kit is the one the not-signed-in Profile and the Multiplayer tab are built on, and its
+   classes are REUSED, not copied: a plain filled card is .gp-list (guestProfile.css), a row is
+   Home's .todays-seven-secondary with its .t7s-* parts, a section's name is .home-section-title, a
+   row that takes you somewhere ends in .mp-row-chev, the gold card is .gp-card. What is set here is
+   this screen's own measures on them (the drawing's: sections 20 apart, a label 10 over its card,
+   type at 11 / 13.5 / 16 / 24 and nothing between) and the few parts no other screen has: a mates
+   row, a rung of the ladder, a badge tile.
+   Every rule starts at .sp (the signed-in phone column) or at a class only that column draws, so
+   the not-signed-in Profile, the wide window and every other screen stay as they are. This file
+   rides in the Profile's own chunk. */
+
+/* ── A screen behind a row. While one is open the strip over the tab (App.jsx's bell and gear)
+   steps aside and the screen's own strip, with the back arrow, stands exactly where it stood: it
+   carries the strip's classes, so its measures are the strip's at every width. */
+html.pf-sub .hdr:not(.sp-top){display:none !important;} /* !important: an installed app in a wide window forces the strip on (app.css, the standalone block) */
+.profile-screen .sp-top{justify-content:flex-start;}
+.profile-screen .sp-sub{outline:0;}
+
+/* ── The card's own parts (components/BallIqCardFace.jsx sets the rest with `kit`). */
+/* The face: 84 across in its tier's frame; a tap on it is the way to a new photo. */
+.profile-screen .sp-face{flex:none;display:grid;place-items:center;box-sizing:border-box;width:84px;height:84px;margin:4px 0 0;padding:0;border-radius:50%;overflow:hidden;background:var(--s2);font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.profile-screen .sp-face img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;}
+/* The line under the name: the rank and the kind of player. One line wherever it fits and two at
+   most: "Ídolo de culto · Especialista en Récords" is wider than a small phone, and a line cut
+   short is worse than a line that wraps. Words, so no tabular figures (Inter's tabular hyphen
+   opens a gap in "All-Rounder"). */
+.profile-screen .sp .gp-sub{margin-top:0;font-size:13.5px;line-height:1.25;font-weight:500;font-variant-numeric:normal;color:rgba(255,255,255,0.62);-webkit-text-fill-color:rgba(255,255,255,0.62);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;text-wrap:balance;}
+/* Share, inside the card: the quiet button. 48 high, a wash of white, no outline. */
+.profile-screen .sp-share{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:48px;margin:0;padding:0 16px;border:0;border-radius:999px;background:rgba(255,255,255,0.12);color:#fff;-webkit-text-fill-color:#fff;font-family:inherit;font-size:16px;line-height:1;font-weight:800;letter-spacing:-0.01em;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.profile-screen .sp-share:active{background:rgba(255,255,255,0.18);}
+.profile-screen .sp-share svg{flex:none;}
+/* The one-time note about a rescale (three weeks after one, then never): in the kit while it shows. */
+.profile-screen .sp .pd-recal{margin:12px 0 0;border:0;background:var(--s1);font-size:13.5px;}
+.profile-screen .sp .pd-recal-x{display:grid;place-items:center;}
+
+/* ── A section's name: Home's small grey spaced capitals, 20 under the block before, 10 over its own. */
+.profile-screen .sp .home-section-title{display:block;margin:20px 4px 10px;padding:0;font-size:11px;line-height:1;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);-webkit-text-fill-color:var(--t3);font-variant-numeric:tabular-nums;}
+
+/* ── One card of rows. The fill is the card's, a hairline between rows, every row 68 high (11
+   above and below the 46px well, the hairline inside the 68). */
+.profile-screen .sp .gp-list{margin:0;padding:2px 16px;}
+.profile-screen .sp .gp-list.sp-gap{margin-top:10px;}
+.profile-screen .sp .gp-list > :not(:first-child){border-top:1px solid rgba(255,255,255,0.07);}
+.profile-screen .sp .gp-list > .todays-seven-secondary:not(:first-child){padding-top:10px;}
+.profile-screen .sp .todays-seven-secondary.is-still,.profile-screen .sp .todays-seven-secondary.mp-row{cursor:default;}
+/* The well is a fill of the row's colour and nothing round it. */
+.profile-screen .sp .t7s-icon{border:0;}
+/* Title 16, grey line 13.5. */
+.profile-screen .sp .t7s-body{gap:5px;}
+.profile-screen .sp .t7s-title{font-size:16px;font-weight:700;letter-spacing:-0.01em;}
+.profile-screen .sp .t7s-sub{font-size:13.5px;font-variant-numeric:tabular-nums;}
+.profile-screen .sp .t7s-sub.is-words{font-variant-numeric:normal;}
+.profile-screen .sp .mp-row-chev{width:28px;}
+/* A person's row says yes in the soft green of Invite (Add, Accept): the lighter green that reads on its own wash. */
+.profile-screen .sp .mp-row{--mode:#8AE042;--mode-rgb:88,204,2;}
+/* A pill that is not the row's one green: Challenge, Decline, Cancel, Try again. */
+.profile-screen .sp .gp-list > .todays-seven-secondary .t7s-cta.sp-quiet{background:var(--s2);color:var(--t1);-webkit-text-fill-color:var(--t1);}
+/* Decline, beside Accept: a round cross the height of a pill. */
+.profile-screen .sp .gp-list > .todays-seven-secondary .t7s-cta.sp-no{width:36px;padding:0;}
+/* Every pill in these cards is a real button where the row is not: 36 to the eye, 44 to the thumb. */
+.profile-screen .sp .gp-list button.t7s-cta{position:relative;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.profile-screen .sp .gp-list button.t7s-cta::after{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;}
+
+/* ── MATES. Rows 56 high: place, face, name, rating. The player's own row in the card's yellow. */
+.profile-screen .sp-mate{display:flex;align-items:center;gap:12px;box-sizing:border-box;width:100%;height:56px;margin:0;padding:0;border:0;border-radius:0;background:none;color:var(--t1);-webkit-text-fill-color:var(--t1);font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+.profile-screen button.sp-mate{cursor:pointer;touch-action:manipulation;}
+.profile-screen .sp-pos{flex:none;width:18px;text-align:center;font-size:13.5px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.profile-screen .sp-av{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;overflow:hidden;}
+.profile-screen .sp-mate-name{flex:1;min-width:0;font-size:16px;line-height:1.2;font-weight:700;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .sp-val{flex:none;font-size:16px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums;}
+/* No rating yet: a grey dash where the number will be. */
+.profile-screen .sp-val.is-none{color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.profile-screen .sp-mate.is-me .sp-pos,.profile-screen .sp-mate.is-me .sp-mate-name,.profile-screen .sp-mate.is-me .sp-val{color:#FFC107;-webkit-text-fill-color:#FFC107;}
+/* The empty seat: a plus in a fine ring where a face will be, grey words, and a soft green Invite.
+   The row opens the screen that finds people; the pill is its own button. */
+.profile-screen .sp-seat{gap:10px;}
+.profile-screen .sp-seat-open{flex:1;min-width:0;display:flex;align-items:center;gap:12px;height:100%;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.profile-screen .sp-plus{box-shadow:inset 0 0 0 1.5px #3A3F4E;color:var(--t2);}
+.profile-screen .sp-seat-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.profile-screen .sp-seat-body b{font-size:16px;line-height:1.2;font-weight:600;letter-spacing:-0.01em;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .sp-seat-body i{font-style:normal;font-size:13.5px;line-height:1.2;font-weight:500;font-variant-numeric:tabular-nums;color:#8AE042;-webkit-text-fill-color:#8AE042;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .sp-seat-body i.is-fail{color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.profile-screen .sp-invite{flex:none;position:relative;height:36px;padding:0 16px;border:0;border-radius:999px;background:rgba(88,204,2,0.16);color:#8AE042;-webkit-text-fill-color:#8AE042;font-family:inherit;font-size:13.5px;line-height:1;font-weight:800;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.profile-screen .sp-invite::after{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;}
+
+/* ── The store link: one grey line of text, underlined; 44 to the thumb. */
+.profile-screen .sp-rate{display:block;margin:6px auto -8px;padding:14px 12px;border:0;background:none;color:var(--t3);-webkit-text-fill-color:var(--t3);font-family:inherit;font-size:13.5px;line-height:1;font-weight:500;text-decoration:underline;text-underline-offset:3px;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;}
+
+/* ── THE LADDER. The gold card's ground (.gp-card) with the rank at 24, the XP, and a bar to the
+   next rank; then the rungs, 56 high, joined by a line that is gold as far as the player has come. */
+.profile-screen .sp .gp-card{margin:0;padding:20px;}
+.profile-screen .sp .gp-eye{text-transform:uppercase;}
+.profile-screen .sp-jy .gp-name{display:block;margin-top:20px;cursor:default;}
+.profile-screen .sp-jy .gp-sub{margin-top:8px;font-variant-numeric:tabular-nums;}
+.profile-screen .sp-bar{height:8px;margin-top:20px;border-radius:4px;background:rgba(255,255,255,0.12);overflow:hidden;}
+.profile-screen .sp-bar i{display:block;height:100%;border-radius:4px;background:#FFC107;}
+.profile-screen .sp-bar-note{margin-top:12px;font-size:13.5px;line-height:1.2;font-weight:500;font-variant-numeric:tabular-nums;color:rgba(255,255,255,0.62);-webkit-text-fill-color:rgba(255,255,255,0.62);}
+.profile-screen .sp .gp-list.sp-ladder{padding:4px 16px;}
+.profile-screen .sp .gp-list.sp-ladder > .sp-rung{border-top:0;}
+.profile-screen .sp-rung{position:relative;display:flex;align-items:center;gap:14px;height:56px;}
+.profile-screen .sp-rung + .sp-rung::before{content:"";position:absolute;left:11px;top:-18px;width:2px;height:36px;background:#262A36;}
+.profile-screen .sp-rung.is-done + .sp-rung::before{background:rgba(255,193,7,0.55);}
+.profile-screen .sp-dot{position:relative;z-index:1;flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--s1);box-shadow:inset 0 0 0 2px #2E3340;color:#15120B;}
+.profile-screen .sp-rung.is-done .sp-dot{background:#8C6E10;box-shadow:none;}
+.profile-screen .sp-rung.is-cur .sp-dot{background:#FFC107;box-shadow:0 0 0 5px rgba(255,193,7,0.18);}
+.profile-screen .sp-rung-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
+.profile-screen .sp-rung-body b{font-size:16px;line-height:1.1;font-weight:600;letter-spacing:-0.01em;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .sp-rung.is-cur .sp-rung-body b{font-weight:700;color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.profile-screen .sp-rung.is-next .sp-rung-body b,.profile-screen .sp-rung.is-far .sp-rung-body b{color:#C9CCD6;-webkit-text-fill-color:#C9CCD6;}
+.profile-screen .sp-rung-body i{font-style:normal;font-size:13.5px;line-height:1.1;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.profile-screen .sp-rung em{flex:none;font-style:normal;font-size:13.5px;line-height:1;font-weight:500;font-variant-numeric:tabular-nums;color:var(--t2);-webkit-text-fill-color:var(--t2);white-space:nowrap;}
+.profile-screen .sp-rung em.is-here{font-weight:700;color:#FFC107;-webkit-text-fill-color:#FFC107;}
+
+/* ── THE BADGE WALL. Three across, each a small filled card: the badge's icon in a well, its name
+   at 11. Held: the icon in green on a wash of it. Not held yet: grey. The one tapped keeps a fine
+   line inside its fill, and its row under the grid says what it takes. */
+.profile-screen .sp-wall{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.profile-screen .sp-badge{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0;margin:0;padding:14px 6px 12px;border:0;border-radius:16px;background:var(--s1);color:var(--t3);-webkit-text-fill-color:var(--t3);font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.profile-screen .sp-badge-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:13px;background:rgba(155,160,184,0.10);}
+.profile-screen .sp-badge-name{max-width:100%;font-size:11px;line-height:1.2;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-screen .sp-badge.is-earned{color:var(--t1);-webkit-text-fill-color:var(--t1);}
+.profile-screen .sp-badge.is-earned .sp-badge-ic{background:rgba(88,204,2,0.16);color:#8AE042;}
+.profile-screen .sp-badge.is-open{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.28);}
+.profile-screen .sp-badge.is-earned.is-open{box-shadow:inset 0 0 0 1.5px rgba(88,204,2,0.55);}
+.profile-screen .sp-badge-detail{scroll-margin-bottom:120px;}
+.profile-screen .sp-badge-detail .todays-seven-secondary{--mode:var(--t2);--mode-rgb:155,160,184;}
+.profile-screen .sp-badge-detail .todays-seven-secondary.is-earned{--mode:#8AE042;--mode-rgb:88,204,2;}
+.profile-screen .sp-tag{flex:none;display:inline-flex;align-items:center;gap:5px;font-size:11px;line-height:1;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.profile-screen .sp .is-earned > .sp-tag{color:#8AE042;-webkit-text-fill-color:#8AE042;}
+
+/* ── THE MATES SCREEN. The field stands on the page, one fill; under it the cards of people. */
+.profile-screen .sp-field{display:flex;align-items:center;gap:10px;height:52px;margin:0;padding:0 16px;border-radius:16px;background:var(--s1);color:var(--t3);cursor:text;}
+.profile-screen .sp-field:focus-within{box-shadow:inset 0 0 0 1.5px rgba(88,204,2,0.55);}
+.profile-screen .sp-field svg{flex:none;}
+.profile-screen .sp-field input{flex:1;min-width:0;height:100%;margin:0;padding:0;border:0;outline:0;background:transparent;color:var(--text);-webkit-text-fill-color:var(--text);font-family:inherit;font-size:16px;font-weight:500;-webkit-appearance:none;appearance:none;}
+.profile-screen .sp-field input::placeholder{color:var(--t3);-webkit-text-fill-color:var(--t3);opacity:1;}
+.profile-screen .sp-field input::-webkit-search-cancel-button{-webkit-appearance:none;}
+.profile-screen .sp-note{margin:12px 4px 0;font-size:13.5px;line-height:1.35;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+.profile-screen .sp-note span{display:block;margin-top:4px;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.profile-screen .sp-fail{font-size:13.5px;line-height:1.35;font-weight:500;color:var(--t2);-webkit-text-fill-color:var(--t2);}
+/* A person's row: a round face the size of a well, on the row itself. */
+.profile-screen .sp-who{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;overflow:hidden;background:var(--s2);}
+.profile-screen .sp-who.sp-plus{background:none;}
+.profile-screen .sp .mp-row .t7s-cta + .t7s-cta{margin-left:-4px;}
+
+/* The smallest phones (under 360 wide): a card's side padding 12 where it was 16, the gap either
+   side of the text 10 where it was 12, the pills closer in. The type keeps its four sizes. */
+@media (max-width: 359px){
+  /* The card (components/BallIqCardFace.jsx reads these): 14 of padding where it was 20, the two
+     columns 10 apart, the capitals set closer, so "LEGENDS" and its rating share a column at 320,
+     and so does "BUNDESLIGA", the longest label there is. */
+  .profile-screen .sp{--bq-pad:14px;--bq-gap:10px;--bq-rg:6px;--bq-ls:0.08em;--bq-ls-long:0em;}
+  .profile-screen .sp .gp-list{padding-left:12px;padding-right:12px;}
+  .profile-screen .sp .gp-list > .todays-seven-secondary,.profile-screen .sp .mp-row-open,.profile-screen .sp-mate,.profile-screen .sp-seat-open{gap:10px;}
+  .profile-screen .sp .gp-list > .todays-seven-secondary .t7s-cta{padding:0 12px;font-size:13.5px;}
+  .profile-screen .sp-invite{padding:0 12px;}
+  .profile-screen .sp .gp-card{padding-left:14px;padding-right:14px;}
+  .profile-screen .sp-wall{gap:8px;}
+}

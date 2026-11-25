@@ -7605,8 +7605,16 @@ function AppInner() {
             Multiplayer tab: `hdr-guest`, styled in screens/guestProfile.css.
             The same test ProfileScreen makes; a signed-in player's strip is
             untouched. */}
+        {/* Later on 25 Nov 2026 the signed-in Profile was built in the same kit
+            (Alex, on its drawing: "Yes, build it"), so the bell and the gear
+            are tiles over the Profile for everyone, and the class keeps the
+            name it was given that morning. A wide window never shows this
+            strip (app.css hides .hdr from 1024 up), so its Profile is as it
+            was. While a screen behind one of the Profile's rows is open, the
+            strip steps aside for that screen's back arrow: signedProfile.css,
+            html.pf-sub. */}
         {!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online")) && (
-          <div className={screen === "home" && tab === "profile" && (!user || isGuest || isAnonUser) ? "hdr hdr-guest" : "hdr"}>
+          <div className={screen === "home" && tab === "profile" ? "hdr hdr-guest" : "hdr"}>
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and
                 the personalised greeting now owns the top. Settings has its own

@@ -8,10 +8,12 @@ import { APP_NAME, LEVELS, getLevelInfo, iqPercentile, computeBadges, MIN_RATED_
 import { isProfaneUsername } from "../lib/profanity.js";
 import { listBlockMaskIds, blockUser, unblockUser, submitReport, REPORT_REASONS } from "../lib/userReports.js";
 import { computeCard, CARD_TIERS, CARD_COMPS, tierPalette, LEAGUE_FACES, pickLeagueFace, rawAnswered } from "../lib/ballIqCard.js";
-import { lift, tint } from "../lib/colourMath.js";
+import { lift, tint, inkOn } from "../lib/colourMath.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { rowLine } from "../lib/rowLine.jsx";
 import "./guestProfile.css";
+import "./signedProfile.css";
+import { mateRating, rankMates, badgeCount, nearestBadge, nextRank, ladder, verdict, faceWord } from "../lib/profileNext.js";
 import { CALIBRATION } from "../data/cardCalibration.js";
 import { t as tl, useT, fmtLocale } from "../i18n/index.js";
 import "../i18n/en.js"; // the full English table: not on Home's eager path
@@ -76,7 +78,7 @@ function accuracyLabel(card, stats) {
   const a = stats?.totalAnswered || 0, c = stats?.totalCorrect || 0;
   return (a > 0 && c <= a) ? `${Math.round(100 * c / a)}%` : "—";
 }
-import { Pencil, Share2, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy, Shirt, Lock, Check, X, ClipboardList, Route, ListOrdered, UserRoundSearch } from 'lucide-react';
+import { Pencil, Share2, Milestone, Compass, Target, Medal, CircleCheck, Search, Flag, Flame, CalendarCheck, Zap, Brain, Star, Gem, Heart, GraduationCap, Repeat, Crown, Globe, Trophy, Shirt, Lock, Check, X, ClipboardList, Route, ListOrdered, UserRoundSearch, ChevronRight, ArrowLeft, Plus, Award, Shield, Share } from 'lucide-react';
 import { avatarColour } from '../lib/avatarColour.js';
 import { currentAvatarId } from '../lib/currentAvatar.js';
 // lift() exists because a dark brand colour at low alpha on a dark card is
@@ -395,12 +397,16 @@ function CropModal({ file, onCancel, onConfirm, onLoadError }) {
   );
 }
 
-// ─── FRIENDS SECTION ──────────────────────────────────────────────────────────
-// Lives inside ProfileScreen. Requires an authenticated user (userId). When
-// isActive is true the section loads friendships on mount and after any action
+// ─── FRIENDS: THE DATA ────────────────────────────────────────────────────────
+// Requires an authenticated user (userId); with none it holds empty lists and
+// asks the server nothing. It loads friendships on mount and after any action
 // so counts + lists stay fresh when the user returns to the Profile tab.
-function FriendsSection({ userId, currentUserScore, currentUserName, currentUserAvatar, currentUserPhoto, onChallenge, onToast, onOpenFriend, onShareProfile }) {
-  const t = useT();
+//
+// 25 Nov 2026: this was the top half of FriendsSection. It is a hook now
+// because two things on the page read it: the wide window's friends section
+// (below, unchanged) and the phone's Mates card with the screen behind its
+// "Add a mate" row. One load, one realtime channel, whichever is on screen.
+function useFriends({ userId, onToast }) {
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -417,6 +423,10 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
   // SECURITY DEFINER RPC (get_block_mask) since the table's SELECT RLS
   // only exposes outgoing blocks.
   const [blockMask, setBlockMask] = useState(() => new Set());
+  // Has one load come back whole? Until it has, the Mates card prints no
+  // place: "1" beside a player whose mates have not arrived yet would be a
+  // figure the data does not support (25 Nov 2026).
+  const [loaded, setLoaded] = useState(false);
   const toast = onToast || (() => {});
   // Sprint #70 LL1: per-key in-flight guard on friend actions. Without it,
   // a double-tap on Add fires two INSERTs; the second hits the unique
@@ -436,7 +446,15 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
     try {
       const PAGE = 1000;
       const rows = [];
-      const cols = "*,requester:profiles!requester_id(id,username,avatar:avatar_id,photo:avatar_url,total_score),addressee:profiles!addressee_id(id,username,avatar:avatar_id,photo:avatar_url,total_score)";
+      // `correct_answers` and `stats` joined on 25 Nov 2026: the Mates card
+      // ranks on each mate's RATING, which is computed from them the way their
+      // own profile screen does it (lib/profileNext.js, mateRating). Measured
+      // on the live table that day before adding them: the blob averages 347
+      // bytes as JSON (764 among players who have a mate), the largest is
+      // 2,102, and nobody has more than two mates, so a load grows by a few
+      // kilobytes at most.
+      const who = "id,username,avatar:avatar_id,photo:avatar_url,total_score,correct_answers,stats";
+      const cols = `*,requester:profiles!requester_id(${who}),addressee:profiles!addressee_id(${who})`;
       for (let from = 0; ; from += PAGE) {
         const { data, error } = await supabase
           .from("friendships")
@@ -449,6 +467,7 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
         if (data.length < PAGE) break;
       }
       setFriendships(rows);
+      setLoaded(true);
     } catch (e) {
       console.error("[friends] load", e?.message || "Unknown error");
       setLoadError(true);
@@ -622,6 +641,17 @@ function FriendsSection({ userId, currentUserScore, currentUserName, currentUser
       inFlightRef.current.delete(key);
     }
   };
+
+  return { search, setSearch, results, searching, friendships, loading, loadError, loaded, blockMask, incoming, outgoing, accepted, loadFriendships, sendRequest, setStatus, cancelRequest };
+}
+
+// ─── FRIENDS SECTION ──────────────────────────────────────────────────────────
+// The wide window's friends block (search, requests, the list, the table on
+// total score). It lives inside ProfileScreen and draws what useFriends holds;
+// on a phone a signed-in player gets the Mates card instead.
+function FriendsSection({ fr, userId, currentUserScore, currentUserName, currentUserAvatar, currentUserPhoto, onChallenge, onOpenFriend, onShareProfile }) {
+  const t = useT();
+  const { search, setSearch, results, searching, friendships, loading, loadError, blockMask, incoming, outgoing, accepted, loadFriendships, sendRequest, setStatus, cancelRequest } = fr;
 
   // Mini-leaderboard: accepted friends + me, sorted by total_score desc.
   // Depend on `friendships` (stable state ref) not on derived `accepted` which
@@ -1317,6 +1347,172 @@ function BlockedUsersScreenImpl({ onBack, onToast }) {
 }
 export const BlockedUsersScreen = React.memo(BlockedUsersScreenImpl);
 
+// ─── THE SIGNED-IN PROFILE ON A PHONE: ITS ROWS (25 Nov 2026) ────────────────
+// The badge ids in the wall's own order, and "r,g,b" of a hex for a wash.
+const BADGE_IDS = BADGE_DEFS.map((b) => b[0]);
+const rgbOf = (hex) => { const n = parseInt(String(hex).slice(1), 16); return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`; };
+
+// One row of Home's kit, as the not-signed-in Profile already draws its one
+// row (guestProfile.css): a 46px well in the row's own colour, one line of
+// title, one grey line, and at the end either a soft pill ("play this now") or
+// a grey arrow ("this takes you somewhere"). The whole row is the tap.
+// `words`: the grey line is a sentence ("5-day streak"), not a figure, so it is
+// not set in tabular figures (Inter's tabular hyphen opens a gap in a word).
+// `sub` as a string is cut at " · " (lib/rowLine.jsx: on a narrow phone the
+// second piece gives way); pass an element to keep a line whole.
+function KitRow({ Icon, ink, rgb, title, sub, words, onTap, pill, ariaLabel }) {
+  const style = { "--mode": ink, "--mode-rgb": rgb };
+  const body = (
+    <>
+      <span className="t7s-icon" aria-hidden="true"><Icon size={22} strokeWidth={2} /></span>
+      <span className="t7s-body">
+        <span className="t7s-title"><span className="t7s-name">{title}</span></span>
+        {sub ? <span className={words ? "t7s-sub is-words" : "t7s-sub"}>{typeof sub === "string" ? rowLine(sub) : sub}</span> : null}
+      </span>
+      {pill ? <span className="t7s-cta">{pill}</span> : onTap ? <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span> : null}
+    </>
+  );
+  return onTap
+    ? <button type="button" className="todays-seven-secondary" style={style} onClick={onTap} aria-label={ariaLabel}>{body}</button>
+    : <div className="todays-seven-secondary is-still" style={style}>{body}</div>;
+}
+
+// The screen behind the Mates card's "Add a mate" row: everything the friends
+// block does on a wide window, in the kit. Find a player by username and ask
+// them; answer a request (Accept, Decline); take back one of your own
+// (Cancel); and your mates, each opening their profile (where Report and
+// Block live, as before) with Challenge beside them. Nothing was dropped on
+// the way here; the table itself is the Mates card on the page before.
+// It draws what useFriends holds, so the wide window's block and this one
+// can never disagree.
+function MatesManage({ fr, userId, onChallenge, onOpenFriend, onShareProfile }) {
+  const t = useT();
+  const { search, setSearch, results, searching, loading, loadError, incoming, outgoing, accepted, loadFriendships, sendRequest, setStatus, cancelRequest } = fr;
+  const otherOf = (f) => (f.requester_id === userId ? f.addressee : f.requester);
+  const score = (p) => t("pf.score", { n: (p.total_score || 0).toLocaleString(fmtLocale()) });
+  const person = (p, sub) => (
+    <>
+      <span className="sp-who" aria-hidden="true"><ProfilePic value={p.avatar} url={p.photo} name={p.username} /></span>
+      <span className="t7s-body">
+        <span className="t7s-title"><span className="t7s-name">{p.username}</span></span>
+        {sub ? <span className="t7s-sub">{rowLine(sub)}</span> : null}
+      </span>
+    </>
+  );
+  return (
+    <>
+      {/* 16px in the field: iOS zooms the page under it. */}
+      <label className="sp-field">
+        <Search size={18} strokeWidth={2.2} aria-hidden="true" />
+        <input type="search" inputMode="search" autoCorrect="off" autoCapitalize="none" placeholder={t("pf.find")} aria-label={t("pf.find")} value={search} onChange={(e) => setSearch(e.target.value)} />
+      </label>
+      {search.trim().length >= 2 && (
+        searching ? <p className="sp-note">{t("pf.searching")}</p>
+        : results.length === 0 ? <p className="sp-note">{t("pf.none")}<span>{t("pf.noneTip")}</span></p>
+        : (
+          <section className="gp-list sp-gap">
+            {results.map((r) => (
+              <div key={r.id} className="todays-seven-secondary mp-row">
+                {person(r, score(r))}
+                <button type="button" className="t7s-cta" onClick={() => sendRequest(r)}>{t("pf.add")}</button>
+              </div>
+            ))}
+          </section>
+        )
+      )}
+
+      {incoming.length > 0 && (
+        <>
+          <div className="home-section-title">{t("pf.incoming")}</div>
+          <section className="gp-list">
+            {incoming.map((f) => {
+              const p = otherOf(f);
+              if (!p) return null;
+              return (
+                <div key={f.id} className="todays-seven-secondary mp-row">
+                  {person(p, score(p))}
+                  <button type="button" className="t7s-cta" onClick={() => setStatus(f.id, "accepted")}>{t("pf.accept")}</button>
+                  {/* A round cross, not a second worded pill: "Aceptar" and "Rechazar"
+                      side by side left a 320px phone room for one letter of the name. */}
+                  <button type="button" className="t7s-cta sp-quiet sp-no" onClick={() => setStatus(f.id, "declined")} aria-label={t("pf.decline")}><X size={17} strokeWidth={2.6} aria-hidden="true" /></button>
+                </div>
+              );
+            })}
+          </section>
+        </>
+      )}
+
+      {outgoing.length > 0 && (
+        <>
+          <div className="home-section-title">{t("pf.pending")}</div>
+          <section className="gp-list">
+            {outgoing.map((f) => {
+              const p = otherOf(f);
+              if (!p) return null;
+              return (
+                <div key={f.id} className="todays-seven-secondary mp-row">
+                  {person(p, t("pf.pendingDots"))}
+                  <button type="button" className="t7s-cta sp-quiet" onClick={() => cancelRequest(f.id)} aria-label={t("pf.cancelReq")}>{t("st.cancel")}</button>
+                </div>
+              );
+            })}
+          </section>
+        </>
+      )}
+
+      <div className="home-section-title">{t("pf.friends")}{accepted.length > 0 ? ` · ${accepted.length}` : ""}</div>
+      {loading && accepted.length === 0 ? (
+        <section className="gp-list" aria-busy="true" aria-label={t("pf.loadingFriends")}>
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="todays-seven-secondary is-still">
+              <span className="sp-who skeleton" />
+              <span className="t7s-body"><span className="skeleton" style={{ height: 12, width: `${55 - i * 10}%`, borderRadius: 6 }} /><span className="skeleton" style={{ height: 9, width: `${35 - i * 5}%`, borderRadius: 6 }} /></span>
+            </div>
+          ))}
+        </section>
+      ) : (
+        <>
+          {/* A failed load is not "no mates": say so, and offer the load again.
+              Mates from an earlier load stay listed under it, as they did. */}
+          {loadError && (
+            <section className="gp-list">
+              <div className="todays-seven-secondary mp-row">
+                <span className="t7s-body"><span className="sp-fail">{t("pf.loadFail")}</span></span>
+                <button type="button" className="t7s-cta sp-quiet" onClick={loadFriendships}>{t("pf.retry")}</button>
+              </div>
+            </section>
+          )}
+          {!loadError && accepted.length === 0 && (
+            <section className="gp-list">
+              <div className="todays-seven-secondary mp-row">
+                <span className="sp-who sp-plus" aria-hidden="true"><Plus size={18} strokeWidth={2.1} /></span>
+                <span className="t7s-body"><span className="t7s-title"><span className="t7s-name">{t("pf.noFriends")}</span></span></span>
+                <button type="button" className="t7s-cta" onClick={onShareProfile}>{t("home.mp.invite")}</button>
+              </div>
+            </section>
+          )}
+          {accepted.length > 0 && (
+            <section className={loadError ? "gp-list sp-gap" : "gp-list"}>
+              {accepted.map((f) => {
+                const p = otherOf(f);
+                if (!p) return null;
+                return (
+                  <div key={f.id} className="todays-seven-secondary mp-row">
+                    <button type="button" className="mp-row-open" onClick={() => onOpenFriend && onOpenFriend(p)} aria-label={t("pf.view", { name: p.username })}>
+                      {person(p, score(p))}
+                    </button>
+                    <button type="button" className="t7s-cta sp-quiet" onClick={() => onChallenge && onChallenge(p)}>{t("pf.challenge")}</button>
+                  </div>
+                );
+              })}
+            </section>
+          )}
+        </>
+      )}
+    </>
+  );
+}
+
 // ─── PROFILE SCREEN ───────────────────────────────────────────────────────────
 function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLoginStreak, level: levelProp, earnedBadges, onShareProfile, onSaveCard, onShowWeekly, onToast, onChallenge, onOpenFriend, onPlayDaily, onPlayLeague, onSetCardLeague, nameEditNonce, isActiveTab = true, openDailies }) {
   // Declared first: saveName (well above where this used to sit) calls it.
@@ -1349,10 +1545,12 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // tier's colours; what they have earned (the share button, the scouting
   // report, the journey, badges) follows the account button as it did.
   //
-  // ⚠️ ONLY THIS STATE. The signed-in Profile is not approved (Alex: "signed
-  // in profile I am not sure yet, needs more work I think") and renders byte
-  // for byte as it did: every change below is behind `guestView`, and the
-  // signed-in scenarios of tests/unit/i18n-screens.golden.json hold it there.
+  // ⚠️ ONLY THIS STATE. That morning the signed-in Profile was not approved
+  // (Alex: "signed in profile I am not sure yet, needs more work I think"),
+  // so every change for this state is behind `guestView`. Later the same day
+  // he approved a drawing of the signed-in one ("Yes, build it") and it was
+  // built beside this, on the same kit: the note at `sub` below has it. The
+  // two share a card component and a stylesheet's classes, never a branch.
   // A wide screen (the >=1024 layout) hides this column and keeps its own
   // cards, as before. Sign-in is the same call the old row made.
   const guestView = !user || isGuest || isAnonUser;
@@ -1553,6 +1751,77 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   // grid. Tap the same badge again to close. State is local to this
   // screen — no persistence across navigations.
   const [selectedBadgeId, setSelectedBadgeId] = useState(null);
+  // ── A SIGNED-IN PLAYER ON A PHONE (25 Nov 2026) ───────────────────────────
+  // Alex, of the signed-in Profile after the guest one was built: "signed in
+  // profile I am not sure yet, needs more work I think"; of the scouting
+  // report: "This has to have value for the players, do they care about their
+  // accuracy, daystreak and longest run? I do not really think so? What do
+  // players want here?"; of the started mates table: "this i really liked
+  // actually a lot. perhaps that should be at the top, right under the card
+  // for people who do not have any mates yet?"; of the eighth drawing: "Yes,
+  // build it" (ball-iq-audit/2026-11-24/finish/profile-signed-in-8.png; the
+  // ladder is the right phone of profile-signed-in-4.png).
+  //
+  // So under 1024 wide a signed-in player gets, top to bottom: the card with
+  // "Share my card" inside it; MATES, where they stand among their friends on
+  // rating (alone: their own row and one empty seat); NEXT UP, three rows
+  // (the next rank, the nearest badge, the weakest area with a Play); one
+  // Badges row; and the store link as a grey line of text. Gone from that
+  // page: the scouting report (accuracy, day streak, best run), the ladder
+  // drawn in full, "Top N%", the friends block and the badge grid. The ladder,
+  // the badge wall and everything the friends block did are one tap away,
+  // each as a screen of its own in this tab with a back arrow: `sub` names
+  // the one that is open.
+  //
+  // ⚠️ ONLY THAT STATE. A player who is not signed in keeps the screen built
+  // for them (guestView, above), and a wide window keeps its two columns: the
+  // phone column (.profile-mobile-identity) is hidden there, and the column
+  // under it carries .pd-wide-only for a signed-in player, which app.css shows
+  // exactly where it shows .pd-left. Declared last among this screen's
+  // useState calls, so the golden render's positions (0 to 9) have not moved.
+  const [sub, setSub] = useState(null); // null | "ladder" | "badges" | "mates"
+  const fr = useFriends({ userId: (user && !isGuest) ? user.id : null, onToast });
+  // A mate's rating is a sum over their whole record: worked out when the
+  // list changes, not on every render of this screen.
+  const mateRows = useMemo(() => fr.accepted
+    .map((f) => (f.requester_id === user?.id ? f.addressee : f.requester))
+    .filter(Boolean)
+    .map((p) => ({ id: p.id, username: p.username, avatar: p.avatar, photo: p.photo, rating: mateRating(p), score: p.total_score || 0 })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fr.friendships, fr.blockMask, user?.id]);
+  const subRef = useRef(null);
+  const wallDetailRef = useRef(null);
+  const subScroll = useRef(0);
+  const activeTabRef = useRef(isActiveTab);
+  activeTabRef.current = isActiveTab;
+  const openSub = useCallback((name) => { try { subScroll.current = window.scrollY || 0; } catch { /* no window */ } setSub(name); }, []);
+  const closeSub = useCallback(() => setSub(null), []);
+  const subOpen = !!sub && !guestView && isActiveTab;
+  // Android's back button, the iOS edge swipe and Escape close the open
+  // screen before anything else happens: the same hook every sheet uses, so
+  // App.jsx's back handler (closeTopModal) finds it with no code of its own.
+  // The focus goes to the screen itself, not to its first control.
+  useModalA11y({ isOpen: subOpen, onClose: closeSub, ref: subRef, focusContainer: true });
+  // Another tab is tapped while one is open (or the player signs out): the
+  // Profile is its first page again on return.
+  useEffect(() => { if ((!isActiveTab || guestView) && sub) setSub(null); }, [isActiveTab, guestView, sub]);
+  // While one is open the strip over the tab (App.jsx's bell and gear) steps
+  // aside for its back arrow (signedProfile.css, html.pf-sub), the page starts
+  // at its top, and closing it puts the Profile back where the player left it.
+  // This screen is mounted only while the tabs are on show, so the class can
+  // never outlive it.
+  useEffect(() => {
+    if (!subOpen) return undefined;
+    const root = document.documentElement;
+    root.classList.add("pf-sub");
+    try { window.scrollTo(0, 0); } catch { /* no window */ }
+    return () => {
+      root.classList.remove("pf-sub");
+      if (!mountedRef.current || !activeTabRef.current) return;
+      const y = subScroll.current;
+      try { window.requestAnimationFrame(() => { if (mountedRef.current && activeTabRef.current) window.scrollTo(0, y); }); } catch { /* no window */ }
+    };
+  }, [subOpen]);
   // ⚠️ REVEAL IT. The detail card renders BELOW a 12-tile grid at the very
   // bottom of the longest screen in the app, so tapping a badge painted its
   // explanation off-screen behind the tab bar — the tap looked inert and only
@@ -1562,12 +1831,14 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
   const badgeDetailRef = useRef(null);
   useEffect(() => {
     if (!selectedBadgeId) return;
-    const el = badgeDetailRef.current;
+    // Two places can show a badge's detail (the wide window's grid, the phone's
+    // badge wall); only one of them is on screen.
+    const el = [wallDetailRef.current, badgeDetailRef.current].find((n) => n && n.offsetParent !== null) || badgeDetailRef.current;
     if (!el || typeof el.scrollIntoView !== "function") return;
     let reduced = false;
     try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { /* no matchMedia */ }
     el.scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
-  }, [selectedBadgeId]);
+  }, [selectedBadgeId, sub]);
   // Prefer memoized values from the parent; fall back for any legacy caller.
   const level = levelProp || getLevelInfo(xp).level;
   // Same best-streak rule as AppInner's earnedBadges memo — streak badges never un-earn.
@@ -1658,6 +1929,193 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       // K2: guard setUploading against post-unmount fires.
       if (mountedRef.current) setUploading(false);
     }
+  };
+
+  // ── THE SIGNED-IN PHONE COLUMN (25 Nov 2026; the note at `sub` says why) ──
+  const num = (n) => Number(n).toLocaleString(fmtLocale());
+  // The back arrow of a screen behind a row: a tile where the bell and the
+  // gear stand on the page before, in a strip with the shared strip's own
+  // measures (it carries its classes), so nothing jumps on the way in or out.
+  const backRow = (
+    <div className="hdr hdr-guest sp-top">
+      <button type="button" className="icon-btn hdr-ic" onClick={closeSub} aria-label={t("game.back")}><ArrowLeft size={22} strokeWidth={2.2} aria-hidden="true" /></button>
+    </div>
+  );
+
+  // The ladder (drawing 4): the rank held, the XP and a bar to the next rank
+  // on a card in the gold card's style, then every rank from LEVELS. The page
+  // before shows only what is left to the next one.
+  const ladderScreen = () => {
+    const l = ladder(xp);
+    return (
+      <div className="sp sp-sub" ref={subRef} tabIndex={-1} role="region" aria-label={t("pf.journey")}>
+        {backRow}
+        <section className="gp-card sp-jy">
+          <div className="gp-eye">{t("pf.journey")}</div>
+          <div className="gp-name">{levelName(l.level.name)}</div>
+          <div className="gp-sub">{num(xp)} XP</div>
+          <div className="sp-bar" aria-hidden="true"><i style={{ width: `${l.pct}%` }} /></div>
+          <div className="sp-bar-note">{l.nextLevel ? t("sp.xpTo", { n: num(l.toGo), name: levelName(l.nextLevel.name) }) : t("sp.topRank")}</div>
+        </section>
+        <div className="home-section-title">{t("sp.ladder")}</div>
+        <section className="gp-list sp-ladder">
+          {l.rows.map((r) => (
+            <div key={r.name} className={`sp-rung is-${r.state}`}>
+              <span className="sp-dot" aria-hidden="true">{r.state === "done" ? <Check size={14} strokeWidth={3} /> : null}</span>
+              <span className="sp-rung-body"><b>{levelName(r.name)}</b><i>{num(r.xpNeeded)} XP</i></span>
+              {r.state === "cur" ? <em className="is-here">{t("sp.here")}</em> : r.state === "next" ? <em>{t("pf.toGo", { n: num(l.toGo) })}</em> : null}
+            </div>
+          ))}
+        </section>
+      </div>
+    );
+  };
+
+  // The badge wall: the grid the page carried in full, held first, a tap on
+  // one for what it takes. Three across, so a name is whole at 11.
+  const badgeScreen = () => {
+    const held = badgeCount(earned, BADGE_IDS);
+    const sel = selectedBadgeId ? BADGE_DEFS.find((b) => b[0] === selectedBadgeId) : null;
+    const SelIcon = sel ? sel[1] : null;
+    return (
+      <div className="sp sp-sub" ref={subRef} tabIndex={-1} role="region" aria-label={t("sp.badges")}>
+        {backRow}
+        <div className="home-section-title">{t("sp.badges")}<span aria-hidden="true"> · </span>{t("sp.nOfM", { n: held.n, m: held.m })}</div>
+        <div className="sp-wall">
+          {[...BADGE_DEFS].sort((a, b) => (earned.has(a[0]) === earned.has(b[0]) ? 0 : earned.has(a[0]) ? -1 : 1)).map(([id, Icon]) => {
+            const name = t(`bd.${id}`);
+            const on = earned.has(id);
+            const open = selectedBadgeId === id;
+            return (
+              <button key={id} type="button" className={`sp-badge${on ? " is-earned" : ""}${open ? " is-open" : ""}`}
+                onClick={() => setSelectedBadgeId((prev) => (prev === id ? null : id))}
+                aria-label={t("pf.badgeAria", { name, s: t(on ? "pf.earned" : "pf.locked") })} aria-expanded={open}>
+                <span className="sp-badge-ic" aria-hidden="true"><Icon size={22} strokeWidth={2.1} /></span>
+                <span className="sp-badge-name">{name}</span>
+              </button>
+            );
+          })}
+        </div>
+        {sel && (
+          <section className="gp-list sp-gap sp-badge-detail" ref={wallDetailRef}>
+            <div className={`todays-seven-secondary is-still${earned.has(sel[0]) ? " is-earned" : ""}`}>
+              <span className="t7s-icon" aria-hidden="true"><SelIcon size={22} strokeWidth={2} /></span>
+              <span className="t7s-body">
+                <span className="t7s-title"><span className="t7s-name">{t(`bd.${sel[0]}`)}</span></span>
+                <span className="t7s-sub is-words">{rowLine(t(`bd.${sel[0]}.d`))}</span>
+              </span>
+              <span className="sp-tag">{earned.has(sel[0]) ? <><Check size={14} strokeWidth={3} aria-hidden="true" />{t("sp.earned")}</> : t("pf.lockedTag")}</span>
+            </div>
+          </section>
+        )}
+      </div>
+    );
+  };
+
+  const matesScreen = () => (
+    <div className="sp sp-sub" ref={subRef} tabIndex={-1} role="region" aria-label={t("sp.addMate")}>
+      {backRow}
+      <MatesManage fr={fr} userId={user?.id} onChallenge={onChallenge} onOpenFriend={onOpenFriend} onShareProfile={onShareProfile} />
+    </div>
+  );
+
+  const signedPhone = (cardEl, card, rated, v) => {
+    if (sub === "ladder") return ladderScreen();
+    if (sub === "badges") return badgeScreen();
+    if (sub === "mates") return matesScreen();
+    // MATES. The player's own row among their mates, best rating first
+    // (lib/profileNext.js has the order and why it is the rating). No place is
+    // printed until the list has loaded once. The last row is always the
+    // empty seat: the row opens the screen that finds and answers people, its
+    // pill sends the player's own link straight to the share sheet.
+    const me = { id: user?.id, username: currentName || t("pf.you"), avatar: currentAvatarId(authProfile, profile), photo: authProfile?.avatar_url || profile?.photo, rating: rated ? card.overall : null, score: authProfile?.total_score || 0 };
+    const table = fr.loaded ? rankMates(me, mateRows) : [{ ...me, isMe: true, place: null }];
+    const waiting = fr.incoming.length;
+    // A load that failed is not "no mates": the seat says so in grey, and the
+    // screen behind it has the whole sentence and a way to try again.
+    const loadFailed = !fr.loaded && fr.loadError;
+    const seatNote = loadFailed ? t("sp.matesFail") : waiting > 0 ? t("sp.reqWaiting", { count: waiting, n: waiting }) : null;
+    // NEXT UP. Three things worth a tap, each from the player's own numbers:
+    // the next rank and what is left to it, the badge nearest to being won,
+    // and the weakest rated area with a quiz in it. A row with nothing true
+    // to say is left out (no weakest before two areas are rated; no badge row
+    // once every badge is held).
+    const nr = nextRank(xp);
+    const nb = nearestBadge({ ids: BADGE_IDS, earned, stats, xp, streak: loginStreak });
+    const NbIcon = nb ? BADGE_DEFS.find((b) => b[0] === nb.id)[1] : null;
+    const held = badgeCount(earned, BADGE_IDS);
+    const weak = v.weakest;
+    // The area's own colour, lifted until it reads on the card: the Premier
+    // League's purple and the Champions League's blue are too dark as they are.
+    const weakInk = weak ? inkOn(weak.color) : null;
+    return (
+      <div className="sp">
+        {cardEl}
+        {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
+          <div className="pd-recal" role="status">
+            <span>{rich(t("pf.recal"), { d: recalDate() })}</span>
+            <button type="button" className="pd-recal-x" aria-label={t("pf.dismiss")} onClick={dismissRecal}><X size={14} strokeWidth={2.6} aria-hidden="true" /></button>
+          </div>
+        )}
+
+        <div className="home-section-title">{t("sp.mates")}</div>
+        <section className="gp-list sp-mates">
+          {table.map((r) => {
+            const inner = (
+              <>
+                <span className="sp-pos">{r.place ?? ""}</span>
+                <span className="sp-av" aria-hidden="true"><ProfilePic value={r.avatar} url={r.photo} name={r.username} /></span>
+                <span className="sp-mate-name">{r.username}</span>
+                {r.rating == null ? <span className="sp-val is-none" aria-label={t("cf.noRating")}>–</span> : <span className="sp-val">{r.rating}</span>}
+              </>
+            );
+            return r.isMe
+              ? <div key="me" className="sp-mate is-me">{inner}</div>
+              : <button key={r.id} type="button" className="sp-mate" onClick={() => onOpenFriend && onOpenFriend(r)} aria-label={t("pf.view", { name: r.username })}>{inner}</button>;
+          })}
+          <div className="sp-mate sp-seat">
+            <button type="button" className="sp-seat-open" onClick={() => openSub("mates")}>
+              <span className="sp-pos">{fr.loaded ? table.length + 1 : ""}</span>
+              <span className="sp-av sp-plus" aria-hidden="true"><Plus size={16} strokeWidth={2.1} /></span>
+              <span className="sp-seat-body"><b>{t("sp.addMate")}</b>{seatNote ? <i className={loadFailed ? "is-fail" : undefined}>{seatNote}</i> : null}</span>
+            </button>
+            <button type="button" className="t7s-cta sp-invite" onClick={onShareProfile}>{t("home.mp.invite")}</button>
+          </div>
+        </section>
+
+        <div className="home-section-title">{t("dd.nextUp")}</div>
+        <section className="gp-list">
+          <KitRow Icon={Award} ink="#FFC107" rgb="255,193,7" title={levelName(nr.name)}
+            sub={nr.top ? t("sp.topRank") : t("pf.toGo", { n: num(nr.toGo) })} onTap={() => openSub("ladder")} />
+          {nb && (
+            <KitRow Icon={NbIcon} ink="#FF9B5A" rgb="255,138,60" title={t(`bd.${nb.id}`)}
+              sub={nb.plain ? t(`bd.${nb.id}.d`) : t(`sp.bd.${nb.kind}`, { n: num(nb.have), m: num(nb.need) })} words={!!nb.plain}
+              onTap={() => { setSelectedBadgeId(nb.id); openSub("badges"); }} />
+          )}
+          {weak && (
+            // The area as the card six rows up names it ("CLUBS" there, "Clubs"
+            // here), in every language, so the two can be matched by eye; and
+            // one piece, so the rating can never be the part that gives way.
+            <KitRow Icon={Shield} ink={weakInk} rgb={rgbOf(weakInk)} title={t("pf.needsWork")} sub={<span className="t7s-p">{`${faceWord(weak.abbr)} · ${weak.rating}`}</span>}
+              onTap={onPlayLeague ? () => onPlayLeague(weak.cat) : undefined} pill={onPlayLeague ? t("common.play") : undefined}
+              ariaLabel={onPlayLeague ? t("pf.playQuiz", { c: compName(weak) }) : undefined} />
+          )}
+        </section>
+        <section className="gp-list sp-gap">
+          <KitRow Icon={Medal} ink="var(--t2)" rgb="155,160,184" title={t("sp.badges")} sub={t("sp.nOfM", { n: held.n, m: held.m })}
+            onTap={() => { setSelectedBadgeId(null); openSub("badges"); }} />
+        </section>
+
+        {/* The store link is one grey line of text (it was a green outlined
+            button under Share). The same rule decides it: the app only, since
+            a web player has nothing installed to rate, and after five games. */}
+        {canRateInStore() && (stats.gamesPlayed || 0) >= 5 && (
+          <button type="button" className="sp-rate" onClick={() => { const store = openStoreRating(); loopEvent("rate-link-tap", { surface: "profile", store }); }}>
+            {t(ratingStore() === "play" ? "st.rateGp" : "st.rateAs")}
+          </button>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -1936,7 +2394,50 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             </section>
           );
         }
-        return (
+        // A signed-in player's card on a phone (25 Nov 2026), as drawn: the
+        // face 84 across in its tier's frame, a tap on it still the way to a
+        // new photo (the small pencil on it is gone: the name keeps the one
+        // pencil); the name at 24; then ONE line, the rank and what kind of
+        // player this is ("Cult Hero · Records Specialist"). Alex, of name
+        // over rank over identity: "reads as hectic to me". The XP left the
+        // card for the ladder, and "Top N%" left the screen: that figure came
+        // from a fixed table (iqPercentile), not from other players.
+        const v = verdict(_card);
+        const kitFace = (
+          <button type="button" className="sp-face" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={{ ...avatarFrame(pal.accent), ...(authLoading ? { opacity: 0.4, animation: "profileSkeletonPulse 1.4s ease-in-out infinite" } : null) }}>
+            {uploading ? (
+              <span className="avatar-spinner" aria-label={t("pf.uploading")} />
+            ) : showPhoto ? (
+              <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? t("pf.avatarOf", { name: currentName }) : t("pf.avatar")} onError={(e) => { e.currentTarget.style.display = "none"; }} />
+            ) : (
+              displayEmoji
+            )}
+          </button>
+        );
+        const kitName = (authLoading && !currentName) ? (
+          <span className="gp-name" style={{ opacity: 0.4, animation: "profileSkeletonPulse 1.4s ease-in-out infinite" }}>{t("pf.loading")}</span>
+        ) : editingName ? (
+          <span className="gp-name-edit">
+            <input className="profile-name-input" value={nameDraft} onChange={e => setNameDraft(e.target.value.slice(0, 24))} onKeyDown={e => { if (e.key === "Enter") saveName(); else if (e.key === "Escape") setEditingName(false); }} onBlur={() => saveName(true)} placeholder={t("pf.yourName")} autoFocus aria-label={t("pf.displayName")} />
+            <button type="button" className="gp-name-ok" onMouseDown={e => e.preventDefault()} onClick={() => saveName()} aria-label={t("pf.saveName")}><Check size={18} strokeWidth={3} aria-hidden="true" /></button>
+            <button type="button" className="gp-name-no" onMouseDown={e => e.preventDefault()} onClick={() => setEditingName(false)} aria-label={t("pf.cancelName")}><X size={17} strokeWidth={2.6} aria-hidden="true" /></button>
+          </span>
+        ) : (
+          <button type="button" className="gp-name" onClick={startNameEdit} aria-label={t(showNameCTA ? "pf.setName" : "pf.editName")}>
+            <span>{showNameCTA ? t("pf.setName") : (currentName || authProfile?.username || profile?.name || t("pf.player"))}</span>
+            <Pencil size={15} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        );
+        const kitSub = (
+          <div className="gp-sub">{levelName(level.name)} · {v.identity === "specialist" ? t("pf.specialist", { c: compName(v.strongest, true) }) : t(v.identity === "allRounder" ? "pf.allRounder" : "pf.rising")}</div>
+        );
+        // Share is the quiet button INSIDE the card (it was a solid green bar
+        // under it): the picture it sends is this card. Not before a first
+        // game, as before: there is nothing on the card to send.
+        const kitShare = (stats.gamesPlayed || 0) > 0 ? (
+          <button type="button" className="sp-share" onClick={onSaveCard || onShareProfile}><Share size={18} strokeWidth={2.4} aria-hidden="true" />{t("sp.share")}</button>
+        ) : undefined;
+        const cardEl = (
           // ⚠️ ONE CARD, THREE SURFACES. The layout lives in
           // components/BallIqCardFace.jsx — read the header there before
           // touching anything visual. This card forked twice (friend profile,
@@ -1948,24 +2449,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             played={hasPlayed}
             answered={stats?.totalAnswered || 0}
             onPickLeague={onSetCardLeague ? () => setLeaguePickerOpen(true) : undefined}
-            style={{ marginBottom: 14 }}
+            kit={!guestView}
+            footer={guestView ? undefined : kitShare}
+            style={guestView ? { marginBottom: 14 } : undefined}
             avatar={guestView ? guestFace(96, pal.accent) :
-                <div className="profile-avatar-wrap" style={{ flexShrink: 0, ...(authLoading ? {opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite"} : null) }}>
-                  <button type="button" className="profile-avatar" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={showPhoto
-                    ? {width:96, height:96, padding:0, overflow:"hidden", background:"var(--s2)", ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}
-                    : {width:96, height:96, fontSize:44, ...avatarFrame(pal.accent), appearance:"none", WebkitAppearance:"none", font:"inherit"}}>
-                    {uploading ? (
-                      <span className="avatar-spinner" aria-label={t("pf.uploading")} />
-                    ) : showPhoto ? (
-                      <img crossOrigin="anonymous" src={avatarUrl} alt={currentName ? t("pf.avatarOf", { name: currentName }) : t("pf.avatar")} onError={(e) => { e.currentTarget.style.display = "none"; }} style={{width:"100%", height:"100%", objectFit:"cover", borderRadius:"50%", display:"block"}} />
-                    ) : (
-                      displayEmoji
-                    )}
-                  </button>
-                  <button type="button" className="profile-avatar-edit" onClick={openAvatarPicker} aria-label={t("pf.editPhoto")} style={{appearance:"none", WebkitAppearance:"none", font:"inherit", display:"inline-flex", alignItems:"center", justifyContent:"center"}}><Pencil size={14} strokeWidth={2.5} aria-hidden="true" /></button>
-                </div>
+                kitFace
             }
-            name={
+            name={!guestView ? kitName :
                     (authLoading && !currentName) ? (
                       <span className="profile-name" style={{opacity:0.4, animation:"profileSkeletonPulse 1.4s ease-in-out infinite", color:pal.text}}>{t("pf.loading")}</span>
                     ) : editingName ? (
@@ -1993,7 +2483,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
                quietly beneath — the same reason the tiers stopped being green
                at all. The class is untouched and still used by the desktop
                pane and the journey list; this card just does not wear it. */
-            subline={<>
+            subline={!guestView ? kitSub : <>
               <div style={{ fontSize: 12.5, fontWeight: 700, letterSpacing: 0.2, color: pal.text, opacity: 0.55, display: "flex", alignItems: "center", gap: 6 }}>
                 <level.Icon size={13} strokeWidth={2.3} aria-hidden="true" /> {levelName(level.name)} · {xp.toLocaleString(fmtLocale())} XP
               </div>
@@ -2001,12 +2491,18 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
             </>}
           />
         );
+        // Not signed in and rated: the card, and what follows it below as it did.
+        if (guestView) return cardEl;
+        return signedPhone(cardEl, _card, hasPlayed, v);
       })()}
       {/* ONE-TIME NOTE (2026-09-09): the scale was recalibrated to the measured
           population (ballIqCard.js) and most numbers moved — the median player
           from 74 to 65. A number that drops with no word is the annoyance the
           rebuild exists to end, so the first sight of the new card says why. */}
-      {(stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
+      {/* From here to the end of the phone column is a not-signed-in player's
+          alone since 25 Nov 2026: a signed-in player's column is signedPhone,
+          which carries this note itself. */}
+      {guestView && (stats?.totalAnswered || 0) >= MIN_RATED_ANSWERS && !recalSeen && (
         <div className="pd-recal" role="status" style={{ marginTop: 0, marginBottom: 14 }}>
           <span>{rich(t("pf.recal"), { d: recalDate() })}</span>
           <button type="button" className="pd-recal-x" aria-label={t("pf.dismiss")} onClick={dismissRecal}>✕</button>
@@ -2061,8 +2557,8 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           invitation to share an empty scorecard, and a weekly summary of a
           week with nothing in it. Gated on the SAME condition the empty state
           uses, so the two can never disagree. */}
-      {(stats.gamesPlayed || 0) > 0 && (
-        <div className={guestView ? "profile-secondary-actions gp-quiet" : "profile-secondary-actions"} style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
+      {guestView && (stats.gamesPlayed || 0) > 0 && (
+        <div className="profile-secondary-actions gp-quiet" style={{display:"flex", flexDirection:"column", gap:8, marginBottom:12}}>
           {/* The card goes as a PICTURE (onSaveCard: the 1080x1440 card, with
               the link as a separate text item the native sheet keeps away from
               Snapchat). The /p?... link it used to send showed as a thumbnail
@@ -2095,21 +2591,10 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
           )}
         </div>
       )}
-      {(stats.gamesPlayed || 0) === 0 ? (guestView ? null :
-        <div style={{
-          background:"var(--s1)",
-          border:"1px solid var(--border)",
-          borderRadius:14,
-          padding:"22px 16px",
-          marginBottom:16,
-          textAlign:"center",
-        }}>
-          {/* A line icon like the rest of the screen; it was an emoji football. */}
-          <Target size={28} strokeWidth={1.8} aria-hidden="true" style={{ color: "var(--t3)", marginBottom: 8 }} />
-          <div style={{fontSize:14, fontWeight:700, color:"var(--text)", marginBottom:4}}>{t("pf.noStats")}</div>
-          <div style={{fontSize:12, color:"var(--t2)", lineHeight:1.5}}>{t("pf.noStatsSub")}</div>
-        </div>
-      ) : (
+      {/* The "No stats yet" box that stood here for a signed-in player before a
+          first game went with the scouting report it was the empty state of
+          (25 Nov 2026): their Next up rows say what to do instead. */}
+      {guestView && (stats.gamesPlayed || 0) > 0 && (
         (() => {
           // Scouting Report — turns the old stat dashboard into a verdict on the
           // player: strongest + weakest competition (from the card data), a
@@ -2226,7 +2711,7 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       </div>
       {/* BELOW column — Journey + Friends + Badges. display:contents on mobile,
           full-width grid-area "below" at desktop (kept reachable per handoff). */}
-      <div className="profile-col-below">
+      <div className={guestView ? "profile-col-below" : "profile-col-below pd-wide-only"}>
       {/* Not signed in: the ladder and the badges wait until there is something in them. */}
       {(!guestView || xp > 0) && (() => {
         const currentIdx = LEVELS.indexOf(level);
@@ -2268,13 +2753,13 @@ function ProfileScreenImpl({ profile, setProfile, stats, xp, loginStreak, bestLo
       })()}
       {user && !isGuest && (
         <FriendsSection
+          fr={fr}
           userId={user.id}
           currentUserScore={authProfile?.total_score || 0}
           currentUserName={authProfile?.username || profile?.name || t("pf.you")}
           currentUserAvatar={currentAvatarId(authProfile, profile)}
           currentUserPhoto={authProfile?.avatar_url || profile?.photo}
           onChallenge={onChallenge}
-          onToast={onToast}
           onOpenFriend={onOpenFriend}
           onShareProfile={onShareProfile}
         />

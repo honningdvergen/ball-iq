@@ -855,8 +855,6 @@ export default registerEnglish({
   'pf.shareCard': 'Share card',
   'pf.saveImage': 'Save image',
   'pf.weekly': 'Weekly Summary',
-  'pf.noStats': 'No stats yet',
-  'pf.noStatsSub': 'Play your first game to see your stats here',
   'pf.specialist': '{c} Specialist',
   'pf.allRounder': 'Versatile All-Rounder',
   'pf.rising': 'Rising Talent',
@@ -1539,6 +1537,28 @@ export default registerEnglish({
   'gp.unlock_other': '{n} answers to unlock your card',
   'gp.create': 'Create free account',
   'gp.keeps': 'Keeps your card on any phone',
+  // The signed-in Profile on a phone (screens/ProfileScreen.jsx, 25 Nov 2026): the card with Share
+  // inside it, Mates, Next up, one Badges row, and the screens behind its rows (the ladder, the
+  // badge wall, the mates screen). sp.bd.* is the nearest badge's grey line, by what the badge
+  // counts. pf.noStats and pf.noStatsSub left with the box they named.
+  'sp.share': 'Share my card',
+  'sp.mates': 'Mates',
+  'sp.addMate': 'Add a mate',
+  'sp.reqWaiting_one': '{n} request waiting',
+  'sp.reqWaiting_other': '{n} requests waiting',
+  'sp.matesFail': 'Could not load',
+  'sp.topRank': 'Top rank reached',
+  'sp.badges': 'Badges',
+  'sp.nOfM': '{n} of {m}',
+  'sp.earned': 'Earned',
+  'sp.bd.day': 'Day {n} of {m}',
+  'sp.bd.best': 'Best {n} of {m}',
+  'sp.bd.games': '{n} of {m} games',
+  'sp.bd.correct': '{n} of {m} correct',
+  'sp.bd.xp': '{n} of {m} XP',
+  'sp.ladder': 'The ladder',
+  'sp.here': 'You are here',
+  'sp.xpTo': '{n} XP to {name}',
   // Online multiplayer: entry, lobby, game and podium (screens/OnlineMultiplayer.jsx).
   'mp.createFail': 'Couldn\'t create the room — check your connection and try again.',
   'mp.enterCode': 'Enter the 6-character room code',

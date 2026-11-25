@@ -46,10 +46,26 @@ import { tierName, compName } from "../i18n/names.js";
  * @param {function}  [onPickLeague] owner only — makes the FIRST row (the
  *   league face) a button that opens the league picker. Omitted on a friend's
  *   card and in the canvas share render, which are read-only.
+ * @param {boolean}   [kit] the signed-in Profile on a phone only (25 Nov 2026).
+ *   The same card, the same parts in the same order, set in that screen's type
+ *   sizes: 11 for the capitals, 16 for the six ratings, 24 for the name the
+ *   caller passes, 92 for the rating; rows 40 high; padding 20 all round.
+ *   Four of its measures are CSS variables with those values as their
+ *   fallbacks (--bq-pad, --bq-gap, --bq-rg, --bq-ls), so that screen's
+ *   stylesheet can bring them in on the smallest phones, where "LEGENDS" and
+ *   its rating did not fit one column at 320 wide.
+ *   Alex approved that screen as a drawing ("Yes, build it":
+ *   ball-iq-audit/2026-11-24/finish/profile-signed-in-8.png). A friend's card
+ *   and a not-signed-in player's keep the sizes below, and the saved picture
+ *   (lib/shareCardRender.js) mirrors THOSE, not these.
+ * @param {ReactNode} [footer] under the six ratings, inside the card: that
+ *   screen's quiet "Share my card".
  */
-export default function BallIqCardFace({ card, played, answered = 0, avatar, name, subline, style, onPickLeague }) {
+export default function BallIqCardFace({ card, played, answered = 0, avatar, name, subline, style, onPickLeague, kit = false, footer }) {
   const t = useT();
   const pal = tierPalette(card.tier);
+  // A measure that differs on the kit card: k(as it was, on the kit card).
+  const k = (was, now) => (kit ? now : was);
 
   // The best of the six PLAYED competitions takes the tier accent, so the eye
   // lands on the player's strongest suit without needing a legend. null when
@@ -62,7 +78,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
     <div style={{
       position: "relative", overflow: "hidden",
       background: pal.bg, border: `1.5px solid ${tint(pal.accent, 0.33)}`,
-      borderRadius: 22, padding: "22px 20px 18px",
+      borderRadius: k(22, 24), padding: k("22px 20px 18px", "var(--bq-pad, 20px)"),
       boxShadow: "0 10px 30px rgba(0,0,0,0.42)",
       ...style,
     }}>
@@ -81,7 +97,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               looks a bit awkward like that"); the card's colour already says the
               tier, the word is kept for saying aloud and for eyes that cannot
               tell the tones apart. */}
-          <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 3.4, color: pal.text }}>
+          <div style={{ fontSize: k(10, 11), fontWeight: k(900, 800), letterSpacing: k(3.4, "0.3em"), lineHeight: k(undefined, 1), color: pal.text }}>
             <span style={{ opacity: 0.5 }}>BALL IQ</span>
             {played ? <><span style={{ opacity: 0.35 }}> · </span><span style={{ color: pal.accent }}>{tierName(card.tier)}</span></> : null}
           </div>
@@ -103,11 +119,11 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
                   card was three labels round one number. Alex: "does overall
                   need to be there? it is kind of obvious". "BALL IQ" above
                   names the number and now carries the tier. Two lines shorter. */}
-              <div style={{ fontSize: 86, fontWeight: 900, color: pal.accent, lineHeight: 1.02, letterSpacing: -4, marginTop: 6, fontVariantNumeric: "tabular-nums" }}>{card.overall}</div>
+              <div style={{ fontSize: k(86, 92), fontWeight: 900, color: pal.accent, lineHeight: k(1.02, 0.9), letterSpacing: k(-4, "-0.05em"), marginTop: k(6, 10), fontVariantNumeric: "tabular-nums" }}>{card.overall}</div>
               {/* A gold number on a short record: say when the card turns, so the
                   hold reads as a goal and not as gold that failed to arrive. */}
               {card.goldIn > 0 && (
-                <div style={{ fontSize: 11.5, fontWeight: 700, color: pal.text, opacity: 0.6, marginTop: 4 }}>{t("cf.goldIn", { count: card.goldIn, n: card.goldIn })}</div>
+                <div style={{ fontSize: k(11.5, 11), fontWeight: 700, color: pal.text, opacity: 0.6, marginTop: k(4, 8) }}>{t("cf.goldIn", { count: card.goldIn, n: card.goldIn })}</div>
               )}
             </>
           ) : (
@@ -153,14 +169,14 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
       {/* Identity runs the FULL width under both columns — the name is the
           second thing you read, and boxing it under the numeral had it wrapping
           at ten characters. */}
-      <div style={{ position: "relative", marginTop: 14 }}>
+      <div style={{ position: "relative", marginTop: k(14, 16) }}>
         {/* ⚠️ EACH ON ITS OWN BLOCK. The name is an inline-flex button (it
             carries an edit pencil) and the level line used to be an inline-flex
             pill, so they rendered SIDE BY SIDE — "Alex ✏️ (Champions League
             1,840 XP)" on one line. Wrapping here rather than asking every
             caller to remember it. */}
         <div>{name}</div>
-        {subline ? <div style={{ marginTop: 6 }}>{subline}</div> : null}
+        {subline ? <div style={{ marginTop: k(6, 8) }}>{subline}</div> : null}
       </div>
 
       {/* ⚠️ AN UNPLAYED COMPETITION STILL SHOWS NO NUMBER. computeCard seeds
@@ -175,7 +191,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           colour says which competition this is; it belongs in both states.
           Played is signalled by the number being there, and the best of the six
           carrying the tier accent. */}
-      <div style={{ position: "relative", marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 20 }}>
+      <div style={{ position: "relative", marginTop: k(18, 20), display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: k(20, "var(--bq-gap, 24px)") }}>
         {card.ratings.map((r, i) => {
           const has = r.answered >= MIN_RATED_ANSWERS;
           // Provisional (3–9 answers): the number shows, muted, never accented —
@@ -186,7 +202,10 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           // the player's own league (pickLeagueFace), the other five are fixed.
           const pickable = i === 0 && !!onPickLeague;
           // long names ("BUNDESLIGA") are set smaller rather than truncated
-          const lab = faceLabelType(r.abbr, 13);
+          // On the kit card every label is 11, the size of that screen's other
+          // capitals; a long one ("BUNDESLIGA") is set closer and ends in an
+          // ellipsis before it would shrink under 11.
+          const lab = kit ? { size: 11, tracking: (r.abbr || "").length >= 8 ? "var(--bq-ls-long, 0.04em)" : "var(--bq-ls, 0.12em)" } : faceLabelType(r.abbr, 13);
           // ⚠️ THE AFFORDANCE LIVES INSIDE THE LABEL, NOT BESIDE THE NUMBER.
           // This card's geometry is mirrored pixel-for-pixel by the canvas
           // share render in App.jsx (generateShareCard, type "iq") — a saved
@@ -201,12 +220,12 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               onClick={pickable ? onPickLeague : undefined}
               aria-label={pickable ? t("cf.change", { c: compName(r) }) : undefined}
               style={{
-              display: "flex", alignItems: "center", gap: 9,
+              display: "flex", alignItems: "center", gap: k(9, "var(--bq-rg, 9px)"),
               /* Fixed height for the reason the old chips had one: nothing in
                  the row may decide its own line box. iOS gives some emoji
                  different metrics from others, which made two of six rows
                  shorter on device and identical in Chrome. */
-              height: 42, boxSizing: "border-box", minWidth: 0,
+              height: k(42, 40), boxSizing: "border-box", minWidth: 0,
               borderTop: `1px solid ${tint(pal.text, 0.10)}`,
               ...(pickable ? {
                 /* a button re-introduces UA styling the div never had */
@@ -216,14 +235,14 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
               } : null),
             }}>
               <span aria-hidden="true" style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0, background: lift(r.color) }} />
-              <span style={{ flex: 1, minWidth: 0, fontSize: lab.size, fontWeight: 800, letterSpacing: lab.tracking, color: pal.text, opacity: 0.72, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span style={{ flex: 1, minWidth: 0, fontSize: lab.size, fontWeight: k(800, 700), letterSpacing: lab.tracking, color: pal.text, opacity: k(0.72, 0.62), overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {r.abbr}{pickable ? <span aria-hidden="true" style={{ opacity: 0.55, marginLeft: 5, fontWeight: 900 }}>›</span> : null}
               </span>
               {has ? (
-                <span style={{ fontSize: 21, fontWeight: 900, color: r.rating === best ? pal.accent : pal.text, opacity: r.rating === best ? 1 : 0.92, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+                <span style={{ fontSize: k(21, 16), fontWeight: k(900, 800), color: r.rating === best ? pal.accent : pal.text, opacity: r.rating === best ? 1 : k(0.92, 1), fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
               ) : soft ? (
                 <span aria-label={t("cf.prov", { c: compName(r), r: r.rating, n: r.answered, min: MIN_RATED_ANSWERS })}
-                  style={{ fontSize: 21, fontWeight: 900, color: pal.text, opacity: 0.45, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
+                  style={{ fontSize: k(21, 16), fontWeight: k(900, 800), color: pal.text, opacity: 0.45, fontVariantNumeric: "tabular-nums" }}>{r.rating}</span>
               ) : (
                 /* A short rule, not an em-dash: at this size a dash beside a
                    label reads as a hyphen. This reads as an empty slot. */
@@ -233,6 +252,7 @@ export default function BallIqCardFace({ card, played, answered = 0, avatar, nam
           );
         })}
       </div>
+      {footer ? <div style={{ position: "relative", marginTop: 20 }}>{footer}</div> : null}
     </div>
   );
 }

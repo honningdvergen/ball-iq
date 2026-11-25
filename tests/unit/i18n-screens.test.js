@@ -20,6 +20,27 @@
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
 //   • Spanish renders with biq_lang=es, with no step 4 English left.
+// INTENDED CHANGE, 25 Nov 2026 (the SIGNED-IN Profile on a phone; Alex, on its drawing: "Yes, build it").
+// Eleven entries were replaced, and only those: the eleven signed-in Profile entries (every "profile: ..."
+// that is not a guest's or the invite-link player's). The new render was dumped with a temporary copy of
+// this test; 87 of 98 entries were byte-identical, among them the three not-signed-in Profile entries and
+// every friend entry (the shared card component gained a `kit` switch, which only the signed-in phone
+// column turns on). For each of the eleven a script cut the old and the new entry at the same two
+// landmarks (<div class="profile-mobile-identity"> and <div class="profile-col-right">, each asserted to
+// be there exactly once) and proved: (1) everything before the phone column is byte-identical (the wide
+// window's header, rating card and league grid); (2) everything after it (the wide window's scouting card
+// and Share, the ladder in full, the friends block, the badge grid and whichever sheet the scenario has
+// open) is byte-identical once " pd-wide-only" is taken off the class of the column under the two, where
+// it appears exactly once; (3) so only the phone column differs. There the card is set in the screen's
+// sizes with the rank and the kind of player on one line and "Share my card" inside it, and under it are
+// the Mates card, Next up and one Badges row where the Share bar, the scouting report (or the "No stats
+// yet" box) stood. Three entries were ADDED, for the screens behind that column's rows: "profile: signed
+// in, the ladder at the top rank", "profile: signed in, the badge wall open on a badge" and "profile:
+// signed in, the mates screen with requests and a search" (101 entries in all). The scenarios' state keys
+// moved with the code: FriendsSection's state is the useFriends hook's now, in the same order
+// ("useFriends:3" where "FriendsSection:3" was), with `loaded` added last (7), and ProfileScreenImpl has
+// one more, `sub` (10), after the ten that were there. tests/unit/profile-signed-in.test.js holds what
+// the new column shows.
 // INTENDED CHANGE, 25 Nov 2026 (the Profile of a player who is NOT signed in; Alex: "good, build when
 // ready please"). Three entries were replaced, and only those: "profile: guest, first visit (the
 // example card)", "profile: guest, 4 answered, example dismissed" and "profile: anonymous invite
@@ -403,7 +424,16 @@ describe('Spanish (biq_lang=es)', () => {
   });
   it('Profile, a friend, blocked users', () => {
     const p = unq(now['profile: signed in, rated, friends and requests']);
-    for (const s of ['>Perfil<', '>Tu Ball IQ<', ' Nivel europeo · 1640 XP<', '>MEDIA<', '>ORO<', '>Medias por liga<', '>Selecciones<', ' Informe del ojeador<', '>A mejorar<', '"Especialista en Premier League"', ' Tu camino<', '>AQUÍ<', '>Faltan 1360 XP<', '>20.000 XP<', '>Solicitudes recibidas<', '>Puntos 900<', '>Clasificación de amigos<', '>TÚ<', '>Insignias: 4/12 conseguidas<', '>Velocista<', '>12 en Crono<', '>✓ Conseguida<']) expect(p, s).toContain(s);
+    for (const s of ['>Perfil<', '>Tu Ball IQ<', ' Nivel europeo · 1640 XP<', '>MEDIA<', '>ORO<', '>Medias por liga<', '>Selecciones<', '>Informe del ojeador<', '>A mejorar<', ' Tu camino<', '>AQUÍ<', '>Faltan 1360 XP<', '>20.000 XP<', '>Solicitudes recibidas<', '>Puntos 900<', '>Clasificación de amigos<', '>TÚ<', '>Insignias: 4/12 conseguidas<', '>Velocista<', '>12 en Crono<', '>✓ Conseguida<']) expect(p, s).toContain(s);
+    // 25 Nov 2026: the signed-in phone column. The scouting report's heading and its quoted verdict
+    // left it (the wide window keeps its own "Informe del ojeador"); the verdict is the card's second
+    // line, and the Mates card, Next up and the Badges row are under it.
+    for (const s of ['>Nivel europeo · Especialista en Premier League<', 'Compartir mi carta<', '>Colegas<', '>Añadir colega<', '>1 solicitud<', '>Invitar<', '>Ahora toca<', '>Faltan 1360 XP<', '>Veterano<', '>1640 de 3000 XP<', '>Jugar<', '>Insignias<', '>4 de 12<']) expect(p, s).toContain(s);
+    expect(p).not.toContain('"Especialista en Premier League"');
+    const m = unq(now['profile: signed in, the mates screen with requests and a search']);
+    for (const s of ['placeholder="Busca a un amigo por su nombre…"', '>Solicitudes recibidas<', '>Aceptar<', 'aria-label="Rechazar"', '>Pendientes<', '>Tus amigos · 2<', '>Retar<']) expect(m, s).toContain(s);
+    const l = unq(now['profile: signed in, the ladder at the top rank']);
+    for (const s of ['>Tu camino<', '>Inmortal<', '>Nivel máximo alcanzado<', '>La escalera<', '>Estás aquí<']) expect(l, s).toContain(s);
     // 25 Nov 2026: a player who is not signed in no longer gets the EXAMPLE pop-up or the "?" card;
     // their card is the one not yet unlocked, with the account under it.
     const g0 = unq(now['profile: guest, first visit (the example card)']);
