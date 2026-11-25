@@ -27,7 +27,8 @@ describe("a member's league row on Home", () => {
     expect(block).toContain('.home-mates .lg-home-line{font-weight:500;}');
   });
   it('the invite is a soft pill 36 high to the eye and 44 to the thumb', () => {
-    expect(block).toMatch(/\.home-mates \.lg-solo-invite\{position:relative;min-height:0;height:36px;padding:0 14px;[^}]*background:rgba\(88,204,2,0\.16\);font-size:13\.5px;\}/);
+    // quiet, as drawn (hk.css): no outline, a softer green, weight 700
+    expect(block).toContain('.home-mates .lg-solo-invite{position:relative;min-height:0;height:36px;padding:0 14px;border:0;background:rgba(88,204,2,0.16);color:#8AE042;-webkit-text-fill-color:#8AE042;font-size:13.5px;font-weight:700;}');
     expect(block).toContain('.home-mates .lg-solo-invite::after{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;}');
     expect(block).toContain('@media (max-width: 359px){.home-mates .lg-solo-invite{padding:0 11px;font-size:12px;}}');
   });

@@ -3946,7 +3946,10 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
   .home-mates .lg-home-body{gap:1px;}
   .home-mates .lg-home-name{font-size:14px;font-weight:900;letter-spacing:-0.2px;line-height:1.1;height:1.1em;}
   .home-mates .lg-home-line{font-weight:500;}
-  .home-mates .lg-solo-invite{position:relative;min-height:0;height:36px;padding:0 14px;border:1px solid rgba(88,204,2,0.45);background:rgba(88,204,2,0.16);font-size:13.5px;}
+  /* Quiet, as drawn: no outline, a softer green and a lighter weight than a Play. Alex on the old
+     one in the simulator: "is the invite a mate button a bit big or a bit too loud on the home
+     screen here somehow? i think so". It asks; the dailies above it are the thing to press. */
+  .home-mates .lg-solo-invite{position:relative;min-height:0;height:36px;padding:0 14px;border:0;background:rgba(88,204,2,0.16);color:#8AE042;-webkit-text-fill-color:#8AE042;font-size:13.5px;font-weight:700;}
   .home-mates .lg-solo-invite::after{content:"";position:absolute;left:0;right:0;top:-4px;bottom:-4px;}
   /* The arrow is the mates rows' own (.mp-row-chev: that grey, 8px in from the edge), so the two
      arrows of the card stand in one column; the week's seven dots draw in a little so "2nd" keeps
