@@ -160,6 +160,25 @@ describe('the search prompt fits a phone header (24 Nov 2026)', () => {
       expect(css).not.toMatch(/\.fd-find-in\{[^}]*font-size:1[0-5]/);
     }
   });
+  it('inside the app the header is not padded twice, so those steps hold there too (25 Nov 2026)', () => {
+    // In a browser tab the app's screens wear the header inside main.app, which is already padded
+    // 16px a side on a phone. With the frame's own 16px on top the field was 32px narrower than on
+    // the front door and the prompt was cut again: "Find your clul" at 393 (108px of words in 101).
+    const front = readFileSync(resolve(__dirname, '../../src/design/front.css'), 'utf8');
+    const phone = front.slice(front.indexOf('@media (max-width:720px){'));
+    const at = phone.indexOf('.app .fd-w{padding-left:0;padding-right:0}');
+    expect(at).toBeGreaterThan(0);
+    // phones only: it sits in the 720 block, after the frame's own padding and before the block ends
+    expect(phone.indexOf('.fd-w{padding:0 16px}')).toBeLessThan(at);
+    expect(at).toBeLessThan(phone.indexOf('.fd-hero{padding-top:18px}'));
+    expect((front.match(/\.app \.fd-w\{/g) || []).length).toBe(1);
+    // the header and the tab row are that frame, inside main.app, and the app's column is 16px a side there
+    expect(readFileSync(resolve(__dirname, '../../src/marketing/SiteHeader.jsx'), 'utf8')).toContain('<div className="fd-w fd-head-in">');
+    expect(readFileSync(resolve(__dirname, '../../src/components/AppBar.jsx'), 'utf8')).toContain('<div className="fd-w fd-appbar-in">');
+    expect(readFileSync(resolve(__dirname, '../../src/app.css'), 'utf8')).toContain('body.biq-web .app { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 44px) 48px; }');
+    // the static pages have no app column: their header keeps its frame
+    expect(front).not.toMatch(/\.fd-head-in\{[^}]*padding:0[;}]/);
+  });
 });
 
 describe('the Spanish layer says "en vivo", not "en directo"', () => {

@@ -255,6 +255,18 @@
      320). KEEP IN STEP with scripts/seo/shell.mjs. */
   @media (max-width:379px){.fd-find-in::placeholder{font-size:13px}}
   @media (max-width:358px){.fd-find-ic{display:none}.fd-find-in{padding:0 8px}.fd-find-in::placeholder{font-size:12px}}
+  /* INSIDE THE APP THE FRAME IS THE APP'S COLUMN (25 Nov 2026). In a browser
+     tab the app's screens wear this header, and the tab row under it, inside
+     main.app, which is already padded 16px a side at this width (app.css,
+     body.biq-web .app). With the frame's own 16px on top, both rows started
+     32px in while everything under them started at 16, and the search field
+     was 32px narrower than on the front door, where the steps above were
+     measured: the prompt was cut at every phone width ("Find your clul" at
+     393, 108px of words in 101; 87 in 83 at 375; 81 in 64 at 320). In the app
+     the frame gives up its side padding, so the header is the front door's to
+     the pixel (16 to w-16), the same steps hold, and the two rows share the
+     left edge of the screen under them. */
+  .app .fd-w{padding-left:0;padding-right:0}
   /* The finder's results span the header, not the 184px search box: names
      wrapped and "Play" spilled out of the panel (design critique, 16 Oct). */
   .fd-head-in{position:relative}
