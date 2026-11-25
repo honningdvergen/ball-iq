@@ -62,7 +62,11 @@ test('K3 greeting — no "Guest" / undefined / object placeholders during load',
   expect(combined).not.toMatch(/Good (morning|afternoon|evening),\s*\[object/);
 });
 
-test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page, context }) => {
+// 25 Nov 2026: a guest who has answered nothing no longer gets the journey ladder and the badge
+// wall (Alex on that screen: "still looks really hectic"; to the redraw: "good, build when ready
+// please"). They get their card, not yet unlocked, and one way to an account; journey and badges
+// follow once there is something in them. This test used to pin the two old headings.
+test('K1 — Profile tab shows a guest their locked card and the way to an account', async ({ page, context }) => {
   // Seed guest mode + onboarded so AuthProvider takes the guest path AND
   // the home screen renders past any first-run onboarding overlay.
   await context.addInitScript(() => {
@@ -98,9 +102,17 @@ test('K1 — Profile tab renders Badges + Journey in guest mode', async ({ page,
   await profileTab.first().click();
   await page.waitForTimeout(400);
 
-  // ProfileScreen renders these section headers.
-  await expect(page.getByText(/Badges —/i)).toBeVisible({ timeout: 5000 });
-  await expect(page.getByText(/Your Journey/i)).toBeVisible({ timeout: 5000 });
+  // On a phone or tablet: the card that is not unlocked yet, and the one green button. A wide
+  // browser window keeps its own two-column Profile (not redrawn yet), which invites a first game.
+  // Looked at on the built app in WebKit at 393, 768 and 1280 wide on 25 Nov 2026.
+  const wide = (page.viewportSize()?.width || 0) >= 1024;
+  if (wide) {
+    await expect(page.getByText(/Play a game to get your/i).first()).toBeVisible({ timeout: 5000 });
+  } else {
+    await expect(page.getByText(/to unlock your card/i).first()).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('button', { name: /Create free account/i }).first()).toBeVisible({ timeout: 5000 });
+  }
+  await expect(page.getByText(/Your Journey/i)).toHaveCount(0);
 
   await page.screenshot({ path: 'test-results/sprint13-stage1-profile.png', fullPage: true });
 

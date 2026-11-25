@@ -31,6 +31,10 @@ async function captureErrors(page) {
       const t = msg.text();
       if (/Failed to load resource/.test(t)) return;
       if (AD_FRAME_NOISE.test(t)) return;
+      // Chrome's own notice, not an app fault: a game opened by its link (Hot Streak has no
+      // row on Home since 25 Nov 2026) can ask for a haptic before the first tap, and Chrome
+      // refuses it and says so. Timing decides whether it shows, so it made this run flaky.
+      if (/Blocked call to navigator\.vibrate/.test(t)) return;
       errs.push(`console.error: ${t}`);
     }
   });
