@@ -316,6 +316,10 @@ export default registerEnglish({
   'qz.classic': 'Everything',
   'qz.chaos': 'Chaos',
   'qz.legends': 'Legends · pre-2000',
+  // The phone list (26 Nov 2026): Everything's grey line under its name, and the grey word
+  // after "Legends" on its row (the wide window keeps qz.legends as one name).
+  'qz.classicSub': 'All topics mixed',
+  'qz.legendsEra': 'pre-2000',
   'qz.classicSum': '10 questions · easy to hard',
   'qz.chaosSum': '10 questions · wild cards',
   'qz.legendsSum': '10 questions · pre-2000',

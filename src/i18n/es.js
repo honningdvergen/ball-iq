@@ -293,6 +293,11 @@ export default {
   'qz.classic': 'De todo',
   'qz.chaos': 'Caos',
   'qz.legends': 'Leyendas · antes de 2000',
+  // La lista del móvil (26 Nov 2026): la línea gris bajo "De todo" y la palabra gris tras
+  // "Leyendas" en su fila.
+  // Not yet read by a native reviewer.
+  'qz.classicSub': 'Todos los temas mezclados',
+  'qz.legendsEra': 'antes de 2000',
   'qz.classicSum': 'Diez preguntas · de fácil a difícil',
   'qz.chaosSum': 'Diez preguntas · sin orden',
   'qz.legendsSum': 'Diez preguntas · antes de 2000',
