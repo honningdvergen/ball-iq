@@ -1566,7 +1566,9 @@ export default registerEnglish({
   // "Yes, build it"). The streak card's grey line while today is not counted yet, and a new
   // player's one line under the Today row. The "No days yet" card's words (hi.noDays,
   // hi.empty, hi.four, hi.three) and hi.TODAY left with what they named.
-  'hi.keepToday': 'Play one puzzle today to keep it',
+  // (hi.keepToday was "Play one puzzle today to keep it" for a day; the sixth drawing's
+  // build keeps it short, the same truth.)
+  'hi.keepToday': 'Play today to keep it',
   'hi.firstRow': 'Each day you play gets a row here',
   // Online multiplayer: entry, lobby, game and podium (screens/OnlineMultiplayer.jsx).
   'mp.createFail': 'Couldn\'t create the room — check your connection and try again.',

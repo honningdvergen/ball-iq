@@ -81,7 +81,8 @@ describe('the tab does what it did', () => {
   });
 
   it('the bell and the gear moved into the title row with the shared strip\'s own handlers', () => {
-    expect(APP).toContain('{!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online")) && (');
+    // (26 Nov 2026: the History tab draws its own too, on its title's row, so the strip stands over neither.)
+    expect(APP).toContain('{!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online" || tab === "daily")) && (');
     const pane = APP.slice(APP.indexOf('<OnlineHubTab'), APP.indexOf('{/* ── PROFILE TAB ── */}'));
     expect(pane).toContain('showSettings={!isWebBrowser}');
     expect(pane).toContain('onOpenSettings={openSettings}');

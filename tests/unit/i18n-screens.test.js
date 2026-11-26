@@ -33,6 +33,28 @@
 // where the "No days yet" card stood, and the repair, day-complete and shields blocks are plain
 // cards with lucide icons where there were outlined boxes and three system glyphs.
 // tests/unit/history-tab.test.js holds what the new column shows.
+// INTENDED CHANGE, 26 Nov 2026, later (History on a phone, the SIXTH drawing; Alex, of the first
+// build: "it does not pass the eye test", and of the sixth drawing: "Yes, build it"). The six
+// "history: ..." entries were replaced again, and only those. The new render was dumped with a
+// temporary copy of this test; 95 of 101 entries were byte-identical. For each of the six the same
+// script (now ball-iq-audit/2026-11-26/history-6/built/how/golden.py) cut the old and the new entry
+// at the phone column's opening tag and at <div class="daily-desktop"> (each asserted to be there
+// exactly once) and proved everything before the phone column and everything from
+// <div class="daily-desktop"> to the end byte-identical: the wide window did not move, its
+// day-complete block included. Inside the phone column: (1) the title and the countdown are one
+// block (.hs-top: "History" over the countdown's one line) with the gear tile, and a signed-in
+// player's bell, on the same row, where the title and the countdown shared a line of their own (the
+// scenarios pass showSettings as the app's shell does; "two weeks with gaps" also passes the bell,
+// "streak broke, yesterday all done" is the browser tab, with no tiles); (2) there is NO
+// day-complete card in any entry (two had one: "Clean sweep" and "Today's done" with Survival);
+// (3) the label is alone on its line and the four games head their columns inside the card, each as
+// an image with the game's name where there were four coloured words; (4) a day is one line
+// ("Today", "Yesterday", "Sun" and "Oct 18" as two words of one label) where it was a name over a
+// date; (5) a solved Footle, Transfer Trail or Mystery Player is a tick and never a number, and a
+// Daily 7 or Top 10 score is the number with its "/7" or "/10" as a second element, no inline
+// colour on either; (6) the dates of a run of days off are words for a screen reader only
+// (.sr-only) where they were a label on the line's own div, and the countdown carries no label of
+// its own (its words are the sentence). The row sentences a screen reader gets are unchanged.
 //   • Every key step 4 added is pinned to its exact English
 //     (i18n-screens.keys.js), and the tables the game keeps in English for
 //     its share texts (levels, tiers, badges, verdicts …) must agree with them.
@@ -462,7 +484,17 @@ describe('Spanish (biq_lang=es)', () => {
     // is the list's first row (here a finished Footle and three games to play).
     for (const s of ['>Nuevos en <b>12 h 0 min</b><', '>Hace 2 semanas<', '>Hoy<', '>Vuelve mañana para mantenerla<', 'aria-label="Juega al Daily 7 de hoy"', 'aria-label="Ponte al día: juega el Daily 7 de ayer"']) expect(h, s).toContain(s);
     expect(h).not.toContain('HACE 2 SEM');
-    expect(unq(now['history: all done today, yesterday open, streak broke'])).toContain('>Se rompió tu racha de 9 días<');
+    // 26 Nov 2026, the sixth drawing: the bell and the gear are on the title's row, a day is one
+    // line (the weekday and the date as two words of one label), the games head their columns as
+    // images with their names, a score is the number and its small "/7", and the dates of a run of
+    // days off are words only a screen reader gets.
+    for (const s of ['aria-label="Notificaciones, 2 nuevas"', 'aria-label="Ajustes"', '<span class="hs-day"><span>dom</span><span>18 oct</span></span>', '<span class="hs-day"><span>Ayer</span></span>', 'role="img" aria-label="Transfer Trail"', '<b>5</b><i>/7</i>', '<span class="sr-only">15 oct – 16 oct: </span>2 días libres<']) expect(h, s).toContain(s);
+    const swept = unq(now['history: all done today, yesterday open, streak broke']);
+    expect(swept).toContain('>Se rompió tu racha de 9 días<');
+    // No day-complete card on a phone, in Spanish either: the wide window keeps its own.
+    const phone = (m) => m.slice(m.indexOf('<div class="daily-col-mobile hs"'), m.indexOf('<div class="daily-desktop">'));
+    for (const s of ['Pleno', 'A muerte', 'Aún puedes jugar los de ayer']) expect(phone(swept), s).not.toContain(s);
+    expect(swept.slice(swept.indexOf('<div class="daily-desktop">'))).toContain('>Pleno<');
     // A new player: the same screen, with the streak card at zero, four games on the Today row
     // and one line under it (it was the "Aún no hay días" card with a button).
     const n = unq(now['history: a new player, nothing played']);

@@ -124,6 +124,16 @@ test('Daily tab — History renders for a new player (a Today row on a phone, no
     await expect(plays.first()).toBeVisible();
     expect(await plays.count()).toBeGreaterThanOrEqual(2);
     await expect(phone.locator('.hs-row')).toHaveCount(1);
+    // 26 Nov 2026, the sixth drawing (Alex, of the first build: "it does not pass the eye test";
+    // of this one: "Yes, build it"). The four games head their columns inside the card as their
+    // own icons, each an image with the game's name (the coloured words are gone); the title and
+    // the countdown are one block; and in a browser tab, which is where this test runs, that row
+    // has no gear or bell of its own: the website's bar above carries them.
+    await expect(phone.getByRole('img', { name: 'Footle', exact: true })).toBeVisible();
+    await expect(phone.getByRole('img', { name: 'Daily 7', exact: true })).toBeVisible();
+    await expect(phone.getByText('FOOTLE', { exact: true })).toHaveCount(0);
+    await expect(phone.locator('.hs-top .hs-title')).toHaveText('History');
+    await expect(phone.locator('.hs-tools')).toHaveCount(0);
     await expect(page.getByText('No days yet', { exact: true })).toHaveCount(0);
   }
 

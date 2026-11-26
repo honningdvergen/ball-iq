@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X, Play, Check, HeartCrack, Shield } from "lucide-react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { ClipboardList, Route, UserRoundSearch, ListOrdered, Flame, X, Play, Check, HeartCrack, Shield, Bell, Settings } from "lucide-react";
 import { Confetti } from "../components/Confetti.jsx";
 import { haptic } from "../lib/feedback.js";
 import { dateToYMD, msToNextLocalMidnight } from '../lib/date.js';
@@ -105,9 +105,9 @@ function ModeGlyph({ mode, size = 22 }) {
 // 54 gives each pill ~11pt of air and still leaves ~97pt of a 375pt phone for
 // the date column, where "Yesterday" needs ~70.
 // 26 Nov 2026: on a phone this is the column's WIDEST (history.css takes it as
-// --hs-colmax). Under about 370 wide the four columns give way, never under the
-// 44 a thumb needs (47 each at 320), so the day's name keeps its room: the old
-// fixed 54 left it 34 at 320, and "Yesterday" ran under the first score.
+// --hs-colmax). Under 377 wide the four columns give way, never under the 44 a
+// thumb needs (53.5 each at 375, 44 at 320), so the day's name keeps its room:
+// the old fixed 54 left it 34 at 320, and "Yesterday" ran under the first score.
 const COL_W = 54;
 
 // A game's colour for the kit's wells, pills and play buttons (app.css reads
@@ -178,18 +178,36 @@ function ReplayCell({ w, theme, label, onTap }) {
   );
 }
 
-// ONE CELL OF THE PHONE'S LIST (26 Nov 2026; history.css). The wide window
-// keeps ScoreCell and ReplayCell above. The same five states, drawn in the kit:
-// a score is a plain number in the game's colour with no chip under it (a fill
-// inside the card's fill was one of the things Alex's drawing took out), not
-// solved is the red cross, started and never finished is a small grey dot, not
-// played is a short grey dash, and a game with no answer that day is empty.
-//
+// ONE CELL OF THE PHONE'S LIST (history.css). The wide window keeps ScoreCell
+// and ReplayCell above. Drawn for the sixth time on 26 Nov 2026, after Alex
+// said of the first build "the scores are a bit confusing": a Footle "3" and a
+// Trail "2" were guesses USED (lower is better) beside a Daily 7 "6/7" and a
+// Top 10 "7/10", things GOT (higher is better), with no word to tell them
+// apart, and four game colours on every row. So:
+//   - Footle, Transfer Trail and Mystery Player are solved or not: a green
+//     tick, or the red cross. NEVER a number. (How many guesses it took is on
+//     the game's own finish and in the row's sentence for a screen reader.)
+//   - Daily 7 and Top 10 keep their score, in white, with "/7" or "/10" small
+//     and grey beside it, so the eye reads 6, 5, 4 down a column.
+//   - started and never finished is a small grey dot, not played is a short
+//     grey dash, and a game with no answer that day is empty.
+// Colour now says how it went (green solved, red missed). Which game a column
+// is comes from the tile at its head (HeadTile), and the four game colours
+// are on those tiles and on the play buttons only.
+export function cellMark(c) {
+  if (c.state === "play") return "play";
+  if (c.state === "win") return c.score ? "score" : "tick";
+  if (c.state === "miss") return "cross";
+  if (c.state === "open") return "dot";
+  if (c.state === "none") return "dash";
+  return "empty";
+}
 // With `onTap` the cell is a button. On Today it carries a round tinted well:
 // the one loud thing in the list. On Yesterday (`bare`) it is the arrow alone,
 // so a player who skipped both days sees one row of buttons, not two. Either
-// way the button is the whole column wide and 56 high, more than the 44 a
-// thumb needs; the well is 36 to the eye.
+// way the button is the whole column wide and 48 of the row's 52 high, more
+// than the 44 a thumb needs; the well is 36 to the eye. `glyph` is Mystery
+// Player's small mark, on a result from before Top 10 took the fourth column.
 function DayCell({ c, glyph = null, onTap = null, bare = false, label = "" }) {
   if (onTap) {
     return (
@@ -198,15 +216,46 @@ function DayCell({ c, glyph = null, onTap = null, bare = false, label = "" }) {
       </button>
     );
   }
+  const mark = cellMark(c);
   return (
     <span className="hs-c" aria-hidden="true">
-      {c.state === "win" ? <b style={{ color: c.theme.fg, WebkitTextFillColor: c.theme.fg }}>{glyph ? <ModeGlyph mode={glyph} size={13} /> : null}{c.text}</b>
-        : c.state === "miss" ? <X className="hs-x" size={16} strokeWidth={2.6} />
-        : c.state === "open" ? <i />
-        : c.state === "none" ? <s />
+      {mark === "tick" ? <>{glyph ? <span className="hs-of" style={{ color: c.theme.fg }}><ModeGlyph mode={glyph} size={13} /></span> : null}<Check className="hs-ok" size={18} strokeWidth={2.8} /></>
+        : mark === "score" ? <><b>{c.score[0]}</b><i>/{c.score[1]}</i></>
+        : mark === "cross" ? <X className="hs-x" size={16} strokeWidth={2.6} />
+        : mark === "dot" ? <u />
+        : mark === "dash" ? <s />
         : null}
     </span>
   );
+}
+
+// THE HEAD OF A COLUMN (26 Nov 2026): the game's own icon in a small tinted
+// tile, in the game's colour. It was the game's name in coloured capitals on
+// the label's line, where "FOOTLE" and "DAILY 7" all but touched on a small
+// phone. The icons are the ones the app already uses for these games (the
+// Footle letter, and ModeGlyph's lucide marks). The words are gone from the
+// screen, so each tile is an image with the game's name.
+function HeadTile({ mode }) {
+  return (
+    <span className="hs-c">
+      <span className="hs-tile" role="img" aria-label={MODE_LABEL[mode]} title={MODE_LABEL[mode]} style={modeVars(mode)}>
+        {mode === "footle" ? <b aria-hidden="true">F</b> : <ModeGlyph mode={mode} size={15} />}
+      </span>
+    </span>
+  );
+}
+
+// A DAY'S NAME, ONE LINE (26 Nov 2026). Alex, of "Today" over "Nov 25": "do
+// we bother having the date under today". Today and Yesterday are their word
+// alone; an older day is its weekday and its short date, in the phone's own
+// order ("Tue 24 Nov", "Tue Nov 24", "mar 24 nov"). Two parts on purpose:
+// where both do not fit beside the four columns (a long locale on the
+// smallest phone) history.css lets the weekday go and keeps the date.
+export function dayLabel(m) {
+  return m.isToday || m.isYesterday ? [m.dateLabel] : [m.dateLabel, m.dateSub];
+}
+function DayName({ m }) {
+  return <span className="hs-day">{dayLabel(m).map((part, i) => <span key={i}>{part}</span>)}</span>;
 }
 
 // One tint per mode, shared by the mobile cards, the desktop cards and the
@@ -306,7 +355,9 @@ function rowCells(m) {
     { key: "footle", theme: MODE_THEME.footle, text: String(m.fUsed),
       state: m.fWon ? "win" : m.fAttempt ? "miss" : "none",
       aria: m.fWon ? solved("Footle", m.fUsed) : m.fAttempt ? notSolved("Footle") : notPlayed("Footle") },
-    { key: "daily7", theme: MODE_THEME.daily7, text: `${m.t7Score}/7`,
+    // `score` is [got, out of], for the two games that have one (the phone
+    // prints the first in white and the second small and grey).
+    { key: "daily7", theme: MODE_THEME.daily7, text: `${m.t7Score}/7`, score: [m.t7Score, 7],
       state: m.t7Done ? "win" : "none",
       aria: m.t7Done ? t("hi.d7", { n: m.t7Score }) : notPlayed("Daily 7") },
     { key: "trail", theme: MODE_THEME.trail, text: String(m.trUsed),
@@ -316,7 +367,7 @@ function rowCells(m) {
     // A finished Top 10 is a score like Daily 7's, never a miss: running out
     // of lives at six found is still six found.
     m.t10Live
-      ? { key: "top10", theme: MODE_THEME.top10, text: `${m.t10Score}/10`,
+      ? { key: "top10", theme: MODE_THEME.top10, text: `${m.t10Score}/10`, score: [m.t10Score, 10],
           state: m.t10Done ? "win" : m.t10Attempt ? "open" : "none",
           aria: m.t10Done ? t("hi.t10", { n: m.t10Score }) : m.t10Attempt ? t("hi.open", { g: "Top 10" }) : notPlayed("Top 10") }
       // Mystery cannot be lost, so an unfinished board is "open", never a miss.
@@ -340,9 +391,10 @@ function rowAria(m) {
 // new player with a different screen.
 //
 // One cell per column, in the columns' order:
-//   - a game FINISHED today prints exactly what any past row prints for it
-//     (rowCells): the number of guesses or the miss mark, x/7, x/10. It is not a
-//     button; Home is where a finished board is opened again.
+//   - a game FINISHED today is exactly what any past row holds for it
+//     (rowCells), drawn as any past row draws it (cellMark): a tick or the
+//     cross, or the score. It is not a button; Home is where a finished board
+//     is opened again.
 //   - a game NOT finished, started or not, is its play button (`play`, with
 //     `started` for the words a screen reader gets).
 //   - a game with NO ANSWER today is empty ("off"), as in any other row.
@@ -377,6 +429,10 @@ export function todayCells(m, games) {
 //     not promise that.)
 // The old line said "come back tomorrow to keep it" to anyone with a streak,
 // also before they had played today, when tomorrow would have been too late.
+// The words are the app's own at every width. In the sixth drawing's 320 phone
+// the line was shortened ("Back tomorrow to keep it"); measured in WebKit the
+// longest of the three is 201.8 wide in English and 208.2 in Spanish, and the
+// line has 212 there, so nothing is shortened and nothing switches by width.
 export function streakNoteKey(streak, countedToday) {
   if (!(streak > 0)) return "hi.light";
   return countedToday ? "hi.keep" : "hi.keepToday";
@@ -419,11 +475,13 @@ function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
 // already plumbed — yesterday's unplayed puzzles — and falls back to Survival,
 // which needs no difficulty picker, no account, and never runs out.
 //
-// `kit` is the phone's drawing of the same block (26 Nov 2026): a plain card,
-// the tick in a green well, the same two lines, and under them soft pills,
-// yesterday's open games in their own colours or Survival. Nothing was taken
-// out. The wide window keeps the block below as it was.
-function DayComplete({ open, onSurvival, wide, todayYMD, kit = false, swept = false }) {
+// THE WIDE WINDOW'S ALONE since 26 Nov 2026. A phone had its own drawing of
+// this block for a day; Alex, of it: "survival never runs out? i am not sure
+// what that even points to in this context", and of the screen "it does not
+// pass the eye test". On a phone a finished day is now its four results on
+// the Today row, the streak's line and the countdown, and nothing else: no
+// card, no Survival, no confetti.
+function DayComplete({ open, onSurvival, wide, todayYMD, swept = false }) {
   useT();
   const hasOpen = open.length > 0;
   // "Clean sweep" only when every one of today's games was WON (26 Nov 2026).
@@ -435,9 +493,18 @@ function DayComplete({ open, onSurvival, wide, todayYMD, kit = false, swept = fa
   // pulse, ONCE per local day — the panel re-mounts on every hub visit and on
   // the mobile/wide layout switch, so the localStorage stamp (not state) is
   // what keeps a finished day from re-celebrating all evening.
+  //
+  // Only where the wide layout is the one in use. That layout is in the page on
+  // a phone too (app.css: .daily-desktop is display:none under 1024), and since
+  // the phone's own block went, this one would have buzzed a phone and spent the
+  // day's one celebration where nobody could see it. In a wide window nothing
+  // changes: the layout's own display is asked, not whether the tab is open.
+  const rootRef = useRef(null);
   const [celebrate, setCelebrate] = useState(false);
   useEffect(() => {
     try {
+      const layout = rootRef.current?.closest(".daily-desktop");
+      if (layout && getComputedStyle(layout).display === "none") return;
       if (!todayYMD || localStorage.getItem("biq_sweep_seen") === todayYMD) return;
       localStorage.setItem("biq_sweep_seen", todayYMD);
       setCelebrate(true);
@@ -446,33 +513,8 @@ function DayComplete({ open, onSurvival, wide, todayYMD, kit = false, swept = fa
       return () => clearTimeout(id);
     } catch { /* storage unavailable: skip the celebration, keep the card */ }
   }, [todayYMD]);
-  if (kit) {
-    return (
-      <section className="gp-list">
-        {celebrate && Confetti ? <Confetti /> : null}
-        <div className="todays-seven-secondary is-still" style={modeVars("footle")}>
-          <span className="t7s-icon" aria-hidden="true"><Check size={22} strokeWidth={2.4} /></span>
-          <span className="t7s-body">
-            <span className="t7s-title">{title}</span>
-            <span className="t7s-sub">{t(hasOpen ? "hi.yOpen" : "hi.survNever")}</span>
-          </span>
-        </div>
-        {/* YESTERDAY'S GAMES ARE NOT OFFERED HERE ON A PHONE (26 Nov 2026). The
-            Yesterday row right under this card carries the same four as its
-            arrows, and four coloured pills here offered them a second time
-            (Alex: "i guess drop them? ... things have to make sense"). With
-            yesterday open the card is its tick and two lines; with nothing
-            left it offers the one game that never runs out. */}
-        {!hasOpen && (
-          <div className="hs-pills">
-            <button type="button" className="t7s-cta" style={modeVars("footle")} onClick={onSurvival}>{t("home.mode.survival")}</button>
-          </div>
-        )}
-      </section>
-    );
-  }
   return (
-    <div style={{ borderRadius: 16, padding: wide ? "18px 20px" : "14px 16px", background: "rgba(88,204,2,0.06)", border: "1px solid rgba(88,204,2,0.28)", display: "flex", flexDirection: "column", gap: hasOpen ? 12 : 0 }}>
+    <div ref={rootRef} style={{ borderRadius: 16, padding: wide ? "18px 20px" : "14px 16px", background: "rgba(88,204,2,0.06)", border: "1px solid rgba(88,204,2,0.28)", display: "flex", flexDirection: "column", gap: hasOpen ? 12 : 0 }}>
       {celebrate && Confetti ? <Confetti /> : null}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "var(--accent)", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
@@ -520,7 +562,7 @@ function StreakRepairBanner({ repair, open, wide, kit = false }) {
     return (
       <section className="gp-list">
         <div className="todays-seven-secondary is-still" style={{ "--mode": "#FF6B6B", "--mode-rgb": "255,107,107" }}>
-          <span className="t7s-icon" aria-hidden="true"><HeartCrack size={22} strokeWidth={2} /></span>
+          <span className="t7s-icon" aria-hidden="true"><HeartCrack size={20} strokeWidth={2} /></span>
           <span className="t7s-body">
             <span className="t7s-title">{rich(t("hi.broke", { count: repair.fell }), { n: repair.fell })}</span>
             <span className="t7s-sub">{t(open.length > 0 ? "hi.repairOpen" : "hi.repairDone")}</span>
@@ -563,7 +605,7 @@ function StreakRepairBanner({ repair, open, wide, kit = false }) {
   );
 }
 
-function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair, onStartLeague }) {
+function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode, setScreen, dailyDone, dailyScore, playDailyForDate, loginStreak, bestLoginStreak, playArchive, streakRepair, onStartLeague, showSettings = false, onOpenSettings, onOpenNotifs, notifCount = 0 }) {
   // The day rows' words and dates are memoised: they follow the language and its table's arrival.
   const uiLang = useLang();
   const uiReady = isLangLoaded(uiLang);
@@ -993,24 +1035,45 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {/* ═══ PHONE (<1024). A display:contents box (it generates no box of its
           own, so the page flows as before) that flips to display:none at
           >=1024. Its class `hs` is where every rule of history.css starts.
-          Rebuilt on 26 Nov 2026 from the drawing Alex approved: the title with
-          the countdown as plain text, the streak card, and one card for all
-          days with Today as its first row. ═══ */}
+          Built on 26 Nov 2026 from the sixth drawing Alex approved ("Yes, build
+          it"; ball-iq-audit/2026-11-24/finish/history-6-compare.png, the right
+          phone): the title's row, the streak card, and one card for all days
+          with Today as its first row. Of the first build he had said "things
+          look a bit thrown together again instead of carefully designed". ═══ */}
       <div className="daily-col-mobile hs" style={{ "--hs-colmax": `${COL_W}px` }}>
       {(() => {
         const ko = countdownText(msToNextLocalMidnight(now));
         return (
           <>
-            {/* No local gear — AppInner's global header already renders one (as a tile over this tab). */}
+            {/* THE TITLE'S ROW. "History" with the countdown as its one grey line,
+                and the gear (after a signed-in player's bell) as tiles on the SAME
+                row: the strip App.jsx drew over this tab is not drawn any more,
+                and the big title line that stood under it is gone (Alex: "a bit
+                too large and clumsy"). In a browser tab the website's own bar
+                carries notifications and Settings, so there the row has no tiles
+                (showSettings is false), as on the Multiplayer tab. */}
             {/* No greeting here (2026-09-06): the tab is History; the header anchor lives on Home. */}
-            <div className="hs-h">
-              <div className="hs-title">{t("tab.daily")}</div>
-              <span className="hs-count" aria-label={t("dd.newIn", { ko })}>{t("hi.newIn")} <b>{ko}</b></span>
+            <div className="hs-top">
+              <div className="hs-id">
+                <div className="hs-title">{t("tab.daily")}</div>
+                <div className="hs-count">{t("hi.newIn")} <b>{ko}</b></div>
+              </div>
+              {showSettings && (
+                <div className="hs-tools">
+                  {onOpenNotifs && (
+                    <button type="button" onClick={onOpenNotifs} className="icon-btn hdr-ic hs-btn" aria-label={notifCount > 0 ? t("nav.notificationsNew", { count: notifCount }) : t("nav.notifications")}>
+                      <Bell size={20} strokeWidth={2} aria-hidden="true" />
+                      {notifCount > 0 && <span className="notif-dot" aria-hidden="true" />}
+                    </button>
+                  )}
+                  <button type="button" onClick={onOpenSettings} className="icon-btn hdr-ic hs-btn" aria-label={t("nav.settings")}><Settings size={20} strokeWidth={2} aria-hidden="true" /></button>
+                </div>
+              )}
             </div>
-            {/* Streak-repair and day-complete stay first: each is about today and
-                each has something to tap. */}
+            {/* Streak-repair stays first: it is about today, and its pills are
+                the way to repair. NO day-complete block on a phone, in any state
+                (see DayComplete). */}
             <StreakRepairBanner repair={streakRepair} open={dayOpen} kit />
-            {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} swept={allWon} kit />}
           </>
         );
       })()}
@@ -1026,7 +1089,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           own gate (hasFormHistory, below). */}
       <section className="gp-list hs-streak" role="status" aria-label={t("hi.streakAria", { count: streak.unbeaten, n: streak.unbeaten, b: streak.bestUnbeaten })}>
         <div className="todays-seven-secondary is-still" style={{ "--mode": "#FF9B5A", "--mode-rgb": "255,138,60" }}>
-          <span className="t7s-icon" aria-hidden="true"><Flame size={22} strokeWidth={2} /></span>
+          <span className="t7s-icon" aria-hidden="true"><Flame size={20} strokeWidth={2} /></span>
           <span className="t7s-body">
             <span className="t7s-title hs-num">{rich(t("hi.dayStreak", { count: streak.unbeaten }), { n: streak.unbeaten })}</span>
             <span className="t7s-sub">{t(streakNoteKey(streak.unbeaten, countedToday))}</span>
@@ -1045,21 +1108,19 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
         <div className="hs-ends"><span>{t("hi.2wk")}</span><span>{t("site.today")}</span></div>
       </section>
 
-      {/* The label and the four games' names, each over its column of the card
-          under them. */}
-      <div className="hs-heads">
-        <span className="home-section-title">{t("hi.recent")}</span>
-        {cols.map(c => (
-          <span key={c.key} className="hs-head" style={{ color: c.theme.head, WebkitTextFillColor: c.theme.head }}>{c.label}</span>
-        ))}
-      </div>
+      {/* The label, alone on its line like every other label in the kit. */}
+      <div className="home-section-title">{t("hi.recent")}</div>
 
-      {/* ONE card for all days, a hairline between rows. It was a card with an
-          outline per day. */}
+      {/* ONE card for all days, a hairline between rows. Its first row heads
+          the four columns with the four games' own icons. */}
       <section className="gp-list hs-list">
+        <div className="hs-heads">
+          <span aria-hidden="true" />
+          {cols.map(c => <HeadTile key={c.key} mode={c.key} />)}
+        </div>
         {todayRow && (
           <div className="hs-row" role="group" aria-label={rowAria(todayRow)}>
-            <span className="t7s-body"><span className="t7s-title">{todayRow.dateLabel}</span><span className="t7s-sub">{todayRow.dateSub}</span></span>
+            <DayName m={todayRow} />
             {todayCells(todayRow, todayModes).map(c => (
               <DayCell key={c.key} c={c} glyph={headKeys.has(c.key) ? null : c.key} onTap={c.play} label={c.play ? c.aria : ""} />
             ))}
@@ -1079,9 +1140,11 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
               // A quiet line between two days, inside the card (26 Nov 2026).
               // On 11 Nov it had already stopped being a dashed box reading
               // "Nov 8 to Nov 9 · 2 days not played": a list of the player's
-              // absences, boxed. The dates stay for a screen reader.
-              <div key={`gap-${newest.ymd}`} className="hs-gap" aria-label={m.days.length === 1 ? `${newest.dateLabel} ${newest.dateSub}: ${text}` : `${oldest.dateSub} – ${newest.dateSub}: ${text}`}>
-                {text}
+              // absences, boxed. The dates stay for a screen reader, as words
+              // only it gets: a label on a bare div is one the accessibility
+              // check refuses and a reader may skip.
+              <div key={`gap-${newest.ymd}`} className="hs-gap">
+                <span className="sr-only">{m.days.length === 1 ? `${newest.dateLabel} ${newest.dateSub}: ` : `${oldest.dateSub} – ${newest.dateSub}: `}</span>{text}
               </div>
             );
           }
@@ -1089,7 +1152,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
           const catchUp = m.isYesterday && !m.t7Done && playDailyForDate;
           return (
             <div key={m.ymd} className="hs-row" role="group" aria-label={rowAria(m)}>
-              <span className="t7s-body"><span className="t7s-title">{m.dateLabel}</span><span className="t7s-sub">{m.dateSub}</span></span>
+              <DayName m={m} />
               {cells.map(c => (
                 c.key === "daily7" && catchUp ? (
                   // Comeback hook (opportunity-scan #8): yesterday's missed
@@ -1111,7 +1174,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
       {shieldCount > 0 && (
         <section className="gp-list">
           <div className="todays-seven-secondary is-still" style={modeVars("footle")}>
-            <span className="t7s-icon" aria-hidden="true"><Shield size={22} strokeWidth={2} /></span>
+            <span className="t7s-icon" aria-hidden="true"><Shield size={20} strokeWidth={2} /></span>
             <span className="t7s-body">
               <span className="t7s-title hs-num">{rich(t("hi.shields", { count: shieldCount }), { n: shieldCount, s: shieldCount === 1 ? "" : "s" })}</span>
               <span className="t7s-sub">{t("hi.shieldSub")}</span>

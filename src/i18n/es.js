@@ -1517,9 +1517,10 @@ export default {
   'sp.here': 'Estás aquí',
   'sp.xpTo': 'Faltan {n} XP para {name}',
   // El Historial en el móvil (26 Nov 2026): la línea gris de la racha cuando hoy aún no cuenta,
-  // y la única línea de un jugador nuevo bajo la fila de hoy. "Reto" como en hi.light.
+  // y la única línea de un jugador nuevo bajo la fila de hoy. hi.keepToday es corta a
+  // propósito, como en inglés ("Play today to keep it"): cabe en una línea a 320 px.
   // Not yet read by a native reviewer.
-  'hi.keepToday': 'Juega un reto hoy para mantenerla',
+  'hi.keepToday': 'Juega hoy para mantenerla',
   'hi.firstRow': 'Cada día que juegues tendrá su fila aquí',
   // Multijugador online: entrada, sala, partida y podio
   'mp.createFail': 'No se ha podido crear la sala. Revisa tu conexión y vuelve a intentarlo.',

@@ -7617,7 +7617,12 @@ function AppInner() {
         {/* 26 Nov 2026: and over the History tab, built in the same kit that day
             (Alex, on its drawing: "Yes, build it"). The tiles' rules moved to
             app.css with it: two tabs wear them, each with a chunk of its own. */}
-        {!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online")) && (
+        {/* 26 Nov 2026, later: not over the History tab at all. Its sixth
+            drawing (Alex: "Yes, build it") has the gear, and a signed-in
+            player's bell, on the title's own row, as Home and the Multiplayer
+            tab have them: screens/DailyScreen.jsx draws them with the handlers
+            this strip gave them. */}
+        {!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online" || tab === "daily")) && (
           <div className={screen === "home" && (tab === "profile" || tab === "daily") ? "hdr hdr-guest" : "hdr"}>
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and
@@ -8060,6 +8065,12 @@ function AppInner() {
               dailyScore={dailyScore}
               playDailyForDate={playDailyForDate}
               onStartLeague={LEAGUES_ON ? openLeagueCreateFromDaily : undefined}
+              // The bell and the gear the shared strip drew over this tab, with
+              // the handlers that strip gives them (the bell needs a session).
+              showSettings={!isWebBrowser}
+              onOpenSettings={openSettings}
+              onOpenNotifs={user ? openNotifs : undefined}
+              notifCount={notifCount}
             />
             </TabErrorBoundary>
           </div>

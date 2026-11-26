@@ -292,7 +292,7 @@ export const STEP7_EN = {
   'sp.here': 'You are here',
   'sp.xpTo': '{n} XP to {name}',
   // The History tab on a phone (26 Nov 2026).
-  'hi.keepToday': 'Play one puzzle today to keep it',
+  'hi.keepToday': 'Play today to keep it',
   'hi.firstRow': 'Each day you play gets a row here',
   'mp.createFail': 'Couldn\'t create the room — check your connection and try again.',
   'mp.enterCode': 'Enter the 6-character room code',

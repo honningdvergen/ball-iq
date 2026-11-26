@@ -164,9 +164,12 @@ const reviewScenarios = () => {
 };
 
 // ── History (the Daily tab) ─────────────────────────────────────────────────
+// 26 Nov 2026: the phone column draws its own gear tile on the title's row (showSettings, as the
+// app's shell passes it; a browser tab passes false), and a signed-in player's bell before it.
 const hist = (props) => () => React.createElement(DailyTabScreen, {
   profile: { name: 'Alex' }, xp: 300, shieldCount: 0, dailyHistory: {}, startMode: noop, setScreen: noop,
-  dailyDone: false, dailyScore: null, playDailyForDate: noop, loginStreak: 0, bestLoginStreak: 0, playArchive: noop, ...props,
+  dailyDone: false, dailyScore: null, playDailyForDate: noop, loginStreak: 0, bestLoginStreak: 0, playArchive: noop,
+  showSettings: true, onOpenSettings: noop, ...props,
 });
 const fl = (n, rec) => ({ [`biq_wordle_${ymd(n)}`]: JSON.stringify(rec) });
 const tr = (n, rec) => ({ [`biq_trail_${ymd(n)}`]: JSON.stringify(rec) });
@@ -181,7 +184,7 @@ const historyScenarios = () => [
     ...tr(2, { status: 'won', attempts: g(2) }), ...tr(9, { status: 'lost', attempts: g(5) }),
     ...t10(2, { status: 'done', score: 6 }), ...t10(3, { status: 'playing', score: 2, picks: [1] }),
     ...my(12, { won: true, guesses: g(5) }), ...my(13, { won: false, guesses: g(2) }),
-  }, hist({ dailyHistory: { [ymd(2)]: 5, [ymd(9)]: 3, [ymd(13)]: 7 }, loginStreak: 1, bestLoginStreak: 6, shieldCount: 1 })],
+  }, hist({ dailyHistory: { [ymd(2)]: 5, [ymd(9)]: 3, [ymd(13)]: 7 }, loginStreak: 1, bestLoginStreak: 6, shieldCount: 1, onOpenNotifs: noop, notifCount: 2 })],
   ['history: all done today, yesterday open, streak broke', {
     ...fl(0, { guesses: g(3), status: 'won' }), ...tr(0, { status: 'won', attempts: g(2) }), ...t10(0, { status: 'done', score: 7 }),
     ...fl(4, { guesses: g(4), status: 'won' }),
@@ -192,7 +195,7 @@ const historyScenarios = () => [
   }, hist({ dailyDone: true, dailyScore: 7, dailyHistory: { [ymd(0)]: 7, [ymd(1)]: 2 }, loginStreak: 2, bestLoginStreak: 2, onStartLeague: noop })],
   ['history: streak broke, yesterday all done', {
     ...fl(1, { guesses: g(2), status: 'won' }), ...tr(1, { status: 'won', attempts: g(1) }), ...t10(1, { status: 'done', score: 3 }),
-  }, hist({ dailyHistory: { [ymd(1)]: 2 }, loginStreak: 0, bestLoginStreak: 3, streakRepair: { fell: 3 } })],
+  }, hist({ dailyHistory: { [ymd(1)]: 2 }, loginStreak: 0, bestLoginStreak: 3, streakRepair: { fell: 3 }, showSettings: false })],
 ];
 
 // ── Profile ─────────────────────────────────────────────────────────────────
