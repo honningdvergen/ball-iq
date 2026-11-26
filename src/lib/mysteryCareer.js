@@ -308,6 +308,15 @@ function clubSizes(careers) {
   return m;
 }
 
+/**
+ * How many players in the careers file have a spell at a club (fan name), the
+ * "better known" measure mainClub breaks near-ties with. Read-only; added for
+ * the hint and tile rules in lib/mysteryRules.js (26 Nov 2026).
+ */
+export function clubFame(careers, club) {
+  return careers ? clubSizes(careers).get(club) || 0 : 0;
+}
+
 /** Years two spells overlapped. Unknown starts never overlap. */
 export function overlapYears(a, b, year = NOW_YEAR) {
   if (a.from == null || b.from == null) return 0;
