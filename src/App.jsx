@@ -3008,6 +3008,11 @@ function AppInner() {
   // The chip the Quiz screen opens on: the last topic started this session, or
   // Everything. Not persisted; a cold start opens on Everything, as the mock.
   const [quizTopic, setQuizTopic] = useState("classic");
+  // Stadiums opened from the Quiz topic list goes BACK to that list (26 Nov
+  // 2026). Its back arrow always went Home, one step too far for someone who
+  // came from the list (the new list makes that the usual way in). By its own
+  // link (?game=stadiums) it still leaves to Home.
+  const stadiumsFromQuiz = useRef(false);
   // Mates' leagues (web only): the open table, and the create / join sheet.
   const [leagueId, setLeagueId] = useState(null);
   // Stitch-up: the link's token (null = the builder). Web only (LEAGUES_WEB).
@@ -5413,7 +5418,7 @@ function AppInner() {
       // link, so every mode needs a URL. startMode owns the mode's own rules
       // (difficulty sheet for classic, done-state for dailies).
       if (["classic", "survival", "hotstreak", "legends", "chaos", "clubquiz", "leaguequiz"].includes(gameSlug)) { startMode(gameSlug); return; }
-      if (gameSlug === "stadiums") { setScreen("stadiums"); return; }
+      if (gameSlug === "stadiums") { stadiumsFromQuiz.current = false; setScreen("stadiums"); return; }
       if (gameSlug === "online") { setScreen("home"); setTab("online"); return; }
       // ?game=mystery — the /mystery redirect and the share link land here.
       // Guarded: links to this mode are already out in the world (the web
@@ -8325,7 +8330,7 @@ function AppInner() {
             initialTopic={quizTopic}
             onStartMode={(m, t) => { setQuizTopic(t); startMode(m); }}
             onStartCat={(c, t) => { setQuizTopic(t); launchLeagueQuiz(c); }}
-            onStadiums={() => setScreen("stadiums")}
+            onStadiums={() => { stadiumsFromQuiz.current = true; setScreen("stadiums"); }}
             onBack={goHome}
             catStats={stats?.catStats}
             cardLeague={stats?.cardLeague}
@@ -8496,7 +8501,7 @@ function AppInner() {
           <TabErrorBoundary name="mystery" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Mystery Player" />}><MysteryPlayer date={archiveDate || undefined} onExit={goHome} services={dailyScreenServices} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stadiums" && (
-          <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={goHome} shareCard={shareCard} /></React.Suspense></TabErrorBoundary>
+          <TabErrorBoundary name="stadiums" onExit={goHome}><React.Suspense fallback={<ScreenLoading label="Loading Stadiums" />}><StadiumGame onExit={() => { if (stadiumsFromQuiz.current) { stadiumsFromQuiz.current = false; setScreen("quiz-topics"); } else goHome(); }} shareCard={shareCard} /></React.Suspense></TabErrorBoundary>
         )}
         {screen === "stump" && stumpRow && (
           <TabErrorBoundary name="stump" onExit={goHome}>

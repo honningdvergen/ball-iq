@@ -93,7 +93,8 @@ describe("Quiz screen: every old entry, through its old launcher", () => {
     expect(QUIZ_CODE).toMatch(/<span className="qz-run-name">\{t\("qz\.stadiums"\)\}<\/span>/);
     expect(QUIZ_CODE).toMatch(/<span className="qz-name">\{t\("qz\.stadiums"\)\}<\/span>/);
     expect(en["qz.stadiums"]).toBe("Stadiums");
-    expect(APP_CODE).toMatch(/onStadiums=\{\(\) => setScreen\("stadiums"\)\}/);
+    // 26 Nov 2026: it also marks that it was opened from the list, so its back arrow returns here.
+    expect(APP_CODE).toMatch(/onStadiums=\{\(\) => \{ stadiumsFromQuiz\.current = true; setScreen\("stadiums"\); \}\}/);
   });
 
   it("one solid button, sentence case, lucide icons only", () => {
@@ -117,7 +118,7 @@ describe("Quiz screen: every old entry, through its old launcher", () => {
 describe("old routes and deep links", () => {
   it("?game= doors still start the old modes directly", () => {
     expect(APP_CODE).toMatch(/\["classic", "survival", "hotstreak", "legends", "chaos", "clubquiz", "leaguequiz"\]\.includes\(gameSlug\)\) \{ startMode\(gameSlug\); return; \}/);
-    expect(APP_CODE).toMatch(/if \(gameSlug === "stadiums"\) \{ setScreen\("stadiums"\); return; \}/);
+    expect(APP_CODE).toMatch(/if \(gameSlug === "stadiums"\) \{ stadiumsFromQuiz\.current = false; setScreen\("stadiums"\); return; \}/);
     // ?quiz=<slug> still resolves to a league quiz, not to the picker.
     expect(APP_CODE).toMatch(/else if \(catKey\) launchLeagueQuiz\(catKey\);/);
   });
