@@ -295,6 +295,16 @@ export default registerEnglish({
   'quiz.tryAgain': 'Please try again in a moment.',
   'quiz.backHome': 'Back to Home',
   'quiz.hardNailed': '🏆 HARD · NAILED IT',
+  // The question and the reveal on a phone (26 Nov 2026, the drawing Alex
+  // approved: quiz-question-3). The arrows, ticks and the trophy are lucide
+  // icons there, so these words carry none; the wide window keeps the lines above.
+  'quiz.nOf': '{n} of {total}',
+  'quiz.stepsAria': 'Question {n} of {total}, {right} right so far',
+  'quiz.nextGo': 'Next',
+  'quiz.resultsGo': 'Results',
+  'quiz.rightWord': 'Correct!',
+  'quiz.wrongWord': 'Incorrect',
+  'quiz.hardNailedTxt': 'HARD · NAILED IT',
   // Category chips (the q-tag and the Quiz screen). Only the labels Spanish
   // changes; the rest stay App.jsx's CAT_LABELS / LEAGUE_QUIZ_SECTIONS names.
   'cat.WorldCup': 'International',

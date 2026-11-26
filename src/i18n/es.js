@@ -274,6 +274,16 @@ export default {
   'quiz.tryAgain': 'Vuelve a intentarlo en un momento.',
   'quiz.backHome': 'Volver al inicio',
   'quiz.hardNailed': '🏆 DIFÍCIL · ¡CLAVADA!',
+  // La pregunta y la respuesta en el móvil (26 Nov 2026): las mismas palabras de
+  // arriba sin flechas ni marcas (allí son iconos). Nuevas: quiz.nOf y quiz.stepsAria.
+  // Not yet read by a native reviewer.
+  'quiz.nOf': '{n} de {total}',
+  'quiz.stepsAria': 'Pregunta {n} de {total}, {right} acertadas hasta ahora',
+  'quiz.nextGo': 'Siguiente',
+  'quiz.resultsGo': 'Resultados',
+  'quiz.rightWord': '¡Correcto!',
+  'quiz.wrongWord': 'Incorrecto',
+  'quiz.hardNailedTxt': 'DIFÍCIL · ¡CLAVADA!',
   'cat.WorldCup': 'Selecciones',
   'cat.Euros': 'Eurocopa',
   'cat.Managers': 'Entrenadores',
