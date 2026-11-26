@@ -379,6 +379,11 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   } : null;
   const typing = focused && !done;
   const q = text.trim();
+  // The hint strip steps out only while a name is being typed (that is when the
+  // suggestions need the room). The field keeps its focus between guesses, so
+  // hiding the strip on focus alone hid "Hint ready" from a player who never
+  // put the keyboard away (found playing it in WebKit, 26 Nov 2026).
+  const stripOut = typing && q.length > 0;
   const noMatch = !done && ready && q.length >= 2 && suggestions.length === 0;
   return (
     <div ref={rootRef} className={`mp mq${embedded ? ' is-embedded' : ''}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', paddingBottom: kbInset ? 24 + kbInset : undefined }}>
@@ -430,7 +435,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       )}
 
       {/* THE PITCH CARD (B1). Before the first guess the rule line; after it
-          the closest rank in yellow. While the field has focus the hint strip
+          the closest rank in yellow. While a name is being typed the hint strip
           steps out so three suggestions fit above the keyboard (B5). */}
       {!done && (
         <section className="mq-card" aria-label={t('mq.who')}>
@@ -438,7 +443,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           {rows.length === 0
             ? <p className="mq-rule">{t('mq.rule')}</p>
             : <p className="mq-best">{t('mq.closest', { r: num(rows[0].rank) })}</p>}
-          {!typing && (
+          {!stripOut && (
             <HintStrip n={n} taken={taken} cards={cards} held={held} open={open} t={t}
               onChoose={() => { ensureData(); setSheet('hints'); }} />
           )}
