@@ -8566,17 +8566,13 @@ function AppInner() {
                 </div>
               </div>
             )}
-            {!activeClub && activeLeague && LEAGUE_QUIZ_BY_CAT[activeLeague] && (
-              <div style={{marginTop:14,marginBottom:6,display:"flex",alignItems:"center",gap:14,padding:"12px 14px",background:clubHexToRgba(LEAGUE_QUIZ_BY_CAT[activeLeague].color, 0.14),border:`1px solid ${clubHexToRgba(LEAGUE_QUIZ_BY_CAT[activeLeague].color, 0.4)}`,borderRadius:14}}>
-                <div style={{width:46,height:46,borderRadius:12,flexShrink:0,background:LEAGUE_QUIZ_BY_CAT[activeLeague].color,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 2px 8px ${clubHexToRgba(LEAGUE_QUIZ_BY_CAT[activeLeague].color, 0.45)}`}}>
-                  <span style={{fontWeight:900,fontSize:14,letterSpacing:0.3,color:clubReadableText(LEAGUE_QUIZ_BY_CAT[activeLeague].color)}}>{LEAGUE_QUIZ_BY_CAT[activeLeague].abbr}</span>
-                </div>
-                <div style={{flex:1,minWidth:0}}>
-                  <div style={{fontSize:11,color:"var(--t3)",fontWeight:600,marginBottom:2}}>{t("cat.LeagueQuiz")}</div>
-                  <div style={{fontSize:17,fontWeight:800,color:"var(--t1)",letterSpacing:"-0.2px"}}>{catLabel(t, activeLeague)}</div>
-                </div>
-              </div>
-            )}
+            {/* The league banner ("League Quiz / Premier League") went on 26 Nov
+                2026. Alex, on the new question screen: "Is league quiz premier
+                league really necessary to have at the top there? They already
+                know that is what they selected". The question card names the
+                league with its flag, and the banner made the screen taller than
+                the phone, so answering scrolled the back tile, the steps and
+                the timer away. */}
             <QuizEngine
               key={mode}
               questions={questions}
