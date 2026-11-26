@@ -94,7 +94,7 @@ async function sheet(items, px, file, title) {
     const lines = [it.name.slice(0, 24), it.id, (it.flags || '').slice(0, 30)];
     comps.push({ input: Buffer.from(`<svg width="${cell}" height="${labelH}">${lines.map((l, k) => `<text x="0" y="${12 + k * 13}" font-size="${k ? 10 : 11}" font-family="Helvetica" fill="${k === 2 ? '#b00' : '#111'}">${esc(l)}</text>`).join('')}</svg>`), left: x - 10, top: y + px + 3 });
   }
-  await sharp({ create: { width: W, height: H, channels: 3, background: '#f4f4f4' } }).composite(comps).png().toFile(file);
+  await sharp({ create: { width: W, height: H, channels: 3, background: '#f4f4f4' } }).composite(comps).jpeg({ quality: 86 }).toFile(file);
 }
 
 const flagText = (v) => (v && v.ok ? Object.entries(v.flags).filter(([, b]) => b).map(([k]) => k).join(' ') : `STRUCK: ${v?.strike || 'none'}`);
@@ -109,7 +109,7 @@ for (const id of answers) {
   cur.push({ id, name: byId.get(id).name, buf: c?.buf, why: v?.strike, flags: flagText(v) });
   if (cur.length % 50 === 0) process.stdout.write(`  answers ${cur.length}\r`);
 }
-for (let i = 0; i < cur.length; i += 50) { await sheet(cur.slice(i, i + 50), HERO_PX * 2, `${OUT}/photos/answers/current-${String(i / 50 + 1).padStart(2, '0')}.png`, `Answers, current Wikidata image, 104 crop at 2x (${i + 1}-${Math.min(i + 50, cur.length)})`); sheets++; }
+for (let i = 0; i < cur.length; i += 50) { await sheet(cur.slice(i, i + 50), HERO_PX * 2, `${OUT}/photos/answers/current-${String(i / 50 + 1).padStart(2, '0')}.jpg`, `Answers, current Wikidata image, 104 crop at 2x (${i + 1}-${Math.min(i + 50, cur.length)})`); sheets++; }
 
 // 2. Before / after where a better candidate is proposed.
 const ba = [];
@@ -121,7 +121,7 @@ for (const id of answers) {
   ba.push({ id, name: `${byId.get(id).name} BEFORE`, buf: before?.buf, why: p.current?.strike, flags: flagText(p.current) });
   ba.push({ id, name: `${byId.get(id).name} AFTER`, buf: after?.buf, flags: `${flagText(p.proposed)} ${p.proposed.date || ''}`.trim() });
 }
-for (let i = 0; i < ba.length; i += 50) { await sheet(ba.slice(i, i + 50), HERO_PX * 2, `${OUT}/photos/answers/proposed-${String(i / 50 + 1).padStart(2, '0')}.png`, `Answers, before and after the better-photo pass (R9), 104 crop at 2x`); sheets++; }
+for (let i = 0; i < ba.length; i += 50) { await sheet(ba.slice(i, i + 50), HERO_PX * 2, `${OUT}/photos/answers/proposed-${String(i / 50 + 1).padStart(2, '0')}.jpg`, `Answers, before and after the better-photo pass (pass two), 104 crop at 2x`); sheets++; }
 
 // 3. The 300 most famous at 104 and at 52 (each drawn at 2x).
 for (const [px, tag] of [[HERO_PX * 2, '104'], [LIST_PX * 2, '52']]) {
@@ -131,7 +131,7 @@ for (const [px, tag] of [[HERO_PX * 2, '104'], [LIST_PX * 2, '52']]) {
     const c = v && v.crop ? await cropOf(v, HERO_PX * 2) : null;
     items.push({ id, name: byId.get(id).name, buf: c?.buf, why: v?.strike, flags: flagText(v) });
   }
-  for (let i = 0; i < items.length; i += 50) { await sheet(items.slice(i, i + 50), px, `${OUT}/photos/famous/famous-${tag}-${String(i / 50 + 1).padStart(2, '0')}.png`, `300 most famous, ${tag} crop at 2x (${i + 1}-${Math.min(i + 50, items.length)})`); sheets++; }
+  for (let i = 0; i < items.length; i += 50) { await sheet(items.slice(i, i + 50), px, `${OUT}/photos/famous/famous-${tag}-${String(i / 50 + 1).padStart(2, '0')}.jpg`, `300 most famous, ${tag} crop at 2x (${i + 1}-${Math.min(i + 50, items.length)})`); sheets++; }
 }
 
 // 4. The review set (R12): the proposed pick, else the current one, at 624.
@@ -142,6 +142,9 @@ for (const id of answers) {
   const v = picks[id]?.proposed || picks[id]?.current;
   if (!v || !v.ok) { struck.push({ id, name: p.name, reason: v?.strike || 'no photo on file' }); continue; }
   if (v.flags.notNamed) { struck.push({ id, name: p.name, file: v.file, reason: 'the file\'s own name and description do not name the player (R11)' }); continue; }
+  // Pass two: a Wikidata image that does not face the camera, with no
+  // replacement that passes every rule, leaves the answer without a photo.
+  if (v.flags.profile) { struck.push({ id, name: p.name, file: v.file, reason: 'profile: not facing the camera, and no replacement passes every rule' }); continue; }
   if (v.dateFits === false) { struck.push({ id, name: p.name, file: v.file, reason: 'date does not fit the career' }); continue; }
   const c = await cropOf(v, REVIEW_PX);
   if (!c) { struck.push({ id, name: p.name, file: v.file, reason: 'could not fetch the picture' }); continue; }
@@ -156,6 +159,10 @@ for (const id of answers) {
     face: v.face, picture: { w: v.w, h: v.h },
     serves: v.crop.serves.hero ? 'both' : v.crop.serves.list ? 'list only' : 'neither',
     srcW: v.crop.srcW, reviewPx: c.px, flags: Object.entries(v.flags).filter(([, b]) => b).map(([k]) => k),
+    // The measures a reviewer's rejects can be compared with (pass two):
+    // frontal (yaw in degrees, nose offset in eye distances), sharpness
+    // (Laplacian variance of the face at 128 px), face share of the crop.
+    frontal: v.frontal ?? null, measures: v.measures || null,
     img: `${id}.jpg`,
   });
 }
