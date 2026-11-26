@@ -46,10 +46,11 @@ describe('the card takes a picture and one action, when a host asks', () => {
     expect(html.endsWith('</div></div></section>')).toBe(true);
   });
   // 25 Nov 2026: Transfer Trail and Top 10 hand over a picture of their own and ask for the layout
-  // (tests/unit/trail-top10-finish.test.js). Mystery Player's finish is as it was.
-  it('Mystery Player passes nothing new; Transfer Trail and Top 10 hand over their own pictures', () => {
+  // (tests/unit/trail-top10-finish.test.js). Mystery Player (26 Nov 2026) takes the layout with a
+  // card it draws itself (card.render), not a picture on the result card.
+  it('Mystery Player draws its own card; Transfer Trail and Top 10 hand over their own pictures', () => {
     const mp = read('src/screens/MysteryPlayer.jsx');
-    expect(mp).not.toMatch(/layout="one"/);
+    expect(mp).toMatch(/layout="one"/);
     expect(mp).not.toMatch(/\bpicture[:=]/);
     for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) {
       const src = read(f);

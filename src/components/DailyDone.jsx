@@ -63,7 +63,8 @@ import "./dailyDone.css";
 //               under the streak, shown only when `game` matches: a daily finish never gets
 //               the full-screen level-up overlay (return research, 16 Oct 2026).
 //   card        what the result card says (components/ResultCard.jsx); with `picture`, the
-//               game's own picture for the card
+//               game's own picture for the card; with `render(action)` (layout "one" only), a
+//               card the host draws itself, handed the one Share button to put inside it
 //   layout      "one": the finish as ONE object (24 Nov 2026, Footle first, the Daily 7 the same
 //               day). The card carries the picture and the Share button; under it sit one caption
 //               line and the other dailies as one filled list. Needs `card`. Every other host
@@ -555,8 +556,13 @@ export function DailyDone({ game, edition, won, bucket, isArchive = false, strea
 
     return (
       <>
+      {/* A host with a card of its own draws it and puts the one Share button
+          in it (`card.render`, Mystery Player's finish, 26 Nov 2026); every
+          other host gets the result card as before. */}
+      {typeof card.render === "function" ? card.render(action) : (
       <ResultCard title={card.title} tag={card.tag} score={card.score} scoreNode={card.scoreNode} outOf={card.outOf} marks={card.marks} shares={card.shares} levels={card.levels}
         verdict={words.verdict} sub={words.sub} xp={card.xp} note={card.note} picture={card.picture} action={action} head={false} />
+      )}
       <section className="dd-one" aria-label={t("dd.aria")}>
         {/* A mate sent this puzzle: who won, the name ask, and the league offer that only a rival earns. */}
         {rival && (() => {

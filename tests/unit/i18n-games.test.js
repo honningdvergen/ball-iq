@@ -22,6 +22,12 @@
 //     or "Closest so far", the hint strip, the search pill), the three starters with a Guess
 //     pill, and each guess with its round face and four tiles; no free clues, no
 //     "Yesterday it was". The finish entries changed only by the hints line until Job C.
+//     THEN JOB C, the same day (the finish of mystery-finish-7, "Yes, build it"): the four
+//     finished entries (won in 1, won in 4 no hints, won in 6 an old save, gave up after 5)
+//     were replaced, and only those, the same way (68 of 72 byte-identical): the old reveal
+//     and the framed panel are one green card (the face, the name, "Position · flag Nation ·
+//     born YEAR", the result line with its hints, the career, the Share button) in
+//     DailyDone's layout "one", the header's "?" is the streak chip, and Back to Home follows.
 //     INTENDED CHANGE, 26 Nov 2026, later (the quiz question on a phone is the drawing Alex
 //     approved, quiz-question-3; "Yes, build it"). The ten "quiz: ..." entries that draw a
 //     question were replaced, and only those: the new render was dumped with a temporary copy of
@@ -430,7 +436,7 @@ describe('Spanish (biq_lang=es)', () => {
     expect(won).toContain('1 pista');
     expect(won).toContain('nacido en 1986');
     expect(unq(now['mystery: won in 4, no hints'])).toContain('sin pistas');
-    expect(unq(now['mystery: gave up after 5'])).toContain('Era Olivier Giroud');
+    expect(unq(now['mystery: gave up after 5'])).toContain('Revelado tras 5 intentos');
     expect(unq(now['mystery: archive, two guesses'])).toContain(' · archivo');
     expect(unq(now['mystery: no puzzle today'])).toContain('Hoy no hay Mystery Player');
   });

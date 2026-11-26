@@ -36,7 +36,8 @@ describe('DailyDone — one panel, four surfaces', () => {
     expect(HOSTS.footle).toMatch(/<DailyDone[\s\S]*?game="footle"/);
     expect(HOSTS.trail).toMatch(/<DailyDone[\s\S]*?game="trail"/);
     expect(HOSTS.top10).toMatch(/<DailyDone[\s\S]*?game="top10"/);
-    expect(HOSTS.mystery.match(/<DailyDone[\s\S]*?game="mystery"/g) || []).toHaveLength(2); // won + gave up
+    // One since 26 Nov 2026 (the Mystery finish of mystery-finish-7): won or given up, the same card.
+    expect(HOSTS.mystery.match(/<DailyDone[\s\S]*?game="mystery"/g) || []).toHaveLength(1);
     expect(RESULTS.match(/<DailyDone game="daily7"/g) || []).toHaveLength(2);             // mobile + desktop card
   });
 

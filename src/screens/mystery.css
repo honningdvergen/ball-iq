@@ -28,6 +28,8 @@
 .mq-tile:focus-visible, .mq-pill:focus-visible, .mq-go:focus-visible, .mq-row:focus-visible, .mq-o:focus-visible,
 .mq-keep:focus-visible, .mq-give:focus-visible, .mq-credits:focus-visible { outline: 2px solid var(--accent, #58CC02); outline-offset: 2px; }
 .mq-title { flex: 1; min-width: 0; }
+/* On the finish the streak chip takes what the name leaves (components/StreakChip.jsx). */
+.mq-top.is-over .mq-title { flex: 0 1 auto; }
 .mq-name { font-size: 20px; line-height: 1.2; font-weight: 800; letter-spacing: -0.01em; color: var(--t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Wraps whole words on a narrow phone rather than cutting "Unlimited guesses". */
 .mq-sub {
@@ -135,7 +137,8 @@
 .mq-gr b { font-size: 22px; line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
 .mq-gr i { font-size: 11px; line-height: 1; font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
-/* The round face: a reviewed photo on the head, else the shirt in a ring. */
+/* The round face: a reviewed photo on the head, else the shirt in a ring
+   (52 in the list; 104 with a soft ring on the finish, .is-ring). */
 .mq-face { position: relative; flex: none; display: block; overflow: hidden; border-radius: 50%; background: #1B1E27; }
 .mq-face img { position: absolute; display: block; max-width: none; }
 .mq-face.is-none { display: grid; place-items: center; color: #8A8E99; background: transparent; box-shadow: inset 0 0 0 2px #2A2E3A; }
@@ -206,50 +209,25 @@
 .mq-cr span { font-size: 13.5px; color: #B4B8C4; overflow-wrap: anywhere; }
 .mq-cr a { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; font-size: 13.5px; font-weight: 600; color: #8AE042; }
 
-/* ── The reveal ────────────────────────────────────────────────────────── */
-.mp-reveal {
-  margin: 4px 0 14px; padding: 16px 16px 14px; border-radius: 16px;
-  background: var(--s1); border: 1px solid var(--border);
-}
-.mp-reveal.is-win { background: rgba(88, 204, 2, 0.10); border-color: rgba(88, 204, 2, 0.40); }
-.mp-reveal-eyebrow {
-  font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--t3); font-variant-numeric: tabular-nums;
-}
-.mp-reveal.is-win .mp-reveal-eyebrow { color: var(--grn-soft); }
-.mp-reveal-name {
-  margin: 4px 0 0; font-size: 22px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em;
-  color: var(--t1); text-wrap: balance;
-}
-.mp-reveal-meta { margin-top: 3px; font-size: 13px; color: var(--t2); }
-.mp-reveal-streak {
-  display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
-  font-size: 12.5px; font-weight: 800; color: var(--gold);
-}
-
-/* The career: a thin line runs down the left through one dot per club, the
-   club the second clue named in the mode's violet. */
-.mp-career { list-style: none; margin: 14px 0 0; padding: 0; position: relative; }
-.mp-career::before {
-  content: ""; position: absolute; left: 4px; top: 9px; bottom: 9px; width: 2px; border-radius: 1px;
-  background: var(--border);
-}
-.mp-career > li {
-  position: relative; display: flex; align-items: baseline; gap: 12px;
-  padding: 5px 0 5px 20px;
-}
-.mp-career > li::before {
-  content: ""; position: absolute; left: 1px; top: 50%; width: 8px; height: 8px; margin-top: -4px;
-  border-radius: 50%; background: var(--s3, #232631); box-shadow: 0 0 0 2px var(--t3);
-}
-.mp-career-years {
-  flex: 0 0 76px; font-size: 12px; font-weight: 700; color: var(--t3);
-  font-variant-numeric: tabular-nums; white-space: nowrap;
-}
-.mp-career-club { flex: 1; min-width: 0; font-size: 14.5px; font-weight: 700; color: var(--t1); }
-.mp-career > li.is-key::before { background: var(--mp); box-shadow: 0 0 0 3px rgba(var(--mp-rgb), 0.3); }
-.mp-career > li.is-key .mp-career-club { color: var(--mp); font-weight: 800; }
-
+/* ── The finish (Job C; drawing mystery-finish-7, measures mf1.py) ────────── */
+.mq-fin-wrap { margin-top: 0; }
+.mq-fin { text-align: center; }
+.mq-fin-face { display: flex; justify-content: center; margin-bottom: 16px; }
+.mq-face.is-ring { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.14), 0 10px 30px rgba(0, 0, 0, 0.35); }
+.mq-face.is-none.is-ring { color: rgba(255, 255, 255, 0.6); background: rgba(0, 0, 0, 0.28); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.16); }
+.mq-fin-name { margin: 0; font-size: 32px; line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; color: #fff; text-wrap: balance; overflow-wrap: anywhere; }
+.mq-fin-meta { margin: 12px 0 0; font-size: 16px; line-height: 1.35; font-weight: 500; color: rgba(255, 255, 255, 0.8); text-wrap: balance; }
+.mq-fin-nat { white-space: nowrap; }
+.mq-fin-nat .mq-flag { vertical-align: -2px; margin: 0 5px 0 1px; }
+.mq-fin-res { margin: 12px 0 0; font-size: 13.5px; line-height: 1.35; font-weight: 600; color: rgba(255, 255, 255, 0.86); font-variant-numeric: tabular-nums; text-wrap: balance; }
+.mq-fin-res b { color: #FFC107; font-weight: 800; white-space: nowrap; }
+.mq-fin-career { list-style: none; margin: 20px 0 0; padding: 0 16px; border-radius: 16px; background: rgba(0, 0, 0, 0.28); text-align: left; }
+.mq-fin-career li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; }
+.mq-fin-career li + li { border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.mq-fin-career b { min-width: 0; font-size: 16px; line-height: 1.2; font-weight: 600; color: #fff; overflow-wrap: anywhere; }
+.mq-fin-career i { flex: none; font-size: 13.5px; font-style: normal; font-weight: 500; color: rgba(255, 255, 255, 0.62); font-variant-numeric: tabular-nums; }
+/* The one Share button (DailyDone's .rc-act), at the drawing's 54. */
+.mq-fin .rc-act { height: 54px; margin-top: 18px; font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {
   .mq * { transition: none !important; }

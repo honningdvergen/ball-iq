@@ -217,9 +217,14 @@ describe('everything else keeps what it had', () => {
     expect(wide).not.toMatch(/dd-one|dd-hd|rc-act/);
   });
   // 25 Nov 2026: Transfer Trail and Top 10 took the layout too (Alex: "Yes, both";
-  // tests/unit/trail-top10-finish.test.js). Mystery Player's drawing is not approved, so it has not.
-  it('Mystery Player still asks for nothing new; Transfer Trail and Top 10 joined on 25 Nov', () => {
-    expect(read('src/screens/MysteryPlayer.jsx')).not.toMatch(/layout="one"|StreakChip|\bpill\b \/>|head=\{false\}/);
+  // tests/unit/trail-top10-finish.test.js). 26 Nov: Mystery Player joined with a card it draws
+  // itself (mystery-finish-7, "Yes, build it"), handed the one Share button by the panel.
+  it('Mystery Player joined on 26 Nov with its own card; Transfer Trail and Top 10 on 25 Nov', () => {
+    const mp = read('src/screens/MysteryPlayer.jsx');
+    expect(mp).toContain('layout="one" card={finishCard}');
+    expect(mp).toContain('<StreakChip streak={finishStreak} isArchive={isArchive} floor />');
+    expect(mp).toContain('<ResultFoot onHome={onExit} pill />');
+    expect(mp).not.toMatch(/head=\{false\}/);
     for (const f of ['src/screens/TransferTrail.jsx', 'src/screens/Top10.jsx']) {
       const src = read(f);
       expect(src, f).toContain('layout="one"');

@@ -436,8 +436,12 @@ describe('the words', () => {
 });
 
 describe('what was left alone', () => {
-  it('Mystery Player\'s finish asks for nothing new', () => {
-    expect(read('src/screens/MysteryPlayer.jsx')).not.toMatch(/layout="one"|StreakChip|\bpicture[:,]|paysXp/);
+  it('Mystery Player\'s finish (26 Nov 2026) draws its own card and asks for no result-card picture', () => {
+    const mp = read('src/screens/MysteryPlayer.jsx');
+    expect(mp).not.toMatch(/\bpicture[:,]/);
+    expect(mp).toMatch(/render: \(action\) => \(/);
+    // XP only where the host pays it, and never on an archive day.
+    expect(mp).toContain('const xp = won && paysXp && !isArchive ? mysteryXp(true, n) : 0;');
   });
   it('what is shared, and its events, are the panel\'s own and untouched', () => {
     const dd = read('src/components/DailyDone.jsx');

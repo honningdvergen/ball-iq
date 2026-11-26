@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { ArrowLeft, CircleHelp, Search, Flame } from 'lucide-react';
+import { ArrowLeft, CircleHelp, Search } from 'lucide-react';
 // Same kit the Trail takes (TransferTrail.jsx) — the scouting panel measured
 // this file at ZERO haptic/sound/confetti: the hardest, longest-effort daily
 // paid off with a mute green panel while Trail and Footle both celebrate.
@@ -8,14 +8,17 @@ import { ArrowLeft, CircleHelp, Search, Flame } from 'lucide-react';
 // `services` — src/games/dailyServices.js.
 import { resolveDailyServices } from '../games/dailyServices.js';
 import { DailyDone } from '../components/DailyDone.jsx';
+import { StreakChip } from '../components/StreakChip.jsx';
+import ResultFoot from '../components/ResultFoot.jsx';
 import {
   rankPool, bandFor, matchGuess,
   mysteryDayIndex, mysteryNumber, buildMysteryShareText,
-  saveMysteryResult, loadMysteryResult, computeMysteryStreak, hintPosition, puzzleYear,
+  saveMysteryResult, loadMysteryResult, computeMysteryStreak, puzzleYear, mysteryXp,
 } from '../lib/mysteryPlayer.js';
-import { careerOf, mainClub, spellYears } from '../lib/mysteryCareer.js';
+import { careerOf, spellYears } from '../lib/mysteryCareer.js';
 import {
   tileVerdicts, hintCards, heldHints, openRounds, hintsFromSave, saveHintFields, startersForDay, starterLine,
+  primaryNation, flagOf, SLOT_WORD,
 } from '../lib/mysteryRules.js';
 import { loadMysteryRulesData, peekMysteryRulesData } from '../lib/mysteryRulesData.js';
 import { photoView } from '../lib/photoCrop.js';
@@ -27,12 +30,11 @@ import { useKeyboardAwareInput } from '../lib/useKeyboardAwareInput.js';
 // The day's answer: from the schedule the SITE serves when an installed app
 // has kept a good copy (lib/scheduleRemote.js), else the bundled schedule.
 import { mysteryAnswerIds } from '../lib/scheduleRemote.js';
-import ROLES from '../data/mysteryRoles.json';
 import { t as tNow, useT, fmtLocale } from '../i18n/index.js';
 import '../i18n/en.js'; // the full English table: not on Home's eager path
 import './mystery.css';
 import ANSWER_IDS from "../data/mysteryAnswers.json";
-import { GuessRow, HintStrip, HintSheet, CreditsSheet } from './mysteryParts.jsx';
+import { GuessRow, HintStrip, HintSheet, CreditsSheet, Face, FlagImg } from './mysteryParts.jsx';
 
 // Mystery Player — guess the secret footballer. Every guess returns a RANK
 // against the whole pool; the answer is 1. Under each guess, four tiles say how
@@ -76,7 +78,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // device default, except on a Spanish device, where it is British English
   // (fmtLocale).
   const num = (v) => v.toLocaleString(fmtLocale());
-  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard } = resolveDailyServices(services);
+  const { haptic, playSound, Confetti, GetAppCTA, dailyDone, shareCard, paysXp } = resolveDailyServices(services);
   // `date` drives EVERYTHING dated in here — the answer, the saved result, the
   // puzzle number — so an archive replay of yesterday reads and writes
   // yesterday's slot and cannot overwrite today's board.
@@ -137,6 +139,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // no order (`at`, written since 26 Nov 2026).
   const [lastId, setLastId] = useState(null);
   const [won, setWon] = useState(() => !!saved?.won);
+  const [wonNow, setWonNow] = useState(false);
   // ⚠️ THE TERMINAL STATE THIS MODE NEVER HAD (added 2026-08-17): without a
   // give-up, the hardest daily was the one where not solving cost the streak.
   const [gaveUp, setGaveUp] = useState(() => !!saved?.gaveUp);
@@ -222,9 +225,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     [POOL, text, guesses],
   );
 
-  // The reveal: the senior career, oldest first, with the club played longest marked.
+  // The finish: the senior career, oldest first, club and years.
   const career = useMemo(() => (answer && CAREERS ? careerOf(answer, CAREERS, year) : []), [answer, CAREERS, year]);
-  const keyClub = useMemo(() => (answer && CAREERS ? mainClub(answer, CAREERS, year) : null), [answer, CAREERS, year]);
 
   // "Photo credits": every photo on screen, with its author and licence.
   const credits = useMemo(() => {
@@ -295,7 +297,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     if (isWin) { haptic('hardCorrect'); playSound('correct'); }
     else if (rank <= 25) { haptic('correct'); playSound('correct'); }
     else { haptic('select'); playSound('soft'); }
-    if (isWin) setWon(true);
+    if (isWin) { setWon(true); setWonNow(true); }
     // Persist EVERY guess, not just the win.
     persist({ won: isWin, guesses: next });
     if (isWin) {
@@ -341,7 +343,40 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       else { await navigator.clipboard.writeText(text); try { window.dispatchEvent(new CustomEvent('biq:show-toast', { detail: tNow('game.copiedShort') })); } catch {} }
     } catch { return false; /* dismissed or blocked — nothing to recover */ }
   };
-  const revealPos = hintPosition(answer, ROLES);
+  // The finish card's facts. The position is the tiles' word for the line
+  // (lib/mysteryRules.js SLOT_WORD), the nation the first senior national team
+  // (never the pool's `nat`), the XP the app's rule (mysteryXp) and only where
+  // the host really pays it: not on the static page, not on an archive day.
+  const finishStreak = won ? (dailyDone?.streak || { count: streak, label: t('dd.l.mystery') }) : (dailyDone?.streak || { count: 0, label: t('dd.l.mystery') });
+  const xp = won && paysXp && !isArchive ? mysteryXp(true, n) : 0;
+  const nation = answer && rulesData ? primaryNation(answer, rulesData.nations) : null;
+  const finishCard = answer ? {
+    render: (action) => (
+      <section className="mq-card mq-fin" aria-label={t('mp.answer')}>
+        <div className="mq-fin-face"><Face entry={photos?.[answer.id]} px={104} ring /></div>
+        <h2 className="mq-fin-name">{answer.name}</h2>
+        <p className="mq-fin-meta">
+          {[
+            SLOT_WORD[answer.slot] ? t(`mq.slot.${answer.slot}`) : null,
+            nation ? <span key="n" className="mq-fin-nat"><FlagImg src={flagOf(nation, rulesData.flags)} />{nation}</span> : null,
+            answer.born ? t('mp.bornIn', { y: answer.born }) : null,
+          ].filter(Boolean).map((part, i) => <React.Fragment key={i}>{i > 0 ? ' · ' : ''}{part}</React.Fragment>)}
+        </p>
+        <p className="mq-fin-res">
+          {won ? `${t('mp.solved', { count: n })} · ${hintWords}` : t('mq.revealed', { count: n })}
+          {xp > 0 && <> · <b>{t('rs.xp', { n: xp })}</b></>}
+        </p>
+        {career.length > 0 && (
+          <ol className="mq-fin-career" aria-label={t('mp.career')}>
+            {career.map((sp, i) => (
+              <li key={`${sp.club}-${sp.from}-${i}`}><b>{sp.club}</b><i>{spellYears(sp)}</i></li>
+            ))}
+          </ol>
+        )}
+        {action}
+      </section>
+    ),
+  } : null;
   const typing = focused && !done;
   const q = text.trim();
   const noMatch = !done && ready && q.length >= 2 && suggestions.length === 0;
@@ -350,7 +385,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
       {/* The header: the back tile, the name over "No. N · Unlimited guesses",
           the help tile. On the static page the page's H1 names the game, so
           the line is the number alone, as it was. */}
-      <div className="mq-top">
+      <div className={`mq-top${done && answer ? ' is-over' : ''}`}>
         {onExit && (
           <button type="button" onClick={onExit} aria-label={t('game.back')} className="mq-tile"><ArrowLeft size={22} strokeWidth={2.2} aria-hidden="true" /></button>
         )}
@@ -362,6 +397,8 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
             {isArchive ? ` · ${t('mp.archive')}` : ''}
           </div>
         </div>
+        {/* Once the result is up the streak has this corner, as on the other finishes. */}
+        {done && answer && <StreakChip streak={finishStreak} isArchive={isArchive} floor />}
         {!done && (
           <button type="button" className="mq-tile" onClick={() => setShowRules((v) => !v)}
             aria-label={t('game.howTo')} aria-expanded={showRules} title={t('game.howTo')}><CircleHelp size={22} strokeWidth={2.1} aria-hidden="true" /></button>
@@ -370,50 +407,25 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
 
       {!done && showRules && <p className="mq-rules">{t('mq.rules')}</p>}
 
-      {won && Confetti ? <Confetti /> : null}
+      {/* Only for a solve made now, as on the Trail: not on every look at a solved day. */}
+      {wonNow && Confetti ? <Confetti /> : null}
       {done && !answer && (
         <p style={{ margin: '4px 0 14px', color: 'var(--t3)', fontSize: 13 }}>{t('mp.loadingAnswer')}</p>
       )}
-      {/* THE REVEAL (14 Oct 2026): the career, club by club with years. Win
-          and give-up share the card; only the tint and the first line differ.
-          Since 26 Nov its first line says how many hints were taken. */}
+      {/* THE FINISH (Job C, 26 Nov 2026; the drawing mystery-finish-7, approved,
+          measures in mf1.py). One green card: the face (the photo cropped on
+          the head, or the shirt in a ring), the name, "Position · flag Nation ·
+          born YEAR", one white line with only the XP in yellow, the career
+          club by club, and the one Share button. No row of guesses. Under it,
+          as on the other built finishes (DailyDone's layout "one"): the day's
+          count and the countdown, the other games with their Play pills, the
+          save line, Back to Home. A give-up reads "Revealed after N guesses". */}
       {done && answer && (
-        <section className={`mp-reveal ${won ? 'is-win' : 'is-gaveup'}`} aria-label={t('mp.answer')}>
-          <div className="mp-reveal-eyebrow">
-            {t(won ? 'mp.solved' : 'mp.gaveUp', { count: n })}
-            {won ? ` · ${hintWords}` : ''}
-          </div>
-          <h2 className="mp-reveal-name">{won ? answer.name : t('mp.itWas', { name: answer.name })}</h2>
-          <div className="mp-reveal-meta">
-            {[revealPos ? revealPos.charAt(0).toUpperCase() + revealPos.slice(1) : null, answer.born ? t('mp.bornIn', { y: answer.born }) : null].filter(Boolean).join(' · ')}
-          </div>
-          {won && streak > 1 && !embedded && (
-            <div className="mp-reveal-streak"><Flame size={13} aria-hidden="true" />{t('mp.streak', { n: streak })}</div>
-          )}
-          {career.length > 0 && (
-            <ol className="mp-career" aria-label={t('mp.career')}>
-              {career.map((s, i) => (
-                <li key={`${s.club}-${s.from}-${i}`} className={s.club === keyClub ? 'is-key' : undefined}>
-                  <span className="mp-career-years">{spellYears(s)}</span>
-                  <span className="mp-career-club">{s.club}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-        </section>
-      )}
-      {won && answer && (
-        <div style={{ margin: '0 0 14px' }}>
-          <DailyDone game="mystery" edition={mysteryNumber(date)} won bucket={n} isArchive={isArchive}
-            streak={dailyDone?.streak || { count: streak, label: t('dd.l.mystery') }} onShare={() => shareResult(true)}
+        <div className="mq-fin-wrap">
+          <DailyDone game="mystery" edition={mysteryNumber(date)} won={won} bucket={won ? n : 0} isArchive={isArchive}
+            layout="one" card={finishCard} streak={finishStreak} onShare={() => shareResult(won)}
             remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} day={dailyDone?.day} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} promoted={dailyDone?.promoted} />
-        </div>
-      )}
-      {gaveUp && answer && (
-        <div style={{ margin: '0 0 14px' }}>
-          <DailyDone game="mystery" edition={mysteryNumber(date)} won={false} bucket={0} isArchive={isArchive}
-            streak={dailyDone?.streak || { count: 0, label: t('dd.l.mystery') }} onShare={() => shareResult(false)}
-            remind={dailyDone?.remind} nextUp={dailyDone?.nextUp || []} day={dailyDone?.day} save={dailyDone?.save} GetAppCTA={GetAppCTA} track={dailyDone?.track} promoted={dailyDone?.promoted} />
+          <ResultFoot onHome={onExit} pill />
         </div>
       )}
 
