@@ -331,7 +331,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     e.preventDefault();
     if (!ready) { ensureData(); setError(t('mp.loadingList')); return; }
     const p = matchGuess(POOL, text);
-    if (!p) { if (!repeatOf) setError(t('mp.noSuch', { q: text.trim() })); return; }
+    if (!p) {
+      // Something typed that only a guessed player matches is not "no such player".
+      const guessedMatch = rankPlayerSuggestions(POOL, text, { limit: SUGGEST_MAX })[0];
+      if (!guessedMatch) setError(t('mp.noSuch', { q: text.trim() }));
+      return;
+    }
     submit(p);
   };
 
