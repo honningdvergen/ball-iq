@@ -85,6 +85,15 @@ export const ART = new RegExp([
 ].join('|'), 'i');
 // A scene, a fan, a trophy, not him: the first pass proposed "Photo d'un supporteur de Paul Pogba" (a fan; pass one knew only the English "supporters") and "Золотий м'яч 2004 Андрія Шевченка" (his Ballon d'Or).
 export const SCENE = /periodist|journalist|reporter|televisions|crowd|supporte?u?rs?\b|hincha|tifos|aficionad|torcedor|\bfans?\b|ultras|concert|\bshow do\b|samba|wedding|protest|rally|ballon d.or|golden ball|balón de oro|pallone d.oro|bola de ouro|золот|trophy|troph[ée]e|trofeo|pokal|award|statuette/i;
+// ⚠️ STRUCK BY HAND after reading a sheet, for what needs no recognition of a
+// person (a figure, not a person). Each is listed in the pass-two report.
+const HAND_STRIKE = {
+  // A painted figure on a balcony in La Boca, Buenos Aires; nothing in its
+  // name, description or categories says so.
+  "Carlitos Tevez at La Boca, Buenos Aires ARG.jpg": "a painted figure, not a photograph of a person (read on the before/after sheet)",
+  // A hand-tinted magazine print, El Gráfico 1956: printed colour, not a photograph.
+  "Sívori (Selección Argentina) - El Gráfico 1905.jpg": "a hand-tinted magazine print, not a photograph (read on the before/after sheet)",
+};
 const NAME_STOP = new Set(['de', 'da', 'do', 'dos', 'van', 'von', 'der', 'den', 'del', 'la', 'le', 'di', 'jr', 'junior', 'el', 'al']);
 export function namesPlayer(text, player) {
   const t = ` ${normaliseName(text)} `;
@@ -223,7 +232,10 @@ export function judge(file, player, how) {
   const v = { file, how, ok: false, strike: null };
   if (!m) { v.strike = 'no Commons record'; return v; }
   Object.assign(v, { page: m.page, url: m.url, w: m.w, h: m.h, licence: m.licence, author: m.author, date: m.date || null });
-  const words = `${m.file} ${m.object || ''} ${m.desc || ''} ${(m.cats || []).join(' | ')}`;
+  // The author is read too: a scan of a Panini card names Panini as its author
+  // ("Giuseppe Meazza durant les années 1930.jpg", Campioni dello Sport 1967-68).
+  const words = `${m.file} ${m.object || ''} ${m.desc || ''} ${m.author || ''} ${(m.cats || []).join(' | ')}`;
+  if (HAND_STRIKE[m.file]) { v.strike = HAND_STRIKE[m.file]; return v; }
   v.names = namesPlayer(`${m.file} ${m.object || ''} ${m.desc || ''}`, player);
   const y = yearOf(m.date);
   v.dateFits = y == null ? null : y >= player.born + 15 && y <= 2026;
@@ -339,7 +351,7 @@ export function rankCandidates(metas, p) {
     .split(' ').filter((w) => w && !nameWords.has(w) && !/^\d+$/.test(w) && !/^(cropped|jpg|img|dsc|photo|foto)$/.test(w)).length;
   const series = (m) => m.file.replace(/\.[a-z]+$/i, '').replace(/[\d\s\-_()]+/g, ' ').trim().toLowerCase();
   const ok = metas.filter((m) => m && /jpe?g|png|tiff?/i.test(m.mime || '') && FREE.test(m.licence) && !NOTFREE.test(m.licence) && m.author && !/unknown/i.test(m.author))
-    .filter((m) => !ART.test(`${m.file} ${m.desc} ${m.object} ${(m.cats || []).join(' ')}`) && !SCENE.test(`${m.file} ${m.desc} ${m.object}`) && !othersNamed(m.file, p))
+    .filter((m) => !ART.test(`${m.file} ${m.desc} ${m.object} ${m.author} ${(m.cats || []).join(' ')}`) && !SCENE.test(`${m.file} ${m.desc} ${m.object}`) && !othersNamed(m.file, p))
     .filter((m) => { const y = yearOf(m.date); return !y || y >= p.born + 15; })
     .filter((m) => m.w >= 400 && m.h >= 400 && m.w / m.h <= 1.6)
     .sort((a, b) => remainder(a) - remainder(b)
