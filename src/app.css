@@ -502,16 +502,6 @@ button:focus-visible,a:focus-visible,.opt:focus-visible,.cta:focus-visible,.play
   }
   .hdr .icon-btn:hover { background: var(--s1); }
 }
-/* THE STRIP'S GEAR AND BELL AS FILLED TILES (.hdr-guest; App.jsx puts the class on the strip over
-   the Profile and, since 26 Nov 2026, over the History tab). As on Home and the Multiplayer tab,
-   whose tiles are in their own title rows: a fill, no outline, and 14 under the strip where it
-   had 4. The class keeps the name it was given for a not-signed-in player's Profile on 25 Nov.
-   These four rules came from screens/guestProfile.css unchanged: two tabs wear them now, and
-   each tab's own stylesheet arrives with its chunk, so neither could be their one home. */
-.hdr.hdr-guest{padding-bottom:14px;}
-.hdr.hdr-guest .icon-btn{border:0;border-radius:14px;background:var(--s1);color:var(--t2);}
-.hdr.hdr-guest .icon-btn .notif-dot{border-color:var(--s1);}
-@media (hover: hover){.hdr.hdr-guest .icon-btn:hover{background:var(--s2);color:var(--text);}}
 /* Sprint #11 H2: .hero-online-cta dropped — replaced by .util-cta inside
    the new rail pattern. */
 

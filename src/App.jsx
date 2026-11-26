@@ -7602,8 +7602,7 @@ function AppInner() {
             Home's are in its greeting row. */}
         {/* Over the Profile of a player who is not signed in, the gear (and an
             invite-link player's bell) is a filled tile, as on Home and the
-            Multiplayer tab: `hdr-guest`, styled in app.css (in
-            screens/guestProfile.css until 26 Nov 2026).
+            Multiplayer tab: `hdr-guest`, styled in screens/guestProfile.css.
             The same test ProfileScreen makes; a signed-in player's strip is
             untouched. */}
         {/* Later on 25 Nov 2026 the signed-in Profile was built in the same kit
@@ -7614,16 +7613,15 @@ function AppInner() {
             was. While a screen behind one of the Profile's rows is open, the
             strip steps aside for that screen's back arrow: signedProfile.css,
             html.pf-sub. */}
-        {/* 26 Nov 2026: and over the History tab, built in the same kit that day
-            (Alex, on its drawing: "Yes, build it"). The tiles' rules moved to
-            app.css with it: two tabs wear them, each with a chunk of its own. */}
-        {/* 26 Nov 2026, later: not over the History tab at all. Its sixth
-            drawing (Alex: "Yes, build it") has the gear, and a signed-in
-            player's bell, on the title's own row, as Home and the Multiplayer
-            tab have them: screens/DailyScreen.jsx draws them with the handlers
-            this strip gave them. */}
+        {/* 26 Nov 2026: not over the History tab either. Earlier that day
+            it wore this strip's tiles too; its sixth drawing (Alex: "Yes, build
+            it") has the gear, and a signed-in player's bell, on the title's own
+            row, as Home and the Multiplayer tab have them:
+            screens/DailyScreen.jsx draws them with the handlers this strip gave
+            them. So the tiles' class is the Profile's alone again, and its
+            rules are back in the Profile's stylesheet. */}
         {!isWebBrowser && !inGame && !(screen === "home" && (tab === "home" || tab === "online" || tab === "daily")) && (
-          <div className={screen === "home" && (tab === "profile" || tab === "daily") ? "hdr hdr-guest" : "hdr"}>
+          <div className={screen === "home" && tab === "profile" ? "hdr hdr-guest" : "hdr"}>
             {/* 1.1: drop the wordmark on the main tabbed view (screen==="home")
                 — on a tab-bar app the app name on its own home is redundant, and
                 the personalised greeting now owns the top. Settings has its own

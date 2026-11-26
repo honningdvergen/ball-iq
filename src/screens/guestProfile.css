@@ -6,11 +6,18 @@
    Four things, top to bottom: the gear in a tile, the card in the gold card's style and not yet
    unlocked, one row for today's next open daily, and the account (one solid green button, the one
    loud thing, and one line).
-   Every rule here starts at a class only that state draws (.gp-*), so the signed-in Profile and
-   every other screen stay as they are. This file rides in the Profile's own chunk.
-   (The gear and the bell as filled tiles on the strip over the tab, .hdr-guest, were set here
-   until 26 Nov 2026. The History tab wears the same tiles now, and either tab's chunk can be the
-   first to arrive, so those four rules are in app.css beside the strip's own.) */
+   Every rule here starts at a class only that state draws (.gp-*, or .hdr-guest on the strip over
+   it), so the signed-in Profile and every other screen stay as they are. This file rides in the
+   Profile's own chunk. */
+
+/* The gear (and an invite-link player's bell) as a filled tile, as on Home and the Multiplayer tab.
+   (Earlier on 26 Nov 2026 these four rules stood in app.css, while the History tab wore
+   the strip's tiles too. It draws its own now, on its title's row, so they are the Profile's alone
+   again and back with it.) */
+.hdr.hdr-guest{padding-bottom:14px;}
+.hdr.hdr-guest .icon-btn{border:0;border-radius:14px;background:var(--s1);color:var(--t2);}
+.hdr.hdr-guest .icon-btn .notif-dot{border-color:var(--s1);}
+@media (hover: hover){.hdr.hdr-guest .icon-btn:hover{background:var(--s2);color:var(--text);}}
 
 /* ── The card, not yet unlocked. The gold card's ground and its fine gold line; white and gold on
    it in either theme. Nothing on it is a fill inside the fill. */

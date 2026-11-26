@@ -27,8 +27,11 @@ const ES = (await import('../../src/i18n/es.js')).default;
 describe('only the not-signed-in state changed', () => {
   it('one test decides it; the strip above the tab is tiled over every Profile', () => {
     expect(PROFILE).toContain('const guestView = !user || isGuest || isAnonUser;');
-    // 26 Nov 2026: and over the History tab, built in the same kit that day (history-tab.test.js).
-    expect(APP).toContain('<div className={screen === "home" && (tab === "profile" || tab === "daily") ? "hdr hdr-guest" : "hdr"}>');
+    // (Earlier on 26 Nov 2026 the History tab wore the strip's tiles too; it draws its own
+    // on its title's row now, tests/unit/history-tab.test.js, so the class is the Profile's alone.)
+    expect(APP).toContain('<div className={screen === "home" && tab === "profile" ? "hdr hdr-guest" : "hdr"}>');
+    expect(read('src/app.css')).not.toMatch(/\.hdr\.hdr-guest/);
+    expect(CSS).toContain('.hdr.hdr-guest .icon-btn{border:0;border-radius:14px;background:var(--s1);color:var(--t2);}');
   });
 
   it('every new branch in the screen is behind guestView', () => {
