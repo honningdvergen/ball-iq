@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'fs';
 import {
   faceCrop, cropStyle, thumbWidthFor, commonsThumb, leanPhotos, approvedPick,
-  HERO_PX, LIST_PX, DENSITY, FACE_SHARE, MIN_ROOM_ABOVE, MIN_ROOM_BELOW,
+  HERO_PX, LIST_PX, DENSITY, FACE_SHARE, MIN_ROOM_ABOVE, MIN_ROOM_BELOW, HAIR_LIFT,
 } from '../../src/lib/photoCrop.js';
 import lean from '../../src/data/mysteryPhotoLean.json';
 import reviewedFile from '../../src/data/mysteryPhotoReviewed.json';
@@ -14,11 +14,13 @@ const reviewed = reviewedFile.ids || {};
 
 describe('the crop rule', () => {
   const portrait = { w: 1200, h: 1600 };
-  it('centres on the middle of the face box', () => {
+  it('centres on the middle of the head: the face box plus its hair, so the hair gets a little more room than the neck', () => {
     const face = { x: 0.4, y: 0.3, w: 0.2, h: 0.15 };
     const c = faceCrop(face, portrait);
     expect(c.ok).toBe(true);
-    const cx = (face.x + face.w / 2) * portrait.w, cy = (face.y + face.h / 2) * portrait.h;
+    const cx = (face.x + face.w / 2) * portrait.w, cy = (face.y - (HAIR_LIFT * face.h) / 2 + face.h / 2) * portrait.h;
+    const fy = face.y * portrait.h, fh = face.h * portrait.h;
+    expect((fy - c.top) / fh).toBeGreaterThan((c.top + c.side - fy - fh) / fh);
     expect(Math.abs(c.left + c.side / 2 - cx)).toBeLessThan(1);
     expect(Math.abs(c.top + c.side / 2 - cy)).toBeLessThan(1);
     expect(c.offCentre).toBeLessThan(0.01);
@@ -32,6 +34,11 @@ describe('the crop rule', () => {
     // Face box touching the top: no room above the hair at any crop.
     const tight = faceCrop({ x: 0.4, y: 0.0, w: 0.2, h: 0.1 }, portrait);
     expect(tight).toMatchObject({ ok: false, reason: 'no room above the hair' });
+  });
+  it('a tight head shot that fills the frame (Lampard on Commons: face 57% of a 463 x 664 picture) is kept, with room for hair and chin', () => {
+    const c = faceCrop({ x: 0.2253, y: 0.2409, w: 0.565, h: 0.394 }, { w: 463, h: 664 });
+    expect(c.ok).toBe(true);
+    expect(c.side).toBe(463);
   });
   it('Xabi Alonso\'s old box (a full-width square from the top of a 330 x 496 picture) cannot clip his chin: it is refused or given room', () => {
     // The face that box was cut around fills the width at the top.

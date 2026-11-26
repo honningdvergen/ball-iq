@@ -139,7 +139,9 @@ export function namesPlayer(m, player) {
   return !!last && text.includes(` ${last} `);
 }
 const yearOf = (d) => { const m = String(d || '').match(/\b(18|19|20)\d\d\b/); return m ? Number(m[0]) : null; };
-const usableMeta = (m) => !!m && /jpe?g|png/i.test(m.mime || m.file) && FREE.test(m.licence) && !NOTFREE.test(m.licence) && !!m.author && m.w >= 300 && m.h >= 300;
+// A picture, freely licensed, with an author to credit. Its SIZE is judged by
+// the crop rule (3x at a display size), not here.
+const usableMeta = (m) => !!m && /jpe?g|png|tiff?/i.test(m.mime || m.file) && FREE.test(m.licence) && !NOTFREE.test(m.licence) && !!m.author;
 
 // ── phase: candidates (R9) ─────────────────────────────────────────────────
 if (PHASE === 'candidates') {
