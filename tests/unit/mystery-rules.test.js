@@ -9,7 +9,7 @@ import {
   hintCards, teammateHint, teammateMainHint, clubHint, careerYearsHint, nationHint, birthYearHint,
   teammateCandidates, nearMainClubs, togetherAt, heldHints, roundHeld, openRounds,
   hintsFromSave, saveHintFields, HINT_ROUNDS, HINT_SAVE_VERSION, startersForDay, starterLine,
-  SLOT_WORD, TEAMMATE_YEARS, TEAMMATE_FALLBACK_YEARS,
+  SLOT_WORD, TEAMMATE_YEARS, TEAMMATE_FALLBACK_YEARS, TEAMMATE_FAME_TOP, teammateFameLine,
 } from '../../src/lib/mysteryRules.js';
 import { withCareerFixes, clubsOf, mainClub, sharedClubs, careerOf } from '../../src/lib/mysteryCareer.js';
 import { rankPool, paidCluesFromSave } from '../../src/lib/mysteryPlayer.js';
@@ -206,6 +206,18 @@ describe('hint cards for all curated answers: true and checkable, or not offered
       const b = cards[2][2];
       if (b.available) expect(b.value.year).toBe(s.born);
     }
+  });
+  it('R14: every teammate named is among the 300 best-known curated answers, the line read from the data', () => {
+    const fames = answers.map((id) => P(id).fame || 0).sort((a, b) => b - a);
+    const line = teammateFameLine(ctx);
+    expect(line).toBe(fames[TEAMMATE_FAME_TOP - 1]);
+    expect(fames.filter((f) => f >= line).length).toBeGreaterThanOrEqual(TEAMMATE_FAME_TOP);
+    for (const [, cards] of all) {
+      for (const c of [cards[1][0], cards[2][0]]) if (c.available) expect(P(c.value.id).fame || 0).toBeGreaterThanOrEqual(line);
+    }
+  });
+  it('R14: no more than 40 answers are left with no card at all in round one', () => {
+    expect(all.filter(([, cards]) => !cards[1].some((c) => c.available)).length).toBeLessThanOrEqual(40);
   });
   it('a one-club player is told as one, and no club is named (Totti)', () => {
     expect(clubHint(P(TOTTI), ctx)).toMatchObject({ available: true, value: { oneClub: true } });

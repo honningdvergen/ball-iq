@@ -45,6 +45,13 @@ export const BORN_CLOSE_YEARS = 4;
 export const TEAMMATE_YEARS = 3;
 export const TEAMMATE_FALLBACK_YEARS = 2;
 /**
+ * R14: a teammate the player has heard of. A teammate hint may only name
+ * someone among this many most famous curated answers (by the pool's `fame`).
+ * The fame line itself is derived from the data (teammateFameLine), never
+ * hard-coded: on 26 Nov 2026 it was fame 64 (306 answers at or above it).
+ */
+export const TEAMMATE_FAME_TOP = 300;
+/**
  * The two rounds (R1). One hint may be chosen per round; a round opens after
  * `after` guesses and stays open until a card is taken. Nothing is ever shown
  * unasked. Never offered in either round: the main club itself, the initials,
@@ -210,20 +217,41 @@ export function togetherAt(a, b, club, ctx) {
 /**
  * Teammates the hint could name, best first. A candidate is a CURATED answer
  * (known as a footballer: the pool's `fame` alone once offered a prime
- * minister) who was at `club` at the same time as the secret player for at
- * least `minYears`, and who is NOT a giveaway:
+ * minister), among the TEAMMATE_FAME_TOP best known of them (R14), who was
+ * at `club` at the same time as the secret player for at least `minYears`,
+ * and who is NOT a giveaway:
  *   · shared two or more clubs with him (Arbeloa for Xabi Alonso: Liverpool
  *     AND Real Madrid would hand over most of the career);
  *   · has his surname (brothers, fathers and sons: the de Boers, the Nevilles);
  *   · is the secret player himself.
  */
+const FAME_LINE = new WeakMap();
+/**
+ * R14: the lowest `fame` among the TEAMMATE_FAME_TOP most famous curated
+ * answers. Ties at the line all pass (so slightly more than 300 can qualify).
+ * Fewer answers than that: every answer passes (line 0).
+ */
+export function teammateFameLine(ctx) {
+  const list = ctx.answers;
+  if (!Array.isArray(list)) return 0;
+  const cached = FAME_LINE.get(list);
+  if (cached && cached.byId === ctx.byId) return cached.line;
+  const fames = list.map((id) => ctx.byId.get(id)?.fame || 0).sort((a, b) => b - a);
+  const line = fames.length >= TEAMMATE_FAME_TOP ? fames[TEAMMATE_FAME_TOP - 1] : 0;
+  FAME_LINE.set(list, { byId: ctx.byId, line });
+  return line;
+}
+
 export function teammateCandidates(secret, ctx, { clubs, minYears }) {
   const out = [];
   const mySurname = surname(secret.name);
+  const fameLine = teammateFameLine(ctx);
   for (const id of ctx.answers) {
     if (id === secret.id) continue;
     const p = ctx.byId.get(id);
     if (!p) continue;
+    // R14: somebody few players know tells the player nothing.
+    if ((p.fame || 0) < fameLine) continue;
     const shared = sharedClubs(secret, p, ctx.careers, null, ctx.year);
     if (shared.length !== 1) continue;
     const club = shared[0].club;
