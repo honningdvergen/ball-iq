@@ -8,6 +8,17 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     INTENDED CHANGE, 26 Nov 2026 (the Quiz topic screen on a phone is the list of the third
+//     drawing, quiz-picker-3; Alex: "Yes, build it"). The five "quiz screen: ..." entries were
+//     replaced, and only those: the new render was dumped with a temporary copy of this test,
+//     64 of 69 entries were byte-identical, and the golden file was rewritten by a script that
+//     first proved it re-serialises the old file byte for byte and then swapped exactly those
+//     five. Each new entry is the phone layout (the scenarios have no window, so no wide
+//     window): the title's row ("Quiz" over "10 questions · easy to hard", the two-line intro
+//     gone), one plain card per group with fifteen rows of class qz-chip (seven of them a league
+//     with its flag picture, no badge, no colour of its own), Stadiums as a row in its own card,
+//     and the summary in parts that keep to one line each. The wide window still draws the
+//     pills, unchanged, and is not in these scenarios.
 //     INTENDED CHANGE, 25 Nov 2026 (later: Transfer Trail and Top 10 finish on the layout Footle
 //     has; Alex, shown both drawn: "Yes, both"). Ten entries were replaced, and only those: the
 //     five finished Trails ("won on the first two clubs", "won after two misses", "lost",
@@ -345,8 +356,10 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['quiz: managers category, local mode'])).toContain('>Entrenadores<');
     expect(unq(now['quiz: no questions (could not load)'])).toContain('>No se pudieron cargar las preguntas<');
     const qs = unq(now['quiz screen: Premier League, rated']);
-    for (const s of ['>Mezcla<', '>De todo<', '>Ligas<', '>Torneos<', '>Temas<', '>Selecciones<', '>Eurocopa<', '>Otros formatos<', '>Estadios<', '>Empezar<', 'Diez preguntas · sube tu media']) expect(qs).toContain(s);
-    expect(unq(now['quiz screen: legends'])).toContain('<strong>Leyendas</strong> · Diez preguntas · antes de 2000');
+    for (const s of ['>Mezcla<', '>De todo<', '>Ligas<', '>Torneos<', '>Temas<', '>Selecciones<', '>Eurocopa<', '>Otros formatos<', '>Estadios<', '>Empezar<', '>Diez preguntas\u00a0·<', '>sube tu media EPL<', '>Todos los temas mezclados<']) expect(qs).toContain(s);
+    // The phone list (26 Nov 2026): the summary in parts, each kept to one line.
+    expect(unq(now['quiz screen: legends'])).toContain('<strong>Leyendas</strong>\u00a0·</span> <span class="qz-seg">Diez preguntas\u00a0·</span> <span class="qz-seg">antes de 2000</span>');
+    expect(unq(now['quiz screen: legends'])).toContain('<span class="qz-name">Leyendas</span><span class="qz-era">antes de 2000</span>');
   });
   it('Transfer Trail', () => {
     const fresh = unq(now['trail: fresh']);

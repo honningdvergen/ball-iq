@@ -1,5 +1,8 @@
 /* The Quiz screen (screens/QuizScreen.jsx). Loaded with the lazy chunk, so none
-   of this is on Home's eager path. The chips are the club finder's .cf-chip
+   of this is on Home's eager path. Under 1024 wide the screen is the phone list
+   (.qz-screen.is-list, at the end of this file); the pills and the rules up to
+   there are the wide window's, as they were (26 Nov 2026: the .cf-chip in the
+   chip selectors keeps them off the list's rows, which share the qz-chip class). The chips are the club finder's .cf-chip
    (app.css) with wrapping turned on; the start button is the app's own
    .next-btn-primary. The phone, the native shell and an installed PWA read the
    same rules; only a browser tab at desktop width (the rail) differs, below. */
@@ -22,12 +25,12 @@
 }
 /* Selected: a green tint and a tick, never a second solid fill. The screen has
    one solid control and it is "Start quiz". */
-.qz-chip.is-on, .qz-chip.is-on:hover, .qz-chip.is-on:focus-visible {
+.qz-chip.cf-chip.is-on, .qz-chip.cf-chip.is-on:hover, .qz-chip.cf-chip.is-on:focus-visible {
   border-color: rgba(88,204,2,0.55); background: rgba(88,204,2,0.10);
 }
-.qz-chip.is-on .qz-well { background: rgba(88,204,2,0.16); color: var(--grn-soft); }
+.qz-chip.cf-chip.is-on .qz-well { background: rgba(88,204,2,0.16); color: var(--grn-soft); }
 .qz-tick { color: var(--grn-soft); margin-left: -2px; flex: 0 0 auto; }
-.qz-chip:focus-visible { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--grn-soft); }
+.qz-chip.cf-chip:focus-visible { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--grn-soft); }
 
 .qz-run {
   display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px;
@@ -77,4 +80,74 @@ html.native-app .qz-screen { --qz-foot-pb: var(--foot-clear, 50px); }
 @media (min-width: 1024px) {
   body.biq-web .qz-foot { position: sticky; left: auto; right: auto; bottom: 0; margin-top: auto; padding: 10px 0 18px; }
   body.biq-web .qz-pad { display: none; }
+}
+
+/* ── THE PHONE LIST (26 Nov 2026). Under 1024 wide; the drawing Alex approved is
+   ball-iq-audit/2026-11-24/finish/quiz-picker-3.png, the right phone. The kit Home, the
+   Multiplayer tab, the Profile and History are built on, its classes reused, not copied: a
+   plain filled card is .gp-list, a group's name is .home-section-title. One type scale (11,
+   13.5 and 16 under a title of 24) and one rhythm (20 between groups, 10 from a label to its
+   card). Every rule starts at .qz-screen.is-list, so the wide window is as it was. */
+
+/* The title's row: the back tile, then "Quiz" over its one grey line. The tile is filled, as
+   on History and the Multiplayer tab: no outline. */
+.qz-screen.is-list .qz-top{display:flex;align-items:center;gap:12px;padding:18px 0 0;}
+.qz-screen.is-list .back-btn{border:0;border-radius:14px;background:var(--s1);color:var(--t2);}
+.qz-screen.is-list .back-btn svg{display:block;}
+.qz-screen.is-list .qz-id{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px;}
+.qz-screen.is-list .qz-title{margin:0;font-size:24px;line-height:1;font-weight:800;letter-spacing:-0.02em;color:var(--t1);}
+/* "10 questions": Inter's tabular figures, as every number in the kit. */
+.qz-screen.is-list .qz-line{margin:0;font-size:13.5px;line-height:1;font-weight:500;color:var(--t2);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* A group's name: small grey capitals, 20 under what is above, 10 over its card. */
+.qz-screen.is-list .home-section-title{display:block;margin:20px 4px 10px;padding:0;font-size:11px;line-height:1;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);-webkit-text-fill-color:var(--t3);}
+.qz-screen.is-list .qz-top + section .home-section-title{margin-top:22px;}
+
+/* The card: its fill, nothing round it. The rows reach its edges so the chosen one's wash is
+   the full row; the card's corners clip it. */
+.qz-screen.is-list .gp-list.qz-card{margin:0;padding:0;border-radius:20px;background:var(--s1);overflow:hidden;}
+/* A row: 50 high, one line, a lead mark 26 wide, the name at 16/600, the tick at the right.
+   A hairline between rows, inside the row's own height. */
+.qz-screen.is-list .qz-row{display:flex;align-items:center;gap:12px;width:100%;height:50px;margin:0;padding:0 16px;border:0;border-radius:0;background:none;color:var(--t1);font-family:inherit;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.qz-screen.is-list .qz-row + .qz-row{box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);}
+.qz-screen.is-list .qz-row.is-big{height:64px;}
+.qz-screen.is-list .qz-name{min-width:0;font-size:16px;line-height:1.2;font-weight:600;color:#E4E6EC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.qz-screen.is-list .qz-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;}
+.qz-screen.is-list .qz-txt.is-line{flex-direction:row;align-items:baseline;gap:10px;}
+.qz-screen.is-list .qz-sub,.qz-screen.is-list .qz-era{font-size:13.5px;line-height:1.2;font-weight:500;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* "pre-2000" is a word, not a figure: Inter's tabular hyphen would open a gap in it. The
+   lighter grey of the drawing fell under 4.5:1 on the chosen row's wash; this one holds. */
+.qz-screen.is-list .qz-era{flex:none;}
+/* The lead marks: a grey line icon, Everything's timer in green; a league's flag, 26 by 18. */
+.qz-screen.is-list .qz-lead{flex:none;display:grid;place-items:center;width:26px;color:var(--t2);}
+.qz-screen.is-list .qz-lead.is-go{color:var(--grn-soft);}
+.qz-screen.is-list .qz-flag{flex:none;display:block;width:26px;height:18px;border-radius:4px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,0.1);}
+/* The chosen row: a soft green wash over the whole row and the tick. Never a second solid
+   fill: the one solid thing on the screen is "Start quiz". */
+.qz-screen.is-list .qz-row.is-on{background:rgba(88,204,2,0.14);}
+.qz-screen.is-list .qz-row.is-on .qz-name{color:#fff;}
+.qz-screen.is-list .qz-tick{margin-left:auto;flex:none;color:var(--grn-soft);}
+.qz-screen.is-list .qz-go{margin-left:auto;flex:none;color:var(--t3);}
+.qz-screen.is-list .qz-row:active{background:var(--s2);}
+.qz-screen.is-list .qz-row.is-on:active{background:rgba(88,204,2,0.2);}
+.qz-screen.is-list .qz-row:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--grn-soft);}
+
+/* The bottom bar, as before (fixed, over the consent bar, the same clearances), with the
+   drawing's measures: the line naming the choice at 13.5, then the one solid button, 56 high.
+   Instead of a rule across, the list fades out over the 24 above it; the bar itself is the
+   screen's ground, so a row never shows through the summary. The pad under the last card
+   holds two lines of the summary, which the longest ones need at 320. */
+.qz-screen.is-list .qz-foot{padding-top:6px;border-top:0;background:var(--bg);}
+.qz-screen.is-list .qz-foot::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:24px;background:linear-gradient(180deg,rgba(11,12,16,0),var(--bg));pointer-events:none;}
+.qz-screen.is-list .qz-sum{margin:0 0 12px;font-size:13.5px;line-height:1.3;font-weight:500;color:var(--t2);text-wrap:balance;}
+.qz-screen.is-list .qz-sum strong{font-weight:700;color:var(--t1);}
+/* Each part of the summary keeps to one line (QuizScreen.jsx: the line breaks between parts). */
+.qz-screen.is-list .qz-seg{white-space:nowrap;}
+.qz-screen.is-list .qz-start.next-btn-primary{min-height:56px;}
+.qz-screen.is-list .qz-pad{height:calc(128px + var(--qz-foot-pb));}
+
+/* The smallest phones (under 360 wide): a card's side padding 12 where it was 16, the gap
+   beside a mark 10 where it was 12. The type keeps its sizes. */
+@media (max-width: 359px){
+  .qz-screen.is-list .qz-row{padding:0 12px;gap:10px;}
 }

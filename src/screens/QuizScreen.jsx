@@ -21,11 +21,26 @@
 // dropped here only. LEAGUE_QUIZ_SECTIONS still carries it, because the
 // /quiz/legends/ page's ?quiz=legends link and the card colours read it there.
 //
+// THE PHONE LIST (26 Nov 2026). Alex on the wrapping pills, then on a grid of
+// coloured tiles drawn for him: "a 5 or 6", then "a bit overstimulating" and
+// "primera liga gets its own full line but the others do not?"; flags were his
+// idea. Of the third drawing (ball-iq-audit/2026-11-24/finish/quiz-picker-3.png,
+// the right phone, "Calmer, with flags"): "Yes, build it". Under 1024 wide every
+// topic is the same row in a plain card, one card per group: a lead mark, the
+// name, and a green tick on the chosen one. Leagues lead with their country's
+// flag, a static picture from public/flags/ (never a league's logo: those are
+// the leagues' trademarks, and the app has no licence); the rest with a grey
+// lucide icon. Colour comes only from the flags and the chosen row.
+// The wide window (1024 and up: the website's rail and the installed app's
+// sidebar) keeps the pills it had, unchanged; it was not part of the drawing.
+// The rows keep the class qz-chip and the button qz-start, which the e2e specs
+// tap by. Whatever starts a quiz is the same in both.
+//
 // Lazy on purpose: this file and quiz.css are off Home's eager budget
 // (scripts/audit-home-budget.mjs); Home only carries the row that opens it.
 import React from "react";
 import { swatchEdge } from '../lib/colourMath.js';
-import { ArrowLeft, ArrowRight, Check, LandPlot, ScrollText, Sparkles, Timer } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronRight, ClipboardList, Globe, LandPlot, Medal, ScrollText, Sparkle, Sparkles, Star, Timer, Trophy } from "lucide-react";
 import { prefetchQuestions } from "../questions-loader.js";
 import { faceAbbrForCat } from "../lib/ballIqCard.js";
 import { LEAGUE_QUIZ_SECTIONS } from "../App.jsx";
@@ -43,6 +58,9 @@ export const QUIZ_MIX = [
   { key: "chaos",   Icon: Sparkles },
   { key: "legends", short: "cat.Legends", Icon: ScrollText },
 ];
+// The phone list's marks for Mix, as drawn: Chaos is the plain four-point sparkle
+// there (the wide window's pill keeps Sparkles, the one with the small stars).
+const LIST_ICON = { chaos: Sparkle };
 export const QUIZ_MIX_KEYS = new Set(QUIZ_MIX.map((m) => m.key));
 // Legends lives in Mix (above), so it leaves the Themes group on this screen.
 export const QUIZ_CAT_SECTIONS = LEAGUE_QUIZ_SECTIONS
@@ -61,6 +79,33 @@ export function normaliseQuizTopic(t) {
 // A chip's name: Spanish renames a few categories (cat.* in en.js); the
 // competitions keep LEAGUE_QUIZ_SECTIONS' name, the same in both languages.
 const chipName = (t, it) => (en[`cat.${it.cat}`] ? t(`cat.${it.cat}`) : it.name);
+
+// A league's lead mark on the phone list: its country's flag. The files are the
+// ones src/data/nationFlags.json names (England's own cross, not the Union
+// flag), written out here so the 151-nation table is not pulled into this
+// chunk; quiz-topic.test.js holds the two in step. Fetched as plain pictures.
+export const QUIZ_LEAGUE_FLAGS = {
+  PL: "flags/england.png", LaLiga: "flags/spain.png", SerieA: "flags/italy.png",
+  Bundesliga: "flags/germany.png", Ligue1: "flags/france.png", SuperLig: "flags/turkey.png",
+  Primeira: "flags/portugal.png",
+};
+// Every other topic: one plain grey line icon.
+export const QUIZ_TOPIC_ICONS = { UCL: Trophy, WorldCup: Globe, Euros: Star, Managers: ClipboardList, Records: Medal };
+
+// 1024 is where app.css hands the app its wide layout (the rail, the sidebar).
+const WIDE = "(min-width: 1024px)";
+function useWide() {
+  const [wide, setWide] = React.useState(() => typeof window !== "undefined" && !!window.matchMedia && window.matchMedia(WIDE).matches);
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return undefined;
+    const mq = window.matchMedia(WIDE);
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener?.("change", on);
+    return () => mq.removeEventListener?.("change", on);
+  }, []);
+  return wide;
+}
 
 export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, onBack, catStats, cardLeague }) {
   const t = useT();
@@ -84,6 +129,96 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
     if (mix) onStartMode(mix.key, topic);
     else if (catItem) onStartCat(catItem.cat, topic);
   };
+  const wide = useWide();
+  const line = mix ? t(`qz.${mix.key}Sum`) : catSum;
+  // On the phone a summary too long for one line (the longer ones at 320) breaks
+  // only between its parts, after a dot: never "10" from "questions", and no
+  // line starts with "·".
+  const parts = line.split(" · ");
+  const phoneSum = parts.map((p, i) => (
+    <React.Fragment key={i}>{" "}<span className="qz-seg">{p}{i < parts.length - 1 ? "\u00a0·" : ""}</span></React.Fragment>
+  ));
+  const tick = (on) => on && <Check className="qz-tick" size={18} strokeWidth={2.6} aria-hidden="true" />;
+  const foot = (
+    <>
+      {/* Room for the fixed footer, so the last card can scroll clear of it. */}
+      <div className="qz-pad" aria-hidden="true" />
+      <div className="qz-foot">
+        <div className="qz-foot-in">
+          {wide
+            ? <p className="qz-sum" aria-live="polite"><strong>{label}</strong> · {line}</p>
+            : <p className="qz-sum" aria-live="polite"><span className="qz-seg"><strong>{label}</strong>{"\u00a0·"}</span>{phoneSum}</p>}
+          <button type="button" className="next-btn-primary qz-start" onClick={start}>{t("qz.start")}</button>
+        </div>
+      </div>
+    </>
+  );
+  if (!wide) return (
+    <div className="screen qz-screen is-list">
+      <header className="qz-top">
+        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}><ArrowLeft size={18} strokeWidth={2.25} aria-hidden="true" /></button>
+        <div className="qz-id">
+          <h1 className="qz-title">{t("home.quiz.title")}</h1>
+          <p className="qz-line">{t("qz.classicSum")}</p>
+        </div>
+      </header>
+
+      <section aria-labelledby="qz-h-mix">
+        <h2 className="home-section-title" id="qz-h-mix">{t("qz.mix")}</h2>
+        <div className="gp-list qz-card">
+          {QUIZ_MIX.map(({ key, Icon }) => {
+            const on = topic === key;
+            const every = key === "classic";
+            return (
+              <button key={key} type="button" className={`qz-chip qz-row${every ? " is-big" : ""}${on ? " is-on" : ""}`} aria-pressed={on} onClick={() => pick(key)}>
+                <span className={`qz-lead${every ? " is-go" : ""}`} aria-hidden="true">{React.createElement(LIST_ICON[key] || Icon, { size: every ? 20 : 18, strokeWidth: 2.1 })}</span>
+                {every
+                  ? <span className="qz-txt"><span className="qz-name">{t("qz.classic")}</span><span className="qz-sub">{t("qz.classicSub")}</span></span>
+                  : key === "legends"
+                    ? <span className="qz-txt is-line"><span className="qz-name">{t("cat.Legends")}</span><span className="qz-era">{t("qz.legendsEra")}</span></span>
+                    : <span className="qz-name">{t(`qz.${key}`)}</span>}
+                {tick(on)}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {QUIZ_CAT_SECTIONS.map((section) => (
+        <section key={section.label} aria-labelledby={`qz-h-${section.label}`}>
+          <h2 className="home-section-title" id={`qz-h-${section.label}`}>{en[`qz.${section.label}`] ? t(`qz.${section.label}`) : section.label}</h2>
+          <div className="gp-list qz-card">
+            {section.items.map((it) => {
+              const on = topic === it.cat;
+              const flag = QUIZ_LEAGUE_FLAGS[it.cat];
+              const Icon = QUIZ_TOPIC_ICONS[it.cat];
+              return (
+                <button key={it.cat} type="button" className={`qz-chip qz-row${on ? " is-on" : ""}`} aria-pressed={on} onClick={() => pick(it.cat)}>
+                  {flag
+                    ? <img className="qz-flag" src={`/${flag}`} width="26" height="18" loading="lazy" decoding="async" alt="" aria-hidden="true" />
+                    : <span className="qz-lead" aria-hidden="true">{Icon && <Icon size={18} strokeWidth={2.1} />}</span>}
+                  <span className="qz-name">{chipName(t, it)}</span>
+                  {tick(on)}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+
+      <section aria-labelledby="qz-h-runs">
+        <h2 className="home-section-title" id="qz-h-runs">{t("qz.notTen")}</h2>
+        <div className="gp-list qz-card">
+          <button type="button" className="qz-row is-big qz-stadiums" onClick={onStadiums}>
+            <span className="qz-lead" aria-hidden="true"><LandPlot size={18} strokeWidth={2.1} /></span>
+            <span className="qz-txt"><span className="qz-name">{t("qz.stadiums")}</span><span className="qz-sub">{t("qz.stadiumsSub")}</span></span>
+            <ChevronRight className="qz-go" size={18} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        </div>
+      </section>
+      {foot}
+    </div>
+  );
   return (
     <div className="screen qz-screen">
       <div className="page-hdr">
@@ -138,14 +273,7 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
         </button>
       </section>
 
-      {/* Room for the fixed footer, so Stadiums can scroll clear of it. */}
-      <div className="qz-pad" aria-hidden="true" />
-      <div className="qz-foot">
-        <div className="qz-foot-in">
-          <p className="qz-sum" aria-live="polite"><strong>{label}</strong> · {mix ? t(`qz.${mix.key}Sum`) : catSum}</p>
-          <button type="button" className="next-btn-primary qz-start" onClick={start}>{t("qz.start")}</button>
-        </div>
-      </div>
+      {foot}
     </div>
   );
 }

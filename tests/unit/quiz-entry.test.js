@@ -89,7 +89,9 @@ describe("Quiz screen: every old entry, through its old launcher", () => {
   it("Stadiums is a row under 'Not ten questions' and opens the Stadiums screen", () => {
     expect(QUIZ_CODE).toMatch(/\{t\("qz\.notTen"\)\}/);
     expect(en["qz.notTen"]).toBe("Not ten questions");
+    // The wide window's row, and (26 Nov 2026) the phone list's row in its own card.
     expect(QUIZ_CODE).toMatch(/<span className="qz-run-name">\{t\("qz\.stadiums"\)\}<\/span>/);
+    expect(QUIZ_CODE).toMatch(/<span className="qz-name">\{t\("qz\.stadiums"\)\}<\/span>/);
     expect(en["qz.stadiums"]).toBe("Stadiums");
     expect(APP_CODE).toMatch(/onStadiums=\{\(\) => setScreen\("stadiums"\)\}/);
   });
@@ -102,6 +104,8 @@ describe("Quiz screen: every old entry, through its old launcher", () => {
       expect(QUIZ_CODE).toMatch(new RegExp(`>\\{t\\("${k.replace(".", "\\.")}"\\)\\}<`));
       expect(en[k]).toBe(h);
     }
+    // The phone list's group names are small capitals by its CSS (quiz.css, the kit's
+    // .home-section-title), never typed in capitals: the words stay sentence case.
     expect(QUIZ_CODE).not.toMatch(/textTransform|text-transform|uppercase/);
     // No typed arrows standing in for icons: the back and Open marks are lucide.
     expect(QUIZ_CODE).not.toMatch(/[←→]/);
