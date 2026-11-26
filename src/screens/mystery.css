@@ -59,6 +59,14 @@
 }
 .mq-lk-l svg { flex: none; }
 .mq-lk.is-ready .mq-lk-l { color: #fff; }
+/* "Hint ready" is one button across the row; the pill is its label's end. */
+button.mq-lk {
+  width: 100%; margin: 0; padding: 0; border: 0; background: none; color: inherit;
+  font: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+button.mq-lk:disabled { cursor: default; }
+button.mq-lk:disabled .mq-pill { opacity: 0.55; }
+button.mq-lk:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 12px; }
 .mq-lk.is-ready .mq-lk-l svg, .mq-lk.is-taken .mq-lk-l svg { color: #FFC107; }
 /* A taken hint is a fact the player chose, so it is never cut: beside its label
    when it fits, else whole on its own line under it, right-aligned (320pt,

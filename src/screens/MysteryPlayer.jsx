@@ -225,6 +225,16 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     [POOL, text, guesses],
   );
 
+  // The grey line under a suggested name: the birth year and the club of the
+  // longest senior spell, the same line the starters carry. The pool's own
+  // `club` put Trabzonspor beside Mohamed Salah and Parma beside Buffon; until
+  // the careers have arrived the line is the birth year alone.
+  const suggestionLine = (p) => {
+    if (!CAREERS) return suggestionSubtitle(p, { club: false });
+    const line = starterLine(p, { careers: CAREERS, year });
+    return [line.born, line.club].filter(Boolean).join(' · ');
+  };
+
   // The finish: the senior career, oldest first, club and years.
   const career = useMemo(() => (answer && CAREERS ? careerOf(answer, CAREERS, year) : []), [answer, CAREERS, year]);
 
@@ -321,7 +331,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
     e.preventDefault();
     if (!ready) { ensureData(); setError(t('mp.loadingList')); return; }
     const p = matchGuess(POOL, text);
-    if (!p) { setError(t('mp.noSuch', { q: text.trim() })); return; }
+    if (!p) { if (!repeatOf) setError(t('mp.noSuch', { q: text.trim() })); return; }
     submit(p);
   };
 
@@ -384,7 +394,13 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
   // hiding the strip on focus alone hid "Hint ready" from a player who never
   // put the keyboard away (found playing it in WebKit, 26 Nov 2026).
   const stripOut = typing && q.length > 0;
-  const noMatch = !done && ready && q.length >= 2 && suggestions.length === 0;
+  // Nothing to suggest for what is typed. Either nobody is called that, or the
+  // only player who is has been guessed already (the list leaves guessed
+  // players out). The second used to read "No player called … in today's
+  // pool", which was untrue (the design session's live play, 26 Nov 2026).
+  const noneLeft = !done && ready && q.length >= 2 && suggestions.length === 0;
+  const repeatOf = noneLeft ? (rankPlayerSuggestions(POOL, text, { limit: SUGGEST_MAX })[0] || null) : null;
+  const noMatch = noneLeft && !repeatOf;
   return (
     <div ref={rootRef} className={`mp mq${embedded ? ' is-embedded' : ''}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', paddingBottom: kbInset ? 24 + kbInset : undefined }}>
       {/* The header: the back tile, the name over "No. N · Unlimited guesses",
@@ -474,7 +490,7 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
               // The keyboard stays up between guesses: refuse the focus change,
               // the click still fires (Top 10 since 9 Oct, Trail since 12 Oct).
               onPointerDown={(e) => e.preventDefault()} onMouseDown={(e) => e.preventDefault()}>
-              <span className="mq-row-t"><b>{p.name}</b><i>{suggestionSubtitle(p)}</i></span>
+              <span className="mq-row-t"><b>{p.name}</b><i>{suggestionLine(p)}</i></span>
             </button>
           ))}
         </div>
@@ -486,7 +502,12 @@ export default function MysteryPlayer({ onExit, date = new Date(), services, emb
           <span>{t('mq.noSuchHelp')}</span>
         </div>
       )}
-      {error && !noMatch && <div className="mq-err" role="alert">{error}</div>}
+      {repeatOf && (
+        <div className="mq-nf" role="status">
+          <b>{t('mp.already', { name: repeatOf.name })}</b>
+        </div>
+      )}
+      {error && !noMatch && !repeatOf && <div className="mq-err" role="alert">{error}</div>}
 
       {/* THREE FIRST MOVES, as kit rows with a soft Guess pill (B5). */}
       {!done && rows.length === 0 && !q && starters.length > 0 && (

@@ -135,10 +135,11 @@ export function HintStrip({ n, taken, cards, held, open, onChoose, t }) {
       rows.push(<div key="r" className="mq-lk"><span className="mq-lk-l"><Lightbulb size={16} strokeWidth={2.2} aria-hidden="true" />{t('mq.heldRound')}</span></div>);
     } else {
       rows.push(
-        <div key="r" className="mq-lk is-ready">
+        /* The whole row is the button, not only the small pill (26 Nov 2026). */
+        <button key="r" type="button" className="mq-lk is-ready" onClick={onChoose} disabled={!list} aria-haspopup="dialog">
           <span className="mq-lk-l"><Lightbulb size={16} strokeWidth={2.2} aria-hidden="true" />{t('mq.hintReady')}</span>
-          <button type="button" className="mq-pill" onClick={onChoose} disabled={!list} aria-haspopup="dialog">{t('mq.choose')}</button>
-        </div>,
+          <span className="mq-pill">{t('mq.choose')}</span>
+        </button>,
       );
     }
   } else {

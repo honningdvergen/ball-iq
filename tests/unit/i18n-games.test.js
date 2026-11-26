@@ -28,6 +28,10 @@
 //     and the framed panel are one green card (the face, the name, "Position · flag Nation ·
 //     born YEAR", the result line with its hints, the career, the Share button) in
 //     DailyDone's layout "one", the header's "?" is the streak chip, and Back to Home follows.
+//     THEN, the same day (the design session's live play): "Hint ready" is one button across
+//     the whole row, with "Choose" as its pill, where only the pill was a button. Three
+//     entries moved and only those (five guesses with a hint ready, and the two old saves
+//     that offer one); 69 of 72 were byte-identical and the file was rewritten the same way.
 //     INTENDED CHANGE, 26 Nov 2026, later (the quiz question on a phone is the drawing Alex
 //     approved, quiz-question-3; "Yes, build it"). The ten "quiz: ..." entries that draw a
 //     question were replaced, and only those: the new render was dumped with a temporary copy of
