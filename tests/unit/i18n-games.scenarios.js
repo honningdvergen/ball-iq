@@ -154,17 +154,21 @@ function mysteryGuesses(S, date, n, withAnswer) {
 const mystery = (props = {}) => () => React.createElement(MysteryPlayer, { onExit: noop, date: TODAY, ...props });
 const mysteryScenarios = (S) => [
   ['mystery: fresh, the pool not loaded yet', { _pool: false }, mystery()],
-  ['mystery: fresh, the pool in (free clues, the key to the colours)', {}, mystery()],
+  ['mystery: fresh, the pool in (the rule line and three starters)', {}, mystery()],
   // Yesterday's answer is named only to someone who closed yesterday's board:
   // it is still playable from History, so to anyone else the name is the answer.
-  ['mystery: fresh, yesterday closed (he is named)', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, gaveUp: true, guesses: mysteryGuesses(S, YESTERDAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
-  ['mystery: fresh, yesterday still open (he is not named)', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, guesses: mysteryGuesses(S, YESTERDAY, 2), hintsUsed: 0, clues: 3 }) }, mystery()],
+  ['mystery: fresh, yesterday closed (no one is named)', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, gaveUp: true, guesses: mysteryGuesses(S, YESTERDAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
+  ['mystery: fresh, yesterday still open', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, guesses: mysteryGuesses(S, YESTERDAY, 2), hintsUsed: 0, clues: 3 }) }, mystery()],
   ['mystery: three guesses', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 3), hintsUsed: 0, clues: 3 }) }, mystery()],
-  ['mystery: five guesses (club clue ready, give up offered)', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
-  ['mystery: seven guesses, club clue taken', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 7), hintsUsed: 1, clues: 3 }) }, mystery()],
-  ['mystery: nine guesses, both clues taken', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 9), hintsUsed: 2, clues: 3 }) }, mystery()],
+  ['mystery: five guesses (hint ready, give up offered)', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
+  ['mystery: seven guesses, an old save with the club clue taken', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 7), hintsUsed: 1, clues: 3 }) }, mystery()],
+  ['mystery: nine guesses, an old save with both clues taken', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 9), hintsUsed: 2, clues: 3 }) }, mystery()],
+  // Saves under the hint rounds of 26 Nov 2026 (clues: 4, the hints chosen).
+  ['mystery: six guesses, a club hint taken', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 6), clues: 4, hints: [{ round: 1, key: 'club' }], hintsUsed: 1 }) }, mystery()],
+  ['mystery: nine guesses, a hint taken in each round', { _mystery: () => saveMysteryResult(TODAY, { won: false, guesses: mysteryGuesses(S, TODAY, 9), clues: 4, hints: [{ round: 1, key: 'careerYears' }, { round: 2, key: 'nation' }], hintsUsed: 2 }) }, mystery()],
+  ['mystery: won in 4, no hints', { _mystery: () => saveMysteryResult(TODAY, { won: true, guesses: mysteryGuesses(S, TODAY, 3, true), clues: 4, hints: [], hintsUsed: 0 }) }, mystery()],
   ['mystery: won in 1', { _mystery: () => saveMysteryResult(TODAY, { won: true, guesses: mysteryGuesses(S, TODAY, 0, true), hintsUsed: 0, clues: 3 }) }, mystery()],
-  ['mystery: won in 6 with a clue', { _mystery: () => saveMysteryResult(TODAY, { won: true, guesses: mysteryGuesses(S, TODAY, 5, true), hintsUsed: 1, clues: 3 }) }, mystery()],
+  ['mystery: won in 6, an old save with a clue', { _mystery: () => saveMysteryResult(TODAY, { won: true, guesses: mysteryGuesses(S, TODAY, 5, true), hintsUsed: 1, clues: 3 }) }, mystery()],
   ['mystery: gave up after 5', { _mystery: () => saveMysteryResult(TODAY, { won: false, gaveUp: true, guesses: mysteryGuesses(S, TODAY, 5), hintsUsed: 0, clues: 3 }) }, mystery()],
   ['mystery: archive, two guesses', { _mystery: () => saveMysteryResult(YESTERDAY, { won: false, guesses: mysteryGuesses(S, YESTERDAY, 2), hintsUsed: 0, clues: 3, arc: 1 }) }, mystery({ date: YESTERDAY })],
   ['mystery: embedded (static page), fresh', {}, mystery({ embedded: true, onExit: undefined })],

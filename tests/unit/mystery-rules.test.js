@@ -270,13 +270,20 @@ describe('the ladder and saves', () => {
     const taken = [{ round: 1, key: 'teammate' }, { round: 2, key: 'birthYear' }];
     const fields = saveHintFields(taken);
     expect(fields).toEqual({ clues: HINT_SAVE_VERSION, hints: taken, hintsUsed: 2 });
-    expect(hintsFromSave({ won: true, guesses: [], ...fields })).toEqual({ taken, count: 2, legacy: false });
+    expect(hintsFromSave({ won: true, guesses: [], ...fields })).toEqual({ taken, count: 2, legacy: false, legacyCount: 0 });
   });
   it('old saves still load: the 16 Oct ladder (clues 3), the 14 Oct ladder (clues 2), and before it', () => {
-    expect(hintsFromSave({ hintsUsed: 1, clues: 3 })).toEqual({ taken: [], count: 1, legacy: true });
-    expect(hintsFromSave({ hintsUsed: 2, clues: 2 })).toEqual({ taken: [], count: 1, legacy: true });
-    expect(hintsFromSave({ hintsUsed: 1 })).toEqual({ taken: [], count: 0, legacy: false });
-    expect(hintsFromSave(null)).toEqual({ taken: [], count: 0, legacy: false });
+    expect(hintsFromSave({ hintsUsed: 1, clues: 3 })).toEqual({ taken: [], count: 1, legacy: true, legacyCount: 1 });
+    expect(hintsFromSave({ hintsUsed: 2, clues: 2 })).toEqual({ taken: [], count: 1, legacy: true, legacyCount: 1 });
+    expect(hintsFromSave({ hintsUsed: 1 })).toEqual({ taken: [], count: 0, legacy: false, legacyCount: 0 });
+    expect(hintsFromSave(null)).toEqual({ taken: [], count: 0, legacy: false, legacyCount: 0 });
+  });
+  it('an old game resumed under these rules keeps its old clues in the count, never as cards', () => {
+    const old = hintsFromSave({ hintsUsed: 1, clues: 3 });
+    const fields = saveHintFields([{ round: 2, key: 'nation' }], old.legacyCount);
+    expect(fields).toMatchObject({ clues: HINT_SAVE_VERSION, hintsUsed: 2, legacyHints: 1 });
+    expect(hintsFromSave(fields)).toEqual({ taken: [{ round: 2, key: 'nation' }], count: 2, legacy: true, legacyCount: 1 });
+    expect(saveHintFields([])).not.toHaveProperty('legacyHints');
   });
   it('the old screen reads a new save as no clues taken, and does not break on it', () => {
     expect(paidCluesFromSave(saveHintFields([{ round: 1, key: 'club' }]))).toBe(0);

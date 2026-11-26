@@ -60,10 +60,13 @@ describe('a running spell counts to the puzzle year, not 2026', () => {
     const s = src('../../src/screens/MysteryPlayer.jsx');
     expect(s).toMatch(/const year = puzzleYear\(dayIndex\)/);
     expect(s).toMatch(/rankPool\(POOL, answer, CAREERS, year\)/);
-    expect(s).toMatch(/clueLadder\(answer, CAREERS, ROLES, year\)/);
     expect(s).toMatch(/careerOf\(answer, CAREERS, year\)/);
-    expect(s).toMatch(/mainClub\(answer, CAREERS, year\)/);
-    expect(s).toMatch(/explainGuess\(byId\.get\(g\.id\), answer, CAREERS, year\)/);
+    // Since 26 Nov 2026 the tiles and the hints read lib/mysteryRules.js
+    // through one ctx that carries the puzzle year.
+    expect(s).toMatch(/regions: rulesData\.regions, flags: rulesData\.flags, year,/);
+    expect(s).toMatch(/tileVerdicts\(p, answer, ctx\)/);
+    expect(s).toMatch(/hintCards\(answer, ctx\)/);
+    expect(s).toMatch(/starterLine\(p, \{ careers: CAREERS, year \}\)/);
     expect(s).not.toMatch(/NOW_YEAR|getFullYear\(\)/);
   });
 });

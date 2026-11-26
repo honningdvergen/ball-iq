@@ -8,6 +8,20 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     INTENDED CHANGE, 26 Nov 2026, latest (Mystery Player's new play screen, Job B of the
+//     Mystery rebuild; drawings mystery-guesses-11 and mystery-hint-7, approved). Only the
+//     "mystery: ..." entries moved: the new render was dumped with a temporary copy of this
+//     test, the 55 other entries were byte-identical, and the golden file was rewritten by a
+//     script that first proved it re-serialises the old file byte for byte and refused any
+//     change outside "mystery: ". Seven scenarios were renamed because their old names
+//     described what is gone (free clues, "he is named", the club and initials clues): the
+//     fresh one is now "(the rule line and three starters)", the yesterday pair no longer
+//     says "he", and the three old-ladder saves say they are old saves; three were added
+//     (a club hint taken, a hint taken in each round, won in 4 with no hints). In every
+//     play state: the filled back and help tiles, the pitch card ("Who am I?", the rule line
+//     or "Closest so far", the hint strip, the search pill), the three starters with a Guess
+//     pill, and each guess with its round face and four tiles; no free clues, no
+//     "Yesterday it was". The finish entries changed only by the hints line until Job C.
 //     INTENDED CHANGE, 26 Nov 2026, later (the quiz question on a phone is the drawing Alex
 //     approved, quiz-question-3; "Yes, build it"). The ten "quiz: ..." entries that draw a
 //     question were replaced, and only those: the new render was dumped with a temporary copy of
@@ -139,6 +153,12 @@ vi.mock('../../src/lib/usePlayerPool.js', () => ({
     ready: !!S.poolReady,
     ensure: () => {},
   }),
+}));
+// The tiles' and hints' data (nations, regions, flags, photos) arrives by an
+// import() in the real screen; here it is handed over with the pool.
+vi.mock('../../src/lib/mysteryRulesData.js', () => ({
+  peekMysteryRulesData: () => (S.poolReady ? S.mysteryRules : null),
+  loadMysteryRulesData: () => new Promise(() => {}),
 }));
 vi.mock('../../src/lib/scheduleRemote.js', async (orig) => {
   const m = await orig();
@@ -397,18 +417,20 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['trail: no career (coming soon)'])).toContain('Muy pronto: una carrera nueva');
   });
   it('Mystery Player', () => {
-    const fresh = unq(now['mystery: fresh, the pool in (free clues, the key to the colours)']);
-    for (const s of ['>Intentos ilimitados<', '>Posición<', '>Nació<', '>Jugó en<', '>Iniciales<', '>en 4 intentos<', 'placeholder="Busca un jugador"', 'aria-label="Pistas"']) expect(fresh).toContain(s);
-    expect(unq(now['mystery: fresh, the pool not loaded yet'])).toContain('>Al empezar<');
-    const five = unq(now['mystery: five guesses (club clue ready, give up offered)']);
-    for (const s of ['>Toca para verla<', '>Rendirse y ver la respuesta<', 'Ningún club en común', '>caliente<']) expect(five).toContain(s);
-    expect(unq(now['mystery: nine guesses, both clues taken'])).not.toContain('(one name)');
-    const won = unq(now['mystery: won in 6 with a clue']);
-    expect(won).toContain('Resuelto en 6 intentos · 1 pista');
+    // The play screen of 26 Nov 2026: no free clues, two rounds of hints, four tiles a guess.
+    const fresh = unq(now['mystery: fresh, the pool in (the rule line and three starters)']);
+    for (const s of ['· Intentos ilimitados<', '>¿Quién soy?<', '>Cada intento recibe un puesto. El puesto\u00a01 es el jugador secreto.<', '>Pista<', '>Tras 4 intentos<', 'placeholder="Busca un jugador"', '>¿No sabes por dónde empezar?<', '>Probar<']) expect(fresh).toContain(s);
+    expect(fresh).not.toContain('Posición');
+    const five = unq(now['mystery: five guesses (hint ready, give up offered)']);
+    for (const s of ['>Pista lista<', '>Elegir<', '>Rendirse y ver la respuesta<', '>Club en común<', '>Selección<', '>Nacido<', '>caliente<', 'Igual que el jugador secreto']) expect(five).toContain(s);
+    const two = unq(now['mystery: nine guesses, a hint taken in each round']);
+    for (const s of ['>Carrera<', '>Selección<']) expect(two).toContain(s);
+    expect(unq(now['mystery: six guesses, a club hint taken'])).toContain('>Siguiente pista<');
+    const won = unq(now['mystery: won in 6, an old save with a clue']);
+    expect(won).toContain('1 pista');
     expect(won).toContain('nacido en 1986');
-    expect(won).toContain('aria-label="Trayectoria"');
-    expect(unq(now['mystery: gave up after 5'])).toContain('Te rendiste tras 5 intentos');
-    expect(unq(now['mystery: gave up after 5'])).toContain('>Era Olivier Giroud<');
+    expect(unq(now['mystery: won in 4, no hints'])).toContain('sin pistas');
+    expect(unq(now['mystery: gave up after 5'])).toContain('Era Olivier Giroud');
     expect(unq(now['mystery: archive, two guesses'])).toContain(' · archivo');
     expect(unq(now['mystery: no puzzle today'])).toContain('Hoy no hay Mystery Player');
   });

@@ -1,10 +1,8 @@
 // Mystery Player, the rules of the rebuild (Job A, 26 Nov 2026).
 //
-// PURE FUNCTIONS ONLY, AND NOTHING IMPORTS THIS FILE YET. The live screen
-// (screens/MysteryPlayer.jsx) still runs on lib/mysteryPlayer.js: its free
-// clues, its club-then-initials ladder, its saves. Job B switches the screen
-// over; until then this file is not in any bundle. What Job B must delete or
-// switch is listed in the Job A report and at the foot of this header.
+// PURE FUNCTIONS ONLY. The play screen (screens/MysteryPlayer.jsx) runs on
+// these since Job B (26 Nov 2026); lib/mysteryPlayer.js keeps the ranking,
+// the band, the day and the saves' storage.
 //
 // THE STANDARD. Every hint and every tile is shown to football fans as a fact.
 // Each function here either returns a value it can support from the data, with
@@ -21,17 +19,13 @@
 //   ctx.flags    nationFlags.json     { nation: "flags/<slug>.png" }
 //   ctx.year     the puzzle's year (puzzleYear(dayIndex)), for running spells
 //
-// WHAT JOB B DELETES OR SWITCHES WHEN IT TURNS THIS ON (also in the report):
-//   · lib/mysteryPlayer.js: FREE_CLUES, CLUE_AFTER, birthDecade's use as a
-//     clue, clueLadder, and paidCluesFromSave's role as the screen's counter
-//     (keep the function: hintsFromSave below calls it for old saves).
-//   · screens/MysteryPlayer.jsx: CLUE_ICON, CLUE_PLACEHOLDER, the clue ladder
-//     block, revealHint, the starters memo (use startersForDay), the
-//     reasonMarks line under each guess (use tileVerdicts), `clues: 3` in the
-//     three save calls (use saveHintFields).
-//   · i18n: mp.position / mp.born / mp.club / mp.initials / mp.oneName /
-//     mp.tapReveal / mp.inN / mp.unlocksIn / mp.readyNext / mp.readyAfter and
-//     mp.rules' two numbers, once nothing reads them.
+// WHAT JOB B SWITCHED (26 Nov 2026). The screen reads tileVerdicts,
+// hintCards, heldHints, openRounds, hintsFromSave, saveHintFields,
+// startersForDay and starterLine from here; it no longer reads FREE_CLUES,
+// CLUE_AFTER, clueLadder, explainGuess or reasonMarks. Those stay in
+// lib/mysteryPlayer.js for now: the cold-start simulation's "old" variant,
+// paidCluesFromSave (old saves) and their own tests still call them, and the
+// old mp.* clue strings stay with them until that is tidied.
 import { careerOf, clubsOf, mainClub, sharedClubs, clubFame } from './mysteryCareer.js';
 import { paidCluesFromSave, normaliseName } from './mysteryPlayer.js';
 
@@ -430,10 +424,13 @@ export function hintsFromSave(saved) {
     const taken = saved.hints
       .filter((h) => h && HINT_ROUNDS.some((r) => r.round === h.round && r.cards.includes(h.key)))
       .filter((h, i, all) => all.findIndex((x) => x.round === h.round) === i);
-    return { taken, count: taken.length, legacy: false };
+    // Clues an old-ladder game took before it was resumed under these rules
+    // (saveHintFields' `legacyHints`): still counted, never shown as cards.
+    const old = Math.max(0, Math.trunc(Number(saved.legacyHints) || 0));
+    return { taken, count: taken.length + old, legacy: old > 0, legacyCount: old };
   }
   const count = paidCluesFromSave(saved);
-  return { taken: [], count, legacy: !!saved && count > 0 };
+  return { taken: [], count, legacy: !!saved && count > 0, legacyCount: count };
 }
 
 /**
@@ -442,8 +439,12 @@ export function hintsFromSave(saved) {
  * `clues: 4` save as no clues taken (paidCluesFromSave ignores the version), so
  * opening an old build on a new save shows the board with its ladder fresh.
  */
-export function saveHintFields(taken = []) {
-  return { clues: HINT_SAVE_VERSION, hints: taken.map(({ round, key }) => ({ round, key })), hintsUsed: taken.length };
+export function saveHintFields(taken = [], legacyCount = 0) {
+  const old = Math.max(0, Math.trunc(Number(legacyCount) || 0));
+  return {
+    clues: HINT_SAVE_VERSION, hints: taken.map(({ round, key }) => ({ round, key })), hintsUsed: taken.length + old,
+    ...(old ? { legacyHints: old } : {}),
+  };
 }
 
 // ── Starters (R5, R7) ───────────────────────────────────────────────────────

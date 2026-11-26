@@ -1,103 +1,210 @@
-/* Mystery Player (screens/MysteryPlayer.jsx), rebuilt 14 Oct 2026: the reason
-   line under each guess, the clue ladder and the career reveal.
+/* Mystery Player (screens/MysteryPlayer.jsx and screens/mysteryParts.jsx).
+   THE PLAY SCREEN OF 26 NOV 2026, as drawn and approved: ball-iq-audit/
+   2026-11-24/finish/mystery-guesses-11.png (the screen with guesses, a name we
+   do not have), mystery-hint-7.png (the hint strip and the sheet) and
+   mystery-play-5.png (before the first guess); the measures are mq2.py to
+   mq11.py there. Filled, not outlined; one loud thing (the pitch card).
    Loaded in the app and, through the island's manifest CSS, on the static
-   /mystery-player/ page, where the app's token names are defined on the host
-   (gen-seo-pages, rootCss). Motion: the house timings, state 180ms. */
+   /mystery-player/ page, where app.css is NOT loaded: nothing here may lean on
+   app.css's classes (.sr-only, .icon-btn, .back-btn), only on its tokens. */
 
 .mp {
   --mp: #B9A5FF;          /* MODE_ACCENT.mystery */
   --mp-rgb: 139, 108, 240; /* MODE_RGB.mystery */
 }
+.mq { font-family: var(--font, Inter, system-ui, sans-serif); }
+.mq button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.mq-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-.mp-intro { margin: 2px 0 14px; color: var(--t2); font-size: 13.5px; line-height: 1.5; text-wrap: pretty; }
+/* ── The header: two filled tiles round the name ─────────────────────────── */
+.mq-top { display: flex; align-items: center; gap: 12px; padding: 8px 0 0; min-height: 44px; }
+.mq.is-embedded .mq-top { padding-top: 2px; }
+.mq-tile {
+  flex: none; width: 44px; height: 44px; min-width: 44px; padding: 0; border: 0; border-radius: 14px;
+  background: var(--s1); color: var(--t2); display: grid; place-items: center; cursor: pointer;
+}
+.mq-tile svg { display: block; }
+@media (hover: hover) { .mq-tile:hover { background: var(--s2); color: var(--t1); } }
+.mq-tile:focus-visible, .mq-pill:focus-visible, .mq-go:focus-visible, .mq-row:focus-visible, .mq-o:focus-visible,
+.mq-keep:focus-visible, .mq-give:focus-visible, .mq-credits:focus-visible { outline: 2px solid var(--accent, #58CC02); outline-offset: 2px; }
+.mq-title { flex: 1; min-width: 0; }
+.mq-name { font-size: 20px; line-height: 1.2; font-weight: 800; letter-spacing: -0.01em; color: var(--t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Wraps whole words on a narrow phone rather than cutting "Unlimited guesses". */
+.mq-sub {
+  margin-top: 3px; font-size: 13.5px; line-height: 1.25; font-weight: 500; color: var(--t2);
+  font-variant-numeric: tabular-nums;
+}
+.mq-sub b { font-weight: 800; }
+.mq-rules { margin: 14px 4px 0; font-size: 13.5px; line-height: 1.5; color: var(--t2); text-wrap: pretty; }
 
-/* ── The guesses: one card, a row each ─────────────────────────────────── */
-.mp-glist { border: 1px solid var(--border); border-radius: 16px; background: var(--s1); overflow: hidden; }
-.mp-g {
-  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px;
-  padding: 12px 16px 15px;
+/* ── The pitch card ──────────────────────────────────────────────────────── */
+.mq-card {
+  margin-top: 18px; padding: 26px 22px 22px; border-radius: 28px; color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(88, 204, 2, 0.22);
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 46px, rgba(0, 0, 0, 0) 46px 92px), linear-gradient(180deg, #123A24, #0C2A1A);
 }
-.mp-g-main { min-width: 0; }
-.mp-g-name {
-  font-size: 15px; font-weight: 800; color: var(--t1); letter-spacing: -0.01em;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-/* Club, position, era. A lit mark is something the guess shares with the
-   answer; a hollow one is a miss. They wrap whole, never mid-phrase. */
-.mp-g-facts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 3px 12px; margin-top: 6px; }
-.mp-fact {
-  display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
-  font-size: 12px; line-height: 1.3; font-weight: 600; color: var(--t3);
-}
-.mp-fact::before {
-  content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%;
-  border: 1.5px solid var(--border2); box-sizing: border-box;
-}
-.mp-fact.is-hit { color: var(--t1); }
-.mp-fact.is-hit::before { border-color: var(--grn-soft, #7BD63A); background: var(--grn-soft, #7BD63A); }
-.mp-g-rank { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-.mp-g-num { font-size: 19px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; color: var(--g); font-variant-numeric: tabular-nums; }
-.mp-g-band { font-size: 9.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g); opacity: 0.8; }
-/* The line between two rows IS the measure: its lit part is how close. */
-.mp-g-bar { position: absolute; left: 16px; right: 16px; bottom: 0; height: 2px; border-radius: 2px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
-.mp-g-bar > i { display: block; height: 100%; border-radius: 2px; background: var(--g); }
-.mp-g:last-child .mp-g-bar { bottom: 6px; }
-.mp-g:last-child { padding-bottom: 19px; }
+.mq-who { margin: 0; font-size: 34px; line-height: 1; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
+.mq-rule { margin: 12px 0 0; font-size: 16px; line-height: 1.35; font-weight: 500; color: rgba(255, 255, 255, 0.76); text-wrap: pretty; }
+.mq-best { margin: 12px 0 0; font-size: 13.5px; line-height: 1.2; font-weight: 700; color: #FFC107; font-variant-numeric: tabular-nums; }
 
-/* ── The clue ladder ───────────────────────────────────────────────────── */
-/* Two by two: the free starting clues on top, the two that wait below.
-   THE VALUE IS THE CLUE (declutter, 26 Oct 2026): "Forward", "1940s" were
-   13.5px under a tracked violet caps label that outshouted them. Now the
-   value is the big line and the label a quiet word above it; violet is kept
-   for the one card that wants a tap (is-ready). */
-.mp-clues {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
-  margin: 2px 0 6px;
+/* The hint strip: rows of 48 on a darker well. */
+.mq-strip { margin-top: 20px; padding: 0 16px; border-radius: 16px; background: rgba(0, 0, 0, 0.28); }
+.mq-lk { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; }
+.mq-lk + .mq-lk { border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.mq-lk-l {
+  flex: none; display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  font-size: 16px; line-height: 1.2; font-weight: 600; color: rgba(255, 255, 255, 0.7);
 }
-.mp-clue {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
-  min-height: 64px; box-sizing: border-box; padding: 9px 12px 10px;
-  border-radius: 12px; border: 1px solid var(--border); background: var(--s1);
-  font: inherit; text-align: left; color: var(--t1);
-  transition: border-color 180ms ease-out, background-color 180ms ease-out, transform 90ms ease-out;
+.mq-lk-l svg { flex: none; }
+.mq-lk.is-ready .mq-lk-l { color: #fff; }
+.mq-lk.is-ready .mq-lk-l svg, .mq-lk.is-taken .mq-lk-l svg { color: #FFC107; }
+/* A taken hint is a fact the player chose, so it is never cut: beside its label
+   when it fits, else whole on its own line under it, right-aligned (320pt,
+   "Robert Lewandowski"). Only a value wider than the whole row ends in "…". */
+.mq-lk.is-taken { flex-wrap: wrap; row-gap: 4px; padding: 12px 0; }
+.mq-lk-v {
+  flex: 1 0 auto; max-width: 100%; display: block; text-align: right;
+  font-size: 16px; line-height: 1.2; font-weight: 700; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums;
 }
-.mp-clue-label {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 12px; font-weight: 600; line-height: 1.2;
-  color: var(--t3);
+.mq-lk-v .mq-flag { vertical-align: -2px; margin-right: 7px; }
+.mq-lk-w { font-size: 13.5px; font-style: normal; font-weight: 500; color: rgba(255, 255, 255, 0.62); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mq-pill {
+  position: relative; flex: none; height: 34px; padding: 0 16px; border: 0; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16); color: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer;
 }
-.mp-clue-value {
-  font-size: 19px; font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; color: var(--t1);
-  overflow-wrap: anywhere;
-}
-/* Solid like its neighbours, only quieter: a dashed box read as unfinished. */
-.mp-clue.is-locked { background: transparent; }
-.mp-clue.is-locked .mp-clue-value { font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--t3); }
-.mp-clue.is-ready {
-  cursor: pointer; border-color: rgba(var(--mp-rgb), 0.6);
-  background: rgba(var(--mp-rgb), 0.12);
-  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-}
-.mp-clue.is-ready .mp-clue-label { color: var(--mp); }
-.mp-clue.is-ready .mp-clue-value { color: var(--mp); font-size: 14px; letter-spacing: 0; }
-.mp-clue.is-ready:active { transform: scale(0.97); }
-.mp-clue.is-ready:focus-visible { outline: 2px solid var(--mp); outline-offset: 2px; }
-/* A clue on show is a plain card: the value carries it, no tint needed. */
-/* A free clue before the pool has loaded (the static page loads it on the
-   first tap of the guess box). */
-.mp-clue.is-pending { border-style: dashed; background: transparent; }
-.mp-clue.is-pending .mp-clue-value { font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--t3); }
+.mq-pill::after { content: ""; position: absolute; inset: -5px -4px; }
+.mq-pill:disabled { opacity: 0.55; cursor: default; }
+.mq-flag { flex: none; display: inline-block; width: 20px; height: 14px; border-radius: 3px; object-fit: cover; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25); }
 
-/* ── Warmer or colder than your own best ───────────────────────────────── */
-.mp-trend {
-  display: flex; align-items: center; gap: 6px; min-height: 18px;
-  font-size: 12.5px; font-weight: 700; color: var(--t2);
+/* The search field, as the pill on the card. */
+.mq-search {
+  margin: 16px 0 0; height: 56px; padding: 0 20px; border-radius: 999px;
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255, 255, 255, 0.14); color: rgba(255, 255, 255, 0.85);
 }
-.mp-trend:empty { display: none; }
-.mp-trend > svg { color: var(--mp); flex-shrink: 0; }
-/* The guess the line above is about: a tint and a mark on its edge. */
-.mp-g.is-latest { background: rgba(var(--mp-rgb), 0.09); }
-.mp-g.is-latest::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--mp); }
+.mq-search.is-on { background: rgba(255, 255, 255, 0.2); box-shadow: inset 0 0 0 1.5px rgba(138, 224, 66, 0.7); }
+.mq-search svg { flex: none; }
+.mq-search input {
+  flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: none; background: transparent;
+  /* ⚠️ 16px is a hard floor: iOS zooms on focusing anything smaller. */
+  font: 600 16px/1 var(--font, Inter, system-ui, sans-serif); color: #fff; caret-color: #8AE042;
+}
+.mq-search input::placeholder { color: rgba(255, 255, 255, 0.82); opacity: 1; }
+
+/* ── Rows in a filled card: suggestions and the starters ─────────────────── */
+.mq-list-card { margin-top: 10px; padding: 0 14px; border-radius: 20px; background: var(--s1); }
+.mq-row {
+  width: 100%; min-height: 60px; padding: 10px 0; border: 0; background: none; color: inherit; text-align: left;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+}
+.mq-row + .mq-row { border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.mq-row.is-start { min-height: 64px; cursor: default; }
+.mq-row-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.mq-row-t b { font-size: 16px; line-height: 1.2; font-weight: 700; color: #F2F3F6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mq-row.is-start .mq-row-t b { font-weight: 600; color: #E4E6EC; }
+.mq-row-t i { font-size: 13.5px; line-height: 1.2; font-style: normal; font-weight: 500; color: var(--t2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.mq-go {
+  position: relative; flex: none; height: 34px; padding: 0 16px; border: 0; border-radius: 999px;
+  background: rgba(88, 204, 2, 0.16); color: #8AE042; font-size: 13.5px; font-weight: 700; cursor: pointer;
+}
+.mq-go::after { content: ""; position: absolute; inset: -5px -4px; }
+.mq-loading { padding: 14px 0; font-size: 13.5px; color: var(--t2); }
+.mq-nf { margin-top: 10px; padding: 18px 16px; border-radius: 20px; background: var(--s1); display: flex; flex-direction: column; gap: 8px; }
+.mq-nf b { font-size: 16px; line-height: 1.3; font-weight: 700; color: #fff; overflow-wrap: anywhere; }
+.mq-nf span { font-size: 13.5px; line-height: 1.3; font-weight: 500; color: var(--t2); }
+.mq-err { margin: 10px 4px 0; font-size: 13.5px; font-weight: 600; color: #FF8A8A; }
+
+/* ── The guesses: every one open, closest first ──────────────────────────── */
+.mq-label {
+  margin: 24px 4px 10px; font-size: 11px; line-height: 1.2; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--t2); font-variant-numeric: tabular-nums;
+}
+.mq-key { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 4px; }
+.mq-key span { display: flex; align-items: center; gap: 6px; font-size: 11px; line-height: 1.2; font-weight: 500; color: var(--t2); white-space: nowrap; }
+.mq-key i { width: 10px; height: 10px; border-radius: 3px; }
+.mq-key i.is-m { background: #3C9A1E; }
+.mq-key i.is-c { background: #C99608; }
+.mq-key i.is-n { background: #2A2E3A; }
+.mq-list { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 30px; }
+.mq-gh { display: flex; align-items: center; gap: 12px; margin: 0 2px 12px; }
+.mq-gn { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.mq-gn b { font-size: 17px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; color: #fff; overflow-wrap: anywhere; }
+.mq-gn em { font-size: 11px; line-height: 1; font-style: normal; font-weight: 600; color: #8AE042; }
+.mq-gr { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; color: var(--c); }
+.mq-gr b { font-size: 22px; line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
+.mq-gr i { font-size: 11px; line-height: 1; font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* The round face: a reviewed photo on the head, else the shirt in a ring. */
+.mq-face { position: relative; flex: none; display: block; overflow: hidden; border-radius: 50%; background: #1B1E27; }
+.mq-face img { position: absolute; display: block; max-width: none; }
+.mq-face.is-none { display: grid; place-items: center; color: #8A8E99; background: transparent; box-shadow: inset 0 0 0 2px #2A2E3A; }
+
+/* Four tiles, two by two: green the same, yellow close, dark different. */
+.mq-tiles { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 8px; }
+.mq-t { position: relative; min-width: 0; height: 54px; padding: 0 14px; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
+.mq-t-l { font-size: 11px; line-height: 1; font-weight: 600; letter-spacing: 0.04em; }
+.mq-t-v { min-width: 0; display: flex; align-items: center; gap: 6px; font-size: 15px; line-height: 1.1; font-weight: 700; font-variant-numeric: tabular-nums; }
+.mq-t-x { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mq-t-v svg { flex: none; margin-left: -2px; }
+.mq-t.is-m { background: linear-gradient(180deg, #3C9A1E, #2E7C15); }
+.mq-t.is-m .mq-t-l { color: rgba(255, 255, 255, 0.85); }
+.mq-t.is-m .mq-t-v { color: #fff; }
+.mq-t.is-c { background: linear-gradient(180deg, #C99608, #A67A04); }
+.mq-t.is-c .mq-t-l { color: rgba(255, 255, 255, 0.88); }
+.mq-t.is-c .mq-t-v { color: #fff; }
+.mq-t.is-n { background: #171A22; }
+.mq-t.is-n .mq-t-l { color: #8A8E99; }
+.mq-t.is-n .mq-t-v { color: #B4B8C4; font-weight: 600; }
+
+.mq-give {
+  align-self: center; margin-top: 18px; min-height: 44px; padding: 8px 12px; border: 0; background: none; cursor: pointer;
+  font-size: 13.5px; font-weight: 500; color: var(--t3); text-decoration: underline; text-underline-offset: 3px;
+}
+.mq-give.is-armed { color: var(--t1); font-weight: 700; }
+.mq-credits {
+  align-self: center; margin-top: 4px; min-height: 44px; padding: 8px 12px; border: 0; background: none; cursor: pointer;
+  font-size: 11px; font-weight: 600; color: var(--t3); text-decoration: underline; text-underline-offset: 3px;
+}
+
+/* ── The sheets: Choose a hint, Photo credits ────────────────────────────── */
+.mq-sheet-wrap { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; justify-content: flex-end; }
+.mq-dim { position: absolute; inset: 0; background: rgba(5, 6, 9, 0.62); }
+.mq-sheet {
+  position: relative; width: 100%; max-width: 560px; margin: 0 auto; max-height: 92vh; overflow-y: auto; box-sizing: border-box;
+  padding: 10px 20px calc(34px + env(safe-area-inset-bottom, 0px)); border-radius: 28px 28px 0 0;
+  background: radial-gradient(120% 60% at 50% 0%, rgba(46, 124, 21, 0.34), rgba(46, 124, 21, 0) 70%), linear-gradient(180deg, #151B19, #111318);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); color: #fff;
+}
+.mq-grab { display: block; width: 36px; height: 4px; margin: 0 auto 18px; border-radius: 2px; background: #353A47; }
+.mq-sheet h2 { margin: 0 4px; font-size: 24px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
+.mq-sheet-sub { margin: 8px 4px 18px; font-size: 13.5px; line-height: 1.35; font-weight: 500; color: #9BA0B8; }
+.mq-o {
+  width: 100%; min-height: 76px; margin-top: 10px; padding: 0 16px; border: 0; border-radius: 20px; cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: 14px; color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.mq-o.is-a { background: linear-gradient(105deg, #2F8A1B, #1F5E14 70%, #184A12); }
+.mq-o.is-b { background: linear-gradient(105deg, #2C6FB8, #1E4E8C 70%, #173E72); }
+.mq-o.is-c { background: linear-gradient(105deg, #C0731A, #96500F 70%, #7A3F0C); }
+.mq-o.is-held { background: #1E222C; box-shadow: none; cursor: default; color: #8A8E99; }
+.mq-o-i { flex: none; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.18); display: grid; place-items: center; }
+.mq-o.is-held .mq-o-i { background: rgba(255, 255, 255, 0.06); }
+.mq-o-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.mq-o-t b { font-size: 17px; line-height: 1.15; font-weight: 700; }
+.mq-o-t i { font-size: 13.5px; line-height: 1.25; font-style: normal; font-weight: 500; color: rgba(255, 255, 255, 0.85); }
+.mq-o.is-held .mq-o-t i { color: #8A8E99; }
+.mq-o-c { flex: none; color: rgba(255, 255, 255, 0.85); }
+.mq-keep {
+  width: 100%; height: 52px; margin-top: 16px; border: 0; border-radius: 999px; cursor: pointer;
+  background: rgba(255, 255, 255, 0.09); color: #fff; font-size: 16px; font-weight: 700;
+}
+.mq-sheet-foot { margin: 14px 4px 0; text-align: center; font-size: 13.5px; line-height: 1.35; color: #9BA0B8; }
+.mq-cr { list-style: none; margin: 0; padding: 0 14px; border-radius: 20px; background: rgba(255, 255, 255, 0.05); }
+.mq-cr li { display: flex; flex-direction: column; gap: 5px; padding: 12px 0; }
+.mq-cr li + li { border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.mq-cr b { font-size: 16px; font-weight: 700; color: #fff; }
+.mq-cr span { font-size: 13.5px; color: #B4B8C4; overflow-wrap: anywhere; }
+.mq-cr a { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; font-size: 13.5px; font-weight: 600; color: #8AE042; }
 
 /* ── The reveal ────────────────────────────────────────────────────────── */
 .mp-reveal {
@@ -143,23 +250,7 @@
 .mp-career > li.is-key::before { background: var(--mp); box-shadow: 0 0 0 3px rgba(var(--mp-rgb), 0.3); }
 .mp-career > li.is-key .mp-career-club { color: var(--mp); font-weight: 800; }
 
-@media (prefers-reduced-motion: reduce) {
-  .mp-clue { transition: none; }
-  .mp-clue.is-ready:active { transform: none; }
-}
 
-/* Three first moves, before the first guess: dashed rows where guesses will land (11 Nov 2026). */
-.mp-start { display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
-.mp-start-k { margin: 0 2px 2px; font-size: 12.5px; font-weight: 700; color: var(--t2); }
-.mp-start-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  min-height: 48px; padding: 10px 14px; border-radius: 12px;
-  background: transparent; border: 1.5px dashed var(--border2);
-  font-family: inherit; text-align: left; cursor: pointer;
-  -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+@media (prefers-reduced-motion: reduce) {
+  .mq * { transition: none !important; }
 }
-.mp-start-row:active { background: var(--s1); }
-.mp-start-name { font-size: 14.5px; font-weight: 800; color: var(--t1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mp-start-go { flex: none; font-size: 12px; font-weight: 700; color: var(--t3); }
-.mp-yday { margin: auto 2px 0; padding-top: 18px; text-align: center; font-size: 12.5px; color: var(--t3); }
-.mp-yday strong { color: var(--t2); font-weight: 700; }

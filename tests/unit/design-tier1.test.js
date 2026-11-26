@@ -137,7 +137,8 @@ describe('design review — tier 1', () => {
 
   it('there is one back button in the app', () => {
     // The label goes through i18n since step 3 (game.back = "Back").
-    expect(MYSTERY).toMatch(/aria-label=\{t\('game\.back'\)\} className="back-btn"/);
+    // Mystery Player's play screen (26 Nov 2026) has the quiz phone's filled back tile.
+    expect(MYSTERY).toMatch(/aria-label=\{t\('game\.back'\)\} className="mq-tile"/);
   });
 
   it('picker rows are left-aligned', () => {

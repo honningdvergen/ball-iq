@@ -7,11 +7,17 @@ import pool from '../../src/data/mysteryPool.json';
 import careers from '../../src/data/mysteryCareers.json';
 import fixes from '../../src/data/mysteryCareerFixes.json';
 import { withCareerFixes } from '../../src/lib/mysteryCareer.js';
+import nations from '../../src/data/mysteryNations.json';
+import regions from '../../src/data/nationRegions.json';
+import flags from '../../src/data/nationFlags.json';
 import { LANG_STORAGE_KEY, initI18n } from '../../src/i18n/index.js';
 
 export function fillPool(S) {
   S.mysteryPool = pool;
   S.mysteryCareers = withCareerFixes(careers, fixes);
+  // What lib/mysteryRulesData.js loads for the tiles and hints (26 Nov 2026).
+  // No photos: the reviewed list ships empty, so the shirt in a ring is drawn.
+  S.mysteryRules = { nations, regions, flags, photos: {} };
 }
 
 /** Stub localStorage & co; returns the storage Map. `lang` is the explicit biq_lang. */

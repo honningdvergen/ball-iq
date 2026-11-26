@@ -607,14 +607,33 @@ export function computeMysteryStreak(today = new Date()) {
  * never a name, so posting it cannot give the answer away to someone who has
  * not played. Ordered worst-to-best so it reads as a journey ending in green.
  */
-export function buildMysteryShareText({ number, guesses = [], won, streak = 0 } = {}) {
+/**
+ * The XP a finished Mystery Player pays (App.jsx awards it on
+ * biq:daily-completed; the finish card prints it). A solve in 5 or fewer
+ * guesses 50, in 15 or fewer 35, else 20; a give-up nothing. Hints taken do
+ * not change it (the rule of 17 Aug 2026, unchanged by the 26 Nov rebuild).
+ */
+export function mysteryXp(won, tries) {
+  if (!won) return 0;
+  const n = Math.max(1, Number(tries) || 1);
+  return n <= 5 ? 50 : n <= 15 ? 35 : 20;
+}
+
+/**
+ * `hintWords` (26 Nov 2026): the screen's words for the hints a solve took
+ * ("no hints", "1 hint"), added to the solved line ("Solved in 6 guesses · no
+ * hints"). Worded by the screen, off Home's eager path: this file is on it
+ * (App.jsx reads MYSTERY_ENABLED), so it names no new key. A caller that
+ * leaves it out gets the text it always had.
+ */
+export function buildMysteryShareText({ number, guesses = [], won, streak = 0, hintWords = '' } = {}) {
   const head = `⚽ Ball IQ · Mystery Player${number > 0 ? ` #${number}` : ''}`;
   const icon = { win: '🟩', hot: '🟩', warm: '🟨', cold: '⬜' };
   const grid = [...guesses]
     .sort((a, b) => b.rank - a.rank)
     .map((g) => icon[g.band] || '⬜')
     .join('');
-  const line = won ? t('share.mysterySolved', { count: guesses.length }) : t('share.mysteryGaveUp');
+  const line = won ? `${t('share.mysterySolved', { count: guesses.length })}${hintWords ? ` · ${hintWords}` : ''}` : t('share.mysteryGaveUp');
   const streakLine = won && streak > 1 ? `\n${t('share.mysteryStreak', { n: streak })}` : '';
   return `${head}\n${line}\n${grid}${streakLine}\n\nhttps://balliq.app/mystery`;
 }

@@ -158,3 +158,19 @@ export function cropStyle(crop, img, px) {
     left: +(-crop.x * img.w * k).toFixed(2), top: +(-crop.y * img.h * k).toFixed(2),
   };
 }
+
+/**
+ * What the screen draws for one player at `px` (52 in the list, 104 on the
+ * finish), from the lean photo file's entry: the thumbnail to fetch and the
+ * <img>'s box inside the round frame. null when there is no entry or the
+ * picture cannot serve that size at three times its pixels (then the screen
+ * draws the shirt in a ring).
+ */
+export function photoView(entry, px) {
+  if (!entry || !(entry.w > 0) || !(entry.s > 0)) return null;
+  const srcW = px > LIST_PX ? entry.hero : entry.list;
+  if (!(srcW > 0)) return null;
+  const src = commonsThumb(entry.u, srcW, entry.w);
+  if (!src) return null;
+  return { src, box: cropStyle({ x: entry.x, y: entry.y, s: entry.s }, { w: entry.w, h: entry.h }, px) };
+}
