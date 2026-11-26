@@ -16,8 +16,8 @@
 // The question and its reveal are the approved quiz look (quizQuestion.css's
 // .qq classes, shared, not copied). The players, Steal and the end's maths are
 // pure functions in lib/passPlay.js (tests/unit/pass-play.test.js).
-import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight, Check, X, Pencil, ChevronRight, Shuffle, Timer, Zap, Flame, Shield, Lightbulb, Flag, Skull, CircleAlert, Loader, Share } from "lucide-react";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { ArrowLeft, ArrowRight, Check, X, Pencil, ChevronRight, Shuffle, Timer, Zap, Flame, Shield, Lightbulb, Flag, Skull, CircleAlert, Loader, Share, ListOrdered } from "lucide-react";
 import { chipLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle } from "../App.jsx";
 import { haptic, playSound } from "../lib/feedback.js";
 import "../i18n/en.js";
@@ -44,7 +44,11 @@ const MODES = [
   { id: "classic", Icon: Timer, name: "quiz.mode.classic", desc: "lp.classicDesc" },
   { id: "sprint", Icon: Zap, name: "lp.sprint", desc: "lp.sprintDesc" },
   { id: "survival", Icon: Flame, name: "home.mode.survival", desc: "lp.survivalDesc" },
+  // Top 10 in turns (26 Nov 2026): its own screen, Top10Turns.jsx, in its own
+  // lazy chunk. A list at random, never a daily still to come; no topic.
+  { id: "top10", Icon: ListOrdered, name: "lp.top10", desc: "lp.top10Desc" },
 ];
+const Top10Turns = lazy(() => import("./Top10Turns.jsx"));
 const modeName = (t, mode) => t((MODES.find((m) => m.id === mode) || MODES[0]).name);
 
 // The topic's name and mark on the quiet row and in the end's grey line:
@@ -117,14 +121,29 @@ export function LocalSetup({ onStart, onBack, initial }) {
         })}
       </section>
 
-      <h2 className="pp-label">{t("lp.topic")}</h2>
-      <section className="pp-card">
-        <button type="button" className="pp-row is-tall" aria-haspopup="dialog" onClick={() => setTopicOpen(true)}>
-          {tp.mark}
-          <span className="pp-rt"><b>{tp.label}</b><i>{tp.sub}</i></span>
-          <span className="pp-ch"><ChevronRight size={20} strokeWidth={2.1} aria-hidden="true" /></span>
-        </button>
-      </section>
+      {lmode === "top10" ? (
+        <>
+          {/* Top 10 in turns plays a list, not a topic: which one is a surprise. */}
+          <h2 className="pp-label">{t("t10t.list")}</h2>
+          <section className="pp-card">
+            <div className="pp-row is-tall is-still">
+              <span className="pp-ic g"><Shuffle size={20} strokeWidth={2.1} aria-hidden="true" /></span>
+              <span className="pp-rt"><b>{t("t10t.listRandom")}</b><i>{t("t10t.listNever")}</i></span>
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          <h2 className="pp-label">{t("lp.topic")}</h2>
+          <section className="pp-card">
+            <button type="button" className="pp-row is-tall" aria-haspopup="dialog" onClick={() => setTopicOpen(true)}>
+              {tp.mark}
+              <span className="pp-rt"><b>{tp.label}</b><i>{tp.sub}</i></span>
+              <span className="pp-ch"><ChevronRight size={20} strokeWidth={2.1} aria-hidden="true" /></span>
+            </button>
+          </section>
+        </>
+      )}
       {topicOpen && (
         <TopicPickerSheet value={topic} onClose={() => setTopicOpen(false)} onDone={(id) => { setTopic(id); setTopicOpen(false); }} />
       )}
@@ -172,7 +191,20 @@ export function LocalSetup({ onStart, onBack, initial }) {
 // Hidden-answer rule (Survival): nothing is revealed after a single pick; the
 // reveal shows all the picks and the right answer in one go, so a later player
 // can't read the answer off an earlier player's screen.
-export function LocalGameScreen({ config, onComplete, onExit, onReport }) {
+export function LocalGameScreen(props) {
+  // Top 10 in turns is its own screen (Top10Turns.jsx); the quiz modes below
+  // are exactly as they were.
+  if (props.config?.mode === "top10") {
+    return (
+      <Suspense fallback={<div className="screen" style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}><Loader size={36} strokeWidth={1.8} color="var(--t3)" aria-hidden="true" /></div>}>
+        <Top10Turns players={props.config.players} onExit={props.onExit} />
+      </Suspense>
+    );
+  }
+  return <LocalQuizGame {...props} />;
+}
+
+function LocalQuizGame({ config, onComplete, onExit, onReport }) {
   // Questions print in the player's language (i18n/questionText.js); picks and
   // scoring read the English rows. The chrome is t() (i18n step 6).
   const loc = useQuestionText();

@@ -47,6 +47,7 @@
 .pp-row.is-name b { flex: 1; min-width: 0; font: 600 16px/1.2 var(--font); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pp-row.is-name b.is-ph { font-weight: 500; color: #8A8E99; }
 .pp-row.is-tall { min-height: 64px; }
+.pp-row.is-still { cursor: default; } /* Top 10 in turns' list row: says, does not open */
 .pp-row .pp-ch { flex: none; display: grid; color: #5E6270; }
 .pp-row.on { background: rgba(88,204,2,0.14); }
 .pp-ic { flex: none; width: 26px; display: grid; place-items: center; color: var(--t2); }
