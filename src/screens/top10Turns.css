@@ -1,0 +1,159 @@
+/* Top 10 in turns (screens/Top10Turns.jsx), 26 Nov 2026. Drawn in
+   ball-iq-audit/2026-11-24/finish/top10-turns-1.png and
+   top10-turns-moments-2.png (measures in tt1.py and tt3.py there); the two
+   landings move as the preview ball-iq-audit/2026-11-26/top10-turns-preview/
+   (tt5.py). Pass and play's kit (passPlay.css) underneath: the header, the
+   discs, the pitch card, the draw. Everything starts at .tt, so nothing else in
+   the app is touched. Loaded with the mode's own lazy chunk. */
+
+.tt { --tt-row: 46px; }
+.tt .tt-wait { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 50vh; color: var(--t3); }
+.tt .tt-wait p { margin: 0; font: 500 13.5px/1.3 var(--font); color: var(--t2); }
+
+/* The chips, the field and the misses stay pinned while the ten scroll under
+   them, so a row being filled comes into view with the field still in sight,
+   above the keyboard. */
+.tt-pin { position: sticky; top: 0; z-index: 6; margin: 0 -20px; padding: 0 20px 2px; background: var(--bg); }
+
+/* ── One chip per player: disc, name, "N found", three strike marks ─────── */
+.tt-scs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding-top: 18px; }
+/* Three to six: one line that scrolls sideways; whoever is up is kept in view. */
+.tt-scs.is-many { display: flex; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 18px 20px 0; scroll-padding: 0 20px; }
+.tt-scs.is-many::-webkit-scrollbar { display: none; }
+.tt-scs.is-many:focus-visible, .tt-ms:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 18px; }
+.tt-scs.is-many .tt-sc { flex: none; width: 172px; }
+.tt-sc { position: relative; min-width: 0; display: flex; align-items: center; gap: 8px; height: 60px; padding: 0 10px; border-radius: 18px; background: #13151C; transition: background-color .35s ease, opacity .35s ease; }
+.tt-sc.is-turn { background: rgba(var(--pr), .16); }
+/* Out: the disc and the marks dimmed; the words stay readable. */
+.tt-sc.is-out .pp-disc, .tt-sc.is-out .tt-stk { opacity: .45; }
+.tt-sc.is-out .tt-sc-t b { color: #A9ADBA; }
+.tt-sc.is-out .tt-sc-t i { color: #8A8E99; }
+.tt-sc-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.tt-sc-t b { font: 700 15px/1.1 var(--font); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tt-sc-t i { align-self: flex-start; font: 500 13.5px/1.1 var(--font); font-style: normal; color: #A9ADBA; font-variant-numeric: tabular-nums; white-space: nowrap; transform-origin: left center; }
+.tt-sc-t i.is-nudge { animation: ttNudge .3s ease; }
+@keyframes ttNudge { 50% { transform: scale(1.14); color: #fff; } }
+/* The strike marks sit at the right of the count's line, so the name has
+   the chip's whole width ("Johannes" was cut to "Joha…" beside them). */
+.tt-stk { position: absolute; right: 10px; bottom: 11px; display: flex; gap: 3px; }
+.tt-stk em { width: 15px; height: 15px; border-radius: 50%; background: #1E222C; color: transparent; display: grid; place-items: center; font-style: normal; transition: background-color .2s, color .2s; }
+.tt-stk em svg { display: block; }
+.tt-stk em.on { background: rgba(255,107,107,.22); color: #FF6B6B; }
+
+/* ── The field: the prompt in the player's colour, and where a name answers ── */
+.tt-entry { position: relative; margin-top: 12px; }
+.tt-fld { position: relative; height: 56px; border-radius: 999px; background: rgba(var(--pr), .14); color: var(--pc); transition: background-color .3s ease; }
+.tt-fld.is-good { background: rgba(var(--pr), .16); }
+.tt-fld.is-bad { background: rgba(255,107,107,.13); }
+.tt-fld.is-shake { animation: ttShake .3s ease; }
+@keyframes ttShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-2px); } }
+.tt-in { position: absolute; inset: 0; display: flex; align-items: center; gap: 12px; padding: 0 20px; cursor: text; }
+.tt-in svg { flex: none; display: block; }
+.tt-in input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; background: none; color: #fff; caret-color: var(--pc); font: 600 16px/1 var(--font); outline: none; -webkit-appearance: none; appearance: none; }
+.tt-in input::placeholder { color: var(--pc); opacity: 1; }
+.pp .tt-in input:focus-visible { outline: none; }
+.tt-say { position: absolute; inset: 0; display: flex; align-items: center; gap: 12px; padding: 0 22px 0 12px; opacity: 0; pointer-events: none; }
+/* The answer takes the field at once; only the hand-on to the next player fades. */
+.tt-fld.is-cross .tt-in, .tt-fld.is-cross .tt-say { transition: opacity .14s ease; }
+.tt-fld.is-land .tt-in, .tt-fld.is-note .tt-in { opacity: 0; }
+.tt-fld.is-land .tt-say, .tt-fld.is-note .tt-say { opacity: 1; }
+.tt-fld.is-land.is-cross .tt-in { opacity: 1; }
+.tt-fld.is-land.is-cross .tt-say { opacity: 0; }
+/* A right name: a tick, the name, its number. */
+.tt-ok { flex: none; width: 34px; height: 34px; border-radius: 50%; background: #58CC02; color: #0B2A04; display: grid; place-items: center; font-style: normal; transition: opacity .2s; }
+.tt-ok svg { display: block; }
+.tt-say b { flex: 1; min-width: 0; font: 700 17px/1 var(--font); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tt-say i { flex: none; font: 700 13.5px/1 var(--font); font-style: normal; color: var(--pc); font-variant-numeric: tabular-nums; transition: opacity .2s; }
+.tt-say i.is-quiet { font-weight: 500; color: #A9ADBA; }
+.tt-fld.is-fly .tt-ok, .tt-fld.is-fly .tt-say i { opacity: 0; }
+/* A wrong name: struck through in red, the strike marks big at the right. */
+.tt-fld.is-bad .tt-say { justify-content: space-between; padding: 0 16px 0 22px; color: #FF8A8A; }
+.tt-say b.is-struck { flex: 0 1 auto; font-weight: 600; color: #FF8A8A; text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(255,107,107,.75); }
+.tt-bs { flex: none; display: flex; gap: 6px; }
+.tt-bs em { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.07); color: transparent; display: grid; place-items: center; font-style: normal; transition: background-color .2s, color .2s; }
+.tt-bs em svg { display: block; }
+.tt-bs em.on { background: #FF6B6B; color: #2A0D0F; }
+.tt-fld.is-note:not(.is-bad):not(.is-good) .tt-say { padding: 0 22px; }
+.is-bump { animation: ttBump .32s ease; }
+@keyframes ttBump { 0% { transform: scale(.6); } 55% { transform: scale(1.18); } 100% { transform: scale(1); } }
+
+/* The name on its way: a copy of the field's text, moved and shrunk. */
+.tt-fly { position: fixed; z-index: 1000; left: 0; top: 0; pointer-events: none; white-space: nowrap; transform-origin: left top; transition-property: transform, color; transition-timing-function: cubic-bezier(.45,0,.2,1); will-change: transform; }
+
+/* The guess box's names, the daily's way. */
+.tt-drop { position: absolute; left: 0; right: 0; top: 100%; z-index: 20; margin-top: 6px; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; border-radius: 18px; background: #1B1E27; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.tt-opt { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 3px; width: 100%; min-height: 48px; padding: 8px 18px; border: 0; background: none; color: #fff; text-align: left; cursor: pointer; }
+.tt-opt + .tt-opt { box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
+.tt-opt:active { background: rgba(var(--pr, 88,204,2), .12); }
+.tt-opt-n { font: 600 16px/1.2 var(--font); }
+.tt-opt-s { max-width: 100%; font: 500 13.5px/1.2 var(--font); color: #A9ADBA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── "Not on the list": ONE line under the field, newest first, sideways ─── */
+.tt-msr { display: flex; align-items: center; gap: 10px; height: 34px; margin-top: 12px; padding-bottom: 10px; box-sizing: content-box; }
+.tt-msr .pp-label { flex: none; margin: 0 0 0 4px; }
+.tt-ms { flex: 1; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.tt-ms::-webkit-scrollbar { display: none; }
+.tt-mc { flex: none; display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px 0 7px; border-radius: 999px; background: #13151C; white-space: nowrap; transition: background-color .9s, color .9s; }
+.tt-mc b { font: 500 13.5px/1 var(--font); color: #A9ADBA; transition: color .9s; }
+.tt-mc.is-red { background: rgba(255,107,107,.14); transition: none; }
+.tt-mc.is-red b { color: #FF8A8A; transition: none; }
+.tt-none { flex: 1; min-width: 0; font: 500 13.5px/1 var(--font); color: #7E828C; }
+
+/* ── The ten, in one column ────────────────────────────────────────────── */
+.tt-list { margin-top: 2px; }
+.tt-r { display: flex; align-items: center; gap: 12px; height: var(--tt-row); padding: 0 14px; transition: background-color .7s ease; }
+.tt-r + .tt-r { box-shadow: inset 0 1px 0 rgba(255,255,255,.07); }
+.tt-r u { flex: none; width: 26px; height: 26px; border-radius: 8px; background: #1E222C; color: #9BA0B8; display: grid; place-items: center; font: 700 13.5px/1 var(--font); text-decoration: none; font-variant-numeric: tabular-nums; transition: background-color .3s, color .3s; }
+.tt-r b { flex: 1; min-width: 0; font: 600 16px/1 var(--font); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .13s; }
+.tt-r b.q { font-weight: 500; color: #7E828C; }
+.tt-r i { flex: none; font: 500 13.5px/1 var(--font); font-style: normal; color: #7E828C; font-variant-numeric: tabular-nums; }
+.tt-tail { flex: none; display: flex; margin-right: -2px; }
+.tt-r.got u { background: rgba(var(--pr), .2); color: var(--pc); }
+/* A found row's figure a step lighter than an open row's, so it still reads
+   on the row's colour while that fades after the landing. */
+.tt-r.got i { color: #9BA0B8; }
+.tt-r.hit { background: rgba(var(--pr), .14); transition: background-color .18s ease; }
+.tt-r.hit i { color: var(--pc); }
+.tt-r.miss b { font-weight: 500; color: #9BA0B8; }
+/* The landing row: the grey figure first, then the name's place, hidden until
+   the travelling copy lands on it; the disc and the figure wait. */
+.tt-r .tt-ph { display: none; }
+.tt-r.is-pre .tt-ph { display: block; }
+.tt-r.is-pre .tt-nm, .tt-r.is-pre .tt-tail, .tt-r.is-pre > i { display: none; }
+.tt-r.is-pre.is-fade .tt-ph { opacity: 0; }
+.tt-r.got.is-pre u { background: #1E222C; color: #9BA0B8; }
+.tt-r.is-land .tt-nm { visibility: hidden; }
+.tt-r.is-land .tt-tail, .tt-r.is-land > i { opacity: 0; }
+.tt-r .is-late { animation: ttLate .34s .05s both; }
+@keyframes ttLate { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: none; } }
+
+.tt-rule { margin: 14px 4px 0; text-align: center; font: 500 13.5px/1.4 var(--font); color: #7E828C; }
+
+/* The end: the pitch card, the chips, then all ten. */
+.tt.is-end .tt-scs { padding-top: 18px; }
+.tt.is-end .tt-list { margin-top: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-fld, .tt-in, .tt-say, .tt-sc, .tt-r, .tt-r u, .tt-r b, .tt-mc, .tt-mc b { transition: none; }
+  .tt-fld.is-shake, .is-bump, .tt-sc-t i.is-nudge, .tt-r .is-late { animation: none; }
+}
+
+/* The smallest phones (under 360): two players' chips a little tighter. */
+@media (max-width: 359px) {
+  .tt-scs:not(.is-many) .tt-sc { padding: 0 8px; gap: 6px; }
+  .tt-scs:not(.is-many) .tt-sc .pp-disc { width: 22px !important; height: 22px !important; }
+  .tt-scs:not(.is-many) .tt-stk { right: 8px; bottom: 13px; gap: 2px; }
+  .tt-scs:not(.is-many) .tt-stk em { width: 10px; height: 10px; }
+  .tt-scs:not(.is-many) .tt-stk em svg { width: 7px; height: 7px; }
+  .tt-scs:not(.is-many) .tt-sc-t i { max-width: calc(100% - 34px); overflow: hidden; text-overflow: ellipsis; }
+  .tt-say { gap: 10px; }
+  .tt-fld.is-bad .tt-say { padding: 0 12px 0 18px; }
+  .tt-bs { gap: 4px; }
+  .tt-bs em { width: 24px; height: 24px; }
+}
+
+/* The wide window: the phone's column, as the rest of pass and play. */
+@media (min-width: 1024px) {
+  .tt-pin { margin: 0; padding: 0 0 2px; }
+  .tt-scs.is-many { margin: 0; padding: 18px 0 0; scroll-padding: 0; }
+}

@@ -150,3 +150,16 @@ describe('the end', () => {
     expect(swapStart(5, 6)).toBe(0);
   });
 });
+describe('the screen holds to the rules', () => {
+  const src = read('src/screens/Top10Turns.jsx');
+  it('the name search asks for SUGGEST_MAX, as every guess box does', () => {
+    const calls = src.match(/rank(Player|List)Suggestions\([^)]*\)/g) || [];
+    expect(calls.length).toBeGreaterThan(0);
+    for (const c of calls) expect(c).toContain('SUGGEST_MAX');
+  });
+  it('the list comes from the bank, never the day\'s list, and the daily screen is not imported', () => {
+    expect(src).toContain('turnsBank(');
+    expect(src).not.toMatch(/getTop10Id|from "\.\/Top10\.jsx"/);
+    expect(src).not.toMatch(/saveTop10Day|biq:daily-completed/);
+  });
+});
