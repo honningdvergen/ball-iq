@@ -8330,7 +8330,9 @@ function AppInner() {
             initialTopic={quizTopic}
             onStartMode={(m, t) => { setQuizTopic(t); startMode(m); }}
             onStartCat={(c, t) => { setQuizTopic(t); launchLeagueQuiz(c); }}
-            onStadiums={() => { stadiumsFromQuiz.current = true; setScreen("stadiums"); }}
+            // The topic chosen on the list is kept, so coming back from Stadiums
+            // finds the same row ticked (it reset to Everything, 26 Nov 2026).
+            onStadiums={(t) => { if (typeof t === "string") setQuizTopic(t); stadiumsFromQuiz.current = true; setScreen("stadiums"); }}
             onBack={goHome}
             catStats={stats?.catStats}
             cardLeague={stats?.cardLeague}

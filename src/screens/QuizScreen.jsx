@@ -209,7 +209,7 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
       <section aria-labelledby="qz-h-runs">
         <h2 className="home-section-title" id="qz-h-runs">{t("qz.notTen")}</h2>
         <div className="gp-list qz-card">
-          <button type="button" className="qz-row is-big qz-stadiums" onClick={onStadiums}>
+          <button type="button" className="qz-row is-big qz-stadiums" onClick={() => onStadiums(topic)}>
             <span className="qz-lead" aria-hidden="true"><LandPlot size={18} strokeWidth={2.1} /></span>
             <span className="qz-txt"><span className="qz-name">{t("qz.stadiums")}</span><span className="qz-sub">{t("qz.stadiumsSub")}</span></span>
             <ChevronRight className="qz-go" size={18} strokeWidth={2.2} aria-hidden="true" />
@@ -263,7 +263,7 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
 
       <section className="qz-group" aria-labelledby="qz-h-runs">
         <h2 className="qz-h" id="qz-h-runs">{t("qz.notTen")}</h2>
-        <button type="button" className="qz-run" onClick={onStadiums}>
+        <button type="button" className="qz-run" onClick={() => onStadiums(topic)}>
           <span className="qz-well" aria-hidden="true"><LandPlot size={20} strokeWidth={2.2} /></span>
           <span className="qz-run-body">
             <span className="qz-run-name">{t("qz.stadiums")}</span>

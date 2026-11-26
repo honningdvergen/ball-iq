@@ -94,7 +94,7 @@ describe("Quiz screen: every old entry, through its old launcher", () => {
     expect(QUIZ_CODE).toMatch(/<span className="qz-name">\{t\("qz\.stadiums"\)\}<\/span>/);
     expect(en["qz.stadiums"]).toBe("Stadiums");
     // 26 Nov 2026: it also marks that it was opened from the list, so its back arrow returns here.
-    expect(APP_CODE).toMatch(/onStadiums=\{\(\) => \{ stadiumsFromQuiz\.current = true; setScreen\("stadiums"\); \}\}/);
+    expect(APP_CODE).toMatch(/onStadiums=\{\(t\) => \{ if \(typeof t === "string"\) setQuizTopic\(t\); stadiumsFromQuiz\.current = true; setScreen\("stadiums"\); \}\}/);
   });
 
   it("one solid button, sentence case, lucide icons only", () => {

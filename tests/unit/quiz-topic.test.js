@@ -192,7 +192,7 @@ describe("the list's CSS", () => {
 describe("Stadiums opened from the Quiz topic list goes back to that list", () => {
   const APP = readFileSync(fileURLToPath(new URL("../../src/App.jsx", import.meta.url)), "utf8");
   it("the list marks where Stadiums was opened from, and its exit returns there", () => {
-    expect(APP).toContain('onStadiums={() => { stadiumsFromQuiz.current = true; setScreen("stadiums"); }}');
+    expect(APP).toContain('onStadiums={(t) => { if (typeof t === "string") setQuizTopic(t); stadiumsFromQuiz.current = true; setScreen("stadiums"); }}');
     expect(APP).toContain('<StadiumGame onExit={() => { if (stadiumsFromQuiz.current) { stadiumsFromQuiz.current = false; setScreen("quiz-topics"); } else goHome(); }}');
   });
   it("opened by its own link it still leaves to Home", () => {
