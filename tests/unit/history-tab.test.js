@@ -247,12 +247,21 @@ describe('what a phone shows', () => {
   });
   it('the repair, day-complete and shields blocks are still there, as plain cards with lucide icons', () => {
     expect(text(swept)).toContain("|Your 9-day streak broke|Play one of yesterday's puzzles before midnight to repair it|Footle|Daily 7|Transfer Trail|Top 10|");
-    expect(text(swept)).toContain("|Clean sweep — today's done|Yesterday is still open|Footle|Daily 7|Transfer Trail|Top 10|");
+    // 26 Nov 2026: with yesterday open the card is its tick and two lines. Yesterday's four games
+    // are offered once, by the Yesterday row's arrows, not a second time as pills on this card.
+    expect(text(swept)).toContain("|Clean sweep|Yesterday is still open|");
+    expect(text(swept)).not.toContain("|Yesterday is still open|Footle|");
+    // (The streak-repair card above it keeps its own pills: in this state they are the way to repair.)
+    expect((swept.match(/class="hs-pills"/g) || []).length).toBe(1);
     expect(text(swept)).toContain('|2 streak shields ready|Auto-protects your streak if you miss a day — earn one every 200 XP|');
-    expect(text(survival)).toContain("|Clean sweep — today's done|Survival never runs out|Survival|");
+    // "Clean sweep" only when every game today was won: this day has a lost Trail, so it is "Today's done".
+    expect(text(survival)).toContain("|Today's done|Survival never runs out|Survival|");
+    expect(text(swept)).not.toContain("Today's done");
     expect(text(broke)).toContain("|Your 3-day streak broke|Yesterday's puzzles are all done — the repair will land with your next play|");
     for (const s of ['lucide-heart-crack', 'lucide-check', 'lucide-shield', 'lucide-flame']) expect(swept, s).toContain(s);
-    for (const s of ['aria-label="Repair the streak — play yesterday&#x27;s Footle"', 'aria-label="Play yesterday&#x27;s Top 10"']) expect(swept, s).toContain(s);
+    expect(swept).toContain('aria-label="Repair the streak — play yesterday&#x27;s Footle"');
+    // The day-complete card's own "Play yesterday's X" pills are gone from a phone (26 Nov 2026).
+    expect(swept).not.toContain('aria-label="Play yesterday&#x27;s Top 10"');
     // The order: what is about today first, then the streak card, then the days, then the shields.
     const at = (s) => swept.indexOf(s);
     expect(at('lucide-heart-crack')).toBeLessThan(at('lucide-check'));
@@ -277,7 +286,7 @@ describe('the wide window is as it was', () => {
     expect(wideSrc).toContain('<ReplayCell key={c.key} w={DCOL_W}');
     expect(wideSrc).toContain('<ScoreCell key={c.key} w={DCOL_W}');
     expect(wideSrc).toContain('<StreakRepairBanner repair={streakRepair} open={dayOpen} wide />');
-    expect(wideSrc).toContain('{allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} />}');
+    expect(wideSrc).toContain('{allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} swept={allWon} />}');
     for (const s of ['hs-', 'gp-list', 'todayCells', 'DayCell', ' kit']) expect(wideSrc, s).not.toContain(s);
   });
   it('as rendered: no streak card for a player with no played day, the old empty line, no kit class', () => {

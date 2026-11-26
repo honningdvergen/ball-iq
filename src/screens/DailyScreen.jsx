@@ -423,9 +423,13 @@ function yesterdayOpen(matchdays, today, playArchive, playDailyForDate) {
 // the tick in a green well, the same two lines, and under them soft pills,
 // yesterday's open games in their own colours or Survival. Nothing was taken
 // out. The wide window keeps the block below as it was.
-function DayComplete({ open, onSurvival, wide, todayYMD, kit = false }) {
+function DayComplete({ open, onSurvival, wide, todayYMD, kit = false, swept = false }) {
   useT();
   const hasOpen = open.length > 0;
+  // "Clean sweep" only when every one of today's games was WON (26 Nov 2026).
+  // The card said it over a Today row with two red crosses in it; a day
+  // finished with a loss is "Today's done". No dash in either.
+  const title = t(swept ? "dd.sweep" : "hi.done");
   // The clean sweep is the single most-earned moment in the product and this
   // card used to whisper it (scouting panel, gameplay 7/B). Confetti + a heavy
   // pulse, ONCE per local day — the panel re-mounts on every hub visit and on
@@ -449,19 +453,21 @@ function DayComplete({ open, onSurvival, wide, todayYMD, kit = false }) {
         <div className="todays-seven-secondary is-still" style={modeVars("footle")}>
           <span className="t7s-icon" aria-hidden="true"><Check size={22} strokeWidth={2.4} /></span>
           <span className="t7s-body">
-            <span className="t7s-title">{t("hi.sweep")}</span>
+            <span className="t7s-title">{title}</span>
             <span className="t7s-sub">{t(hasOpen ? "hi.yOpen" : "hi.survNever")}</span>
           </span>
         </div>
-        <div className="hs-pills">
-          {hasOpen ? open.map(o => (
-            <button type="button" key={o.key} className="t7s-cta" style={modeVars(o.key)} onClick={o.onTap} aria-label={t("hi.playY", { g: o.label })}>
-              <Play size={11} strokeWidth={1.5} fill="currentColor" aria-hidden="true" />{o.label}
-            </button>
-          )) : (
+        {/* YESTERDAY'S GAMES ARE NOT OFFERED HERE ON A PHONE (26 Nov 2026). The
+            Yesterday row right under this card carries the same four as its
+            arrows, and four coloured pills here offered them a second time
+            (Alex: "i guess drop them? ... things have to make sense"). With
+            yesterday open the card is its tick and two lines; with nothing
+            left it offers the one game that never runs out. */}
+        {!hasOpen && (
+          <div className="hs-pills">
             <button type="button" className="t7s-cta" style={modeVars("footle")} onClick={onSurvival}>{t("home.mode.survival")}</button>
-          )}
-        </div>
+          </div>
+        )}
       </section>
     );
   }
@@ -471,7 +477,7 @@ function DayComplete({ open, onSurvival, wide, todayYMD, kit = false }) {
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ width: 34, height: 34, flexShrink: 0, borderRadius: 10, background: "rgba(88,204,2,0.14)", border: "1px solid rgba(88,204,2,0.30)", color: "var(--accent)", fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center" }} aria-hidden="true">✓</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>{t("hi.sweep")}</div>
+          <div style={{ fontSize: wide ? 16 : 15, fontWeight: 800, color: "var(--t1)" }}>{title}</div>
           <div style={{ fontSize: 12.5, color: "var(--t2)" }}>
             {t(hasOpen ? "hi.yOpen" : "hi.survNever")}
           </div>
@@ -960,6 +966,8 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
   // conditional, so a day with neither live and both fixed modes played is the
   // shortest possible complete day, and an empty list must never read as one.
   const allDone = todayModes.length > 0 && playedCount === todayModes.length;
+  // Every one of them won: a lost Footle or Trail is a finished day, not a clean sweep.
+  const allWon = allDone && todayModes.every(m => m.won);
   const dayOpen = useMemo(
     () => (allDone || streakRepair ? yesterdayOpen(matchdays, today, playArchive, playDailyForDate) : []),
     [allDone, streakRepair, matchdays, today, playArchive, playDailyForDate],
@@ -1002,7 +1010,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
             {/* Streak-repair and day-complete stay first: each is about today and
                 each has something to tap. */}
             <StreakRepairBanner repair={streakRepair} open={dayOpen} kit />
-            {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} kit />}
+            {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} todayYMD={todayYMD} swept={allWon} kit />}
           </>
         );
       })()}
@@ -1170,7 +1178,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
                 <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
                   {/* Rows live on Home (2026-09-06); this column is the day's streak + history. */}
                   <StreakRepairBanner repair={streakRepair} open={dayOpen} wide />
-                  {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} />}
+                  {allDone && <DayComplete open={dayOpen} onSurvival={playSurvival} wide todayYMD={todayYMD} swept={allWon} />}
 
                   {/* Recent days */}
                   <div style={{ marginTop: 6 }}>

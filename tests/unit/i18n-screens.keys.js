@@ -229,7 +229,7 @@ export const STEP4_EN = {
   'hi.open': "{g} still open",
   'hi.d7': "Daily 7 {n} of 7",
   'hi.t10': "Top 10 {n} of 10",
-  'hi.sweep': "Clean sweep — today's done",
+  'hi.done': "Today's done",
   'hi.yOpen': "Yesterday is still open",
   'hi.survNever': "Survival never runs out",
   'hi.playY': "Play yesterday's {g}",

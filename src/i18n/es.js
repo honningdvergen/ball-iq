@@ -651,7 +651,7 @@ export default {
   'hi.open': '{g}: sin terminar',
   'hi.d7': 'Daily 7: {n} de 7',
   'hi.t10': 'Top 10: {n} de 10',
-  'hi.sweep': 'Pleno: hoy, todo hecho',
+  'hi.done': 'Hoy, todo hecho',
   'hi.yOpen': 'Aún puedes jugar los de ayer',
   'hi.survNever': 'A muerte nunca se acaba',
   'hi.playY': 'Jugar al {g} de ayer',
