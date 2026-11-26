@@ -257,6 +257,17 @@ export function dayLabel(m) {
 function DayName({ m }) {
   return <span className="hs-day">{dayLabel(m).map((part, i) => <span key={i}>{part}</span>)}</span>;
 }
+// IS THIS PHONE'S OWN WAY OF WRITING A DAY LONG? In English the app prints dates
+// as the phone does (i18n/index.js, fmtLocaleEnglish), and a Norwegian phone
+// writes "man. 23. nov.": 13 letters where "Mon 23 Nov" has 10 and the longest
+// in English or Spanish has 11 ("dom 13 sept"). On a phone under 390 wide such
+// a name does not fit beside the four columns; left to the line itself, Monday
+// lost its weekday and Friday kept it (seen in WebKit at 375, 26 Nov 2026). So
+// the list is told, and history.css then shows every older day there as its
+// date alone: one way down the whole list.
+export function longDayNames(days) {
+  return (days || []).some((m) => dayLabel(m).join(" ").length > 11);
+}
 
 // One tint per mode, shared by the mobile cards, the desktop cards and the
 // Recent-days column heads so the same puzzle is never two different colours.
@@ -1113,7 +1124,7 @@ function DailyTabScreenImpl({ profile, xp, shieldCount, dailyHistory, startMode,
 
       {/* ONE card for all days, a hairline between rows. Its first row heads
           the four columns with the four games' own icons. */}
-      <section className="gp-list hs-list">
+      <section className={longDayNames(pastDays) ? "gp-list hs-list is-long" : "gp-list hs-list"}>
         <div className="hs-heads">
           <span aria-hidden="true" />
           {cols.map(c => <HeadTile key={c.key} mode={c.key} />)}

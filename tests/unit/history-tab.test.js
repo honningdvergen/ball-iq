@@ -24,7 +24,7 @@ const APPCSS = read('src/app.css');
 const GOLDEN = JSON.parse(read('tests/unit/i18n-screens.golden.json'));
 const EN = (await import('../../src/i18n/en.js')).default;
 const ES = (await import('../../src/i18n/es.js')).default;
-const { todayCells, streakNoteKey, cellMark, dayLabel } = await import('../../src/screens/DailyScreen.jsx');
+const { todayCells, streakNoteKey, cellMark, dayLabel, longDayNames } = await import('../../src/screens/DailyScreen.jsx');
 
 // The phone column of a render, and the wide window's.
 const phoneOf = (g) => g.slice(g.indexOf('<div class="daily-col-mobile hs"'), g.indexOf('<div class="daily-desktop">'));
@@ -279,6 +279,24 @@ describe('a day\'s name is one line', () => {
     expect(dayLabel(older(d, 'es')).join(' ')).toBe('mar 24 nov');
     // Two parts, so the stylesheet can let the weekday go where both do not fit and keep the date.
     expect(dayLabel(older(d, 'en-GB'))).toEqual(['Tue', '24 Nov']);
+  });
+  it('a phone whose own dates are long shows the date alone under 390 wide, on every older day', () => {
+    // In English the app prints dates as the phone does. A Norwegian phone writes "man. 23. nov.",
+    // which does not fit beside four columns at 375: left to the line, Monday lost its weekday and
+    // Friday kept it. The list is told, and the stylesheet drops the weekday from all of them.
+    const year = (loc) => Array.from({ length: 365 }, (_, i) => older(new Date(2026, 0, 1 + i, 12), loc));
+    for (const loc of ['en-GB', 'en-US', 'es']) expect(longDayNames(year(loc)), loc).toBe(false);
+    expect(longDayNames(year('nb-NO'))).toBe(true);
+    expect(dayLabel(older(new Date(2026, 10, 23, 12), 'nb-NO')).join(' ')).toBe('man. 23. nov.');
+    // Today and Yesterday are never long, and nothing is not long.
+    expect(longDayNames([{ isToday: true, dateLabel: 'Today', dateSub: '26. nov.' }, { isYesterday: true, dateLabel: 'Yesterday', dateSub: '25. nov.' }])).toBe(false);
+    expect(longDayNames([])).toBe(false);
+    expect(longDayNames(undefined)).toBe(false);
+    expect(DAILY).toContain('<section className={longDayNames(pastDays) ? "gp-list hs-list is-long" : "gp-list hs-list"}>');
+    const rules = CSS.replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(rules).toMatch(/@media \(max-width: 389px\)\{\s*\.hs \.hs-list\.is-long \.hs-day span:first-child:not\(:only-child\)\{display:none;\}\s*\}/);
+    // English and Spanish lists never carry the class.
+    for (const [k, p] of Object.entries(ALL)) expect(p, k).not.toContain('is-long');
   });
   it('the screen builds them from the same words the rows\' sentences use', () => {
     expect(DAILY).toContain('else dateLabel = d.toLocaleDateString(lang, { weekday: "short" });');

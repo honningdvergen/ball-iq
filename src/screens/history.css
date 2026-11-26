@@ -112,6 +112,12 @@
 .hs .hs-c .hs-of{display:grid;margin-right:2px;}
 .hs .hs-c u{width:4px;height:4px;border-radius:50%;background:var(--t3);text-decoration:none;}
 .hs .hs-c s{width:12px;height:2px;border-radius:1px;background:#2E3340;text-decoration:none;}
+/* A phone whose own dates are long (.is-long, DailyScreen.jsx: a Norwegian one writes
+   "man. 23. nov." where English has "Mon 23 Nov"): under 390 wide such a name does not fit, and
+   some days would lose their weekday and some keep it. There every older day is its date alone. */
+@media (max-width: 389px){
+  .hs .hs-list.is-long .hs-day span:first-child:not(:only-child){display:none;}
+}
 /* A game to play. The button is the whole column wide and 48 of the row's 52 high. On Today it
    carries a round well, 36 across, in a wash of the game's colour: the one loud thing in the list.
    On Yesterday it is the bare arrow, quieter. */
