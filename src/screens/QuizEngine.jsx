@@ -7,8 +7,11 @@ import { useModalA11y } from "../useModalA11y.js";
 import { questionSeconds } from "../lib/quiz.js";
 import { Results } from "../screens/ResultsScreen.jsx";
 import * as Sentry from "@sentry/react";
-import { Lightbulb, Flame, Flag } from "lucide-react";
+import { Lightbulb, Flame, Flag, ArrowLeft, ArrowRight, Check, X, Trophy, Timer, Sparkle, ScrollText, ClipboardList, Heart, Shield, Zap, CircleHelp } from "lucide-react";
 import ReportButton from "../components/ReportButton.jsx";
+import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS, LEGENDS_ICON } from "../lib/quizTopicMarks.js";
+import { questionCardStyle } from "../lib/questionAccent.js";
+import "./quizQuestion.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { catLabel, chipLabel, LETTERS, TIMINGS, checkTyped, getACSuggestions, norm } from "../App.jsx";
 import { haptic, playSound } from "../lib/feedback.js";
@@ -172,8 +175,48 @@ export function TypedInput({ question, diff, hintsEnabled, onAnswer }) {
 // How long a timed question sits with a full clock before it starts to drain.
 export const READ_GRACE_MS = 800;
 
+// THE PHONE AND THE WIDE WINDOW (26 Nov 2026). Under 1024 wide the question and
+// the reveal are the drawing Alex approved ("Yes, build it": ball-iq-audit/
+// 2026-11-24/finish/quiz-question-3.png, the right phone, and quiz-answer-3.png):
+// one row of back tile, steps and a small timer ring; the card in its topic's
+// colour with the topic's flag or icon and "1 of 10"; four filled tiles; a plain
+// "Why?"; the one solid Next. Its styles are quizQuestion.css, in this chunk.
+// The wide window (1024 and up: the website's rail, the installed app's sidebar)
+// was not part of the drawing and keeps today's markup exactly, so it is drawn
+// by its own branch below rather than re-styled. Same breakpoint as the Quiz
+// topic screen (QuizScreen.jsx). Only the drawing differs: every handler, timer
+// and record is the same code in both.
+const WIDE = "(min-width: 1024px)";
+function useWide() {
+  const [wide, setWide] = useState(() => typeof window !== "undefined" && !!window.matchMedia && window.matchMedia(WIDE).matches);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return undefined;
+    const mq = window.matchMedia(WIDE);
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener?.("change", on);
+    return () => mq.removeEventListener?.("change", on);
+  }, []);
+  return wide;
+}
+
+// The card's lead mark when the question's own topic has none (History,
+// Transfers, a club round, Chaos's own rows): the mode's name and icon, the
+// icons Home and the Quiz topic screen give these modes.
+const PHONE_MODE = {
+  daily: { Icon: ClipboardList, name: () => "Daily 7" },
+  classic: { Icon: Timer, name: (t) => t("qz.classic") },
+  chaos: { Icon: Sparkle, name: (t) => t("qz.chaos") },
+  legends: { Icon: ScrollText, name: (t) => t("cat.Legends") },
+  survival: { Icon: Heart, name: (t) => t("home.mode.survival") },
+  speed: { Icon: Zap, name: (t) => t("quiz.mode.speed") },
+};
+// The timer ring: r 15 in a 38 box (qq2.py's measures).
+const RING_C = 2 * Math.PI * 15;
+
 export function QuizEngine({ questions, mode, diff, timerEnabled, timerSecondsOverride, soundEnabled, hintsEnabled, onComplete, onBack, survivalBest, onReport, quizLabel, onHowToPlay, dailyDay }) {
   const t = useT();
+  const wide = useWide(); // which drawing; nothing else reads it
   // 10 Nov 2026: leaving Daily 7 lost the run and let a player replay seen
   // answers. `dailyDay` (today's YMD, set by App for today's daily only) turns
   // on save-after-every-answer and resume; see lib/dailyRun.js. `qs` pins the
@@ -697,7 +740,34 @@ const CTA_INSET = (() => {
     </div>
   );
 
-  return (
+  // The leave sheet: the same in both drawings.
+  const quitSheet = showQuit && (
+        <div className="modal-overlay" onClick={() => setShowQuit(false)}>
+          <div ref={quitRef} tabIndex={-1} className="modal-box" role="dialog" aria-modal="true" aria-labelledby="quit-title" onClick={e => e.stopPropagation()}>
+            <div className="modal-grab" aria-hidden="true" />
+            {/* The stake, not a generic warning (2026-09-06, Alex: "this screen
+                also looks dull"): a sheet in the app's vocabulary — icon well,
+                what is actually on the line, one green primary, a quiet exit. */}
+            <div className="modal-head">
+              <div className="modal-title" id="quit-title">{t("quiz.leave")}</div>
+              <div className="modal-body">{idx > 0
+                ? rich(t("quiz.leaveBody"), { score: <strong>{score}</strong>, n: <strong>{idx}</strong> })
+                : t("quiz.leaveLost")}</div>
+            </div>
+            <div className="modal-btns">
+              <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>{t("quiz.keepPlaying")}</button>
+              {/* ⚠️ A rage-quit is a stated bad moment. The app already knows —
+                  it rendered a confirm dialog and the player said yes — and it
+                  did nothing with that. Abandoning mid-quiz is not the mood to
+                  ask for five stars in. */}
+              <button className="modal-btn modal-confirm" onClick={() => { try { markBadReviewMoment(); } catch {} onBack(); }}>{t("quiz.quit")}</button>
+            </div>
+          </div>
+        </div>
+  );
+
+  // ── THE WIDE WINDOW (1024 and up): today's markup, unchanged (see useWide). ──
+  if (wide) return (
     <div className={`quiz-wrap qd-wrap${q?.cat ? ` cat-${q.cat}` : ""}`}>
       {hardRightBurst && <HardRightBurst />}
       {hardRightBurst && (
@@ -1073,30 +1143,237 @@ const CTA_INSET = (() => {
       )}
       </div>{/* /.qd-play */}
 
-      {showQuit && (
-        <div className="modal-overlay" onClick={() => setShowQuit(false)}>
-          <div ref={quitRef} tabIndex={-1} className="modal-box" role="dialog" aria-modal="true" aria-labelledby="quit-title" onClick={e => e.stopPropagation()}>
-            <div className="modal-grab" aria-hidden="true" />
-            {/* The stake, not a generic warning (2026-09-06, Alex: "this screen
-                also looks dull"): a sheet in the app's vocabulary — icon well,
-                what is actually on the line, one green primary, a quiet exit. */}
-            <div className="modal-head">
-              <div className="modal-title" id="quit-title">{t("quiz.leave")}</div>
-              <div className="modal-body">{idx > 0
-                ? rich(t("quiz.leaveBody"), { score: <strong>{score}</strong>, n: <strong>{idx}</strong> })
-                : t("quiz.leaveLost")}</div>
-            </div>
-            <div className="modal-btns">
-              <button className="modal-btn modal-cancel" onClick={() => setShowQuit(false)}>{t("quiz.keepPlaying")}</button>
-              {/* ⚠️ A rage-quit is a stated bad moment. The app already knows —
-                  it rendered a confirm dialog and the player said yes — and it
-                  did nothing with that. Abandoning mid-quiz is not the mood to
-                  ask for five stars in. */}
-              <button className="modal-btn modal-confirm" onClick={() => { try { markBadReviewMoment(); } catch {} onBack(); }}>{t("quiz.quit")}</button>
-            </div>
+      {quitSheet}
+    </div>
+  );
+
+  // ── THE PHONE (under 1024): the approved drawing. ──────────────────────────
+  // The answer's handlers, the timer, the records and the advance are the same
+  // calls as above, word for word; only the markup and its classes differ. The
+  // tiles keep the class "opt" (and "correct", "wrong", "neutral-after") because
+  // the e2e specs find answers by it and app.css gives the right answer its pop
+  // and a wrong one its shake: the moment is today's (no new motion).
+  const lastQ = idx + 1 >= total;
+  const ratio = timed ? Math.max(0, Math.min(1, timeLeft / timerDuration)) : 1;
+  // The bar's own thresholds, unchanged: green over half, yellow over a quarter, then red.
+  const ringColor = ratio > 0.5 ? "var(--accent)" : ratio > 0.25 ? "var(--gold)" : "var(--red)";
+  const cardStyle = questionCardStyle(q.cat);
+  const flag = QUIZ_LEAGUE_FLAGS[q.cat];
+  const TopicIcon = QUIZ_TOPIC_ICONS[q.cat] || (q.cat === "Legends" ? LEGENDS_ICON : null);
+  // A topic of its own names itself; a question without one names the round:
+  // the club or pack (quizLabel), else the mode.
+  const lead = flag ? { name: chipLabel(t, q.cat) }
+    : TopicIcon ? { Icon: TopicIcon, name: chipLabel(t, q.cat) }
+    : quizLabel ? { Icon: Shield, name: quizLabel }
+    : PHONE_MODE[mode] ? { Icon: PHONE_MODE[mode].Icon, name: PHONE_MODE[mode].name(t) }
+    : { Icon: null, name: chipLabel(t, q.cat) };
+  const LeadIcon = lead.Icon;
+  const reportInfo = () => {
+    const picked = isTF
+      ? (selected === 1 ? "True" : selected === 0 ? "False" : null)
+      : (typeof selected === "number" && Array.isArray(q?.o) ? q.o[selected] : null);
+    const correct = isTF
+      ? ((q?.a === true || q?.a === 1) ? "True" : "False")
+      : (Array.isArray(q?.o) && typeof q?.a === "number" ? q.o[q.a] : (q?.typed_a || null));
+    return { id: q?.id, q: q?.q, picked, correct, mode };
+  };
+
+  return (
+    <div className="quiz-wrap qq">
+      {hardRightBurst && <HardRightBurst />}
+      {/* The trophy is lucide's, not the 🏆 emoji the wide window still prints. */}
+      {hardRightBurst && <div className="qq-hard"><Trophy size={14} strokeWidth={2.6} aria-hidden="true" />{t("quiz.hardNailedTxt")}</div>}
+
+      {/* One row: the back tile, the steps, the ring. The separate timer bar
+          and the "1/10" beside the steps are gone: the count is on the card. */}
+      <div className="qq-hd">
+        <button className="back-btn qq-tile" onClick={() => {
+          if (idx === 0 && (!timed || !armed)) { onBack(); return; }
+          setShowQuit(true);
+        }} aria-label={t("game.goBack")}><ArrowLeft size={20} strokeWidth={2.2} aria-hidden="true" /></button>
+        {mode === "survival" ? (
+          <div className="qq-gap" />
+        ) : (
+          // The steps say in words what their colours say: where you are and how
+          // many are right (the running score that sat beside "1/10" before).
+          <div className="qq-steps" role="img" aria-label={t("quiz.stepsAria", { n: idx + 1, total, right: score })}>
+            {Array.from({ length: total }, (_, i) => (
+              <i key={i} className={i < marks.length ? (marks[i] ? "ok" : "no") : (i === marks.length && !answered ? "cur" : "")} />
+            ))}
           </div>
+        )}
+        {onHowToPlay && <button className="qq-tile qq-how" onClick={onHowToPlay} aria-label={t("game.howTo")} title={t("game.howTo")}><CircleHelp size={20} strokeWidth={2.2} aria-hidden="true" /></button>}
+        {/* The ring only where the engine runs a clock (the same test as the
+            bar it replaces), and only until the answer is in, as drawn. The
+            seconds are its text; the sentence is for a screen reader. */}
+        {timed && !isTyped && !answered && (
+          <span className="qq-ring">
+            <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
+              <circle cx="19" cy="19" r="15" fill="none" stroke="#1E222C" strokeWidth="3.5" />
+              <circle cx="19" cy="19" r="15" fill="none" stroke={ringColor} strokeWidth="3.5" strokeLinecap="round"
+                strokeDasharray={RING_C} strokeDashoffset={RING_C * (1 - ratio)} transform="rotate(-90 19 19)"
+                style={{ transition: timeLeft > prevTimeLeftRef.current ? "none" : "stroke-dashoffset 0.9s linear, stroke 0.3s ease" }} />
+            </svg>
+            <b aria-hidden="true">{timeLeft}</b>
+            <span className="sr-only">{t("quiz.secsLeft", { n: timeLeft })}</span>
+          </span>
+        )}
+        {streakBeat > 0 && (
+          <div className="streak-beat" role="status"><Flame size={14} strokeWidth={2.4} aria-hidden="true" /> {t("quiz.inARow", { n: streakBeat })}</div>
+        )}
+      </div>
+
+      {/* Survival's run and best, as before, on one quiet line under the row. */}
+      {mode === "survival" && (
+        <div className="qq-surv">
+          <span className="qq-surv-n"><Flame size={16} strokeWidth={2.4} aria-hidden="true" />{streak}</span>
+          <strong className={streak === 0 ? "is-rule" : undefined}>{t(streak === 0 ? "quiz.survRule" : streak === 1 ? "quiz.surv1" : streak < 5 ? "quiz.surv2" : streak < 10 ? "quiz.surv5" : "quiz.surv10")}</strong>
+          {survivalBest > 0 && <span className="qq-surv-pb">{t("quiz.pb", { n: survivalBest })}</span>}
+          {streak > 0 && survivalBest > 0 && streak >= survivalBest && <span className="qq-surv-new">{t("quiz.newPb")}</span>}
         </div>
       )}
+
+      <div className="sr-only" role="timer" aria-live="assertive" aria-atomic="true">
+        {timed && !isTyped ? (timeLeft === 10 || timeLeft === 5 ? t("quiz.secsLeft", { n: timeLeft }) : timeLeft === 0 ? t("quiz.timesUp") : "") : ""}
+      </div>
+
+      {/* The card: the topic's coloured edge (Alex: keep it) and a soft wash of
+          the same colour (lib/questionAccent.js); its mark and name, the count;
+          then the question at 20/700 on 1.42, the live screen's lighter type. */}
+      <section key={idx} className={`qq-card q-fade${cardStyle ? " has-k" : ""}`} style={cardStyle}>
+        <div className="qq-cat">
+          {flag
+            ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" />
+            : LeadIcon ? <span className="qq-lead" aria-hidden="true"><LeadIcon size={18} strokeWidth={2.1} /></span> : null}
+          <span className="qq-cat-n">{lead.name}</span>
+          <span className="q-ctr qq-n">{mode === "survival" ? t("quiz.q", { n: idx + 1 }) : t("quiz.nOf", { n: idx + 1, total })}</span>
+        </div>
+        {/* noBreakScores: display only (keeps "6-1" on one line); q.q itself is untouched. */}
+        <h2 className="qq-q">{noBreakScores(qv.q)}</h2>
+      </section>
+
+      {isTF ? (
+        // True or false: the same filled tiles, two of them, in today's order.
+        <div className="qq-os">
+          {[true, false].map((val, k) => {
+            const isAnswered = selected !== null;
+            // T/F answers stored as either boolean (TF_STATEMENTS) or number (QB: a:1/0)
+            const qAsBool = q.a === true || q.a === 1;
+            const isCorrect = val === qAsBool;
+            const isChosen = selected === (val ? 1 : 0);
+            const st = !isAnswered ? "" : isCorrect ? " is-ok" : isChosen ? " is-no" : " is-dim";
+            return (
+              <button key={`${idx}-${val}`} className={`qq-o${st}`} disabled={isAnswered}
+                onClick={() => { haptic("select"); handleMCQ(val ? 1 : 0); }}
+                onPointerDown={e => { if (!isAnswered) e.currentTarget.style.transform = "scale(0.97)"; }}
+                onPointerUp={e => { e.currentTarget.style.transform = ""; }}>
+                <span className="qq-w">{isAnswered && isCorrect ? <Check size={18} strokeWidth={3} aria-hidden="true" /> : isAnswered && isChosen ? <X size={16} strokeWidth={3} aria-hidden="true" /> : LETTERS[k]}</span>
+                <span className="qq-ot">{t(val ? "quiz.true" : "quiz.false")}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : !isTyped ? (
+        <div className="qq-os">
+          {qv.o.map((opt, i) => {
+            const answered = selected !== null;
+            const isCorrect = i === q.a;
+            const isChosen = i === selected;
+            let cls = "opt qq-o";
+            if (answered) {
+              if (isCorrect) cls += " correct";
+              else if (isChosen) cls += " wrong";
+              else cls += " neutral-after";
+            }
+            return (
+              // A tap on an answered tile advances, as before (see the wide branch).
+              <button key={`${idx}-${i}`} className={cls} aria-disabled={answered || undefined}
+                onClick={() => {
+                  if (!answered) { handleMCQ(i); return; }
+                  if (showNext) doAdvance(showNext.ns, showNext.nb, showNext.correct);
+                }}
+                onPointerDown={e => { if (!answered) e.currentTarget.style.transform = "scale(0.97)"; }}
+                onPointerUp={e => { e.currentTarget.style.transform = ""; }}
+                onPointerLeave={e => { e.currentTarget.style.transform = ""; }}
+              >
+                <span className="qq-w">{answered && isCorrect ? <Check size={18} strokeWidth={3} aria-hidden="true" /> : answered && isChosen ? <X size={16} strokeWidth={3} aria-hidden="true" /> : LETTERS[i]}</span>
+                <span className="qq-ot">{noBreakScores(opt)}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <TypedInput key={idx} question={q} diff={diff} hintsEnabled={hintsEnabled} onAnswer={(correct, userText) => {
+          // Blur on submit: iOS strands the keyboard otherwise (see the wide branch).
+          try { document.activeElement?.blur?.(); } catch {}
+          setTypedResult(correct ? "correct" : "wrong");
+          if (correct && q.diff === "hard") {
+            haptic("hardCorrect");
+            setHardRightBurst(true);
+            if (hardRightBurstTimerRef.current) clearTimeout(hardRightBurstTimerRef.current);
+            hardRightBurstTimerRef.current = setTimeout(() => setHardRightBurst(false), TIMINGS.ANSWER_REVEAL);
+          }
+          registerAnswer(correct, userText, -1);
+        }} />
+      )}
+
+      {/* The verdict: heard when a tile already shows it, seen when none can
+          (time ran out, or a typed answer). Same rule as the wide branch. */}
+      {answered && (() => {
+        const gotIt = !timedOut && (isTF
+          ? ((selected === 1) === (q?.a === true || q?.a === 1))
+          : (selected === q?.a || typedResult === "correct"));
+        const Mark = gotIt ? Check : timedOut ? Timer : X;
+        return (
+          <div role="status" className={`feedback qq-fb ${gotIt ? "correct" : "wrong"}${!timedOut && !isTyped ? " sr-only" : ""}`}>
+            <span className="qq-fb-t"><Mark size={15} strokeWidth={2.6} aria-hidden="true" />{
+              gotIt ? t("quiz.rightWord")
+                : timedOut ? t("quiz.timesUp")
+                : isTyped ? q.typed_a
+                : t("quiz.wrongWord")
+            }</span>
+          </div>
+        );
+      })()}
+
+      {/* "Why?": a plain card, the yellow bulb and word (Alex: "why in yellow is
+          good"), then the question's own explanation. Only when it has one. It
+          still brings itself into view (the effect on whyRef above). */}
+      {answered && qv?.hint && (
+        <div ref={whyRef} className="qq-why">
+          <div className="qq-why-h"><Lightbulb size={16} strokeWidth={2.2} aria-hidden="true" />{t("quiz.why")}</div>
+          <p>{qv.hint}</p>
+        </div>
+      )}
+
+      {/* The foot, as before: the quiet report row above the one solid button. */}
+      {answered && showNext && (
+        <div className="q-sticky-foot qq-foot">
+          {onReport && (
+            <ReportButton
+              key={q?._histKey || (q?.id != null ? String(q.id) : q?.q)}
+              onReport={onReport}
+              idle={<><Flag size={15} strokeWidth={2.2} aria-hidden="true" />{t("quiz.report")}</>}
+              idleColor="var(--t3)"
+              info={reportInfo}
+              style={{
+                display:"flex", alignItems:"center", justifyContent:"center", gap:7,
+                margin:"4px auto 0", padding:"12px 14px", minHeight:44,
+                background:"transparent", border:"none", borderRadius:10,
+                fontSize:13.5, fontWeight:500,
+              }}
+            />
+          )}
+          <button
+            className="next-btn-primary qq-next"
+            onClick={() => doAdvance(showNext.ns, showNext.nb, showNext.correct)}
+          >
+            {t(lastQ ? "quiz.resultsGo" : "quiz.nextGo")}<ArrowRight size={18} strokeWidth={2.6} aria-hidden="true" />
+          </button>
+        </div>
+      )}
+
+      {quitSheet}
     </div>
   );
 }

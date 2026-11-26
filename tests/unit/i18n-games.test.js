@@ -8,6 +8,23 @@
 //     markup the same scenarios produced on main before step 3 (d5d4cbc7). Do
 //     not regenerate the golden to make this pass: a diff here IS an English
 //     regression.
+//     INTENDED CHANGE, 26 Nov 2026, later (the quiz question on a phone is the drawing Alex
+//     approved, quiz-question-3; "Yes, build it"). The ten "quiz: ..." entries that draw a
+//     question were replaced, and only those: the new render was dumped with a temporary copy of
+//     this test, 59 of 69 entries were byte-identical ("quiz: no questions (could not load)"
+//     among them), and the golden file was rewritten by a script that first proved it
+//     re-serialises the old file byte for byte and then swapped exactly those ten. Each new entry
+//     is the phone markup (the scenarios have no window, so no wide window, which keeps today's
+//     markup and is not in these scenarios): one row of a filled back tile, the steps as short
+//     bars with a sentence for a screen reader ("Question 1 of 3, 0 right so far"; none in
+//     Survival) and, where the engine runs a clock, a timer ring with its seconds in place of the
+//     timer bar; the card (qq-card) with its topic's accent as --qq-k / --qq-kr, the topic's flag
+//     or lucide icon and name (the round's or the mode's when the topic has none) and "1 of 3"
+//     (q-ctr qq-n); the question as an h2; the answers as filled tiles (opt qq-o) with the letter
+//     in a well, and true or false as two such tiles. Gone from the phone markup: the hidden wide
+//     chrome (qd-topbar, qd-progress, qd-meta, qd-eyebrow), the q-tag chip, the running score
+//     beside "1/3", the timer bar. Survival's line keeps its words (qq-surv); a typed question is
+//     unchanged inside its card.
 //     INTENDED CHANGE, 26 Nov 2026 (the Quiz topic screen on a phone is the list of the third
 //     drawing, quiz-picker-3; Alex: "Yes, build it"). The five "quiz screen: ..." entries were
 //     replaced, and only those: the new render was dumped with a temporary copy of this test,
@@ -344,11 +361,14 @@ describe('Spanish (biq_lang=es)', () => {
     expect(unq(now['footle: hard mode, one guess in'])).toContain('>Difícil: solo nombres reales<');
   });
   it('the quiz engine and the Quiz screen', () => {
+    // The phone's question (26 Nov 2026): the wide window's badge, counter, eyebrow and pills
+    // ("Clásico", "P 01 / 3", "Pregunta 1", "aciertos", "Racha 0") are not in its markup.
     const classic = unq(now['quiz: classic, timed, first question']);
-    for (const s of ['>Clásico<', '>Europa<', '>P 01 / 3<', '>Pregunta 1<', '>aciertos<', 'Racha 0', 'aria-label="Salir de la partida"', 'aria-label="Volver"']) expect(classic).toContain(s);
+    for (const s of ['>Europa<', '>1 de 3<', 'aria-label="Pregunta 1 de 3, 0 acertadas hasta ahora"', '>Quedan 20 segundos<', 'aria-label="Cómo se juega"', 'aria-label="Volver"']) expect(classic).toContain(s);
     const surv = unq(now['quiz: survival, PB 12']);
-    for (const s of ['>A muerte<', '>Un fallo y se acaba<', '>Récord: 12<', '>P1<']) expect(surv).toContain(s);
-    expect(unq(now['quiz: speed, club label'])).toContain('>Quiz de club<');
+    for (const s of ['>Un fallo y se acaba<', '>Récord: 12<', '>P 1<']) expect(surv).toContain(s);
+    // A club round's question names the club where a topic would be.
+    expect(unq(now['quiz: speed, club label'])).toContain('<span class="qq-cat-n">Arsenal</span>');
     expect(unq(now['quiz: speed, club label'])).toContain('Quedan 10 segundos');
     expect(unq(now['quiz: legends, a typed question (easy, with the first-letter hint)'])).toContain('Empieza por "T"');
     expect(unq(now['quiz: legends, a typed question (easy, with the first-letter hint)'])).toContain('>Enviar →<');

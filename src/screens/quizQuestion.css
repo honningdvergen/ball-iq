@@ -1,0 +1,99 @@
+/* The quiz question and its reveal on a phone (screens/QuizEngine.jsx, 26 Nov 2026).
+   Under 1024 wide only: the engine draws the wide window with today's markup and
+   classes, and none of these. The drawing Alex approved, "Yes, build it", is
+   ball-iq-audit/2026-11-24/finish/quiz-question-3.png (the right phone) and
+   quiz-answer-3.png; its measures are qq2.py on qq1.py in that folder. Loaded with
+   the engine's lazy chunk, so nothing here is on Home's eager path.
+   His rulings, so they are not undone: the coloured edge down the card's left
+   stays; "Why?" stays yellow; the question's type stays the live 20/700 on about
+   1.42 (22/800 was "clumsy"); the answer states are the strong ones (green with a
+   tick, red with a cross, the rest at half).
+   Everything starts at .qq, the engine's phone wrapper, so the other screens that
+   share .opt, .q-sticky-foot and .next-btn-primary (pass and play, online
+   multiplayer, the wrong-answers review, Hot Streak) render as they did. Where a
+   rule has to beat app.css's own for those shared classes it says .quiz-wrap.qq. */
+
+/* The one row: the back tile, the steps, the ring. Filled, not outlined. */
+.qq .qq-hd{display:flex;align-items:center;gap:14px;position:relative;min-height:44px;}
+.quiz-wrap.qq .qq-tile{flex:none;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:0;border-radius:14px;background:var(--s1);color:var(--t2);display:grid;place-items:center;cursor:pointer;}
+.quiz-wrap.qq .qq-tile:hover{background:var(--s2);color:var(--t1);}
+.qq .qq-tile svg{display:block;}
+.qq .qq-gap{flex:1;}
+/* A step per question: done ones green or red by how they went, the current one
+   light grey, the rest dark. Static: the old pips' pulse is not in the drawing. */
+.qq .qq-steps{flex:1;min-width:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:5px;}
+.qq .qq-steps i{display:block;height:6px;border-radius:3px;background:#1E222C;}
+.qq .qq-steps i.cur{background:var(--t2);}
+.qq .qq-steps i.ok{background:var(--accent);}
+.qq .qq-steps i.no{background:#FF6B6B;}
+/* The timer ring, 38 across, its seconds in Inter's tabular figures. */
+.qq .qq-ring{position:relative;flex:none;width:38px;height:38px;display:grid;place-items:center;}
+.qq .qq-ring svg{position:absolute;inset:0;display:block;}
+.qq .qq-ring b{position:relative;font:700 13.5px/1 var(--font);color:#E4E6EC;font-variant-numeric:tabular-nums;}
+
+/* Survival's run and best: one quiet line under the row. */
+.qq .qq-surv{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:16px;font:600 13.5px/1.3 var(--font);color:var(--t2);}
+.qq .qq-surv-n{display:inline-flex;align-items:center;gap:5px;font:800 16px/1 var(--font);color:#fff;font-variant-numeric:tabular-nums;}
+.qq .qq-surv-n svg{color:var(--gold);}
+.qq .qq-surv strong{font-weight:700;color:var(--t1);}
+.qq .qq-surv strong.is-rule{font-weight:600;color:var(--t2);}
+.qq .qq-surv-pb{color:var(--t3);}
+.qq .qq-surv-new{color:var(--gold);font-weight:700;}
+
+/* The card: the topic's edge and a soft wash of its colour (lib/questionAccent.js
+   sets --qq-k and --qq-kr). A category with no colour keeps the plain fill. */
+.qq .qq-card{position:relative;overflow:hidden;margin-top:20px;padding:22px 20px 26px 26px;border-radius:22px;background:var(--s1);}
+.qq .qq-surv ~ .qq-card{margin-top:14px;}
+.qq .qq-card.has-k{background:linear-gradient(110deg,rgba(var(--qq-kr),.20),rgba(var(--qq-kr),.05) 55%,rgba(var(--qq-kr),0) 80%),var(--s1);}
+.qq .qq-card.has-k::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--qq-k);}
+/* Its first line: the flag or icon and the topic, "1 of 10" at the right in grey. */
+.qq .qq-cat{display:flex;align-items:center;gap:8px;min-width:0;font:600 13.5px/1.2 var(--font);color:var(--t2);}
+.qq .qq-flag{flex:none;display:block;width:26px;height:18px;border-radius:4px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,0.1);}
+.qq .qq-lead{flex:none;display:grid;place-items:center;width:26px;color:var(--t2);}
+.qq .qq-cat-n{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.quiz-wrap.qq .qq-n{margin-left:auto;padding-left:10px;flex:none;font:600 13.5px/1.2 var(--font);letter-spacing:0;color:var(--t3);font-variant-numeric:tabular-nums;}
+.qq .qq-q{margin:18px 0 0;font:700 20px/1.42 var(--font);letter-spacing:-0.01em;color:#fff;text-wrap:pretty;overflow-wrap:break-word;}
+
+/* The answers: filled tiles 62 high, the letter in a small well, no outlines. A
+   long option wraps inside its tile and the tile grows; nothing is cut. */
+.qq .qq-os{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.quiz-wrap.qq .qq-o{display:flex;align-items:center;gap:14px;width:100%;min-height:62px;margin:0;padding:12px 14px;border:0;border-radius:18px;background:var(--s1);color:#F2F3F6;-webkit-text-fill-color:currentColor;font:600 17px/1.3 var(--font);text-align:left;cursor:pointer;opacity:1;}
+.quiz-wrap.qq .qq-o:disabled,.quiz-wrap.qq .qq-o[aria-disabled="true"]{cursor:default;}
+.qq .qq-w{flex:none;width:34px;height:34px;border-radius:11px;background:#1E222C;color:var(--t2);display:grid;place-items:center;font:700 13.5px/1 var(--font);}
+.qq .qq-w svg{display:block;}
+.qq .qq-ot{min-width:0;overflow-wrap:break-word;}
+/* The reveal: the right answer fills green with a tick, a wrong pick red with a
+   cross, the others dim to half. The pop and the shake are app.css's, as today. */
+.quiz-wrap.qq .qq-o.correct,.quiz-wrap.qq .qq-o.is-ok{background:linear-gradient(180deg,#3C9A1E,#2E7C15);color:#fff;}
+.quiz-wrap.qq .qq-o.wrong,.quiz-wrap.qq .qq-o.is-no{background:linear-gradient(180deg,#B8343A,#8C2228);color:#fff;}
+.quiz-wrap.qq .qq-o.correct .qq-w,.quiz-wrap.qq .qq-o.is-ok .qq-w{background:rgba(255,255,255,0.22);color:#fff;}
+.quiz-wrap.qq .qq-o.wrong .qq-w,.quiz-wrap.qq .qq-o.is-no .qq-w{background:rgba(255,255,255,0.2);color:#fff;}
+.quiz-wrap.qq .qq-o.neutral-after,.quiz-wrap.qq .qq-o.is-dim{opacity:.5;color:#F2F3F6;}
+/* True or false had a 0.2s ease on everything; it keeps it. */
+.quiz-wrap.qq .qq-o:not(.opt){transition:all 0.2s;}
+
+/* The verdict, where it shows (time ran out, a typed answer): a filled line. */
+.quiz-wrap.qq .qq-fb{margin-top:12px;padding:12px 14px;border:0;border-radius:14px;font:700 13.5px/1.3 var(--font);}
+.quiz-wrap.qq .qq-fb.correct{background:rgba(88,204,2,0.12);color:var(--grn-soft);}
+.quiz-wrap.qq .qq-fb.wrong{background:rgba(255,71,71,0.12);color:#FF8A8A;}
+.qq .qq-fb-t{display:inline-flex;align-items:center;gap:7px;min-width:0;}
+
+/* "Why?": a plain card, the bulb and the word in yellow, the explanation in the
+   body colour. The 0.4s fade is the one it had. */
+.qq .qq-why{margin-top:16px;padding:16px 16px 18px;border-radius:20px;background:var(--s1);animation:fadeIn 0.4s ease-out;}
+.qq .qq-why-h{display:flex;align-items:center;gap:7px;font:700 13.5px/1 var(--font);color:var(--gold);}
+.qq .qq-why p{margin:10px 0 0;font:500 15px/1.45 var(--font);color:#C9CCD6;}
+
+/* The foot: "Report a problem" quiet and grey, then the ONE solid green Next with
+   its arrow, 56 high, flat (no glow). */
+.quiz-wrap.qq .qq-next{min-height:56px;padding:16px;font-size:17px;gap:8px;box-shadow:none;}
+.qq .qq-next svg{display:block;flex:none;}
+
+/* The hard-question moment, as before, with lucide's trophy for the emoji. */
+.qq .qq-hard{position:fixed;top:calc(env(safe-area-inset-top, 0px) + 46px);left:50%;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:linear-gradient(135deg,#FBBF24 0%,#F59E0B 100%);color:#1a1a1a;padding:10px 22px;border-radius:100px;font:900 13px/1 var(--font);letter-spacing:0.2px;box-shadow:0 8px 32px rgba(251,191,36,0.5),0 2px 8px rgba(0,0,0,0.3);z-index:501;pointer-events:none;animation:hardRightBadge 1.5s cubic-bezier(0.22,1,0.36,1) forwards;}
+
+/* The smallest phones (under 360): the card's sides a little narrower. Type keeps its sizes. */
+@media (max-width: 359px){
+  .qq .qq-hd{gap:10px;}
+  .qq .qq-card{padding:20px 16px 22px 22px;}
+}
