@@ -6,6 +6,7 @@
 // the measures are lp4.py and lp5.py there. Styles: passPlay.css.
 import { useRef } from "react";
 import { Crown, Flame, Zap, Star, Shield, Ghost, Heart, Moon, Check } from "lucide-react";
+import "../i18n/en.js"; // the full English table: not on Home's eager path
 import { useT } from "../i18n/index.js";
 import { useModalA11y } from "../useModalA11y.js";
 import { COLOURS, BADGES, colourOf, heldByOthers } from "../lib/passPlay.js";
