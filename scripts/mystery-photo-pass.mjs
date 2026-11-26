@@ -138,6 +138,8 @@ export function namesPlayer(m, player) {
   const last = parts[parts.length - 1];
   return !!last && text.includes(` ${last} `);
 }
+const SCENE = /periodist|journalist|reporter|televisions|crowd|supporters|\bfans\b|concert|\bshow do\b|samba|tribute|memorial|funeral|grave|tomb/i;
+const ART = /\bpanel\b|mural|graffit|mosaic|statue|sculpt|\bbust\b|street.?art|painting|drawing|caricature|cartoon|wax|madame tussaud|cardboard|cutout|poster|banner|tifo|stamp|sticker|trading card|panini|figurine|wall ?art|artwork|portrait painted|\bart\b|denkmal|estatua|est[aá]tua|murale|pintura|dibujo|fresque|statua/i;
 const yearOf = (d) => { const m = String(d || '').match(/\b(18|19|20)\d\d\b/); return m ? Number(m[0]) : null; };
 // A picture, freely licensed, with an author to credit. Its SIZE is judged by
 // the crop rule (3x at a display size), not here.
@@ -236,6 +238,24 @@ export function judge(file, player, how) {
   if (f.faces !== 1) { v.strike = 'more than one face'; return v; }
   if (f.conf < FACE_CONF_MIN) { v.strike = 'low face confidence'; return v; }
   if (v.dateFits === false) { v.strike = `date ${y} does not fit (born ${player.born})`; return v; }
+  // A file whose own name says it shows someone else too ("Alisson Becker and
+  // Virgil van Dijk") is never a candidate, even when the detector found one
+  // face: the other person may be turned away or cut off. On the Wikidata
+  // image itself it is a flag for the reader.
+  v.othersNamed = /\s(and|&|with|y|e|und|et|con|mit)\s/i.test(` ${m.file.replace(/\.[a-z]+$/i, '')} `);
+  if (v.othersNamed && how === 'category') { v.strike = 'the file name names someone else too'; return v; }
+  // ⚠️ NOT A PHOTOGRAPH OF HIM. A player's own category holds murals, mosaics,
+  // statues and fan art, newly dated and named for him, and the first run
+  // proposed a mural of Ronaldo and a mosaic of Zlatan over real photographs.
+  // A face detector finds a face on a mural, so the words decide.
+  v.artwork = ART.test(`${m.file} ${m.object} ${m.desc}`);
+  if (v.artwork && how === 'category') { v.strike = 'artwork, not a photograph (file name or description)'; return v; }
+  // A file whose own words describe a scene, not him: the second run proposed
+  // a reporter outside Dani Alves's trial ("Periodistes i televisions davant
+  // del palau de justícia …") and the samba singer Bebeto's show filed in the
+  // footballer's category. Read from the words, never from the face.
+  v.scene = SCENE.test(`${m.file} ${m.object} ${m.desc}`);
+  if (v.scene && how === 'category') { v.strike = 'the file describes a scene or someone else (file name or description)'; return v; }
   const crop = faceCrop(f, { w: m.w, h: m.h });
   if (!crop.ok) { v.strike = `crop: ${crop.reason}`; return v; }
   v.crop = crop;
@@ -245,6 +265,9 @@ export function judge(file, player, how) {
     wide: m.w / m.h > 1.3,
     offCentre: crop.offCentre > 0.1,
     notNamed: !v.names,
+    othersNamed: v.othersNamed,
+    artwork: v.artwork,
+    scene: v.scene,
   };
   if (!crop.serves.list) { v.strike = 'cannot reach 3x at the list size'; return v; }
   v.lum = f.lum ?? null;
@@ -270,7 +293,13 @@ if (PHASE === 'score') {
     const isAnswer = answers.includes(id);
     const others = isAnswer ? (S.members[id] || []).slice(0, CANDS).filter((f) => !P18[id] || f !== S.meta[title(P18[id])]?.file).map((f) => judge(f, p, 'category')) : [];
     const good = others.filter((c) => c.ok).sort((a, b) => b.score - a.score);
-    const best = inc.ok && (!good[0] || good[0].score <= inc.score + 10) ? inc : good[0] || (inc.ok ? inc : null);
+    // ⚠️ A CLEAN WIKIDATA IMAGE IS KEPT. A candidate is proposed only where the
+    // current picture is struck, or carries a quality flag the candidate does
+    // not (dark, small face, wide, off-centre, not named, names others), and
+    // scores higher. Recency alone never replaces a good photograph.
+    const flagCount = (x) => Object.values(x.flags || {}).filter(Boolean).length;
+    const better = good.filter((c) => !inc.ok || (flagCount(inc) > flagCount(c) && c.score > inc.score));
+    const best = better[0] || (inc.ok ? inc : null);
     picks[id] = {
       name: p.name, answer: isAnswer, famous: FAMOUS.includes(id),
       current: inc, proposed: best && best !== inc ? best : null,
