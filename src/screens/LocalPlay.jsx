@@ -1,139 +1,178 @@
-// Local pass & play — setup, the game engine and the podium. Extracted from
-// App.jsx on 2026-09-06 (review E16, brick 2). The question-selection helpers
-// (getQs, applySeenFilter, shuffle, …) stay in App and are imported along the
-// seam the lazy screens already use; every screen here takes its state as
-// props and reaches into nothing else.
+// Pass and play: the couch mode, several players on one phone. Setup, the game
+// and the end. Extracted from App.jsx on 2026-09-06 (review E16, brick 2); the
+// question-selection helpers (getQs, applySeenFilter, shuffle, …) stay in App
+// and are imported along the seam the lazy screens already use.
+//
+// THE LOOK OF 26 NOV 2026, approved piece by piece by Alex (ball-iq-audit/
+// 2026-11-24/finish/pass-play-*.png; brief ball-iq-audit/2026-11-26/
+// pass-play-build-brief.md). His rulings, so nothing is undone:
+//  - each player picks a colour and a badge; the disc carries the badge and
+//    NEVER a number, and the name is said once ("Johannes, you're up");
+//  - "Scores so far" is a table on the hand-over; nobody can take a colour or
+//    a badge another player holds;
+//  - Steal only in two-player games ("Yes, lock it"), and the stealer sees the
+//    struck answer ("Yes, show it"): the two switches are in lib/passPlay.js;
+//  - a draw is just a draw ("No, just a draw"): no decider of any kind.
+// The question and its reveal are the approved quiz look (quizQuestion.css's
+// .qq classes, shared, not copied). The players, Steal and the end's maths are
+// pure functions in lib/passPlay.js (tests/unit/pass-play.test.js).
 import { useState, useEffect } from "react";
-import { Timer, Zap, Flame, Handshake, Home, Share, Trophy, Skull, CircleAlert, Loader, Gamepad2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X, Pencil, ChevronRight, Shuffle, Timer, Zap, Flame, Shield, Lightbulb, Flag, Skull, CircleAlert, Loader, Share } from "lucide-react";
 import { chipLabel, applySeenFilter, getQs, qbHistKey, recordSeenQuestions, shuffle } from "../App.jsx";
 import { haptic, playSound } from "../lib/feedback.js";
 import "../i18n/en.js";
 import { useT } from "../i18n/index.js";
 import { TopicPickerSheet, topicMeta } from "../components/TopicPickerSheet.jsx";
 import { CLUB_PACK_TO_QB } from "../data/clubPacks.js";
-import { ResultsCloseBtn } from "../components/ResultsCloseBtn.jsx";
+import ReportButton from "../components/ReportButton.jsx";
 import { loadQuestions } from "../questions-loader.js";
 import { useQuestionText, useLiveQuestion } from "../i18n/questionText.js";
 import { RETIRED_TAGS, optionOrder } from "../lib/quiz.js";
-import { qTagStyle, qCardStyle } from "../lib/ballIqCard.js";
+import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS, LEGENDS_ICON } from "../lib/quizTopicMarks.js";
+import { questionCardStyle } from "../lib/questionAccent.js";
+import { noBreakScores } from "../lib/noBreakScore.js";
+import {
+  STEAL_SHOWS_STRUCK, initialSlots, normalizeSlots, pickFor, makePlayers, slotsFromPlayers,
+  stealInGame, canSteal, stealerFor, newTally, scoreOwn, scoreSteal, scoresSoFar, standing,
+} from "../lib/passPlay.js";
+import { PlayerDisc, PickerSheet, PlayerTable, playerVars } from "./passPlayParts.jsx";
+import "./quizQuestion.css";
+import "./passPlay.css";
 
-// Six players, six marks. A number in a coloured ring — not an emoji avatar
-// (the review's icon rule) — and the colour follows the player through the
-// handoff, reveal, summary and podium so "who is 3?" never needs reading.
-export const PLAYER_RGB = ["88,204,2", "255,170,0", "78,168,222", "139,108,240", "236,72,153", "255,122,0"];
-export function PlayerMark({ p, size }) {
-  if (!p) return null;
-  return <span className={`pmark${size === "lg" ? " lg" : ""}`} style={{ "--pm": p.rgb || PLAYER_RGB[(p.id || 0) % PLAYER_RGB.length] }} aria-hidden="true">{p.n || (p.id || 0) + 1}</span>;
+const LETTERS = ["A", "B", "C", "D"];
+const MODES = [
+  { id: "classic", Icon: Timer, name: "quiz.mode.classic", desc: "lp.classicDesc" },
+  { id: "sprint", Icon: Zap, name: "lp.sprint", desc: "lp.sprintDesc" },
+  { id: "survival", Icon: Flame, name: "home.mode.survival", desc: "lp.survivalDesc" },
+];
+const modeName = (t, mode) => t((MODES.find((m) => m.id === mode) || MODES[0]).name);
+
+// The topic's name and mark on the quiet row and in the end's grey line:
+// "Everything" for all topics mixed (the Quiz topic screen's own words), a
+// league's flag, a competition's line icon, a club's colours; never an emoji.
+function topicShown(topic, t) {
+  if (!topic || topic === "mixed") return { label: t("qz.classic"), sub: t("qz.classicSub"), mark: <span className="pp-ic g"><Shuffle size={20} strokeWidth={2.1} aria-hidden="true" /></span> };
+  const tm = topicMeta(topic, t);
+  const cat = String(topic).startsWith("cat:") ? String(topic).slice(4) : null;
+  let mark;
+  if (cat && QUIZ_LEAGUE_FLAGS[cat]) mark = <span className="pp-ic"><img src={`/${QUIZ_LEAGUE_FLAGS[cat]}`} width="26" height="18" alt="" aria-hidden="true" decoding="async" /></span>;
+  else if (cat && QUIZ_TOPIC_ICONS[cat]) { const I = QUIZ_TOPIC_ICONS[cat]; mark = <span className="pp-ic"><I size={20} strokeWidth={2.1} aria-hidden="true" /></span>; }
+  else if (tm.abbr) mark = <span className="pp-ic"><span className="pp-mono" style={{ background: tm.color || "var(--s2)", color: tm.fg || "var(--t1)" }} aria-hidden="true">{tm.abbr}</span></span>;
+  else mark = <span className="pp-ic"><Shield size={20} strokeWidth={2.1} aria-hidden="true" /></span>;
+  return { label: tm.label, sub: tm.sub, mark };
 }
 
-export function LocalSetup({ onStart, onBack }) {
+// ─── SETUP ────────────────────────────────────────────────────────────────────
+// As drawn (pass-play-setup-2.png): the number of players as one filled row,
+// one row per player (disc, name, a pencil into the picker), the quiet topic
+// row, the three modes with a tick, ONE solid Start kept in view at the bottom.
+// `initial` is the last game's config when the end's "Change topic or mode"
+// brings the players back here.
+export function LocalSetup({ onStart, onBack, initial }) {
   const t = useT();
-  const [count, setCount] = useState(2);
-  const [names, setNames] = useState(Array.from({ length: 6 }, (_, i) => ""));
-  const [lmode, setLmode] = useState("classic");
-  const [topic, setTopic] = useState("mixed");
+  const unnamed = (n) => t("lp.player", { n });
+  const [count, setCount] = useState(() => (initial?.players?.length >= 2 ? initial.players.length : 2));
+  const [slots, setSlots] = useState(() => (initial?.players ? slotsFromPlayers(initial.players, unnamed) : initialSlots()));
+  const [lmode, setLmode] = useState(initial?.mode || "classic");
+  const [topic, setTopic] = useState(initial?.topic || "mixed");
   const [topicOpen, setTopicOpen] = useState(false);
+  const [editing, setEditing] = useState(null); // the seat whose sheet is open
 
-  const setName = (idx, val) => setNames(n => { const copy = n.slice(); copy[idx] = val; return copy; });
-
+  const changeCount = (n) => { setCount(n); setSlots((s) => normalizeSlots(s, n)); };
   const launch = () => {
-    const players = Array.from({ length: count }, (_, i) => ({
-      id: i,
-      name: (names[i] || "").trim() || t("lp.player", { n: i + 1 }),
-      n: i + 1,
-      rgb: PLAYER_RGB[i % PLAYER_RGB.length],
-    }));
     // Same call as Classic (Alex, 2026-09-06): no difficulty picker. The arc
     // ramps easy → hard inside the round; survival draws the hard pool.
-    onStart({ players, mode: lmode, diff: "hard", topic });
+    onStart({ players: makePlayers(slots, count, unnamed), mode: lmode, diff: "hard", topic });
   };
+  const tp = topicShown(topic, t);
 
   return (
-    <div className="screen">
-      <div className="page-hdr">
-        <button className="back-btn" onClick={onBack} aria-label={t("game.goBack")}>←</button>
-        <div className="page-title">{t("lp.title")}</div>
-      </div>
+    <div className="pp pp-page">
+      <header className="pp-top">
+        <button className="pp-tile" onClick={onBack} aria-label={t("game.goBack")}><ArrowLeft size={20} strokeWidth={2.2} aria-hidden="true" /></button>
+        <div className="pp-tt">
+          <h1>{t("lp.heading")}</h1>
+          <p>{t("oh.localSub")}</p>
+        </div>
+      </header>
 
-      {/* Player count picker */}
-      <div className="ds-eyebrow local-section-label">{t("lp.players")}</div>
-      <div className="local-count-row">
-        {[2,3,4,5,6].map(n => (
-          <button key={n} className={`local-count-btn${count===n?" on":""}`} onClick={() => setCount(n)}>{n}</button>
+      <h2 className="pp-label" id="pp-n-l">{t("lp.players")}</h2>
+      <div className="pp-seg" role="radiogroup" aria-labelledby="pp-n-l">
+        {[2, 3, 4, 5, 6].map((n) => (
+          <button key={n} type="button" role="radio" aria-checked={count === n} className={count === n ? "on" : ""} onClick={() => changeCount(n)}>{n}</button>
         ))}
       </div>
 
-      {/* Names */}
-      <div className="ds-eyebrow local-section-label">{t("lp.names")}</div>
-      <div className="local-names">
-        {Array.from({ length: count }, (_, i) => (
-          <div key={i} className="player-input-row">
-            <PlayerMark p={{ id: i, n: i + 1 }} />
-            <input
-              className="player-inp"
-              placeholder={t("lp.player", { n: i + 1 })}
-              value={names[i]}
-              onChange={e => setName(i, e.target.value)}
-              maxLength={16}
-            />
-          </div>
-        ))}
-      </div>
+      <h2 className="pp-label">{t("lp.who")}</h2>
+      <section className="pp-card">
+        {slots.slice(0, count).map((s, i) => {
+          const shown = s.name.trim() || unnamed(i + 1);
+          return (
+            <button key={i} type="button" className="pp-row is-name" aria-haspopup="dialog" aria-label={t("lp.edit", { name: shown })} onClick={() => setEditing(i)}>
+              <PlayerDisc p={s} size={36} />
+              <b className={s.name.trim() ? "" : "is-ph"}>{shown}</b>
+              <span className="pp-ch"><Pencil size={16} strokeWidth={2.1} aria-hidden="true" /></span>
+            </button>
+          );
+        })}
+      </section>
 
-      {/* Topic — same card + full-screen picker as the online lobby */}
-      <div className="ds-eyebrow local-section-label">{t("lp.topic")}</div>
-      {(() => {
-        const tm = topicMeta(topic, t);
-        return (
-          <div style={{borderRadius:16,background:"var(--s1)",border:"1px solid var(--border)",padding:"13px 14px",display:"flex",alignItems:"center",gap:12}}>
-            <span style={{width:46,height:46,borderRadius:13,background:tm.color || "var(--s2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:tm.abbr ? 12 : 21,fontWeight:tm.abbr ? 900 : 400,letterSpacing:tm.abbr ? "0.04em" : 0,color:tm.fg || "var(--t1)",flexShrink:0,boxShadow:tm.color ? `0 2px 8px ${tm.color}55` : undefined}}>{tm.abbr || tm.icon}</span>
-            <div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:2}}>
-              <span style={{fontSize:15,fontWeight:800,color:"var(--t1)",overflow:"hidden",display:"-webkit-box",WebkitBoxOrient:"vertical",WebkitLineClamp:2,lineHeight:1.25}}>{tm.label}</span>
-              <span style={{fontSize:12,color:"var(--t3)"}}>{tm.sub}</span>
-            </div>
-            <button onClick={() => setTopicOpen(true)} style={{border:"none",borderRadius:999,padding:"9px 16px",fontSize:13,fontWeight:800,color:"var(--grn-ink)",background:"var(--accent)",cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>{t("lp.change")}</button>
-          </div>
-        );
-      })()}
+      <h2 className="pp-label">{t("lp.topic")}</h2>
+      <section className="pp-card">
+        <button type="button" className="pp-row is-tall" aria-haspopup="dialog" onClick={() => setTopicOpen(true)}>
+          {tp.mark}
+          <span className="pp-rt"><b>{tp.label}</b><i>{tp.sub}</i></span>
+          <span className="pp-ch"><ChevronRight size={20} strokeWidth={2.1} aria-hidden="true" /></span>
+        </button>
+      </section>
       {topicOpen && (
         <TopicPickerSheet value={topic} onClose={() => setTopicOpen(false)} onDone={(id) => { setTopic(id); setTopicOpen(false); }} />
       )}
 
-      {/* Mode */}
-      <div className="ds-eyebrow local-section-label">{t("lp.mode")}</div>
-      <div className="local-mode-row">
-        {[
-          { id:"classic",  Icon: Timer, name:t("quiz.mode.classic"),  desc:t("lp.classicDesc") },
-          { id:"sprint",   Icon: Zap,   name:t("lp.sprint"),   desc:t("lp.sprintDesc") },
-          { id:"survival", Icon: Flame, name:t("home.mode.survival"), desc:t("lp.survivalDesc") },
-        ].map(m => (
-          <button key={m.id} className={`local-mode-chip${lmode===m.id?" on":""}`} onClick={() => setLmode(m.id)}>
-            <span className="local-mode-icon"><m.Icon size={22} strokeWidth={2.2} aria-hidden="true" /></span>
-            <span className="local-mode-name">{m.name}</span>
-            <span className="local-mode-desc">{m.desc}</span>
-          </button>
-        ))}
+      <h2 className="pp-label" id="pp-m-l">{t("lp.mode")}</h2>
+      <section className="pp-card" role="radiogroup" aria-labelledby="pp-m-l">
+        {MODES.map((m) => {
+          const on = lmode === m.id;
+          return (
+            <button key={m.id} type="button" role="radio" aria-checked={on} className={`pp-row is-tall${on ? " on" : ""}`} onClick={() => setLmode(m.id)}>
+              <span className={`pp-ic${on ? " g" : ""}`}><m.Icon size={18} strokeWidth={2.1} aria-hidden="true" /></span>
+              <span className="pp-rt"><b>{t(m.name)}</b><i>{t(m.desc)}</i></span>
+              {on && <span className="pp-tick"><Check size={20} strokeWidth={2.6} aria-hidden="true" /></span>}
+            </button>
+          );
+        })}
+      </section>
+
+      <div className="pp-spacer" />
+      <div className="pp-bar">
+        <button type="button" className="pp-go" onClick={launch}>{t("lp.start", { n: count })}</button>
       </div>
 
-      <button className="btn-3d" style={{marginTop:18}} onClick={launch}>
-        {t("lp.start", { n: count })}
-      </button>
+      {editing != null && (
+        <PickerSheet slots={slots} count={count} seat={editing}
+          onName={(v) => setSlots((s) => s.map((x, i) => (i === editing ? { ...x, name: v } : x)))}
+          onPick={(key, v) => setSlots((s) => pickFor(s, count, editing, key, v))}
+          onClose={() => setEditing(null)} />
+      )}
     </div>
   );
 }
 
 // ─── LOCAL GAME ENGINE ────────────────────────────────────────────────────────
-// Flow (classic / sprint — chunk mode):
-//   handoff → question → locked (0.8s) → next Q in chunk OR chunk-end reveal (2s)
-//     → summary (1.2s) → handoff for next player's chunk
-// Flow (survival — round-robin mode):
-//   handoff → question → locked (0.8s) → playerSwap → … → question → locked → reveal (2s)
-//     → advance to next Q + handoff (eliminations applied during reveal)
+// Flow (classic / sprint — a run of up to three questions per player):
+//   hand-over → question → locked (0.8s) → that question's reveal (Next)
+//     → the next question in the run, OR the next player's hand-over
+//   In a two-player Classic or Sprint game a wrong answer is not revealed: the
+//   other player gets one try at it (Steal), then the reveal, then play goes on
+//   where it was.
+// Flow (survival — everyone on the same question):
+//   hand-over → question → locked (0.8s) → next player → … → reveal (Next)
+//     → next question's hand-over (eliminations applied on Next)
 //
-// Hidden-answer rule: correct/wrong is never revealed after a single pick; the
-// reveal phase shows all the picks + correct answer in one go, so a later
-// player can't see what's right from an earlier player's feedback.
-export function LocalGameScreen({ config, onComplete, onExit }) {
+// Hidden-answer rule (Survival): nothing is revealed after a single pick; the
+// reveal shows all the picks and the right answer in one go, so a later player
+// can't read the answer off an earlier player's screen.
+export function LocalGameScreen({ config, onComplete, onExit, onReport }) {
   // Questions print in the player's language (i18n/questionText.js); picks and
   // scoring read the English rows. The chrome is t() (i18n step 6).
   const loc = useQuestionText();
@@ -142,6 +181,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   const TARGETS = { classic: 10, sprint: 5, survival: 30 };
   const target = TARGETS[mode] || 10;
   const CHUNK_SIZE = mode === "survival" ? 1 : 3;
+  const stealOn = stealInGame(players.length, mode);
 
   // getQs was made async by commit fc6e7aa (V1.1 lazy-load). useState
   // initializers can't await — so the previous `useState(() => getQs(...))`
@@ -197,19 +237,24 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   const [currentQIdx, setCurrentQIdx] = useState(0);  // index of question currently on screen
   const [turnIdx, setTurnIdx] = useState(0);           // survival: which surviving player is answering
   const [phase, setPhase] = useState("handoff");
-  const [scores, setScores] = useState(() => Object.fromEntries(players.map(p => [p.id, 0])));
+  // Points (scores), own right answers (rights) and steals, per player.
+  const [tally, setTally] = useState(() => newTally(players));
+  const scores = tally.scores;
   const [eliminatedIds, setEliminatedIds] = useState([]);
   const [newEliminatedIds, setNewEliminatedIds] = useState([]);
-  const [chunkPicks, setChunkPicks] = useState([]);   // [{qIdx, playerId, optIdx}] for the active chunk/question
-  const [lastPick, setLastPick] = useState(null);      // the just-submitted pick, for the locked-state highlight
+  const [chunkPicks, setChunkPicks] = useState([]);   // survival: [{qIdx, playerId, optIdx}] for the question on screen
+  const [lastPick, setLastPick] = useState(null);      // the just-submitted pick, for the locked-state mark
+  const [marks, setMarks] = useState([]);              // classic/sprint: per question, the asker's own answer right or not (the steps)
+  const [steal, setSteal] = useState(null);            // { misserId, stealerId, missOpt, pick } while a steal is on or just revealed
+  const [ownPick, setOwnPick] = useState(null);        // classic/sprint: the asker's pick on the question being revealed
 
   const survivors = players.filter(p => !eliminatedIds.includes(p.id));
   const chunkIdx = Math.floor(currentQIdx / CHUNK_SIZE);
   const chunkStartQ = chunkIdx * CHUNK_SIZE;
   const chunkEndQ = Math.min(chunkStartQ + CHUNK_SIZE - 1, totalQs - 1);
   const chunkQSize = chunkEndQ - chunkStartQ + 1;
-  // In classic/sprint, the chunk rotates through players. In survival, the "chunk player" is
-  // the current surviving answerer.
+  // In classic/sprint, the run rotates through players. In survival, the
+  // answering player is the current surviving answerer.
   const currentPlayer = mode === "survival"
     ? survivors[turnIdx]
     : players[chunkIdx % players.length];
@@ -217,7 +262,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   // Computed above the early returns, so it is only held English as displayed
   // (questionText.js useLiveQuestion) while a phase actually shows it: not
   // behind the hand-off screen.
-  const shownQ = useLiveQuestion(currentQ, phase === "question" || phase === "locked" || phase === "reveal");
+  const shownQ = useLiveQuestion(currentQ, phase === "question" || phase === "locked" || phase === "steal" || phase === "stealLocked" || phase === "reveal");
 
   // End-of-game:
   // - Classic/Sprint: ran off the end of the question list → rank by score.
@@ -234,10 +279,11 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     // this state. Without the guard, currentQIdx (0) >= totalQs (0) fires a
     // fake 0-0 "questions-out" podium via onComplete.
     if (totalQs === 0) return;
+    const base = { players, scores, rights: tally.rights, steals: tally.steals, stealOn, eliminatedIds, mode, topic };
     if (mode !== "survival") {
       if (currentQIdx >= totalQs) {
         setPhase("done");
-        onComplete({ players, scores, eliminatedIds, mode, winnerId: null, endReason: "questions-out" });
+        onComplete({ ...base, winnerId: null, endReason: "questions-out" });
       }
       return;
     }
@@ -246,13 +292,13 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
       const winnerId = survivors[0]?.id ?? null;
       const endReason = survivors.length === 1 ? "last-standing" : "total-wipe";
       setPhase("done");
-      onComplete({ players, scores, eliminatedIds, mode, winnerId, endReason });
+      onComplete({ ...base, winnerId, endReason });
       return;
     }
     if (currentQIdx >= totalQs) {
       // Two or more players still alive but the question pool is exhausted
       setPhase("done");
-      onComplete({ players, scores, eliminatedIds, mode, winnerId: null, endReason: "questions-out" });
+      onComplete({ ...base, winnerId: null, endReason: "questions-out" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQIdx, totalQs, mode, phase, eliminatedIds]);
@@ -262,51 +308,12 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     try { recordSeenQuestions(questions); } catch {}
   }, [phase, questions]);
 
-  // reveal (2s) → summary (classic/sprint) OR advance (survival).
-  // Hoisted above the early-return so the hook count is stable across the
-  // initial async-loading render (where !currentQ short-circuits below).
+  // A new question, a hand-over or a steal starts at the top: the reveal's Why
+  // can leave the page scrolled down (QuizEngine does the same per question).
+  const screenKey = `${currentQIdx}:${phase === "handoff" || phase === "playerSwap" ? "h" : phase === "steal" ? "s" : "q"}`;
   useEffect(() => {
-    if (phase !== "reveal") return;
-    const t = setTimeout(() => {
-      if (mode === "survival") {
-        const allOut = [...eliminatedIds, ...newEliminatedIds];
-        setEliminatedIds(allOut);
-        setNewEliminatedIds([]);
-        const nextSurvivors = players.filter(p => !allOut.includes(p.id));
-        if (nextSurvivors.length <= 1) return;
-        const nextQ = currentQIdx + 1;
-        if (nextQ >= totalQs) {
-          setCurrentQIdx(nextQ);
-          return;
-        }
-        setCurrentQIdx(nextQ);
-        setTurnIdx(0);
-        setChunkPicks([]);
-        setPhase("handoff");
-      } else {
-        setPhase("summary");
-      }
-    }, 2000);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
-
-  // summary (1.2s) → next chunk handoff. Same hoist as reveal effect above.
-  useEffect(() => {
-    if (phase !== "summary") return;
-    const t = setTimeout(() => {
-      const nextStart = chunkEndQ + 1;
-      if (nextStart >= totalQs) {
-        setCurrentQIdx(nextStart);
-        return;
-      }
-      setCurrentQIdx(nextStart);
-      setChunkPicks([]);
-      setPhase("handoff");
-    }, 1200);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
+    try { window.scrollTo({ top: 0, left: 0, behavior: "instant" }); } catch { /* old engines */ }
+  }, [screenKey]);
 
   // Load failure — mirrors QuizEngine's !q guard. Must render BEFORE the
   // loading/finishing fallback below (explicit state before fallback checks),
@@ -340,7 +347,7 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
     playSound("soft");
     const entry = { qIdx: currentQIdx, playerId: currentPlayer.id, optIdx };
     const nextPicks = [...chunkPicks, entry];
-    setChunkPicks(nextPicks);
+    if (mode === "survival") setChunkPicks(nextPicks);
     setLastPick(entry);
     setPhase("locked");
 
@@ -357,16 +364,47 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
           // Everyone answered this question → reveal
           revealSurvivalQuestion(nextPicks);
         }
-      } else {
-        // classic/sprint: same player, next question in chunk OR chunk-end reveal
-        if (currentQIdx < chunkEndQ) {
-          setCurrentQIdx(currentQIdx + 1);
-          setLastPick(null);
-          setPhase("question"); // no inter-question screen; same player continues
-        } else {
-          revealChunk(nextPicks);
-        }
+        return;
       }
+      // classic/sprint: a miss a steal can be made on goes to the other
+      // player unrevealed; anything else is revealed now.
+      const right = optIdx === currentQ.a;
+      setOwnPick(optIdx);
+      setLastPick(null);
+      // The step turns green or red with the reveal, not before (a steal waits).
+      const mark = () => setMarks(m => { const c = m.slice(); c[currentQIdx] = right; return c; });
+      if (!right && canSteal(players.length, mode, currentQ)) {
+        setSteal({ misserId: currentPlayer.id, stealerId: stealerFor(players, currentPlayer.id).id, missOpt: optIdx, pick: null });
+        setPhase("steal");
+        return;
+      }
+      setSteal(null);
+      mark();
+      setTally(tl => scoreOwn(tl, currentPlayer.id, right));
+      haptic("heavy");
+      playSound("streak");
+      setPhase("reveal");
+    }, 800);
+  };
+
+  // The stealer's one try: a right pick is their point and a steal; a wrong
+  // one scores nobody. Then the normal reveal.
+  const pickSteal = (optIdx) => {
+    if (phase !== "steal" || !steal) return;
+    if (STEAL_SHOWS_STRUCK && optIdx === steal.missOpt) return; // struck, not tappable
+    haptic("soft");
+    playSound("soft");
+    setLastPick({ qIdx: currentQIdx, playerId: steal.stealerId, optIdx });
+    setPhase("stealLocked");
+    setTimeout(() => {
+      const right = optIdx === currentQ.a;
+      setSteal(s => ({ ...s, pick: optIdx }));
+      setLastPick(null);
+      setMarks(m => { const c = m.slice(); c[currentQIdx] = false; return c; }); // the asker's own answer missed
+      setTally(tl => scoreSteal(tl, steal.stealerId, right));
+      haptic("heavy");
+      playSound("streak");
+      setPhase("reveal");
     }, 800);
   };
 
@@ -375,354 +413,335 @@ export function LocalGameScreen({ config, onComplete, onExit }) {
   function revealSurvivalQuestion(picksSoFar) {
     const thisQPicks = picksSoFar.filter(p => p.qIdx === currentQIdx);
     const freshlyOut = [];
-    const nextScores = { ...scores };
-    for (const pk of thisQPicks) {
-      if (pk.optIdx === currentQ.a) {
-        nextScores[pk.playerId] = (nextScores[pk.playerId] || 0) + 1;
-      } else {
-        freshlyOut.push(pk.playerId);
-      }
-    }
-    setScores(nextScores);
+    setTally(tl => {
+      let next = tl;
+      for (const pk of thisQPicks) next = scoreOwn(next, pk.playerId, pk.optIdx === currentQ.a);
+      return next;
+    });
+    for (const pk of thisQPicks) if (pk.optIdx !== currentQ.a) freshlyOut.push(pk.playerId);
     setNewEliminatedIds(freshlyOut);
     haptic("heavy");
     playSound("streak");
     setPhase("reveal");
   }
 
-  // A function declaration, not a const arrow: it is called from the
-  // lock-in handler declared above it, and a `const` there is a TDZ read.
-  function revealChunk(picksSoFar) {
-    const nextScores = { ...scores };
-    for (const pk of picksSoFar) {
-      const q = questions[pk.qIdx];
-      if (q && pk.optIdx === q.a) {
-        nextScores[pk.playerId] = (nextScores[pk.playerId] || 0) + 1;
+  // Next on a reveal: play continues where it was.
+  const advance = () => {
+    if (mode === "survival") {
+      const allOut = [...eliminatedIds, ...newEliminatedIds];
+      setEliminatedIds(allOut);
+      setNewEliminatedIds([]);
+      const nextSurvivors = players.filter(p => !allOut.includes(p.id));
+      if (nextSurvivors.length <= 1) return;
+      const nextQ = currentQIdx + 1;
+      if (nextQ >= totalQs) {
+        setCurrentQIdx(nextQ);
+        return;
       }
+      setCurrentQIdx(nextQ);
+      setTurnIdx(0);
+      setChunkPicks([]);
+      setPhase("handoff");
+      return;
     }
-    setScores(nextScores);
-    haptic("heavy");
-    playSound("streak");
-    setPhase("reveal");
-  }
-
-  const prog = t("lp.prog", { a: String(currentQIdx + 1).padStart(2, "0"), b: String(Math.min(target, totalQs)).padStart(2, "0") });
+    setSteal(null);
+    setOwnPick(null);
+    if (currentQIdx < chunkEndQ) {
+      setCurrentQIdx(currentQIdx + 1);
+      setPhase("question"); // no screen between questions; same player continues
+      return;
+    }
+    const nextStart = chunkEndQ + 1;
+    setCurrentQIdx(nextStart);
+    if (nextStart < totalQs) setPhase("handoff");
+  };
 
   // ── Render ─────────────────────────────────────────────────────────────────
+  const back = (
+    <button className="back-btn qq-tile pp-tile" onClick={onExit} aria-label={t("game.goBack")}><ArrowLeft size={20} strokeWidth={2.2} aria-hidden="true" /></button>
+  );
 
-  if (phase === "handoff") {
+  if (phase === "handoff" || phase === "playerSwap") {
     const classicSprint = mode !== "survival";
-    const headline = classicSprint
-      ? t("lp.roundHead", { name: currentPlayer?.name, n: chunkQSize })
-      : t("lp.turn", { name: currentPlayer?.name });
-    const sub = classicSprint
-      ? t("lp.passTo", { name: currentPlayer?.name, count: chunkQSize })
-      : t("lp.passReady");
+    const isLastRun = classicSprint ? chunkEndQ >= totalQs - 1 : false;
+    const n = classicSprint ? chunkQSize : 1;
+    const eyebrow = classicSprint && chunkQSize > 1
+      ? t("lp.qRange", { a: chunkStartQ + 1, b: chunkEndQ + 1 })
+      : t("lp.qOne", { n: currentQIdx + 1 });
+    const rows = scoresSoFar(players, scores, eliminatedIds);
     return (
-      <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label={t("game.goBack")}>←</button>
-        <div className="ds-eyebrow local-ready-eyebrow">
-          {classicSprint
-            ? t("lp.roundEyebrow", { r: chunkIdx + 1, a: chunkStartQ + 1, b: chunkEndQ + 1 })
-            : t("lp.nextUp", { prog })}
+      <div className="pp pp-page" style={playerVars(currentPlayer)}>
+        <header className="pp-top">{back}</header>
+        <div className="pp-ho">
+          <p className="pp-eye">{eyebrow}</p>
+          <PlayerDisc p={currentPlayer} size={96} />
+          <h2>{t("lp.youreUp", { name: currentPlayer?.name })}</h2>
+          <p>{t(`lp.${isLastRun ? "last" : "next"}${Math.min(3, Math.max(1, n))}`)}</p>
         </div>
-        <div className="local-ready-emoji"><PlayerMark p={currentPlayer} size="lg" /></div>
-        <div className="local-ready-name">{headline}</div>
-        <div className="local-ready-sub">{sub}</div>
-        {mode === "survival" && eliminatedIds.length > 0 && (
-          <div className="local-out-list">
-            {eliminatedIds.map(id => {
-              const p = players.find(pp => pp.id === id);
-              return p ? <span key={id} className="local-out-chip"><PlayerMark p={p} /> {p.name}</span> : null;
-            })}
-          </div>
-        )}
-        <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
-          {t("lp.ready")}
-        </button>
-      </div>
-    );
-  }
-
-  // Quick neutral pass-the-phone between players inside a single survival question
-  if (phase === "playerSwap") {
-    return (
-      <div className="local-ready">
-        <button className="back-btn" onClick={onExit} style={{position:"absolute",top:14,left:14}} aria-label={t("game.goBack")}>←</button>
-        <div className="ds-eyebrow local-ready-eyebrow">{t("lp.nextUp", { prog })}</div>
-        <div className="local-ready-emoji"><PlayerMark p={currentPlayer} size="lg" /></div>
-        <div className="local-ready-name">{t("lp.turn", { name: currentPlayer?.name })}</div>
-        <div className="local-ready-sub">{t("lp.sameQ")}</div>
-        <button className="btn-3d" style={{maxWidth:320}} onClick={() => setPhase("question")}>
-          {t("lp.ready")}
-        </button>
-      </div>
-    );
-  }
-
-  if (phase === "question" || phase === "locked") {
-    return (
-      <div className="quiz-wrap">
-        <div className="q-top">
-          <button className="back-btn" onClick={onExit} aria-label={t("game.goBack")}>←</button>
-          <div className="prog-wrap">
-            <div className="prog-bar" style={{ width: `${Math.min(100, ((currentQIdx + 1) / Math.max(1, Math.min(target, totalQs))) * 100)}%` }} />
-          </div>
-          <span className="q-ctr">{prog}</span>
-        </div>
-        <div style={{textAlign:"center",padding:"6px 0 8px",fontSize:13,fontWeight:700,color:"var(--accent)"}}>
-          <Gamepad2 size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{t("lp.turn", { name: currentPlayer?.name })}
-        </div>
-        <div className="q-card" style={qCardStyle(currentQ.cat)}>
-          <div className="q-tag" style={qTagStyle(currentQ.cat)}>{chipLabel(t, currentQ.cat)}</div>
-          <div className="q-text">{shownQ.q}</div>
-        </div>
-        <div className="opts">
-          {shownQ.o.map((opt, i) => {
-            let cls = "opt";
-            if (phase === "locked" && lastPick && i === lastPick.optIdx) cls += " locked";
-            else if (phase === "locked") cls += " neutral-after";
-            return (
-              <button key={`${currentQIdx}-${currentPlayer?.id}-${i}`} className={cls} onClick={() => pick(i)} disabled={phase === "locked"}>
-                <span className="opt-l">{["A","B","C","D"][i]}</span>{opt}
-              </button>
-            );
-          })}
-        </div>
-        {phase === "locked" && (
-          <div style={{marginTop:14,textAlign:"center",fontSize:15,fontWeight:800,color:"var(--info, var(--gold))"}}>
-            {t("lp.locked")}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  if (phase === "reveal") {
-    const isSurvivalQ = mode === "survival";
-    const revealPlayers = isSurvivalQ
-      ? survivors
-      : [currentPlayer]; // classic/sprint chunk — one player, shown per-question
-    return (
-      <div className="local-reveal">
-        <div className="ds-eyebrow local-reveal-eyebrow">
-          {isSurvivalQ ? t("lp.results", { prog }) : t("lp.roundOf", { name: currentPlayer?.name, a: chunkStartQ + 1, b: chunkEndQ + 1 })}
-        </div>
-        {isSurvivalQ ? (
-          <>
-            <div className="local-reveal-q">{shownQ.q}</div>
-            <div className="local-reveal-correct">{t("lp.correct")} <strong>{shownQ.o[currentQ.a]}</strong></div>
-            <div className="local-reveal-list">
-              {revealPlayers.map(p => {
-                const pk = chunkPicks.find(x => x.qIdx === currentQIdx && x.playerId === p.id);
-                const chose = pk ? shownQ.o[pk.optIdx] : "—";
-                const ok = pk && pk.optIdx === currentQ.a;
-                const outNow = newEliminatedIds.includes(p.id);
-                return (
-                  <div key={p.id} className={`local-reveal-row ${ok ? "ok" : "no"}${outNow ? " out" : ""}`}>
-                    <PlayerMark p={p} />
-                    <span style={{flex:1,fontWeight:700,color:"var(--t1)"}}>{p.name}</span>
-                    <span className="local-reveal-chose">{chose}</span>
-                    <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
-                  </div>
-                );
-              })}
-            </div>
-            {newEliminatedIds.length > 0 && (
-              <div className="local-reveal-eliminate">
-                <Skull size={14} strokeWidth={2.4} aria-hidden="true" style={{verticalAlign:"-2px",marginRight:6}} />{t("lp.eliminated", { names: newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ") })}
-              </div>
-            )}
-          </>
-        ) : (
-          // Classic/Sprint chunk reveal: one player, list of their questions with pick vs correct
-          <>
-            <div className="local-reveal-list">
-              {chunkPicks.filter(p => p.playerId === currentPlayer.id).map(pk => {
-                const q = questions[pk.qIdx];
-                const ok = pk.optIdx === q.a;
-                return (
-                  <div key={pk.qIdx} className={`local-reveal-row ${ok ? "ok" : "no"}`}>
-                    <span className="local-reveal-qn">{t("lp.qn", { n: pk.qIdx + 1 })}</span>
-                    <span style={{flex:1,color:"var(--t2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{loc.q(q).q}</span>
-                    <span className="local-reveal-mark">{ok ? "✓" : "✗"}</span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="local-reveal-tally">
-              {t("lp.tally", { x: chunkPicks.filter(p => p.playerId === currentPlayer.id && p.optIdx === questions[p.qIdx]?.a).length, n: chunkQSize })}
-            </div>
-          </>
-        )}
-      </div>
-    );
-  }
-
-  if (phase === "summary") {
-    const rows = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-    return (
-      <div className="local-summary-overlay">
-        <div className="local-summary-card">
-          <div className="local-summary-title">{t("lp.after", { n: currentQIdx + 1 })}</div>
-          {rows.map(p => (
-            <div key={p.id} className="local-summary-row">
-              <PlayerMark p={p} />
-              <span style={{flex:1,fontWeight:700,color:"var(--t1)"}}>{p.name}</span>
-              <span className="local-summary-score">{scores[p.id] || 0}</span>
-            </div>
-          ))}
+        <h2 className="pp-label">{t("lp.scoresSoFar")}</h2>
+        <PlayerTable rows={rows} scores={scores} size="sm" upId={currentPlayer?.id} outIds={eliminatedIds} />
+        <div className="pp-spacer" />
+        <div className="pp-bar">
+          <button type="button" className="pp-go" onClick={() => setPhase("question")}>{t("lp.ready")}<ArrowRight size={18} strokeWidth={2.6} aria-hidden="true" /></button>
         </div>
       </div>
     );
   }
 
-  return null;
-}
+  // The question, the steal and the reveal: the approved quiz look.
+  const cardStyle = questionCardStyle(currentQ.cat);
+  const flag = QUIZ_LEAGUE_FLAGS[currentQ.cat];
+  const TopicIcon = QUIZ_TOPIC_ICONS[currentQ.cat] || (currentQ.cat === "Legends" ? LEGENDS_ICON : null);
+  const clubName = String(topic).startsWith("club:") ? CLUB_PACK_TO_QB[String(topic).slice(5)] : null;
+  const lead = flag ? { name: chipLabel(t, currentQ.cat) }
+    : TopicIcon ? { Icon: TopicIcon, name: chipLabel(t, currentQ.cat) }
+    : clubName ? { Icon: Shield, name: clubName }
+    : { Icon: null, name: chipLabel(t, currentQ.cat) };
+  const LeadIcon = lead.Icon;
+  const total = Math.min(target, totalQs);
+  const isReveal = phase === "reveal";
+  // The banner stands while the steal is on; its reveal is the normal one,
+  // the two picks tagged with whose they were.
+  const isSteal = phase === "steal" || phase === "stealLocked";
+  const stealer = steal ? players.find(p => p.id === steal.stealerId) : null;
+  const misser = steal ? players.find(p => p.id === steal.misserId) : null;
+  const locked = phase === "locked" || phase === "stealLocked";
+  const lastQ = mode === "survival" ? false : currentQIdx >= totalQs - 1;
+  const tag = (p) => <i className="pp-tag" key={p.id}><PlayerDisc p={p} size={22} /><span>{p.name}</span></i>;
 
-// ─── LOCAL RESULTS ────────────────────────────────────────────────────────────
-export function LocalResults({ result, onHome, onRetry, onShare }) {
-  const t = useT();
-  if (!result || !result.players || result.players.length === 0) {
-    return (
-      <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
-        <ResultsCloseBtn onClose={onHome} />
-        <div className="rc" style={{marginBottom:16}}>
-          <div className="rc-title">{t("lp.noResults")}</div>
-        </div>
-        <div className="results-actions">
-          <button className="btn-3d ghost" onClick={onHome}>{t("quiz.backHome")}</button>
-        </div>
-      </div>
-    );
-  }
-  const { players, scores, eliminatedIds, mode, winnerId, endReason } = result;
-  const isSurvival = mode === "survival";
-  const elimList = eliminatedIds || [];
+  // Who picked each option, shown on the reveal: Survival's picks, or the
+  // steal's two (the miss and the stealer's try).
+  const pickersOf = (i) => {
+    if (!isReveal) return [];
+    if (mode === "survival") return chunkPicks.filter(pk => pk.qIdx === currentQIdx && pk.optIdx === i).map(pk => players.find(p => p.id === pk.playerId)).filter(Boolean);
+    if (steal && steal.pick !== null) return [steal.missOpt === i ? misser : null, steal.pick === i ? stealer : null].filter(Boolean);
+    return [];
+  };
+  const someoneRight = mode === "survival"
+    ? chunkPicks.some(pk => pk.qIdx === currentQIdx && pk.optIdx === currentQ.a)
+    : steal && steal.pick !== null ? steal.pick === currentQ.a : ownPick === currentQ.a;
 
-  // Rank players differently per end state:
-  // - Survival last-standing: sole survivor first, then eliminated in reverse
-  // - Survival total-wipe:    nobody wins; eliminated in reverse elimination order
-  // - Survival questions-out: surviving players ranked by score, then eliminated in reverse
-  // - Classic/Sprint:         everyone ranked by score descending
-  let ranked;
-  let headline;
-  let subHeadline = null;
-  // The other five branches below already resolve to Lucide or a PlayerMark;
-  // these three were the last raw glyphs in an icon slot (review C8).
-  let iconTop = <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-  if (isSurvival) {
-    const survivors = players.filter(p => !elimList.includes(p.id));
-    const elimRev = [...elimList].reverse().map(id => players.find(p => p.id === id)).filter(Boolean);
-
-    if (endReason === "total-wipe" || (survivors.length === 0 && !winnerId)) {
-      iconTop = <Skull size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = t("lp.nobody");
-      subHeadline = t("lp.nobodySub");
-      ranked = elimRev;
-    } else if (endReason === "last-standing" || survivors.length === 1) {
-      const winner = players.find(p => p.id === winnerId) || survivors[0];
-      // The winner's own mark, as the Classic and Sprint branches already do —
-      // a generic trophy says less than the face of who won.
-      iconTop = winner ? <PlayerMark p={winner} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = winner ? t("lp.survives", { name: winner.name }) : t("lp.nobody");
-      subHeadline = winner ? t("lp.lastStanding", { count: scores[winner.id] || 0 }) : null;
-      ranked = winner ? [winner, ...elimRev.filter(p => p.id !== winner.id)] : elimRev;
-    } else {
-      // questions-out with 2+ survivors — highest score among survivors wins (or draw)
-      const byScore = [...survivors].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-      const topScore = scores[byScore[0]?.id] ?? 0;
-      const tiedAtTop = byScore.filter(p => (scores[p.id] || 0) === topScore);
-      if (tiedAtTop.length > 1) {
-        iconTop = <Handshake size={40} strokeWidth={2} aria-hidden="true" />;
-        headline = t("lp.tie");
-        const names = tiedAtTop.map(p => p.name).join(" · ");
-        subHeadline = t("lp.allOn", { names, n: topScore });
-      } else {
-        const top = byScore[0];
-        iconTop = top ? <PlayerMark p={top} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-        headline = top ? t("lp.wins", { name: top.name }) : t("lp.over");
-        subHeadline = top ? t("lp.ranOut", { count: topScore }) : null;
-      }
-      ranked = [...byScore, ...elimRev];
-    }
-  } else {
-    // Classic / Sprint
-    ranked = [...players].sort((a, b) => (scores[b.id] || 0) - (scores[a.id] || 0));
-    const topScore = scores[ranked[0]?.id] ?? 0;
-    const tiedAtTop = ranked.filter(p => (scores[p.id] || 0) === topScore);
-    const top = ranked[0];
-    if (tiedAtTop.length > 1) {
-      iconTop = <Handshake size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = t("lp.tie");
-      const names = tiedAtTop.map(p => p.name).join(" · ");
-      subHeadline = t("lp.allOn", { names, n: topScore });
-    } else {
-      iconTop = top ? <PlayerMark p={top} size="lg" /> : <Trophy size={40} strokeWidth={2} aria-hidden="true" />;
-      headline = top ? t("lp.wins", { name: top.name }) : t("lp.over");
-      subHeadline = top ? t("lp.nCorrect", { count: topScore }) : null;
-    }
-  }
+  const reportInfo = () => ({ id: currentQ?.id, q: currentQ?.q, picked: typeof ownPick === "number" ? currentQ.o[ownPick] : null, correct: currentQ.o[currentQ.a], mode: "local" });
 
   return (
-    <div className="screen foot-clear" style={{paddingTop:8, position:"relative"}}>
-      <ResultsCloseBtn onClose={onHome} />
-      <div className="rc" style={{marginBottom:16}}>
-        <div className="rc-icon">{iconTop}</div>
-        <div className="rc-title">{headline}</div>
-        {subHeadline && <div className="rc-sub" style={{marginTop:4}}>{subHeadline}</div>}
-      </div>
-
-      {/* Podium top 3 */}
-      <div className="podium">
-        {ranked.slice(0, 3).map((p, i) => (
-          <div key={p.id} className={`podium-row${i === 0 ? " gold" : ""}`}>
-            <div className="pod-rank numeric">{i + 1}</div>
-            <div className="pod-name"><PlayerMark p={p} /> {p.name}</div>
-            <div className="pod-score">{scores[p.id] || 0}</div>
+    <div className="quiz-wrap qq pp" style={playerVars(isSteal ? stealer : currentPlayer)}>
+      <div className="qq-hd">
+        {back}
+        {mode === "survival" ? (
+          <div className="qq-gap" />
+        ) : (
+          <div className="qq-steps" role="img" aria-label={t("lp.stepsAria", { n: currentQIdx + 1, total })}>
+            {Array.from({ length: total }, (_, i) => (
+              <i key={i} className={marks[i] === true ? "ok" : marks[i] === false ? "no" : i === currentQIdx ? "cur" : ""} />
+            ))}
           </div>
-        ))}
+        )}
+        {!isSteal && !(isReveal && mode === "survival") && (
+          <span className="pp-turn"><PlayerDisc p={currentPlayer} size={26} /><span>{t("lp.turn", { name: currentPlayer?.name })}</span></span>
+        )}
       </div>
 
-      {/* Full ranked list */}
-      {ranked.length > 3 && (
-        <div style={{marginTop:14,background:"var(--s1)",border:"1px solid var(--border)",borderRadius:12,overflow:"hidden"}}>
-          {ranked.slice(3).map((p, i) => (
-            <div key={p.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderTop: i===0?"none":"0.5px solid var(--border)"}}>
-              <span style={{width:24,color:"var(--t3)",fontWeight:700,fontVariantNumeric:"tabular-nums"}}>{i + 4}</span>
-              <PlayerMark p={p} />
-              <span style={{flex:1,color:"var(--t1)",fontWeight:700}}>{p.name}</span>
-              <span style={{fontFamily:"var(--font)",fontVariantNumeric:"tabular-nums",fontWeight:700,color:"var(--accent)"}}>{scores[p.id] || 0}</span>
-            </div>
-          ))}
+      {isSteal && stealer && (
+        <div className="pp-stl" role="status">
+          <PlayerDisc p={stealer} size={40} />
+          <span className="pp-rt"><b>{t("lp.stealIt", { name: stealer.name })}</b><i>{t("lp.stealLine", { name: misser?.name })}</i></span>
         </div>
       )}
 
-      {isSurvival && elimList.length > 0 && (
-        <div style={{marginTop:14}}>
-          <div style={{fontSize:11,fontWeight:800,letterSpacing:"0.14em",color:"var(--t3)",textTransform:"uppercase",marginBottom:8}}>{t("lp.elimOrder")}</div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-            {elimList.map((id, i) => {
-              const p = players.find(pp => pp.id === id);
-              if (!p) return null;
-              return (
-                <span key={id} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 10px",borderRadius:20,background:"var(--s2)",border:"1px solid var(--border)",fontSize:12,color:"var(--t2)"}}>
-                  <span style={{opacity:0.5,fontVariantNumeric:"tabular-nums"}}>#{i+1}</span>
-                  <PlayerMark p={p} /> {p.name}
-                </span>
-              );
-            })}
-          </div>
+      <section key={currentQIdx} className={`qq-card q-fade${cardStyle ? " has-k" : ""}`} style={cardStyle}>
+        <div className="qq-cat">
+          {flag
+            ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" />
+            : LeadIcon ? <span className="qq-lead" aria-hidden="true"><LeadIcon size={18} strokeWidth={2.1} /></span> : null}
+          <span className="qq-cat-n">{lead.name}</span>
+          <span className="q-ctr qq-n">{mode === "survival" ? t("lp.qOne", { n: currentQIdx + 1 }) : t("quiz.nOf", { n: currentQIdx + 1, total })}</span>
         </div>
+        <h2 className="qq-q">{noBreakScores(shownQ.q)}</h2>
+      </section>
+
+      <div className="qq-os">
+        {shownQ.o.map((opt, i) => {
+          const struck = steal && (phase === "steal" || phase === "stealLocked") && STEAL_SHOWS_STRUCK && i === steal.missOpt;
+          let cls = "opt qq-o";
+          let well = LETTERS[i];
+          if (isReveal) {
+            const isCorrect = i === currentQ.a;
+            const picked = mode === "survival"
+              ? pickersOf(i).length > 0
+              : i === ownPick || (steal && i === steal.pick);
+            if (isCorrect) { cls += " correct"; well = <Check size={18} strokeWidth={3} aria-hidden="true" />; }
+            else if (picked) { cls += " wrong"; well = <X size={16} strokeWidth={3} aria-hidden="true" />; }
+            else cls += " neutral-after";
+          } else if (struck) {
+            cls += " pp-gone"; well = <X size={16} strokeWidth={3} aria-hidden="true" />;
+          } else if (locked && lastPick) {
+            cls += i === lastPick.optIdx ? " pp-lock" : " neutral-after";
+          }
+          const tags = isReveal ? pickersOf(i) : struck ? [misser] : [];
+          const onClick = isReveal ? advance : phase === "steal" ? () => pickSteal(i) : () => pick(i);
+          const inert = struck || locked;
+          return (
+            <button key={`${currentQIdx}-${i}`} className={cls} onClick={inert ? undefined : onClick}
+              disabled={struck || undefined} aria-disabled={(!struck && (locked || isReveal)) || undefined}>
+              <span className="qq-w">{well}</span>
+              <span className="qq-ot">{noBreakScores(opt)}</span>
+              {tags.length > 0 && (tags.length === 1 ? tag(tags[0]) : <span className="pp-tags">{tags.map(tag)}</span>)}
+            </button>
+          );
+        })}
+      </div>
+
+      {locked && (
+        <p className="pp-locked" role="status"><Check size={16} strokeWidth={2.6} aria-hidden="true" />{t("lp.locked")}</p>
       )}
 
-      <div className="results-actions" style={{marginTop:16}}>
-        <button className="btn-3d" onClick={onRetry}>{t("lp.again")}</button>
-        {onShare && <button className="btn-3d ghost" onClick={onShare}>{t("lp.share")}</button>}
-        <button className="results-exit" onClick={onHome}>{t("quiz.backHome")}</button>
-      </div>
+      {isReveal && (
+        <div role="status" className="sr-only">{t(someoneRight ? "quiz.rightWord" : "quiz.wrongWord")}</div>
+      )}
+      {isReveal && mode === "survival" && newEliminatedIds.length > 0 && (
+        <div className="pp-out"><Skull size={16} strokeWidth={2.4} aria-hidden="true" />{t("lp.eliminated", { names: newEliminatedIds.map(id => players.find(p => p.id === id)?.name).filter(Boolean).join(", ") })}</div>
+      )}
+      {isReveal && shownQ?.hint && (
+        <div className="qq-why">
+          <div className="qq-why-h"><Lightbulb size={16} strokeWidth={2.2} aria-hidden="true" />{t("quiz.why")}</div>
+          <p>{shownQ.hint}</p>
+        </div>
+      )}
+      {isReveal && (
+        <div className="q-sticky-foot qq-foot">
+          {onReport && (
+            <ReportButton
+              key={currentQ?._histKey || (currentQ?.id != null ? String(currentQ.id) : currentQ?.q)}
+              onReport={onReport}
+              idle={<><Flag size={15} strokeWidth={2.2} aria-hidden="true" />{t("quiz.report")}</>}
+              idleColor="var(--t3)"
+              info={reportInfo}
+              style={{
+                display:"flex", alignItems:"center", justifyContent:"center", gap:7,
+                margin:"4px auto 0", padding:"12px 14px", minHeight:44,
+                background:"transparent", border:"none", borderRadius:10,
+                fontSize:13.5, fontWeight:500,
+              }}
+            />
+          )}
+          <button className="next-btn-primary qq-next" onClick={advance}>
+            {t(lastQ ? "quiz.resultsGo" : "quiz.nextGo")}<ArrowRight size={18} strokeWidth={2.6} aria-hidden="true" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
+// ─── THE END ──────────────────────────────────────────────────────────────────
+// Two players (pass-play-steal-1.png, the right phone): the winner card ("Anmol
+// wins" / "6 points against 5"), ONE solid button to play again, the quiet "Change topic
+// or mode", then the final table, the winner's points in their colour. Three
+// to six (pass-play-handover-table-2.png, the right phone): "7 points" and the
+// table with coloured bars. A draw (pass-play-draw-4.png): the tied discs
+// facing each other with the score between; three or more on top stand in a
+// row, "N points each". Survival keeps its own facts (who lasted longest).
+export function LocalResults({ result, onHome, onRetry, onChange, onShare }) {
+  const t = useT();
+  if (!result || !result.players || result.players.length === 0) {
+    return (
+      <div className="pp pp-page pp-end">
+        <header className="pp-top">
+          <button className="pp-tile" onClick={onHome} aria-label={t("quiz.backHome")}><ArrowLeft size={20} strokeWidth={2.2} aria-hidden="true" /></button>
+          <div className="pp-tt"><h1>{t("lp.noResults")}</h1></div>
+        </header>
+      </div>
+    );
+  }
+  const { players, scores, rights = scores, steals = {}, stealOn = false, eliminatedIds = [], mode, topic } = result;
+  const isSurvival = mode === "survival";
+  const st = standing(result);
+  const many = players.length > 2;
+  const right = (p) => t("lp.right", { count: rights[p.id] || 0 });
+  const line = (p) => (stealOn && (steals[p.id] || 0) > 0 ? `${right(p)} · ${t("lp.steals", { count: steals[p.id] })}` : right(p));
 
+  let card;
+  const playAgain = <button type="button" className="pp-go" onClick={onRetry}>{t("lp.again")}<ArrowRight size={18} strokeWidth={2.6} aria-hidden="true" /></button>;
+  const change = onChange ? <button type="button" className="pp-again" onClick={onChange}>{t("lp.changeSetup")}</button> : null;
+  if (st.kind === "draw") {
+    const side = (p) => (
+      <div className="pp-sd" key={p.id}>
+        <PlayerDisc p={p} size={76} />
+        <b>{p.name}</b>
+        <i>{line(p)}</i>
+      </div>
+    );
+    card = (
+      <section className="pp-win is-draw">
+        <p className="pp-eye">{t("lp.tie")}</p>
+        {st.top.length === 2 ? (
+          <div className="pp-vs">
+            {side(st.top[0])}
+            <strong aria-label={t("lp.pointsEach", { count: st.topScore })}>{st.topScore}<s aria-hidden="true" />{st.topScore}</strong>
+            {side(st.top[1])}
+          </div>
+        ) : (
+          <>
+            <div className="pp-row-of">{st.top.map(side)}</div>
+            <p className="pp-meta">{t("lp.pointsEach", { count: st.topScore })}</p>
+          </>
+        )}
+        {playAgain}
+        {change}
+      </section>
+    );
+  } else {
+    const w = st.top[0];
+    let headline, meta;
+    if (st.kind === "wipe") { headline = t("lp.nobody"); meta = t("lp.nobodySub"); }
+    else if (isSurvival && (result.endReason === "last-standing" || players.filter(p => !eliminatedIds.includes(p.id)).length === 1)) {
+      headline = t("lp.survives", { name: w.name }); meta = t("lp.lastStanding", { count: scores[w.id] || 0 });
+    } else if (isSurvival) { headline = t("lp.wins", { name: w.name }); meta = t("lp.ranOut", { count: scores[w.id] || 0 }); }
+    else {
+      headline = t("lp.wins", { name: w.name });
+      const other = st.ranked[1];
+      meta = !many && other ? t("lp.pointsVs", { count: scores[w.id] || 0, b: scores[other.id] || 0 }) : t("lp.points", { count: scores[w.id] || 0 });
+    }
+    card = (
+      <section className="pp-win">
+        <div className="pp-hero">
+          {w ? <PlayerDisc p={w} size={96} glow /> : <span className="pp-none"><Skull size={44} strokeWidth={2} aria-hidden="true" /></span>}
+        </div>
+        <h2>{headline}</h2>
+        <p className="pp-meta">{meta}</p>
+        {playAgain}
+        {change}
+      </section>
+    );
+  }
+
+  // The table: always with three or more; with two, under a win (a two-player
+  // draw shows both sides on the card already).
+  const showTable = many || st.kind !== "draw";
+  const bars = many || isSurvival;
+  // .screen.foot-clear: the end clears the home indicator, as every finish does.
+  return (
+    <div className="screen foot-clear">
+    <div className="pp pp-page pp-end">
+      <header className="pp-top">
+        <button className="pp-tile" onClick={onHome} aria-label={t("quiz.backHome")}><ArrowLeft size={20} strokeWidth={2.2} aria-hidden="true" /></button>
+        <div className="pp-tt">
+          <h1>{t("lp.heading")}</h1>
+          <p>{modeName(t, mode)} · {topicShown(topic, t).label}</p>
+        </div>
+      </header>
+      {card}
+      {showTable && (
+        <>
+          <h2 className="pp-label">{t("lp.finalTable")}</h2>
+          <PlayerTable rows={st.ranked} scores={scores} size="lg" line={many ? right : line} bars={bars}
+            winnerId={!bars && st.kind === "win" ? st.top[0]?.id : undefined} />
+        </>
+      )}
+      {onShare && (
+        <button type="button" className="pp-share" onClick={onShare}><Share size={15} strokeWidth={2.2} aria-hidden="true" />{t("lp.share")}</button>
+      )}
+    </div>
+    </div>
+  );
+}

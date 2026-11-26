@@ -153,3 +153,20 @@ describe('the tables and the end', () => {
     expect(out.ranked.map((x) => x.id)).toEqual([0, 1, 2, 3]);
   });
 });
+
+describe('the screens hold to the rules', () => {
+  const lp = read('src/screens/LocalPlay.jsx');
+  const parts = read('src/screens/passPlayParts.jsx');
+  it('the old numbered PlayerMark is gone from pass and play; the disc draws no number', () => {
+    expect(lp).not.toMatch(/PlayerMark|PLAYER_RGB/);
+    expect(parts).toMatch(/export function PlayerDisc/);
+    expect(parts).not.toMatch(/p\.n\b|id \+ 1\}/);
+  });
+  it('the question wears quizQuestion.css as it is (imported, not copied)', () => {
+    expect(lp).toContain('import "./quizQuestion.css";');
+    expect(read('src/screens/passPlay.css')).not.toMatch(/\.qq-card\{|\.qq-o\{/);
+  });
+  it('online multiplayer is untouched by the new classes', () => {
+    expect(read('src/screens/OnlineMultiplayer.jsx')).not.toMatch(/pp-|passPlay/);
+  });
+});

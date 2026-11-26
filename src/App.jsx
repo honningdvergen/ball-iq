@@ -8341,7 +8341,7 @@ function AppInner() {
 
         {/* ── LOCAL SETUP ── */}
         {screen === "local-setup" && (
-          <LocalSetup onStart={startLocalGame} onBack={goHome} />
+          <LocalSetup onStart={startLocalGame} onBack={goHome} initial={localConfig} />
         )}
 
         {/* ── LOCAL GAME (unified handoff → question → feedback → summary engine) ── */}
@@ -8350,6 +8350,7 @@ function AppInner() {
             config={localConfig}
             onComplete={handleLocalComplete}
             onExit={goHome}
+            onReport={reportQuestion}
           />
         )}
 
@@ -8620,6 +8621,7 @@ function AppInner() {
             result={localResult}
             onHome={goHome}
             onRetry={() => { if (localConfig) startLocalGame(localConfig); }}
+            onChange={() => setScreen("local-setup")}
             onShare={() => shareScore(0, 0, "local")}
           />
         )}

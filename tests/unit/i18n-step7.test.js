@@ -176,7 +176,7 @@ describe('b. only questions actually displayed are held, and the hold is let go'
   it('the live views use useLiveQuestion; the toast and the lists pin nothing', () => {
     expect(read('src/screens/QuizEngine.jsx')).toContain('const qv = useLiveQuestion(q);');
     expect(read('src/screens/StumpScreen.jsx')).toContain('const shown = useLiveQuestion(row);');
-    expect(read('src/screens/LocalPlay.jsx')).toContain('const shownQ = useLiveQuestion(currentQ, phase === "question" || phase === "locked" || phase === "reveal");');
+    expect(read('src/screens/LocalPlay.jsx')).toContain('const shownQ = useLiveQuestion(currentQ, phase === "question" || phase === "locked" || phase === "steal" || phase === "stealLocked" || phase === "reveal");');
     const app = read('src/App.jsx');
     expect(app).toContain('const qv = useLiveQuestion(q);'); // Hot Streak
     expect(app).toContain('const qv = useLiveQuestion(done ? null : questions?.[idx]);'); // True or False

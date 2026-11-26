@@ -244,13 +244,20 @@ describe('a Spanish player shares in Spanish', () => {
 });
 
 describe('the screens and sheets', () => {
-  const result = { players: [{ id: 0, name: 'Ana', n: 1 }, { id: 1, name: 'Ben', n: 2 }], scores: { 0: 3, 1: 1 }, eliminatedIds: [], mode: 'classic', winnerId: null, endReason: 'questions-out' };
+  // Pass and play's new look (26 Nov 2026) moved these: the title is "Pass and
+  // play", the names are rows into a picker (no field on the setup, so no
+  // placeholder), the topic is a quiet row ("Everything / All topics mixed",
+  // the Quiz topic screen's words), Survival's line is "Out on a wrong answer",
+  // Start and Play again lost their typed arrows (a lucide arrow on Play
+  // again), the winner's line is points ("3 points against 1"), and "Back to
+  // Home" is the back tile's name.
+  const result = { players: [{ id: 0, name: 'Ana', colour: 'green', badge: 'crown' }, { id: 1, name: 'Ben', colour: 'yellow', badge: 'flame' }], scores: { 0: 3, 1: 1 }, rights: { 0: 3, 1: 1 }, steals: { 0: 0, 1: 0 }, stealOn: true, eliminatedIds: [], mode: 'classic', topic: 'mixed', winnerId: null, endReason: 'questions-out' };
   it('local play in English reads as it did', async () => {
     await bootLang(store, null);
     const setup = html(React.createElement(LocalSetup, { onStart: noop, onBack: noop }));
-    for (const s of ['>Local Multiplayer<', '>Players<', '>Names<', 'placeholder="Player 1"', '>Topic<', '>Change<', '>Mode<', '>Classic<', '>10 questions<', '>Sprint<', '>Survival<', '>Eliminated on wrong<', 'Start with 2 players →', 'aria-label="Go back"', '>Mixed — all topics<', '>Questions from every topic<']) expect(setup, s).toContain(s);
-    const res = html(React.createElement(LocalResults, { result, onHome: noop, onRetry: noop, onShare: noop }));
-    for (const s of ['>Ana wins<', '>3 correct<', '>Play again<', '>Share score<', '>Back to Home<']) expect(res, s).toContain(s);
+    for (const s of ['>Pass and play<', '>Same couch · up to 6 players<', '>Players<', '>Who is playing<', '>Player 1<', 'aria-label="Edit Player 2"', '>Topic<', '>Mode<', '>Classic<', '>10 questions<', '>Sprint<', '>Survival<', '>Out on a wrong answer<', '>Start with 2 players<', 'aria-label="Go back"', '>Everything<', '>All topics mixed<']) expect(setup, s).toContain(s);
+    const res = html(React.createElement(LocalResults, { result, onHome: noop, onRetry: noop, onChange: noop, onShare: noop }));
+    for (const s of ['>Ana wins<', '>3 points against 1<', 'Play again<', '>Change topic or mode<', '>Final table<', '>3 right<', '>Share score<', 'aria-label="Back to Home"', '>Classic · Everything<']) expect(res, s).toContain(s);
     const pick = html(React.createElement(TopicPickerSheet, { value: 'cat:WorldCup', onDone: noop, onClose: noop }));
     for (const s of ['>Topics<', '>Leagues<', '>Tournaments<', '>International<', '>Euros<', '>Done — International<']) expect(pick, s).toContain(s);
     expect(topicMeta('cat:Euros')).toMatchObject({ label: 'Euros', sub: 'Competition pack' });
@@ -258,10 +265,10 @@ describe('the screens and sheets', () => {
   it('local play in Spanish', async () => {
     await bootLang(store, 'es');
     const setup = html(React.createElement(LocalSetup, { onStart: noop, onBack: noop }));
-    for (const s of ['>Multijugador local<', '>Jugadores<', 'placeholder="Jugador 1"', '>Clásico<', '>A muerte<', 'Empezar con 2 jugadores →', '>Mixto: todos los temas<']) expect(setup, s).toContain(s);
-    expect(setup).not.toMatch(/>(Players|Names|Topic|Change|Mode)</);
-    const res = html(React.createElement(LocalResults, { result, onHome: noop, onRetry: noop, onShare: noop }));
-    for (const s of ['>Gana Ana<', '>3 aciertos<', '>Otra partida<', '>Volver al inicio<']) expect(res, s).toContain(s);
+    for (const s of ['>Multijugador local<', '>Jugadores<', '>Jugador 1<', '>Clásico<', '>A muerte<', '>Empezar con 2 jugadores<', '>Quién juega<']) expect(setup, s).toContain(s);
+    expect(setup).not.toMatch(/>(Players|Names|Topic|Change|Mode|Who is playing)</);
+    const res = html(React.createElement(LocalResults, { result, onHome: noop, onRetry: noop, onChange: noop, onShare: noop }));
+    for (const s of ['>Gana Ana<', '>3 puntos contra 1<', '>3 aciertos<', 'Otra partida<', '>Cambiar tema o modo<', 'aria-label="Volver al inicio"']) expect(res, s).toContain(s);
     const pick = html(React.createElement(TopicPickerSheet, { value: 'cat:WorldCup', onDone: noop, onClose: noop }));
     for (const s of ['>Temas<', '>Torneos<', '>Selecciones<', '>Eurocopa<', '>Listo: Selecciones<']) expect(pick, s).toContain(s);
   });
