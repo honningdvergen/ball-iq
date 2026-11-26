@@ -40,7 +40,8 @@
 // (scripts/audit-home-budget.mjs); Home only carries the row that opens it.
 import React from "react";
 import { swatchEdge } from '../lib/colourMath.js';
-import { ArrowLeft, ArrowRight, Check, ChevronRight, ClipboardList, Globe, LandPlot, Medal, ScrollText, Sparkle, Sparkles, Star, Timer, Trophy } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronRight, LandPlot, ScrollText, Sparkle, Sparkles, Timer } from "lucide-react";
+import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS } from "../lib/quizTopicMarks.js";
 import { prefetchQuestions } from "../questions-loader.js";
 import { faceAbbrForCat } from "../lib/ballIqCard.js";
 import { LEAGUE_QUIZ_SECTIONS } from "../App.jsx";
@@ -80,17 +81,11 @@ export function normaliseQuizTopic(t) {
 // competitions keep LEAGUE_QUIZ_SECTIONS' name, the same in both languages.
 const chipName = (t, it) => (en[`cat.${it.cat}`] ? t(`cat.${it.cat}`) : it.name);
 
-// A league's lead mark on the phone list: its country's flag. The files are the
-// ones src/data/nationFlags.json names (England's own cross, not the Union
-// flag), written out here so the 151-nation table is not pulled into this
-// chunk; quiz-topic.test.js holds the two in step. Fetched as plain pictures.
-export const QUIZ_LEAGUE_FLAGS = {
-  PL: "flags/england.png", LaLiga: "flags/spain.png", SerieA: "flags/italy.png",
-  Bundesliga: "flags/germany.png", Ligue1: "flags/france.png", SuperLig: "flags/turkey.png",
-  Primeira: "flags/portugal.png",
-};
-// Every other topic: one plain grey line icon.
-export const QUIZ_TOPIC_ICONS = { UCL: Trophy, WorldCup: Globe, Euros: Star, Managers: ClipboardList, Records: Medal };
+// A league's lead mark on the phone list: its country's flag; every other topic
+// one plain grey line icon. Both tables live in lib/quizTopicMarks.js since 26
+// Nov 2026, so the question card wears the same marks; re-exported here, where
+// quiz-topic.test.js holds the flags in step with src/data/nationFlags.json.
+export { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS };
 
 // 1024 is where app.css hands the app its wide layout (the rail, the sidebar).
 const WIDE = "(min-width: 1024px)";
