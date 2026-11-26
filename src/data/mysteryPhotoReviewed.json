@@ -1,0 +1,4 @@
+{
+  "_note": "R11/R12, 26 Nov 2026. The ONLY way a player photo reaches the Mystery screens. An id goes here only after (1) HQ and the design session have read its round crop on a contact sheet and struck the wrong, clipped, dark or doubtful ones, and (2) the owner has pressed Approve on that exact crop on his review page. Each entry stores what was reviewed, so a later change to the picture or the crop takes the photo off until it is approved again: { file: Commons file name, crop: { x, y, s }, face: { x, y, w, h }, provenance: { how: 'P18' | 'category', names: bool, date, dateFits, faces: 1 }, approvedBy, approvedOn }. Then run node scripts/build-mystery-photo-lean.mjs. Starts EMPTY.",
+  "ids": {}
+}
