@@ -463,13 +463,13 @@ export const MYSTERY_PAGE = {
   statLine: 'Free · no sign-up · new player every day',
   how: [
     ['Name any player', 'Type any footballer, from any era. There is no penalty for a wild first guess — it is information either way.'],
-    ['Read the rank', 'Every guess comes back with a number: where your player sits among thousands for closeness to the secret one, with the reason underneath — a shared club, the same position, the same era. The secret player is 1.'],
-    ['Use the colours', 'Green means you are hot — inside the top handful. Amber is warm. Grey means nothing in common worth chasing.'],
-    ['Narrow it down', 'Closeness weighs shared clubs most (more for years as team-mates), then position, then era. You start with two free clues, his position and the decade he was born in. Stuck? A club he played for unlocks after four guesses and his initials after eight.'],
+    ['Read the rank', 'Every guess comes back with a number: where your player sits among thousands for closeness to the secret one. Under it, four tiles compare your guess with the secret player: a shared club, the position, the nation and the year of birth. The secret player is 1.'],
+    ['Use the colours', 'A green tile is the same as the secret player. A yellow tile is close: a nation from the same part of the world, or born within four years. A dark tile is different. An arrow beside the year says whether the secret player was born earlier or later.'],
+    ['Narrow it down', 'Closeness weighs shared clubs most (more for years as team-mates), then position, then era. Nothing is given away at the start. Stuck? After four guesses you may choose one hint, a team-mate, a club or the first and last years of the career, and after eight guesses one more.'],
   ],
   body: [
     `Mystery Player is a daily football guessing game. There is one secret footballer, the same for everyone, and no limit on how many guesses you take to find them. What makes it work is the feedback: instead of a plain right or wrong, every name you try comes back with a rank showing how close that player is to the answer.`,
-    `Closeness is not a vibe — it is computed from things a football fan already thinks in, and every guess shows its working. Having played for the same club counts for most, and more for years spent there together. Playing in the same position counts next, and being of the same era breaks the ties. So a team-mate of the answer lands near the top immediately, and the line under it names the club you share; a guess with nothing in common says exactly that, and rules out a whole direction.`,
+    `Closeness is not a vibe — it is computed from things a football fan already thinks in, and every guess shows its working. Having played for the same club counts for most, and more for years spent there together. Playing in the same position counts next, and being of the same era breaks the ties. So a team-mate of the answer lands near the top immediately, and the tile under it names the club you share; a guess with nothing in common says exactly that, and rules out a whole direction.`,
     `Everyone gets the same player on the same day, which is the point — a result is worth comparing. Solve it and you get a spoiler-safe grid to share that shows how your guesses ran hot and cold without giving the answer away. It is free, plays in the browser with no account, and the Ball IQ app keeps your solve streak.`,
   ],
   faq: [
