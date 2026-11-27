@@ -1,4 +1,3501 @@
 {
   "_note": "R11/R12, 26 Nov 2026. The ONLY way a player photo reaches the Mystery screens. An id goes here only after (1) HQ and the design session have read its round crop on a contact sheet and struck the wrong, clipped, dark or doubtful ones, and (2) the owner has pressed Approve on that exact crop on his review page. Each entry stores what was reviewed, so a later change to the picture or the crop takes the photo off until it is approved again: { file: Commons file name, crop: { x, y, s }, face: { x, y, w, h }, provenance: { how: 'P18' | 'category', names: bool, date, dateFits, faces: 1 }, approvedBy, approvedOn }. Then run node scripts/build-mystery-photo-lean.mjs. Starts EMPTY.",
-  "ids": {}
+  "ids": {
+    "Q615": {
+      "file": "Leo Messi Argentina v Egypt 7 July 2026-1.jpg",
+      "crop": {
+        "x": 0.0511,
+        "y": 0,
+        "s": 0.8533
+      },
+      "face": {
+        "x": 0.2985636591911316,
+        "y": 0.14025139808654785,
+        "w": 0.35838228464126587,
+        "h": 0.23892152309417725
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "Taken on 7 July 2026, 11:58:26",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q624": {
+      "file": "Alessandro Del Piero, New York NY 2015.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.092,
+        "s": 1
+      },
+      "face": {
+        "x": 0.30720680952072144,
+        "y": 0.2841489017009735,
+        "w": 0.5647406578063965,
+        "h": 0.37649375200271606
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "Taken on 3 November 2015 21:26:35 UTC-5",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q1894": {
+      "file": "Memphis Depay 2019.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.14208753407001495,
+        "y": 0.20785024762153625,
+        "w": 0.46658146381378174,
+        "h": 0.37326517701148987
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-10-02",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q1907": {
+      "file": "Hugo Lloris NYCFC v LAFC 17 October 2026-053 (cropped).jpg",
+      "crop": {
+        "x": 0.0656,
+        "y": 0,
+        "s": 0.9344
+      },
+      "face": {
+        "x": 0.366437166929245,
+        "y": 0.17846569418907166,
+        "w": 0.3924526274204254,
+        "h": 0.26163509488105774
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2026-10-17 19:33:02",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q1935": {
+      "file": "Éric Abidal - 001.jpg",
+      "crop": {
+        "x": 0.2403,
+        "y": 0.0553,
+        "s": 0.4223
+      },
+      "face": {
+        "x": 0.3628194034099579,
+        "y": 0.14747323840856552,
+        "w": 0.17736981809139252,
+        "h": 0.11304370313882828
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2008-03-05",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q2339": {
+      "file": "Loco-Fener (10).jpg",
+      "crop": {
+        "x": 0.0175,
+        "y": 0,
+        "s": 0.9133
+      },
+      "face": {
+        "x": 0.28237801790237427,
+        "y": 0.1570967137813568,
+        "w": 0.38359498977661133,
+        "h": 0.31385043263435364
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2016-02-26 23:22:13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q4462": {
+      "file": "Joachim Löw 2006.jpg",
+      "crop": {
+        "x": 0.0054,
+        "y": 0,
+        "s": 0.9946
+      },
+      "face": {
+        "x": 0.30890408158302307,
+        "y": 0.26324307918548584,
+        "w": 0.4398994743824005,
+        "h": 0.442202627658844
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2006-08-24",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q4599": {
+      "file": "Raúl Albiol 2009.jpg",
+      "crop": {
+        "x": 0.1319,
+        "y": 0.0079,
+        "s": 0.8264
+      },
+      "face": {
+        "x": 0.37154945731163025,
+        "y": 0.24611517786979675,
+        "w": 0.3470851182937622,
+        "h": 0.29212498664855957
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2009-11-18",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q10602": {
+      "file": "Ashley Young 2018-06-13 1.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0183,
+        "s": 1
+      },
+      "face": {
+        "x": 0.22452977299690247,
+        "y": 0.23300215601921082,
+        "w": 0.5976092219352722,
+        "h": 0.465078204870224
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-06-13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q11571": {
+      "file": "Cristiano Ronaldo Croatia v Portugal 2 July 2026-075 (cropped).jpg",
+      "crop": {
+        "x": 0.0452,
+        "y": 0,
+        "s": 0.912
+      },
+      "face": {
+        "x": 0.30967047810554504,
+        "y": 0.13659268617630005,
+        "w": 0.3830462396144867,
+        "h": 0.2555416226387024
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-07-02 19:04:40",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q11576": {
+      "file": "Raul 2012-05-13-2.jpg",
+      "crop": {
+        "x": 0.361,
+        "y": 0,
+        "s": 0.639
+      },
+      "face": {
+        "x": 0.5595327019691467,
+        "y": 0.14958502352237701,
+        "w": 0.26837581396102905,
+        "h": 0.23252777755260468
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2012-05-13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q11584": {
+      "file": "Iker Casillas 2.jpg",
+      "crop": {
+        "x": 0.1598,
+        "y": 0,
+        "s": 0.6833
+      },
+      "face": {
+        "x": 0.35800090432167053,
+        "y": 0.10864053666591644,
+        "w": 0.2869928777217865,
+        "h": 0.23760773241519928
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-10-24",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q11948": {
+      "file": "Michael Ballack 2022 BHO-0832.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.1044,
+        "s": 1
+      },
+      "face": {
+        "x": 0.1893758624792099,
+        "y": 0.3069932460784912,
+        "w": 0.6131080985069275,
+        "h": 0.4598310887813568
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2022-11-18 20:14:16",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q17158": {
+      "file": "Carles Puyol 18abr2007.jpg",
+      "crop": {
+        "x": 0.1136,
+        "y": 0,
+        "s": 0.8864
+      },
+      "face": {
+        "x": 0.380526065826416,
+        "y": 0.21717703342437744,
+        "w": 0.3722712993621826,
+        "h": 0.2903832197189331
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2007-04-18",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q17163": {
+      "file": "Johan Cruijff (1974).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2559826076030731,
+        "y": 0.2364971935749054,
+        "w": 0.48572811484336853,
+        "h": 0.3642960786819458
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "1974-04-30",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q17499": {
+      "file": "2023 - Cesc Fabregas (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.28703320026397705,
+        "y": 0.2115056812763214,
+        "w": 0.535555899143219,
+        "h": 0.38540753722190857
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2023-11-14 15:51",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q17507": {
+      "file": "GerardPique.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 0.9768
+      },
+      "face": {
+        "x": 0.22081606090068817,
+        "y": 0.2351069450378418,
+        "w": 0.4102385938167572,
+        "h": 0.32956406474113464
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2015-02-04",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q18976": {
+      "file": "Ole G Solskjaer.jpg",
+      "crop": {
+        "x": 0.2358,
+        "y": 0.045,
+        "s": 0.4615
+      },
+      "face": {
+        "x": 0.369679719209671,
+        "y": 0.15592803061008453,
+        "w": 0.19383205473423004,
+        "h": 0.13602249324321747
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1996-05-16",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q20469": {
+      "file": "CSKA-RM18 (14).jpg",
+      "crop": {
+        "x": 0.264,
+        "y": 0,
+        "s": 0.5737
+      },
+      "face": {
+        "x": 0.43034827709198,
+        "y": 0.08829978108406067,
+        "w": 0.24095620214939117,
+        "h": 0.20224520564079285
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-10-03 19:25:47",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q26069": {
+      "file": "Huntelaar (15300325039) (crop).jpg",
+      "crop": {
+        "x": 0.1926,
+        "y": 0.0156,
+        "s": 0.5851
+      },
+      "face": {
+        "x": 0.3622862994670868,
+        "y": 0.14922016859054565,
+        "w": 0.24575792253017426,
+        "h": 0.16383862495422363
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2014-10-09 12:19:12",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q26517": {
+      "file": "Luis Suárez NE Revolution Inter Miami 7.9.25-053 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.1376730352640152,
+        "y": 0.1928001344203949,
+        "w": 0.4848707914352417,
+        "h": 0.3636530935764313
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2025-07-09 19:40:23",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q29516": {
+      "file": "Theo walcott.jpg",
+      "crop": {
+        "x": 0.1434,
+        "y": 0,
+        "s": 0.7013
+      },
+      "face": {
+        "x": 0.3467870056629181,
+        "y": 0.1601472795009613,
+        "w": 0.2945365309715271,
+        "h": 0.30753079056739807
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-01-21",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q31981": {
+      "file": "David Alaba - Österreich U-21 (1).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.041,
+        "s": 1
+      },
+      "face": {
+        "x": 0.20316508412361145,
+        "y": 0.23123732209205627,
+        "w": 0.572218120098114,
+        "h": 0.38147875666618347
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2009-09-01",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q41533": {
+      "file": "Frank Lampard 2019.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0389,
+        "s": 1
+      },
+      "face": {
+        "x": 0.21883219480514526,
+        "y": 0.23907470703125,
+        "w": 0.5676319599151611,
+        "h": 0.3958036005496979
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-08-13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q42731": {
+      "file": "Fernando Torres 2017.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0451,
+        "s": 1
+      },
+      "face": {
+        "x": 0.19335077702999115,
+        "y": 0.2494061291217804,
+        "w": 0.5661848187446594,
+        "h": 0.40209144353866577
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2017-09-07 11:38:46",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q43682": {
+      "file": "Philipp Lahm auf der Berlinale 2024, Ausschnitt.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0409,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2771076261997223,
+        "y": 0.24441322684288025,
+        "w": 0.5804116129875183,
+        "h": 0.418314665555954
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2024-02-21 14:05",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q44977": {
+      "file": "1 Pierre-Emerick Aubameyang (cropped).jpg",
+      "crop": {
+        "x": 0.1612,
+        "y": 0.0082,
+        "s": 0.6977
+      },
+      "face": {
+        "x": 0.36356040835380554,
+        "y": 0.19887565076351166,
+        "w": 0.293040007352829,
+        "h": 0.23384739458560944
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-07-28 21:01:25",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q45626": {
+      "file": "Ruud van Nistelrooy 2017.jpg",
+      "crop": {
+        "x": 0.2727,
+        "y": 0,
+        "s": 0.6263
+      },
+      "face": {
+        "x": 0.4543077349662781,
+        "y": 0.1544620245695114,
+        "w": 0.26306021213531494,
+        "h": 0.20267881453037262
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2017-09-02 14:31:13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q45766": {
+      "file": "Mario gomez.jpg",
+      "crop": {
+        "x": 0.0526,
+        "y": 0,
+        "s": 0.9474
+      },
+      "face": {
+        "x": 0.420769065618515,
+        "y": 0.23624920845031738,
+        "w": 0.3979034423828125,
+        "h": 0.31981489062309265
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-08-05",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q46347": {
+      "file": "Patrick Vieira NYCFC (cropped).JPG",
+      "crop": {
+        "x": 0.0094,
+        "y": 0,
+        "s": 0.9906
+      },
+      "face": {
+        "x": 0.2990463078022003,
+        "y": 0.18723124265670776,
+        "w": 0.41605138778686523,
+        "h": 0.2973605990409851
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2016-05-08 19:49:24",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q46896": {
+      "file": "Zlatan Ibrahimović nyc.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2346796840429306,
+        "y": 0.17634493112564087,
+        "w": 0.5197635293006897,
+        "h": 0.34650900959968567
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-07-18 09:05:22",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q47230": {
+      "file": "Andrey Arshavin 2021.jpg",
+      "crop": {
+        "x": 0.0315,
+        "y": 0,
+        "s": 0.9546
+      },
+      "face": {
+        "x": 0.30838826298713684,
+        "y": 0.17988750338554382,
+        "w": 0.4009426236152649,
+        "h": 0.26729509234428406
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2021-03-30 11:39:35",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q47526": {
+      "file": "Zico 2012.jpg",
+      "crop": {
+        "x": 0.0276,
+        "y": 0,
+        "s": 0.8431
+      },
+      "face": {
+        "x": 0.2721058130264282,
+        "y": 0.15694159269332886,
+        "w": 0.3541180491447449,
+        "h": 0.26291829347610474
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2012-06-29",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q47548": {
+      "file": "Víctor Valdés (2010).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0199,
+        "s": 1
+      },
+      "face": {
+        "x": 0.14849144220352173,
+        "y": 0.1954895257949829,
+        "w": 0.630813479423523,
+        "h": 0.42054232954978943
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "8 March 2010, 17:45:02 (according to Exi",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q48770": {
+      "file": "Álvaro Morata in 2025.jpg",
+      "crop": {
+        "x": 0.3945,
+        "y": 0.0324,
+        "s": 0.3836
+      },
+      "face": {
+        "x": 0.50577312707901,
+        "y": 0.11827120184898376,
+        "w": 0.16109265387058258,
+        "h": 0.10520336031913757
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2025-09-04 23:14:57",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q48892": {
+      "file": "Didier Drogba (2019) (cropped).jpg",
+      "crop": {
+        "x": 0.1585,
+        "y": 0,
+        "s": 0.5909
+      },
+      "face": {
+        "x": 0.3298071324825287,
+        "y": 0.13080386817455292,
+        "w": 0.24816976487636566,
+        "h": 0.1919766217470169
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-06-30 16:09:07",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q49704": {
+      "file": "Sergio Busquets NYCFC Miami 24 Sep 2025-020 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.331219345331192,
+        "y": 0.20555835962295532,
+        "w": 0.4587770998477936,
+        "h": 0.3440828323364258
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2025-09-24 19:39:31",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q50603": {
+      "file": "Park Ji-sung G20 Seoul Summit Ambassador (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0105,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2468879520893097,
+        "y": 0.23642927408218384,
+        "w": 0.47027161717414856,
+        "h": 0.32833853363990784
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2010-07-23 14:58:20",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q54094": {
+      "file": "Sami Khedira Germany Austria June 2018.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3370841443538666,
+        "y": 0.23271900415420532,
+        "w": 0.4973108172416687,
+        "h": 0.3725332021713257
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2018-06-02",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q57079": {
+      "file": "Jürgen Klinsmann 14021113000678638425063004371092 64131.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.25336945056915283,
+        "y": 0.1531580090522766,
+        "w": 0.4567839205265045,
+        "h": 0.3470729887485504
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2024-02-02 22:23:51",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q57114": {
+      "file": "Jens Lehmann.jpg",
+      "crop": {
+        "x": 0.1528,
+        "y": 0,
+        "s": 0.8209
+      },
+      "face": {
+        "x": 0.390843003988266,
+        "y": 0.1693052053451538,
+        "w": 0.3447624742984772,
+        "h": 0.22984164953231812
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2007-05-06 18:02:53",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q61886": {
+      "file": "Takashi Inui IAA September 2013.JPG",
+      "crop": {
+        "x": 0.2951,
+        "y": 0,
+        "s": 0.6377
+      },
+      "face": {
+        "x": 0.4800025522708893,
+        "y": 0.14780627191066742,
+        "w": 0.26782065629959106,
+        "h": 0.20340807735919952
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2013-09-17",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q67964": {
+      "file": "Roberto Baggio cropped.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0029,
+        "s": 1
+      },
+      "face": {
+        "x": 0.20050577819347382,
+        "y": 0.2399064302444458,
+        "w": 0.48472389578819275,
+        "h": 0.3609645962715149
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2013-06-09 15:07",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q68060": {
+      "file": "Gianluigi Buffon (31784615942) (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.20302598178386688,
+        "y": 0.18879124522209167,
+        "w": 0.5404976606369019,
+        "h": 0.3781907856464386
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2016-12-23 10:06",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q70550": {
+      "file": "54 Merci Arsène - Per Mertesacker (27086040527).jpg",
+      "crop": {
+        "x": 0.286,
+        "y": 0.1832,
+        "s": 0.4382
+      },
+      "face": {
+        "x": 0.413032203912735,
+        "y": 0.28313881903886795,
+        "w": 0.18403993546962738,
+        "h": 0.12252312153577805
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2018-05-06 18:50",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q73360": {
+      "file": "Thibaut Courtois Belgium v USA 6 July 2026-076 (cropped).jpg",
+      "crop": {
+        "x": 0.1265,
+        "y": 0,
+        "s": 0.7146
+      },
+      "face": {
+        "x": 0.3337777256965637,
+        "y": 0.13763320446014404,
+        "w": 0.30012816190719604,
+        "h": 0.2279454469680786
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2026-07-06 20:08:59",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q83006": {
+      "file": "Spain-Tahiti, Confederations Cup 2013 (02) (Villa crop).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.1684432029724121,
+        "y": 0.21429643034934998,
+        "w": 0.48775941133499146,
+        "h": 0.331290066242218
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2014-02-23 11:50:46",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q83106": {
+      "file": "Jürgen Klopp at IAA 2019 IMG 0370.jpg",
+      "crop": {
+        "x": 0.1419,
+        "y": 0,
+        "s": 0.7131
+      },
+      "face": {
+        "x": 0.3486720323562622,
+        "y": 0.18329507112503052,
+        "w": 0.2994883954524994,
+        "h": 0.2869349718093872
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2019-09-10 09:17:14",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q83456": {
+      "file": "John Terry at pro-am Wentworth golf course September 2023 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0328,
+        "s": 1
+      },
+      "face": {
+        "x": 0.26605433225631714,
+        "y": 0.26022711396217346,
+        "w": 0.5247661471366882,
+        "h": 0.39357462525367737
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2023-09-13 09:45:00",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q96755": {
+      "file": "Antonio Rudiger Ecuador v Germany 25 June 2026-055 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.20189419388771057,
+        "y": 0.15732431411743164,
+        "w": 0.44561243057250977,
+        "h": 0.3226153254508972
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-25 15:54:17",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q102027": {
+      "file": "Fabio Cannavaro - 2024 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0768,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2565392553806305,
+        "y": 0.27625325322151184,
+        "w": 0.6263242363929749,
+        "h": 0.4715852737426758
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "Taken on 11 May 2024, 17:01:56",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q104454": {
+      "file": "Mario Götze, Germany national football team (07).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3058146834373474,
+        "y": 0.21169403195381165,
+        "w": 0.4356064796447754,
+        "h": 0.2904043197631836
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2011-06-03",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q110053": {
+      "file": "Mats Hummels, Germany national football team (03).jpg",
+      "crop": {
+        "x": 0.3906,
+        "y": 0.0341,
+        "s": 0.3244
+      },
+      "face": {
+        "x": 0.4846973717212677,
+        "y": 0.10819017887115479,
+        "w": 0.13625290989875793,
+        "h": 0.09083527326583862
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2011-06-03",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q115453": {
+      "file": "Ivan Rakitic.jpg",
+      "crop": {
+        "x": 0.3978,
+        "y": 0.0603,
+        "s": 0.2955
+      },
+      "face": {
+        "x": 0.4835438132286072,
+        "y": 0.13297829777002335,
+        "w": 0.12411624938249588,
+        "h": 0.08911862224340439
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2013-09-25 20:44:59",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q116980": {
+      "file": "Gennaro Gattuso Audi Cup 2009.jpg",
+      "crop": {
+        "x": 0.2888,
+        "y": 0.0445,
+        "s": 0.3427
+      },
+      "face": {
+        "x": 0.3882125914096832,
+        "y": 0.12753140181303024,
+        "w": 0.14392337203025818,
+        "h": 0.10189265757799149
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2009-07-29",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q119562": {
+      "file": "Agüero in 2018.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.24663083255290985,
+        "y": 0.181644469499588,
+        "w": 0.575709342956543,
+        "h": 0.3834224343299866
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-06-26 20:50:47",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q128725": {
+      "file": "Hidetoshi Nakata in Okinawa (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0427,
+        "s": 1
+      },
+      "face": {
+        "x": 0.11277730762958527,
+        "y": 0.21826019883155823,
+        "w": 0.6313145756721497,
+        "h": 0.42116886377334595
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2012-03-31 13:07:13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q131234": {
+      "file": "Toni Kroos Real Madrid 2021.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3232238292694092,
+        "y": 0.19676637649536133,
+        "w": 0.46558019518852234,
+        "h": 0.3410872519016266
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2021-03-05",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q131261": {
+      "file": "2022-07-30 Fußball, Männer, DFL-Supercup, RB Leipzig - FC Bayern München 1DX 3179 by Stepro.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.31459710001945496,
+        "y": 0.31138238310813904,
+        "w": 0.42530450224876404,
+        "h": 0.42530450224876404
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2022-07-30",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q133556": {
+      "file": "ACole.JPG",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.15619701147079468,
+        "y": 0.19092151522636414,
+        "w": 0.5235448479652405,
+        "h": 0.41769149899482727
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "11 June 2012",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q136986": {
+      "file": "Mauro Icardi en 2025.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0446,
+        "s": 1
+      },
+      "face": {
+        "x": 0.15697935223579407,
+        "y": 0.2501680552959442,
+        "w": 0.5648720264434814,
+        "h": 0.40292656421661377
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2025-08-08",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q138172": {
+      "file": "Radamel Falcao 2011-11-22 001.jpg",
+      "crop": {
+        "x": 0.3891,
+        "y": 0.0077,
+        "s": 0.3502
+      },
+      "face": {
+        "x": 0.49062615633010864,
+        "y": 0.08182769268751144,
+        "w": 0.14708200097084045,
+        "h": 0.09080303460359573
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2011-11-22 19:26:18",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q150268": {
+      "file": "David de Gea 2017.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2802943289279938,
+        "y": 0.18458563089370728,
+        "w": 0.4594944715499878,
+        "h": 0.3060098886489868
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2017-11-13 00:59:08",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q151260": {
+      "file": "MJK30405 Jérôme Boateng (Berlinale 2017).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0403,
+        "s": 1
+      },
+      "face": {
+        "x": 0.25719693303108215,
+        "y": 0.2564935088157654,
+        "w": 0.47264260053634644,
+        "h": 0.3164134621620178
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2017-02-09 16:47:27",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q153786": {
+      "file": "20150331 2026 AUT BIH 2177 Edin Džeko (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.23913146555423737,
+        "y": 0.18929263949394226,
+        "w": 0.523684024810791,
+        "h": 0.34912267327308655
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2015-03-31",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q154708": {
+      "file": "Shinji Kagawa 2018 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0411,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3399450480937958,
+        "y": 0.2555180490016937,
+        "w": 0.47885653376579285,
+        "h": 0.32038602232933044
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-07-03 07:54:15",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q160472": {
+      "file": "Marc-Andre Ter Stegen ACCI FCBARCELONA Turisme Catalunya gira pretemporada CATPRESS.jpg",
+      "crop": {
+        "x": 0.2588,
+        "y": 0.0309,
+        "s": 0.5796
+      },
+      "face": {
+        "x": 0.42692384123802185,
+        "y": 0.18965712189674377,
+        "w": 0.243417888879776,
+        "h": 0.19473430514335632
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2024-08-05",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q161089": {
+      "file": "Ilkay Gündogan (16391883485).jpg",
+      "crop": {
+        "x": 0.2748,
+        "y": 0.0689,
+        "s": 0.2992
+      },
+      "face": {
+        "x": 0.3615356385707855,
+        "y": 0.1371861696243286,
+        "w": 0.12568286061286926,
+        "h": 0.08378857374191284
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2015-01-24 16:33",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q161571": {
+      "file": "Javier Mascherano NE Revolution Inter Miami 7.9.25-040 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.24769291281700134,
+        "y": 0.17461714148521423,
+        "w": 0.44771337509155273,
+        "h": 0.33604755997657776
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2025-07-09 19:37:54",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q163564": {
+      "file": "Nemanja Vidić.jpg",
+      "crop": {
+        "x": 0.3219,
+        "y": 0.162,
+        "s": 0.3318
+      },
+      "face": {
+        "x": 0.4180876910686493,
+        "y": 0.25508349388837814,
+        "w": 0.13936232030391693,
+        "h": 0.11405611783266068
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2006-12-09",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q163666": {
+      "file": "Pepe Reina 2017.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0522,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2031339406967163,
+        "y": 0.2756437063217163,
+        "w": 0.4388289451599121,
+        "h": 0.292260080575943
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2017-11-13 00:55:27",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q164038": {
+      "file": "Josep Guardiola 2023-10-04 Fußball, Männer, UEFA Champions League, RB Leipzig - Manchester City FC 1DX 2797 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0497,
+        "s": 1
+      },
+      "face": {
+        "x": 0.1334267556667328,
+        "y": 0.2646339237689972,
+        "w": 0.5921399593353271,
+        "h": 0.4576927125453949
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2023-10-04",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q164521": {
+      "file": "George Best (1976).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 0.8463
+      },
+      "face": {
+        "x": 0.24120324850082397,
+        "y": 0.16228550672531128,
+        "w": 0.3554384112358093,
+        "h": 0.28200072050094604
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "1976-10-13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q164546": {
+      "file": "Di Stefano 1959.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.012,
+        "s": 1
+      },
+      "face": {
+        "x": 0.23278610408306122,
+        "y": 0.20438924431800842,
+        "w": 0.5292676687240601,
+        "h": 0.33774784207344055
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1959-06-30",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q165125": {
+      "file": "Javier Hernández Paley Center Fox Sports Soccer-12.jpg",
+      "crop": {
+        "x": 0.0253,
+        "y": 0,
+        "s": 0.9742
+      },
+      "face": {
+        "x": 0.3078751266002655,
+        "y": 0.1495879888534546,
+        "w": 0.40917715430259705,
+        "h": 0.2727847695350647
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-05-21 18:35:12",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q166317": {
+      "file": "2017 FRIENDLY MATCH RUSSIA v ARGENTINA - Paulo Dybala 02.jpg",
+      "crop": {
+        "x": 0.0873,
+        "y": 0,
+        "s": 0.5954
+      },
+      "face": {
+        "x": 0.25994202494621277,
+        "y": 0.05714472383260727,
+        "w": 0.2500794231891632,
+        "h": 0.0967269316315651
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2017-11-11 17:58:28",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q167790": {
+      "file": "Edinson Cavani 2018 (cropped).jpg",
+      "crop": {
+        "x": 0.1429,
+        "y": 0,
+        "s": 0.5995
+      },
+      "face": {
+        "x": 0.31679609417915344,
+        "y": 0.12386974692344666,
+        "w": 0.25178050994873047,
+        "h": 0.17869731783866882
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-06-30 15:05:47",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q169098": {
+      "file": "Ajax selectie seizoen 1981 1982 nr. 140a E. Ophof speler, nr. 15a F. Rijka, Bestanddeelnr 253-8568.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0587,
+        "s": 1
+      },
+      "face": {
+        "x": 0.24634788930416107,
+        "y": 0.2913464307785034,
+        "w": 0.467401385307312,
+        "h": 0.33485472202301025
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "1981-07-13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q171295": {
+      "file": "Pavel Nedvěd.jpg",
+      "crop": {
+        "x": 0.3488,
+        "y": 0.0674,
+        "s": 0.2996
+      },
+      "face": {
+        "x": 0.43568602204322815,
+        "y": 0.13834138214588165,
+        "w": 0.12582437694072723,
+        "h": 0.08704571425914764
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2006-06-17",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q173139": {
+      "file": "George Weah in 2019 (cropped) mod-2.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0043,
+        "s": 1
+      },
+      "face": {
+        "x": 0.20111864805221558,
+        "y": 0.21184897422790527,
+        "w": 0.5773808360099792,
+        "h": 0.42279601097106934
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-05-08 17:46:30",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q173972": {
+      "file": "Ruud Gullit 1988.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0232,
+        "s": 0.8975
+      },
+      "face": {
+        "x": 0.2335122674703598,
+        "y": 0.22715485095977783,
+        "w": 0.37696200609207153,
+        "h": 0.2500922679901123
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1988-03-21",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q174614": {
+      "file": "Carlo Ancelotti Brazil V Morocco 13 June 2026-47.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.18211965262889862,
+        "y": 0.1789923906326294,
+        "w": 0.4896562993526459,
+        "h": 0.3264375329017639
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-13 17:57:39",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q178628": {
+      "file": "Paolo Rossi Vicenza (cropped).jpg",
+      "crop": {
+        "x": 0.0706,
+        "y": 0,
+        "s": 0.8663
+      },
+      "face": {
+        "x": 0.3218488395214081,
+        "y": 0.1674683690071106,
+        "w": 0.3638538718223572,
+        "h": 0.3163621425628662
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "24 March 2013 (original upload date)",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q178649": {
+      "file": "Senadores da 57ª Legislatura (52689451805).jpg",
+      "crop": {
+        "x": 0.1145,
+        "y": 0,
+        "s": 0.8855
+      },
+      "face": {
+        "x": 0.3787167966365814,
+        "y": 0.22397008538246155,
+        "w": 0.37188920378685,
+        "h": 0.3503568470478058
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2023-02-09 16:08",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q180326": {
+      "file": "Lilian Thuram - Février 2013.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.21457144618034363,
+        "y": 0.2171476185321808,
+        "w": 0.5702832341194153,
+        "h": 0.4857780933380127
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2013-02-01 17:48:35",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q180649": {
+      "file": "Mario Kempes Argentina v Spain 19 July 2026-036 (cropped).jpg",
+      "crop": {
+        "x": 0.1428,
+        "y": 0.3726,
+        "s": 0.5965
+      },
+      "face": {
+        "x": 0.31574833393096924,
+        "y": 0.505508303642273,
+        "w": 0.25054609775543213,
+        "h": 0.16295680403709412
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-07-19 14:51:04",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q180661": {
+      "file": "Dino Zoff, 1970.jpg",
+      "crop": {
+        "x": 0.1194,
+        "y": 0,
+        "s": 0.7928
+      },
+      "face": {
+        "x": 0.3493555188179016,
+        "y": 0.17681652307510376,
+        "w": 0.3329758942127228,
+        "h": 0.2457008957862854
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "Taken on 5 January 1970",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q183967": {
+      "file": "David Trezeguet 2017-01-23.jpg",
+      "crop": {
+        "x": 0.1675,
+        "y": 0,
+        "s": 0.3171
+      },
+      "face": {
+        "x": 0.2594054341316223,
+        "y": 0.08268685638904572,
+        "w": 0.13317662477493286,
+        "h": 0.11136721074581146
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2017-01-23 11:31",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q184277": {
+      "file": "Yaya Touré (cropped).jpg",
+      "crop": {
+        "x": 0.0512,
+        "y": 0,
+        "s": 0.9345
+      },
+      "face": {
+        "x": 0.3222090005874634,
+        "y": 0.19818073511123657,
+        "w": 0.3925107419490814,
+        "h": 0.297638475894928
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2013-08-08",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q185093": {
+      "file": "Navas v Southampton 2017.jpg",
+      "crop": {
+        "x": 0.2184,
+        "y": 0,
+        "s": 0.5887
+      },
+      "face": {
+        "x": 0.3891414701938629,
+        "y": 0.13706856966018677,
+        "w": 0.24723759293556213,
+        "h": 0.20251542329788208
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2017-08-05 14:48",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q185389": {
+      "file": "Dennis Bergkamp 1989, Bestanddeelnr 934-4782.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0587,
+        "s": 1
+      },
+      "face": {
+        "x": 0.20226852595806122,
+        "y": 0.26010844111442566,
+        "w": 0.5240358114242554,
+        "h": 0.34790757298469543
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1989-07-03",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q186691": {
+      "file": "Oleg Blokhin 2011.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0656,
+        "s": 1
+      },
+      "face": {
+        "x": 0.15622296929359436,
+        "y": 0.2472570538520813,
+        "w": 0.6073424816131592,
+        "h": 0.40518420934677124
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2011-06-02",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q187125": {
+      "file": "Hristo Stoichkov FC Litex Lovech manager.JPG",
+      "crop": {
+        "x": 0.3612,
+        "y": 0,
+        "s": 0.4267
+      },
+      "face": {
+        "x": 0.484954833984375,
+        "y": 0.07473953068256378,
+        "w": 0.17922186851501465,
+        "h": 0.09291188418865204
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2012-07-07",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q187171": {
+      "file": "Mario Mandžukić in 2018.jpg",
+      "crop": {
+        "x": 0.0772,
+        "y": 0,
+        "s": 0.7067
+      },
+      "face": {
+        "x": 0.2821001708507538,
+        "y": 0.13714540004730225,
+        "w": 0.29679563641548157,
+        "h": 0.24141687154769897
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-07-15",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q188720": {
+      "file": "Michael Laudrup 2015d.jpg",
+      "crop": {
+        "x": 0.3724,
+        "y": 0.0525,
+        "s": 0.3195
+      },
+      "face": {
+        "x": 0.4650545120239258,
+        "y": 0.18175579607486725,
+        "w": 0.13420884311199188,
+        "h": 0.1584753841161728
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2015-03-23",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q188997": {
+      "file": "Wojciech Szczęsny.png",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2819599211215973,
+        "y": 0.19119319319725037,
+        "w": 0.4407218098640442,
+        "h": 0.40880322456359863
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2025-01-29",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q189217": {
+      "file": "Football against poverty 2014 - Davor Šuker (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2622091472148895,
+        "y": 0.2213524580001831,
+        "w": 0.4778185784816742,
+        "h": 0.3449002206325531
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2014-03-04 21:29:51",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q192635": {
+      "file": "Ronald Koeman (2014) (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0125,
+        "s": 1
+      },
+      "face": {
+        "x": 0.18051889538764954,
+        "y": 0.23547092080116272,
+        "w": 0.4879349172115326,
+        "h": 0.34316301345825195
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2014-01-25",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q193706": {
+      "file": "David Luiz at Baku before 2019 UEFA Europe League Final.jpg",
+      "crop": {
+        "x": 0.0398,
+        "y": 0,
+        "s": 0.8461
+      },
+      "face": {
+        "x": 0.2851741909980774,
+        "y": 0.2185758650302887,
+        "w": 0.3553820252418518,
+        "h": 0.33375006914138794
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-05-28",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q201381": {
+      "file": "Vincent Kompany - Parade 2014.jpg",
+      "crop": {
+        "x": 0.2398,
+        "y": 0.2112,
+        "s": 0.4874
+      },
+      "face": {
+        "x": 0.3811852037906647,
+        "y": 0.37164951860904694,
+        "w": 0.20470547676086426,
+        "h": 0.19671396911144257
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2014-05-12 18:44",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q202054": {
+      "file": "Keisuke Honda 2018 (cropped) (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 0.8548
+      },
+      "face": {
+        "x": 0.19739112257957458,
+        "y": 0.18261581659317017,
+        "w": 0.35900187492370605,
+        "h": 0.2390405535697937
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-07-03",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q204825": {
+      "file": "Bebeto cropped.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.079,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3212307393550873,
+        "y": 0.31496143341064453,
+        "w": 0.48580676317214966,
+        "h": 0.36069178581237793
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2010-06-27",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q207431": {
+      "file": "Nieuwe trainers Ajax na vertrek Linder Louis van Gaal , kop, Bestanddeelnr 934-3207.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0678,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2510155439376831,
+        "y": 0.2786770761013031,
+        "w": 0.5295379161834717,
+        "h": 0.3702522814273834
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1988-09-22",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q208050": {
+      "file": "20150616 - Portugal - Italie - Genève - Leonardo Bonucci.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.17604902386665344,
+        "y": 0.21564039587974548,
+        "w": 0.45601069927215576,
+        "h": 0.3040071427822113
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2015-06-16 19:23:06",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q208104": {
+      "file": "Xabi Alonso Training 2017-03 FC Bayern Muenchen-3 (cropped).jpg",
+      "crop": {
+        "x": 0.1682,
+        "y": 0,
+        "s": 0.8318
+      },
+      "face": {
+        "x": 0.42638057470321655,
+        "y": 0.24066895246505737,
+        "w": 0.3493492305278778,
+        "h": 0.32305842638015747
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2017-03-14",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q210453": {
+      "file": "Thiago Silva 2018.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2815624177455902,
+        "y": 0.1492728590965271,
+        "w": 0.5124300718307495,
+        "h": 0.3414457440376282
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2018-06-21 18:38:34",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q213427": {
+      "file": "Aaron Ramsey 2019.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3333393931388855,
+        "y": 0.20398765802383423,
+        "w": 0.4414203464984894,
+        "h": 0.30899423360824585
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-11-06",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q214903": {
+      "file": "Diego Godín 2018 (cropped).jpg",
+      "crop": {
+        "x": 0.1509,
+        "y": 0,
+        "s": 0.6779
+      },
+      "face": {
+        "x": 0.34750688076019287,
+        "y": 0.08857126533985138,
+        "w": 0.28473562002182007,
+        "h": 0.19237415492534637
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-06-30 15:16:53",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q215890": {
+      "file": "Dunga061115.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0521,
+        "s": 1
+      },
+      "face": {
+        "x": 0.17429903149604797,
+        "y": 0.2768245041370392,
+        "w": 0.534303605556488,
+        "h": 0.40072768926620483
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2006-11-15",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q250901": {
+      "file": "Álvaro Arbeloa.jpg",
+      "crop": {
+        "x": 0.2135,
+        "y": 0,
+        "s": 0.7865
+      },
+      "face": {
+        "x": 0.4987648129463196,
+        "y": 0.1896168291568756,
+        "w": 0.3303283154964447,
+        "h": 0.29088613390922546
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2010-08-04 15:22",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q252190": {
+      "file": "Shaqiri 20180705.jpg",
+      "crop": {
+        "x": 0.1531,
+        "y": 0,
+        "s": 0.8469
+      },
+      "face": {
+        "x": 0.4381408393383026,
+        "y": 0.17943274974822998,
+        "w": 0.35571691393852234,
+        "h": 0.24823158979415894
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2018-07-05 12:06:55",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q258115": {
+      "file": "Diego Simeone - 01.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.29587996006011963,
+        "y": 0.22406867146492004,
+        "w": 0.4350825548171997,
+        "h": 0.2900550365447998
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2013-09-14 17:18:20",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q261534": {
+      "file": "U10 Diego Forlán 7524.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.064,
+        "s": 1
+      },
+      "face": {
+        "x": 0.3084316551685333,
+        "y": 0.2849463224411011,
+        "w": 0.44951534271240234,
+        "h": 0.29967689514160156
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2014-03-05 20:28:01",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q273715": {
+      "file": "Jordan Henderson England v Ghana 23 June 2026-029 (cropped).jpg",
+      "crop": {
+        "x": 0.0578,
+        "y": 0,
+        "s": 0.9422
+      },
+      "face": {
+        "x": 0.34981632232666016,
+        "y": 0.17016243934631348,
+        "w": 0.3957279920578003,
+        "h": 0.2643694281578064
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-23 15:21:33",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q281734": {
+      "file": "Yuto Nagatomo - mixed.jpg",
+      "crop": {
+        "x": 0.2331,
+        "y": 0.0288,
+        "s": 0.5653
+      },
+      "face": {
+        "x": 0.3970312476158142,
+        "y": 0.11097124218940735,
+        "w": 0.2374310940504074,
+        "h": 0.10076919198036194
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2010-04-04 15:31",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q294214": {
+      "file": "Dirk Kuyt Fenerbahçe 20260805 (1).JPG",
+      "crop": {
+        "x": 0.3688,
+        "y": 0.3326,
+        "s": 0.2594
+      },
+      "face": {
+        "x": 0.4440551698207855,
+        "y": 0.39179566502571106,
+        "w": 0.10894538462162018,
+        "h": 0.07263025641441345
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2026-08-05 20:22:58",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q311872": {
+      "file": "Coutinho 2018.jpg",
+      "crop": {
+        "x": 0.0605,
+        "y": 0,
+        "s": 0.6539
+      },
+      "face": {
+        "x": 0.25011149048805237,
+        "y": 0.15359795093536377,
+        "w": 0.2746575176715851,
+        "h": 0.21349895000457764
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-03-23",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q312157": {
+      "file": "Raheem Sterling 2018.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2570270299911499,
+        "y": 0.14196065068244934,
+        "w": 0.4610847532749176,
+        "h": 0.30722054839134216
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-07-11 02:16:33",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q313316": {
+      "file": "Romelu Lukaku 2021.jpg",
+      "crop": {
+        "x": 0.219,
+        "y": 0,
+        "s": 0.6124
+      },
+      "face": {
+        "x": 0.3966054320335388,
+        "y": 0.09934964776039124,
+        "w": 0.2572254240512848,
+        "h": 0.1752878725528717
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2021-12-08 22:14:11",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q315697": {
+      "file": "Draxler Schalke 2015.jpg",
+      "crop": {
+        "x": 0.2302,
+        "y": 0.0143,
+        "s": 0.5435
+      },
+      "face": {
+        "x": 0.38776353001594543,
+        "y": 0.1464778184890747,
+        "w": 0.2282552570104599,
+        "h": 0.16206610202789307
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2015-04-16 10:13:46",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q349125": {
+      "file": "Lovren in Zenit (cropped).jpg",
+      "crop": {
+        "x": 0.1566,
+        "y": 0,
+        "s": 0.6935
+      },
+      "face": {
+        "x": 0.35774102807044983,
+        "y": 0.10448946058750153,
+        "w": 0.29128897190093994,
+        "h": 0.22248928248882294
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2020-08-26 22:42:13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q386876": {
+      "file": "Emmanuel Adebayor.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 0.9805
+      },
+      "face": {
+        "x": 0.25810152292251587,
+        "y": 0.21338191628456116,
+        "w": 0.41179734468460083,
+        "h": 0.33090856671333313
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "28 May 2006 (original upload date)",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q429039": {
+      "file": "LS3 1288 (53332367864) (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.33995577692985535,
+        "y": 0.18391495943069458,
+        "w": 0.49892643094062805,
+        "h": 0.37419480085372925
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2023-11-14 15:40",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q439722": {
+      "file": "BFA 2023 -2 Heung-Min Son (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2570848762989044,
+        "y": 0.234995037317276,
+        "w": 0.45075246691703796,
+        "h": 0.33311963081359863
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2024-05-16 09:54:13",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q455462": {
+      "file": "Antoine Griezmann Orlando City.jpg",
+      "crop": {
+        "x": 0.3867,
+        "y": 0.0257,
+        "s": 0.3039
+      },
+      "face": {
+        "x": 0.4748174250125885,
+        "y": 0.09508353471755981,
+        "w": 0.12764444947242737,
+        "h": 0.08509629964828491
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2026-08-08 18:58:58",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q459830": {
+      "file": "Steven Gerrard in Thailand (12775079374).jpg",
+      "crop": {
+        "x": 0.1306,
+        "y": 0.0439,
+        "s": 0.7854
+      },
+      "face": {
+        "x": 0.35834866762161255,
+        "y": 0.2316129505634308,
+        "w": 0.3298649489879608,
+        "h": 0.23013833165168762
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2014-01-05 09:21",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q482931": {
+      "file": "Puskas (links) met Nederlandse voetballer Ger Lagendijk ( naar Vancouver vertrok, Bestanddeelnr 921-0431.jpg",
+      "crop": {
+        "x": 0.4154,
+        "y": 0.0533,
+        "s": 0.3289
+      },
+      "face": {
+        "x": 0.510744035243988,
+        "y": 0.12760479748249054,
+        "w": 0.1381281167268753,
+        "h": 0.09113608300685883
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1968-02-02",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q483145": {
+      "file": "Football against poverty 2014 - Luis Figo (2).jpg",
+      "crop": {
+        "x": 0.3549,
+        "y": 0.075,
+        "s": 0.2897
+      },
+      "face": {
+        "x": 0.43893301486968994,
+        "y": 0.14115775376558304,
+        "w": 0.12168483436107635,
+        "h": 0.0811232253909111
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2014-03-04 21:44:03",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q483309": {
+      "file": "Sergio Ramos Interview 2021 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.24452842772006989,
+        "y": 0.19343209266662598,
+        "w": 0.4894690215587616,
+        "h": 0.3629344403743744
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2021-03-11",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q483583": {
+      "file": "Alan Shearer 2008.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.30104777216911316,
+        "y": 0.17557385563850403,
+        "w": 0.4622592031955719,
+        "h": 0.33267712593078613
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2008-10-23 17:51",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q483629": {
+      "file": "Marco van Basten 1989 crop.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.1512,
+        "s": 1
+      },
+      "face": {
+        "x": 0.21616420149803162,
+        "y": 0.3625688850879669,
+        "w": 0.5107255578041077,
+        "h": 0.3499767482280731
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "1989-04-21",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q483846": {
+      "file": "Higuaín 20180626.jpg",
+      "crop": {
+        "x": 0.1188,
+        "y": 0,
+        "s": 0.8812
+      },
+      "face": {
+        "x": 0.37953314185142517,
+        "y": 0.16100481152534485,
+        "w": 0.37011682987213135,
+        "h": 0.25945189595222473
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-06-26",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q487459": {
+      "file": "Arda Turan, Eyüpspor Teknik Direktörü, 1 Eylül 2024 Kasımpaşa Stadyumu.jpg",
+      "crop": {
+        "x": 0.2173,
+        "y": 0.1123,
+        "s": 0.6212
+      },
+      "face": {
+        "x": 0.3974454998970032,
+        "y": 0.2541810870170593,
+        "w": 0.2609223425388336,
+        "h": 0.1739482283592224
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2024-09-01",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q508711": {
+      "file": "Didier Deschamps France v Senegal 16 June 2026-519 (cropped).jpg",
+      "crop": {
+        "x": 0.0323,
+        "y": 0,
+        "s": 0.894
+      },
+      "face": {
+        "x": 0.2915578782558441,
+        "y": 0.1272520124912262,
+        "w": 0.3754715025424957,
+        "h": 0.24338462948799133
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-16 17:12:11",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q529207": {
+      "file": "051119SMcC0014.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0.0023,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2852585017681122,
+        "y": 0.2342606484889984,
+        "w": 0.4778376519680023,
+        "h": 0.3454248011112213
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2019-11-05 16:28:19",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q531814": {
+      "file": "Ricardo Izecson dos Santos Leite (Kaká) 01.jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.27223899960517883,
+        "y": 0.2273825705051422,
+        "w": 0.5057885646820068,
+        "h": 0.3790706694126129
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2007-12-28",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q602525": {
+      "file": "Roberto Firmino 2017.jpg",
+      "crop": {
+        "x": 0.2955,
+        "y": 0.0166,
+        "s": 0.4186
+      },
+      "face": {
+        "x": 0.4169016182422638,
+        "y": 0.08772005140781403,
+        "w": 0.17581181228160858,
+        "h": 0.08722446858882904
+      },
+      "provenance": {
+        "how": "category",
+        "names": true,
+        "date": "2017-01-31 20:28",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q659634": {
+      "file": "Deco 21dec2006.jpg",
+      "crop": {
+        "x": 0.1909,
+        "y": 0,
+        "s": 0.7788
+      },
+      "face": {
+        "x": 0.4167606234550476,
+        "y": 0.17401611804962158,
+        "w": 0.32710400223731995,
+        "h": 0.24229925870895386
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2006-12-21",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q969423": {
+      "file": "Keylor Navas 2018 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 0.8856
+      },
+      "face": {
+        "x": 0.10769243538379669,
+        "y": 0.13851255178451538,
+        "w": 0.37193945050239563,
+        "h": 0.24712079763412476
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2018-06-02 23:45:36",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q969725": {
+      "file": "Harry Kane England v Ghana 23 June 2026-219 (cropped).jpg",
+      "crop": {
+        "x": 0.0429,
+        "y": 0,
+        "s": 0.9571
+      },
+      "face": {
+        "x": 0.32106512784957886,
+        "y": 0.1553131639957428,
+        "w": 0.40199464559555054,
+        "h": 0.2681826651096344
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-23 16:52:02",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q1255625": {
+      "file": "Sammuel Eto'o Fils 02.jpg",
+      "crop": {
+        "x": 0.0614,
+        "y": 0.0137,
+        "s": 0.8156
+      },
+      "face": {
+        "x": 0.29788535833358765,
+        "y": 0.1998993456363678,
+        "w": 0.34255149960517883,
+        "h": 0.2283676564693451
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2023-02-11 22:30:43",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q1354960": {
+      "file": "Mohamed Salah Argentina v Egypt 7 July 2026-163 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.23908990621566772,
+        "y": 0.19538122415542603,
+        "w": 0.5110272765159607,
+        "h": 0.3529396951198578
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-07-07 12:18:48",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q4979316": {
+      "file": "Bruno Fernandes USMNT v Portugal Mar 31 2026-27 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2016834318637848,
+        "y": 0.21506068110466003,
+        "w": 0.44198891520500183,
+        "h": 0.2948640286922455
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-03-31 18:59:16",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q13865408": {
+      "file": "Joshua Kimmich Ecuador v Germany 25 June 2026-149.jpg",
+      "crop": {
+        "x": 0.1069,
+        "y": 0.0178,
+        "s": 0.8334
+      },
+      "face": {
+        "x": 0.3485792875289917,
+        "y": 0.20802606642246246,
+        "w": 0.350042462348938,
+        "h": 0.2333616465330124
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-25 16:49:42",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q16665941": {
+      "file": "N'Golo Kante France v Senegal 16 June 2026-397.jpg",
+      "crop": {
+        "x": 0.1468,
+        "y": 0.0534,
+        "s": 0.6913
+      },
+      "face": {
+        "x": 0.34727033972740173,
+        "y": 0.21126128733158112,
+        "w": 0.2903534770011902,
+        "h": 0.19356898963451385
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-16 15:54:46",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q21621995": {
+      "file": "Kylian Mbappe France v Senegal 16 June 2026-391 (cropped).jpg",
+      "crop": {
+        "x": 0.0835,
+        "y": 0,
+        "s": 0.7946
+      },
+      "face": {
+        "x": 0.3139839172363281,
+        "y": 0.12863852083683014,
+        "w": 0.33373552560806274,
+        "h": 0.2224903553724289
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-16 15:54:08",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q27310755": {
+      "file": "Kai Havertz Ecuador v Germany 25 June 2026-118.jpg",
+      "crop": {
+        "x": 0.1006,
+        "y": 0,
+        "s": 0.8526
+      },
+      "face": {
+        "x": 0.34782594442367554,
+        "y": 0.19277332723140717,
+        "w": 0.3580869138240814,
+        "h": 0.23872460424900055
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-25 16:21:06",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q28967995": {
+      "file": "Erling Haaland Morocco v Norway 7 June 2026-51.jpg",
+      "crop": {
+        "x": 0.0657,
+        "y": 0,
+        "s": 0.8793
+      },
+      "face": {
+        "x": 0.32070186734199524,
+        "y": 0.15941452980041504,
+        "w": 0.3693173825740814,
+        "h": 0.24621158838272095
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-07 14:59:38",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q28973866": {
+      "file": "Vinícius Júnior Brazil V Morocco 13 June 2026-207 (cropped).jpg",
+      "crop": {
+        "x": 0.0512,
+        "y": 0.0009,
+        "s": 0.7903
+      },
+      "face": {
+        "x": 0.280384361743927,
+        "y": 0.18144358694553375,
+        "w": 0.3319408595561981,
+        "h": 0.22144769132137299
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-13 18:53:49",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    },
+    "Q66241169": {
+      "file": "Jude Bellingham England v Ghana 23 June 2026-061 (cropped).jpg",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "s": 1
+      },
+      "face": {
+        "x": 0.2111639678478241,
+        "y": 0.17604124546051025,
+        "w": 0.4239555597305298,
+        "h": 0.2826370596885681
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-06-23 15:31:12",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q66606355": {
+      "file": "Pedri France v Spain 7.24.26-245.jpg",
+      "crop": {
+        "x": 0.0842,
+        "y": 0,
+        "s": 0.8415
+      },
+      "face": {
+        "x": 0.32820263504981995,
+        "y": 0.16839662194252014,
+        "w": 0.3534145951271057,
+        "h": 0.2356097400188446
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-07-14 16:42:17",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-27"
+    },
+    "Q113704154": {
+      "file": "Lamine Yamal Argentina v Spain 19 July 2026-214 (cropped).jpg",
+      "crop": {
+        "x": 0.061,
+        "y": 0,
+        "s": 0.8378
+      },
+      "face": {
+        "x": 0.3039117753505707,
+        "y": 0.15920250117778778,
+        "w": 0.351863294839859,
+        "h": 0.21365512907505035
+      },
+      "provenance": {
+        "how": "P18",
+        "names": true,
+        "date": "2026-07-19 17:11:28",
+        "dateFits": true,
+        "faces": 1
+      },
+      "approvedBy": "Alex",
+      "approvedOn": "2026-11-26"
+    }
+  }
 }

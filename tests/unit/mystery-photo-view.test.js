@@ -13,10 +13,21 @@ const FIXTURE = {
 };
 
 describe('photoView: what a round face draws', () => {
-  it('ships with no photo for anyone: the shirt in a ring for every player', () => {
-    expect(Object.keys(reviewed.ids)).toEqual([]);
-    expect(lean).toEqual({});
-    expect(photoView(lean.Q208104, LIST_PX)).toBe(null);
+  // Until 27 Nov 2026 this pinned an EMPTY list ("ships with no photo for
+  // anyone"). The owner's first approvals arrived that day from his review
+  // page, so the pin is now the rule itself: a photo ships for a player only
+  // if the owner approved it, every shipped entry carries who approved it and
+  // when, and a player he has not approved still draws the shirt in a ring.
+  it('ships a photo only for players the owner approved; everyone else is the shirt in a ring', () => {
+    const approved = Object.keys(reviewed.ids);
+    expect(Object.keys(lean).sort()).toEqual([...approved].sort());
+    for (const id of approved) {
+      expect(reviewed.ids[id].approvedBy, id).toBe('Alex');
+      expect(reviewed.ids[id].approvedOn, id).toMatch(/^\d{4}-\d\d-\d\d$/);
+      expect(photoView(lean[id], LIST_PX), id).not.toBe(null);
+    }
+    // An id that is on no list draws nothing.
+    expect(photoView(lean.Q0, LIST_PX)).toBe(null);
   });
   it('a fixture entry draws the Commons thumbnail the size asks for, cropped on the head', () => {
     const v = photoView(FIXTURE, LIST_PX);
