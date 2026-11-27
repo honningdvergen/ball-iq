@@ -80,7 +80,10 @@ button.mq-lk:focus-visible { outline: 2px solid #fff; outline-offset: 4px; borde
 .mq-lk-v .mq-flag { vertical-align: -2px; margin-right: 7px; }
 .mq-lk-w { font-size: 13.5px; font-style: normal; font-weight: 500; color: rgba(255, 255, 255, 0.62); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .mq-pill {
-  position: relative; flex: none; height: 34px; padding: 0 16px; border: 0; border-radius: 999px;
+  /* inline-flex: since 26 Nov the pill is a span inside the row's button, and a
+     span's words sat at the top of its 34 instead of in the middle. */
+  position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center;
+  height: 34px; padding: 0 16px; border: 0; border-radius: 999px;
   background: rgba(255, 255, 255, 0.16); color: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer;
 }
 .mq-pill::after { content: ""; position: absolute; inset: -5px -4px; }
