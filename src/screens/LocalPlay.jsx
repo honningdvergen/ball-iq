@@ -34,15 +34,18 @@ import { noBreakScores } from "../lib/noBreakScore.js";
 import {
   STEAL_SHOWS_STRUCK, initialSlots, normalizeSlots, pickFor, makePlayers, slotsFromPlayers,
   stealInGame, canSteal, stealerFor, newTally, scoreOwn, scoreSteal, scoresSoFar, standing,
+  gamePlan, fitPlan, dealt, ownQuestions, handoverLineKey,
 } from "../lib/passPlay.js";
 import { PlayerDisc, PickerSheet, PlayerTable, playerVars } from "./passPlayParts.jsx";
 import "./quizQuestion.css";
 import "./passPlay.css";
 
 const LETTERS = ["A", "B", "C", "D"];
+// Classic and Sprint say what each player gets for the chosen player count
+// (lib/passPlay.js gamePlan: "6 questions each"); the other two keep a line.
 const MODES = [
-  { id: "classic", Icon: Timer, name: "quiz.mode.classic", desc: "lp.classicDesc" },
-  { id: "sprint", Icon: Zap, name: "lp.sprint", desc: "lp.sprintDesc" },
+  { id: "classic", Icon: Timer, name: "quiz.mode.classic" },
+  { id: "sprint", Icon: Zap, name: "lp.sprint" },
   { id: "survival", Icon: Flame, name: "home.mode.survival", desc: "lp.survivalDesc" },
   // Top 10 in turns (26 Nov 2026): its own screen, Top10Turns.jsx, in its own
   // lazy chunk. A list at random, never a daily still to come; no topic.
@@ -155,7 +158,7 @@ export function LocalSetup({ onStart, onBack, initial }) {
           return (
             <button key={m.id} type="button" role="radio" aria-checked={on} className={`pp-row is-tall${on ? " on" : ""}`} onClick={() => setLmode(m.id)}>
               <span className={`pp-ic${on ? " g" : ""}`}><m.Icon size={18} strokeWidth={2.1} aria-hidden="true" /></span>
-              <span className="pp-rt"><b>{t(m.name)}</b><i>{t(m.desc)}</i></span>
+              <span className="pp-rt"><b>{t(m.name)}</b><i>{m.desc ? t(m.desc) : t("lp.each", { count: gamePlan(m.id, count).each })}</i></span>
               {on && <span className="pp-tick"><Check size={20} strokeWidth={2.6} aria-hidden="true" /></span>}
             </button>
           );
@@ -178,9 +181,10 @@ export function LocalSetup({ onStart, onBack, initial }) {
 }
 
 // ─── LOCAL GAME ENGINE ────────────────────────────────────────────────────────
-// Flow (classic / sprint — a run of up to three questions per player):
+// Flow (classic / sprint — dealt in turns, lib/passPlay.js gamePlan: every
+// player gets the same number of questions, Alex 26 Nov "Yes, same each"):
 //   hand-over → question → locked (0.8s) → that question's reveal (Next)
-//     → the next question in the run, OR the next player's hand-over
+//     → the next question in the turn, OR the next player's hand-over
 //   In a two-player Classic or Sprint game a wrong answer is not revealed: the
 //   other player gets one try at it (Steal), then the reveal, then play goes on
 //   where it was.
@@ -210,9 +214,11 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
   const loc = useQuestionText();
   const t = useT();
   const { players, mode, diff, topic = "mixed" } = config;
-  const TARGETS = { classic: 10, sprint: 5, survival: 30 };
-  const target = TARGETS[mode] || 10;
-  const CHUNK_SIZE = mode === "survival" ? 1 : 3;
+  const isSurvival = mode === "survival";
+  // Classic and Sprint: the table's deal (rounds of one turn each). Survival
+  // draws up to 30 and plays them one at a time.
+  const basePlan = isSurvival ? null : gamePlan(mode, players.length) || gamePlan("classic", players.length);
+  const target = isSurvival ? 30 : basePlan.total;
   const stealOn = stealInGame(players.length, mode);
 
   // getQs was made async by commit fc6e7aa (V1.1 lazy-load). useState
@@ -240,7 +246,7 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
           // No "easy" in club games (invested fans); keep full pool only if the
           // no-easy pool is too thin to fill the round.
           const noEasyPool = pool.filter(q => q.diff !== "easy");
-          const freshPool = applySeenFilter(noEasyPool.length >= 10 ? noEasyPool : pool, target, qbHistKey);
+          const freshPool = applySeenFilter(noEasyPool.length >= target ? noEasyPool : pool, target, qbHistKey);
           raw = shuffle([...freshPool]).slice(0, target).map(q => {
             const idx = optionOrder(q.o.slice(0, 4), shuffle);
             return { ...q, o: idx.map(i => q.o[i]), a: idx.indexOf(q.a), _histKey: qbHistKey(q) };
@@ -252,7 +258,11 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
         }
         if (cancelled) return;
         const filtered = (Array.isArray(raw) ? raw : []).filter(q => q && q.type !== "tf" && q.type !== "typed");
-        setQuestions(filtered);
+        // A short bank never deals an unequal game: whole rounds come off
+        // until the questions cover every turn (fitPlan); none covered is []
+        // and the not-enough screen below.
+        const fit = isSurvival ? null : fitPlan(basePlan, players.length, filtered.length);
+        setQuestions(isSurvival ? filtered : fit ? filtered.slice(0, fit.total) : []);
       } catch {
         if (!cancelled) setQuestions([]);
       }
@@ -265,6 +275,8 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadNonce]);
   const totalQs = questions?.length ?? 0;
+  // The plan as played: the table's, or fewer rounds when the bank was short.
+  const plan = isSurvival || !totalQs ? null : fitPlan(basePlan, players.length, totalQs);
 
   const [currentQIdx, setCurrentQIdx] = useState(0);  // index of question currently on screen
   const [turnIdx, setTurnIdx] = useState(0);           // survival: which surviving player is answering
@@ -281,15 +293,14 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
   const [ownPick, setOwnPick] = useState(null);        // classic/sprint: the asker's pick on the question being revealed
 
   const survivors = players.filter(p => !eliminatedIds.includes(p.id));
-  const chunkIdx = Math.floor(currentQIdx / CHUNK_SIZE);
-  const chunkStartQ = chunkIdx * CHUNK_SIZE;
-  const chunkEndQ = Math.min(chunkStartQ + CHUNK_SIZE - 1, totalQs - 1);
-  const chunkQSize = chunkEndQ - chunkStartQ + 1;
-  // In classic/sprint, the run rotates through players. In survival, the
-  // answering player is the current surviving answerer.
-  const currentPlayer = mode === "survival"
+  // In classic/sprint, whose turn it is and where the question sits in that
+  // player's own run (lib/passPlay.js dealt). In survival, the answering
+  // player is the current surviving answerer.
+  const deal = plan ? dealt(plan, players.length, currentQIdx) : null;
+  const turnEndQ = deal ? deal.turnEnd : currentQIdx;
+  const currentPlayer = isSurvival
     ? survivors[turnIdx]
-    : players[chunkIdx % players.length];
+    : deal ? players[deal.seat] : null;
   const currentQ = questions ? questions[currentQIdx] : null;
   // Computed above the early returns, so it is only held English as displayed
   // (questionText.js useLiveQuestion) while a phase actually shows it: not
@@ -478,12 +489,12 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
     }
     setSteal(null);
     setOwnPick(null);
-    if (currentQIdx < chunkEndQ) {
+    if (currentQIdx < turnEndQ) {
       setCurrentQIdx(currentQIdx + 1);
       setPhase("question"); // no screen between questions; same player continues
       return;
     }
-    const nextStart = chunkEndQ + 1;
+    const nextStart = turnEndQ + 1;
     setCurrentQIdx(nextStart);
     if (nextStart < totalQs) setPhase("handoff");
   };
@@ -494,12 +505,12 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
   );
 
   if (phase === "handoff" || phase === "playerSwap") {
-    const classicSprint = mode !== "survival";
-    const isLastRun = classicSprint ? chunkEndQ >= totalQs - 1 : false;
-    const n = classicSprint ? chunkQSize : 1;
-    const eyebrow = classicSprint && chunkQSize > 1
-      ? t("lp.qRange", { a: chunkStartQ + 1, b: chunkEndQ + 1 })
-      : t("lp.qOne", { n: currentQIdx + 1 });
+    // Classic/Sprint count the player's OWN questions ("Questions 4 to 6" of
+    // their six), and the line under the name says whether the phone goes on.
+    const eyebrow = deal && plan.perTurn > 1
+      ? t("lp.qRange", { a: deal.ownStart + 1, b: deal.ownEnd + 1 })
+      : t("lp.qOne", { n: deal ? deal.own + 1 : currentQIdx + 1 });
+    const lineKey = deal ? handoverLineKey(plan, players.length, currentQIdx) : "lp.next1";
     const rows = scoresSoFar(players, scores, eliminatedIds);
     return (
       <div className="pp pp-page" style={playerVars(currentPlayer)}>
@@ -508,7 +519,7 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
           <p className="pp-eye">{eyebrow}</p>
           <PlayerDisc p={currentPlayer} size={96} />
           <h2>{t("lp.youreUp", { name: currentPlayer?.name })}</h2>
-          <p>{t(`lp.${isLastRun ? "last" : "next"}${Math.min(3, Math.max(1, n))}`)}</p>
+          <p>{t(lineKey)}</p>
         </div>
         <h2 className="pp-label">{t("lp.scoresSoFar")}</h2>
         <PlayerTable rows={rows} scores={scores} size="sm" upId={currentPlayer?.id} outIds={eliminatedIds} />
@@ -530,7 +541,11 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
     : clubName ? { Icon: Shield, name: clubName }
     : { Icon: null, name: chipLabel(t, currentQ.cat) };
   const LeadIcon = lead.Icon;
-  const total = Math.min(target, totalQs);
+  // The steps and "N of M" count the asker's own questions in this game (six
+  // for Classic with two to four players), not the game's total; a steal
+  // shows on the misser's step, the asker's.
+  const mine = deal ? ownQuestions(plan, players.length, deal.seat) : [];
+  const ownTotal = mine.length;
   const isReveal = phase === "reveal";
   // The banner stands while the steal is on; its reveal is the normal one,
   // the two picks tagged with whose they were.
@@ -562,9 +577,9 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
         {mode === "survival" ? (
           <div className="qq-gap" />
         ) : (
-          <div className="qq-steps" role="img" aria-label={t("lp.stepsAria", { n: currentQIdx + 1, total })}>
-            {Array.from({ length: total }, (_, i) => (
-              <i key={i} className={marks[i] === true ? "ok" : marks[i] === false ? "no" : i === currentQIdx ? "cur" : ""} />
+          <div className="qq-steps" role="img" aria-label={t("lp.stepsAria", { n: deal.own + 1, total: ownTotal })}>
+            {mine.map((gi) => (
+              <i key={gi} className={marks[gi] === true ? "ok" : marks[gi] === false ? "no" : gi === currentQIdx ? "cur" : ""} />
             ))}
           </div>
         )}
@@ -586,7 +601,7 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
             ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" />
             : LeadIcon ? <span className="qq-lead" aria-hidden="true"><LeadIcon size={18} strokeWidth={2.1} /></span> : null}
           <span className="qq-cat-n">{lead.name}</span>
-          <span className="q-ctr qq-n">{mode === "survival" ? t("lp.qOne", { n: currentQIdx + 1 }) : t("quiz.nOf", { n: currentQIdx + 1, total })}</span>
+          <span className="q-ctr qq-n">{mode === "survival" ? t("lp.qOne", { n: currentQIdx + 1 }) : t("quiz.nOf", { n: deal.own + 1, total: ownTotal })}</span>
         </div>
         <h2 className="qq-q">{noBreakScores(shownQ.q)}</h2>
       </section>
