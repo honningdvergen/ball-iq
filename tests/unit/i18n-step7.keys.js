@@ -1082,4 +1082,11 @@ export const STEP7_EN = {
   't10t.loading': 'Loading the lists…',
   't10t.loadFail': 'Couldn\'t load the lists.',
   't10t.empty': 'No list to play yet.',
+  // Pass and play, same each (27 Nov 2026): replace lp.classicDesc and
+  // lp.sprintDesc ('10 questions', '5 questions'), and a player's last turn.
+  'lp.each_one': '{count} question each',
+  'lp.each_other': '{count} questions each',
+  'lp.yourLast1': 'Your last question, then pass the phone on.',
+  'lp.yourLast2': 'Your last two questions, then pass the phone on.',
+  'lp.yourLast3': 'Your last three questions, then pass the phone on.',
 };

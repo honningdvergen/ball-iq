@@ -104,14 +104,15 @@ export const STEP6_EN = {
   // lp.prog, lp.roundHead, lp.passTo, lp.passReady, lp.roundEyebrow, lp.nextUp,
   // lp.sameQ, lp.results, lp.roundOf, lp.correct, lp.qn, lp.tally, lp.after,
   // lp.allOn, lp.over, lp.nCorrect, lp.elimOrder) are gone.
+  // Pass and play, same each (27 Nov 2026) moved two more on purpose:
+  // lp.classicDesc ('10 questions') and lp.sprintDesc ('5 questions') are gone;
+  // the mode lines are lp.each ("6 questions each"), pinned in i18n-step7.keys.js.
   'lp.player': 'Player {n}',
   'lp.title': 'Local Multiplayer',
   'lp.players': 'Players',
   'lp.topic': 'Topic',
   'lp.mode': 'Mode',
-  'lp.classicDesc': '10 questions',
   'lp.sprint': 'Sprint',
-  'lp.sprintDesc': '5 questions',
   'lp.survivalDesc': 'Out on a wrong answer',
   'lp.start': 'Start with {n} players',
   'lp.loadFail': 'Couldn\'t load questions',

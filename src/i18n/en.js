@@ -1282,9 +1282,7 @@ export default registerEnglish({
   'lp.players': 'Players',
   'lp.topic': 'Topic',
   'lp.mode': 'Mode',
-  'lp.classicDesc': '10 questions',
   'lp.sprint': 'Sprint',
-  'lp.sprintDesc': '5 questions',
   'lp.survivalDesc': 'Out on a wrong answer',
   'lp.start': 'Start with {n} players',
   'lp.loadFail': 'Couldn\'t load questions',
@@ -2467,4 +2465,12 @@ export default registerEnglish({
   't10t.loading': 'Loading the lists…',
   't10t.loadFail': 'Couldn\'t load the lists.',
   't10t.empty': 'No list to play yet.',
+  // Pass and play, same each (27 Nov 2026): the mode lines say what each player
+  // gets (they replace lp.classicDesc and lp.sprintDesc), and a player's last
+  // turn when the phone still goes on.
+  'lp.each_one': '{count} question each',
+  'lp.each_other': '{count} questions each',
+  'lp.yourLast1': 'Your last question, then pass the phone on.',
+  'lp.yourLast2': 'Your last two questions, then pass the phone on.',
+  'lp.yourLast3': 'Your last three questions, then pass the phone on.',
 });

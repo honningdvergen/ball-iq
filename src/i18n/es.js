@@ -1161,10 +1161,7 @@ export default {
   'lp.players': 'Jugadores',
   'lp.topic': 'Tema',
   'lp.mode': 'Modo',
-  // Spelled out: scripts/audit-no-question-count.mjs fails any digit next to "preguntas".
-  'lp.classicDesc': 'Diez preguntas',
   'lp.sprint': 'Sprint',
-  'lp.sprintDesc': 'Cinco preguntas',
   'lp.survivalDesc': 'Fallas y fuera',
   'lp.start': 'Empezar con {n} jugadores',
   'lp.loadFail': 'No se pudieron cargar las preguntas',
@@ -1272,6 +1269,12 @@ export default {
   't10t.loading': 'Cargando las listas…',
   't10t.loadFail': 'No se pudieron cargar las listas.',
   't10t.empty': 'Aún no hay listas para jugar.',
+  // Pass and play, same each (27 Nov 2026). Not yet read by a native reviewer.
+  'lp.each_one': '{count} pregunta por persona',
+  'lp.each_other': '{count} preguntas por persona',
+  'lp.yourLast1': 'Tu última pregunta y pasas el móvil.',
+  'lp.yourLast2': 'Tus dos últimas preguntas y pasas el móvil.',
+  'lp.yourLast3': 'Tus tres últimas preguntas y pasas el móvil.',
   'tp.title': 'Temas',
   'tp.mixed': 'Mixto: todos los temas',
   'tp.mixedSub': 'Preguntas de todos los temas',
