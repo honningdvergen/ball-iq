@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import {
   STEAL_MAX_PLAYERS, STEAL_SHOWS_STRUCK, COLOURS, BADGES, initialSlots, normalizeSlots, heldByOthers, pickFor,
   makePlayers, slotsFromPlayers, stealInGame, canSteal, stealerFor, newTally, scoreOwn, scoreSteal, stealOptions,
-  scoresSoFar, standing,
+  scoresSoFar, standing, ROUNDS, TURN_SIZE, MAX_GAME_QUESTIONS, gamePlan, fitPlan, dealt, ownQuestions, handoverLineKey,
 } from '../../src/lib/passPlay.js';
 
 const unnamed = (n) => `Player ${n}`;
@@ -108,6 +108,82 @@ describe('Steal', () => {
     expect(tl).toEqual(before);
     tl = scoreOwn(tl, 1, true);
     expect(tl).toEqual({ scores: { 0: 0, 1: 2 }, rights: { 0: 0, 1: 1 }, steals: { 0: 0, 1: 1 } });
+  });
+});
+
+describe('the deal: the same number of questions each (Alex, 26 Nov: "Yes, same each")', () => {
+  const MODES = ['sprint', 'classic'];
+  const deal = (plan, n) => Array.from({ length: plan.total }, (_, q) => dealt(plan, n, q));
+  it('the table, as HQ settled it: Sprint one round, Classic two; a turn of three, two with five or six', () => {
+    expect(ROUNDS).toEqual({ sprint: 1, classic: 2 });
+    expect(TURN_SIZE).toEqual({ 2: 3, 3: 3, 4: 3, 5: 2, 6: 2 });
+    const rows = [2, 3, 4, 5, 6].map((n) => [n, gamePlan('sprint', n), gamePlan('classic', n)].map((x) => (typeof x === 'number' ? x : `${x.each}/${x.total}`)));
+    expect(rows).toEqual([[2, '3/6', '6/12'], [3, '3/9', '6/18'], [4, '3/12', '6/24'], [5, '2/10', '4/20'], [6, '2/12', '4/24']]);
+    expect(gamePlan('classic', 4)).toEqual({ perTurn: 3, rounds: 2, each: 6, total: 24 });
+  });
+  it('not dealt in turns: Survival, Top 10 in turns, a count outside 2 to 6', () => {
+    expect(gamePlan('survival', 3)).toBeNull();
+    expect(gamePlan('top10', 3)).toBeNull();
+    expect(gamePlan('classic', 1)).toBeNull();
+    expect(gamePlan('classic', 7)).toBeNull();
+  });
+  it('every player answers the same number, every mode, every count; no game past 24', () => {
+    for (const m of MODES) for (let n = 2; n <= 6; n++) {
+      const plan = gamePlan(m, n);
+      expect(plan.total, `${m} ${n}`).toBeLessThanOrEqual(MAX_GAME_QUESTIONS);
+      const counts = Array(n).fill(0);
+      for (const d of deal(plan, n)) counts[d.seat]++;
+      expect(counts, `${m} ${n}`).toEqual(Array(n).fill(plan.each));
+      // Each player's own index runs 0 … each-1 once, in order.
+      for (let s = 0; s < n; s++) {
+        const own = deal(plan, n).filter((d) => d.seat === s).map((d) => d.own);
+        expect(own, `${m} ${n} seat ${s}`).toEqual([...Array(plan.each).keys()]);
+        expect(ownQuestions(plan, n, s).map((q) => dealt(plan, n, q).seat)).toEqual(Array(plan.each).fill(s));
+      }
+    }
+  });
+  it('who answers which question: turns go round in seat order, round after round', () => {
+    const seats = (m, n) => deal(gamePlan(m, n), n).map((d) => d.seat).join('');
+    expect(seats('sprint', 2)).toBe('000111');
+    expect(seats('classic', 2)).toBe('000111000111');
+    expect(seats('sprint', 4)).toBe('000111222333');
+    expect(seats('classic', 3)).toBe('000111222000111222');
+    expect(seats('sprint', 5)).toBe('0011223344');
+    expect(seats('classic', 6)).toBe('001122334455001122334455');
+    expect(ownQuestions(gamePlan('classic', 4), 4, 1)).toEqual([3, 4, 5, 15, 16, 17]);
+    // Question 16 of a four-player Classic is the second player's fifth (own index 4), in their last turn.
+    expect(dealt(gamePlan('classic', 4), 4, 16)).toEqual({ seat: 1, round: 1, own: 4, turnStart: 15, turnEnd: 17, ownStart: 3, ownEnd: 5, playersLast: true, gamesLast: false });
+  });
+  it('the line under the name: the game\'s last turn alone has nobody to pass to', () => {
+    const lines = (m, n) => { const p = gamePlan(m, n); return Array.from({ length: p.rounds * n }, (_, t) => handoverLineKey(p, n, t * p.perTurn)); };
+    expect(lines('classic', 2)).toEqual(['lp.next3', 'lp.next3', 'lp.yourLast3', 'lp.last3']);
+    expect(lines('classic', 4)).toEqual(['lp.next3', 'lp.next3', 'lp.next3', 'lp.next3', 'lp.yourLast3', 'lp.yourLast3', 'lp.yourLast3', 'lp.last3']);
+    expect(lines('classic', 6).slice(5)).toEqual(['lp.next2', 'lp.yourLast2', 'lp.yourLast2', 'lp.yourLast2', 'lp.yourLast2', 'lp.yourLast2', 'lp.last2']);
+    // One round: nobody has had a turn before, so "your last" would read oddly; plain until the game's last.
+    expect(lines('sprint', 3)).toEqual(['lp.next3', 'lp.next3', 'lp.last3']);
+    expect(lines('sprint', 6)).toEqual(['lp.next2', 'lp.next2', 'lp.next2', 'lp.next2', 'lp.next2', 'lp.last2']);
+  });
+  it('a short bank: whole rounds come off, never an unequal game; none covered is the not-enough state', () => {
+    const c4 = gamePlan('classic', 4);
+    expect(fitPlan(c4, 4, 24)).toEqual(c4);
+    expect(fitPlan(c4, 4, 40)).toEqual(c4);               // never more than the table
+    expect(fitPlan(c4, 4, 23)).toEqual({ perTurn: 3, rounds: 1, each: 3, total: 12 });
+    expect(fitPlan(c4, 4, 12)).toEqual({ perTurn: 3, rounds: 1, each: 3, total: 12 });
+    expect(fitPlan(c4, 4, 11)).toBeNull();
+    expect(fitPlan(gamePlan('sprint', 6), 6, 11)).toBeNull();
+    expect(fitPlan(gamePlan('sprint', 6), 6, 0)).toBeNull();
+    expect(fitPlan(null, 3, 30)).toBeNull();
+    for (const m of MODES) for (let n = 2; n <= 6; n++) for (let have = 0; have <= 30; have++) {
+      const p = fitPlan(gamePlan(m, n), n, have);
+      if (!p) { expect(have, `${m} ${n} ${have}`).toBeLessThan(gamePlan(m, n).perTurn * n); continue; }
+      expect(p.total).toBeLessThanOrEqual(have);
+      const counts = Array(n).fill(0);
+      for (const d of deal(p, n)) counts[d.seat]++;
+      expect(counts, `${m} ${n} ${have}`).toEqual(Array(n).fill(p.each));
+      // A cut game's last turn is the game's last; its earlier turns are never "the last".
+      expect(dealt(p, n, p.total - 1).gamesLast).toBe(true);
+      expect(deal(p, n).filter((d) => d.gamesLast).length).toBe(p.perTurn);
+    }
   });
 });
 

@@ -142,6 +142,102 @@ export function stealOptions(q, missedIdx) {
   return (q?.o || []).map((_, i) => i !== missedIdx);
 }
 
+// ── The deal: every player gets the same number of questions ───────────────
+// Alex, 26 Nov 2026: "Yes, same each" (ball-iq-audit/2026-11-27/
+// pass-play-fair-brief.md). A game is a number of ROUNDS; in a round every
+// player has one turn; a turn is a fixed number of questions. Sprint is one
+// round, Classic two; a turn is three questions, two with five or six players
+// so no game runs past MAX_GAME_QUESTIONS. HQ settled the numbers on his
+// ruling and they are his to overrule: change them HERE and nowhere else.
+//   players  turn  Sprint each/total  Classic each/total
+//   2        3     3 / 6              6 / 12
+//   3        3     3 / 9              6 / 18
+//   4        3     3 / 12             6 / 24
+//   5        2     2 / 10             4 / 20
+//   6        2     2 / 12             4 / 24
+// Survival (one question at a time, out on a miss) and Top 10 in turns are
+// not dealt this way. A steal is an extra try at another player's question and
+// never uses up the stealer's own.
+export const ROUNDS = { sprint: 1, classic: 2 };
+export const TURN_SIZE = { 2: 3, 3: 3, 4: 3, 5: 2, 6: 2 };
+export const MAX_GAME_QUESTIONS = 24;
+
+const planOf = (perTurn, rounds, playerCount) => ({ perTurn, rounds, each: perTurn * rounds, total: perTurn * rounds * playerCount });
+
+/** The game as the table deals it: { perTurn, rounds, each, total }, or null for a mode not dealt in turns. */
+export function gamePlan(mode, playerCount) {
+  const rounds = ROUNDS[mode];
+  const perTurn = TURN_SIZE[playerCount];
+  if (!rounds || !perTurn) return null;
+  return planOf(perTurn, rounds, playerCount);
+}
+
+/**
+ * The plan cut to what the bank could supply: whole rounds come off until
+ * `available` questions cover every turn, so every player still gets the same
+ * number. null when not even one round is covered (the mode's "not enough
+ * questions" state). Never an unequal game.
+ */
+export function fitPlan(plan, playerCount, available) {
+  if (!plan) return null;
+  const rounds = Math.min(plan.rounds, Math.floor((available || 0) / (plan.perTurn * playerCount)));
+  return rounds >= 1 ? planOf(plan.perTurn, rounds, playerCount) : null;
+}
+
+/**
+ * Who answers the game's question `qIdx`, and where it sits in that player's
+ * own run. Turns go round the players in seat order, round after round.
+ *   seat      - the player's index in the play order
+ *   round     - 0-based round
+ *   own       - 0-based index among that player's own questions (0 … each-1)
+ *   turnStart, turnEnd - the game indexes of this turn's first and last question
+ *   ownStart, ownEnd   - the same turn counted in the player's own questions
+ *   playersLast - this turn is that player's last of the game
+ *   gamesLast   - this turn is the game's last (the phone is not passed on)
+ */
+export function dealt(plan, playerCount, qIdx) {
+  const turn = Math.floor(qIdx / plan.perTurn);
+  const round = Math.floor(turn / playerCount);
+  const ownStart = round * plan.perTurn;
+  const turnStart = turn * plan.perTurn;
+  return {
+    seat: turn % playerCount,
+    round,
+    own: ownStart + (qIdx - turnStart),
+    turnStart,
+    turnEnd: turnStart + plan.perTurn - 1,
+    ownStart,
+    ownEnd: ownStart + plan.perTurn - 1,
+    playersLast: round === plan.rounds - 1,
+    gamesLast: turn === plan.rounds * playerCount - 1,
+  };
+}
+
+/** The game indexes of one player's own questions, in the order they answer them. */
+export function ownQuestions(plan, playerCount, seat) {
+  const out = [];
+  for (let r = 0; r < plan.rounds; r++) {
+    const start = (r * playerCount + seat) * plan.perTurn;
+    for (let k = 0; k < plan.perTurn; k++) out.push(start + k);
+  }
+  return out;
+}
+
+/**
+ * The line under the name on a hand-over, as an i18n key:
+ *  lp.last{k}     - the game's last turn: nobody to pass the phone to;
+ *  lp.yourLast{k} - that player's last turn when they have had one before; the phone still goes on;
+ *  lp.next{k}     - any other turn (in a one-round game, every turn but the last).
+ * k is the turn's size, 1 to 3.
+ */
+export function handoverLineKey(plan, playerCount, qIdx) {
+  const d = dealt(plan, playerCount, qIdx);
+  const k = Math.min(3, Math.max(1, plan.perTurn));
+  if (d.gamesLast) return `lp.last${k}`;
+  if (d.playersLast && plan.rounds > 1) return `lp.yourLast${k}`;
+  return `lp.next${k}`;
+}
+
 // ── Tables and the end ──────────────────────────────────────────────────────
 const byScore = (scores, players) => (a, b) =>
   (scores[b.id] || 0) - (scores[a.id] || 0) || players.indexOf(a) - players.indexOf(b);
