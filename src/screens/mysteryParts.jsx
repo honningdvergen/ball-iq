@@ -7,7 +7,7 @@
 //
 // ⚠️ NO IMPORT FROM App.jsx and nothing from app.css: the screen also mounts as
 // an island on the static /mystery-player/ page. Its styles are mystery.css.
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Lock, Lightbulb, Users, Shield, CalendarRange, Flag, Cake, ChevronRight, ArrowDown, ArrowUp, Shirt, ExternalLink } from 'lucide-react';
 import { photoView } from '../lib/photoCrop.js';
 import { useModalA11y } from '../useModalA11y.js';
@@ -21,7 +21,9 @@ const FILL = { same: 'm', close: 'c', different: 'n', unknown: 'n' };
 /** A flag picture from public/flags (lib/mysteryRules.js flagOf), never an emoji. */
 export function FlagImg({ src, className = 'mq-flag' }) {
   if (!src) return null;
-  return <img className={className} src={`/${src}`} width="20" height="14" alt="" aria-hidden="true" decoding="async" />;
+  // A flag that does not load leaves no empty box behind: the name beside it says the nation.
+  return <img className={className} src={`/${src}`} width="20" height="14" alt="" aria-hidden="true" decoding="async"
+    onError={(e) => { e.currentTarget.style.display = 'none'; }} />;
 }
 
 /**
@@ -33,7 +35,11 @@ export function FlagImg({ src, className = 'mq-flag' }) {
 export function Face({ entry, px, ring = false }) {
   const v = photoView(entry, px);
   const size = { width: px, height: px };
-  if (!v) {
+  // A photo that does not arrive (no signal, Commons slow or the file gone)
+  // must not leave an empty dark circle: the shirt takes its place, as for a
+  // player with no photo. Keyed on the picture, so a new one gets its own try.
+  const [failedSrc, setFailedSrc] = useState(null);
+  if (!v || failedSrc === v.src) {
     return (
       <span className={`mq-face is-none${ring ? ' is-ring' : ''}`} style={size} aria-hidden="true">
         <Shirt size={Math.round(px * 0.42)} strokeWidth={1.9} />
@@ -44,7 +50,7 @@ export function Face({ entry, px, ring = false }) {
     <span className={`mq-face${ring ? ' is-ring' : ''}`} style={size} aria-hidden="true">
       <img src={v.src} alt="" decoding="async" referrerPolicy="no-referrer"
         style={{ width: v.box.width, height: v.box.height, left: v.box.left, top: v.box.top }}
-        onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+        onError={() => setFailedSrc(v.src)} />
     </span>
   );
 }
