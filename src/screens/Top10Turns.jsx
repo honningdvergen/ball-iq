@@ -188,7 +188,9 @@ function TurnsBoard({ list, data, players, start, onExit, onAnother, onSwap }) {
     if (game.over || !entry) return [];
     if (list.kind === "player") {
       return rankPlayerSuggestions(playerPool, entry, { limit: SUGGEST_MAX })
-        .map((p) => ({ key: p.id, name: p.name, sub: suggestionSubtitle(p) }));
+        // The birth year alone, as on the Trail: the pool's own club is unreliable
+        // ("Thierry Henry 1977 · AS Monaco") and a club under a name can answer a list.
+        .map((p) => ({ key: p.id, name: p.name, sub: suggestionSubtitle(p, { club: false }) }));
     }
     return rankListSuggestions(data.pools?.[list.kind], entry, { limit: SUGGEST_MAX });
   }, [game.over, entry, list, playerPool, data.pools]);
