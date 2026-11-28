@@ -32,6 +32,9 @@
 //     the whole row, with "Choose" as its pill, where only the pill was a button. Three
 //     entries moved and only those (five guesses with a hint ready, and the two old saves
 //     that offer one); 69 of 72 were byte-identical and the file was rewritten the same way.
+//     THEN, 28 Nov 2026 (Alex, on an archive Footle: "i could not see the hard mode on
+//     footle"): the Hard mode switch is on an archive board too. Only the archive Footle
+//     entries moved, each proven identical once that one button is taken out.
 //     INTENDED CHANGE, 26 Nov 2026, later (the quiz question on a phone is the drawing Alex
 //     approved, quiz-question-3; "Yes, build it"). The ten "quiz: ..." entries that draw a
 //     question were replaced, and only those: the new render was dumped with a temporary copy of

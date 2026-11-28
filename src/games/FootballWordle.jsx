@@ -367,8 +367,12 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     return () => clearInterval(id);
   }, [dateKey, isArchive]);
 
-  // Never on an archive replay: the switch is not offered there.
-  const hardNow = !isArchive && hardPref;
+  // ALSO ON AN ARCHIVE PUZZLE (28 Nov 2026). The switch was hidden on archive
+  // replays, and Alex, playing one on a plane: "i could not see the hard mode
+  // on footle". A player who plays hard plays hard: real names only, whichever
+  // day's board it is. Only today's result can carry the "Hard" mark (the
+  // `hard` field below is written for today alone), as before.
+  const hardNow = hardPref;
   useEffect(() => {
     if (!hardNow || hardNames) return undefined;
     let live = true;
@@ -382,8 +386,8 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
     const v = !hardPref;
     setHardPref(v);
     try { localStorage.setItem("biq_footle_hard", v ? "1" : "0"); } catch { /* private mode */ }
-    // Mid-game, say what the switch does to today's result.
-    if (state.guesses.length > 0) {
+    // Mid-game, say what the switch does to today's result (an archive puzzle has none to mark).
+    if (!isArchive && state.guesses.length > 0) {
       const msg = !v ? (state.hard ? "footle.hardOff" : null) : (state.hard ? null : "footle.hardLate");
       if (msg) { try { window.dispatchEvent(new CustomEvent("biq:show-toast", { detail: t(msg) })); } catch { /* no toast here */ } }
     }
@@ -734,12 +738,11 @@ export const FootballWordle = React.memo(function FootballWordle({ onBack, userI
                   </div>
                 )
               ) : null}
-              {/* The switch stays for the whole game, beside whatever holds the slot. */}
-              {!isArchive && (
-                <button type="button" className={`wd-hard${hardPref ? " is-on" : ""}`} aria-pressed={hardPref} onClick={toggleHard}>
-                  {t(hardPref ? "footle.hardOn" : "footle.hard")}
-                </button>
-              )}
+              {/* The switch stays for the whole game, beside whatever holds the slot,
+                  on today's board and on an archive one alike. */}
+              <button type="button" className={`wd-hard${hardPref ? " is-on" : ""}`} aria-pressed={hardPref} onClick={toggleHard}>
+                {t(hardPref ? "footle.hardOn" : "footle.hard")}
+              </button>
             </div>
           </div>
         )}
