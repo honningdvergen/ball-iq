@@ -1,7 +1,7 @@
 // The Multiplayer tab: the pitch card, join by code, your people, the other ways to play.
 // Extracted from App.jsx on 2026-09-06 (review E16, brick 3).
 import React, { useMemo } from "react";
-import { ChevronRight, Flame, Gamepad2, KeyRound, Settings } from "lucide-react";
+import { ArrowLeftRight, ChevronRight, Flame, KeyRound, Settings } from "lucide-react";
 import { ProfilePic } from "../components/ProfilePic.jsx";
 import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { useProfilePhotos } from "../lib/profilePhotos.js";
@@ -333,12 +333,15 @@ export function OnlineHubTab({ startMode, setOnlineAutoCreate, onJoinCode, displ
         {/* Local pass & play: the whole row is the tap and it ends in an arrow,
             as every row that takes you somewhere does (it had a grey Play
             beside a row that did the same thing). */}
-        <div className="todays-seven-secondary mp-row" role="group" aria-label={t("oh.localAria")}>
+        {/* 27 Nov 2026: the same name, line and arrows as Home's row (Alex: "Yes,
+            same there"); it said "Local pass & play" with a grey gamepad. */}
+        <div className="todays-seven-secondary mp-row is-pass" role="group" aria-label={t("home.pass.title")}
+          style={{ "--mode-rgb": "168,120,240", "--mode": "#B994F5" }}>
           <button type="button" className="mp-row-open" onClick={() => startMode("local")} aria-label={t("oh.localOpen")}>
-            <span className="t7s-icon" aria-hidden="true"><Gamepad2 size={22} strokeWidth={2} /></span>
+            <span className="t7s-icon" aria-hidden="true"><ArrowLeftRight size={22} strokeWidth={2} /></span>
             <span className="t7s-body">
-              <span className="t7s-title"><span className="t7s-name">{t("oh.local")}</span></span>
-              <span className="t7s-sub">{rowLine(t("oh.localSub"))}</span>
+              <span className="t7s-title"><span className="t7s-name">{t("home.pass.title")}</span></span>
+              <span className="t7s-sub">{rowLine(t("home.pass.sub"))}</span>
             </span>
             <span className="mp-row-chev" aria-hidden="true"><ChevronRight size={18} strokeWidth={2.4} /></span>
           </button>

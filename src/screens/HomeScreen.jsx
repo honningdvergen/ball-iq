@@ -21,7 +21,7 @@ import { QB_TAG_COUNTS } from "../questions-index-meta.js";
 import { getFootleNumber } from "../lib/footleNumber.js";
 import { MODE_ACCENT, MODE_RGB } from "../lib/accents.js";
 import { playStoreUrl, appStoreUrl } from "../lib/links.js";
-import { MultiplayerCard } from "../components/MultiplayerCard.jsx";
+import { MultiplayerCard, PassPlayRow } from "../components/MultiplayerCard.jsx";
 import { BALLPARK_PREVIEW } from "../lib/ballparkPreview.js";
 import { LeagueStartRow } from "../components/LeagueStartRow.jsx";
 import { HomeGreeting } from "../components/HomeGreeting.jsx";
@@ -660,6 +660,8 @@ function HomeScreenImpl({
         onOpen={() => setTab("online")}
         showToast={showToast}
       />
+      {/* Pass and play, the card's last row (PassPlayRow says why it is here). */}
+      <PassPlayRow onOpen={() => startMode("local")} />
       </div>
       </div>
 

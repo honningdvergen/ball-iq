@@ -6,6 +6,14 @@
 //     compared with i18n-home-nav.golden.json: the markup the same scenarios
 //     produced on main before step 2 (d1a8e1b2). Do not regenerate the golden
 //     to make this pass: a diff here IS an English regression.
+//     INTENDED CHANGE, 27 Nov 2026 (Alex's approvals of that day: "Yes, Play online", "yeah
+//     build it but another icon on home", "The arrows"). In Home's "With your mates" card the
+//     online row reads "Play online / Live against your mates" with a globe, and a third row
+//     "Pass and play / One phone · 2 to 6 players" follows it. 13 of the 21 entries moved (the
+//     twelve Home states and "multiplayer card"); for each, the new render was dumped with a
+//     temporary copy of this test and proven identical to the old one once the mates rows are
+//     taken out; the golden was rewritten by a script that first proved it re-serialises the
+//     old file byte for byte. The other eight entries are untouched.
 //   • Every key step 2 added is pinned to its exact English below, including
 //     the ones no static render reaches (the finder's dropdown, the open menu).
 //   • Spanish renders with biq_lang=es, with no English left in those surfaces
@@ -184,7 +192,7 @@ const STEP2_EN = {
   'home.done.title': "Today’s {n}, done",
   'home.done.next': "New in {time}",
   'home.mp.openAria': "Open the Multiplayer tab",
-  'home.mp.sub': "Play your mates live",
+  'home.mp.sub': "Live against your mates",
   'home.mp.invite': "Invite",
   'home.mp.inviteAria': "Create a room and invite friends",
   'home.league.title': "Mates’ league",

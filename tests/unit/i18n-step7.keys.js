@@ -1089,4 +1089,13 @@ export const STEP7_EN = {
   'lp.yourLast1': 'Your last question, then pass the phone on.',
   'lp.yourLast2': 'Your last two questions, then pass the phone on.',
   'lp.yourLast3': 'Your last three questions, then pass the phone on.',
+  // 27 Nov 2026, Alex's approvals of that day: Home's online row is "Play online" ("Yes, Play
+  // online"), pass and play has a row of its own on Home ("yeah build it but another icon on
+  // home", "The arrows"), and the Multiplayer tab's row reads the same two lines ("Yes, same
+  // there": it prints home.pass.title and home.pass.sub; oh.localSub stays for the setup screen's
+  // own line "Same couch · up to 6 players"). home.mp.sub changed in i18n-home-nav.test.js.
+  'home.mp.title': 'Play online',
+  'home.pass.title': 'Pass and play',
+  'home.pass.sub': 'One phone · 2 to 6 players',
+  'home.pass.openAria': 'Open pass and play',
 };

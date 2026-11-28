@@ -116,7 +116,7 @@ export default registerEnglish({
   'home.done.next': 'New in {time}',
   // Multiplayer row (components/MultiplayerCard.jsx); its name is tab.online.
   'home.mp.openAria': 'Open the Multiplayer tab',
-  'home.mp.sub': 'Play your mates live',
+  'home.mp.sub': 'Live against your mates',
   'home.mp.invite': 'Invite',
   'home.mp.inviteAria': 'Create a room and invite friends',
   'home.league.title': 'Mates’ league',
@@ -2473,4 +2473,9 @@ export default registerEnglish({
   'lp.yourLast1': 'Your last question, then pass the phone on.',
   'lp.yourLast2': 'Your last two questions, then pass the phone on.',
   'lp.yourLast3': 'Your last three questions, then pass the phone on.',
+  // Home's "With your mates" card, 27 Nov 2026: the online row is "Play online" and pass and play has its own row.
+  'home.mp.title': 'Play online',
+  'home.pass.title': 'Pass and play',
+  'home.pass.sub': 'One phone · 2 to 6 players',
+  'home.pass.openAria': 'Open pass and play',
 });

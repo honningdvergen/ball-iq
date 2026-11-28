@@ -3965,6 +3965,19 @@ body.biq-web .cf-input{scroll-margin-top:118px;}
   .home-mates .lg-dots{gap:3px;}
   .home-mates .lg-dots i{width:6px;height:6px;}
 }
+/* THREE ROWS, ONE CARD (27 Nov 2026). Pass and play is the card's last row, under Play online.
+   Alex, on the mock where the middle row kept the rounded bottom it had as the last row: "look a
+   the corneers here though, they are not right". A row with a row above it and a row below it is
+   square on all four corners, with the hairline above it; only the card's last row is round at
+   the bottom. The pass and play tile is the drawing's purple (the border a step stronger than a
+   mode tile's). */
+@media (max-width: 1023px){
+  .home-mates > .mp-row + .mp-row:not(:last-child),
+  .home-mates > .lg-home + .mp-row:not(:last-child),
+  .home-mates > .lg-solo + .mp-row:not(:last-child),
+  .home-mates > .lg-home-wait + .mp-row:not(:last-child){border-radius:0;}
+}
+.mp-row.is-pass .t7s-icon{background:rgba(168,120,240,0.13);border-color:rgba(168,120,240,0.5);color:#B994F5;}
 /* Under 360 wide the invite is the size the other pills are there, so "Only you so far" stands whole beside it. */
 @media (max-width: 359px){.home-mates .lg-solo-invite{padding:0 11px;font-size:12px;}}
 @media (max-width: 1023px) and (hover: hover){
