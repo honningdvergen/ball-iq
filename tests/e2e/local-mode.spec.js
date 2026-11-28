@@ -37,7 +37,9 @@ async function enterLocalSetup(page) {
   await page.goto('/play?tab=online');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
-  await page.getByText('Local pass & play').locator('xpath=ancestor::div[2]').getByRole('button', { name: 'Play' }).first().click();
+  // By the row's own spoken name, which did not change when the row was renamed
+  // "Pass and play" on 27 Nov 2026 (the old text selector broke on that day).
+  await page.getByRole('button', { name: 'Play locally on one phone' }).first().click();
   await page.waitForTimeout(500);
 }
 
