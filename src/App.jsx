@@ -8654,6 +8654,8 @@ function AppInner() {
             mode={result.mode || mode}
             cardDelta={cardDeltaState}
             onHome={goHome}
+            // The results card's last row: pass and play (27 Nov 2026, ResultsScreen says why).
+            onPassPlay={() => startMode("local")}
             survivalBest={result?.prevBest ?? (stats.bestSurvival || 0)}
             wrongAnswers={wrongAnswers}
             onReport={reportQuestion}

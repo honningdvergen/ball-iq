@@ -4,7 +4,7 @@
 // collaborator arrives as a prop, and `haptic` / `Confetti` come from App the
 // way the lazy screens already import them.
 import { useEffect } from "react";
-import { RotateCcw, Share, Star, Trophy } from "lucide-react";
+import { ArrowLeftRight, RotateCcw, Share, Star, Trophy } from "lucide-react";
 import { haptic } from "../lib/feedback.js";
 import { Confetti } from "../components/Confetti.jsx";
 import { DailyDone, DEFAULT_ICON } from "../components/DailyDone.jsx";
@@ -98,7 +98,7 @@ function CardDeltaRow({ d }) {
 const DAILY_ORDER = ["trail", "top10", "footle", "daily7", "mystery", "ballpark"];
 const modeOf = (k) => (k === "daily" ? "daily7" : k);
 
-export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta }) {
+export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, onPlayDaily, dailyOpen, survivalBest, wrongAnswers, classicBest, label, badge, onReport, photoNudge, dailyDone, cardDelta, onPassPlay }) {
   const t = useT();
   const isPerfect = result && result.score === result.total && result.total >= 10;
   const pct = Math.round((result.score / result.total) * 100);
@@ -265,9 +265,24 @@ export function Results({ result, mode, onHome, onRetry, onShare, onPlayFootle, 
       <span className="dd-li-go">{t("common.play")}</span>
     </button>
   ) : null;
+  // PASS AND PLAY AFTER A QUIZ (27 Nov 2026). Alex wanted people to know the
+  // couch mode exists ("it is fun"); to the drawing of this row on the quiz's
+  // results he said "Yes, build it". The last row of the card, in pass and
+  // play's purple with the arrows he chose for Home, and a Play pill: it opens
+  // the pass and play setup.
+  const passRow = onPassPlay ? (
+    <button key="pass" type="button" className="dd-li" style={{ "--dd-rgb": "168,120,240", "--dd-c": "#B994F5" }} onClick={onPassPlay}>
+      <span className="dd-li-ic" aria-hidden="true"><ArrowLeftRight size={18} strokeWidth={2.2} /></span>
+      <span className="dd-li-t">
+        <span className="dd-li-n">{t("home.pass.title")}</span>
+        <span className="dd-li-h">{t("rs.passSub")}</span>
+      </span>
+      <span className="dd-li-go">{t("common.play")}</span>
+    </button>
+  ) : null;
   // The other daily leads, except after a Survival death on the first question,
   // where the only honest next step is the same run again.
-  const nextRows = (isSurvival && rdZero ? [againRow, dailyRow] : [dailyRow, againRow]).filter(Boolean);
+  const nextRows = [...(isSurvival && rdZero ? [againRow, dailyRow] : [dailyRow, againRow]), passRow].filter(Boolean);
   const rdBestStreak = result.bestStreak != null ? result.bestStreak : 0;
 
   return (

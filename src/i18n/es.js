@@ -1268,6 +1268,11 @@ export default {
   't10t.foundVs_other': '{count} encontrados contra {b}',
   't10t.foundEach_one': 'Empate a {count} encontrado',
   't10t.foundEach_other': 'Empate a {count} encontrados',
+  // Not yet read by a native reviewer (27 Nov 2026).
+  't10t.more_one': 'y {count} más',
+  't10t.more_other': 'y {count} más',
+  't10t.pick': 'Elige un nombre de la lista',
+  'rs.passSub': 'Juega contra un amigo en este móvil',
   't10t.another': 'Jugar otra lista',
   't10t.swap': 'Misma lista, empieza otro',
   't10t.loading': 'Cargando las listas…',

@@ -2477,4 +2477,10 @@ export default registerEnglish({
   'home.mp.title': 'Play online',
   'home.pass.title': 'Pass and play',
   'home.pass.sub': 'One phone · 2 to 6 players',
+  // Top 10 in turns, the top redrawn (27 Nov 2026): the cap on the missed line, and Enter with nothing to pick.
+  't10t.more_one': 'and {count} more',
+  't10t.more_other': 'and {count} more',
+  't10t.pick': 'Pick a name from the list',
+  // The pass and play row on a quiz's results (27 Nov 2026).
+  'rs.passSub': 'Play a mate on this phone',
 });
