@@ -47,7 +47,8 @@ import { computeCard, CARD_TIERS, recordAnswers, cardDelta, storeCardDelta, drai
 // The club tables are LAZY (src/data/clubPacks.js); this is the only way in.
 import { loadClubData, useClubData } from './lib/clubData.js';
 import { CLUB_INDEX } from './marketing/clubIndex.js';
-import { liveStreak, localDayNow, needsTodayCredit, owedStreakDays, shieldsAvailable, tickOwedStreak } from './lib/streak.js';
+import { liveStreak, localDayNow, needsTodayCredit, owedStreakDays, shieldsAvailable, tickOwedStreak, tickStreakLocally } from './lib/streak.js';
+import { isNetFail, markSyncOwed } from './lib/syncOwed.js';
 // lib/trailDay.js, never lib/trail.js: that one is every Trail career, and
 // this file is Home's eager path. The lazy Trail screen resolves the player.
 import { hasTrailOn, loadTrailDay } from './lib/trailDay.js';
@@ -2774,6 +2775,7 @@ const FOOTLE_SERVICES = {
         if (error) {
           console.warn('[wordle sync]', error.message);
           Sentry.captureException(error, { tags: { area: 'wordle-sync' } });
+          markSyncOwed(); // the board stays on the phone; the next profile read sends it
         }
       })
       .catch(e => {
@@ -3944,73 +3946,54 @@ function AppInner() {
     const d0 = new Date();
     const localDay = Math.floor((d0.getTime() - d0.getTimezoneOffset() * 60000) / 86400000);
     let result;
-    if (user?.id) {
-      // Owed days first, oldest first, then today (lib/streak.js). A day that
-      // fails is written down and sent again; it used to be a console line.
-      const { data, error } = await tickOwedStreak(
-        (day) => supabase.rpc('tick_login_streak', { p_local_day: day }).then(({ data, error }) => ({ data, error })),
-        { uid: user.id, today: localDay, upTo: localDay });
-      if (error) {
-        console.warn('[tick_login_streak]', error.message);
-        Sentry.captureException(error, { tags: { area: 'streak-tick' } });
-        return;
-      }
-      result = data;
-    } else {
-      // Guest path — same logic as the RPC, executed client-side.
-      const todayNum = localDay;
+    // The record and the shields as this phone holds them. Read from storage,
+    // not state, so this stays out of tickLoginStreak's deps: it fires on
+    // mount, and depending on xp or stats would re-tick on every change.
+    const tickOnPhone = () => {
       let prev = null;
-      try {
-        const raw = localStorage.getItem('biq_login_streak');
-        if (raw) prev = JSON.parse(raw);
-      } catch {}
-      const prevStreak  = prev?.streak  ?? 0;
-      const prevLastDay = prev?.lastDay ?? 0;
-      const prevBest    = prev?.best    ?? prev?.streak ?? 0;
-      // 1.1 streak freeze: a SINGLE missed day with an available shield freezes
-      // the streak — it survives, and today still continues it. xp + shieldsUsed
-      // are read from localStorage (not state) so this stays out of
-      // tickLoginStreak's deps; it fires on mount, and depending on xp/stats
-      // values would make it re-tick on every XP/stats change.
+      try { const raw = localStorage.getItem('biq_login_streak'); if (raw) prev = JSON.parse(raw); } catch {}
       let xpVal = 0, shieldsUsed = 0;
       try { xpVal = parseInt(localStorage.getItem('biq_xp') || '0', 10) || 0; } catch {}
       try { const s = JSON.parse(localStorage.getItem('biq_stats') || '{}'); shieldsUsed = s.shieldsUsed || 0; } catch {}
-      // Capped at 3 banked: an uncapped shield pile lets a high-XP player run
-      // an infinite every-other-day "streak", which kills the loss aversion
-      // the streak exists to create.
-      const shieldsAvail = Math.min(3, Math.max(0, Math.floor(xpVal / 200) - shieldsUsed));
-      let newStreak, shieldSaved = false;
-      if (prevLastDay > todayNum) {
-        // lastDay is AHEAD of today (a legacy UTC tick banked a later day).
-        // Never reset for that — keep state as-is and leave lastDay alone.
-        result = { lastDay: prevLastDay, streak: prevStreak, best: prevBest, ticked: false, shieldSaved: false };
+      return tickStreakLocally(prev, localDay, shieldsAvailable(xpVal, shieldsUsed));
+    };
+    // True when the answer below is the phone's own and the account has not
+    // heard about the day yet.
+    let onPhoneOnly = false;
+    if (user?.id) {
+      // Owed days first, oldest first, then today (lib/streak.js). A day that
+      // fails is written down and sent again; it used to be a console line.
+      // Known to be offline: do not ask. With an expired token the call first
+      // waits out the session refresh's own retries, and the result card sat
+      // on yesterday's number for those seconds. Answering "no" at once lets
+      // tickOwedStreak write the day down and the phone count it now.
+      let offlineNow = false;
+      try { offlineNow = navigator.onLine === false; } catch { /* no navigator */ }
+      const { data, error } = await tickOwedStreak(
+        (day) => offlineNow
+          ? Promise.resolve({ data: null, error: { message: 'offline' } })
+          : supabase.rpc('tick_login_streak', { p_local_day: day }).then(({ data, error }) => ({ data, error })),
+        { uid: user.id, today: localDay, upTo: localDay });
+      if (error) {
+        console.warn('[tick_login_streak]', error.message);
+        if (!offlineNow) Sentry.captureException(error, { tags: { area: 'streak-tick' } });
+        // The owed day is sent after the next profile read (the hydrate effect
+        // below); the mark makes that read happen when the phone is back.
+        markSyncOwed();
+        // NO NETWORK IS NOT NO STREAK (28 Nov 2026, Alex on a flight). This
+        // used to return here, so a signed-in player who finished a daily
+        // offline read "0 day streak, play one puzzle to light it" above the
+        // game just played. The day is owed and will reach the account; until
+        // then the phone counts it the way it always has for guests.
+        result = tickOnPhone();
+        onPhoneOnly = true;
       } else {
-        if (prevLastDay === todayNum) newStreak = prevStreak;
-        else if (prevLastDay === todayNum - 1) newStreak = prevStreak + 1;
-        else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) {
-          newStreak = prevStreak + 1;
-          shieldSaved = true;
-          bumpUsage('shield-saved');
-        } else newStreak = 1;
-        // Un-shielded break: stash the fallen streak for same-day repair,
-        // mirroring the RPC (see v1_6_streak_repair.sql + the floor-2 follow-up).
-        // Floor dropped 3 -> 2 on 2026-08-21 to match the server: measured in
-        // prod, 33 of 179 streak-holders were at 3+ but 54 were at 2+, and a
-        // two-day habit is the most fragile one there is. The longest current
-        // streak (55 days) does not need coaxing back; day two does.
-        // ⚠️ This threshold is duplicated client/server on purpose (guests have
-        // no RPC). If one moves, move BOTH or guests and accounts disagree.
-        const fellStash = (newStreak === 1 && prevLastDay !== todayNum && prevStreak >= 2)
-          ? { fell: prevStreak, fellDay: todayNum } : null;
-        result = {
-          lastDay: todayNum,
-          streak:  newStreak,
-          best:    Math.max(prevBest, newStreak),
-          ticked:  prevLastDay !== todayNum,
-          shieldSaved,
-          ...(fellStash || {}),
-        };
+        result = data;
       }
+    } else {
+      // Guest path: the same rule as the RPC, worked out on the phone.
+      result = tickOnPhone();
+      if (result.shieldSaved) bumpUsage('shield-saved');
     }
     if (!result) return;
     // Streak-death acknowledgment (opportunity-scan #8): capture the streak
@@ -4031,6 +4014,12 @@ function AppInner() {
     } catch {}
     setLoginStreak(result.streak);
     setBestLoginStreak(result.best);
+    // TOLD ONCE. A day counted on the phone is celebrated there and then; when
+    // the account later confirms the same day (the owed tick after the phone
+    // is back), that answer lands quietly.
+    let toldAlready = false;
+    try { toldAlready = localStorage.getItem('biq_streak_told_day') === String(result.lastDay); } catch {}
+    if (onPhoneOnly && result.ticked) { try { localStorage.setItem('biq_streak_told_day', String(result.lastDay)); } catch {} }
     // Repair window: the stash is only actionable on the local day the break
     // was discovered — the server enforces the same rule, this just gates UI.
     setStreakRepair(result.fell > 0 && result.fellDay === localDay
@@ -4053,10 +4042,12 @@ function AppInner() {
         safeSetItem("biq_stats", JSON.stringify(updated));
         return updated;
       });
-      showToast(tl("ts.shield", { n: result.streak }));
-      haptic("heavy");
-      playSound("streak");
-    } else if (result.ticked && result.streak > 1) {
+      if (!toldAlready) {
+        showToast(tl("ts.shield", { n: result.streak }));
+        haptic("heavy");
+        playSound("streak");
+      }
+    } else if (result.ticked && result.streak > 1 && !toldAlready) {
       // ONE TELLING (11 Nov 2026). A finished daily lands on a panel whose
       // first row IS the streak ("3-day daily streak"); the gold toast said it
       // again on top of that row, and on day 3, 7, 30 and 100 the milestone
@@ -4137,6 +4128,25 @@ function AppInner() {
         if (sent) loopEvent('score-outbox-flushed', { sent, dropped });
       })
       .catch(() => { /* still offline; the queue keeps until next time */ });
+  }, [user?.id]);
+
+  // ...AND WHEN THE PHONE COMES BACK (28 Nov 2026). The flush above runs once
+  // per sign-in, so a queue filled on a flight waited for the next cold start.
+  // An empty queue returns before touching the network, so this is free.
+  useEffect(() => {
+    if (!user?.id) return;
+    let last = 0;
+    const back = () => {
+      try { if (navigator.onLine === false || document.visibilityState === 'hidden') return; } catch { return; }
+      if (Date.now() - last < 15000) return;
+      last = Date.now();
+      flushScoreOutbox(user.id)
+        .then(({ sent, dropped }) => { if (sent) loopEvent('score-outbox-flushed', { sent, dropped }); })
+        .catch(() => { /* not back after all */ });
+    };
+    window.addEventListener('online', back);
+    document.addEventListener('visibilitychange', back);
+    return () => { window.removeEventListener('online', back); document.removeEventListener('visibilitychange', back); };
   }, [user?.id]);
 
 
@@ -4926,6 +4936,9 @@ function AppInner() {
     if (user?.id) {
       (async () => {
         let syncFailed = false;
+        // True when every failure below was the network and none was the
+        // server saying no.
+        let netOnly = true;
         try {
           const scoreDelta = newResult.score || 0;
           if (scoreDelta > 0) {
@@ -4937,6 +4950,7 @@ function AppInner() {
               console.error("[score sync]", rpcErr?.message || "Unknown error");
               Sentry.captureException(rpcErr, { tags: { area: 'score-sync' } });
               syncFailed = true;
+              if (!isNetFail(rpcErr)) netOnly = false;
             }
           }
           // ⚠️ ABSOLUTES, SO ONLY AFTER THE MERGE (useAuth statsHydratedFor):
@@ -4962,15 +4976,22 @@ function AppInner() {
             console.error("[profile sync]", updErr?.message || "Unknown error");
             Sentry.captureException(updErr, { tags: { area: 'profile-sync' } });
             syncFailed = true;
+            if (!isNetFail(updErr)) netOnly = false;
           }
         } catch (e) {
           console.error("[profile sync]", e?.message || "Unknown error");
           Sentry.captureException(e, { tags: { area: 'profile-sync' } });
           syncFailed = true;
+          if (!isNetFail(e)) netOnly = false;
         }
+        // Owed, and sent again the moment the phone is back (lib/syncOwed.js).
+        if (syncFailed) markSyncOwed();
         // Surface a single quiet toast per session — flaky connections
         // shouldn't nag the user after every game.
-        if (syncFailed && !scoreSyncToastShownRef.current) {
+        // ⚠️ NOT WHEN THE CAUSE IS NO NETWORK (28 Nov 2026). The offline banner
+        // is already up saying progress will sync; this warning beside it said
+        // the opposite, to a signed-in player on a flight.
+        if (syncFailed && !netOnly && !scoreSyncToastShownRef.current) {
           scoreSyncToastShownRef.current = true;
           showToast(tl("ts.syncFail"));
         }
@@ -5841,6 +5862,7 @@ function AppInner() {
           if (error) {
             console.error("[xp sync]", error?.message || "Unknown error");
             Sentry.captureException(error, { tags: { area: 'xp-sync' } });
+            markSyncOwed();
           }
         });
     }
@@ -6498,11 +6520,13 @@ function AppInner() {
             if (error) {
               console.warn('[daily sync]', error.message);
               Sentry.captureException(error, { tags: { area: 'daily-sync' } });
+              markSyncOwed();
             }
           })
           .catch(e => {
             console.warn('[daily sync]', e?.message || e);
             Sentry.captureException(e, { tags: { area: 'daily-sync' } });
+            markSyncOwed();
           });
         if (res.wrongAnswers && res.wrongAnswers.length > 0) {
           supabase.rpc('upsert_daily_wrong_answers', { p_ymd: targetYMD, p_wrongs: res.wrongAnswers })

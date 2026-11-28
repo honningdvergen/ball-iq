@@ -73,7 +73,9 @@ describe("a phone that never read the account does not overwrite the account's t
   it('and again when the phone comes back online or to the front, without flashing the stand-in', () => {
     expect(auth).toContain("window.addEventListener('online', again)");
     expect(auth).toContain("document.addEventListener('visibilitychange', again)");
-    expect(auth).toContain('if (!userId || activeUserIdRef.current !== userId || statsHydratedFor(userId)) return');
+    // Since 28 Nov 2026 a sync still owed is the other reason to read again
+    // (lib/syncOwed.js, tests/unit/offline-signed-in.test.js).
+    expect(auth).toContain('if (!userId || activeUserIdRef.current !== userId || (statsHydratedFor(userId) && !syncOwed())) return');
     expect(auth).toContain('if (Date.now() - at < 15000) return');
     expect(auth).toContain('if (attempt === 0) setProfile(standIn)');
   });

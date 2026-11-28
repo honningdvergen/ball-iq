@@ -14,6 +14,7 @@ import { mergeWordleRecords, localBoardLeads } from './lib/wordleStatus.js'
 import { perfMark } from './lib/perf.js'
 import { isProfaneUsername } from './lib/profanity.js'
 import { unregisterPush } from './lib/push.js'
+import { syncOwed, clearSyncOwed, markSyncOwed } from './lib/syncOwed.js'
 
 // PostHog identity (web only). public/ph.js is consent-gated and never loads
 // in the native app, so window.posthog only exists where it may be used. The
@@ -88,6 +89,7 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_pending_join',
   'biq_last_email',
   'biq_mp_history', // Online-tab h2h ledger — per-user W/L record, must not leak across accounts
+  'biq_sync_owed', // a sync this phone owes the account (lib/syncOwed.js); another account must not inherit the mark
   'biq_ledger_reconcile_at', // per-user delta-reconcile throttle — a stale one would suppress the next user's reconcile
   'biq_league_home', // the Home league card's last answer (lib/leagues.js cachedLeagues): one account's league must not show for the next
 ]
@@ -479,7 +481,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const again = () => {
       const { userId, userObj, at } = lastLoadRef.current
-      if (!userId || activeUserIdRef.current !== userId || statsHydratedFor(userId)) return
+      // Merged already and nothing owed: nothing to do. A sync still owed
+      // (lib/syncOwed.js) is the other reason to read again: the read runs the
+      // catch-up a cold start would.
+      if (!userId || activeUserIdRef.current !== userId || (statsHydratedFor(userId) && !syncOwed())) return
       if (typeof navigator !== 'undefined' && navigator.onLine === false) return
       if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return
       if (Date.now() - at < 15000) return
@@ -739,21 +744,26 @@ export function AuthProvider({ children }) {
     try {
       const RECONCILE_FLAG = 'biq_ledger_reconcile_at'
       const lastAt = parseInt(localStorage.getItem(RECONCILE_FLAG) || '0', 10) || 0
-      if (Date.now() - lastAt > 5 * 60 * 1000) {
-        const xpDeficit = finalXp - remoteXp
-        const scoreDeficit = finalTotalCorrect - remoteTotalScore
-        if (xpDeficit > 0 || scoreDeficit > 0) {
-          safeSetItem(RECONCILE_FLAG, String(Date.now()))
-          if (xpDeficit > 0) {
-            const { error } = await supabase.rpc('increment_xp', { user_id: userId, xp_delta: xpDeficit })
-            if (error) { console.warn('[hydrate] xp reconcile failed', error.message); Sentry.captureException(error, { tags: { area: 'hydrate-xp' } }) }
-          }
-          if (scoreDeficit > 0) {
-            const { error } = await supabase.rpc('increment_score', { user_id: userId, score_delta: scoreDeficit })
-            if (error) { console.warn('[hydrate] score reconcile failed', error.message); Sentry.captureException(error, { tags: { area: 'hydrate-score' } }) }
-          }
+      const xpDeficit = finalXp - remoteXp
+      const scoreDeficit = finalTotalCorrect - remoteTotalScore
+      // Nothing short on the account: whatever was owed (lib/syncOwed.js) has
+      // arrived. Short and inside the five minutes: still owed, the next
+      // return of the phone tries again.
+      let settled = xpDeficit <= 0 && scoreDeficit <= 0
+      if (!settled && Date.now() - lastAt > 5 * 60 * 1000) {
+        safeSetItem(RECONCILE_FLAG, String(Date.now()))
+        let failed = false
+        if (xpDeficit > 0) {
+          const { error } = await supabase.rpc('increment_xp', { user_id: userId, xp_delta: xpDeficit })
+          if (error) { failed = true; console.warn('[hydrate] xp reconcile failed', error.message); Sentry.captureException(error, { tags: { area: 'hydrate-xp' } }) }
         }
+        if (scoreDeficit > 0) {
+          const { error } = await supabase.rpc('increment_score', { user_id: userId, score_delta: scoreDeficit })
+          if (error) { failed = true; console.warn('[hydrate] score reconcile failed', error.message); Sentry.captureException(error, { tags: { area: 'hydrate-score' } }) }
+        }
+        settled = !failed
       }
+      if (settled) clearSyncOwed()
     } catch { /* reconcile is best-effort; the next hydrate retries */ }
 
     // ── Phase 5v: cross-device sync for daily/wordle ──
@@ -830,21 +840,21 @@ export function AuthProvider({ children }) {
     if (localOnlyDailyDays.length > 0) {
       Promise.all(localOnlyDailyDays.map(d =>
         supabase.rpc('upsert_daily_score', { p_ymd: d, p_score: localDailyScores[d] })
-          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }); markSyncOwed() } })
       )).catch(e => console.warn('[hydrate back-sync daily]', e?.message || e))
     }
     const localOnlyDailyWADays = Object.keys(localDailyWA).filter(d => !(d in remoteDailyWA))
     if (localOnlyDailyWADays.length > 0) {
       Promise.all(localOnlyDailyWADays.map(d =>
         supabase.rpc('upsert_daily_wrong_answers', { p_ymd: d, p_wrongs: localDailyWA[d] })
-          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily wa]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily wa]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }); markSyncOwed() } })
       )).catch(e => console.warn('[hydrate back-sync daily wa]', e?.message || e))
     }
     const localOnlyDailyAADays = Object.keys(localDailyAA).filter(d => !(d in remoteDailyAA))
     if (localOnlyDailyAADays.length > 0) {
       Promise.all(localOnlyDailyAADays.map(d =>
         supabase.rpc('upsert_daily_all_answers', { p_ymd: d, p_answers: localDailyAA[d] })
-          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily aa]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync daily aa]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }); markSyncOwed() } })
       )).catch(e => console.warn('[hydrate back-sync daily aa]', e?.message || e))
     }
 
@@ -866,7 +876,7 @@ export function AuthProvider({ children }) {
     if (localOnlyWordleDays.length > 0) {
       Promise.all(localOnlyWordleDays.map(d =>
         supabase.rpc('upsert_wordle_state', { p_ymd: d, p_state: localWordleState[d] })
-          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync wordle]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }) } })
+          .then(({ error }) => { if (error) { console.warn('[hydrate back-sync wordle]', d, error.message); Sentry.captureException(error, { tags: { area: 'hydrate-back-sync' } }); markSyncOwed() } })
       )).catch(e => console.warn('[hydrate back-sync wordle]', e?.message || e))
     }
 

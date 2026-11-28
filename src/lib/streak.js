@@ -53,6 +53,41 @@ export function liveStreak(record, today = localDayNow(), shields = 0) {
 }
 
 /**
+ * One day's tick, worked out on the phone: the same rule as tick_login_streak.
+ *
+ * Guests have always been counted this way. Since 28 Nov 2026 a SIGNED-IN
+ * player is too whenever the server cannot be reached: before that an offline
+ * game left History saying "0 day streak, play one puzzle to light it" right
+ * above the row for the game just played, because the failed call returned
+ * without touching the display. The day stays owed (tickOwedStreak) and the
+ * server's answer replaces this one when it arrives.
+ *
+ * Pure: reads nothing, writes nothing. `prev` is the stored record
+ * ({ streak, lastDay, best }) or null.
+ *
+ * ⚠️ The repair floor (2) and the shield rule are duplicated client and server
+ * on purpose. If one moves, move BOTH or guests and accounts disagree.
+ */
+export function tickStreakLocally(prev, todayNum, shieldsAvail = 0) {
+  const prevStreak = prev?.streak ?? 0;
+  const prevLastDay = prev?.lastDay ?? 0;
+  const prevBest = prev?.best ?? prev?.streak ?? 0;
+  // lastDay AHEAD of today (a legacy UTC tick banked a later day): never reset
+  // for that, keep the record as it is.
+  if (prevLastDay > todayNum) {
+    return { lastDay: prevLastDay, streak: prevStreak, best: prevBest, ticked: false, shieldSaved: false };
+  }
+  let streak, shieldSaved = false;
+  if (prevLastDay === todayNum) streak = prevStreak;
+  else if (prevLastDay === todayNum - 1) streak = prevStreak + 1;
+  else if (prevLastDay === todayNum - 2 && prevStreak > 0 && shieldsAvail > 0) { streak = prevStreak + 1; shieldSaved = true; }
+  else streak = 1;
+  // An un-shielded break: stash the fallen streak for same-day repair.
+  const fell = (streak === 1 && prevLastDay !== todayNum && prevStreak >= 2) ? { fell: prevStreak, fellDay: todayNum } : null;
+  return { lastDay: todayNum, streak, best: Math.max(prevBest, streak), ticked: prevLastDay !== todayNum, shieldSaved, ...(fell || {}) };
+}
+
+/**
  * Does a signed-in player's day still need crediting to the account's streak?
  *
  * ⚠️ THE STREAK TICKS ONLY WHEN A DAILY IS FINISHED, AND THAT MISSED ONE CASE:
