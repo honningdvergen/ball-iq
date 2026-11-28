@@ -15,34 +15,37 @@
    above the keyboard. */
 .tt-pin { position: sticky; top: 0; z-index: 6; margin: 0 -20px; padding: 0 20px 2px; background: var(--bg); }
 
-/* ── One chip per player: disc, name, "N found", three strike marks ─────── */
-.tt-scs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding-top: 18px; }
+/* ── One chip per player: disc, name over three strike marks, the count ────
+   THE TOP, REDRAWN (27 Nov 2026; top10-turns-top-1.png, "Yes, build it").
+   Whose turn it is has ONE signal: a ring in that player's colour round their
+   chip, the others drawn back. No tinted slabs. */
+.tt-scs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; padding-top: 18px; }
 /* Three to six: one line that scrolls sideways; whoever is up is kept in view. */
 .tt-scs.is-many { display: flex; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 18px 20px 0; scroll-padding: 0 20px; }
 .tt-scs.is-many::-webkit-scrollbar { display: none; }
 .tt-scs.is-many:focus-visible, .tt-ms:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 18px; }
 .tt-scs.is-many .tt-sc { flex: none; width: 172px; }
-.tt-sc { position: relative; min-width: 0; display: flex; align-items: center; gap: 8px; height: 60px; padding: 0 10px; border-radius: 18px; background: #13151C; transition: background-color .35s ease, opacity .35s ease; }
-.tt-sc.is-turn { background: rgba(var(--pr), .16); }
-/* Out: the disc and the marks dimmed; the words stay readable. */
-.tt-sc.is-out .pp-disc, .tt-sc.is-out .tt-stk { opacity: .45; }
-.tt-sc.is-out .tt-sc-t b { color: #A9ADBA; }
-.tt-sc.is-out .tt-sc-t i { color: #8A8E99; }
-.tt-sc-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-.tt-sc-t b { font: 700 15px/1.1 var(--font); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tt-sc-t i { align-self: flex-start; font: 500 13.5px/1.1 var(--font); font-style: normal; color: #A9ADBA; font-variant-numeric: tabular-nums; white-space: nowrap; transform-origin: left center; }
-.tt-sc-t i.is-nudge { animation: ttNudge .3s ease; }
-@keyframes ttNudge { 50% { transform: scale(1.14); color: #fff; } }
-/* The strike marks sit at the right of the count's line, so the name has
-   the chip's whole width ("Johannes" was cut to "Joha…" beside them). */
-.tt-stk { position: absolute; right: 10px; bottom: 11px; display: flex; gap: 3px; }
-.tt-stk em { width: 15px; height: 15px; border-radius: 50%; background: #1E222C; color: transparent; display: grid; place-items: center; font-style: normal; transition: background-color .2s, color .2s; }
+.tt-sc { position: relative; min-width: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 12px 14px 12px 12px; border-radius: 18px; background: #13151C; opacity: .72; transition: opacity .35s ease, box-shadow .35s ease; }
+.tt-sc.is-turn { opacity: 1; box-shadow: inset 0 0 0 2px var(--pc); }
+/* Out: the disc and the marks drawn back further; the name stays readable. */
+.tt-sc.is-out .pp-disc, .tt-sc.is-out .tt-stk, .tt-sc.is-out .tt-sc-n { opacity: .6; }
+.tt-sc-t { min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.tt-sc-t b { font: 700 15px/1 var(--font); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Three marks under the name: a solid red disc with a white cross for a strike
+   used, an empty ring for one left. */
+.tt-stk { display: flex; gap: 5px; }
+.tt-stk em { width: 16px; height: 16px; border-radius: 50%; background: none; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.22); color: transparent; display: grid; place-items: center; font-style: normal; transition: background-color .2s, color .2s, box-shadow .2s; }
 .tt-stk em svg { display: block; }
-.tt-stk em.on { background: rgba(255,107,107,.22); color: #FF6B6B; }
+.tt-stk em.on { background: #E5484D; box-shadow: none; color: #fff; }
+/* The count: one big number in the player's colour ("N found" is its spoken name). */
+.tt-sc-n { font: 800 26px/1 var(--font); font-variant-numeric: tabular-nums; letter-spacing: -.02em; color: var(--pc); transform-origin: right center; }
+.tt-sc-n.is-nudge { animation: ttNudge .3s ease; }
+@keyframes ttNudge { 50% { transform: scale(1.16); } }
 
-/* ── The field: the prompt in the player's colour, and where a name answers ── */
+/* ── The field: plain and dark with the prompt in soft white; it takes the
+   player's colour or red only while a name is answering ─────────────────── */
 .tt-entry { position: relative; margin-top: 12px; }
-.tt-fld { position: relative; height: 56px; border-radius: 999px; background: rgba(var(--pr), .14); color: var(--pc); transition: background-color .3s ease; }
+.tt-fld { position: relative; height: 56px; border-radius: 999px; background: #13151C; color: #7E828C; transition: background-color .3s ease; }
 .tt-fld.is-good { background: rgba(var(--pr), .16); }
 .tt-fld.is-bad { background: rgba(255,107,107,.13); }
 .tt-fld.is-shake { animation: ttShake .3s ease; }
@@ -50,7 +53,7 @@
 .tt-in { position: absolute; inset: 0; display: flex; align-items: center; gap: 12px; padding: 0 20px; cursor: text; }
 .tt-in svg { flex: none; display: block; }
 .tt-in input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; background: none; color: #fff; caret-color: var(--pc); font: 600 16px/1 var(--font); outline: none; -webkit-appearance: none; appearance: none; }
-.tt-in input::placeholder { color: var(--pc); opacity: 1; }
+.tt-in input::placeholder { color: #C9CCD6; -webkit-text-fill-color: #C9CCD6; opacity: 1; }
 .pp .tt-in input:focus-visible { outline: none; }
 .tt-say { position: absolute; inset: 0; display: flex; align-items: center; gap: 12px; padding: 0 22px 0 12px; opacity: 0; pointer-events: none; }
 /* The answer takes the field at once; only the hand-on to the next player fades. */
@@ -88,16 +91,16 @@
 .tt-opt-n { font: 600 16px/1.2 var(--font); }
 .tt-opt-s { max-width: 100%; font: 500 13.5px/1.2 var(--font); color: #A9ADBA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ── "Not on the list": ONE line under the field, newest first, sideways ─── */
-.tt-msr { display: flex; align-items: center; gap: 10px; height: 34px; margin-top: 12px; padding-bottom: 10px; box-sizing: content-box; }
-.tt-msr .pp-label { flex: none; margin: 0 0 0 4px; }
-.tt-ms { flex: 1; min-width: 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-.tt-ms::-webkit-scrollbar { display: none; }
-.tt-mc { flex: none; display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px 0 7px; border-radius: 999px; background: #13151C; white-space: nowrap; transition: background-color .9s, color .9s; }
-.tt-mc b { font: 500 13.5px/1 var(--font); color: #A9ADBA; transition: color .9s; }
-.tt-mc.is-red { background: rgba(255,107,107,.14); transition: none; }
+/* ── "Not on the list:" one plain wrapping line of words under the field,
+   newest first: no pills, no discs, nothing cut at the edge ─────────────── */
+.tt-msr { margin-top: 12px; padding: 0 4px 12px; }
+.tt-ms { margin: 0; min-height: 20px; font: 500 13.5px/1.45 var(--font); color: #C9CCD6; text-wrap: pretty; }
+.tt-ms.is-none, .tt-ms-l, .tt-ms-more { color: #7E828C; }
+/* A name is its own inline block so a new one can slide the line open, and
+   keeps its comma and space (white-space: pre). */
+.tt-mc { display: inline-block; white-space: pre; }
+.tt-mc b { font: inherit; color: #C9CCD6; transition: color .9s; }
 .tt-mc.is-red b { color: #FF8A8A; transition: none; }
-.tt-none { flex: 1; min-width: 0; font: 500 13.5px/1 var(--font); color: #7E828C; }
 
 /* ── The ten, in one column ────────────────────────────────────────────── */
 .tt-list { margin-top: 2px; }
@@ -129,23 +132,25 @@
 
 .tt-rule { margin: 14px 4px 0; text-align: center; font: 500 13.5px/1.4 var(--font); color: #7E828C; }
 
-/* The end: the pitch card, the chips, then all ten. */
+/* The end: the pitch card, the chips, then all ten. Nobody is up, so no chip is drawn back. */
 .tt.is-end .tt-scs { padding-top: 18px; }
+.tt.is-end .tt-sc { opacity: 1; }
 .tt.is-end .tt-list { margin-top: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   .tt-fld, .tt-in, .tt-say, .tt-sc, .tt-r, .tt-r u, .tt-r b, .tt-mc, .tt-mc b { transition: none; }
-  .tt-fld.is-shake, .is-bump, .tt-sc-t i.is-nudge, .tt-r .is-late { animation: none; }
+  .tt-fld.is-shake, .is-bump, .tt-sc-n.is-nudge, .tt-r .is-late { animation: none; }
 }
 
 /* The smallest phones (under 360): two players' chips a little tighter. */
 @media (max-width: 359px) {
-  .tt-scs:not(.is-many) .tt-sc { padding: 0 8px; gap: 6px; }
-  .tt-scs:not(.is-many) .tt-sc .pp-disc { width: 22px !important; height: 22px !important; }
-  .tt-scs:not(.is-many) .tt-stk { right: 8px; bottom: 13px; gap: 2px; }
-  .tt-scs:not(.is-many) .tt-stk em { width: 10px; height: 10px; }
-  .tt-scs:not(.is-many) .tt-stk em svg { width: 7px; height: 7px; }
-  .tt-scs:not(.is-many) .tt-sc-t i { max-width: calc(100% - 34px); overflow: hidden; text-overflow: ellipsis; }
+  .tt-scs { gap: 8px; }
+  .tt-scs:not(.is-many) .tt-sc { grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; padding: 10px 10px 10px 9px; }
+  .tt-scs:not(.is-many) .tt-sc .pp-disc { width: 24px !important; height: 24px !important; }
+  .tt-scs:not(.is-many) .tt-stk { gap: 4px; }
+  .tt-scs:not(.is-many) .tt-stk em { width: 13px; height: 13px; }
+  .tt-scs:not(.is-many) .tt-stk em svg { width: 8px; height: 8px; }
+  .tt-scs:not(.is-many) .tt-sc-n { font-size: 22px; }
   .tt-say { gap: 10px; }
   .tt-fld.is-bad .tt-say { padding: 0 12px 0 18px; }
   .tt-bs { gap: 4px; }

@@ -47,6 +47,9 @@ import { PlayerDisc, playerVars } from "./passPlayParts.jsx";
 import "./passPlay.css";
 import "./top10Turns.css";
 
+// How many missed names the line under the field prints before "and N more".
+const MISSED_SHOWN = 6;
+
 const isCalm = () => {
   try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
 };
@@ -235,7 +238,7 @@ function TurnsBoard({ list, data, players, start, onExit, onAnother, onSwap }) {
     const chip = ms?.querySelector(".is-land");
     if (!ms || !chip) return;
     ms.scrollLeft = 0;
-    chip.style.marginLeft = `${-(chip.offsetWidth + 8)}px`;
+    chip.style.marginLeft = `${-chip.offsetWidth}px`;
     chip.style.opacity = "0";
   }, [land]);
 
@@ -429,13 +432,19 @@ function TurnsBoard({ list, data, players, start, onExit, onAnother, onSwap }) {
         return (
           <div key={p.id} data-p={p.id} className={`tt-sc${up ? " is-turn" : ""}${out ? " is-out" : ""}`} style={playerVars(p)}>
             <PlayerDisc p={p} size={28} />
+            {/* THE TOP, REDRAWN (27 Nov 2026). Alex on the first build: "i still
+                think there might be something that is not quite right here";
+                to the redraw (top10-turns-top-1.png) "Yes, build it". The name
+                with three clear strike marks under it, and the count as one
+                big number in the player's colour: "N found" is no longer
+                printed, it is the number's spoken name. */}
             <span className="tt-sc-t">
               <b>{p.name}</b>
-              <i key={counts[p.id]} className={bump === p.id ? "is-nudge" : undefined}>{t("t10t.found", { count: counts[p.id] || 0 })}</i>
+              <span className="tt-stk" role="img" aria-label={`${t("t10t.strikes", { count: k })}${out ? `, ${t("lp.out")}` : ""}`}>
+                {Array.from({ length: TURNS_STRIKES }, (_, j) => <em key={j} className={j < k ? "on" : undefined}><X size={10} strokeWidth={3.4} aria-hidden="true" /></em>)}
+              </span>
             </span>
-            <span className="tt-stk" role="img" aria-label={`${t("t10t.strikes", { count: k })}${out ? `, ${t("lp.out")}` : ""}`}>
-              {Array.from({ length: TURNS_STRIKES }, (_, j) => <em key={j} className={j < k ? "on" : undefined}><X size={9} strokeWidth={4} aria-hidden="true" /></em>)}
-            </span>
+            <span key={counts[p.id]} className={`tt-sc-n${bump === p.id ? " is-nudge" : ""}`} role="img" aria-label={t("t10t.found", { count: counts[p.id] || 0 })}>{counts[p.id] || 0}</span>
           </div>
         );
       })}
@@ -548,7 +557,19 @@ function TurnsBoard({ list, data, players, start, onExit, onAnother, onSwap }) {
                 disabled={game.over}
                 onFocus={() => wantPool?.()}
                 onChange={(e) => { skip(); if (note) setNote(null); wantPool?.(); setEntry(e.target.value); }}
-                onKeyDown={(e) => { if (e.key === "Enter" && suggestions[0]) { e.preventDefault(); send(suggestions[0]); } }}
+                onKeyDown={(e) => {
+                  if (e.key !== "Enter") return;
+                  e.preventDefault();
+                  if (suggestions[0]) { send(suggestions[0]); return; }
+                  // Nothing matches what is typed: one quiet line, no strike, so
+                  // the screen does not look frozen (the design session's play).
+                  if (entry.trim().length >= 2 && !landRef.current) {
+                    setNote({ kind: "pick", name: entry.trim(), by: gameRef.current.turn });
+                    setSaid(t("t10t.pick"));
+                    afters.current.forEach(clearTimeout); afters.current = [];
+                    after(wait.note, () => setNote(null));
+                  }
+                }}
                 autoCapitalize="words" autoCorrect="off" autoComplete="off" spellCheck={false} enterKeyHint="go"
               />
             </label>
@@ -571,7 +592,7 @@ function TurnsBoard({ list, data, players, start, onExit, onAnother, onSwap }) {
               ) : (
                 <>
                   <b>{sayItem.name}</b>
-                  <i className="is-quiet">{t(sayItem.kind === "found" ? "t10t.foundAlready" : "t10t.triedAlready")}</i>
+                  <i className="is-quiet">{t(sayItem.kind === "found" ? "t10t.foundAlready" : sayItem.kind === "pick" ? "t10t.pick" : "t10t.triedAlready")}</i>
                 </>
               ))}
             </span>
@@ -591,21 +612,26 @@ function TurnsBoard({ list, data, players, start, onExit, onAnother, onSwap }) {
             </div>
           )}
         </div>
+        {/* The missed names are one plain line of words, newest first: no pills,
+            no discs, nothing cut at the edge (the redraw he approved, knowing
+            the line no longer says who missed each name; the chips count that).
+            Past MISSED_SHOWN names the rest is "and N more", so six players'
+            misses cannot push the ten off the screen. */}
         <div className="tt-msr">
-          <h2 className="pp-label" id="tt-ms-l">{t("t10t.notOn")}</h2>
-          {missed.length === 0 && <span className="tt-none">{t("t10t.none")}</span>}
-          <div ref={msRef} className="tt-ms" role={missed.length ? "list" : undefined} aria-labelledby="tt-ms-l" tabIndex={missed.length ? 0 : undefined}>
-            {missed.map((m) => {
-              const p = byId(m.by);
+          <p ref={msRef} className={`tt-ms${missed.length ? "" : " is-none"}`}>
+            <span className="tt-ms-l">{t("t10t.notOn")}: </span>
+            {missed.length === 0 && t("t10t.none")}
+            {missed.slice(0, MISSED_SHOWN).map((m, i) => {
               const isLand = land && land.kind === "miss" && land.key === m.key;
+              const last = i === Math.min(missed.length, MISSED_SHOWN) - 1;
               return (
-                <span key={m.key} role="listitem" className={`tt-mc${isLand ? " is-land" : ""}${redKey === m.key ? " is-red" : ""}`}>
-                  <PlayerDisc p={p} size={20} label={p?.name} />
-                  <b>{m.name}</b>
+                <span key={m.key} className={`tt-mc${isLand ? " is-land" : ""}${redKey === m.key ? " is-red" : ""}`}>
+                  <b>{m.name}</b>{last ? (missed.length > MISSED_SHOWN ? " " : "") : ", "}
                 </span>
               );
             })}
-          </div>
+            {missed.length > MISSED_SHOWN && <span className="tt-ms-more">{t("t10t.more", { count: missed.length - MISSED_SHOWN })}</span>}
+          </p>
         </div>
       </div>
       {rows(false)}
