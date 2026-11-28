@@ -91,7 +91,27 @@ const USER_SCOPED_STATIC_KEYS = [
   'biq_ledger_reconcile_at', // per-user delta-reconcile throttle — a stale one would suppress the next user's reconcile
   'biq_league_home', // the Home league card's last answer (lib/leagues.js cachedLeagues): one account's league must not show for the next
 ]
-const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_']
+const USER_SCOPED_PREFIXES = ['biq_daily_', 'biq_wordle_', 'biq_profile_row_']
+
+// The signed-in player's own profile row as last read, kept on the phone so
+// they are still themselves with no network (loadProfile says why). Only what
+// the screens draw a person with; never the game state, which has its own
+// keys and its own merge. Cleared with the rest on sign-out (the prefix above).
+const PROFILE_ROW_KEY = (userId) => `biq_profile_row_${userId}`
+const PROFILE_ROW_FIELDS = ['username', 'avatar_id', 'avatar_url', 'total_score', 'games_played', 'correct_answers', 'onboarded_at']
+function saveProfileRow(userId, row) {
+  try {
+    const slim = {}
+    for (const k of PROFILE_ROW_FIELDS) if (row?.[k] != null) slim[k] = row[k]
+    localStorage.setItem(PROFILE_ROW_KEY(userId), JSON.stringify(slim))
+  } catch { /* storage full or off: the stand-in is "Player" again */ }
+}
+function readProfileRow(userId) {
+  try {
+    const row = JSON.parse(localStorage.getItem(PROFILE_ROW_KEY(userId)) || 'null')
+    return row && typeof row === 'object' ? row : null
+  } catch { return null }
+}
 
 export function clearAllUserLocalStorage() {
   try {
@@ -241,23 +261,67 @@ export function AuthProvider({ children }) {
       })
     }, 5000)
 
+    // ⚠️ "NO SESSION" FROM getSession() IS NOT "SIGNED OUT" EITHER (28 Nov 2026).
+    // Alex, after an hour on a plane with no wifi: "it just does not save your
+    // profile ... and it asked me to save it by logging in, i am logged in i
+    // am just offline". With the access token expired (it lasts an hour) and
+    // no network, supabase-js cannot refresh, and getSession() does not hang:
+    // it RESOLVES with no session and an error, or rejects. Both paths dropped
+    // a signed-in player to guest: a stranger's name, the shirt for a face,
+    // "Create free account" and "live on this phone only", and every game
+    // played went to the guest's side. supabase-js keeps the stored session on
+    // a network failure and removes it only when the server refuses it, so the
+    // disk is the honest witness, exactly as for the slow start above: a
+    // session on disk means show the player as themselves; none means guest.
+    const settleWithoutSession = (why) => {
+      authSettled = true
+      clearTimeout(authWatchdog)
+      readStoredSession().then((stored) => {
+        if (stored?.user) {
+          perfMark(`useAuth: ${why} — restored the stored session (offline?)`)
+          applySession({ user: stored.user })
+        } else {
+          applySession(null)
+        }
+      }).catch(() => applySession(null))
+    }
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
         perfMark(`useAuth: getSession() resolved (user=${!!session?.user})`);
+        if (!session?.user) { settleWithoutSession('getSession() gave no session'); return }
         authSettled = true
         clearTimeout(authWatchdog)
         applySession(session)
       })
       .catch((e) => {
         // A rejection is the same failure as the hang, minus the waiting.
-        authSettled = true
-        clearTimeout(authWatchdog)
-        console.warn('[useAuth] getSession failed — entering as guest', e)
-        applySession(null)
+        console.warn('[useAuth] getSession failed', e)
+        settleWithoutSession('getSession() failed')
       })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+    // ⚠️ AN EVENT WITH NO SESSION IS NOT A SIGN-OUT UNLESS IT SAYS SO (28 Nov
+    // 2026; reproduced in WebKit with an expired token and no network). The
+    // slow-start watchdog above shows a signed-in player as themselves from
+    // the disk at 5 s. About a minute later supabase-js gives up refreshing
+    // and reports its start-up result, INITIAL_SESSION with no session, and
+    // this listener used to take that as "nobody": the player flipped to
+    // guest mid-session, with the session still on the phone. That was Alex
+    // on a plane. Only SIGNED_OUT ends a session (supabase-js sends it, and
+    // removes the stored session, when the server refuses the token or the
+    // player signs out). For any other event with no session, the disk
+    // decides: a stored session means the player stays who they are.
+    const onAuthEvent = (event, session, checked = false) => {
+        if (!session?.user && event !== 'SIGNED_OUT' && !checked) {
+          readStoredSession().then((stored) => {
+            if (!stored?.user) { onAuthEvent(event, session, true); return }
+            perfMark(`useAuth: ${event} with no session — kept the stored session (offline?)`)
+            authSettled = true
+            clearTimeout(authWatchdog)
+            if (activeUserIdRef.current !== stored.user.id) applySession({ user: stored.user })
+            else setLoading(false)
+          }).catch(() => onAuthEvent(event, session, true))
+          return
+        }
         activeUserIdRef.current = session?.user?.id ?? null
         setUser(session?.user ?? null)
         if (event === 'PASSWORD_RECOVERY') setPasswordRecovery(true)
@@ -392,8 +456,8 @@ export function AuthProvider({ children }) {
             setAuthPromptOpen(true)
           }
         }
-      }
-    )
+    }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => onAuthEvent(event, session))
 
     return () => { clearTimeout(authWatchdog); subscription.unsubscribe() }
   }, [])
@@ -452,9 +516,17 @@ export function AuthProvider({ children }) {
       // Anything that writes back must wait for the real row.
       _placeholder: true,
     }
+    // THE LAST ROW THIS PHONE READ IS THE BETTER STAND-IN (28 Nov 2026). With
+    // no network the read below fails, and the stand-in above is "Player" with
+    // a default avatar: Alex's own name and avatar were gone on the plane. The
+    // row is kept on the phone after every good read (saveProfileRow) and
+    // shown here until the next one. Still marked _placeholder, so nothing
+    // writes it back and nothing merges from it.
+    const cachedRow = readProfileRow(userId)
+    const standIn = cachedRow ? { ...fallbackProfile, ...cachedRow, id: userId, _placeholder: true } : fallbackProfile
     // Only on the first try: a retry must not flash the stand-in over a
     // profile that is already on screen.
-    if (attempt === 0) setProfile(fallbackProfile)
+    if (attempt === 0) setProfile(standIn)
 
     try {
       // Phase I cutover: profile metadata + aggregate stats live on `profiles`;
@@ -527,6 +599,7 @@ export function AuthProvider({ children }) {
         _gameStateUnread: !!gameStateError,
       }
       setProfile(merged)
+      saveProfileRow(userId, profileData)
       // Cross-device sync: max-merge local <-> remote so signing in on a fresh
       // device (or PWA install) restores progress, while never losing newer
       // local progress that hasn't synced yet.

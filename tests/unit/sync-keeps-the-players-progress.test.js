@@ -75,7 +75,7 @@ describe("a phone that never read the account does not overwrite the account's t
     expect(auth).toContain("document.addEventListener('visibilitychange', again)");
     expect(auth).toContain('if (!userId || activeUserIdRef.current !== userId || statsHydratedFor(userId)) return');
     expect(auth).toContain('if (Date.now() - at < 15000) return');
-    expect(auth).toContain('if (attempt === 0) setProfile(fallbackProfile)');
+    expect(auth).toContain('if (attempt === 0) setProfile(standIn)');
   });
 });
 
