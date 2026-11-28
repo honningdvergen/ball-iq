@@ -55,6 +55,14 @@ const KEEP_EXACT = new Set([
   'version.json',
   '.well-known',       // deep-link association files; harmless, tiny
   'badges',            // the store badges on the share cards (lib/shareCardV2.js), 22 KB
+  // The country flags: the Quiz topic list, the question card's topic line and
+  // Mystery Player's nation tiles draw them from /flags/ (data/nationFlags.json,
+  // lib/quizTopicMarks.js), 652 KB. They were added on 26 Nov 2026 and NOT put
+  // here, so builds 194 to 199 shipped without them and every flag in the app
+  // was a broken image (Alex's screenshot of 28 Nov: a "?" box beside "Süper
+  // Lig"). tests/unit/native-assets-kept.test.js now fails the build when the
+  // app draws from a public folder that is not on this list.
+  'flags',
 ])
 
 // Inside marketing/: delete everything EXCEPT these (BiqNav.jsx nav logo).
