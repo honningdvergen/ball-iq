@@ -190,7 +190,7 @@ export function QuizScreen({ initialTopic, onStartMode, onStartCat, onStadiums, 
               return (
                 <button key={it.cat} type="button" className={`qz-chip qz-row${on ? " is-on" : ""}`} aria-pressed={on} onClick={() => pick(it.cat)}>
                   {flag
-                    ? <img className="qz-flag" src={`/${flag}`} width="26" height="18" loading="lazy" decoding="async" alt="" aria-hidden="true" />
+                    ? <img className="qz-flag" src={`/${flag}`} width="26" height="18" loading="lazy" decoding="async" alt="" aria-hidden="true" onError={(e) => { e.currentTarget.style.display = "none"; }} />
                     : <span className="qz-lead" aria-hidden="true">{Icon && <Icon size={18} strokeWidth={2.1} />}</span>}
                   <span className="qz-name">{chipName(t, it)}</span>
                   {tick(on)}

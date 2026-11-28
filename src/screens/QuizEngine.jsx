@@ -9,7 +9,7 @@ import { Results } from "../screens/ResultsScreen.jsx";
 import * as Sentry from "@sentry/react";
 import { Lightbulb, Flame, Flag, ArrowLeft, ArrowRight, Check, X, Trophy, Timer, Sparkle, ScrollText, ClipboardList, Heart, Shield, Zap, CircleHelp } from "lucide-react";
 import ReportButton from "../components/ReportButton.jsx";
-import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS, LEGENDS_ICON } from "../lib/quizTopicMarks.js";
+import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS, LEGENDS_ICON, topicAnswersQuestion } from "../lib/quizTopicMarks.js";
 import { questionCardStyle } from "../lib/questionAccent.js";
 import "./quizQuestion.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -1158,15 +1158,18 @@ const CTA_INSET = (() => {
   // The bar's own thresholds, unchanged: green over half, yellow over a quarter, then red.
   const ringColor = ratio > 0.5 ? "var(--accent)" : ratio > 0.25 ? "var(--gold)" : "var(--red)";
   const cardStyle = questionCardStyle(q.cat);
-  const flag = QUIZ_LEAGUE_FLAGS[q.cat];
-  const TopicIcon = QUIZ_TOPIC_ICONS[q.cat] || (q.cat === "Legends" ? LEGENDS_ICON : null);
+  // Not when the topic line would answer the question (quizTopicMarks.js says
+  // why); in a quiz picked by that topic (quizLabel) it stays.
+  const quietTopic = !quizLabel && topicAnswersQuestion(q, chipLabel(t, q.cat));
+  const flag = quietTopic ? null : QUIZ_LEAGUE_FLAGS[q.cat];
+  const TopicIcon = quietTopic ? null : (QUIZ_TOPIC_ICONS[q.cat] || (q.cat === "Legends" ? LEGENDS_ICON : null));
   // A topic of its own names itself; a question without one names the round:
   // the club or pack (quizLabel), else the mode.
   const lead = flag ? { name: chipLabel(t, q.cat) }
     : TopicIcon ? { Icon: TopicIcon, name: chipLabel(t, q.cat) }
     : quizLabel ? { Icon: Shield, name: quizLabel }
     : PHONE_MODE[mode] ? { Icon: PHONE_MODE[mode].Icon, name: PHONE_MODE[mode].name(t) }
-    : { Icon: null, name: chipLabel(t, q.cat) };
+    : { Icon: null, name: quietTopic ? t("home.quiz.title") : chipLabel(t, q.cat) };
   const LeadIcon = lead.Icon;
   const reportInfo = () => {
     const picked = isTF
@@ -1243,7 +1246,7 @@ const CTA_INSET = (() => {
       <section key={idx} className={`qq-card q-fade${cardStyle ? " has-k" : ""}`} style={cardStyle}>
         <div className="qq-cat">
           {flag
-            ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" />
+            ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" onError={(e) => { e.currentTarget.style.display = "none"; }} />
             : LeadIcon ? <span className="qq-lead" aria-hidden="true"><LeadIcon size={18} strokeWidth={2.1} /></span> : null}
           <span className="qq-cat-n">{lead.name}</span>
           <span className="q-ctr qq-n">{mode === "survival" ? t("quiz.q", { n: idx + 1 }) : t("quiz.nOf", { n: idx + 1, total })}</span>

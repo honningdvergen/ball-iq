@@ -28,7 +28,7 @@ import ReportButton from "../components/ReportButton.jsx";
 import { loadQuestions } from "../questions-loader.js";
 import { useQuestionText, useLiveQuestion } from "../i18n/questionText.js";
 import { RETIRED_TAGS, optionOrder } from "../lib/quiz.js";
-import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS, LEGENDS_ICON } from "../lib/quizTopicMarks.js";
+import { QUIZ_LEAGUE_FLAGS, QUIZ_TOPIC_ICONS, LEGENDS_ICON, topicAnswersQuestion } from "../lib/quizTopicMarks.js";
 import { questionCardStyle } from "../lib/questionAccent.js";
 import { noBreakScores } from "../lib/noBreakScore.js";
 import {
@@ -533,13 +533,15 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
 
   // The question, the steal and the reveal: the approved quiz look.
   const cardStyle = questionCardStyle(currentQ.cat);
-  const flag = QUIZ_LEAGUE_FLAGS[currentQ.cat];
-  const TopicIcon = QUIZ_TOPIC_ICONS[currentQ.cat] || (currentQ.cat === "Legends" ? LEGENDS_ICON : null);
   const clubName = String(topic).startsWith("club:") ? CLUB_PACK_TO_QB[String(topic).slice(5)] : null;
+  // In a mixed game the topic line must not answer the question (quizTopicMarks.js).
+  const quietTopic = (!topic || topic === "mixed") && topicAnswersQuestion(currentQ, chipLabel(t, currentQ.cat));
+  const flag = quietTopic ? null : QUIZ_LEAGUE_FLAGS[currentQ.cat];
+  const TopicIcon = quietTopic ? null : (QUIZ_TOPIC_ICONS[currentQ.cat] || (currentQ.cat === "Legends" ? LEGENDS_ICON : null));
   const lead = flag ? { name: chipLabel(t, currentQ.cat) }
     : TopicIcon ? { Icon: TopicIcon, name: chipLabel(t, currentQ.cat) }
     : clubName ? { Icon: Shield, name: clubName }
-    : { Icon: null, name: chipLabel(t, currentQ.cat) };
+    : { Icon: null, name: quietTopic ? t("home.quiz.title") : chipLabel(t, currentQ.cat) };
   const LeadIcon = lead.Icon;
   // The steps and "N of M" count the asker's own questions in this game (six
   // for Classic with two to four players), not the game's total; a steal
@@ -598,7 +600,7 @@ function LocalQuizGame({ config, onComplete, onExit, onReport }) {
       <section key={currentQIdx} className={`qq-card q-fade${cardStyle ? " has-k" : ""}`} style={cardStyle}>
         <div className="qq-cat">
           {flag
-            ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" />
+            ? <img className="qq-flag" src={`/${flag}`} width="26" height="18" decoding="async" alt="" aria-hidden="true" onError={(e) => { e.currentTarget.style.display = "none"; }} />
             : LeadIcon ? <span className="qq-lead" aria-hidden="true"><LeadIcon size={18} strokeWidth={2.1} /></span> : null}
           <span className="qq-cat-n">{lead.name}</span>
           <span className="q-ctr qq-n">{mode === "survival" ? t("lp.qOne", { n: currentQIdx + 1 }) : t("quiz.nOf", { n: deal.own + 1, total: ownTotal })}</span>

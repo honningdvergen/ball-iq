@@ -16,6 +16,26 @@ export const QUIZ_LEAGUE_FLAGS = {
   Bundesliga: "flags/germany.png", Ligue1: "flags/france.png", SuperLig: "flags/turkey.png",
   Primeira: "flags/portugal.png",
 };
+// THE TOPIC LINE MUST NOT ANSWER THE QUESTION (28 Nov 2026). The question card
+// says its topic with the league's flag: "Süper Lig" and Turkey's flag stood
+// over "In which country's top division does Beşiktaş play?" in Alex's Daily 7
+// ("Obvious everyone knows it is turkey"). When the right answer names the
+// topic's country or the topic itself, the card says the round's name instead.
+// In a quiz the player picked by that topic, the line stays: they chose it.
+export const QUIZ_LEAGUE_COUNTRY = {
+  PL: "England", LaLiga: "Spain", SerieA: "Italy", Bundesliga: "Germany",
+  Ligue1: "France", SuperLig: "Turkey", Primeira: "Portugal",
+};
+const fold = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+export function topicAnswersQuestion(q, topicLabel) {
+  if (!q?.cat) return false;
+  const right = Array.isArray(q.o) && typeof q.a === "number" ? q.o[q.a] : q.typed_a;
+  const r = fold(right);
+  if (!r) return false;
+  return [QUIZ_LEAGUE_COUNTRY[q.cat], topicLabel].map(fold).filter(Boolean)
+    .some((w) => r === w || r.includes(w) || (r.length >= 4 && w.includes(r)));
+}
 // Every other topic: one plain grey line icon.
 export const QUIZ_TOPIC_ICONS = { UCL: Trophy, WorldCup: Globe, Euros: Star, Managers: ClipboardList, Records: Medal };
 // Legends is a topic of its own on the question card (the bank's cat "Legends");
