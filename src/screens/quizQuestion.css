@@ -24,8 +24,14 @@
 .qq .qq-steps{flex:1;min-width:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:5px;}
 .qq .qq-steps i{display:block;height:6px;border-radius:3px;background:#1E222C;}
 .qq .qq-steps i.cur{background:var(--t2);}
-.qq .qq-steps i.ok{background:var(--accent);}
-.qq .qq-steps i.no{background:#FF6B6B;}
+/* STRONGER GREEN AND RED (28 Nov 2026). Alex: "the green and red we have been
+   using is a bit blunt and dull", then, shown three rows: "go strongest". The
+   pills here and the result card's dots (resultCard.css) wear the same pair,
+   #66E61A and #FF3232; they were lime with a soft coral here and lime with a
+   brick red there. The answer tiles below do NOT change: "the anser i think
+   is correct today as it is". The brand's lime (--accent) is untouched. */
+.qq .qq-steps i.ok{background:#66E61A;}
+.qq .qq-steps i.no{background:#FF3232;}
 /* The timer ring, 38 across, its seconds in Inter's tabular figures. */
 .qq .qq-ring{position:relative;flex:none;width:38px;height:38px;display:grid;place-items:center;}
 .qq .qq-ring svg{position:absolute;inset:0;display:block;}

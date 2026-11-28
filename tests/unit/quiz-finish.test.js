@@ -72,8 +72,8 @@ describe('the score is on the result card', () => {
     expect(rule(css, '.rc-kicks.is-many .rc-k')).toBe('.rc-kicks.is-many .rc-k{flex:1 1 0;width:auto;max-width:26px;');
     expect(rule(css, '.rc-kicks.is-many .rc-k i')).toBe('.rc-kicks.is-many .rc-k i{width:100%;height:auto;aspect-ratio:1;');
     // the colours are the card's own: green for right, the deeper red for wrong
-    expect(rule(css, '.rc-k.is-in i')).toContain('background:#58CC02');
-    expect(rule(css, '.rc-k i')).toContain('background:#C23B33');
+    expect(rule(css, '.rc-k.is-in i')).toContain('background:#66E61A');
+    expect(rule(css, '.rc-k i')).toContain('background:#FF3232');
     // and the Daily 7's seven keep their fixed size
     const seven = renderToStaticMarkup(el(ResultCard, { title: 'Daily 7', score: 5, outOf: 7, verdict: 'x', marks: [true, true, true, true, true, false, false] }));
     expect(seven).not.toContain('is-many');

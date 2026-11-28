@@ -1730,7 +1730,7 @@ details[open] .wr-summary::before{transform:rotate(90deg);}
 .wm-a{margin-top:12px;font-size:15px;line-height:20px;font-weight:700;color:var(--green-ink);}
 .wm-u{margin-top:6px;font-size:14px;line-height:20px;font-weight:500;color:var(--t2);}
 .wm-a svg,.wm-u svg{flex:none;margin-top:2px;}
-.wm-u svg{color:#C23B33;}
+.wm-u svg{color:#FF3232;}
 .wm-a span,.wm-u span{min-width:0;}
 .wm-why{margin-top:14px;font-size:13.5px;line-height:1.5;color:var(--t2);overflow-wrap:anywhere;}
 

@@ -28,11 +28,13 @@
 .rc-hero.is-foot{align-items:flex-end;gap:18px;}
 .rc-hero.is-foot .rc-say{padding-bottom:5px;}
 /* The seven, in order: a filled green dot is a right answer, a filled red dot
-   a wrong one (24 Nov 2026; before that a white disc and an empty ring). */
+   a wrong one (24 Nov 2026; before that a white disc and an empty ring). The
+   pair is the stronger one Alex picked on 28 Nov 2026 ("go strongest"), the
+   same as the quiz's progress pills (screens/quizQuestion.css). */
 .rc-kicks{display:flex;justify-content:space-between;margin-top:22px;}
 .rc-k{display:flex;flex-direction:column;align-items:center;gap:7px;width:38px;}
-.rc-k i{display:block;width:34px;height:34px;border-radius:50%;background:#C23B33;}
-.rc-k.is-in i{background:#58CC02;box-shadow:0 6px 14px -6px rgba(0,0,0,0.6);}
+.rc-k i{display:block;width:34px;height:34px;border-radius:50%;background:#FF3232;}
+.rc-k.is-in i{background:#66E61A;box-shadow:0 6px 14px -6px rgba(0,0,0,0.6);}
 /* A hard one the player got: the same green dot with a gold ring round it, a
    2.5px ring 2.5px clear of the dot. Drawn as a border with the fill clipped
    to the content box, not as an outline: Safari before 16.4 draws an outline

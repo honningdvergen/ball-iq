@@ -90,10 +90,10 @@ describe('the hierarchy inside a card', () => {
   it('the right answer is the app\'s green, bold; the player\'s own is secondary grey with the result card\'s red on the cross only', () => {
     expect(rule(css, '.wm-a')).toContain('font-weight:700;color:var(--green-ink);');
     expect(rule(css, '.wm-u')).toContain('font-weight:500;color:var(--t2);');
-    expect(rule(css, '.wm-u svg')).toBe('.wm-u svg{color:#C23B33;}');
-    expect(rule(read('src/components/resultCard.css'), '.rc-k i')).toContain('background:#C23B33;');
+    expect(rule(css, '.wm-u svg')).toBe('.wm-u svg{color:#FF3232;}');
+    expect(rule(read('src/components/resultCard.css'), '.rc-k i')).toContain('background:#FF3232;');
     // no other red, and no yellow, anywhere in the card
-    expect((css.slice(css.indexOf('.wm-list{'), css.indexOf('}', css.indexOf('.wm-why{'))).match(/#[0-9A-Fa-f]{3,8}/g) || [])).toEqual(['#C23B33']);
+    expect((css.slice(css.indexOf('.wm-list{'), css.indexOf('}', css.indexOf('.wm-why{'))).match(/#[0-9A-Fa-f]{3,8}/g) || [])).toEqual(['#FF3232']);
   });
   it('the explanation is a note: smaller than the question, never under 13px, in the 7:1 grey, after a little space', () => {
     const why = rule(css, '.wm-why');

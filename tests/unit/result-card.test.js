@@ -117,7 +117,7 @@ describe('the look that was agreed', () => {
     expect(css).not.toMatch(/radial-gradient|::before|::after/);
   });
   it('a wrong answer is a filled red dot, not a cross', () => {
-    expect(rule('.rc-k i')).toContain('background:#C23B33');
+    expect(rule('.rc-k i')).toContain('background:#FF3232');
     expect(rule('.rc-k i')).not.toContain('border:');
     const src = readFileSync(new URL('../../src/components/ResultCard.jsx', import.meta.url), 'utf8');
     expect(src.slice(src.indexOf('export function ResultCard'))).not.toMatch(/✓|✗|✕|<svg|lucide/);
@@ -134,8 +134,8 @@ describe('the marks and the XP (24 Nov 2026)', () => {
   // Number 3 is hard and missed, number 6 is hard and got.
   const mixed = { score: 5, marks: marks5, levels, sub: 'Some tough ones in there today.', xp: 50 };
   it('right is a filled green dot, wrong a filled red one', () => {
-    expect(rule('.rc-k.is-in i')).toContain('background:#58CC02');
-    expect(rule('.rc-k i')).toContain('background:#C23B33');
+    expect(rule('.rc-k.is-in i')).toContain('background:#66E61A');
+    expect(rule('.rc-k i')).toContain('background:#FF3232');
     // filled, never outlined: neither has a border of its own
     expect(rule('.rc-k i')).not.toContain('border:');
     expect(rule('.rc-k.is-in i')).not.toContain('border');
