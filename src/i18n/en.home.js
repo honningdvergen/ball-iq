@@ -102,7 +102,6 @@ export default {
   'home.mp.title': 'Play online',
   'home.pass.title': 'Pass and play',
   'home.pass.sub': 'One phone · 2 to 6 players',
-  'home.pass.openAria': 'Open pass and play',
   'home.league.title': 'Mates’ league',
   'home.league.sub': 'The four dailies · scored all week',
   'home.league.start': 'Start',

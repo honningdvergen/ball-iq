@@ -1097,5 +1097,4 @@ export const STEP7_EN = {
   'home.mp.title': 'Play online',
   'home.pass.title': 'Pass and play',
   'home.pass.sub': 'One phone · 2 to 6 players',
-  'home.pass.openAria': 'Open pass and play',
 };

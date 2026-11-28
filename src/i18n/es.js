@@ -106,7 +106,6 @@ export default {
   'home.mp.title': 'Jugar en línea',
   'home.pass.title': 'Multijugador local',
   'home.pass.sub': 'Un móvil · de 2 a 6 jugadores',
-  'home.pass.openAria': 'Abrir el multijugador local',
   'home.league.title': 'Liga de amigos',
   'home.league.sub': 'Los 4 retos diarios · toda la semana',
   'home.league.start': 'Crear',

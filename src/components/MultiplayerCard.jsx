@@ -64,13 +64,15 @@ export const MultiplayerCard = React.memo(function MultiplayerCardImpl({ onOpen 
 // to the drawing of this row "yeah build it but another icon on home" and, for
 // the icon, "The arrows". The third row of the "With your mates" card, under
 // Play online: the same row anatomy, the arrows in a purple tile, and an arrow
-// at the end because it takes you somewhere (the pass and play setup).
+// at the end because it takes you somewhere (the pass and play setup). The
+// button has no aria-label of its own: its two printed lines are its name, so
+// what is read out is what is seen.
 export const PassPlayRow = React.memo(function PassPlayRowImpl({ onOpen }) {
   const t = useT();
   return (
     <div className="todays-seven-secondary mp-row is-pass" role="group" aria-label={t("home.pass.title")}
       style={{ "--mode-rgb": "168,120,240", "--mode": "#B994F5" }}>
-      <button type="button" className="mp-row-open" onClick={(e) => { e?.stopPropagation(); onOpen?.(); }} aria-label={t("home.pass.openAria")}>
+      <button type="button" className="mp-row-open" onClick={(e) => { e?.stopPropagation(); onOpen?.(); }}>
         <span className="t7s-icon" aria-hidden="true"><ArrowLeftRight size={22} strokeWidth={2} /></span>
         <span className="t7s-body">
           <span className="t7s-title"><span className="t7s-name">{t("home.pass.title")}</span></span>
